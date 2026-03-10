@@ -5,7 +5,7 @@ pubDate: "Sep 13 2020"
 heroImage: "../../assets/blog/Qo-7nCDjjUM.jpg"
 ---
 
-Starbucks has nitro cold brew on tap at many of their locations, but now you can grab it in a can. We picked up an eight-pack online at about **$3 per can** -- cheaper than buying it in-store, but still not exactly cheap for canned coffee. The question is whether the nitro infusion actually delivers a noticeably smoother taste. We cracked one open to find out.
+Starbucks has nitro cold brew on tap at many of their locations, but now you can grab it in a can. We picked up an eight-pack of the **[Starbucks Nitro Cold Brew](https://www.amazon.com/s?k=Starbucks+Nitro+Cold+Brew+Cans&tag=jayarrcoffee-20)** online at about **$3 per can** -- cheaper than buying it in-store, but still not exactly cheap for canned coffee. The question is whether the nitro infusion actually delivers a noticeably smoother taste. We cracked one open to find out.
 
 <iframe width="100%" style="aspect-ratio:16/9" src="https://www.youtube.com/embed/Qo-7nCDjjUM" title="Starbucks Canned Nitro Cold Brew REVIEW! (Worth the $3/Can??)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -28,3 +28,5 @@ Here's where things got interesting. Adding just a small splash of **half-and-ha
 The nitro infusion does deliver on the smoothness promise, and the aroma is excellent. But served black, the unsweetened version leans too bitter for casual drinking. The fix is easy -- a splash of half-and-half or your preferred creamer turns it into something special.
 
 The bigger question is value. At **$3 per can**, especially when you need to add your own cream at home, the cost adds up quickly. It's harder to justify as a grab-and-go option when you're customizing it anyway. But if you're a coffee lover looking for a smooth, rich, convenient cold brew and you don't mind the price, it's worth trying at least once.
+
+*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*

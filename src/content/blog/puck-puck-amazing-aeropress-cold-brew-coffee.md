@@ -5,7 +5,7 @@ pubDate: "May 18 2020"
 heroImage: "../../assets/blog/i0dt9dWTL4Y.jpg"
 ---
 
-Slow drip cold brew is typically associated with elaborate, expensive setups. The **Puck Puck** changes that equation entirely — it is a simple device that sits on top of your AeroPress and turns it into a slow drip cold brew maker, all for around **30 pounds ($35)**. That is a fraction of the cost of a larger cold drip tower. But is it any good?
+Slow drip cold brew is typically associated with elaborate, expensive setups. The **[Puck Puck](https://www.amazon.com/s?k=Puck+Puck+AeroPress+Cold+Brew&tag=jayarrcoffee-20)** changes that equation entirely — it is a simple device that sits on top of your **[AeroPress](https://www.amazon.com/s?k=AeroPress+Coffee+Maker&tag=jayarrcoffee-20)** and turns it into a slow drip cold brew maker, all for around **30 pounds ($35)**. That is a fraction of the cost of a larger cold drip tower. But is it any good?
 
 <iframe width="100%" style="aspect-ratio:16/9" src="https://www.youtube.com/embed/i0dt9dWTL4Y" title="Puck Puck: AeroPress Cold Brew Coffee" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -46,7 +46,7 @@ If you are using slightly older coffee grounds, you can pre-wet them — just de
 
 ## The Results
 
-After about three hours, the chamber empties out and you are left with a beautifully dark cold brew. The coffee we made with **Taylor's Lazy Sunday** (a lighter, three-roses roast) produced something genuinely impressive.
+After about three hours, the chamber empties out and you are left with a beautifully dark cold brew. The coffee we made with **[Taylor's Lazy Sunday](https://www.amazon.com/s?k=Taylors+Lazy+Sunday+Coffee&tag=jayarrcoffee-20)** (a lighter, three-roses roast) produced something genuinely impressive.
 
 The flavor: **dark chocolate and beautiful roast notes**, but noticeably sweeter than if you had brewed the same coffee hot. The cold water extraction creates a **smooth, creamy mouthfeel** — crisp and clean, but absolutely full of flavor. No concerns about the brew being watered down or thin. It was full-bodied, strong, and refreshing.
 
@@ -57,3 +57,5 @@ You can enjoy it straight, mix it with milk, pour it over ice for a longer drink
 Cleanup is the one area where the Puck Puck is slightly less convenient than a standard AeroPress brew — you are dealing with a few more parts. But it is still minimal: dump the grounds, give everything a rinse, and you are done.
 
 For **$35**, the Puck Puck is a fantastic nerdy coffee accessory. It is easy to use, produces genuinely excellent cold brew, and works with equipment you probably already own. If you are looking for a fun, affordable way to make beautiful slow drip cold brew, this one is easy to recommend.
+
+*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*

@@ -5,7 +5,7 @@ pubDate: "Jun 08 2020"
 heroImage: "../../assets/blog/XRxpvZSymHo.jpg"
 ---
 
-French press coffee is a classic -- simple to make and always reliable. But let's be honest: nobody enjoys cleaning those grounds mashed at the bottom of the carafe. The **American Press** was invented specifically to solve that problem, born from the frustrations of a college student who watched his peers leave dirty French presses sitting for days. We put it through its paces and then compared it head-to-head against both the French press and the Aeropress.
+French press coffee is a classic -- simple to make and always reliable. But let's be honest: nobody enjoys cleaning those grounds mashed at the bottom of the carafe. The **[American Press](https://www.amazon.com/s?k=American+Press+Coffee+Maker&tag=jayarrcoffee-20)** was invented specifically to solve that problem, born from the frustrations of a college student who watched his peers leave dirty French presses sitting for days. We put it through its paces and then compared it head-to-head against both the French press and the Aeropress.
 
 <iframe width="100%" style="aspect-ratio:16/9" src="https://www.youtube.com/embed/XRxpvZSymHo" title="American Press Review: Better Than French Press? (Honest Comparison)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -52,3 +52,5 @@ To keep things fair, we brewed three cups using the same Costa Rican medium roas
 **Yes.** The American Press is a useful, well-designed brewer. It is compact, all-in-one, travels well, and is not made of glass on the outside (so it is likely shatterproof). The brewing experience takes about the same time as a French press, and the cleanup convenience is genuinely its killer feature.
 
 If you are chasing the absolute best flavor extraction from your beans, the **Aeropress remains the champion**. But if convenience matters more to you -- and you are tired of scrubbing grounds out of a French press -- the American Press is a worthwhile addition to your coffee arsenal.
+
+*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*

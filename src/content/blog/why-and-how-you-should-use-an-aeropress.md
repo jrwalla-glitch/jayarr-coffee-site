@@ -5,7 +5,7 @@ pubDate: "Jun 15 2020"
 heroImage: "../../assets/blog/kmXWfHExI64.jpg"
 ---
 
-The AeroPress is a simple, modern way to brew great-tasting coffee at home. Many people assume it works like a French press, but it's actually closer to an espresso machine -- it relies on air pressure to extract flavor rather than just steeping. That difference in mechanics makes for a cleaner, smoother, and faster brew.
+The **[AeroPress](https://www.amazon.com/s?k=AeroPress+Coffee+Maker&tag=jayarrcoffee-20)** is a simple, modern way to brew great-tasting coffee at home. Many people assume it works like a French press, but it's actually closer to an espresso machine -- it relies on air pressure to extract flavor rather than just steeping. That difference in mechanics makes for a cleaner, smoother, and faster brew.
 
 <iframe width="100%" style="aspect-ratio:16/9" src="https://www.youtube.com/embed/kmXWfHExI64" title="Why and How You Should Use an Aeropress!" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -49,3 +49,5 @@ The inverted method prevents any liquid from escaping during the steeping phase,
 ## Which Method Is Better?
 
 We tend to prefer the inverted method because it retains more flavor -- less water and coffee are lost during the brewing process. But both methods produce excellent coffee, and the standard method is more forgiving for beginners. Either way, the AeroPress is one of the best investments you can make for your home coffee setup.
+
+*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*

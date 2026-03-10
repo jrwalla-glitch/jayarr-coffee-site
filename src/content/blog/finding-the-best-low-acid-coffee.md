@@ -17,30 +17,32 @@ The bottom line: don't be fooled when you see "acidity" in a coffee flavor profi
 
 ## The Reviews
 
-### Best Overall: Volcanica Low Acid Coffee Blend
+### Best Overall: **[Volcanica Low Acid Coffee Blend](https://www.amazon.com/s?k=Volcanica+Low+Acid+Coffee&tag=jayarrcoffee-20)**
 
 **Volcanica** offers a massive range of whole beans sourced from optimal growing regions worldwide, usually defined by volcanic soils. We were fond of both the coffee and the price, though you'll want to keep an eye on brewing time to avoid over-extraction. They offer a freshness guarantee, roasting only after you place your order. Their technical process minimizes the acid that causes heartburn while safeguarding vitamins, nutrients, and other essentials. Taste-wise, it was solid if not spectacular.
 
-### Lifeboost Medium Roast
+### **[Lifeboost Medium Roast](https://www.amazon.com/s?k=Lifeboost+Medium+Roast+Coffee&tag=jayarrcoffee-20)**
 
 A costly single-origin coffee grown at elevations above 5,700 feet in Nicaragua. On the upside, it's **organic, Fair Trade, and non-GMO**. If your budget allows, the quality and ethical sourcing make it worth considering.
 
-### Mommee Coffee Half-Caf
+### **[Mommee Coffee Half-Caf](https://www.amazon.com/s?k=Mommee+Coffee+Half+Caf&tag=jayarrcoffee-20)**
 
 While pitched at women, caffeine- and acid-sensitive coffee drinkers of all kinds can enjoy it. They avoid harsh chemicals, and the coffee is low in **chlorogenic acid**, which can contribute to acid reflux. It's a pricier option with a slight burnt and bitter taste, though.
 
-### Franck's Coffee Peruvian Dark
+### **[Franck's Coffee Peruvian Dark](https://www.amazon.com/s?k=Francks+Coffee+Peruvian+Dark&tag=jayarrcoffee-20)**
 
 This coffee integrates roasted Arabica beans with **roasted flax seeds**, boosting the mineral, vitamin, antioxidant, and omega-3 content. Flax seeds are generally alkaline, which helps bring down the acid from the coffee. It has a nutty, buttery taste, but something about it doesn't quite taste like your average cup. Note that those with sensitive stomachs may want to avoid it, as flax seeds are high in fiber.
 
-### Puroast Organic House Blend
+### **[Puroast Organic House Blend](https://www.amazon.com/s?k=Puroast+Organic+House+Blend+Coffee&tag=jayarrcoffee-20)**
 
 Venezuelan-sourced beans with low acidity derived from a proprietary wood-fire roasting process. It claims **70% lower acidity** than competitors and five times the antioxidants -- they've even hired scientists to verify these claims. It can be a little brown and bitter, but the genuinely low acidity level is a real winner.
 
-### Teeccino Herbal Coffee
+### **[Teeccino Herbal Coffee](https://www.amazon.com/s?k=Teeccino+Herbal+Coffee&tag=jayarrcoffee-20)**
 
 This is a blended coffee with **goji beans, matcha green tea, and rooibos red tea**. Energy is enhanced from the matcha, and the stomach is settled by the rooibos. It doesn't taste like an average cup of coffee, but it's full-bodied, rich in flavor, and has a creamy mouthfeel. It's on the pricier side.
 
 ## Our Recommendation
 
-**Volcanica** is our best overall pick for low acid coffee -- it delivers the best combination of taste and value. However, if you're specifically looking for the absolute lowest acidity level and stomach comfort is your top priority, the **Healthwise** low acid option is worth trying first.
+**Volcanica** is our best overall pick for low acid coffee -- it delivers the best combination of taste and value. However, if you're specifically looking for the absolute lowest acidity level and stomach comfort is your top priority, the **[Healthwise](https://www.amazon.com/s?k=Healthwise+Low+Acid+Coffee&tag=jayarrcoffee-20)** low acid option is worth trying first.
+
+*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*

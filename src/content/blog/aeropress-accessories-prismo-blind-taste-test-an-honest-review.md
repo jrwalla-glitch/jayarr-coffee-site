@@ -5,7 +5,7 @@ pubDate: "Jun 01 2020"
 heroImage: "../../assets/blog/pzHA9rkmyS0.jpg"
 ---
 
-The AeroPress is already one of the most versatile coffee makers around, but a growing ecosystem of accessories promises to make it even better. The **Fellow Prismo** is one of the most popular -- a pressure-actuated valve attachment that claims to produce espresso-style coffee with crema, all while eliminating the need for the inverted brewing method. At around **$25 (or 20 pounds)**, is it worth adding to your setup? We put it through a blind taste test to find out.
+The **[AeroPress](https://www.amazon.com/s?k=AeroPress+Coffee+Maker&tag=jayarrcoffee-20)** is already one of the most versatile coffee makers around, but a growing ecosystem of accessories promises to make it even better. The **[Fellow Prismo](https://www.amazon.com/s?k=Fellow+Prismo+AeroPress&tag=jayarrcoffee-20)** is one of the most popular -- a pressure-actuated valve attachment that claims to produce espresso-style coffee with crema, all while eliminating the need for the inverted brewing method. At around **$25 (or 20 pounds)**, is it worth adding to your setup? We put it through a blind taste test to find out.
 
 <iframe width="100%" style="aspect-ratio:16/9" src="https://www.youtube.com/embed/pzHA9rkmyS0" title="AeroPress Accessories: Prismo Blind Taste Test! (An Honest Review)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -20,7 +20,7 @@ The idea is that the valve builds up pressure during the plunge, creating espres
 
 ## The Blind Taste Test
 
-To keep things honest, we set up a blind comparison using **Taylor's Lazy Sunday** ground coffee across three methods:
+To keep things honest, we set up a blind comparison using **[Taylor's Lazy Sunday](https://www.amazon.com/s?k=Taylors+Lazy+Sunday+Coffee&tag=jayarrcoffee-20)** ground coffee across three methods:
 
 1. **Standard AeroPress** (right-side up)
 2. **Inverted AeroPress method**
@@ -55,3 +55,5 @@ The included **metal filter** is also a nice bonus. Metal filters on their own c
 The Fellow Prismo is a fun accessory, and the no-drip seal addresses a real pain point. But in our blind taste test, the coffee it produced ranked behind both standard and inverted AeroPress methods. The recommended recipe (20 grams of coffee, 50ml of water) may need tweaking -- that's an intense ratio, especially under pressure. With some experimentation on measurements, the results might improve.
 
 If you're curious, give it a try. But if you're already comfortable with the inverted method, the Prismo may not offer enough of an upgrade to justify the purchase.
+
+*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*

@@ -49,19 +49,19 @@ A common question: **does coffee need the USDA organic label to be considered or
 
 ## Best Organic Coffees to Try
 
-### Kicking Horse Whole Bean Dark Roast
+### **[Kicking Horse Whole Bean Dark Roast](https://www.amazon.com/s?k=Kicking+Horse+Whole+Bean+Dark+Roast+Coffee&tag=jayarrcoffee-20)**
 
 A delicious, oily, rich dark coffee with hints of **baker's chocolate**, low acidity, and a smooth finish. The aroma is outstanding, and it comes in both whole bean and pre-ground options.
 
-### Real Good Coffee Company Organic Dark Roast (USDA Certified)
+### **[Real Good Coffee Company Organic Dark Roast](https://www.amazon.com/s?k=Real+Good+Coffee+Company+Organic+Dark+Roast&tag=jayarrcoffee-20)** (USDA Certified)
 
 An inexpensive, solid Arabica coffee with the right balance of smoothness and flavor. The aroma is exceptional. Easy to recommend from every perspective.
 
-### Volcanica Organic
+### **[Volcanica Organic](https://www.amazon.com/s?k=Volcanica+Organic+Coffee&tag=jayarrcoffee-20)**
 
 **Volcanica** are specialists in organic coffee. Their beans are well-sourced and ethically produced, roasted after each order is placed for optimal freshness in small batches. Available in whole bean or pre-ground to accommodate drip, espresso, and French press.
 
-### Cafe Don Pablo Organic Gourmet Subtle Earth
+### **[Cafe Don Pablo Organic Gourmet Subtle Earth](https://www.amazon.com/s?k=Cafe+Don+Pablo+Subtle+Earth+Organic+Coffee&tag=jayarrcoffee-20)**
 
 Super smooth with a higher caffeine level that keeps you alert with a sense of calm. This low-acid coffee emphasizes **flavor without intensity** and works cold, hot, drip, or in a French press.
 
@@ -69,18 +69,20 @@ Super smooth with a higher caffeine level that keeps you alert with a sense of c
 
 Direct City takes the quantity approach, selling in **5-pound packs**. The coffee arrives fresh, but the challenge is finishing it before it goes stale. Some find it pricey for the quality, but we think it's solid value -- especially if you drink a lot of coffee.
 
-### Death Wish Coffee
+### **[Death Wish Coffee](https://www.amazon.com/s?k=Death+Wish+Coffee&tag=jayarrcoffee-20)**
 
 **Death Wish** has a cult following and is both **USDA and Fair Trade certified organic**. Sourced from Peru and India, it's an Arabica-Robusta blend. Robusta beans are generally less preferred for taste, but they deliver the high caffeine content that Death Wish is famous for.
 
-### Best for Cold Brew: Bizzy Cold Brew Organic
+### Best for Cold Brew: **[Bizzy Cold Brew Organic](https://www.amazon.com/s?k=Bizzy+Cold+Brew+Organic+Coffee&tag=jayarrcoffee-20)**
 
 Sweet and smooth when served black, with no burnt or bitter flavors and low acidity. You can use it for regular brewing, but it truly shines as cold brew.
 
-### Best for Cold Brew: Tiny Footprint Coffee
+### Best for Cold Brew: **[Tiny Footprint Coffee](https://www.amazon.com/s?k=Tiny+Footprint+Coffee&tag=jayarrcoffee-20)**
 
 A feel-good coffee that promises a **negative carbon footprint**. The aroma is powerful enough to smell from the packaging. The flavor strikes a nice balance -- not too strong, not too light. A great cold brew option.
 
-### Best Organic Decaf: Jo Coffee Decaffeinated
+### Best Organic Decaf: **[Jo Coffee Decaffeinated](https://www.amazon.com/s?k=Jo+Coffee+Organic+Decaf&tag=jayarrcoffee-20)**
 
 Unlike many decaf coffees that use methyl chloride, **Jo Coffee uses the Swiss Water method** -- no chemicals involved. It has a rich, smooth taste with notes of **milk chocolate and blueberry**.
+
+*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*

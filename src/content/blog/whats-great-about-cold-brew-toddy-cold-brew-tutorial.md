@@ -5,7 +5,7 @@ pubDate: "Mar 12 2020"
 heroImage: "../../assets/blog/60YOhhNMDsc.jpg"
 ---
 
-Cold brew is one of the hottest coffee drinks in the world right now, and the immersion method is by far the most popular way to make it. Beloved for its **lower acidity and sweet, smooth taste**, cold brew has become a year-round staple — not just a summer drink. Here's everything you need to know about making it at home with the Toddy Cold Brew System.
+Cold brew is one of the hottest coffee drinks in the world right now, and the immersion method is by far the most popular way to make it. Beloved for its **lower acidity and sweet, smooth taste**, cold brew has become a year-round staple — not just a summer drink. Here's everything you need to know about making it at home with the **[Toddy Cold Brew System](https://www.amazon.com/s?k=Toddy+Cold+Brew+System&tag=jayarrcoffee-20)**.
 
 <iframe width="100%" style="aspect-ratio:16/9" src="https://www.youtube.com/embed/60YOhhNMDsc" title="What's Great About Cold Brew? (Toddy Cold Brew Tutorial)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -80,3 +80,5 @@ Cold brew is incredibly versatile. You can enjoy it:
 - **With hot water** — for a surprisingly flavorful and gentle hot cup of coffee
 
 The flavor is noticeably lighter and smoother than hot-brewed coffee, with a sweetness that often eliminates the need for added sugar. Once you've got a batch in the fridge, you'll wonder how you ever started your mornings without it.
+
+*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*

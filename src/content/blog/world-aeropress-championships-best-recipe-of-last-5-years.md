@@ -11,7 +11,7 @@ The World Aeropress Championship is a fan-driven global phenomenon, drawing comp
 
 ## The Baseline: Standard Aeropress Method
 
-Before diving into the championship recipes, we brewed a control cup using the manufacturer's standard method: add a filter and cap, one scoop of fine grounds, 80-degree water up to level one, stir for 10 seconds, and press. The result was a nice level of richness with smoked black pepper, raisin, and dark fruit notes -- smooth, not too bitter, and a pleasant dark roast overall. Every championship recipe uses the **inverted Aeropress method**, which gives more freedom to control brew time before the coffee begins dripping through.
+Before diving into the championship recipes, we brewed a control cup using the manufacturer's standard method: add a filter and cap, one scoop of fine grounds, 80-degree water up to level one, stir for 10 seconds, and press. The result was a nice level of richness with smoked black pepper, raisin, and dark fruit notes -- smooth, not too bitter, and a pleasant dark roast overall. Every championship recipe uses the **inverted [Aeropress](https://www.amazon.com/s?k=AeroPress+Coffee+Maker&tag=jayarrcoffee-20) method**, which gives more freedom to control brew time before the coffee begins dripping through.
 
 ## 2019 Winner: Wendelien Brouwer (Netherlands)
 
@@ -39,7 +39,7 @@ Before diving into the championship recipes, we brewed a control cup using the m
 
 ## 2015 Winner: Lukas Zahradnicek (Slovakia)
 
-**The recipe:** 20g coffee at a drip grind (7.3 on a Mahlkonig EK 43), 230g water at 79 degrees C. Add 60g water first, perform a "turbulent wiggle" for 15 seconds, bloom for 13 seconds, add remaining water over 10 seconds, press for 45 seconds using gravity.
+**The recipe:** 20g coffee at a drip grind (7.3 on a **[Mahlkonig EK 43](https://www.amazon.com/s?k=Mahlkonig+EK+43+Grinder&tag=jayarrcoffee-20)**), 230g water at 79 degrees C. Add 60g water first, perform a "turbulent wiggle" for 15 seconds, bloom for 13 seconds, add remaining water over 10 seconds, press for 45 seconds using gravity.
 
 **The verdict:** Easily the most potent and bitter of the five. Bitter, tough, very smoky, and intensely peppery. The aroma during the turbulent wiggle was incredible, but the resulting cup was like drinking lava -- a nuclear bomb compared to the mellow 2016 entry before it.
 
@@ -54,3 +54,5 @@ After tasting all five championship brews side by side, our ranking is clear:
 5. **2015 (Lukas Zahradnicek, Slovakia)** -- Incredibly intense and potent. For those who want maximum strength.
 
 We highly recommend heading to the World Aeropress Championship website and trying these recipes yourself. It is genuinely fun to experiment with, and you might discover a new favorite technique for your morning brew.
+
+*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*

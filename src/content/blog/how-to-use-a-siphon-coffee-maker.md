@@ -13,7 +13,7 @@ Few coffee brewers turn heads quite like the siphon coffee maker. Part chemistry
 
 Siphon coffee makers have been making a comeback recently, but they're far from new. According to historical records, the siphon brewer was invented in the early 19th century by a gentleman known as **Loeff of Berlin**. While the brewing machine was his brainchild, its popularity is credited to a French woman known as **Madame Vassieux**, who commercialized the product and redesigned the original model into the double-balloon shape that characterizes the brewer today.
 
-By the 20th century, siphon coffee makers were a household item in American homes, with companies like **Hario** selling their designs in large quantities. The hype gradually died off toward the turn of the 21st century as consumers sought more convenient brewing techniques. Today, siphon brewers are clearly making a comeback among coffee enthusiasts and baristas paying renewed attention to the age-old craft.
+By the 20th century, siphon coffee makers were a household item in American homes, with companies like **[Hario](https://www.amazon.com/s?k=Hario+Siphon+Coffee+Maker&tag=jayarrcoffee-20)** selling their designs in large quantities. The hype gradually died off toward the turn of the 21st century as consumers sought more convenient brewing techniques. Today, siphon brewers are clearly making a comeback among coffee enthusiasts and baristas paying renewed attention to the age-old craft.
 
 ## How a Siphon Coffee Maker Works
 
@@ -88,3 +88,5 @@ Some people prefer to pour their coffee into a carafe for serving. We prefer to 
 ## Final Thoughts
 
 Brewing with a siphon coffee maker is both a science and an art. It's not as straightforward as other methods, but the reward is absolutely worth the effort. If you're a barista or an enthusiastic coffee aficionado, this peculiar brewing apparatus is definitely worth a try.
+
+*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*

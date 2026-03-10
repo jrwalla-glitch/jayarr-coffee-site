@@ -15,19 +15,19 @@ We brewed every instant coffee black, following the package instructions exactly
 
 ## The Rankings
 
-**Juan Valdez Medium Roast -- 6/10.** We started with this one expecting a top-tier result based on its premium look and higher price point. It delivered a good flavor and pleasant smell with no bitterness. A solid, drinkable cup that we would happily finish.
+**[Juan Valdez Medium Roast](https://www.amazon.com/s?k=Juan+Valdez+Instant+Coffee+Medium+Roast&tag=jayarrcoffee-20) -- 6/10.** We started with this one expecting a top-tier result based on its premium look and higher price point. It delivered a good flavor and pleasant smell with no bitterness. A solid, drinkable cup that we would happily finish.
 
-**Taster's Choice House Blend (Light/Medium) -- 5/10.** A strong taste that felt more like a heavy coffee than you would expect from a "light medium." It carried a slightly bitter aftertaste. Not terrible, but not exciting either.
+**[Taster's Choice House Blend](https://www.amazon.com/s?k=Nescafe+Tasters+Choice+House+Blend+Instant+Coffee&tag=jayarrcoffee-20) (Light/Medium) -- 5/10.** A strong taste that felt more like a heavy coffee than you would expect from a "light medium." It carried a slightly bitter aftertaste. Not terrible, but not exciting either.
 
-**Starbucks Colombian Medium Roast -- 3/10.** This was a disappointment. Despite the Starbucks name, it was bold, bitter, with an artificial aftertaste. Not what we hoped for from a premium brand.
+**[Starbucks Colombian Medium Roast](https://www.amazon.com/s?k=Starbucks+Instant+Coffee+Colombian+Medium+Roast&tag=jayarrcoffee-20) -- 3/10.** This was a disappointment. Despite the Starbucks name, it was bold, bitter, with an artificial aftertaste. Not what we hoped for from a premium brand.
 
-**Starbucks French Roast (Dark) -- 2/10.** The dark roast was smoother than the Colombian but had a lingering, acidic aftertaste that was unpleasant. Even for dark roast fans, this one was hard to recommend.
+**[Starbucks French Roast](https://www.amazon.com/s?k=Starbucks+Instant+Coffee+French+Roast&tag=jayarrcoffee-20) (Dark) -- 2/10.** The dark roast was smoother than the Colombian but had a lingering, acidic aftertaste that was unpleasant. Even for dark roast fans, this one was hard to recommend.
 
-**Folgers Classic Roast (Medium) -- 7/10.** The biggest surprise of the test. **Folgers** was smooth, rich, and had absolutely no bitter aftertaste. It tasted genuinely like a proper medium roast -- something you would actually want to drink. A shocking performance from a budget brand.
+**[Folgers Classic Roast](https://www.amazon.com/s?k=Folgers+Classic+Roast+Instant+Coffee&tag=jayarrcoffee-20) (Medium) -- 7/10.** The biggest surprise of the test. **Folgers** was smooth, rich, and had absolutely no bitter aftertaste. It tasted genuinely like a proper medium roast -- something you would actually want to drink. A shocking performance from a budget brand.
 
-**Maxwell House (Light with Cream and Sugar) -- 6/10.** Technically not a fair comparison since this is a mix with cream and sugar rather than straight black coffee. That said, it had a good flavor, was not too sweet, and tasted pleasant. Slightly watery, but a high mark for what it is.
+**[Maxwell House](https://www.amazon.com/s?k=Maxwell+House+Instant+Coffee&tag=jayarrcoffee-20) (Light with Cream and Sugar) -- 6/10.** Technically not a fair comparison since this is a mix with cream and sugar rather than straight black coffee. That said, it had a good flavor, was not too sweet, and tasted pleasant. Slightly watery, but a high mark for what it is.
 
-**Nescafe Clasico (Dark) -- 2/10.** Strong, acidic, and dominated by an unpleasant aftertaste. If you want to put hair on your chest, this might be your pick -- but for drinkability, it scored near the bottom. We did not finish this cup.
+**[Nescafe Clasico](https://www.amazon.com/s?k=Nescafe+Clasico+Instant+Coffee&tag=jayarrcoffee-20) (Dark) -- 2/10.** Strong, acidic, and dominated by an unpleasant aftertaste. If you want to put hair on your chest, this might be your pick -- but for drinkability, it scored near the bottom. We did not finish this cup.
 
 **Taster's Choice Colombian (Medium) -- 4/10.** A nice aroma and rich flavor, but darker than labeled with a lingering bitter taste. Drinkable, but not memorable.
 
@@ -48,3 +48,5 @@ Here is our final ranking, keeping in mind that these are instant coffees and we
 The two most expensive options -- both Starbucks varieties -- landed at the very bottom. The two best performers were **Folgers** and **Great Value**, sitting at opposite ends of the brand prestige spectrum. The lesson is clear: when it comes to instant coffee, you absolutely cannot judge a jar by its label.
 
 If you are looking for a quick, easy, on-the-go coffee option, **Folgers Classic Roast** and **Walmart's Great Value** are genuinely drinkable and cost a fraction of the premium brands.
+
+*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*

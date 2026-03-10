@@ -5,7 +5,7 @@ pubDate: "May 30 2020"
 heroImage: "../../assets/blog/HV5FwgdKSCo.jpg"
 ---
 
-If you love iced coffee but hate the watery taste that comes from ice melting into a regular brew, a coffee concentrate is the answer. And one of the easiest ways to make it? Your Instant Pot. This method produces a smooth, rich concentrate that's perfect for iced coffees, frappuccinos, and even baking -- without paying those crazy cafe prices.
+If you love iced coffee but hate the watery taste that comes from ice melting into a regular brew, a coffee concentrate is the answer. And one of the easiest ways to make it? Your **[Instant Pot](https://www.amazon.com/s?k=Instant+Pot&tag=jayarrcoffee-20)**. This method produces a smooth, rich concentrate that's perfect for iced coffees, frappuccinos, and even baking -- without paying those crazy cafe prices.
 
 <iframe width="100%" style="aspect-ratio:16/9" src="https://www.youtube.com/embed/HV5FwgdKSCo" title="Cold Brew Coffee...with an INSTANT POT!?!?" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -40,3 +40,5 @@ Squeeze out the filter when you're done to capture every last drop of concentrat
 Pour the strained concentrate into a jar or pitcher and store it in the fridge. Because you're using a **1:1 ratio of concentrate to water**, this batch will last quite a while. For one serving, mix half a cup of concentrate with half a cup of water (or milk), add ice, and you've got a full cup.
 
 You can customize from there -- cream, sugar, coffee creamer, whatever you like. But even served black, the concentrate produces a remarkably **smooth, almost creamy taste** with no wateriness. It's a rich, full-bodied iced coffee that rivals anything you'd pay a premium for at a coffee shop.
+
+*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*

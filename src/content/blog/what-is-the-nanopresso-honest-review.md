@@ -5,7 +5,7 @@ pubDate: "Jul 25 2020"
 heroImage: "../../assets/blog/8zOAn6Rbc08.jpg"
 ---
 
-The idea of making real espresso anywhere -- on a hiking trail, in a hotel room, at a campsite -- sounds too good to be true. The **Wacaco Nanopresso** claims to deliver exactly that: barista-level espresso from a handheld device with no batteries, no electricity, and no compromises. We put it to the test with a full unboxing, brew, and honest review.
+The idea of making real espresso anywhere -- on a hiking trail, in a hotel room, at a campsite -- sounds too good to be true. The **[Wacaco Nanopresso](https://www.amazon.com/s?k=Wacaco+Nanopresso+Portable+Espresso+Maker&tag=jayarrcoffee-20)** claims to deliver exactly that: barista-level espresso from a handheld device with no batteries, no electricity, and no compromises. We put it to the test with a full unboxing, brew, and honest review.
 
 <iframe width="100%" style="aspect-ratio:16/9" src="https://www.youtube.com/embed/8zOAn6Rbc08" title="What is the Nanopresso? (Honest Review!)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -52,3 +52,5 @@ Reviews of the Nanopresso are genuinely mixed across the internet. Some people s
 **Who should skip it:** If you are exclusively looking for the absolute best extraction and do not care about portability, a proper home machine will serve you better.
 
 At its price point, the Nanopresso is a solid investment for anyone who values good coffee on the move.
+
+*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*

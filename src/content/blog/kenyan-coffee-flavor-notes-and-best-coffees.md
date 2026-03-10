@@ -72,22 +72,24 @@ The highlands just west of the Rift Valley offer fertile soil and mild temperatu
 
 We scoured the internet for highly rated, accessible, ethically sourced, and — most importantly — delicious Kenyan beans.
 
-### Volcanica Kenya AA
+### **[Volcanica Kenya AA](https://www.amazon.com/s?k=Volcanica+Kenya+AA+Coffee&tag=jayarrcoffee-20)**
 
 Kenya grades its beans on several quality factors before roasting, distributing them at different price points. **AA beans** are large, high quality, and have a sweet, complex flavor. Volcanica's offering is **100% AA-grade Arabica**, grown at the highest altitudes in the region (up to 6,800 feet). This coffee is praised for its complex flavor experience — it starts with a floral aroma, hits you with sweet top notes, tickles your tongue with tartness, then surprises you with a savory edge.
 
-### Java House Kenya AA
+### **[Java House Kenya AA](https://www.amazon.com/s?k=Java+House+Kenya+AA+Coffee&tag=jayarrcoffee-20)**
 
 **Java House** is a cafe franchise that began in Nairobi, eventually spreading across Kenya, Uganda, and Rwanda. Their coffee is organic, fair trade, and single origin. The Kenya AA boasts that robust, acidic highland taste with a **lighter roast** than most Kenyan coffees, resulting in sweeter notes and a smooth finish.
 
-### Out of the Grey Kenyan AA
+### **[Out of the Grey Kenyan AA](https://www.amazon.com/s?k=Out+of+the+Grey+Kenya+AA+Coffee&tag=jayarrcoffee-20)**
 
 For high-quality Kenyan with a special something, consider **Out of the Grey**, a family-run small-batch coffee house based in Fairview, Pennsylvania. Their Kenyan AA beans feature floral notes with flavors of **black currant, fennel, and black tea**. Not a fan of single origin? They also offer custom blends.
 
-### Screen 18 Kenya AA
+### **[Screen 18 Kenya AA](https://www.amazon.com/s?k=Screen+18+Kenya+AA+Coffee&tag=jayarrcoffee-20)**
 
 In business for **75 years**, Screen 18 (named for the screen size used to sift the finest coffee beans) is a Miami-based company dedicated to quality. Their Kenya AA is a medium-to-dark roast with that full-bodied flavor and wine-like acidity signature to Kenyan coffee.
 
-### Allegro Coffee Kenya Grand Cru Light Roast
+### **[Allegro Coffee Kenya Grand Cru Light Roast](https://www.amazon.com/s?k=Allegro+Coffee+Kenya+Grand+Cru&tag=jayarrcoffee-20)**
 
 Looking for all the flavors of Kenya but a little less bold? This **light roast** from Allegro, a small company dedicated to ethical practices, comes direct from small landholders in Nyeri. It allows more subtle notes to come to the foreground — **red wine, currant, and blackberry** with a soft finish.
+
+*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*

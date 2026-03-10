@@ -15,12 +15,12 @@ The pour over method is more hands-on than most brewing styles, so the equipment
 
 - **Burr grinder** (consistency matters here)
 - **Paper filters**
-- **Gooseneck kettle** (the narrow spout gives you essential pour control)
+- **[Gooseneck kettle](https://www.amazon.com/s?k=Gooseneck+Kettle+Coffee&tag=jayarrcoffee-20)** (the narrow spout gives you essential pour control)
 - **Quality coffee beans**
 - **Carafe or decanter**
 - **Timer**
 - **Coffee scale**
-- **Pour over dripper** — popular options include the **Hario V60**, Kalita Wave 185, Chemex, Bee House Ceramic, and Coffee Gator
+- **Pour over dripper** — popular options include the **[Hario V60](https://www.amazon.com/s?k=Hario+V60+Pour+Over&tag=jayarrcoffee-20)**, **[Kalita Wave 185](https://www.amazon.com/s?k=Kalita+Wave+185+Dripper&tag=jayarrcoffee-20)**, **[Chemex](https://www.amazon.com/s?k=Chemex+Coffee+Maker&tag=jayarrcoffee-20)**, **[Bee House Ceramic](https://www.amazon.com/s?k=Bee+House+Ceramic+Dripper&tag=jayarrcoffee-20)**, and **[Coffee Gator](https://www.amazon.com/s?k=Coffee+Gator+Pour+Over&tag=jayarrcoffee-20)**
 
 For this guide, we are using the **Hario V60**, which is arguably the most popular pour over dripper on the market.
 
@@ -72,3 +72,5 @@ Most experienced baristas prefer the pour over method, and the reasons go beyond
 One caveat: like any manual method, pour over is subject to human error. **Channeling** — where water finds an easy path through the coffee bed due to uneven distribution — is the most common issue. Even distribution and a controlled, consistent pour are the keys to avoiding it.
 
 The best part about pour over is the individuality of each brew. Hot, iced, or cold brewed — it is suitable for any style. The entire experience, from grinding the beans to sipping the last drop, is meditative in a way that automated brewing simply cannot replicate. And the coffee is exactly the way you want it to be.
+
+*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*

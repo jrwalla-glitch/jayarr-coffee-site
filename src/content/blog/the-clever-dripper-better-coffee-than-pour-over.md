@@ -5,13 +5,13 @@ pubDate: "Jul 15 2020"
 heroImage: "../../assets/blog/L7BeHoHLjEo.jpg"
 ---
 
-The Clever Dripper claims to combine the best of immersion brewing and pour-over filtration into one simple device. It promises robust, aromatic coffee without acidity, bitterness, or loose grounds — and no experience necessary. We put it through a full week of testing to find out if it lives up to the hype.
+The **[Clever Dripper](https://www.amazon.com/s?k=Clever+Coffee+Dripper&tag=jayarrcoffee-20)** claims to combine the best of immersion brewing and pour-over filtration into one simple device. It promises robust, aromatic coffee without acidity, bitterness, or loose grounds — and no experience necessary. We put it through a full week of testing to find out if it lives up to the hype.
 
 <iframe width="100%" style="aspect-ratio:16/9" src="https://www.youtube.com/embed/L7BeHoHLjEo" title="The Clever Dripper: Better Coffee than Pour Over?" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## What Is the Clever Dripper?
 
-At first glance, the Clever Dripper looks a lot like the **Hario V60** — that compact, portable pour-over dripper known for rapid but tasty brews. They share a similar cone shape designed to maximize extraction. But the Clever Dripper has one key trick: its **patented shut-off system**.
+At first glance, the Clever Dripper looks a lot like the **[Hario V60](https://www.amazon.com/s?k=Hario+V60+Pour+Over&tag=jayarrcoffee-20)** — that compact, portable pour-over dripper known for rapid but tasty brews. They share a similar cone shape designed to maximize extraction. But the Clever Dripper has one key trick: its **patented shut-off system**.
 
 A silicone stopper inside a release ring means the Clever Dripper will only dispense coffee **when it's placed on top of a cup**. Lift it up and the flow stops. This means you can prepare your brew on any surface without needing to balance it on a mug — a genuinely useful feature.
 
@@ -60,4 +60,6 @@ The Clever Dripper isn't without its issues:
 
 The Clever Dripper makes genuinely good coffee with dead-simple technique and impressive consistency. The ability to prepare it on any surface without sitting on a mug is a nice touch. But is it going to replace an AeroPress or a Chemex in your daily rotation? Probably not.
 
-It sits in a slightly awkward middle ground — not quite as versatile as an AeroPress, not as elegant as a Chemex. The only truly "clever" thing about it is the shut-off valve. The coffee it produces is clean and delicious, but it's not doing anything you can't achieve with other methods. If you're looking for a foolproof, low-skill brewer that delivers consistent results, it's worth considering. But if you already have a solid pour-over or AeroPress setup, this one might end up collecting dust in the cupboard.
+It sits in a slightly awkward middle ground — not quite as versatile as an AeroPress, not as elegant as a **[Chemex](https://www.amazon.com/s?k=Chemex+Coffee+Maker&tag=jayarrcoffee-20)**. The only truly "clever" thing about it is the shut-off valve. The coffee it produces is clean and delicious, but it's not doing anything you can't achieve with other methods. If you're looking for a foolproof, low-skill brewer that delivers consistent results, it's worth considering. But if you already have a solid pour-over or AeroPress setup, this one might end up collecting dust in the cupboard.
+
+*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*

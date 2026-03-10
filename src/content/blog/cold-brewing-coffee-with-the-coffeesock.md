@@ -5,7 +5,7 @@ pubDate: "Feb 18 2020"
 heroImage: "../../assets/blog/kh3-xQ3_z-Y.jpg"
 ---
 
-There are countless ways to make coffee at home, but the **CoffeeSock** cold brew filter is one you might not have encountered yet. It is a low-cost, reusable filter made from certified organic cotton that produces a rich, smooth cup of cold brew. Cheap and high quality — hard to argue with that combination.
+There are countless ways to make coffee at home, but the **[CoffeeSock](https://www.amazon.com/s?k=CoffeeSock+Cold+Brew+Filter&tag=jayarrcoffee-20)** cold brew filter is one you might not have encountered yet. It is a low-cost, reusable filter made from certified organic cotton that produces a rich, smooth cup of cold brew. Cheap and high quality — hard to argue with that combination.
 
 <iframe width="100%" style="aspect-ratio:16/9" src="https://www.youtube.com/embed/kh3-xQ3_z-Y" title="Cold Brewing Coffee with the CoffeeSock" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -47,3 +47,5 @@ If the filter ever gets clogged or the grounds stop filtering properly, **boil i
 ## The Verdict
 
 The cold brew produced by the CoffeeSock delivers a **rich, smooth taste** with a clean finish. It is a genuinely simple, inexpensive, and environmentally friendly way to make excellent cold brew at home. If you are looking for a no-fuss cold brew setup that costs a fraction of more elaborate systems and produces quality coffee, the CoffeeSock is well worth trying.
+
+*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*

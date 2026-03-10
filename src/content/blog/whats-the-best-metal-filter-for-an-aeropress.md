@@ -5,7 +5,7 @@ pubDate: "Jun 28 2020"
 heroImage: "../../assets/blog/jzYvaZ-gJGA.jpg"
 ---
 
-Paper filter or metal filter? If you're an AeroPress fan who cares about sustainability -- or just wants to try something different -- it's a question worth exploring. We put three of the most popular AeroPress metal filters to the test, compared them against the traditional paper filter, and found a clear winner.
+Paper filter or metal filter? If you're an **[AeroPress](https://www.amazon.com/s?k=AeroPress+Coffee+Maker&tag=jayarrcoffee-20)** fan who cares about sustainability -- or just wants to try something different -- it's a question worth exploring. We put three of the most popular AeroPress metal filters to the test, compared them against the traditional paper filter, and found a clear winner.
 
 <iframe width="100%" style="aspect-ratio:16/9" src="https://www.youtube.com/embed/jzYvaZ-gJGA" title="What's the BEST Metal Filter for an AeroPress?" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -19,9 +19,9 @@ AeroPress inventor Alan Adler claims to have used a single paper filter up to 80
 
 We chose three of the most common metal filters available online:
 
-- **Cafe Concetto Fine Filter Disc** -- the most expensive at around $22
-- **Able Disc Fine** -- mid-range at roughly $19
-- **CoffeeSock Mesh Filter** -- the cheapest at only about $8
+- **[Cafe Concetto Fine Filter Disc](https://www.amazon.com/s?k=Cafe+Concetto+AeroPress+Filter&tag=jayarrcoffee-20)** -- the most expensive at around $22
+- **[Able Disc Fine](https://www.amazon.com/s?k=Able+Disc+Fine+AeroPress+Filter&tag=jayarrcoffee-20)** -- mid-range at roughly $19
+- **[CoffeeSock Mesh Filter](https://www.amazon.com/s?k=CoffeeSock+Mesh+Filter+AeroPress&tag=jayarrcoffee-20)** -- the cheapest at only about $8
 
 ## Unboxing and First Impressions
 
@@ -56,3 +56,5 @@ We were particularly disappointed with the **Cafe Concetto** and the **Able Disc
 Our pick is the **CoffeeSock Mesh Filter**, for two reasons: it was the cheapest at only about $8, and it let through absolutely zero grounds. If you go with either of the other two, consider using an even coarser grind to reduce sediment.
 
 One caveat worth noting: none of the World Championship AeroPress baristas have ever used anything except the paper filter. So if you're training for competition, you might want to stick with paper.
+
+*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*

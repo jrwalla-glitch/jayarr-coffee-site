@@ -21,7 +21,7 @@ By weighing your coffee, you remove the guesswork and use the exact same amount 
 
 **Negatives:** Has a somewhat cheap look.
 
-The **Airo Style** delivers everything you need in a coffee scale: a large, legible backlit display, accurate measurement, and a timer on the same screen. It features low battery and overload warning indicators, and the timer automatically switches off after five minutes of inactivity. Cleaning is straightforward thanks to the stainless steel platform. The only downside is that it doesn't exactly look or feel premium -- but functionally, it covers all the bases at a very reasonable price.
+The **[Airo Style](https://www.amazon.com/s?k=Airo+Style+Coffee+Scale+with+Timer&tag=jayarrcoffee-20)** delivers everything you need in a coffee scale: a large, legible backlit display, accurate measurement, and a timer on the same screen. It features low battery and overload warning indicators, and the timer automatically switches off after five minutes of inactivity. Cleaning is straightforward thanks to the stainless steel platform. The only downside is that it doesn't exactly look or feel premium -- but functionally, it covers all the bases at a very reasonable price.
 
 ## 2. Etekcity Digital Multifunction Scale
 
@@ -29,7 +29,7 @@ The **Airo Style** delivers everything you need in a coffee scale: a large, legi
 
 **Negatives:** Auto-off kicks in too quickly, making extended use difficult. Not accurate for very small amounts (around 2 grams).
 
-The **Etekcity** is both portable and stylish, about the size of an iPad Mini. Its backlit display is embossed in a stainless steel frame that's easy to wipe clean. The AAA batteries are much easier to find than lithium alternatives. Accuracy improved when using a container for small quantities, and since you generally won't be weighing such tiny amounts of coffee, this shouldn't be a dealbreaker for most users.
+The **[Etekcity](https://www.amazon.com/s?k=Etekcity+Digital+Kitchen+Scale&tag=jayarrcoffee-20)** is both portable and stylish, about the size of an iPad Mini. Its backlit display is embossed in a stainless steel frame that's easy to wipe clean. The AAA batteries are much easier to find than lithium alternatives. Accuracy improved when using a container for small quantities, and since you generally won't be weighing such tiny amounts of coffee, this shouldn't be a dealbreaker for most users.
 
 ## 3. Hario Drip Scale
 
@@ -37,7 +37,7 @@ The **Etekcity** is both portable and stylish, about the size of an iPad Mini. I
 
 **Negatives:** Significantly more expensive ($40-50), measurement displayed in grams only.
 
-As the name implies, the **Hario Drip Scale** was built specifically for pour over coffee. It's sleek, stylish, and accurate -- no surprise given that Hario is a major player in the specialty coffee market. The touch-sensitive controls and smart auto-off behavior (the five-minute timer resets when the brew timer is active) show thoughtful design. At **$40-50**, though, the price tag makes it harder to recommend despite stellar performance.
+As the name implies, the **[Hario Drip Scale](https://www.amazon.com/s?k=Hario+Drip+Scale&tag=jayarrcoffee-20)** was built specifically for pour over coffee. It's sleek, stylish, and accurate -- no surprise given that Hario is a major player in the specialty coffee market. The touch-sensitive controls and smart auto-off behavior (the five-minute timer resets when the brew timer is active) show thoughtful design. At **$40-50**, though, the price tag makes it harder to recommend despite stellar performance.
 
 ## 4. Ozeri Touch Professional Digital Kitchen Scale
 
@@ -45,7 +45,7 @@ As the name implies, the **Hario Drip Scale** was built specifically for pour ov
 
 **Negatives:** Uses 3V lithium batteries (more expensive than AAA), no built-in timer, not the best value at its price point.
 
-If you prioritize style, the **Ozeri Touch** might appeal to you. The tempered glass construction and elegant black finish make it one of the most visually striking options we tested. It's also quite durable. However, at a higher price than the Etekcity without a built-in timer, it's a hard value proposition.
+If you prioritize style, the **[Ozeri Touch](https://www.amazon.com/s?k=Ozeri+Touch+Professional+Digital+Kitchen+Scale&tag=jayarrcoffee-20)** might appeal to you. The tempered glass construction and elegant black finish make it one of the most visually striking options we tested. It's also quite durable. However, at a higher price than the Etekcity without a built-in timer, it's a hard value proposition.
 
 ## 5. Apexstone Coffee Scale with Timer
 
@@ -53,7 +53,7 @@ If you prioritize style, the **Ozeri Touch** might appeal to you. The tempered g
 
 **Negatives:** Lacks style, feels cheap and flimsy, not a great value given other options at the same price.
 
-We weren't overly impressed by the **Apexstone**. It felt substantially cheaper and flimsier than the competition. It measured reasonably well and includes a timer, but with better alternatives available at similar prices, we'd steer you elsewhere.
+We weren't overly impressed by the **[Apexstone](https://www.amazon.com/s?k=Apexstone+Coffee+Scale+with+Timer&tag=jayarrcoffee-20)**. It felt substantially cheaper and flimsier than the competition. It measured reasonably well and includes a timer, but with better alternatives available at similar prices, we'd steer you elsewhere.
 
 ## Our Verdict
 
@@ -62,3 +62,5 @@ We weren't overly impressed by the **Apexstone**. It felt substantially cheaper 
 **Best Value: Etekcity.** Hard to beat at around $10, though note that it lacks a timer.
 
 **Best Performance: Hario Drip Scale.** It trumps the rest in accuracy and features, but the $40-50 price tag will be a dealbreaker for most people.
+
+*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*

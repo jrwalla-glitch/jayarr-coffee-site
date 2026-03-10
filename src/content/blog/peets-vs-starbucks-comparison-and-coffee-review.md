@@ -17,38 +17,40 @@ For coffee connoisseurs and casual caffeinators alike, there are more roasters t
 
 ## Top 5 Peet's Coffees
 
-### 5. House Blend
+### 5. **[Peet's House Blend](https://www.amazon.com/s?k=Peets+Coffee+House+Blend&tag=jayarrcoffee-20)**
 A Latin American blend and a great introduction to Peet's. It's a dark roast best brewed using drip and press pot methods -- bright, not as full-bodied as other roasts, with a hint of spice and a crisp finish. An ideal starter coffee for those looking to branch out.
 
-### 4. French Roast
+### 4. **[Peet's French Roast](https://www.amazon.com/s?k=Peets+Coffee+French+Roast&tag=jayarrcoffee-20)**
 Bold and flavorful with smoky overtones, Peet's French Roast is a great selection for those who take their coffee with cream and sugar. While some online reviewers may overstate things by calling it the best coffee available, we'd agree it's one of the better French roasts out there.
 
-### 3. Major Dickason's Blend
+### 3. **[Peet's Major Dickason's Blend](https://www.amazon.com/s?k=Peets+Major+Dickasons+Blend&tag=jayarrcoffee-20)**
 Peet's most popular coffee. A dark roast blend with **rich, smooth, and complex flavors** -- earthy and nutty notes particularly stand out. Its versatility is perhaps its best feature, lending itself to drip, press pot, and espresso. It's also widely available at grocery stores like Wegmans.
 
-### 2. Guatemala San Sebastian
+### 2. **[Peet's Guatemala San Sebastian](https://www.amazon.com/s?k=Peets+Guatemala+San+Sebastian+Coffee&tag=jayarrcoffee-20)**
 Peet's sources beans from Antigua farms for many of their blends, but this single origin is a cut above. Highly aromatic with a distinct taste of **bittersweet chocolate**, it's a bright, high-acidity coffee with a sweetness that has earned it a reputation as one of Peet's best. Try it as a pour-over to experience its full flavor complement.
 
-### 1. JR Reserve Blend
+### 1. **[Peet's JR Reserve Blend](https://www.amazon.com/s?k=Peets+JR+Reserve+Blend+Coffee&tag=jayarrcoffee-20)**
 Roasted on Wednesdays only to ensure maximum freshness. **JR Reserve** is full-bodied with prominent chocolate notes and a spiced flavor that's hard to pin down. Many reviewers comment on its mysterious, complex spiciness. It's expensive, but it's a coffee that enthusiasts should absolutely try.
 
 ## Top 5 Starbucks Coffees
 
-### 5. Cafe Verona
+### 5. **[Starbucks Cafe Verona](https://www.amazon.com/s?k=Starbucks+Cafe+Verona+Coffee&tag=jayarrcoffee-20)**
 Normally considered a little light by dark roast devotees, Cafe Verona plays all the classic dark roast hits: notes of **chocolate, nuts, and caramel** with low acidity. A representative, if not particularly adventurous, dark roast blend.
 
-### 4. Veranda Blend
+### 4. **[Starbucks Veranda Blend](https://www.amazon.com/s?k=Starbucks+Veranda+Blend+Coffee&tag=jayarrcoffee-20)**
 Part of Starbucks' increasing emphasis on lighter "blonde" roasts. More caffeinated than other Starbucks coffees while remaining mild and easy to drink. The flavor is a bit **buttery and sweet**, much like a morning pastry. Worth trying as an entry point to Starbucks blonde roasts.
 
-### 3. Brazil Latin American Blend
+### 3. **[Starbucks Brazil Latin American Blend](https://www.amazon.com/s?k=Starbucks+Brazil+Blend+Coffee&tag=jayarrcoffee-20)**
 This one may be difficult to find in stores but is usually available online. For a major coffee chain, Brazil Blend is surprisingly adventurous, featuring prominent notes of **maple and vanilla** while remaining bright and fruity. An interesting mix that still works as an everyday cup.
 
-### 2. Sumatra Dark Roast
+### 2. **[Starbucks Sumatra Dark Roast](https://www.amazon.com/s?k=Starbucks+Sumatra+Dark+Roast+Coffee&tag=jayarrcoffee-20)**
 Bold with somewhat funky, earthy notes -- and for those new to Sumatras, that funkiness is a good thing. Notably **less smoky** than some other Sumatras, with minimal acidity. A great coffee for getting your feet wet with the style or for Sumatra veterans.
 
-### 1. Pike Place
+### 1. **[Starbucks Pike Place](https://www.amazon.com/s?k=Starbucks+Pike+Place+Roast+Coffee&tag=jayarrcoffee-20)**
 Named after the Seattle market where the first Starbucks opened, **Pike Place** is both the default roast and the most iconic Starbucks coffee. Many don't realize it's actually a dark-roasted Latin American blend. It delivers a smooth, balanced flavor with crowd-pleasing notes of nuts and chocolate that are virtually impossible to take offense to.
 
 ## The Verdict
 
 While it comes down to personal preference, we think **Peet's probably has the edge** with a great selection of single-origin coffees from exotic locations and more varied offerings. However, Starbucks' strength lies in its unique-tasting blends that appeal to a broader audience at more affordable prices.
+
+*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*

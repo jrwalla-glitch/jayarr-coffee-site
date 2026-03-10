@@ -64,7 +64,7 @@ We tasted and rated a selection of Guatemalan coffees available online. Here's h
 
 **Cat and Cloud**, a Santa Cruz-based roaster started by regional and national Brewers Cup and Barista Championship winners, has something truly special here. Through washed processing, this coffee retains the desirable chocolatey, nutty flavors characteristic of Guatemalan coffees while successfully marrying them to more exotic notes like **tangerine**. It pairs extremely well with a morning pastry or evening dessert. This is a coffee we fully recommend.
 
-### Starbucks Guatemala Antigua — 4.2/5
+### **[Starbucks Guatemala Antigua](https://www.amazon.com/s?k=Starbucks+Guatemala+Antigua+Coffee&tag=jayarrcoffee-20)** — 4.2/5
 
 Best described as a **crowd pleaser**. The dominant chocolate and nut notes aren't particularly adventurous, but the coffee is a low-risk option for anyone looking to explore Guatemalan beans. It has a relatively buttery texture with a clean, crisp finish. High acidity up front gets muted mid-palate by the bolder notes of a darker roast. Widely available and makes a great everyday cup.
 
@@ -72,15 +72,15 @@ Best described as a **crowd pleaser**. The dominant chocolate and nut notes aren
 
 The **Pakamara variety** originated in El Salvador but quickly spread throughout Central America. Bilux, a small Georgia roaster, offers a great auction-lot Red Pakamara with bright acidity and a subtle but interesting **wine-like quality** alongside notes of chocolate and fruit. A great entry point for anyone new to the Pakamara bean.
 
-### Volcanica Guatemala Antigua — 4.0/5
+### **[Volcanica Guatemala Antigua](https://www.amazon.com/s?k=Volcanica+Guatemala+Antigua+Coffee&tag=jayarrcoffee-20)** — 4.0/5
 
 A **rich, sophisticated, and smooth-bodied** experience with a pleasant, robust aroma. Roasted fresh to order, these beans deliver a balanced combination of chocolate and nut flavors without being overly sweet. A solid baseline for what to expect from Guatemalan coffee generally.
 
-### Pablo's Pride — 3.8/5
+### **[Pablo's Pride](https://www.amazon.com/s?k=Don+Pablo+Guatemala+Coffee&tag=jayarrcoffee-20)** — 3.8/5
 
 **Don Pablo** works with many growers of top-quality beans in Latin America through their certified organic facility. This GMO-free, 100% natural Arabica has a **clean finish and incredibly smooth texture** with notes of caramel and cocoa. One of the only blends we considered, and the positive experience makes it worth trying.
 
-### Two Volcanoes — 3.8/5
+### **[Two Volcanoes](https://www.amazon.com/s?k=Two+Volcanoes+Guatemala+Coffee&tag=jayarrcoffee-20)** — 3.8/5
 
 A U.S. roaster specializing in Guatemalan coffee, **Two Volcanoes** represents the high standards of San Marcos while bringing its own twist. Nuts dominate the flavor with **reduced acidity and unique floral hints**. A low-tone, pleasant coffee that's very easy to drink.
 
@@ -88,6 +88,8 @@ A U.S. roaster specializing in Guatemalan coffee, **Two Volcanoes** represents t
 
 Produced in **Asobagri**, a coffee-growing cooperative in Huehuetenango, this organic and fair-trade offering features unusual flavors of **blood orange, coconut, and jasmine**. Opinions will vary on whether these diverse flavors tie together well — this is a love-it-or-hate-it coffee best suited to adventurous palates.
 
-### Java Planet Guatemala Organic — 2.8/5
+### **[Java Planet Guatemala Organic](https://www.amazon.com/s?k=Java+Planet+Guatemala+Organic+Coffee&tag=jayarrcoffee-20)** — 2.8/5
 
 Despite its dedication to eco-friendly and chemical-free processing (which makes it a consideration for sensitive stomachs), we found this coffee **a bit flat and stale-tasting**. The notes of chocolate, caramel, and fruit were typical but not particularly interesting. Probably one you can pass on.
+
+*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*

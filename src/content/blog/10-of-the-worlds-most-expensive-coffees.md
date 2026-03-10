@@ -15,9 +15,9 @@ From a family-owned farm in the highlands of Guatemala, **Finca El Injerto** is 
 
 ## 2. Kopi Luwak -- Indonesia ($500-700/kg)
 
-Perhaps the world's most notorious expensive coffee, **Kopi Luwak** is produced when civet cats consume coffee cherries and excrete the pits, from which the coffee is then brewed. This unique intestinal processing method significantly reduces bitterness compared to regular coffee, producing a **mellow, floral texture reminiscent of black tea**. Originally from Indonesia, traditional Kopi Luwak commands premium prices for its one-of-a-kind processing.
+Perhaps the world's most notorious expensive coffee, **[Kopi Luwak](https://www.amazon.com/s?k=Kopi+Luwak+Coffee&tag=jayarrcoffee-20)** is produced when civet cats consume coffee cherries and excrete the pits, from which the coffee is then brewed. This unique intestinal processing method significantly reduces bitterness compared to regular coffee, producing a **mellow, floral texture reminiscent of black tea**. Originally from Indonesia, traditional Kopi Luwak commands premium prices for its one-of-a-kind processing.
 
-## 3. Jamaica Blue Mountain -- Jamaica (~$60-80/lb)
+## 3. **[Jamaica Blue Mountain](https://www.amazon.com/s?k=Jamaica+Blue+Mountain+Coffee&tag=jayarrcoffee-20)** -- Jamaica (~$60-80/lb)
 
 The temperature and humid climate in the **Blue Mountains of Jamaica** produces exceptional, highly sought-after coffee with a **mild, slightly fruity, not-too-bitter flavor**. Over **80% of Blue Mountain production** is exported to Japan, making it particularly popular in the Japanese market.
 
@@ -27,7 +27,7 @@ This award-winning single-estate coffee is described as having a **sweet butters
 
 ## 5. Black Ivory Coffee -- Thailand (~$1,000+/lb)
 
-Sharing a concept with Kopi Luwak but taken to another level, **Black Ivory Coffee** beans are digested by elephants over **72 hours**, removing bitter proteins. Only **150 kilos are produced each year**. The first sip reveals fruity notes with hints of butter, leather, malt, and earth. Instead of bitterness, you taste fresh grass. As the cup cools, it develops a **chocolate-like aroma** with a velvety aftertaste of extended caramel and chocolate. This process simply cannot be replicated with modern machinery.
+Sharing a concept with Kopi Luwak but taken to another level, **[Black Ivory Coffee](https://www.amazon.com/s?k=Black+Ivory+Coffee&tag=jayarrcoffee-20)** beans are digested by elephants over **72 hours**, removing bitter proteins. Only **150 kilos are produced each year**. The first sip reveals fruity notes with hints of butter, leather, malt, and earth. Instead of bitterness, you taste fresh grass. As the cup cools, it develops a **chocolate-like aroma** with a velvety aftertaste of extended caramel and chocolate. This process simply cannot be replicated with modern machinery.
 
 ## 6. HR 61 Hacienda El Roble -- Colombia (~$100/100g)
 
@@ -52,3 +52,5 @@ Grown on a small island in the middle of the South Atlantic Ocean, the beans the
 ## Is the Price Worth It?
 
 For most daily drinkers, these coffees represent curiosity purchases rather than everyday staples. But if you're looking to expand your palate and experience just how diverse coffee can be, trying even one of these -- especially the more accessible options like **Los Planes** or **Jamaica Blue Mountain** -- can fundamentally change how you think about what's possible in a cup.
+
+*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*

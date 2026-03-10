@@ -19,7 +19,7 @@ Not every bell and whistle is essential, but a few features go a long way if you
 
 ## 5. OXO Brew Conical Burr Grinder with Integrated Scale — $225
 
-The standout feature of the **OXO Brew** is its **built-in intelligent scale**. Enter the number of cups you want and your preferred coarseness, and the grinder dispenses exactly the recommended amount of coffee by weight rather than time. That eliminates the need for a separate scale and simplifies the process considerably.
+The standout feature of the **[OXO Brew](https://www.amazon.com/s?k=OXO+Brew+Conical+Burr+Grinder+Integrated+Scale&tag=jayarrcoffee-20)** is its **built-in intelligent scale**. Enter the number of cups you want and your preferred coarseness, and the grinder dispenses exactly the recommended amount of coffee by weight rather than time. That eliminates the need for a separate scale and simplifies the process considerably.
 
 Details like the **UV-blocking plastic hopper** — designed to protect bean integrity — are a nice touch. Grind consistency is admirable across settings.
 
@@ -29,7 +29,7 @@ Details like the **UV-blocking plastic hopper** — designed to protect bean int
 
 ## 4. KitchenAid Burr Coffee Bean Grinder — $250
 
-The **KitchenAid** grinds with an insanely consistent particle size — right up there with commercial grinders that cost significantly more. The classic KitchenAid design looks great on any counter, and the build quality is impressive. Ours survived being dropped on a concrete floor without issue.
+The **[KitchenAid](https://www.amazon.com/s?k=KitchenAid+Burr+Coffee+Bean+Grinder&tag=jayarrcoffee-20)** grinds with an insanely consistent particle size — right up there with commercial grinders that cost significantly more. The classic KitchenAid design looks great on any counter, and the build quality is impressive. Ours survived being dropped on a concrete floor without issue.
 
 Noise ranges from just under 90 to 95 decibels, which is loud enough to disrupt conversation. The bigger issue is **static**: fresh or darkly roasted coffee ground on coarser settings sometimes sends charged particles swirling up under the catch jar's thin walls, clinging to the sides of the machine or escaping onto the counter. Not uncommon with burr grinders, but the KitchenAid's vibrations seem to make it worse.
 
@@ -39,7 +39,7 @@ Noise ranges from just under 90 to 95 decibels, which is loud enough to disrupt 
 
 ## 3. Bodum Bistro Electric Burr Grinder — $100
 
-Looking for something affordable and no-frills? The **Bodum Bistro** might be the right fit. The borosilicate glass grounds bin keeps the machine free from **static cling**, and the material and build mean minimal cleaning with no clogging from oily beans.
+Looking for something affordable and no-frills? The **[Bodum Bistro](https://www.amazon.com/s?k=Bodum+Bistro+Electric+Burr+Coffee+Grinder&tag=jayarrcoffee-20)** might be the right fit. The borosilicate glass grounds bin keeps the machine free from **static cling**, and the material and build mean minimal cleaning with no clogging from oily beans.
 
 With 720 RPM conical burrs, grind quality is good enough for standard brew types like French press and drip. The machine indicates espresso capability, but results at that setting are merely workable. The funky design is distinctive, and the price makes it accessible.
 
@@ -49,7 +49,7 @@ With 720 RPM conical burrs, grind quality is good enough for standard brew types
 
 ## 2. Baratza Encore — $150
 
-The **Baratza** name comes up more often than any other when talking to coffee enthusiasts. While Baratza makes higher-end models, the **Encore** hits a quality-for-price sweet spot that is hard to match. You can spend significantly more on their premium offerings, but the Encore does the job for a fraction of the cost.
+The **Baratza** name comes up more often than any other when talking to coffee enthusiasts. While Baratza makes higher-end models, the **[Encore](https://www.amazon.com/s?k=Baratza+Encore+Coffee+Grinder&tag=jayarrcoffee-20)** hits a quality-for-price sweet spot that is hard to match. You can spend significantly more on their premium offerings, but the Encore does the job for a fraction of the cost.
 
 It is incredibly intuitive with a wide grind range from espresso fine to French press and cold brew coarse. The grind quality is **remarkably consistent** for the price point, and the minimalistic design makes operation straightforward.
 
@@ -59,7 +59,7 @@ It is incredibly intuitive with a wide grind range from espresso fine to French 
 
 ## 1. Breville Smart Grinder Pro — $200
 
-The **Breville Smart Grinder Pro** consistently delivers near-commercial-level quality at consumer-level cost. This is our favorite grinder for making coffee at home.
+The **[Breville Smart Grinder Pro](https://www.amazon.com/s?k=Breville+Smart+Grinder+Pro&tag=jayarrcoffee-20)** consistently delivers near-commercial-level quality at consumer-level cost. This is our favorite grinder for making coffee at home.
 
 It features high-quality burrs built to last, a sleek digital display, and a rich set of convenience features. The **timed grind setting** remembers your past grind times for repeatable dosage. **60 different grind settings** with 10 available micro-adjustments give you extraordinary control. Grinds deposit into an included sealable bin, and cleanup is easy.
 
@@ -70,3 +70,5 @@ It features high-quality burrs built to last, a sleek digital display, and a ric
 ## Which Grinder Should You Buy?
 
 For **budget buyers**, the Bodum Bistro at $100 gets the job done for standard brew methods. The **Baratza Encore** at $150 is the sweet spot for enthusiasts who want excellent grind quality without complexity. And the **Breville Smart Grinder Pro** at $200 is our top pick overall — the abundance of features, long-lasting burrs, and near-commercial consistency make it the best value in electric coffee grinders.
+
+*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*

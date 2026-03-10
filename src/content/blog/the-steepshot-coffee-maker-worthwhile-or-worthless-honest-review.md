@@ -5,7 +5,7 @@ pubDate: "Aug 26 2020"
 heroImage: "../../assets/blog/7xGFLtSD5Pc.jpg"
 ---
 
-The SteepShot promises to brew coffee in a clean, simple way in just 30 seconds. Throw in your grounds, add boiling water, close it up, wait, and you've got coffee. We got our hands on one to see if it lives up to the hype -- and whether it's worth the investment.
+The **[SteepShot](https://www.amazon.com/s?k=SteepShot+Coffee+Maker&tag=jayarrcoffee-20)** promises to brew coffee in a clean, simple way in just 30 seconds. Throw in your grounds, add boiling water, close it up, wait, and you've got coffee. We got our hands on one to see if it lives up to the hype -- and whether it's worth the investment.
 
 <iframe width="100%" style="aspect-ratio:16/9" src="https://www.youtube.com/embed/7xGFLtSD5Pc" title="The Steepshot Coffee Maker: Worthwhile or Worthless? (HONEST REVIEW!)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -52,3 +52,5 @@ The result was noticeably better -- much clearer, and the taste was acceptable. 
 ## The Verdict
 
 The SteepShot is a **brilliant idea** that isn't quite there yet. It's fast and simple, but the coffee quality doesn't match what you can get from an AeroPress, pour-over, or even a good French press -- all of which cost significantly less. As avid consumers of different coffee products, we'd rather spend our money elsewhere in its current state. That said, the concept has real potential, and a future version that addresses the quality and consistency issues could be a genuine contender.
+
+*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*

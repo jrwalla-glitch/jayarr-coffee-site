@@ -5,7 +5,7 @@ pubDate: "Feb 14 2021"
 heroImage: "../../assets/blog/Lkq4nTDxrf8.jpg"
 ---
 
-So you are ready to upgrade your coffee game with a real espresso machine. Maybe you are an espresso novice looking for something with an easy learning curve. Maybe you have been eyeing the **Gaggia Classic Pro** because it is a fan favorite among enthusiasts. Before you pull the trigger, we wanted to compare it against two other popular options in a similar price range: the **Breville Bambino Plus** and the **Philips 3200**.
+So you are ready to upgrade your coffee game with a real espresso machine. Maybe you are an espresso novice looking for something with an easy learning curve. Maybe you have been eyeing the **[Gaggia Classic Pro](https://www.amazon.com/s?k=Gaggia+Classic+Pro+Espresso+Machine&tag=jayarrcoffee-20)** because it is a fan favorite among enthusiasts. Before you pull the trigger, we wanted to compare it against two other popular options in a similar price range: the **[Breville Bambino Plus](https://www.amazon.com/s?k=Breville+Bambino+Plus+Espresso+Machine&tag=jayarrcoffee-20)** and the **[Philips 3200](https://www.amazon.com/s?k=Philips+3200+Series+Espresso+Machine&tag=jayarrcoffee-20)**.
 
 <iframe width="100%" style="aspect-ratio:16/9" src="https://www.youtube.com/embed/Lkq4nTDxrf8" title="Espresso Battle Royale! (Reviews of Gaggia, Breville Bambino, and Phillips 3200)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -46,3 +46,5 @@ We recommend either the **Breville Bambino Plus** or the **Philips 3200**, depen
 **Choose the Philips 3200 if** you do not own a grinder and want maximum convenience. The integrated grinder and digital interface make it a true one-button solution. If budget allows, spring for the **LatteGo version** -- it dramatically improves latte quality.
 
 **The Gaggia Classic Pro**, while a beloved classic, is harder to recommend to the average consumer. The temperature surfing requirement and limited milk steaming make it a better fit for hobbyists who enjoy the process of learning advanced espresso mechanics.
+
+*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*
