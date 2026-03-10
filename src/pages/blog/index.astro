@@ -5,7 +5,7 @@ import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import { SITE_TITLE } from '../../consts';
 
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
@@ -15,100 +15,53 @@ const posts = (await getCollection('blog')).sort(
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
-			main {
-				width: 960px;
-			}
-			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-			}
-			ul li {
-				width: calc(50% - 1rem);
-			}
-			ul li * {
-				text-decoration: none;
-				transition: 0.2s ease;
-			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
-			}
-			ul li:first-child img {
-				width: 100%;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-			}
-			ul li a {
-				display: block;
-			}
-			.title {
-				margin: 0;
-				color: rgb(var(--black));
-				line-height: 1;
-			}
-			.date {
-				margin: 0;
-				color: rgb(var(--gray));
-			}
-			ul li a:hover h4,
-			ul li a:hover .date {
-				color: rgb(var(--accent));
-			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
-			}
-			@media (max-width: 720px) {
-				ul {
-					gap: 0.5em;
-				}
-				ul li {
-					width: 100%;
-					text-align: center;
-				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
-				}
-			}
-		</style>
+		<BaseHead title={`Articles — ${SITE_TITLE}`} description="Coffee articles, reviews, and guides from JayArr Coffee." />
 	</head>
-	<body>
+	<body class="bg-cream">
 		<Header />
-		<main>
-			<section>
-				<ul>
-					{
-						posts.map((post) => (
-							<li>
-								<a href={`/blog/${post.id}/`}>
-									{post.data.heroImage && (
-										<Image width={720} height={360} src={post.data.heroImage} alt="" />
-									)}
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
-								</a>
-							</li>
-						))
-					}
-				</ul>
-			</section>
+
+		<!-- Page header -->
+		<div class="pt-32 pb-16 bg-charcoal">
+			<div class="max-w-6xl mx-auto px-6">
+				<span class="text-xs uppercase tracking-widest text-copper font-medium">Read</span>
+				<h1 class="font-serif text-5xl md:text-6xl font-bold text-cream mt-2">Articles</h1>
+			</div>
+		</div>
+
+		<!-- Articles grid -->
+		<main class="max-w-6xl mx-auto px-6 py-16">
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+				{posts.map((post) => (
+					<a href={`/blog/${post.id}/`} class="group block">
+						<article>
+							{post.data.heroImage && (
+								<div class="aspect-[16/10] overflow-hidden rounded-sm mb-4">
+									<Image
+										width={720}
+										height={450}
+										src={post.data.heroImage}
+										alt={post.data.title}
+										class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+									/>
+								</div>
+							)}
+							<time class="text-xs uppercase tracking-widest text-warm-gray">
+								<FormattedDate date={post.data.pubDate} />
+							</time>
+							<h2 class="font-serif text-xl font-bold text-charcoal mt-1 mb-2 group-hover:text-copper transition-colors">
+								{post.data.title}
+							</h2>
+							{post.data.description && (
+								<p class="text-sm text-warm-gray leading-relaxed line-clamp-3">
+									{post.data.description}
+								</p>
+							)}
+						</article>
+					</a>
+				))}
+			</div>
 		</main>
+
 		<Footer />
 	</body>
 </html>

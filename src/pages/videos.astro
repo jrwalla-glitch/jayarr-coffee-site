@@ -1,0 +1,53 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`Videos — ${SITE_TITLE}`} description="Watch JayArr Coffee videos — coffee scoring, reviews, brewing science, and more." />
+	</head>
+	<body class="bg-cream">
+		<Header />
+
+		<!-- Page header -->
+		<div class="pt-32 pb-16 bg-charcoal">
+			<div class="max-w-6xl mx-auto px-6">
+				<span class="text-xs uppercase tracking-widest text-copper font-medium">Watch</span>
+				<h1 class="font-serif text-5xl md:text-6xl font-bold text-cream mt-2">Videos</h1>
+			</div>
+		</div>
+
+		<main class="max-w-6xl mx-auto px-6 py-16">
+			<p class="text-warm-gray text-center mb-12 max-w-2xl mx-auto">
+				In-depth coffee content — scoring breakdowns, brewing science, honest reviews, and more.
+				Subscribe on <a href="https://www.youtube.com/@jayarrcoffee" target="_blank" rel="noopener" class="text-copper hover:text-copper-dark underline underline-offset-2">YouTube</a> to catch new videos.
+			</p>
+
+			<!-- YouTube channel embed -->
+			<div class="max-w-4xl mx-auto space-y-8">
+				<div class="aspect-video rounded-sm overflow-hidden bg-charcoal">
+					<iframe
+						class="w-full h-full"
+						src="https://www.youtube.com/embed?listType=user_uploads&list=jayarrcoffee"
+						title="JayArr Coffee - Latest Video"
+						frameborder="0"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+						allowfullscreen
+					></iframe>
+				</div>
+			</div>
+
+			<div class="text-center mt-12">
+				<a href="https://www.youtube.com/@jayarrcoffee" target="_blank" rel="noopener" class="inline-block bg-charcoal text-cream px-8 py-3 text-sm uppercase tracking-widest hover:bg-copper transition-colors">
+					View All on YouTube
+				</a>
+			</div>
+		</main>
+
+		<Footer />
+	</body>
+</html>
