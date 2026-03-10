@@ -1,0 +1,56 @@
+---
+title: "Coffee Grind Size Guide: The Right Grind for Every Brew Method"
+description: "Using the wrong grind size is the most common coffee brewing mistake. This guide covers the ideal grind for every method — from cold brew to Turkish — and how grind affects extraction and flavor."
+pubDate: "Dec 15 2019"
+heroImage: "../../assets/blog/JT01fu8P_LM.jpg"
+---
+
+A great cup of coffee starts with the right grind. It is the most overlooked variable in brewing, and getting it wrong is the fastest way to ruin otherwise excellent beans. If your coffee tastes off and you cannot figure out why, grind size is the first place to look.
+
+<iframe width="100%" style="aspect-ratio:16/9" src="https://www.youtube.com/embed/JT01fu8P_LM" title="Coffee Grind Size Guide for Every Brew Method" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+## How Grind Size Affects Extraction
+
+Your coffee grind directly impacts extraction, and extraction directly impacts flavor. Here is the basic principle:
+
+- A **finer grind** increases the surface area of the coffee, giving water easier access and extracting more compounds in the same amount of brewing time.
+- A **coarser grind** reduces surface area, resulting in fewer compounds being extracted in the same time.
+
+This means grind size is your primary tool for controlling the balance between **under-extraction** and **over-extraction**:
+
+- **Under-extracted coffee** tastes sour
+- **Over-extracted coffee** tastes bitter
+
+If your coffee tastes off, adjusting your grind size is the most effective way to fix it. Too sour? Grind finer. Too bitter? Grind coarser.
+
+Another way to think about extraction problems is the concept of a "hollow" cup — one that is missing the enjoyable flavors it should have, either because those compounds were never extracted from the grounds or because other compounds are masking them.
+
+## The Right Grind for Every Brew Method
+
+**Extra coarse** (ground peppercorn size) — **Cold brew coffee**. Coarser grinds suit longer cold brewing times of 12 hours or more. Shorter cold brew times can work with a slightly finer grind, but coarse to medium is generally recommended.
+
+**Coarse** (sea salt size) — **Percolator and French press**. These immersion and percolation methods need larger particles to avoid over-extraction during their longer brew times.
+
+**Medium-coarse** (rough sand) — **Chemex and similar pour over devices**. This grind sits between the coarse French press grind and standard drip.
+
+**Medium** (regular sand) — **Most pour over brewers and flat-bottom drip coffee machines**. With pour over, you may need to experiment with grind size to dial in your brew. Start with what the manufacturer suggests and adjust from there.
+
+**Medium-fine** (coarse table salt) — **Cone-shaped drip coffee brewers**. These brewers use a narrower filter that increases water contact time, so a slightly finer grind compensates.
+
+**Fine** (table salt) — **Espresso and Moka pots**. Espresso machines use pressure (measured in bars) to force hot water through the grounds. If your grind is too coarse, the water flows through too quickly and under-extracts. Too fine, and it cannot flow through effectively. The proper fine grind regulates pressurized water flow at the appropriate level.
+
+**Extra fine** (flour or fine powder) — **Turkish coffee**. This is the finest grind available, producing an almost powder-like consistency.
+
+## Why You Need a Burr Grinder
+
+We recommend a **burr grinder over a blade grinder** for one simple reason: consistency.
+
+A blade grinder cuts beans randomly, producing a mix of particle sizes. Some of the smaller particles end up over-extracted while the larger ones are under-extracted — giving you the worst of both worlds, a mix of sour and bitter in the same cup.
+
+A burr grinder crushes beans with uniform rotation and pressure, producing a **consistent, precise grind**. This is especially critical for **espresso**, where uniform particle size is essential for proper extraction.
+
+## Grind Fresh, Every Time
+
+One question we get asked frequently: is it okay to grind all your beans at once and store the grounds?
+
+The answer is a firm no. Coffee grounds lose freshness quickly — even within a single day. For optimal flavor, grind your beans **right before brewing**. Grinding releases a burst of aromas that you do not just smell — you taste them too. Pre-grinding sacrifices those aromas before they ever reach your cup.
