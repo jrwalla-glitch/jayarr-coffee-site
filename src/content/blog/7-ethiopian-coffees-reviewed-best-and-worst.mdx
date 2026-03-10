@@ -4,6 +4,7 @@ description: "We reviewed seven Ethiopian coffees from brands like Peet's, Volca
 pubDate: "Feb 07 2020"
 heroImage: "../../assets/blog/8zkdY6XRROY.jpg"
 ---
+import RegionCards from '../../components/infographics/RegionCards.astro';
 
 Ethiopia is the birthplace of coffee, and for good reason. Its lush southern regions and deep, rich soil create ideal growing conditions for thousands of coffee varieties. Unlike coffee grown in many other parts of the world, Ethiopian coffee often grows without agricultural chemicals, making these beans superior in quality. When you buy Ethiopian coffee, you're getting coffee as it was meant to be.
 
@@ -20,6 +21,67 @@ Ethiopian coffee is known for its **floral, bright, and fruity flavors**, usuall
 **Guji**, located south of Sidama, is another prominent region where some of the world's best roasters source their beans. Guji coffees tend to have a tea-like body with sweet floral notes like jasmine, peach, and melon.
 
 **Harrar**, in the east, is known for delicious dry-processed beans with syrupy bodies. These tend to have a wild, fruity character with a winey taste.
+
+<RegionCards
+  title="Ethiopian Coffee Regions"
+  subtitle="Six distinct growing regions — each with its own character"
+  regions={[
+    {
+      name: "Yirgacheffe",
+      altitude: "5,800 – 7,600 ft",
+      location: "Sidama Zone · Southern Ethiopia",
+      flavors: ["Floral", "Citrus", "Tea-like", "Jasmine"],
+      bestFor: "Washed process · Pour-over · Light roast",
+      note: "The most celebrated Ethiopian region — start here if you're new to Ethiopian coffee."
+    },
+    {
+      name: "Harrar",
+      altitude: "5,000 – 6,500 ft",
+      location: "Eastern Highlands",
+      flavors: ["Chocolate", "Wild Berry", "Winey", "Mocha"],
+      bestFor: "Natural process · French press · Medium roast",
+      note: "One of the oldest producing regions — bold, fruit-forward, with a distinctive dry-processed character."
+    },
+    {
+      name: "Sidamo",
+      altitude: "5,100 – 7,200 ft",
+      location: "Sidama Zone · Largest Region",
+      flavors: ["Fruity", "Earthy", "Complex", "Bright"],
+      bestFor: "Both processes · Any brew method · Any roast level",
+      note: "The full range of Ethiopian flavors — something different every time."
+    },
+    {
+      name: "Guji",
+      altitude: "5,500 – 7,000 ft",
+      location: "Southeastern Ethiopia",
+      flavors: ["Dark Chocolate", "Floral", "Tart Berry"],
+      bestFor: "Natural process · Pour-over · Light roast",
+      note: "The rising star of specialty coffee — now recognized as its own distinct origin."
+    },
+    {
+      name: "Limu",
+      altitude: "5,200 – 6,600 ft",
+      location: "Southwestern Ethiopia",
+      flavors: ["Wine", "Spiced", "Bold", "Earthy"],
+      bestFor: "Washed process · Drip or press · Medium-dark roast",
+      note: "Underrated and excellent value — works beautifully at darker roast levels."
+    },
+    {
+      name: "Jimma",
+      altitude: "5,000 – 6,200 ft",
+      location: "Western Highlands · Near Kaffa",
+      flavors: ["Balanced", "Deep", "Medium Body"],
+      bestFor: "Both processes · Any method · Medium roast",
+      note: "Budget-friendly with surprising depth — near the ancient Kaffa forests where coffee began."
+    }
+  ]}
+  stats={[
+    { value: "6,000+", label: "Heirloom Varieties" },
+    { value: "#5", label: "World Producer" },
+    { value: "#1", label: "In Africa" },
+    { value: "~700 AD", label: "First Cultivated" }
+  ]}
+/>
 
 ## The Reviews: From Bottom to Top
 

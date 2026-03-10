@@ -4,6 +4,7 @@ description: "Kenyan coffee is renowned for its bright acidity, complex berry no
 pubDate: "Dec 10 2020"
 heroImage: "../../assets/blog/lrNhYyDXXro.jpg"
 ---
+import RegionCards from '../../components/infographics/RegionCards.astro';
 
 Even if you're a coffee novice, you've likely heard about Kenyan coffee. Though it makes up less than one percent of the world's coffee market, it's earned a noble reputation among coffee enthusiasts — often referred to as **"the connoisseur's cup"** for its smooth drinkability and rich, well-balanced flavors.
 
@@ -67,6 +68,59 @@ With regular rainfall and rich soil, the densely populated Nyanza region (includ
 ### Great Rift Valley
 
 The highlands just west of the Rift Valley offer fertile soil and mild temperatures ideal for coffee cultivation. Coffee from this region carries that **signature Kenyan flavor** but with slightly less sharp acidity than some varieties.
+
+<RegionCards
+  title="Kenyan Coffee Regions"
+  subtitle="5 growing regions — the connoisseur's cup"
+  regions={[
+    {
+      name: "Central",
+      altitude: "1,400 – 2,000m",
+      location: "Kiambu · Nyeri · Kirinyaga · Muranga",
+      flavors: ["Sharp Citrus", "Chocolate-Berry"],
+      bestFor: "60% of Kenya's coffee · Volcanic soil",
+      note: "The source of the sharp citrus and chocolate-berry most people associate with Kenyan coffee."
+    },
+    {
+      name: "Western",
+      altitude: "1,500 – 1,900m",
+      location: "Mount Elgon Area",
+      flavors: ["Full-Bodied", "Sharp Citrus"],
+      bestFor: "Similar profile to Central highlands",
+      note: "Home to Mount Elgon — an extinct volcano straddling the Uganda-Kenya border."
+    },
+    {
+      name: "Eastern",
+      altitude: "1,400 – 1,700m",
+      location: "Mbuni · Kagundu · Ivetti Hills",
+      flavors: ["Fruity", "Silky Mouthfeel"],
+      bestFor: "Drier climate · Lighter body",
+      note: "A fruitier, silkier take on the Kenyan profile."
+    },
+    {
+      name: "Nyanza",
+      altitude: "1,300 – 1,600m",
+      location: "Kisii · Nyamira · Migori",
+      flavors: ["Sweet", "Creamy", "Nutty"],
+      bestFor: "Less pungent · Touch of fruit",
+      note: "Sweeter and creamier — the gentlest introduction to Kenyan coffee."
+    },
+    {
+      name: "Great Rift Valley",
+      altitude: "1,500 – 2,000m",
+      location: "Highlands West of the Rift",
+      flavors: ["Signature Kenyan", "Less Sharp"],
+      bestFor: "Fertile volcanic soil · Mild temperatures",
+      note: "Classic Kenyan flavor with slightly less sharp acidity."
+    }
+  ]}
+  stats={[
+    { value: "~50,000", label: "Tons / Year" },
+    { value: "100%", label: "Arabica" },
+    { value: "AA", label: "Top Grade" },
+    { value: "Washed", label: "Processing" }
+  ]}
+/>
 
 ## Best Kenyan Coffee Beans to Try
 

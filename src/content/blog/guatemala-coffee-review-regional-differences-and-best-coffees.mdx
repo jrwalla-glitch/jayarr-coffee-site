@@ -4,6 +4,7 @@ description: "Explore Guatemala's eight coffee growing regions, their unique fla
 pubDate: "Sep 20 2020"
 heroImage: "../../assets/blog/raySH-fAvS0.jpg"
 ---
+import RegionCards from '../../components/infographics/RegionCards.astro';
 
 If you've never experienced Guatemalan coffee, you're in for a treat. With 125,000 coffee producers farming across 300 different microclimates and eight distinct growing regions, Guatemala offers some of the most diverse and complex coffee in the world. Here's everything you need to know about what makes it special, how the regions differ, and which coffees are worth your money.
 
@@ -56,11 +57,88 @@ In the far west, **San Marcos** is a mountainous region with microclimates heavi
 
 The eighth region rounds out Guatemala's diverse coffee landscape, each microclimate adding yet another dimension to the country's remarkable range of flavors.
 
+<RegionCards
+  title="Guatemalan Coffee Regions"
+  subtitle="8 distinct growing regions — 300 microclimates"
+  regions={[
+    {
+      name: "Antigua",
+      altitude: "1,500 – 1,700m",
+      location: "West of Guatemala City · Volcanic",
+      flavors: ["Mild Sweetness", "Chocolate", "Apple-like Acidity"],
+      bestFor: "Most famous region · Rich volcanic soil",
+      note: "The first region most connoisseurs think of — surrounded by volcanoes."
+    },
+    {
+      name: "Atitlan",
+      altitude: "1,500 – 1,700m",
+      location: "Sierra Madre · Pacific Coast",
+      flavors: ["Full-Bodied", "Floral", "Spicy"],
+      bestFor: "Environmentally friendly farming",
+      note: "Home to gorgeous Lake Atitlan — cooler temps develop more complex flavors."
+    },
+    {
+      name: "Coban Rainforest",
+      altitude: "1,300 – 1,500m",
+      location: "Central Guatemala · Subtropical",
+      flavors: ["Medium-Bodied", "Bright", "Less Acidic"],
+      bestFor: "Lower acidity preference",
+      note: "Limestone and clay soil with steady rainfall — a gentler Guatemalan cup."
+    },
+    {
+      name: "Fraijanes Plateau",
+      altitude: "1,400 – 1,600m",
+      location: "South of Guatemala City",
+      flavors: ["Bouquet", "Sweet", "Complex"],
+      bestFor: "Rare find in the US",
+      note: "Volcanic ash from active Pacaya volcano dusts the beans — sweet and complex."
+    },
+    {
+      name: "Huehuetenango",
+      altitude: "1,500 – 2,000m",
+      location: "Highest · Driest · Most Remote",
+      flavors: ["Mildly Acidic", "Wine-like"],
+      bestFor: "Specialty single origins",
+      note: "Guatemala's highest growing region — non-volcanic with a subtropical climate."
+    },
+    {
+      name: "Nuevo Oriente",
+      altitude: "1,300 – 1,700m",
+      location: "Eastern Guatemala · Near Honduras",
+      flavors: ["Strong Aroma", "High Acidity", "Full-Bodied"],
+      bestFor: "Bold coffee lovers",
+      note: "One of the oldest regions — small-scale farmers since the 1800s."
+    },
+    {
+      name: "San Marcos",
+      altitude: "1,300 – 1,600m",
+      location: "Far West · Pacific Influence",
+      flavors: ["Acidic (Lime)", "Floral", "Cocoa"],
+      bestFor: "Bright, citrus-forward cups",
+      note: "Pacific Ocean microclimates with heavy rainfall and volcanic soil."
+    },
+    {
+      name: "West Valley (Acatenango)",
+      altitude: "1,500 – 2,000m",
+      location: "Various Microclimates",
+      flavors: ["Varied", "Complex"],
+      bestFor: "Diverse flavor exploration",
+      note: "The eighth region — each microclimate adds another dimension."
+    }
+  ]}
+  stats={[
+    { value: "125,000", label: "Producers" },
+    { value: "300+", label: "Microclimates" },
+    { value: "8", label: "Regions" },
+    { value: "Full-Bodied", label: "General Profile" }
+  ]}
+/>
+
 ## Best Guatemalan Coffees Reviewed
 
 We tasted and rated a selection of Guatemalan coffees available online. Here's how they stacked up.
 
-### Cat and Cloud Guatemala Los Cedros — 4.7/5 (Best Overall)
+### **[Cat and Cloud Guatemala Los Cedros](https://www.amazon.com/s?k=Cat+and+Cloud+Guatemala+Coffee&tag=jayarrcoffee-20)** — 4.7/5 (Best Overall)
 
 **Cat and Cloud**, a Santa Cruz-based roaster started by regional and national Brewers Cup and Barista Championship winners, has something truly special here. Through washed processing, this coffee retains the desirable chocolatey, nutty flavors characteristic of Guatemalan coffees while successfully marrying them to more exotic notes like **tangerine**. It pairs extremely well with a morning pastry or evening dessert. This is a coffee we fully recommend.
 
@@ -84,7 +162,7 @@ A **rich, sophisticated, and smooth-bodied** experience with a pleasant, robust 
 
 A U.S. roaster specializing in Guatemalan coffee, **Two Volcanoes** represents the high standards of San Marcos while bringing its own twist. Nuts dominate the flavor with **reduced acidity and unique floral hints**. A low-tone, pleasant coffee that's very easy to drink.
 
-### Out of the Grey Guatemala Asobagri Huehuetenango — 3.5/5
+### **[Out of the Grey Guatemala Asobagri Huehuetenango](https://www.amazon.com/s?k=Out+of+the+Grey+Guatemala+Coffee&tag=jayarrcoffee-20)** — 3.5/5
 
 Produced in **Asobagri**, a coffee-growing cooperative in Huehuetenango, this organic and fair-trade offering features unusual flavors of **blood orange, coconut, and jasmine**. Opinions will vary on whether these diverse flavors tie together well — this is a love-it-or-hate-it coffee best suited to adventurous palates.
 

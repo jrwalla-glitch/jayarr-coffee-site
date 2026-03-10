@@ -4,6 +4,7 @@ description: "Learn how coffee is roasted from green bean to finished cup. Under
 pubDate: "Jun 15 2020"
 heroImage: "../../assets/blog/qSdGXdIfpoY.jpg"
 ---
+import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
 
 Green coffee beans are almost flavorless -- nothing more than a faint vegetable taste. Yet freshly roasted coffee is intoxicating, evocative, and delicious. So how exactly does this transformation happen? Understanding the roasting process is key to appreciating what ends up in your cup.
 
@@ -14,6 +15,53 @@ Green coffee beans are almost flavorless -- nothing more than a faint vegetable 
 Highly praised coffee roasters around the world tend to be self-trained, having mastered the art through trial and error. Every roaster develops their own aesthetic philosophy and style. They know how to reproduce the drinks they enjoy, but even experienced professionals don't always fully understand every complexity of the roasting process.
 
 The goal of roasting is to strike a balance between **sweetness**, **bitterness**, and **acidity**. How a roaster manages time and temperature determines where the final cup lands on that spectrum.
+
+<ProcessFlow
+  title="How Coffee Is Roasted"
+  subtitle="From green bean to your cup — the roasting stages"
+  steps={[
+    {
+      label: "Drying",
+      sublabel: "~3 minutes",
+      description: "Green beans contain 7–11% water that must be evaporated first, or they won't brown properly.",
+      detail: "Very little change in smell or appearance during this phase."
+    },
+    {
+      label: "Browning",
+      sublabel: "Maillard Reactions",
+      description: "Sugars and amino acids react, creating hundreds of new aromatic compounds.",
+      detail: "The outside may look roasted, but the inside is still undercooked."
+    },
+    {
+      label: "First Crack",
+      sublabel: "Light Roast",
+      description: "Water vapor and gas pressure cause the bean to break open with a popping sound, roughly doubling in volume.",
+      detail: "This is where coffee flavors truly begin to develop."
+    },
+    {
+      label: "Development",
+      sublabel: "Medium Roast",
+      description: "Balanced flavors emerge as body increases. The sweet spot where most specialty coffee lives.",
+      detail: "Roasters carefully control time here to preserve origin character."
+    },
+    {
+      label: "Second Crack",
+      sublabel: "Dark Roast",
+      description: "Beans crack again with a snappier noise. Oils surface and acidity is lost.",
+      detail: "A 'generic roast flavor' develops — more about the roast than the bean's origin."
+    }
+  ]}
+  compare={[
+    {
+      title: "Slow Roast (14–20 min)",
+      points: ["Higher quality cup", "Lower acidity", "More weight loss", "Complex flavors"]
+    },
+    {
+      title: "Quick Roast (~90 sec)",
+      points: ["More acidic", "Less bitter", "Brighter cup", "Less body"]
+    }
+  ]}
+/>
 
 ## Roast Speed: Slow vs. Fast
 

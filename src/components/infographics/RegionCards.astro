@@ -1,0 +1,281 @@
+---
+interface Region {
+  name: string;
+  altitude: string;
+  location: string;
+  flavors: string[];
+  bestFor: string;
+  note: string;
+}
+
+interface Stat {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  title: string;
+  subtitle: string;
+  regions: Region[];
+  stats?: Stat[];
+}
+
+const { title, subtitle, regions, stats } = Astro.props;
+---
+
+<aside class="infographic-region-cards" role="complementary" aria-label={title}>
+  <header class="ig-header">
+    <span class="ig-brand">JayArr Coffee</span>
+    <h2 class="ig-title">{title}</h2>
+    <p class="ig-subtitle">{subtitle}</p>
+  </header>
+
+  <div class="ig-divider"></div>
+
+  {regions.map((region, i) => (
+    <div class="region-card">
+      <div class="rank-number">{String(i + 1).padStart(2, '0')}</div>
+      <div class="region-content">
+        <div class="region-top-row">
+          <span class="region-name">{region.name}</span>
+          <span class="altitude">{region.altitude}</span>
+        </div>
+        <div class="region-location">{region.location}</div>
+        <div class="section-label">Flavor Profile</div>
+        <div class="flavor-tags">
+          {region.flavors.map((f) => <span class="tag">{f}</span>)}
+        </div>
+        <div class="section-label">Best For</div>
+        <div class="best-for">{region.bestFor}</div>
+        <div class="region-note">{region.note}</div>
+      </div>
+    </div>
+  ))}
+
+  {stats && stats.length > 0 && (
+    <div class="stats-bar">
+      {stats.map((stat, i) => (
+        <>
+          {i > 0 && <div class="stat-divider" />}
+          <div class="stat">
+            <div class="stat-value">{stat.value}</div>
+            <div class="stat-label">{stat.label}</div>
+          </div>
+        </>
+      ))}
+    </div>
+  )}
+
+  <div class="ig-footer">jayarr.coffee</div>
+</aside>
+
+<style>
+  .infographic-region-cards {
+    max-width: 720px;
+    margin: 2.5rem auto;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--color-charcoal, #1A1A1A);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .ig-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .ig-brand {
+    display: block;
+    font-weight: 600;
+    font-size: 0.8125rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--color-copper, #C17A3A);
+    margin-bottom: 0.75rem;
+  }
+
+  .ig-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 900;
+    font-size: 2.5rem;
+    color: var(--color-charcoal, #1A1A1A);
+    line-height: 1.15;
+    margin: 0 0 0.75rem;
+    letter-spacing: -0.02em;
+  }
+
+  .ig-subtitle {
+    font-size: 1rem;
+    color: var(--color-warm-gray, #6B6560);
+    margin: 0;
+  }
+
+  .ig-divider {
+    height: 1px;
+    background: var(--color-warm-gray-light, #9B9590);
+    opacity: 0.4;
+    margin-bottom: 1.5rem;
+  }
+
+  .region-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1.75rem 0;
+    border-bottom: 1px solid rgba(155, 149, 144, 0.25);
+  }
+
+  .region-card:last-of-type {
+    border-bottom: none;
+  }
+
+  .rank-number {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    font-size: 3rem;
+    color: var(--color-copper, #C17A3A);
+    line-height: 1;
+    min-width: 4rem;
+    text-align: right;
+    padding-top: 2px;
+  }
+
+  .region-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .region-top-row {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.25rem;
+    flex-wrap: wrap;
+  }
+
+  .region-name {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.625rem;
+    color: var(--color-charcoal, #1A1A1A);
+    line-height: 1.2;
+  }
+
+  .altitude {
+    font-weight: 500;
+    font-size: 0.8125rem;
+    color: var(--color-copper, #C17A3A);
+    white-space: nowrap;
+  }
+
+  .region-location {
+    font-weight: 500;
+    font-size: 0.75rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--color-warm-gray, #6B6560);
+    margin-bottom: 1.25rem;
+  }
+
+  .section-label {
+    font-weight: 600;
+    font-size: 0.6875rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--color-warm-gray, #6B6560);
+    margin-bottom: 0.625rem;
+  }
+
+  .flavor-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .tag {
+    font-weight: 500;
+    font-size: 0.8125rem;
+    color: var(--color-charcoal, #1A1A1A);
+    padding: 0.375rem 1rem;
+    border-radius: 4px;
+    border: 1px solid var(--color-copper, #C17A3A);
+    background: var(--color-cream, #F5F0E8);
+  }
+
+  .best-for {
+    font-size: 0.875rem;
+    color: var(--color-warm-gray, #6B6560);
+    margin-bottom: 0.625rem;
+  }
+
+  .region-note {
+    font-style: italic;
+    font-size: 0.8125rem;
+    color: var(--color-warm-gray-light, #9B9590);
+  }
+
+  .stats-bar {
+    background: var(--color-cream-dark, #EBE4D8);
+    border-top: 2px solid var(--color-copper, #C17A3A);
+    margin-top: 2rem;
+    padding: 1.5rem 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-value {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.75rem;
+    color: var(--color-charcoal, #1A1A1A);
+    line-height: 1.2;
+  }
+
+  .stat-label {
+    font-weight: 500;
+    font-size: 0.625rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--color-warm-gray, #6B6560);
+    margin-top: 0.25rem;
+  }
+
+  .stat-divider {
+    width: 1px;
+    height: 2.5rem;
+    background: var(--color-warm-gray-light, #9B9590);
+    opacity: 0.4;
+  }
+
+  .ig-footer {
+    text-align: center;
+    padding: 1.25rem 0 0;
+    font-size: 0.75rem;
+    color: var(--color-warm-gray-light, #9B9590);
+  }
+
+  @media (max-width: 480px) {
+    .rank-number {
+      font-size: 2rem;
+      min-width: 2.5rem;
+    }
+    .ig-title {
+      font-size: 1.75rem;
+    }
+    .region-name {
+      font-size: 1.25rem;
+    }
+    .stats-bar {
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .stat-divider {
+      display: none;
+    }
+  }
+</style>

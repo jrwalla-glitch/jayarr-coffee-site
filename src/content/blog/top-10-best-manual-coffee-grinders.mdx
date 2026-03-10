@@ -4,10 +4,30 @@ description: "We tested 10 of the best manual coffee grinders on the market, com
 pubDate: "Aug 17 2020"
 heroImage: "../../assets/blog/0GLY1Tf8amA.jpg"
 ---
+import RankingList from '../../components/infographics/RankingList.astro';
 
 There's an old saying in coffee circles: the grinder is more important than the coffee maker. A weak grinder can limit even the most skilled barista, while a good one lays the foundation for everything that follows -- hazelnut, caramel, chocolate, fruity, floral, smoky, whatever flavors you're chasing. We put ten of the most popular manual hand grinders through their paces and ranked them on particle uniformity, ease of use, and overall design.
 
 <iframe width="100%" style="aspect-ratio:16/9" src="https://www.youtube.com/embed/0GLY1Tf8amA" title="Top 10 BEST Manual Coffee Grinders!" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<RankingList
+  title="Top 10 Manual Coffee Grinders"
+  subtitle="Tested and ranked for every budget"
+  columns={["Capacity", "Settings", "Burr"]}
+  items={[
+    { name: "Porlex Mini", specs: ["200g", "13 settings", "Ceramic"], price: "~$70", highlight: "Ultra-portable" },
+    { name: "OE Lido 3", specs: ["N/A", "Stepless", "Steel"], price: "$185", highlight: "Pro-grade precision" },
+    { name: "Timemore Chestnut G1", specs: ["N/A", "Stepless", "Steel"], price: "~$159", highlight: "Red Dot Design Award" },
+    { name: "Hario Mini Mill Slim", specs: ["2 cups", "Adjustable", "Ceramic"], price: "<$40", highlight: "Best budget pick" },
+    { name: "Zassenhaus Santiago", specs: ["40g", "Adjustable", "Steel"], price: "$130", highlight: "25-year warranty" },
+    { name: "Handground Precision", specs: ["N/A", "15 settings", "Ceramic"], price: "~$80", highlight: "Vertical handle" },
+    { name: "Hario Skerton", specs: ["N/A", "Adjustable", "Ceramic"], price: "~$40", highlight: "Compact design" },
+    { name: "JavaPresse", specs: ["40g", "18 settings", "Ceramic"], price: "~$30", highlight: "Budget favorite" },
+    { name: "ROK Grinder", specs: ["N/A", "Stepless", "Steel 48mm"], price: "$250", highlight: "Premium build" },
+    { name: "1Zpresso Q2", specs: ["20g", "Adjustable", "Steel 38mm"], price: "$99", highlight: "Travel size" }
+  ]}
+  tip="Steel burrs grind faster & more consistent · Ceramic burrs retain less heat"
+/>
 
 ## How We Tested
 

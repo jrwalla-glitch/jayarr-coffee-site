@@ -4,10 +4,24 @@ description: "We tested five coffee scales on accuracy, features, and value. Her
 pubDate: "Oct 27 2020"
 heroImage: "../../assets/blog/Ijnj7RX-pis.jpg"
 ---
+import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
 
 If you really want to make a great cup of coffee, you should probably be weighing your beans. The correct coffee-to-water ratio is key to a sublime cup, but with so many scales on the market, how do you know what features you actually need and how much to spend? We tested five different coffee scales and picked our favorites for best performance, best value, and best overall.
 
 <iframe width="100%" style="aspect-ratio:16/9" src="https://www.youtube.com/embed/Ijnj7RX-pis" title="5 Coffee Scales Reviewed!" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<ComparisonTable
+  title="5 Coffee Scales Compared"
+  subtitle="Which one is worth your money?"
+  columns={["Price", "Accuracy", "Timer", "Standout Feature"]}
+  rows={[
+    { name: "Hario Drip Scale", values: ["$40–50", "0.1g", "Yes", "Built-in brew timer"], result: "Best Performance" },
+    { name: "Airo Style", values: ["~$25", "0.1g", "Yes", "Stainless steel platform"], result: "Best Overall" },
+    { name: "Ozeri Touch", values: ["~$15", "1g", "No", "Tempered glass design"], result: "Most Stylish" },
+    { name: "Apexstone", values: ["~$15", "0.1g", "Yes", "Multiple units"], result: "Budget Pick" },
+    { name: "Etekcity", values: ["~$10", "1g", "No", "Ultra-portable"], result: "Best Value" }
+  ]}
+/>
 
 ## Why You Can't Just Use a Scoop
 

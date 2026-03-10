@@ -1,0 +1,185 @@
+---
+interface Row {
+  name: string;
+  values: string[];
+  result?: string;
+}
+
+interface Props {
+  title: string;
+  subtitle: string;
+  columns: string[];
+  rows: Row[];
+  footnote?: string;
+}
+
+const { title, subtitle, columns, rows, footnote } = Astro.props;
+---
+
+<aside class="infographic-comparison" role="complementary" aria-label={title}>
+  <header class="ig-header">
+    <span class="ig-brand">JayArr Coffee</span>
+    <h2 class="ig-title">{title}</h2>
+    <p class="ig-subtitle">{subtitle}</p>
+  </header>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th class="col-name">Method</th>
+          {columns.map((col) => <th>{col}</th>)}
+          {rows[0]?.result !== undefined && <th class="col-result">Result</th>}
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((row) => (
+          <tr>
+            <td class="cell-name">{row.name}</td>
+            {row.values.map((val) => <td>{val}</td>)}
+            {row.result !== undefined && <td class="cell-result">{row.result}</td>}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  {footnote && <p class="ig-footnote">{footnote}</p>}
+
+  <div class="ig-footer">jayarr.coffee</div>
+</aside>
+
+<style>
+  .infographic-comparison {
+    max-width: 720px;
+    margin: 2.5rem auto;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--color-charcoal, #1A1A1A);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .ig-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .ig-brand {
+    display: block;
+    font-weight: 600;
+    font-size: 0.8125rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--color-copper, #C17A3A);
+    margin-bottom: 0.75rem;
+  }
+
+  .ig-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 900;
+    font-size: 2.25rem;
+    color: var(--color-charcoal, #1A1A1A);
+    line-height: 1.15;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .ig-subtitle {
+    font-size: 1rem;
+    color: var(--color-warm-gray, #6B6560);
+    margin: 0;
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+
+  thead tr {
+    border-bottom: 2px solid var(--color-copper, #C17A3A);
+  }
+
+  th {
+    font-weight: 500;
+    font-size: 0.6875rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--color-warm-gray, #6B6560);
+    padding: 0.75rem 0.625rem;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  th.col-name {
+    padding-left: 0;
+  }
+
+  th.col-result {
+    text-align: right;
+    padding-right: 0;
+  }
+
+  td {
+    padding: 1rem 0.625rem;
+    color: var(--color-charcoal, #1A1A1A);
+    font-size: 0.875rem;
+    vertical-align: top;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid rgba(155, 149, 144, 0.2);
+  }
+
+  tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .cell-name {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    font-size: 1rem;
+    padding-left: 0;
+    white-space: nowrap;
+  }
+
+  .cell-result {
+    color: var(--color-copper, #C17A3A);
+    font-weight: 500;
+    font-style: italic;
+    text-align: right;
+    padding-right: 0;
+  }
+
+  .ig-footnote {
+    font-size: 0.8125rem;
+    font-style: italic;
+    color: var(--color-warm-gray-light, #9B9590);
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+
+  .ig-footer {
+    text-align: center;
+    padding: 1.25rem 0 0;
+    font-size: 0.75rem;
+    color: var(--color-warm-gray-light, #9B9590);
+  }
+
+  @media (max-width: 480px) {
+    .ig-title {
+      font-size: 1.625rem;
+    }
+    th, td {
+      font-size: 0.75rem;
+      padding: 0.625rem 0.375rem;
+    }
+    .cell-name {
+      font-size: 0.875rem;
+    }
+  }
+</style>

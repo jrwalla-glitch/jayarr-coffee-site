@@ -1,0 +1,220 @@
+---
+interface GuideItem {
+  label: string;
+  description: string;
+  value: string;
+  /** Relative size 0-1 for visual indicator dot (optional) */
+  dotScale?: number;
+}
+
+interface Props {
+  title: string;
+  subtitle: string;
+  items: GuideItem[];
+  scaleLabel?: { start: string; end: string };
+  footnote?: string;
+}
+
+const { title, subtitle, items, scaleLabel, footnote } = Astro.props;
+---
+
+<aside class="infographic-reference" role="complementary" aria-label={title}>
+  <header class="ig-header">
+    <span class="ig-brand">JayArr Coffee</span>
+    <h2 class="ig-title">{title}</h2>
+    <p class="ig-subtitle">{subtitle}</p>
+  </header>
+
+  {scaleLabel && (
+    <div class="scale-bar">
+      <span class="scale-label">{scaleLabel.start}</span>
+      <div class="scale-track">
+        <div class="scale-fill"></div>
+      </div>
+      <span class="scale-label">{scaleLabel.end}</span>
+    </div>
+  )}
+
+  <div class="ig-divider"></div>
+
+  {items.map((item) => (
+    <div class="guide-row">
+      {item.dotScale !== undefined && (
+        <div class="dot-container">
+          <div
+            class="dot"
+            style={`width: ${Math.max(8, item.dotScale * 24)}px; height: ${Math.max(8, item.dotScale * 24)}px;`}
+          />
+        </div>
+      )}
+      <div class="guide-main">
+        <span class="guide-label">{item.label}</span>
+        <span class="guide-desc">{item.description}</span>
+      </div>
+      <span class="guide-value">{item.value}</span>
+    </div>
+  ))}
+
+  {footnote && <p class="ig-footnote">{footnote}</p>}
+
+  <div class="ig-footer">jayarr.coffee</div>
+</aside>
+
+<style>
+  .infographic-reference {
+    max-width: 720px;
+    margin: 2.5rem auto;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--color-charcoal, #1A1A1A);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .ig-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .ig-brand {
+    display: block;
+    font-weight: 600;
+    font-size: 0.8125rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--color-copper, #C17A3A);
+    margin-bottom: 0.75rem;
+  }
+
+  .ig-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 900;
+    font-size: 2.25rem;
+    color: var(--color-charcoal, #1A1A1A);
+    line-height: 1.15;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .ig-subtitle {
+    font-size: 1rem;
+    color: var(--color-warm-gray, #6B6560);
+    margin: 0;
+  }
+
+  .scale-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .scale-label {
+    font-weight: 500;
+    font-size: 0.6875rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--color-warm-gray, #6B6560);
+    white-space: nowrap;
+  }
+
+  .scale-track {
+    flex: 1;
+    height: 6px;
+    background: var(--color-cream-dark, #EBE4D8);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .scale-fill {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(to right, var(--color-copper, #C17A3A), var(--color-copper-light, #D4944F));
+    border-radius: 3px;
+    opacity: 0.5;
+  }
+
+  .ig-divider {
+    height: 1px;
+    background: var(--color-warm-gray-light, #9B9590);
+    opacity: 0.4;
+    margin-bottom: 0;
+  }
+
+  .guide-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.125rem 0;
+    border-bottom: 1px solid rgba(155, 149, 144, 0.2);
+  }
+
+  .guide-row:last-of-type {
+    border-bottom: none;
+  }
+
+  .dot-container {
+    width: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .dot {
+    border-radius: 50%;
+    background: var(--color-copper, #C17A3A);
+    opacity: 0.7;
+  }
+
+  .guide-main {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .guide-label {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.0625rem;
+    color: var(--color-charcoal, #1A1A1A);
+    display: block;
+    margin-bottom: 0.125rem;
+  }
+
+  .guide-desc {
+    font-size: 0.8125rem;
+    color: var(--color-warm-gray, #6B6560);
+  }
+
+  .guide-value {
+    font-weight: 500;
+    font-size: 0.9375rem;
+    color: var(--color-copper, #C17A3A);
+    white-space: nowrap;
+    text-align: right;
+    min-width: 8rem;
+  }
+
+  .ig-footnote {
+    font-size: 0.8125rem;
+    font-style: italic;
+    color: var(--color-warm-gray-light, #9B9590);
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+
+  .ig-footer {
+    text-align: center;
+    padding: 1.25rem 0 0;
+    font-size: 0.75rem;
+    color: var(--color-warm-gray-light, #9B9590);
+  }
+
+  @media (max-width: 480px) {
+    .ig-title {
+      font-size: 1.625rem;
+    }
+    .guide-value {
+      min-width: 5rem;
+      font-size: 0.8125rem;
+    }
+  }
+</style>

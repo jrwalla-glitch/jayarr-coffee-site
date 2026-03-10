@@ -63,4 +63,6 @@ The roasting method significantly changes your Costa Rican coffee experience:
 - **Medium roast** — caramelized sweet flavors with a fuller body. **Drip brewing** works well here.
 - **Dark roast** — bolder, smoother cup with lower acidity that emphasizes deeper characteristics. Brew with a **French press** for best results.
 
-For the authentic Costa Rican experience, get yourself a **chorreador** — a traditional Costa Rican brewing apparatus similar to a coffee sock. It's nothing fancy, but it's as authentic as it gets.
+For the authentic Costa Rican experience, get yourself a **[chorreador](https://www.amazon.com/s?k=Costa+Rican+Chorreador+Coffee+Maker&tag=jayarrcoffee-20)** — a traditional Costa Rican brewing apparatus similar to a coffee sock. It's nothing fancy, but it's as authentic as it gets.
+
+*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*

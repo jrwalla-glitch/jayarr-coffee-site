@@ -4,10 +4,72 @@ description: "We taste-tested six Colombian coffees and ranked them from best to
 pubDate: "Sep 15 2020"
 heroImage: "../../assets/blog/niL78O7NKd8.jpg"
 ---
+import RegionCards from '../../components/infographics/RegionCards.astro';
 
 Colombia is world-renowned for amazing coffee, often with notes of chocolate, caramel, berries, and spices. But because the country produces so much coffee, it can be hard to pinpoint the good stuff from this coffee powerhouse. We did the hard work for you and taste-tested six different Colombian coffees to let you know which are the best and which to avoid.
 
 <iframe width="100%" style="aspect-ratio:16/9" src="https://www.youtube.com/embed/niL78O7NKd8" title="6 Colombian Coffees Reviewed: Best and Worst!" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<RegionCards
+  title="Colombian Coffee"
+  subtitle="6 coffees reviewed — best to worst"
+  regions={[
+    {
+      name: "Lucalum's San Roque",
+      altitude: "4.8 / 5",
+      location: "Best Overall",
+      flavors: ["Cherry", "Chocolate", "Fruity Aftertaste"],
+      bestFor: "Light roast · All brew methods",
+      note: "Cherry-forward with subtle chocolate — the best Colombian in our selection."
+    },
+    {
+      name: "Stumptown Narino Borderlands",
+      altitude: "4.5 / 5",
+      location: "Premium Pick",
+      flavors: ["Citrus", "Fruit", "Toast", "Honey"],
+      bestFor: "Light-medium roast · Pour-over",
+      note: "Strong coffee with floral malt and honey — worth the premium price."
+    },
+    {
+      name: "Cafe Altura",
+      altitude: "3.5 / 5",
+      location: "Everyday Drinker",
+      flavors: ["Chocolate", "Fruit"],
+      bestFor: "Medium roast · Drip coffee",
+      note: "Solid quality at a reasonable price — high acidity balanced by creamy body."
+    },
+    {
+      name: "Eight O'Clock Colombian Peaks",
+      altitude: "3.2 / 5",
+      location: "National Brand",
+      flavors: ["Fruit", "Bright", "Peppery"],
+      bestFor: "Medium roast · Drip coffee",
+      note: "Mellow and bold, but the peppery taste is a bit of a distraction."
+    },
+    {
+      name: "Jim's Organic Colombian",
+      altitude: "2.5 / 5",
+      location: "Sierra Nevada de Santa Marta",
+      flavors: ["Cherry", "Dark Chocolate", "Harsh"],
+      bestFor: "Medium-dark roast · If organic matters to you",
+      note: "Cherry and chocolate with a burnt, woody aftertaste — okay but not outstanding."
+    },
+    {
+      name: "Coffee Bean & Tea Leaf",
+      altitude: "2.0 / 5",
+      location: "Least Favorite",
+      flavors: ["Leathery", "Earthy", "Woody", "Bitter"],
+      bestFor: "Skip this one",
+      note: "Harsh on the palate with a woody aftertaste — better alternatives exist for less money."
+    }
+  ]}
+  stats={[
+    { value: "12%", label: "World Production" },
+    { value: "#3", label: "Global Producer" },
+    { value: "100%", label: "Arabica" },
+    { value: "Washed", label: "Primary Process" }
+  ]}
+/>
 
 ## Best Overall: Lucalum's San Roque
 

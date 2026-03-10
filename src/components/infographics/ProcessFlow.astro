@@ -1,0 +1,264 @@
+---
+interface Step {
+  label: string;
+  sublabel?: string;
+  description: string;
+  detail?: string;
+}
+
+interface CompareBox {
+  title: string;
+  points: string[];
+}
+
+interface Props {
+  title: string;
+  subtitle: string;
+  steps: Step[];
+  compare?: CompareBox[];
+  footnote?: string;
+}
+
+const { title, subtitle, steps, compare, footnote } = Astro.props;
+---
+
+<aside class="infographic-process" role="complementary" aria-label={title}>
+  <header class="ig-header">
+    <span class="ig-brand">JayArr Coffee</span>
+    <h2 class="ig-title">{title}</h2>
+    <p class="ig-subtitle">{subtitle}</p>
+  </header>
+
+  <div class="ig-divider"></div>
+
+  <div class="process-timeline">
+    {steps.map((step, i) => (
+      <div class="process-step">
+        <div class="step-marker">
+          <div class="step-dot">{i + 1}</div>
+          {i < steps.length - 1 && <div class="step-line" />}
+        </div>
+        <div class="step-content">
+          <span class="step-label">{step.label}</span>
+          {step.sublabel && <span class="step-sublabel">{step.sublabel}</span>}
+          <p class="step-desc">{step.description}</p>
+          {step.detail && <p class="step-detail">{step.detail}</p>}
+        </div>
+      </div>
+    ))}
+  </div>
+
+  {compare && compare.length > 0 && (
+    <div class="compare-grid">
+      {compare.map((box) => (
+        <div class="compare-box">
+          <h3 class="compare-title">{box.title}</h3>
+          <ul class="compare-points">
+            {box.points.map((point) => <li>{point}</li>)}
+          </ul>
+        </div>
+      ))}
+    </div>
+  )}
+
+  {footnote && <p class="ig-footnote">{footnote}</p>}
+
+  <div class="ig-footer">jayarr.coffee</div>
+</aside>
+
+<style>
+  .infographic-process {
+    max-width: 720px;
+    margin: 2.5rem auto;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--color-charcoal, #1A1A1A);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .ig-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .ig-brand {
+    display: block;
+    font-weight: 600;
+    font-size: 0.8125rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--color-copper, #C17A3A);
+    margin-bottom: 0.75rem;
+  }
+
+  .ig-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 900;
+    font-size: 2.25rem;
+    color: var(--color-charcoal, #1A1A1A);
+    line-height: 1.15;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .ig-subtitle {
+    font-size: 1rem;
+    color: var(--color-warm-gray, #6B6560);
+    margin: 0;
+  }
+
+  .ig-divider {
+    height: 1px;
+    background: var(--color-warm-gray-light, #9B9590);
+    opacity: 0.4;
+    margin-bottom: 2rem;
+  }
+
+  .process-timeline {
+    position: relative;
+  }
+
+  .process-step {
+    display: flex;
+    gap: 1.25rem;
+    min-height: 5rem;
+  }
+
+  .step-marker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    width: 2.5rem;
+  }
+
+  .step-dot {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: var(--color-copper, #C17A3A);
+    color: white;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .step-line {
+    width: 2px;
+    flex: 1;
+    background: linear-gradient(to bottom, var(--color-copper, #C17A3A), var(--color-cream-dark, #EBE4D8));
+    margin: 0.25rem 0;
+  }
+
+  .step-content {
+    flex: 1;
+    padding-bottom: 1.75rem;
+  }
+
+  .step-label {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--color-charcoal, #1A1A1A);
+    display: block;
+    margin-bottom: 0.125rem;
+  }
+
+  .step-sublabel {
+    font-weight: 500;
+    font-size: 0.8125rem;
+    color: var(--color-copper, #C17A3A);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .step-desc {
+    font-size: 0.875rem;
+    color: var(--color-warm-gray, #6B6560);
+    line-height: 1.6;
+    margin: 0 0 0.25rem;
+  }
+
+  .step-detail {
+    font-size: 0.8125rem;
+    font-style: italic;
+    color: var(--color-warm-gray-light, #9B9590);
+    margin: 0;
+  }
+
+  .compare-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .compare-box {
+    background: var(--color-cream-dark, #EBE4D8);
+    border-radius: 6px;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .compare-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--color-charcoal, #1A1A1A);
+    margin: 0 0 0.75rem;
+  }
+
+  .compare-points {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .compare-points li {
+    font-size: 0.8125rem;
+    color: var(--color-warm-gray, #6B6560);
+    padding: 0.25rem 0;
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .compare-points li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.65rem;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--color-copper, #C17A3A);
+  }
+
+  .ig-footnote {
+    font-size: 0.8125rem;
+    font-style: italic;
+    color: var(--color-warm-gray-light, #9B9590);
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+
+  .ig-footer {
+    text-align: center;
+    padding: 1.25rem 0 0;
+    font-size: 0.75rem;
+    color: var(--color-warm-gray-light, #9B9590);
+  }
+
+  @media (max-width: 480px) {
+    .ig-title {
+      font-size: 1.625rem;
+    }
+    .step-label {
+      font-size: 1.0625rem;
+    }
+    .compare-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

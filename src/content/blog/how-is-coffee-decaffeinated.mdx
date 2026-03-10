@@ -4,6 +4,7 @@ description: "Ever wondered how caffeine is removed from coffee beans? We break 
 pubDate: "Dec 15 2019"
 heroImage: "../../assets/blog/0akAdI-6TbI.jpg"
 ---
+import MethodCards from '../../components/infographics/MethodCards.astro';
 
 Decaf coffee gets a bad reputation among enthusiasts, but for anyone who loves coffee and wants to enjoy six cups a day without the jitters or sleepless nights, it is worth understanding. The real question most people never think to ask is: how do they actually remove the caffeine from the beans?
 
@@ -16,6 +17,41 @@ On its own, caffeine is an astringent alkaloid. During both the roasting and dec
 ## Where It All Started
 
 Coffee decaffeination originated in **Germany over 100 years ago**. While numerous patents have emerged since then, only a few main techniques are actually used in the industry today. All processes start the same way: green beans are treated with water and steam to soften and open them up before the caffeine compounds are released. From there, the methods diverge.
+
+<MethodCards
+  title="How Coffee Is Decaffeinated"
+  subtitle="Comparing the 3 main methods"
+  methods={[
+    {
+      name: "Swiss Water Process",
+      metrics: [
+        { label: "Caffeine Removed", value: "94–96%" },
+        { label: "Chemicals Used", value: "None" },
+        { label: "Flavor Impact", value: "Preserved" }
+      ],
+      notes: ["Carbon filtration", "Exclusively Arabica"]
+    },
+    {
+      name: "Solvent Process",
+      metrics: [
+        { label: "Caffeine Removed", value: "96–98%" },
+        { label: "Chemicals Used", value: "Ethyl Acetate or Methylene Chloride" },
+        { label: "Flavor Impact", value: "Some loss" }
+      ],
+      notes: ["Direct or indirect contact methods"]
+    },
+    {
+      name: "CO₂ Process",
+      metrics: [
+        { label: "Caffeine Removed", value: "96–98%" },
+        { label: "Chemicals Used", value: "Carbon Dioxide" },
+        { label: "Flavor Impact", value: "Preserved" }
+      ],
+      notes: ["250–300x atmospheric pressure", "Non-toxic"]
+    }
+  ]}
+  footnote="FDA requires 'decaffeinated' coffee retain no more than 3% of original caffeine"
+/>
 
 ## Method 1: The Swiss Water Process
 

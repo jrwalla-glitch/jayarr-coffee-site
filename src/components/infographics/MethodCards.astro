@@ -1,0 +1,192 @@
+---
+interface Metric {
+  label: string;
+  value: string;
+  color?: string;
+}
+
+interface MethodCard {
+  name: string;
+  metrics: Metric[];
+  notes: string[];
+}
+
+interface Props {
+  title: string;
+  subtitle: string;
+  methods: MethodCard[];
+  footnote?: string;
+}
+
+const { title, subtitle, methods, footnote } = Astro.props;
+---
+
+<aside class="infographic-methods" role="complementary" aria-label={title}>
+  <header class="ig-header">
+    <span class="ig-brand">JayArr Coffee</span>
+    <h2 class="ig-title">{title}</h2>
+    <p class="ig-subtitle">{subtitle}</p>
+  </header>
+
+  <div class="ig-divider"></div>
+
+  <div class="methods-grid">
+    {methods.map((method) => (
+      <div class="method-card">
+        <h3 class="method-name">{method.name}</h3>
+        <div class="method-metrics">
+          {method.metrics.map((metric) => (
+            <div class="metric">
+              <span class="metric-label">{metric.label}</span>
+              <span class="metric-value" style={metric.color ? `color: ${metric.color}` : ''}>
+                {metric.value}
+              </span>
+            </div>
+          ))}
+        </div>
+        <div class="method-notes">
+          {method.notes.map((note) => <p class="note">{note}</p>)}
+        </div>
+      </div>
+    ))}
+  </div>
+
+  {footnote && <p class="ig-footnote">{footnote}</p>}
+
+  <div class="ig-footer">jayarr.coffee</div>
+</aside>
+
+<style>
+  .infographic-methods {
+    max-width: 720px;
+    margin: 2.5rem auto;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--color-charcoal, #1A1A1A);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .ig-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .ig-brand {
+    display: block;
+    font-weight: 600;
+    font-size: 0.8125rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--color-copper, #C17A3A);
+    margin-bottom: 0.75rem;
+  }
+
+  .ig-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 900;
+    font-size: 2.25rem;
+    color: var(--color-charcoal, #1A1A1A);
+    line-height: 1.15;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .ig-subtitle {
+    font-size: 1rem;
+    color: var(--color-warm-gray, #6B6560);
+    margin: 0;
+  }
+
+  .ig-divider {
+    height: 1px;
+    background: var(--color-warm-gray-light, #9B9590);
+    opacity: 0.4;
+    margin-bottom: 2rem;
+  }
+
+  .methods-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .method-card {
+    background: var(--color-cream-dark, #EBE4D8);
+    border-radius: 6px;
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .method-name {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: var(--color-charcoal, #1A1A1A);
+    margin: 0 0 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--color-copper, #C17A3A);
+  }
+
+  .method-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .metric {
+    text-align: center;
+  }
+
+  .metric-label {
+    display: block;
+    font-weight: 500;
+    font-size: 0.625rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--color-warm-gray, #6B6560);
+    margin-bottom: 0.25rem;
+  }
+
+  .metric-value {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--color-copper, #C17A3A);
+  }
+
+  .method-notes {
+    border-top: 1px solid rgba(155, 149, 144, 0.25);
+    padding-top: 0.75rem;
+  }
+
+  .note {
+    font-size: 0.8125rem;
+    color: var(--color-warm-gray, #6B6560);
+    margin: 0.25rem 0;
+    line-height: 1.5;
+  }
+
+  .ig-footnote {
+    font-size: 0.8125rem;
+    font-style: italic;
+    color: var(--color-warm-gray-light, #9B9590);
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+
+  .ig-footer {
+    text-align: center;
+    padding: 1.25rem 0 0;
+    font-size: 0.75rem;
+    color: var(--color-warm-gray-light, #9B9590);
+  }
+
+  @media (max-width: 480px) {
+    .ig-title {
+      font-size: 1.625rem;
+    }
+    .methods-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

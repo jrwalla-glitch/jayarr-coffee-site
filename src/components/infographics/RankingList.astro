@@ -1,0 +1,218 @@
+---
+interface RankingItem {
+  name: string;
+  specs: string[];
+  price: string;
+  highlight?: string;
+}
+
+interface Props {
+  title: string;
+  subtitle: string;
+  columns: string[];
+  items: RankingItem[];
+  tip?: string;
+}
+
+const { title, subtitle, columns, items, tip } = Astro.props;
+---
+
+<aside class="infographic-ranking" role="complementary" aria-label={title}>
+  <header class="ig-header">
+    <span class="ig-brand">JayArr Coffee</span>
+    <h2 class="ig-title">{title}</h2>
+    <p class="ig-subtitle">{subtitle}</p>
+  </header>
+
+  <div class="ig-divider"></div>
+
+  <div class="ranking-header" role="row" aria-hidden="true">
+    <span class="col-rank">#</span>
+    <span class="col-name">Name</span>
+    {columns.map((col) => <span class="col-spec">{col}</span>)}
+    <span class="col-price">Price</span>
+  </div>
+
+  {items.map((item, i) => (
+    <div class="ranking-row" role="row">
+      <span class="row-rank">{i + 1}</span>
+      <div class="row-main">
+        <span class="row-name">{item.name}</span>
+        {item.highlight && <span class="row-highlight">{item.highlight}</span>}
+      </div>
+      <div class="row-specs">
+        {item.specs.map((spec) => <span class="row-spec">{spec}</span>)}
+      </div>
+      <span class="row-price">{item.price}</span>
+    </div>
+  ))}
+
+  {tip && (
+    <div class="ranking-tip">
+      <span class="tip-label">Tip:</span> {tip}
+    </div>
+  )}
+
+  <div class="ig-footer">jayarr.coffee</div>
+</aside>
+
+<style>
+  .infographic-ranking {
+    max-width: 720px;
+    margin: 2.5rem auto;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--color-charcoal, #1A1A1A);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .ig-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .ig-brand {
+    display: block;
+    font-weight: 600;
+    font-size: 0.8125rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--color-copper, #C17A3A);
+    margin-bottom: 0.75rem;
+  }
+
+  .ig-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 900;
+    font-size: 2.25rem;
+    color: var(--color-charcoal, #1A1A1A);
+    line-height: 1.15;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .ig-subtitle {
+    font-size: 1rem;
+    color: var(--color-warm-gray, #6B6560);
+    margin: 0;
+  }
+
+  .ig-divider {
+    height: 1px;
+    background: var(--color-warm-gray-light, #9B9590);
+    opacity: 0.4;
+    margin-bottom: 0;
+  }
+
+  .ranking-header {
+    display: none;
+  }
+
+  .ranking-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid rgba(155, 149, 144, 0.2);
+  }
+
+  .ranking-row:last-of-type {
+    border-bottom: none;
+  }
+
+  .row-rank {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.75rem;
+    color: var(--color-copper, #C17A3A);
+    line-height: 1;
+    min-width: 2.5rem;
+    text-align: right;
+    padding-top: 2px;
+  }
+
+  .row-main {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .row-name {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: var(--color-charcoal, #1A1A1A);
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .row-highlight {
+    font-size: 0.75rem;
+    font-style: italic;
+    color: var(--color-warm-gray-light, #9B9590);
+  }
+
+  .row-specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+    flex: 2;
+    padding-top: 4px;
+  }
+
+  .row-spec {
+    font-size: 0.8125rem;
+    color: var(--color-warm-gray, #6B6560);
+    white-space: nowrap;
+  }
+
+  .row-price {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--color-copper, #C17A3A);
+    white-space: nowrap;
+    min-width: 4rem;
+    text-align: right;
+    padding-top: 4px;
+  }
+
+  .ranking-tip {
+    background: var(--color-cream-dark, #EBE4D8);
+    border-radius: 4px;
+    padding: 0.75rem 1.25rem;
+    margin-top: 1.5rem;
+    font-size: 0.8125rem;
+    color: var(--color-warm-gray, #6B6560);
+    text-align: center;
+  }
+
+  .tip-label {
+    font-weight: 600;
+    color: var(--color-copper, #C17A3A);
+  }
+
+  .ig-footer {
+    text-align: center;
+    padding: 1.25rem 0 0;
+    font-size: 0.75rem;
+    color: var(--color-warm-gray-light, #9B9590);
+  }
+
+  @media (max-width: 480px) {
+    .ig-title {
+      font-size: 1.625rem;
+    }
+    .ranking-row {
+      flex-wrap: wrap;
+    }
+    .row-specs {
+      flex-basis: 100%;
+      padding-left: 3.75rem;
+    }
+    .row-price {
+      position: absolute;
+      right: 0;
+    }
+    .ranking-row {
+      position: relative;
+    }
+  }
+</style>

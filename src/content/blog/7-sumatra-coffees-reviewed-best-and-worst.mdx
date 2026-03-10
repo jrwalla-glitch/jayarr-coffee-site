@@ -4,10 +4,80 @@ description: "We tasted seven different Sumatran coffees and ranked them from be
 pubDate: "Sep 15 2020"
 heroImage: "../../assets/blog/eEeJAt4FK14.jpg"
 ---
+import RegionCards from '../../components/infographics/RegionCards.astro';
 
 The islands of Indonesia may not be commonly recognized as a coffee powerhouse, but the Sunda Islands produce an interesting and varied cup. Sumatran coffee can generally be thought of as having a **low-tone richness** with differing flavor notes depending on area and processing methods. We tasted seven different Sumatran coffees and ranked them so you don't have to guess.
 
 <iframe width="100%" style="aspect-ratio:16/9" src="https://www.youtube.com/embed/eEeJAt4FK14" title="7 Sumatra Coffees Reviewed (Best and Worst!)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<RegionCards
+  title="Sumatran Coffee Rankings"
+  subtitle="7 coffees reviewed — best to worst"
+  regions={[
+    {
+      name: "Peach Coffee Roasters Lintong",
+      altitude: "Best Overall",
+      location: "West Sumatra · Lintong Region",
+      flavors: ["Cedar", "Sage", "Spicy", "Earthy"],
+      bestFor: "AeroPress · All brew methods",
+      note: "The best representation of Sumatra we tried — cedar and sage in perfect balance."
+    },
+    {
+      name: "Volcanica Sumatra Mandheling",
+      altitude: "4.6 / 5",
+      location: "Mandheling Region",
+      flavors: ["Spice", "Brown Sugar", "Chocolate"],
+      bestFor: "French press · Drip",
+      note: "Earthy and distinctive with low acidity and full body — the best Mandheling we sampled."
+    },
+    {
+      name: "Peet's Sumatra",
+      altitude: "Strong Value",
+      location: "Dark Roast",
+      flavors: ["Earthy", "Sweet", "Balanced"],
+      bestFor: "Everyday drinking · Great value",
+      note: "Pleasing and balanced — a crowd-pleaser that could easily be an everyday cup."
+    },
+    {
+      name: "Starbucks Sumatra Whole Bean",
+      altitude: "Solid Pick",
+      location: "Dark Roast · Widely Available",
+      flavors: ["Spicy", "Earthy", "Herbs"],
+      bestFor: "Dark roast fans · Watch extraction time",
+      note: "Pretty good with spicy and earthy notes — quite dark and oily, so watch your ratio."
+    },
+    {
+      name: "Coffee Bean Direct Mandheling",
+      altitude: "Average",
+      location: "Mandheling Region",
+      flavors: ["Aromatic", "Smooth", "Classic"],
+      bestFor: "Budget Sumatran option",
+      note: "Not complex or bold, but a classic Sumatra at a reasonable price."
+    },
+    {
+      name: "Camano Island Coffee",
+      altitude: "Budget",
+      location: "West Sumatra",
+      flavors: ["Deep", "Syrupy", "Rich"],
+      bestFor: "Bargain hunters only",
+      note: "Deep and syrupy but the batch was stale with no roast date — freshness is a concern."
+    },
+    {
+      name: "Fresh Roasted Coffee LLC",
+      altitude: "Least Favorite",
+      location: "Mandheling · Medium Roast",
+      flavors: ["Cardboard", "Paper", "Minimal"],
+      bestFor: "Skip this one",
+      note: "Lacked distinctive taste with distracting notes of cardboard and paper."
+    }
+  ]}
+  stats={[
+    { value: "#4", label: "World Producer" },
+    { value: "Low", label: "Acidity" },
+    { value: "Full", label: "Body" },
+    { value: "Wet-Hulled", label: "Processing" }
+  ]}
+/>
 
 ## Our Winner: Peach Coffee Roasters Sumatra Lintong
 

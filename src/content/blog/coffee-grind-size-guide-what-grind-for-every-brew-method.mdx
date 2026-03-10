@@ -4,6 +4,7 @@ description: "Using the wrong grind size is the most common coffee brewing mista
 pubDate: "Dec 15 2019"
 heroImage: "../../assets/blog/JT01fu8P_LM.jpg"
 ---
+import ReferenceGuide from '../../components/infographics/ReferenceGuide.astro';
 
 A great cup of coffee starts with the right grind. It is the most overlooked variable in brewing, and getting it wrong is the fastest way to ruin otherwise excellent beans. If your coffee tastes off and you cannot figure out why, grind size is the first place to look.
 
@@ -25,13 +26,28 @@ If your coffee tastes off, adjusting your grind size is the most effective way t
 
 Another way to think about extraction problems is the concept of a "hollow" cup — one that is missing the enjoyable flavors it should have, either because those compounds were never extracted from the grounds or because other compounds are masking them.
 
+<ReferenceGuide
+  title="Coffee Grind Size Guide"
+  subtitle="The right grind for every brew method"
+  scaleLabel={{ start: "Coarser", end: "Finer" }}
+  items={[
+    { label: "Extra Coarse", description: "Texture: Peppercorn", value: "Cold Brew", dotScale: 1.0 },
+    { label: "Coarse", description: "Texture: Sea Salt", value: "French Press, Percolator", dotScale: 0.85 },
+    { label: "Medium-Coarse", description: "Texture: Rough Sand", value: "Chemex, Pour Over", dotScale: 0.7 },
+    { label: "Medium", description: "Texture: Regular Sand", value: "Drip (flat-bottom)", dotScale: 0.55 },
+    { label: "Medium-Fine", description: "Texture: Table Salt", value: "Drip (cone-shaped)", dotScale: 0.4 },
+    { label: "Fine", description: "Texture: Fine Table Salt", value: "Espresso, Moka Pot", dotScale: 0.25 },
+    { label: "Extra Fine", description: "Texture: Flour / Powder", value: "Turkish Coffee", dotScale: 0.1 }
+  ]}
+/>
+
 ## The Right Grind for Every Brew Method
 
 **Extra coarse** (ground peppercorn size) — **Cold brew coffee**. Coarser grinds suit longer cold brewing times of 12 hours or more. Shorter cold brew times can work with a slightly finer grind, but coarse to medium is generally recommended.
 
 **Coarse** (sea salt size) — **Percolator and French press**. These immersion and percolation methods need larger particles to avoid over-extraction during their longer brew times.
 
-**Medium-coarse** (rough sand) — **Chemex and similar pour over devices**. This grind sits between the coarse French press grind and standard drip.
+**Medium-coarse** (rough sand) — **[Chemex](https://www.amazon.com/s?k=Chemex+Pour+Over+Coffee+Maker&tag=jayarrcoffee-20) and similar pour over devices**. This grind sits between the coarse French press grind and standard drip.
 
 **Medium** (regular sand) — **Most pour over brewers and flat-bottom drip coffee machines**. With pour over, you may need to experiment with grind size to dial in your brew. Start with what the manufacturer suggests and adjust from there.
 
@@ -54,3 +70,5 @@ A burr grinder crushes beans with uniform rotation and pressure, producing a **c
 One question we get asked frequently: is it okay to grind all your beans at once and store the grounds?
 
 The answer is a firm no. Coffee grounds lose freshness quickly — even within a single day. For optimal flavor, grind your beans **right before brewing**. Grinding releases a burst of aromas that you do not just smell — you taste them too. Pre-grinding sacrifices those aromas before they ever reach your cup.
+
+*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*

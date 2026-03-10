@@ -65,7 +65,7 @@ An inexpensive, solid Arabica coffee with the right balance of smoothness and fl
 
 Super smooth with a higher caffeine level that keeps you alert with a sense of calm. This low-acid coffee emphasizes **flavor without intensity** and works cold, hot, drip, or in a French press.
 
-### Direct City Coffee
+### **[Direct City Coffee](https://www.amazon.com/s?k=Direct+City+Coffee+Organic&tag=jayarrcoffee-20)**
 
 Direct City takes the quantity approach, selling in **5-pound packs**. The coffee arrives fresh, but the challenge is finishing it before it goes stale. Some find it pricey for the quality, but we think it's solid value -- especially if you drink a lot of coffee.
 
