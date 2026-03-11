@@ -618,13 +618,51 @@
   }
 </script>
 
-<div class="bloom-container">
-  <div class="bloom-header">
-    <h1>Discover Your Flavor</h1>
-  </div>
+<div class="bloom-frame">
+  <!-- Botanical corner decorations -->
+  <svg class="botanical-corner botanical-tl" viewBox="0 0 50 50" aria-hidden="true">
+    <path d="M4 46 C12 30 30 12 46 4" stroke="#8B9A80" stroke-width="0.8" fill="none" opacity="0.45"/>
+    <path d="M8 40 Q16 28 24 18 Q18 26 10 34Z" fill="#8B9A80" opacity="0.18"/>
+    <path d="M16 42 Q24 32 32 24 Q26 30 18 38Z" fill="#8B9A80" opacity="0.14"/>
+    <circle cx="46" cy="4" r="1.5" fill="#8B9A80" opacity="0.25"/>
+  </svg>
+  <svg class="botanical-corner botanical-tr" viewBox="0 0 50 50" aria-hidden="true">
+    <path d="M46 46 C38 30 20 12 4 4" stroke="#8B9A80" stroke-width="0.8" fill="none" opacity="0.45"/>
+    <path d="M42 40 Q34 28 26 18 Q32 26 40 34Z" fill="#8B9A80" opacity="0.18"/>
+    <path d="M34 42 Q26 32 18 24 Q24 30 32 38Z" fill="#8B9A80" opacity="0.14"/>
+    <circle cx="4" cy="4" r="1.5" fill="#8B9A80" opacity="0.25"/>
+  </svg>
+  <svg class="botanical-corner botanical-bl" viewBox="0 0 50 50" aria-hidden="true">
+    <path d="M4 4 C12 20 30 38 46 46" stroke="#8B9A80" stroke-width="0.8" fill="none" opacity="0.45"/>
+    <path d="M8 10 Q16 22 24 32 Q18 24 10 16Z" fill="#8B9A80" opacity="0.18"/>
+    <path d="M16 8 Q24 18 32 26 Q26 20 18 12Z" fill="#8B9A80" opacity="0.14"/>
+    <circle cx="46" cy="46" r="1.5" fill="#8B9A80" opacity="0.25"/>
+  </svg>
+  <svg class="botanical-corner botanical-br" viewBox="0 0 50 50" aria-hidden="true">
+    <path d="M46 4 C38 20 20 38 4 46" stroke="#8B9A80" stroke-width="0.8" fill="none" opacity="0.45"/>
+    <path d="M42 10 Q34 22 26 32 Q32 24 40 16Z" fill="#8B9A80" opacity="0.18"/>
+    <path d="M34 8 Q26 18 18 26 Q24 20 32 12Z" fill="#8B9A80" opacity="0.14"/>
+    <circle cx="4" cy="46" r="1.5" fill="#8B9A80" opacity="0.25"/>
+  </svg>
+  <div class="bloom-container">
+    <div class="bloom-header">
+      <span class="explore-overline">EXPLORE</span>
+      <h1>Discover Your Flavor</h1>
+      <p class="bloom-subtitle">A Botanical Guide to Coffee Tasting Notes</p>
+    </div>
 
   <div class="bloom-wrapper">
     <svg viewBox={isMobile ? "130 50 400 380" : "0 30 700 460"} xmlns="http://www.w3.org/2000/svg" class="bloom-svg">
+      <defs>
+        {#each petals as petal}
+          <radialGradient id={`wc-${petal.id}`} cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color={petal.color} stop-opacity="1" />
+            <stop offset="60%" stop-color={petal.color} stop-opacity="0.92" />
+            <stop offset="85%" stop-color={petal.colorLight} stop-opacity="0.65" />
+            <stop offset="100%" stop-color={petal.colorLight} stop-opacity="0.35" />
+          </radialGradient>
+        {/each}
+      </defs>
       {#each renderOrder as i (petals[i].id)}
         {@const petal = petals[i]}
         {@const pc = petalCenter(petal.angle)}
@@ -647,7 +685,7 @@
             cy={pc.y}
             rx={petalRx}
             ry={petalRy}
-            fill={isActive ? petal.colorLight : petal.color}
+            fill={isActive ? petal.colorLight : `url(#wc-${petal.id})`}
             stroke={isActive ? '#C17A3A' : 'none'}
             stroke-width={isActive ? 2.5 : 0}
             class="petal-shape"
@@ -665,10 +703,20 @@
         </g>
       {/each}
 
-      <!-- Center circle with coffee bean -->
-      <circle cx={cx} cy={cy} r="24" fill="#F5F0E8" stroke="#C17A3A" stroke-width="1.5" />
-      <g transform={`translate(${cx - 8}, ${cy - 10}) scale(0.65)`}>
-        <path d="M12.5 2C9.5 2 6 5 6 10c0 5.5 3.5 9 6.5 9s6.5-3.5 6.5-9c0-5-3.5-8-6.5-8zm0 1.5c0 3.5-1.5 6-1.5 7.5s1.5 4 1.5 7" stroke="#C17A3A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <!-- Center circle with coffee bean (reset button) -->
+      <g
+        class="center-bean"
+        class:clickable={activePetal !== null}
+        onclick={() => { activePetal = null; activeSub = null; activeCoffee = null; }}
+        role="button"
+        tabindex="0"
+        onkeydown={(e) => { if (e.key === 'Enter') { activePetal = null; activeSub = null; activeCoffee = null; } }}
+        aria-label="Reset to full bloom view"
+      >
+        <circle cx={cx} cy={cy} r="24" fill="#F5F0E8" stroke="#C17A3A" stroke-width="1.5" class="center-circle" />
+        <g transform={`translate(${cx - 8}, ${cy - 10}) scale(0.65)`}>
+          <path d="M12.5 2C9.5 2 6 5 6 10c0 5.5 3.5 9 6.5 9s6.5-3.5 6.5-9c0-5-3.5-8-6.5-8zm0 1.5c0 3.5-1.5 6-1.5 7.5s1.5 4 1.5 7" stroke="#C17A3A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        </g>
       </g>
 
       <!-- Layer 2: Sub-categories (SVG — desktop only) -->
@@ -804,14 +852,73 @@
       Select a flavor family to begin your journey
     {/if}
   </p>
+  </div>
 </div>
 
 <style>
-  .bloom-container {
-    max-width: 780px;
+  .bloom-frame {
+    max-width: 860px;
     margin: 0 auto;
-    padding: 1rem 1rem;
+    background: #DDE4D6;
+    border: 2.5px solid #2A2520;
+    border-radius: 2px;
+    padding: 20px 22px 28px;
+    position: relative;
+    box-shadow:
+      inset 0 4px 10px rgba(0, 0, 0, 0.1),
+      inset 0 -3px 8px rgba(0, 0, 0, 0.06),
+      inset 4px 0 10px rgba(0, 0, 0, 0.07),
+      inset -4px 0 10px rgba(0, 0, 0, 0.07),
+      0 2px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .botanical-corner {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .botanical-tl { top: 8px; left: 8px; }
+  .botanical-tr { top: 8px; right: 8px; }
+  .botanical-bl { bottom: 8px; left: 8px; }
+  .botanical-br { bottom: 8px; right: 8px; }
+
+  .bloom-frame::before {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border: 0.6px solid #6B5D4E;
+    border-radius: 1px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .bloom-frame::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border: 0.5px solid rgba(193, 122, 58, 0.65);
+    border-radius: 1px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .bloom-container {
     text-align: center;
+    padding: 0.5rem 0;
+  }
+
+  .explore-overline {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: #C17A3A;
+    display: block;
+    margin-bottom: 0.25rem;
   }
 
   .bloom-header h1 {
@@ -820,7 +927,16 @@
     font-size: 2.75rem;
     color: #1A1A1A;
     letter-spacing: -0.02em;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0;
+  }
+
+  .bloom-subtitle {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.95rem;
+    color: #6B6B5E;
+    font-style: italic;
+    margin-top: 0.35rem;
+    margin-bottom: 0.5rem;
   }
 
   .bloom-wrapper {
@@ -870,6 +986,19 @@
     font-weight: 700;
     fill: #F5F0E8;
     pointer-events: none;
+  }
+
+  .center-bean {
+    outline: none;
+  }
+
+  .center-bean.clickable {
+    cursor: pointer;
+  }
+
+  .center-bean.clickable:hover .center-circle {
+    stroke-width: 2.5;
+    filter: drop-shadow(0 0 4px rgba(193, 122, 58, 0.3));
   }
 
   .sub-group {
@@ -1112,8 +1241,10 @@
   }
 
   @media (max-width: 640px) {
+    .bloom-frame { padding: 12px 14px 18px; }
     .bloom-header h1 { font-size: 1.75rem; }
-    .bloom-container { padding: 0.5rem 0.75rem; }
+    .bloom-container { padding: 0.25rem 0; }
+    .bloom-subtitle { font-size: 0.85rem; }
     .bloom-wrapper { max-width: 340px; }
     .recs-grid { grid-template-columns: 1fr; }
     .rec-detail-inner { flex-direction: column; gap: 1rem; }

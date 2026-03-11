@@ -1,0 +1,58 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Toolbox from '../../components/Toolbox.svelte';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title="Coffee Toolkit — JayArr Coffee"
+			description="Practical coffee tools: brew ratio calculator, coffee diagnostic, caffeine tracker, freshness guide, drink builder, and grind size reference."
+		/>
+	</head>
+	<body class="bg-cream">
+		<Header />
+
+		<!-- Hero -->
+		<section class="bg-charcoal pt-32 pb-16 md:pb-20">
+			<div class="max-w-3xl mx-auto px-6 text-center">
+				<span class="text-xs uppercase tracking-widest text-copper font-medium">Practical Tools</span>
+				<h1 class="font-serif text-4xl md:text-6xl font-bold text-cream mt-2 mb-4">Your Coffee Toolkit</h1>
+				<p class="text-cream/60 max-w-xl mx-auto leading-relaxed">
+					Everything you need to brew better coffee — from dialing in ratios to diagnosing what went wrong.
+				</p>
+			</div>
+		</section>
+
+		<!-- Toolbox -->
+		<section class="py-12 md:py-16 overflow-visible">
+			<div class="max-w-4xl mx-auto px-6 overflow-visible">
+				<Toolbox client:load />
+			</div>
+		</section>
+
+		<!-- Bridge to Discovery Tools -->
+		<section class="bg-charcoal py-16">
+			<div class="max-w-3xl mx-auto px-6 text-center">
+				<span class="text-xs uppercase tracking-widest text-copper font-medium">Explore</span>
+				<h2 class="font-serif text-2xl md:text-3xl font-bold text-cream mt-2 mb-3">Looking for something different?</h2>
+				<p class="text-cream/50 text-sm mb-8 max-w-lg mx-auto">
+					Our discovery tools help you explore coffee origins, flavors, and brewing methods.
+				</p>
+				<div class="flex flex-wrap justify-center gap-4">
+					<a href="/explore/origins/" class="border border-cream/20 text-cream/70 px-6 py-2.5 text-sm uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
+						Origin Map
+					</a>
+					<a href="/explore/" class="border border-cream/20 text-cream/70 px-6 py-2.5 text-sm uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
+						Flavor Bloom
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<Footer />
+	</body>
+</html>

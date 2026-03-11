@@ -2,21 +2,21 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import FlavorBloom from '../components/FlavorBloom.svelte';
+import ExploreGallery from '../components/ExploreGallery.svelte';
 ---
 
 <html lang="en">
   <head>
     <BaseHead
-      title="Discover Your Coffee Flavor | JayArr Coffee"
-      description="Explore coffee flavors with our interactive Flavor Bloom. Find your perfect coffee by flavor profile — fruity, floral, sweet, nutty, spiced, or earthy."
+      title="Explore — The Coffee Collection | JayArr Coffee"
+      description="Three interactive studies in coffee science. Explore origins on our world map, discover brewing methods through star constellations, and find your perfect flavor with our botanical tasting guide."
     />
   </head>
   <body class="bg-cream">
     <Header />
 
     <main class="pt-20 pb-20">
-      <FlavorBloom client:load />
+      <ExploreGallery client:load />
     </main>
 
     <Footer />
