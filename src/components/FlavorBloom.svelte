@@ -31,274 +31,535 @@
       subs: ['Woody', 'Tobacco & Leather', 'Herbal', 'Savory'] },
   ];
 
-  // Coffee data with detail fields — will be replaced with real scraped data + affiliate links
+  // Research-backed coffee picks — 78 coffees across 26 sub-categories, verified against roaster descriptions, Coffee Review scores, and independent reviewer confirmations
   const coffeeData = {
     'Berry': [
-      { name: 'Ethiopia Yirgacheffe', origin: 'Ethiopia', roast: 'Light', notes: 'Blueberry, strawberry, wine-like acidity with a silky body.',
-        description: 'The crown jewel of Ethiopian coffees. Yirgacheffe beans are grown at 1,700–2,200m altitude in the birthplace of coffee itself. Wet-processed to preserve the explosive berry character, this coffee delivers waves of blueberry and strawberry jam layered over a wine-like acidity and silky, medium body. Best brewed as a pour-over to let the fruit complexity shine.',
-        blogSlug: 'ethiopian-coffee-guide', buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=ethiopia+yirgacheffe+coffee&tag=jayarrcoffee-20' },
-          { retailer: 'Trade Coffee', url: 'https://www.drinktrade.com/search?q=yirgacheffe' },
+      { name: 'Counter Culture Idido', origin: 'Ethiopia', roast: 'Medium', notes: 'Blueberry, strawberry, tart cherry with chocolate sweetness.',
+        description: 'Counter Culture has sourced Idido for years, making it one of the most reliably returning berry-forward Ethiopians on the market. The natural sundried lot delivers textbook blueberry intensity -- waves of strawberry and blueberry jam over tart cherry brightness and chocolate sweetness. Multiple independent reviewers confirm the berry character across seasons.',
+        blogSlug: 'ethiopian-coffee-flavors-and-varieties', buyLinks: [
+          { retailer: 'Counter Culture', url: 'https://counterculturecoffee.com/products/idido' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/Counter-Culture-Coffee-Idido-Roast/dp/B0797HWSN5?tag=jayarrcoffee-20' },
+          { retailer: 'Trade Coffee', url: 'https://www.drinktrade.com/search?q=counter+culture+idido' },
         ]},
-      { name: 'Kenya AA Nyeri', origin: 'Kenya', roast: 'Light-Medium', notes: 'Blackcurrant, raspberry, bright and juicy with a crisp finish.',
-        description: 'Kenya AA refers to the largest bean screen size — and in Kenyan coffee, bigger often means bolder flavor. Nyeri county produces some of the most electrifying cups on earth: blackcurrant and raspberry at the front, followed by a tomato-like acidity that is unmistakably Kenyan. The crisp, clean finish makes this a coffee you keep reaching for.',
-        blogSlug: 'kenyan-coffee-guide', buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=kenya+aa+nyeri+coffee&tag=jayarrcoffee-20' },
+      { name: 'Black & White The Natural', origin: 'Ethiopia', roast: 'Medium', notes: 'Mixed berries, sangria, candied orange, peach rings.',
+        description: 'Founded by the 2016 and 2017 US Barista Champions, Black & White designed The Natural as their year-round Ethiopian natural showcase -- built specifically to highlight berry and red fruit. The wide retail distribution (Williams-Sonoma, Crate & Barrel, Fellow, Sur La Table) makes it one of the most genuinely accessible specialty berry coffees in the country.',
+        blogSlug: 'ethiopian-coffee-flavors-and-varieties', buyLinks: [
+          { retailer: 'Black & White', url: 'https://www.blackwhiteroasters.com/products/the-natural' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=black+white+roasters+the+natural+coffee&tag=jayarrcoffee-20' },
+          { retailer: 'Fellow', url: 'https://fellowproducts.com/products/black-and-white-the-natural' },
         ]},
-      { name: 'Rwanda Huye Mountain', origin: 'Rwanda', roast: 'Light', notes: 'Mixed berry compote, plum, delicate florals.',
-        description: 'Rwanda has quietly become one of specialty coffee\'s most exciting origins. Huye Mountain\'s high-altitude farms produce beans with a delicate berry compote sweetness — think plum and mixed berries folded into a light floral base. The body is clean and tea-like, making it an elegant, easy-drinking cup that punches well above its price point.',
-        buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=rwanda+huye+mountain+coffee&tag=jayarrcoffee-20' },
+      { name: 'Onyx Ethiopia Gedeb Banko Gotiti', origin: 'Ethiopia', roast: 'Light', notes: 'Strawberry, blueberry, dried plum, lychee berry with jasmine.',
+        description: 'Onyx is one of the most awarded specialty roasters in the US, and they return to Banko Gotiti regularly. The natural-process lot consistently delivers dense berry sweetness -- strawberry and blueberry at the forefront with floral jasmine complexity underneath. The kind of coffee that makes you stop and pay attention.',
+        blogSlug: 'ethiopian-coffee-flavors-and-varieties', buyLinks: [
+          { retailer: 'Onyx Coffee Lab', url: 'https://onyxcoffeelab.com/products/ethiopia-gedeb-banko-gotiti' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=onyx+coffee+lab&tag=jayarrcoffee-20' },
         ]},
     ],
     'Citrus': [
-      { name: 'Colombia Huila', origin: 'Colombia', roast: 'Medium', notes: 'Orange zest, lemon, balanced sweetness and bright acidity.',
-        description: 'Huila is Colombia\'s most awarded coffee region, and for good reason. Grown at 1,500–2,000m in volcanic soil, these beans develop a bright citrus profile — orange zest and lemon — balanced by brown sugar sweetness and a clean, round body. A versatile coffee that works beautifully as pour-over, drip, or even espresso.',
-        blogSlug: 'colombian-coffee-guide', buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=colombia+huila+coffee&tag=jayarrcoffee-20' },
-          { retailer: 'Trade Coffee', url: 'https://www.drinktrade.com/search?q=colombia+huila' },
+      { name: 'George Howell Mamuto AA', origin: 'Kenya', roast: 'Light', notes: 'Grapefruit-citrus brightness, blackberry, plum with deep sweetness.',
+        description: 'George Howell has sourced Mamuto since 2006 -- "it has never faltered." The SL28 varietal is genetically predisposed to high citric acidity, and it shows: this is a Grand Cru Kenyan with the grapefruit-citrus brightness that defines the best Kenya coffees. Deep sweetness keeps the acidity from being aggressive.',
+        blogSlug: 'kenyan-coffee-flavor-notes-and-best-coffees', buyLinks: [
+          { retailer: 'George Howell', url: 'https://georgehowellcoffee.com/products/mamuto-aa-ken-001' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=george+howell+mamuto+kenya&tag=jayarrcoffee-20' },
         ]},
-      { name: 'Costa Rica Tarrazú', origin: 'Costa Rica', roast: 'Medium', notes: 'Grapefruit, tangerine, honey sweetness, clean finish.',
-        description: 'Tarrazú is Costa Rica\'s most prestigious growing region, producing beans with electric citrus acidity — grapefruit and tangerine — underpinned by honey sweetness. The exceptionally clean finish is a hallmark of Costa Rican washed processing. A bright, uplifting cup that defines what Central American coffee can be.',
-        buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=costa+rica+tarrazu+coffee&tag=jayarrcoffee-20' },
+      { name: 'Heart Coffee Kenya', origin: 'Kenya', roast: 'Light', notes: 'Rich grapefruit acidity with a sweet, lingering finish.',
+        description: 'Heart is a Portland micro-roasting company known for precision light roasting that maximizes origin character. Their Kenya lots consistently showcase the grapefruit-forward acidity Kenya is famous for. The specific lot name rotates seasonally, but whatever Kenya they carry will deliver that electric citrus.',
+        blogSlug: 'kenyan-coffee-flavor-notes-and-best-coffees', buyLinks: [
+          { retailer: 'Heart Coffee', url: 'https://www.heartroasters.com/collections/all' },
+        ]},
+      { name: 'Intelligentsia Kenya', origin: 'Kenya', roast: 'Light', notes: 'Meyer lemon, grapefruit, tart berry with dense jammy character.',
+        description: 'Intelligentsia has deep direct-trade relationships in Kenya and consistently sources lots with that signature bright, citric Kenyan character. Their national availability -- grocery stores, cafes, Amazon -- makes them one of the most accessible ways to try world-class Kenya citrus coffee without hunting down a micro-roaster.',
+        blogSlug: 'kenyan-coffee-flavor-notes-and-best-coffees', buyLinks: [
+          { retailer: 'Intelligentsia', url: 'https://www.intelligentsia.com/' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=intelligentsia+kenya+coffee&tag=jayarrcoffee-20' },
         ]},
     ],
     'Stone Fruit': [
-      { name: 'Ethiopia Guji Natural', origin: 'Ethiopia', roast: 'Light', notes: 'Peach, apricot, nectarine with a creamy mouthfeel.',
-        description: 'Natural-processed Guji coffees are sun-dried inside the cherry, allowing the fruit sugars to ferment into the bean. The result is an intensely fruity cup brimming with peach, apricot, and ripe nectarine. The body is surprisingly creamy for a light roast, with a finish that lingers like stone fruit preserves.',
-        blogSlug: 'ethiopian-coffee-guide', buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=ethiopia+guji+natural+coffee&tag=jayarrcoffee-20' },
+      { name: 'Verve Kayon Mountain', origin: 'Ethiopia', roast: 'Light', notes: 'Ripe apricot, white peach, sweet cream with juicy-bright acidity.',
+        description: 'Verve has a long relationship with the Kayon Mountain farm, and this washed heirloom lot delivers textbook stone fruit. Apricot and white peach are not supporting notes but the headline flavor -- front and center from first sip through a lingering, juicy finish. Multiple Coffee Review ratings from various roasters confirm the apricot-forward profile.',
+        blogSlug: 'ethiopian-coffee-flavors-and-varieties', buyLinks: [
+          { retailer: 'Verve Coffee', url: 'https://www.vervecoffee.com/products/kayon-mountain' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=verve+coffee+kayon+mountain&tag=jayarrcoffee-20' },
         ]},
-      { name: 'Panama Boquete', origin: 'Panama', roast: 'Light-Medium', notes: 'Plum, cherry, refined acidity with floral undertones.',
-        description: 'Panama\'s Boquete highlands produce some of the world\'s most refined coffees. Expect stone fruit — plum and cherry — with a polished acidity and subtle floral undertones. The terroir at 1,600m+ gives these beans an elegance that few origins can match. Worth seeking out for a special brew.',
-        buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=panama+boquete+coffee&tag=jayarrcoffee-20' },
+      { name: 'George Howell Worka Chelbessa', origin: 'Ethiopia', roast: 'Light', notes: 'Peach, cherry, honeyed-jasmine finish.',
+        description: 'George Howell\'s Worka Chelbessa is a returning origin with peach and cherry as dominant notes confirmed across both roast levels. The medium roast specifically emphasizes "stewed peach" for maximum stone fruit saturation. The light roast adds floral brightness that lifts the fruit. Either way, it delivers.',
+        blogSlug: 'ethiopian-coffee-flavors-and-varieties', buyLinks: [
+          { retailer: 'George Howell', url: 'https://georgehowellcoffee.com/products/worka-chelbessa-ethiopia' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=george+howell+worka+chelbessa&tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Bean & Bean Las Lajas Red Honey', origin: 'Costa Rica', roast: 'Medium-Light', notes: 'Strawberry, orange, peach, green apple with honey sweetness.',
+        description: 'Las Lajas is one of the most famous honey-processing farms in the world. The red honey process -- where more mucilage is left on the bean during drying -- specifically amplifies peach and stone fruit notes. This is not a one-off micro-lot: Las Lajas is a well-established farm that ships regularly, and the peach character is baked into the process.',
+        blogSlug: 'what-does-costa-rican-coffee-taste-like', buyLinks: [
+          { retailer: 'Bean & Bean', url: 'https://beannbeancoffee.com/products/red-honey-las-lajas-costa-rican' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=bean+bean+las+lajas+red+honey&tag=jayarrcoffee-20' },
         ]},
     ],
     'Tropical': [
-      { name: 'Honduras Marcala', origin: 'Honduras', roast: 'Medium', notes: 'Mango, pineapple, papaya with brown sugar sweetness.',
-        description: 'Marcala was Honduras\'s first designated origin — and it earns the distinction. These beans deliver a tropical fruit salad of mango, pineapple, and papaya, grounded by brown sugar sweetness. A medium body and gentle acidity make this an incredibly approachable cup that surprises with its complexity.',
-        buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=honduras+marcala+coffee&tag=jayarrcoffee-20' },
+      { name: 'Black & White Rodrigo Sanchez Mango', origin: 'Colombia', roast: 'Light', notes: 'Mango, passion fruit, pina colada from mango co-fermentation.',
+        description: 'The gold standard for tropical-tasting coffee. The mango co-fermentation is not a gimmick -- it produces genuine, unmistakable mango and tropical flavors confirmed by multiple reviewers. Black & White describes it as "the most balanced of all co-ferment endeavors we\'ve ever tasted." They return to Rodrigo Sanchez regularly; this is their signature experimental line.',
+        blogSlug: 'single-origin-colombian-coffee-what-flavor-notes-to-expect', buyLinks: [
+          { retailer: 'Black & White', url: 'https://www.blackwhiteroasters.com/products/r-rodrigo-sanchez-mango' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=black+white+rodrigo+sanchez+mango+coffee&tag=jayarrcoffee-20' },
         ]},
-      { name: 'Colombia Nariño', origin: 'Colombia', roast: 'Light-Medium', notes: 'Passion fruit, coconut, lively and exotic.',
-        description: 'Nariño sits at the southern tip of Colombia, near the Ecuadorian border, where extreme altitude and equatorial sun create uniquely complex beans. The cup is lively and exotic — passion fruit and coconut lead, with a vibrant acidity that keeps things energetic. One of Colombia\'s most underrated regions.',
-        blogSlug: 'colombian-coffee-guide', buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=colombia+narino+coffee&tag=jayarrcoffee-20' },
+      { name: 'Onyx Tropical Weather', origin: 'Ethiopia', roast: 'Light-Medium', notes: 'Mango nectar, pineapple, peach sweet tea, floral honey.',
+        description: 'A year-round blend specifically designed to taste tropical -- the name tells you exactly what to expect. The blend format means Onyx can maintain the tropical profile by swapping components seasonally, and wide availability on Amazon and subscription services means you can actually get it. The most accessible entry point into genuinely tropical coffee.',
+        blogSlug: 'ethiopian-coffee-flavors-and-varieties', buyLinks: [
+          { retailer: 'Onyx Coffee Lab', url: 'https://onyxcoffeelab.com/products/tropical-weather' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/Onyx-Coffee-Lab-Tropical-Espresso/dp/B0BHZYBCCQ?tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Happy Mug Passion Fruit Co-Ferment', origin: 'Colombia', roast: 'Light', notes: 'Passion fruit, apple, cinnamon, chocolate, tropical fruit.',
+        description: 'Happy Mug is known for offering specialty-grade coffee at much lower prices than competitors, and their honest descriptions confirm this delivers: "the passion fruit flavor is all over it." Budget-friendly entry point for co-fermented tropical coffee without sacrificing authenticity. The passion fruit co-fermentation produces unmistakable tropical fruit character.',
+        blogSlug: 'single-origin-colombian-coffee-what-flavor-notes-to-expect', buyLinks: [
+          { retailer: 'Happy Mug', url: 'https://happymugcoffee.com/products/colombia-passion-fruit-co-ferment' },
         ]},
     ],
     'Dried Fruit': [
-      { name: 'Yemen Mocha Mattari', origin: 'Yemen', roast: 'Medium', notes: 'Raisin, fig, dates with deep wine-like complexity.',
-        description: 'Yemeni coffee is where it all began — and Mocha Mattari is the archetype. Ancient heirloom varieties grown on terraced hillsides produce a cup unlike anything else: raisin, fig, and dates with a deep wine-like complexity. The processing is traditional sun-drying, giving the beans a wild, untamed character. Rare and extraordinary.',
-        buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=yemen+mocha+mattari+coffee&tag=jayarrcoffee-20' },
+      { name: 'Port of Mokha Yemen Al Wadi', origin: 'Yemen', roast: 'Medium', notes: 'Dried fig, raisin, date, orange blossom with dark chocolate.',
+        description: 'Port of Mokha is the premier source for Yemen specialty coffee in the US. Yemen is THE origin for dried fruit notes -- date, fig, and raisin are baked into the terroir and traditional natural processing. Mokhtar Alkhanshali\'s sourcing is world-class. Yes, it\'s expensive ($40-60/bag), but Yemen coffee is inherently scarce, and Port of Mokha makes it as accessible as this origin gets.',
+        blogSlug: 'yemen-coffee-guide-mocha-origin', buyLinks: [
+          { retailer: 'Port of Mokha', url: 'https://portofmokha.com/pages/shop' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=port+of+mokha+yemen+coffee&tag=jayarrcoffee-20' },
         ]},
-      { name: 'Ethiopia Harrar Natural', origin: 'Ethiopia', roast: 'Medium', notes: 'Dried blueberry, prune, wild and winey.',
-        description: 'Harrar naturals are the wild child of Ethiopian coffee. Sun-dried on raised beds, these beans develop intense dried blueberry and prune flavors with a winey, almost fermented edge. Not for the faint of heart — this is coffee with personality, best enjoyed by those who appreciate bold, distinctive cups.',
-        blogSlug: 'ethiopian-coffee-guide', buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=ethiopia+harrar+natural+coffee&tag=jayarrcoffee-20' },
+      { name: 'Al Mokha Yemen Medium Roast', origin: 'Yemen', roast: 'Medium', notes: 'Dried figs, date syrup, muscat grape, honey, cinnamon.',
+        description: 'Al Mokha is the top online seller of 100% authentic Yemeni coffee -- more affordable and more consistently available than Port of Mokha\'s micro-lots. The dried fruit character (date, fig, raisin) is inherent to Yemen\'s terroir and processing tradition. Amazon availability makes this the most accessible way to try genuine Yemen coffee with real dried fruit notes.',
+        blogSlug: 'yemen-coffee-guide-mocha-origin', buyLinks: [
+          { retailer: 'Al Mokha', url: 'https://www.almokha.com/products/yemeni-medium' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/Al-Mokha-Worlds-Coffee-Medium/dp/B00QRB6MUS?tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Dancing Goats Sumatra Mutu Batak', origin: 'Indonesia', roast: 'Medium', notes: 'Fig bar, cacao nib, clove, dried mango with earthy depth.',
+        description: 'The wet-hulled Sumatran process creates the earthy, fig-forward, dried-fruit character that defines this category. Mutu Batak is a consistent, reliable offering -- not a one-off lot. The fig bar note is prominent and genuine, and at roughly $20/bag it is much more affordable than Yemen. A practical everyday alternative for dried fruit lovers.',
+        blogSlug: 'what-does-indonesian-coffee-taste-like', buyLinks: [
+          { retailer: 'Dancing Goats', url: 'https://www.dancinggoats.com/products/sumatra-mandheling' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=batdorf+bronson+sumatra&tag=jayarrcoffee-20' },
         ]},
     ],
     'Jasmine': [
-      { name: 'Panama Geisha', origin: 'Panama', roast: 'Light', notes: 'Jasmine, bergamot, honeysuckle — ethereal and complex.',
-        description: 'The Geisha variety is coffee royalty — originally from Ethiopia but made famous by Panama\'s Hacienda La Esmeralda. The cup is ethereal: jasmine, bergamot, and honeysuckle float above a tea-like body. It regularly commands the highest prices at auction. If you try one exceptional coffee in your life, make it a Geisha.',
-        buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=panama+geisha+coffee&tag=jayarrcoffee-20' },
+      { name: 'Red Rooster Ethiopia Mehbuba Guji', origin: 'Ethiopia', roast: 'Light', notes: 'Star jasmine, bergamot, wild honey, ripe apricot, lemon verbena.',
+        description: 'A 97-point coffee with star jasmine and bergamot as primary descriptors -- not an afterthought, but the headline. Red Rooster is a small Floyd, Virginia organic micro-roaster that regularly carries Ethiopian lots from this region. The jasmine here is not subtle; it perfumes the room as you brew.',
+        blogSlug: 'ethiopian-coffee-flavors-and-varieties', buyLinks: [
+          { retailer: 'Red Rooster', url: 'https://www.redroostercoffee.com/collections/coffee' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=red+rooster+coffee+ethiopia&tag=jayarrcoffee-20' },
+          { retailer: 'Trade Coffee', url: 'https://www.drinktrade.com/collections/red-rooster' },
         ]},
-      { name: 'Ethiopia Washed Sidamo', origin: 'Ethiopia', roast: 'Light', notes: 'Jasmine tea, lemon, delicate and aromatic.',
-        description: 'Washed Sidamo is elegance in a cup. The wet processing strips away fruit to reveal the bean\'s true terroir — jasmine tea, lemon, and a delicate aromatic quality that perfumes the room as you brew. Light-bodied and refined, this is a meditative coffee best savored slowly.',
-        buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=ethiopia+sidamo+washed+coffee&tag=jayarrcoffee-20' },
+      { name: 'JBC Ethiopia Chelbessa', origin: 'Ethiopia', roast: 'Light', notes: 'Sweet citrus, apricot, jasmine with meyer lemon undertones.',
+        description: 'JBC has a long track record with the Chelbessa washing station and consistently delivers jasmine-forward washed Ethiopians. Based in Madison, WI, JBC holds one of the highest average Coffee Review scores of any US roaster. Free shipping on 3+ bags makes repeat ordering painless.',
+        blogSlug: 'ethiopian-coffee-flavors-and-varieties', buyLinks: [
+          { retailer: 'JBC Coffee', url: 'https://jbccoffeeroasters.com/shop/' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=jbc+coffee+roasters&tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Stumptown Ethiopia Suke Quto', origin: 'Ethiopia', roast: 'Light', notes: 'Sweet peach, jasmine, honey, lemon zest.',
+        description: 'Stumptown has been purchasing from Suke Quto since 2010, making this one of the most reliably available jasmine-noted coffees in the US market. The jasmine note is a primary descriptor, not an afterthought. More accessible than micro-lot roasters -- available at grocery stores and through subscription services.',
+        blogSlug: 'ethiopian-coffee-flavors-and-varieties', buyLinks: [
+          { retailer: 'Stumptown', url: 'https://www.stumptowncoffee.com/products/ethiopia-suke-quto' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=stumptown+ethiopia+suke+quto&tag=jayarrcoffee-20' },
         ]},
     ],
     'Rose': [
-      { name: 'Ethiopia Yirgacheffe Washed', origin: 'Ethiopia', roast: 'Light', notes: 'Rose water, peach, Earl Grey tea complexity.',
-        description: 'The washed version of Yirgacheffe trades the berry bomb for floral finesse. Rose water and peach dominate, with an Earl Grey tea complexity that reveals itself as the cup cools. The body is silky and the finish is long and perfumed. A stunning coffee for those who love delicacy over power.',
-        blogSlug: 'ethiopian-coffee-guide', buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=ethiopia+yirgacheffe+washed+coffee&tag=jayarrcoffee-20' },
+      { name: 'Onyx Ethiopia Worka Chelbesa', origin: 'Ethiopia', roast: 'Light', notes: 'Earl Grey, bergamot, honeysuckle, cocoa with silky texture.',
+        description: 'This is Onyx\'s fifth year carrying this coffee, so it is reliably available year after year. The Earl Grey/bergamot profile delivers that rose water complexity -- Earl Grey tea is flavored with bergamot oil, and this coffee naturally replicates that aromatic complexity. The silky texture completes the rose-water-like experience.',
+        blogSlug: 'ethiopian-coffee-flavors-and-varieties', buyLinks: [
+          { retailer: 'Onyx Coffee Lab', url: 'https://onyxcoffeelab.com/products/ethiopia-worka-chelbesa' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=onyx+coffee+lab&tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Red Rooster Ethiopia Shantawene Washed', origin: 'Ethiopia', roast: 'Light', notes: 'Nectarine, bergamot, cocoa nib, nougat, wisteria.',
+        description: 'The peach blossom + bergamot + wisteria combination creates exactly the rose water character this category targets. The wisteria note is unusual in coffee and adds genuine perfumed floral complexity beyond standard jasmine. Red Rooster sources this annually from the same washing station.',
+        blogSlug: 'ethiopian-coffee-flavors-and-varieties', buyLinks: [
+          { retailer: 'Red Rooster', url: 'https://www.redroostercoffee.com/products/ethiopia-shantawene-washed' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=red+rooster+coffee+shantawene&tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Paradise Roasters Jamaica Blue Mountain Coffea Diversa Reserve', origin: 'Jamaica', roast: 'Light-Medium', notes: 'Meyer lemon, almond brittle, pink rose, baking chocolate, plum.',
+        description: 'One of the rare coffees with "pink rose" as a confirmed tasting note from Coffee Review -- not just generic "floral." Paradise has a direct partnership with Coffea Diversa Jamaica providing access to curated lots. More expensive than Ethiopian options (from $50), but genuinely delivers rose character that most coffees only hint at.',
+        buyLinks: [
+          { retailer: 'Paradise Roasters', url: 'https://paradiseroasters.com/products/jamaica-blue-mountain-coffea-diversa-reserve' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=paradise+roasters+jamaica+blue+mountain&tag=jayarrcoffee-20' },
         ]},
     ],
     'Tea-like': [
-      { name: 'Malawi Mzuzu', origin: 'Malawi', roast: 'Light', notes: 'Black tea, subtle fruit, light and approachable.',
-        description: 'Malawi is Africa\'s hidden coffee gem. Mzuzu beans grown near Lake Malawi produce a gentle, tea-like cup with subtle fruit sweetness and a light, approachable body. Perfect for those transitioning from tea to specialty coffee, or anyone who appreciates understatement over intensity.',
-        buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=malawi+mzuzu+coffee&tag=jayarrcoffee-20' },
+      { name: 'Counter Culture Idido (Washed)', origin: 'Ethiopia', roast: 'Light', notes: 'Lemon drop, jasmine, melon, bergamot tea with delicate body.',
+        description: 'Counter Culture\'s 17-year partnership with Idido (through 2026) makes this one of the most reliable tea-like coffees on the US market. The "delicate, tea-like body" is the signature characteristic reviewers consistently cite. Available at Whole Foods nationwide, making it the most accessible recommendation in the entire Floral family.',
+        blogSlug: 'ethiopian-coffee-flavors-and-varieties', buyLinks: [
+          { retailer: 'Counter Culture', url: 'https://counterculturecoffee.com/products/idido' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/Counter-Culture-Coffee-Idido-Roast/dp/B0797HWSN5?tag=jayarrcoffee-20' },
         ]},
-      { name: 'China Yunnan', origin: 'China', roast: 'Light-Medium', notes: 'Pu-erh tea, stone fruit, unique and smooth.',
-        description: 'Yes, China grows coffee — and Yunnan province is producing increasingly interesting lots. The cup carries echoes of the region\'s famous pu-erh tea, layered with stone fruit and a smooth, round body. A curiosity that rewards the adventurous drinker.',
-        buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=yunnan+china+coffee&tag=jayarrcoffee-20' },
+      { name: 'George Howell Worka Chelbessa (Washed, Light)', origin: 'Ethiopia', roast: 'Light', notes: 'Peach, cherry, honeyed-jasmine finish with tea-like delicacy.',
+        description: 'George Howell is a pioneer of specialty coffee, and his light-roasted Worka Chelbessa is frequently described as having a "tea-like delicacy" that defines the sub-category. The honeyed-jasmine finish gives it approachability. George Howell has sourced from Yirgacheffe farms since the 1970s -- this is a deep-knowledge pick from someone who helped define what specialty coffee means.',
+        blogSlug: 'ethiopian-coffee-flavors-and-varieties', buyLinks: [
+          { retailer: 'George Howell', url: 'https://georgehowellcoffee.com/products/worka-chelbessa-ethiopia' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=george+howell+worka+chelbessa&tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Stumptown Ethiopia Nano Challa', origin: 'Ethiopia', roast: 'Light', notes: 'Bright citrus, tea-like clarity, jasmine, floral.',
+        description: 'Stumptown explicitly describes the cup profile as expressing "tea-like qualities" and "tea-like and floral qualities we love in Ethiopian coffees." The light body and citrus clarity make this genuinely tea-like rather than merely floral. Nano Challa has been in Stumptown\'s lineup for years -- not a one-off lot, and available at grocery retailers.',
+        blogSlug: 'ethiopian-coffee-flavors-and-varieties', buyLinks: [
+          { retailer: 'Stumptown', url: 'https://www.stumptowncoffee.com/products/ethiopia-nano-challa' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=stumptown+ethiopia+nano+challa&tag=jayarrcoffee-20' },
         ]},
     ],
     'Perfumed': [
-      { name: 'Ethiopia Natural Guji', origin: 'Ethiopia', roast: 'Light', notes: 'Lavender, honey, intensely aromatic and sweet.',
-        description: 'Natural Guji at its most expressive — the dry processing creates an intensely perfumed cup where lavender and honey dominate from first sip to last. The aroma alone is worth the price of admission. Pairs beautifully with a quiet morning and zero distractions.',
-        blogSlug: 'ethiopian-coffee-guide', buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=ethiopia+guji+natural+coffee&tag=jayarrcoffee-20' },
+      { name: 'JBC Ethiopia Halo Beriti', origin: 'Ethiopia', roast: 'Light', notes: 'Jammy pear, meyer lemon, jasmine, raspberry, lavender, honey.',
+        description: 'One of the few widely available specialty coffees with both lavender AND honey as confirmed tasting notes from a top-tier roaster -- not artificial flavoring, but naturally occurring aromatics preserved by JBC\'s light roast. The Halo Beriti washing station has earned Cup of Excellence awards. JBC sources from this station regularly, so equivalent lots return each year.',
+        blogSlug: 'ethiopian-coffee-flavors-and-varieties', buyLinks: [
+          { retailer: 'JBC Coffee', url: 'https://jbccoffeeroasters.com/shop/' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=jbc+coffee+roasters+ethiopia&tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Red Rooster Ethiopia Ayla Bombe Washed', origin: 'Ethiopia', roast: 'Light', notes: 'Lavender, bergamot, nectarine, wild honey, ripe blackberry.',
+        description: 'Lavender + wild honey as primary descriptors is exactly the perfumed profile. The bergamot adds aromatic intensity, and the nectarine provides the sweet underpinning. Red Rooster sources Ayla Bombe as a regular offering from the same Sidama region that produces their other top-scoring Ethiopians.',
+        blogSlug: 'ethiopian-coffee-flavors-and-varieties', buyLinks: [
+          { retailer: 'Red Rooster', url: 'https://www.redroostercoffee.com/products/ethiopia-ayla-bombe-washed' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=red+rooster+coffee+ethiopia&tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Brandywine Ethiopia Aleta Wondo', origin: 'Ethiopia', roast: 'Light', notes: 'Jasmine, Earl Grey, tangerine, wild honey.',
+        description: 'The combination of jasmine + wild honey + Earl Grey creates an intensely aromatic, perfumed cup. Brandywine is a respected micro-roaster from Wilmington, Delaware, known for precise light roasting that preserves delicate aromatics. The wild honey note specifically indicates the natural sweetness that defines the perfumed sub-category.',
+        blogSlug: 'ethiopian-coffee-flavors-and-varieties', buyLinks: [
+          { retailer: 'Brandywine Coffee', url: 'https://www.brandywinecoffeeroasters.com/' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=brandywine+coffee+roasters&tag=jayarrcoffee-20' },
         ]},
     ],
     'Dark Chocolate': [
-      { name: 'Guatemala Antigua', origin: 'Guatemala', roast: 'Medium-Dark', notes: 'Dark chocolate, smoky, full body with a long finish.',
-        description: 'Antigua sits in a valley between three volcanoes, and the mineral-rich volcanic soil produces Guatemala\'s most iconic coffee. Dark chocolate and smoke dominate a full, velvety body that lingers on the palate. This is the coffee that converts people who think they don\'t like dark roasts.',
-        blogSlug: 'guatemalan-coffee-guide', buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=guatemala+antigua+coffee&tag=jayarrcoffee-20' },
-          { retailer: 'Trade Coffee', url: 'https://www.drinktrade.com/search?q=guatemala+antigua' },
-        ]},
-      { name: 'Peru Chanchamayo', origin: 'Peru', roast: 'Medium', notes: 'Cacao, brown sugar, balanced and smooth.',
-        description: 'Peru\'s Chanchamayo region produces wonderfully balanced beans where cacao meets brown sugar in a smooth, easy-drinking cup. The acidity is gentle, the body is medium, and the finish is clean. An excellent everyday coffee that never gets boring.',
+      { name: 'Counter Culture Forty-Six', origin: 'Blend', roast: 'Dark', notes: 'Dark chocolate, smoky undertones, bittersweet cacao.',
+        description: 'One of the rare specialty-grade dark roasts that genuinely leads with dark chocolate and smoke while preserving sweetness and complexity. Counter Culture built this blend to prove that dark roast can be specialty-quality, and multiple reviewers confirm the sweet-smoky-chocolate trifecta. Available at Whole Foods and many grocery stores.',
         buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=peru+chanchamayo+coffee&tag=jayarrcoffee-20' },
+          { retailer: 'Counter Culture', url: 'https://counterculturecoffee.com/products/12-oz-forty-six' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/Counter-Culture-Coffee-Forty-Whole/dp/B0764KPS75?tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Onyx Monarch', origin: 'Blend', roast: 'Medium-Dark', notes: 'Bittersweet dark chocolate, cacao, molasses, mulled wine, dried berries.',
+        description: 'Onyx describes "complex sugar browning notes from Swiss chocolate to cacao with molasses" -- this is their intentional dark-chocolate-forward espresso blend. The velvety mouthfeel is remarkable, and the chocolate intensifies with milk. From the roaster ranked #1 coffee shop in the world (2026).',
+        buyLinks: [
+          { retailer: 'Onyx Coffee Lab', url: 'https://onyxcoffeelab.com/products/monarch' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/Onyx-Coffee-Lab-Monarch-Espresso/dp/B0BZ4N7LRW?tag=jayarrcoffee-20' },
+        ]},
+      { name: 'George Howell Alchemy Espresso', origin: 'Blend', roast: 'Medium-Dark', notes: 'Dark chocolate brownie, dark caramel, raspberry jam, nougat.',
+        description: 'Three origins chosen specifically for chocolate depth -- Brazil for velvety body, Costa Rica for nougat and milk-chocolate sweetness, Guatemala for bittersweet chocolate-and-nuts complexity. Multiple reviewers confirm the "luscious dark chocolate" as the dominant impression. Also available through Cometeer for single-serve convenience.',
+        buyLinks: [
+          { retailer: 'George Howell', url: 'https://georgehowellcoffee.com/products/alchemy-espresso-alc-001' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/George-Howell-Coffee-Alchemy-Espresso/dp/B0DLBDK1XP?tag=jayarrcoffee-20' },
         ]},
     ],
     'Milk Chocolate': [
-      { name: 'Brazil Santos', origin: 'Brazil', roast: 'Medium', notes: 'Milk chocolate, nut, low acidity, creamy and sweet.',
-        description: 'Brazil Santos is the world\'s most popular coffee style for a reason — it\'s the definition of comfort. Milk chocolate, roasted nut, and a creamy sweetness with virtually no acidity. The low-altitude, natural processing creates a heavy, smooth body that\'s perfect for espresso blends or a simple drip brew.',
+      { name: 'La Colombe Nizza', origin: 'Blend', roast: 'Medium', notes: 'Milk chocolate, roasted nuts, honey-sweet nuttiness, caramel.',
+        description: 'This is the espresso behind every La Colombe cafe drink -- and there\'s a reason it\'s their foundation. "Honey-sweet, roasted nuttiness" with milk chocolate as the dominant note. Low acidity, creamy body, and one of the most widely available specialty coffees in the country (grocery stores, cafes, Amazon).',
         buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=brazil+santos+coffee+beans&tag=jayarrcoffee-20' },
-          { retailer: 'Trade Coffee', url: 'https://www.drinktrade.com/search?q=brazil+santos' },
+          { retailer: 'La Colombe', url: 'https://www.lacolombe.com/products/nizza' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/Colombe-Coffee-Whl-Bean-Nizza/dp/B00MZXU6CW?tag=jayarrcoffee-20' },
         ]},
-      { name: 'Colombia Supremo', origin: 'Colombia', roast: 'Medium', notes: 'Chocolate, caramel, mild fruit, crowd-pleasing balance.',
-        description: 'Supremo is Colombia\'s largest screen size — big beans with big flavor. Chocolate and caramel lead with mild fruit notes adding just enough complexity to keep things interesting. This is the coffee you serve to guests because literally everyone likes it.',
-        blogSlug: 'colombian-coffee-guide', buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=colombia+supremo+coffee&tag=jayarrcoffee-20' },
+      { name: 'Black & White The Classic', origin: 'Blend', roast: 'Medium', notes: 'Caramel, black cherry, milk chocolate with balanced acidity.',
+        description: 'Designed as their approachable "breakfast-style" coffee that leads with clean acidity and milk chocolate. The Colombia/Uganda washed combination delivers a clean, creamy cup with prominent milk chocolate and restrained acidity. From the same roaster behind The Natural -- same quality, different direction.',
+        buyLinks: [
+          { retailer: 'Black & White', url: 'https://www.blackwhiteroasters.com/products/the-classic' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=black+white+roasters+the+classic&tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Intelligentsia Frequency Blend', origin: 'Blend', roast: 'Medium', notes: 'Milk chocolate, toasted almond, dried fruits, smooth full body.',
+        description: 'Intelligentsia explicitly describes the Brazil component as contributing "a smooth body and predominant note of milk chocolate." This is their everyday crowd-pleaser, built on a milk-chocolate foundation with nutty support. Available at Target, Kroger, Harris Teeter, and most Whole Foods -- the definition of accessible specialty.',
+        buyLinks: [
+          { retailer: 'Intelligentsia', url: 'https://www.intelligentsia.com/products/frequency-blend' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/Intelligentsia-Coffee-Frequency-Direct-Medium/dp/B00P7EB7BU?tag=jayarrcoffee-20' },
         ]},
     ],
     'Caramel & Toffee': [
-      { name: 'El Salvador Pacamara', origin: 'El Salvador', roast: 'Medium', notes: 'Butterscotch, toffee, brown sugar, velvety body.',
-        description: 'Pacamara is a hybrid variety unique to El Salvador — giant beans that deliver giant sweetness. Butterscotch and toffee dominate with brown sugar depth and a velvety, almost syrupy body. One of Central America\'s most distinctive and rewarding coffees.',
+      { name: 'Ceremony Coffee Thesis', origin: 'Blend', roast: 'Medium', notes: 'Cookie dough, brown sugar, caramel, toffee finish, vanilla.',
+        description: 'A direct bullseye for caramel and toffee. Multiple independent reviewers confirm the caramel-toffee-brown sugar trifecta. Bean Box reviewers specifically call out cookie/caramel/vanilla. The roaster designs this blend to maximize sugar-browning sweetness, and it shows in every sip.',
         buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=el+salvador+pacamara+coffee&tag=jayarrcoffee-20' },
+          { retailer: 'Ceremony Coffee', url: 'https://ceremonycoffee.com/products/thesis' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/Ceremony-Coffee-Roasters-Specialty-Coffee/dp/B01922C1US?tag=jayarrcoffee-20' },
         ]},
-      { name: 'Guatemala Huehuetenango', origin: 'Guatemala', roast: 'Medium', notes: 'Caramel, apple, spice, complex sweetness.',
-        description: 'Huehuetenango (way-way-ten-ANG-go) is Guatemala\'s highest and most remote growing region. The altitude develops a complex sweetness — caramel and apple with warming spice notes. Each sip reveals something new. A coffee for people who want to think while they drink.',
-        blogSlug: 'guatemalan-coffee-guide', buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=guatemala+huehuetenango+coffee&tag=jayarrcoffee-20' },
+      { name: 'Stumptown Holler Mountain', origin: 'Blend', roast: 'Medium', notes: 'Citrus zest, caramel, hazelnut, toffee.',
+        description: 'The Latin American base delivers the caramel/toffee sweetness while East African beans add brightness that keeps it from being flat. The caramel note intensifies as the cup cools. Full-bodied, creamy, organic, and one of the most widely available specialty coffees in America -- grocery stores, Amazon, everywhere.',
+        buyLinks: [
+          { retailer: 'Stumptown', url: 'https://www.stumptowncoffee.com/products/holler-mountain' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/Stumptown-Coffee-Roasters-Organic-Mountain/dp/B008J4Z3C4?tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Greater Goods Take Me Home', origin: 'Costa Rica', roast: 'Medium', notes: 'Sticky toffee, caramel, marzipan, vanilla bean with blood orange.',
+        description: 'Honey processing from Tarrazu produces intense natural sweetness, and multiple retailers independently describe "toffee, marzipan, and vanilla" as the core notes. The sticky-toffee descriptor is particularly apt. From Greater Goods (Roast Magazine Roaster of the Year 2021) -- serious quality from an award-winning operation.',
+        blogSlug: 'what-does-costa-rican-coffee-taste-like', buyLinks: [
+          { retailer: 'Greater Goods', url: 'https://greatergoodsroasting.com/products/take-me-home' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=greater+goods+take+me+home+coffee&tag=jayarrcoffee-20' },
+          { retailer: 'Trade Coffee', url: 'https://www.drinktrade.com/take-me-home-costa-rica/p/1864' },
         ]},
     ],
     'Brown Sugar': [
-      { name: 'Costa Rica Honey Process', origin: 'Costa Rica', roast: 'Medium', notes: 'Brown sugar, molasses, stone fruit, syrupy.',
-        description: 'Honey processing leaves some of the fruit mucilage on the bean during drying, creating a sweetness that lives up to the name. Brown sugar and molasses coat every sip, with stone fruit peeking through. The body is syrupy and the finish is long and sweet. A processing method that Costa Rica has perfected.',
+      { name: 'Brandywine Colombia Santa Barbara Estate', origin: 'Colombia', roast: 'Medium', notes: 'Milk chocolate, brown sugar, cherry.',
+        description: 'The official tasting notes lead with brown sugar as a primary descriptor. The washed process keeps it clean while the medium roast develops the sugar-browning sweetness. Cherry provides the stone fruit element. Consistent year-round offering (harvest Oct-May) from one of Delaware\'s most respected micro-roasters.',
+        blogSlug: 'single-origin-colombian-coffee-what-flavor-notes-to-expect', buyLinks: [
+          { retailer: 'Brandywine Coffee', url: 'https://www.brandywinecoffeeroasters.com/products/colombia-santa-barbara-estate-12oz' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=brandywine+coffee+santa+barbara&tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Counter Culture Hologram', origin: 'Blend', roast: 'Medium', notes: 'Brown sugar, fig, red fruit syrup, milk chocolate.',
+        description: 'The natural-sundried coffees provide the syrupy body and stone fruit punch, while washed coffees add chocolate and pastry. A reviewer explicitly called out "brown sugar and fig right off the bat." The syrupy mouthfeel is a defining characteristic confirmed across multiple reviews. Widely available at grocery stores with Amazon backup.',
         buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=costa+rica+honey+process+coffee&tag=jayarrcoffee-20' },
+          { retailer: 'Counter Culture', url: 'https://counterculturecoffee.com/products/12-oz-hologram' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/Counter-Culture-Coffee-Hologram-Whole/dp/B018CSY0R0?tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Greater Goods Kickstart Espresso', origin: 'Blend', roast: 'Medium', notes: 'Dark chocolate, brown sugar, rose.',
+        description: 'Greater Goods (Roast Magazine Roaster of the Year) explicitly leads with "dark chocolate and brown sugar sweetness" as the primary descriptors. The espresso blend format means it\'s designed for syrupy extraction with heavy body. The rose note adds an unexpected floral lift.',
+        buyLinks: [
+          { retailer: 'Greater Goods', url: 'https://greatergoodsroasting.com' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=greater+goods+kickstart+espresso&tag=jayarrcoffee-20' },
+          { retailer: 'Trade Coffee', url: 'https://www.drinktrade.com/products/kickstart' },
         ]},
     ],
     'Honey & Vanilla': [
-      { name: 'Honduras Comayagua', origin: 'Honduras', roast: 'Medium', notes: 'Honey, vanilla, mild citrus, sweet and approachable.',
-        description: 'Comayagua produces some of Honduras\'s sweetest coffees — literal honey and vanilla notes with just enough citrus to keep things balanced. An incredibly approachable cup that works for every brewing method and every palate. The kind of coffee you buy a second bag of without thinking.',
+      { name: 'Bean & Bean Costa Rica Las Lajas Black Honey', origin: 'Costa Rica', roast: 'Medium', notes: 'Orange, strawberry, vanilla, watermelon with honey sweetness.',
+        description: 'A textbook match -- honey-processed coffee with vanilla as an official tasting note and citrus (orange) as a primary flavor. The Chacon family pioneered honey processing in Costa Rica, leaving maximum mucilage for maximum sweetness. Organic, Fair Trade. Extremely approachable for newcomers to specialty coffee.',
+        blogSlug: 'what-does-costa-rican-coffee-taste-like', buyLinks: [
+          { retailer: 'Bean & Bean', url: 'https://beannbeancoffee.com/products/black-honey-las-lajas-costa-rican' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/Bean-Costa-Rica-Honey-Coffee/dp/B09C323YGK?tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Verve Streetlevel', origin: 'Blend', roast: 'Medium', notes: 'Honeyed citrus, red apple, honeycomb finish, dark chocolate.',
+        description: 'The honey and citrus descriptors are confirmed across multiple independent sources. The honeycomb finish is the standout -- approachable, balanced, and built for everyday drinking. The Central American blend base provides the sweet, clean foundation. Available at Crate & Barrel for gift-giving appeal.',
         buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=honduras+comayagua+coffee&tag=jayarrcoffee-20' },
+          { retailer: 'Verve Coffee', url: 'https://www.vervecoffee.com/products/streetlevel' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/VERVE-COFFEE-ROASTERS-Streetlevel-Coffee/dp/B079JR53F2?tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Ceremony Coffee Mass Appeal', origin: 'Blend', roast: 'Medium-Light', notes: 'Maple pecan, vanilla, caramel, milk chocolate, sugar cookie.',
+        description: 'The vanilla and maple/honey sweetness are front and center. "All chocolate and caramel -- a sweet tooth\'s dream" per the roaster. The extremely low acidity and sweet profile make it one of the most approachable specialty coffees available. Works with any brew method, and the name says it all.',
+        buyLinks: [
+          { retailer: 'Ceremony Coffee', url: 'https://ceremonycoffee.com/products/mass-appeal' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/Ceremony-Coffee-Roasters-Mass-Espresso/dp/B01A7MA9UG?tag=jayarrcoffee-20' },
         ]},
     ],
     'Almond': [
-      { name: 'Brazil Cerrado', origin: 'Brazil', roast: 'Medium', notes: 'Almond, chocolate, low acidity, smooth and nutty.',
-        description: 'The Cerrado plateau\'s consistent climate produces incredibly reliable, nutty coffees. Almond and chocolate in a smooth, low-acid cup with a heavy body. This is the coffee that makes Brazil the world\'s largest producer — dependable, delicious, and endlessly versatile.',
+      { name: 'Intelligentsia Frequency Blend', origin: 'Blend', roast: 'Medium', notes: 'Toasted almond, milk chocolate, dried fruit with smooth body.',
+        description: 'The almond note is prominent and explicitly called out by Intelligentsia. Low acidity, smooth body, and milk chocolate make this a textbook match for almond lovers. Year-round availability and wide retail distribution (Target, Kroger, Whole Foods) make it one of the most accessible specialty coffees in the country.',
         buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=brazil+cerrado+coffee&tag=jayarrcoffee-20' },
+          { retailer: 'Intelligentsia', url: 'https://www.intelligentsia.com/products/frequency-blend' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/Intelligentsia-Coffee-Frequency-Direct-Medium/dp/B00P7EB7BU?tag=jayarrcoffee-20' },
         ]},
-      { name: 'India Monsooned Malabar', origin: 'India', roast: 'Medium-Dark', notes: 'Almond, spice, earthy, bold and mellow.',
-        description: 'One of coffee\'s most unusual processes — beans are exposed to monsoon winds and moisture for weeks, swelling and losing acidity. The result is bold and mellow: almond, warm spice, and an earthy depth with virtually zero brightness. Divisive but beloved by its fans. A must-try for the adventurous.',
+      { name: 'George Howell Tarrazu Dota', origin: 'Costa Rica', roast: 'Light', notes: 'Almond, milk chocolate, nougat, peach.',
+        description: 'The almond-nougat-milk chocolate profile is exactly this sub-category. George Howell sources this coffee year-round from the same region, so it stays consistent. The light roast preserves the delicate almond note without roast bitterness. From the man who founded the Cup of Excellence program.',
+        blogSlug: 'what-does-costa-rican-coffee-taste-like', buyLinks: [
+          { retailer: 'George Howell', url: 'https://store.georgehowellcoffee.com/coffees/dota-costa-rica.html' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=george+howell+coffee&tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Intelligentsia Black Cat Organic Espresso', origin: 'Blend', roast: 'Medium', notes: 'Caramel, honeydew melon, dark chocolate and toasted almond finish.',
+        description: 'The dark chocolate + toasted almond finish is the signature of this espresso. Full-bodied mouthfeel with clean flavors and low-toned acidity. Works beautifully as brewed coffee too, not just espresso. Available at Target and Whole Foods for easy pickup.',
         buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=india+monsooned+malabar+coffee&tag=jayarrcoffee-20' },
+          { retailer: 'Intelligentsia', url: 'https://www.intelligentsia.com/products/organic-black-cat-espresso' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/Intelligentsia-Black-Certified-Organic-Espresso/dp/B0055ZRULM?tag=jayarrcoffee-20' },
         ]},
     ],
     'Hazelnut': [
-      { name: 'Colombia Castillo', origin: 'Colombia', roast: 'Medium', notes: 'Hazelnut, cocoa, red fruit, balanced and round.',
-        description: 'Castillo is a Colombian variety bred for disease resistance — and it turns out it\'s delicious too. Hazelnut and cocoa form the base with red fruit adding brightness. Balanced, round, and incredibly drinkable. Proof that practical breeding and great flavor aren\'t mutually exclusive.',
-        blogSlug: 'colombian-coffee-guide', buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=colombia+castillo+coffee&tag=jayarrcoffee-20' },
+      { name: 'Coffee Bros. Medium Roast', origin: 'Blend', roast: 'Medium', notes: 'Hazelnut, brown sugar, red fruit with balanced body.',
+        description: 'A near-exact match for the sub-category -- hazelnut is the lead note, paired with red fruit and brown sugar sweetness. The Brazil component provides the hazelnut and body; the Ethiopia provides the red fruit. Roasted to order with Tuesday/Saturday ship days. Recognized by Forbes and multiple award bodies.',
+        buyLinks: [
+          { retailer: 'Coffee Bros.', url: 'https://coffeebros.com/products/medium-roast-coffee-blend' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=coffee+bros+medium+roast&tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Stumptown Holler Mountain', origin: 'Blend', roast: 'Medium', notes: 'Citrus zest, caramel, hazelnut with chocolaty texture.',
+        description: 'Hazelnut is one of the three official tasting notes. The caramel sweetness and full body create the "balanced and round" profile. One of the most widely available specialty coffees in America -- you can find it at most grocery stores, making it the easiest hazelnut pick to actually try.',
+        buyLinks: [
+          { retailer: 'Stumptown', url: 'https://www.stumptowncoffee.com/products/holler-mountain' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/Stumptown-Coffee-Roasters-Organic-Mountain/dp/B008J4Z3C4?tag=jayarrcoffee-20' },
+        ]},
+      { name: 'JBC Guatemala Finca Santa Isabel', origin: 'Guatemala', roast: 'Medium-Light', notes: 'Cocoa powder, date, hazelnut, freesia, cedar.',
+        description: 'Hazelnut and cocoa explicitly paired in the cupping notes -- a direct match. JBC is a five-time Good Food Award winner with hundreds of 90+ Coffee Review scores. Note: JBC rotates single origins seasonally, so this specific lot may not always be available, but they consistently source Guatemalan coffees with similar profiles.',
+        blogSlug: 'guatemala-coffee-review-regional-differences-and-best-coffees', buyLinks: [
+          { retailer: 'JBC Coffee', url: 'https://jbccoffeeroasters.com/' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=jbc+coffee+roasters&tag=jayarrcoffee-20' },
         ]},
     ],
     'Peanut': [
-      { name: 'Brazil Natural', origin: 'Brazil', roast: 'Medium-Dark', notes: 'Peanut, dark chocolate, heavy body, comfort-coffee classic.',
-        description: 'Natural-processed Brazilian coffee taken to a medium-dark roast is the backbone of espresso blends worldwide. Peanut and dark chocolate in a heavy, syrupy body — this is comfort coffee at its most fundamental. Makes an exceptional espresso base or a rich, satisfying French press.',
+      { name: 'Greater Goods Good Vibes', origin: 'Brazil', roast: 'Medium', notes: 'Cacao nibs, peanut butter, dried cherry with rich body.',
+        description: 'Peanut butter is the lead tasting note confirmed across multiple independent reviewers (Trade Coffee, MistoBox, Bean Box, Crema.co). Heavy, smooth body with dark cocoa makes this the quintessential comfort coffee. Natural process Brazils are the origin archetype for peanut notes, and this is a year-round staple starting at just $10.',
+        blogSlug: 'is-brazilian-coffee-any-good', buyLinks: [
+          { retailer: 'Greater Goods', url: 'https://greatergoodsroasting.com/products/good-vibes' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/Good-Vibes-Brazil-Roasted-Greater/dp/B0F22SNJQ2?tag=jayarrcoffee-20' },
+          { retailer: 'Trade Coffee', url: 'https://www.drinktrade.com/products/good-vibes-brazil' },
+        ]},
+      { name: 'Red Bird Espresso', origin: 'Blend', roast: 'Medium-Dark', notes: 'Peanut, chocolate, caramel -- tastes like a Snickers bar.',
+        description: 'The "Snickers" reputation is well-documented across home-barista.com, Coffee Cantata, and multiple review sites. The peanut-chocolate-caramel profile emerges reliably, especially as the coffee rests 10-15 days post-roast. A favorite of the home espresso community for over a decade. All coffees roasted to order.',
         buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=brazil+natural+process+coffee&tag=jayarrcoffee-20' },
+          { retailer: 'Red Bird Coffee', url: 'https://redbirdcoffee.com/products/red-bird-espresso' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=red+bird+espresso+coffee&tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Buena Vista Brazil Organic', origin: 'Brazil', roast: 'Medium', notes: 'Peanut butter, chocolate, toffee.',
+        description: 'All three cupping notes match the sub-category perfectly. The single-estate sourcing from a consistent farm means the flavor profile stays reliable season to season. Organic certification is a bonus for those who prioritize it. From a small Colorado roaster that takes quality seriously.',
+        blogSlug: 'is-brazilian-coffee-any-good', buyLinks: [
+          { retailer: 'Buena Vista Roastery', url: 'https://bvroastery.com/products/organic-brazilian-coffee' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=buena+vista+roastery+brazil&tag=jayarrcoffee-20' },
         ]},
     ],
     'Walnut & Pecan': [
-      { name: 'Mexico Chiapas', origin: 'Mexico', roast: 'Medium', notes: 'Pecan, caramel, mild acidity, warm and inviting.',
-        description: 'Chiapas, in Mexico\'s southern highlands, produces coffees with a warm, nutty character — pecan and caramel with just enough acidity to keep things interesting. A warm, inviting cup that\'s excellent value and consistently enjoyable.',
+      { name: 'Onyx Southern Weather', origin: 'Blend', roast: 'Medium', notes: 'Milk chocolate, plum, candied walnuts, pecan pie sweetness.',
+        description: 'Both walnut and pecan are explicitly called out across multiple reviewers. The "pecan pie" descriptor appears independently from multiple sources -- that is not marketing, that is consensus. Caramel/brown sugar sweetness and mild citrus acidity complete the profile. Year-round flagship blend, widely available, and consistently excellent.',
         buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=mexico+chiapas+coffee&tag=jayarrcoffee-20' },
+          { retailer: 'Onyx Coffee Lab', url: 'https://onyxcoffeelab.com/products/southern-weather' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/Onyx-Coffee-Lab-Southern-Specialty/dp/B08JJKKVRC?tag=jayarrcoffee-20' },
+        ]},
+      { name: 'George Howell Dota Dark', origin: 'Costa Rica', roast: 'Dark', notes: 'Dark chocolate, caramel, walnut with rich smoothness.',
+        description: 'Walnut and caramel are two of the three primary tasting notes. The dark roast brings warmth and body while George Howell\'s quality control ensures no bitter over-roast. The "warm and inviting" descriptor fits this coffee perfectly. Year-round offering for those who want their nut notes in a darker, richer package.',
+        blogSlug: 'what-does-costa-rican-coffee-taste-like', buyLinks: [
+          { retailer: 'George Howell', url: 'https://georgehowellcoffee.com/products/dota-french-roast-costa-rica-copy' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=george+howell+dota+french+roast&tag=jayarrcoffee-20' },
+          { retailer: 'Trade Coffee', url: 'https://www.drinktrade.com/products/tarrazu-french' },
+        ]},
+      { name: 'Huckleberry Civitas Blend', origin: 'Peru', roast: 'Medium-Dark', notes: 'Toffee, nutty, chocolate with caramel stroopwafel pairing.',
+        description: 'The toffee-nutty-chocolate core delivers the warm and inviting comfort profile. The Peruvian origin provides mild acidity and full body. The caramel stroopwafel milk pairing confirms the caramel warmth. Widely distributed including Target, Amazon, and Trade Coffee.',
+        blogSlug: 'peru-coffee-guide-chanchamayo', buyLinks: [
+          { retailer: 'Huckleberry Roasters', url: 'https://huckleberryroasters.com/products/civitas-blend' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/Civitas-Blend-Roasted-Huckleberry-Roasters/dp/B0DV9VL9Y8?tag=jayarrcoffee-20' },
+          { retailer: 'Trade Coffee', url: 'https://www.drinktrade.com/civitas/p/2199' },
         ]},
     ],
     'Baking Spice': [
-      { name: 'Sumatra Mandheling', origin: 'Indonesia', roast: 'Dark', notes: 'Cinnamon, clove, earthy, thick body, lingering warmth.',
-        description: 'Mandheling is the quintessential Sumatran coffee — wet-hulled processing creates that unmistakable earthy, spicy character. Cinnamon and clove warmth in an incredibly thick, syrupy body that coats your palate. The finish lingers for minutes. A polarizing coffee that inspires fierce loyalty.',
-        blogSlug: 'sumatra-coffee-guide', buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=sumatra+mandheling+coffee&tag=jayarrcoffee-20' },
-          { retailer: 'Trade Coffee', url: 'https://www.drinktrade.com/search?q=sumatra+mandheling' },
+      { name: 'JBC Pantan Musara Sumatra', origin: 'Indonesia', roast: 'Medium', notes: 'Black grape, nutmeg, graham cracker, plum, bergamot.',
+        description: 'The nutmeg and graham cracker notes are textbook baking spice. Unusual for Sumatra, this lot is washed -- removing some of the earthy funk while keeping the spice and thick body that Sumatran coffees are famous for. Fellow Products featured it in a dedicated brew guide, which says something about the quality.',
+        blogSlug: 'what-does-indonesian-coffee-taste-like', buyLinks: [
+          { retailer: 'JBC Coffee', url: 'https://jbccoffeeroasters.com/product/pantan-musara-2/' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=jbc+coffee+sumatra&tag=jayarrcoffee-20' },
         ]},
-      { name: 'Java Estate', origin: 'Indonesia', roast: 'Medium-Dark', notes: 'Nutmeg, brown sugar, full body, spiced and clean.',
-        description: 'Java was one of the first places outside Africa to grow coffee — and centuries later, the island still produces exceptional beans. Estate coffees are cleaner than their Sumatran neighbors, with nutmeg and brown sugar over a full body. Spiced but approachable.',
-        buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=java+estate+coffee&tag=jayarrcoffee-20' },
+      { name: 'Equator Sumatra Queen Ketiara', origin: 'Indonesia', roast: 'Medium-Light', notes: 'Vanilla, milk chocolate, pipe tobacco, clove, tangerine.',
+        description: 'The clove, pipe tobacco, and vanilla combination directly maps to baking spice warmth. Sourced exclusively from the women members of the Ketiara Co-op ("Queen" designation) -- the story behind the coffee is as compelling as the cup. Fair Trade Organic certified. Year-round staple offering.',
+        blogSlug: 'what-does-indonesian-coffee-taste-like', buyLinks: [
+          { retailer: 'Equator Coffees', url: 'https://www.equatorcoffees.com/products/sumatra-queen-ketiara-fair-trade-organic' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=equator+coffees+sumatra&tag=jayarrcoffee-20' },
+          { retailer: 'Trade Coffee', url: 'https://www.drinktrade.com/products/sumatra-queen-ketiara-fair-trade-organic-nugyuujk' },
+        ]},
+      { name: 'Stumptown Indonesia Bies Penantan', origin: 'Indonesia', roast: 'Medium', notes: 'Dark chocolate, pineapple, clove with savory spice aroma.',
+        description: 'The clove note is explicit from the roaster, and multiple reviewers confirm baking-spice character with a full, earthy body. Stumptown has worked with Ketiara since 2013, making this a consistent annual offering. Available at grocery stores and Amazon -- the most accessible baking spice pick.',
+        blogSlug: 'what-does-indonesian-coffee-taste-like', buyLinks: [
+          { retailer: 'Stumptown', url: 'https://www.stumptowncoffee.com/products/indonesia-bies-penantan' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/Stumptown-Coffee-Roasters-Indonesia-Sumatra/dp/B008J50M92?tag=jayarrcoffee-20' },
         ]},
     ],
     'Pungent': [
-      { name: 'Sulawesi Toraja', origin: 'Indonesia', roast: 'Medium-Dark', notes: 'Black pepper, dark chocolate, cedar, intense and complex.',
-        description: 'Toraja coffee from Sulawesi is one of Indonesia\'s most complex offerings. Black pepper spice hits first, followed by dark chocolate and cedar. The intensity is remarkable but never overwhelming. A coffee with real depth for drinkers who want to be challenged.',
-        buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=sulawesi+toraja+coffee&tag=jayarrcoffee-20' },
+      { name: 'Paradise Roasters Aged Sumatra Semiga', origin: 'Indonesia', roast: 'Medium-Dark', notes: 'Pipe tobacco, scorched clove, dark chocolate, ripe banana.',
+        description: 'The 7-year aging amplifies the cedar/tobacco/dark chocolate axis to an extreme level of intensity and complexity. "Scorched clove" is almost aggressive spice -- exactly the pungent character this sub-category asks for. The heavy mouthfeel and viscosity add to the intense, lingering impression. From a Minnesota nano-roaster that specializes in aged coffees.',
+        blogSlug: 'what-does-indonesian-coffee-taste-like', buyLinks: [
+          { retailer: 'Paradise Roasters', url: 'https://paradiseroasters.com/products/aged-sumatra-semiga-7' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=paradise+roasters+aged+sumatra&tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Happy Mug Sulawesi Toraja Sapan Minanga', origin: 'Indonesia', roast: 'Medium', notes: 'Black pepper, tobacco, chocolate with orange rind hints.',
+        description: 'Black pepper is an explicit, confirmed tasting note. Coffee Review scored Victrola\'s version of this same lot at 90 with notes of "cedar, pungent, bittersweet chocolate." Happy Mug is also excellent value (typically $12-14/bag) -- serious pungent character at a price that lets you experiment.',
+        blogSlug: 'what-does-indonesian-coffee-taste-like', buyLinks: [
+          { retailer: 'Happy Mug', url: 'https://happymugcoffee.com/products/sulawesi-toraja-mananga' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=happy+mug+sulawesi+toraja&tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Volcanica Sulawesi Reserve', origin: 'Indonesia', roast: 'Dark', notes: 'Bold cinnamon, cardamom, black pepper, dark chocolate.',
+        description: 'The dark roast pushes cedar and dark chocolate notes forward while the Toraja terroir delivers the peppery spice. Volcanica roasts to order and is widely available, making this a reliable, accessible pick for those who want serious intensity. The heavy body and pungent character match the sub-category perfectly.',
+        blogSlug: 'what-does-indonesian-coffee-taste-like', buyLinks: [
+          { retailer: 'Volcanica Coffee', url: 'https://volcanicacoffee.com/products/sulawesi-reserve-coffee-celebes-kalossi' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/Volcanica-Sulawesi-Reserve-Coffee-16-ounce/dp/B08TB16PC1?tag=jayarrcoffee-20' },
         ]},
     ],
     'Wine-like': [
-      { name: 'Kenya Peaberry', origin: 'Kenya', roast: 'Medium', notes: 'Red wine, blackberry, tomato, brilliantly acidic.',
-        description: 'Peaberries — single round beans instead of the usual flat pair — are hand-sorted for their concentrated flavor. Kenyan peaberries deliver red wine and blackberry with that signature Kenyan tomato acidity dialed up to 11. Brilliantly bright and complex. Not a background coffee — this demands your attention.',
-        blogSlug: 'kenyan-coffee-guide', buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=kenya+peaberry+coffee&tag=jayarrcoffee-20' },
+      { name: 'Red Rooster Ethiopia Worka Sakaro Anaerobic Natural', origin: 'Ethiopia', roast: 'Light', notes: 'Blackberry cobbler, dark chocolate fudge, almond nougat, cedar.',
+        description: 'Coffee Review literally describes this as a "blackberry cobbler" coffee. The anaerobic natural process intensifies the fermented fruit character beyond what standard natural processing achieves. The blackberry and dark chocolate fudge combination is bold and distinctive. Red Rooster brings this back annually with fresh crop -- their most popular single origin.',
+        blogSlug: 'ethiopian-coffee-flavors-and-varieties', buyLinks: [
+          { retailer: 'Red Rooster', url: 'https://www.redroostercoffee.com/products/ethiopia-worka-sakaro-anaerobic-natural' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/Red-Rooster-Coffee-Roaster-Ethiopia/dp/B0CHT42Y5Q?tag=jayarrcoffee-20' },
+          { retailer: 'Trade Coffee', url: 'https://www.drinktrade.com/products/ethiopia-worka-sakaro-anaerobic-natural-1' },
         ]},
-      { name: 'Ethiopia Sidamo Natural', origin: 'Ethiopia', roast: 'Light-Medium', notes: 'Wine, blueberry, fermented fruit, bold and distinctive.',
-        description: 'Natural Sidamo is wild — fermented fruit and blueberry wine in a bold, distinctive cup that pushes the boundaries of what coffee can taste like. The natural processing amplifies everything, creating an almost vinous quality. For drinkers who want coffee to surprise them.',
-        blogSlug: 'ethiopian-coffee-guide', buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=ethiopia+sidamo+natural+coffee&tag=jayarrcoffee-20' },
+      { name: 'Stauf\'s Ethiopia Moka Harrar', origin: 'Ethiopia', roast: 'Medium', notes: 'Dark chocolate, red wine, blueberries, blackberries.',
+        description: 'This is the quintessential wine-like coffee. Ethiopian Harrar is historically THE origin associated with "winey" character, and Stauf\'s explicitly lists "red wine" as a primary tasting note alongside blackberry. The natural process amplifies the fermented fruit qualities. Heavy body adds boldness. A classic for a reason.',
+        blogSlug: 'ethiopian-coffee-flavors-and-varieties', buyLinks: [
+          { retailer: 'Stauf\'s Coffee', url: 'https://www.staufs.com/single-origin/ethiopia-moka-harrar' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=ethiopia+harrar+natural+coffee&tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Black & White The Natural', origin: 'Ethiopia', roast: 'Light-Medium', notes: 'Mixed berries, sangria, candied orange with sparkling acidity.',
+        description: '"Sangria" is an explicit tasting note -- literally a wine-fruit punch descriptor. This is Black & White\'s flagship natural Ethiopian, designed to showcase the bold, fermented-fruit, wine-like character of natural processing. The composition rotates seasonally but the wine-like profile is consistent. Widely available year-round.',
+        blogSlug: 'ethiopian-coffee-flavors-and-varieties', buyLinks: [
+          { retailer: 'Black & White', url: 'https://www.blackwhiteroasters.com/products/the-natural' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=black+white+roasters+the+natural&tag=jayarrcoffee-20' },
+          { retailer: 'Fellow', url: 'https://fellowproducts.com/products/black-and-white-the-natural' },
         ]},
     ],
     'Anise': [
-      { name: 'Guatemala El Injerto', origin: 'Guatemala', roast: 'Medium', notes: 'Anise, dark cherry, chocolate, lingering herbal finish.',
-        description: 'El Injerto is one of Guatemala\'s legendary farms — Cup of Excellence winners multiple times over. The anise note is distinctive and rare, woven through dark cherry and chocolate with a lingering herbal finish. A collector\'s coffee that justifies the premium.',
-        blogSlug: 'guatemalan-coffee-guide', buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=guatemala+el+injerto+coffee&tag=jayarrcoffee-20' },
+      { name: 'Al Mokha Yemen Dark Roast', origin: 'Yemen', roast: 'Dark', notes: 'Anise seed, cumin, aromatic wood, date sugar, dry cocoa.',
+        description: 'Yemen coffees are the most reliably anise-forward specialty origin. The dark roast emphasizes the licorice/anise character while the natural processing adds dark cherry sweetness. The chocolate and dried fruit (dates, figs) create the lingering herbal finish. Yemen is the original coffee origin with heirloom cultivars that have been grown the same way for centuries.',
+        blogSlug: 'yemen-coffee-guide-mocha-origin', buyLinks: [
+          { retailer: 'Al Mokha', url: 'https://www.almokha.com/products/yemeni-dark' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=al+mokha+yemen+dark+roast&tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Prime Roast Sumatran Dark', origin: 'Indonesia', roast: 'Dark', notes: 'Dark chocolate, cherry, licorice with earthy depth.',
+        description: 'One of the few specialty coffees that explicitly lists licorice alongside dark cherry and chocolate as primary tasting notes -- a direct match for the entire anise sub-category definition. Sumatra Mandheling is broadly known for "sweet chocolate and licorice tones," and the dark roast pushes the licorice character forward. Budget-friendly path to anise/licorice notes.',
+        blogSlug: 'what-does-indonesian-coffee-taste-like', buyLinks: [
+          { retailer: 'Prime Roast', url: 'https://primeroastcoffee.com/product/sumatran-coffee/' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=sumatra+dark+roast+licorice+coffee&tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Onyx Monarch', origin: 'Blend', roast: 'Medium-Dark', notes: 'Bittersweet dark chocolate, mulled wine, molasses, dried berries.',
+        description: 'The mulled wine note is key -- mulled wine inherently contains star anise and warming spices. The bittersweet dark chocolate plus molasses creates a lingering, herbal-sweet finish. While Monarch doesn\'t have explicit "anise" in its descriptors, the mulled wine + dark chocolate + molasses + dried berry combination creates the same sensory impression. Also the most widely available and accessible coffee in this sub-category.',
+        buyLinks: [
+          { retailer: 'Onyx Coffee Lab', url: 'https://onyxcoffeelab.com/products/monarch' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/Onyx-Coffee-Lab-Monarch-Espresso/dp/B0BZ4N7LRW?tag=jayarrcoffee-20' },
         ]},
     ],
     'Woody': [
-      { name: 'Sumatra Lintong', origin: 'Indonesia', roast: 'Dark', notes: 'Cedar, pine, dark chocolate, earthy with herbal hints.',
-        description: 'Lintong, near Lake Toba in North Sumatra, produces a darker, woodier expression of Sumatran coffee. Cedar and pine dominate with dark chocolate underneath and herbal hints in the finish. The wet-hulled processing gives it that characteristic earthy depth. Excellent for French press or cold brew where the woodiness can really develop.',
-        blogSlug: 'sumatra-coffee-guide', buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=sumatra+lintong+coffee&tag=jayarrcoffee-20' },
-          { retailer: 'Trade Coffee', url: 'https://www.drinktrade.com/search?q=sumatra+lintong' },
+      { name: 'Peach Coffee Blue Sunda Estate Java', origin: 'Indonesia', roast: 'Medium', notes: 'Cedar, dark chocolate, tobacco, dried fruit, black tea.',
+        description: 'A more refined, complex expression of Indonesian woody character than typical Sumatra. Java estate coffees are smoother than their Sumatran neighbors while retaining that woody backbone. The 94-point Coffee Review score and specific cedar + dark chocolate + spice notes make it a standout in a category where many coffees blur together.',
+        blogSlug: 'what-does-indonesian-coffee-taste-like', buyLinks: [
+          { retailer: 'Peach Coffee', url: 'https://www.peachcoffeeroasters.com/' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=blue+sunda+estate+java+coffee&tag=jayarrcoffee-20' },
         ]},
-      { name: 'Papua New Guinea', origin: 'PNG', roast: 'Medium', notes: 'Oak, fruit, mild spice, complex and rustic.',
-        description: 'PNG coffee is the wild frontier of specialty — many farms are small, remote, and use traditional methods. The cup is rustic and complex: oak and mild spice with unexpected fruit notes. Each lot is an adventure. If you like the idea of terroir-driven, untamed coffee, PNG delivers.',
-        buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=papua+new+guinea+coffee&tag=jayarrcoffee-20' },
+      { name: 'Stumptown Indonesia Sumatra', origin: 'Indonesia', roast: 'Medium-Dark', notes: 'Cedar, herb, dark chocolate with wine-toned fruit undercurrents.',
+        description: 'The wet-hulled processing gives this coffee its hallmark cedar and earthy-herbal character. Stumptown\'s version is widely available, consistently high-quality, and the most accessible expression of the classic woody Sumatra profile. The cedar note is prominent and well-documented by multiple reviewers.',
+        blogSlug: 'what-does-indonesian-coffee-taste-like', buyLinks: [
+          { retailer: 'Stumptown', url: 'https://www.stumptowncoffee.com/collections/coffee' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/Stumptown-Coffee-Roasters-Indonesia-Sumatra/dp/B008J50M92?tag=jayarrcoffee-20' },
+        ]},
+      { name: 'George Howell Sumatra Lintong', origin: 'Indonesia', roast: 'Medium', notes: 'Pipe tobacco, butterscotch, cedar, full-bodied nuts.',
+        description: 'George Howell\'s Sumatra Lintong specifically calls out cedar and pipe tobacco with a butterscotch sweetness that rounds out the woody character. The herb-accented profile adds complexity that elevates it above generic "earthy Sumatra" territory. Seasonal availability -- check their rotating single-origin selections.',
+        blogSlug: 'what-does-indonesian-coffee-taste-like', buyLinks: [
+          { retailer: 'George Howell', url: 'https://georgehowellcoffee.com/collections/all-coffee' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=george+howell+sumatra+lintong&tag=jayarrcoffee-20' },
         ]},
     ],
     'Tobacco & Leather': [
-      { name: 'Indian Robusta', origin: 'India', roast: 'Dark', notes: 'Tobacco leaf, leather, dark cocoa, bold and rugged.',
-        description: 'Indian Robusta is not for the delicate palate — and that\'s exactly the point. Tobacco leaf and leather with dark cocoa in a punishingly thick body. This is the coffee equivalent of a peated Scotch: bold, rugged, and unapologetically intense. Makes a killer espresso for those who take it straight.',
-        buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=indian+robusta+coffee+beans&tag=jayarrcoffee-20' },
+      { name: 'Paradise Roasters Aged Sumatra Semiga', origin: 'Indonesia', roast: 'Medium-Dark', notes: 'Pipe tobacco, scorched clove, dark chocolate with syrupy-smooth body.',
+        description: 'The gold standard for tobacco-forward coffee. The 7-year aging process intensifies pipe tobacco, leather, and dark cocoa notes to a level that fresh-crop coffee simply cannot reach. Paradise Roasters specializes in aged coffees and this is their flagship. If you want to know what tobacco and leather actually taste like in coffee, this is where you start.',
+        blogSlug: 'what-does-indonesian-coffee-taste-like', buyLinks: [
+          { retailer: 'Paradise Roasters', url: 'https://paradiseroasters.com/products/aged-sumatra-semiga-7' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=paradise+roasters+aged+sumatra&tag=jayarrcoffee-20' },
         ]},
-      { name: 'Sumatra Blue Batak', origin: 'Indonesia', roast: 'Medium-Dark', notes: 'Tobacco, molasses, earthy, heavy and brooding.',
-        description: 'Blue Batak refers to the Batak people of North Sumatra who cultivate these distinctive beans. Tobacco and molasses in an earthy, heavy cup that feels contemplative and brooding. The wet-hulled processing creates a profile that\'s unmistakably Sumatran — dark, deep, and endlessly interesting.',
-        blogSlug: 'sumatra-coffee-guide', buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=sumatra+blue+batak+coffee&tag=jayarrcoffee-20' },
+      { name: 'Peet\'s Aged Sumatra', origin: 'Indonesia', roast: 'Dark', notes: 'Sweet wood, leather, pipe tobacco -- rugged and wild.',
+        description: 'The most accessible aged Sumatra on the market. Peet\'s has been sourcing and aging Sumatran coffee since Alfred Peet started the company. The dark roast amplifies the bold, rugged tobacco-and-leather character. Much easier to find than Paradise Roasters, and the Islay whisky comparison tells you exactly what kind of drinker this is for.',
+        blogSlug: 'what-does-indonesian-coffee-taste-like', buyLinks: [
+          { retailer: 'Peet\'s Coffee', url: 'https://www.peets.com/products/aged-sumatra' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=peets+aged+sumatra&tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Telluride Aged Sumatra', origin: 'Indonesia', roast: 'Medium', notes: 'Sweet wood, leather, pipe tobacco with molasses-like body.',
+        description: 'The roaster\'s own description literally uses the words "sweet wood, leather, and pipe tobacco" -- a direct match for this sub-category. The 3-year aging in parchment (shorter than Paradise\'s 7-year) creates a more approachable version of the aged profile while still delivering bold leather and tobacco character. The medium+ roast lets the aging character come through without being dominated by roast flavors.',
+        blogSlug: 'what-does-indonesian-coffee-taste-like', buyLinks: [
+          { retailer: 'Telluride Coffee', url: 'https://telluridecoffeeroasters.net/product/aged-sumatra/' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=telluride+aged+sumatra+coffee&tag=jayarrcoffee-20' },
         ]},
     ],
     'Herbal': [
-      { name: 'Bolivia Caranavi', origin: 'Bolivia', roast: 'Medium', notes: 'Chamomile, sage, mild sweetness, delicate and rare.',
-        description: 'Bolivia is one of the smallest and rarest specialty coffee origins. Caranavi beans carry chamomile and sage with a mild sweetness that\'s utterly unique. The body is delicate, the acidity gentle, and the finish clean. A quiet, meditative coffee for those who value subtlety. Hard to find, worth the search.',
-        buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=bolivia+caranavi+coffee&tag=jayarrcoffee-20' },
+      { name: 'Sey Coffee Hamasho Honey', origin: 'Ethiopia', roast: 'Light', notes: 'Chamomile, nectarine, limeade finish.',
+        description: 'The best match in specialty coffee for genuine chamomile notes. Sey Coffee is one of the most respected light-roast-focused roasters in the US (Brooklyn, NY), and their Hamasho lot specifically features chamomile as a primary tasting note -- not filler marketing, but a confirmed, repeatable cup characteristic across multiple vintage years. The honey process and Ethiopian heirloom varieties from the Bombe Mountains create this genuinely delicate, herbal-floral profile.',
+        blogSlug: 'ethiopian-coffee-flavors-and-varieties', buyLinks: [
+          { retailer: 'Sey Coffee', url: 'https://www.seycoffee.com/collections/coffee' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=sey+coffee+hamasho&tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Peet\'s Peru Cajamarca Organic', origin: 'Peru', roast: 'Medium-Light', notes: 'Chamomile, baking spice, soft fruit, hint of dark chocolate.',
+        description: 'Peru Cajamarca is an under-recognized origin for herbal-noted coffees. Peet\'s tasters specifically called out chamomile as the leading note. More accessible and affordable than Sey, though availability is seasonal. Beansmith Coffee\'s Peru Cajamarca (90 points Coffee Review) was also noted for "a hint of sage," confirming that Cajamarca coffees genuinely produce herbal character.',
+        blogSlug: 'peru-coffee-guide-chanchamayo', buyLinks: [
+          { retailer: 'Peet\'s Coffee', url: 'https://www.peets.com/' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=peets+peru+cajamarca&tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Equator Ethiopian Sidama Natural', origin: 'Ethiopia', roast: 'Light', notes: 'Chamomile, apricot, brown sugar, black tea, rose.',
+        description: 'The chamomile note is specifically listed among the cupping notes alongside black tea and other herbal/floral descriptors. The natural process from Sidama creates a more complex, fruit-layered version of the herbal profile than the Sey pick. Equator is a certified B Corp roaster in the San Francisco Bay Area. Their Ethiopian offerings rotate seasonally, but they consistently source Sidama naturals with this herbal character.',
+        blogSlug: 'ethiopian-coffee-flavors-and-varieties', buyLinks: [
+          { retailer: 'Equator Coffees', url: 'https://www.equatorcoffees.com/' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=equator+coffees+ethiopian+sidama&tag=jayarrcoffee-20' },
         ]},
     ],
     'Savory': [
-      { name: 'Myanmar Shan State', origin: 'Myanmar', roast: 'Medium', notes: 'Umami, tomato, dark chocolate, savory and surprising.',
-        description: 'Myanmar\'s coffee industry is young and tiny — which makes discoveries like Shan State all the more exciting. The cup is genuinely savory: umami and tomato notes that feel more like a fine broth than a typical coffee, anchored by dark chocolate. One of the most surprising and conversation-starting coffees you\'ll ever try.',
+      { name: 'Conscious Cup Kenya AA Kiri', origin: 'Kenya', roast: 'Light-Medium', notes: 'Tomato leaf, red currant, candied violet, cedar, almond butter.',
+        description: 'A 95-point Coffee Review score with "vibrantly umami" as a primary descriptor. The tomato leaf and red currant notes are the classic Kenya savory-sweet balance that defines umami in coffee. SL28/SL34 varieties from Kirinyaga are the apex of Kenyan umami character. This is not generic "earthy" -- it is genuinely, specifically savory in a way that surprises people expecting coffee to taste like coffee.',
+        blogSlug: 'kenyan-coffee-flavor-notes-and-best-coffees', buyLinks: [
+          { retailer: 'Conscious Cup', url: 'https://consciouscup.com/' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=conscious+cup+kenya+aa+kiri&tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Klatch Kenya Thunguri AA', origin: 'Kenya', roast: 'Light-Medium', notes: 'Ripe tomato, black currant, almond brittle, jasmine, oak.',
+        description: 'The "ripe tomato" note is the headline descriptor in Coffee Review\'s 94-point review. Klatch is a multiple-time award-winning roaster (World Brewing Championship winners). The 100% SL28 varietal composition maximizes the umami/tomato character that this variety is famous for. More reliably available than Conscious Cup since Klatch is a larger operation.',
+        blogSlug: 'kenyan-coffee-flavor-notes-and-best-coffees', buyLinks: [
+          { retailer: 'Klatch Coffee', url: 'https://www.klatchroasting.com/products/kenya-thunguri-aa' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=klatch+kenya+thunguri&tag=jayarrcoffee-20' },
+        ]},
+      { name: 'Fulcrum Myanmar Oat Twin', origin: 'Myanmar', roast: 'Light', notes: 'Green tea, red bell pepper, tomato jam -- savory and creamy.', blogSlug: 'myanmar-coffee-shan-state',
+        description: 'The wildcard pick -- a genuinely unusual savory coffee from a rare origin. Myanmar is one of the newest specialty coffee origins, and Fulcrum\'s Oat Twin lot has specific tasting notes of "tomato jam" and "red bell pepper" that you almost never see in coffee. This is a different expression of savory character from a completely different terroir. The green tea note adds the "surprising" element. Will genuinely shock people who have never had savory coffee before.',
         buyLinks: [
-          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=myanmar+shan+state+coffee&tag=jayarrcoffee-20' },
+          { retailer: 'Fulcrum Coffee', url: 'https://www.fulcrumcoffee.com/products/myanmar-oat-twin' },
+          { retailer: 'Amazon', url: 'https://www.amazon.com/s?k=fulcrum+coffee+myanmar&tag=jayarrcoffee-20' },
         ]},
     ],
   };
@@ -499,7 +760,7 @@
 
             <!-- Expanded detail (Layer 4) -->
             {#if isExpanded}
-              <div class="rec-detail" onclick={(e) => e.stopPropagation()}>
+              <div class="rec-detail" role="region" aria-label="Coffee details" onclick={(e) => e.stopPropagation()} onkeydown={(e) => e.stopPropagation()}>
                 <div class="rec-detail-inner">
                   <div class="rec-detail-left">
                     <p class="rec-description">{coffee.description}</p>
