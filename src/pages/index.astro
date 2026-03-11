@@ -144,9 +144,16 @@ const posts = (await getCollection('blog')).sort(
 				<p class="text-warm-gray mb-8 leading-relaxed">
 					Get new articles, video drops, and coffee insights delivered to your inbox. No spam, just good coffee content.
 				</p>
-				<form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+				<form
+					action="https://buttondown.com/api/emails/embed-subscribe/jayarrcoffee"
+					method="post"
+					target="popupwindow"
+					class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+				>
 					<input
 						type="email"
+						name="email"
+						required
 						placeholder="your@email.com"
 						class="flex-1 px-4 py-3 bg-cream border border-charcoal/20 text-charcoal placeholder:text-warm-gray/60 text-sm focus:outline-none focus:border-copper transition-colors"
 					/>

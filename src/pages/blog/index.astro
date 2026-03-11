@@ -75,6 +75,7 @@ const posts = (await getCollection('blog')).sort(
 								<time class="text-xs uppercase tracking-widest text-warm-gray">
 									<FormattedDate date={post.data.pubDate} />
 								</time>
+								<span class="text-xs text-warm-gray/60">{Math.max(1, Math.round((post.body?.split(/\s+/).length || 0) / 230))} min read</span>
 							</div>
 							<h2 class="font-serif text-xl font-bold text-charcoal mt-1 mb-2 group-hover:text-copper transition-colors">
 								{post.data.title}

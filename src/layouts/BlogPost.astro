@@ -6,6 +6,7 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import RelatedPosts from '../components/RelatedPosts.astro';
+import ShareButtons from '../components/ShareButtons.astro';
 import { SITE_TITLE } from '../consts';
 
 type Props = CollectionEntry<'blog'>['data'] & { id: string };
@@ -136,14 +137,18 @@ const breadcrumbSchema = {
 						{category}
 					</a>
 				)}
-				<time class="block text-xs uppercase tracking-widest text-cream/50">
-					<FormattedDate date={pubDate} />
-				</time>
-				{updatedDate && (
-					<span class="text-xs text-cream/40 ml-2">
-						(Updated <FormattedDate date={updatedDate} />)
-					</span>
-				)}
+				<div class="flex items-center justify-center gap-3 text-xs uppercase tracking-widest text-cream/50">
+					<time>
+						<FormattedDate date={pubDate} />
+					</time>
+					{updatedDate && (
+						<span class="text-cream/40">
+							(Updated <FormattedDate date={updatedDate} />)
+						</span>
+					)}
+					<span class="text-cream/30">|</span>
+					<span id="read-time" class="text-cream/40"></span>
+				</div>
 				<h1 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-cream mt-4 leading-tight">
 					{title}
 				</h1>
@@ -183,6 +188,11 @@ const breadcrumbSchema = {
 				<slot />
 			</article>
 
+			<!-- Share buttons -->
+			<div class="max-w-[720px] mx-auto">
+				<ShareButtons title={title} url={canonicalURL.toString()} />
+			</div>
+
 			<!-- Related Posts -->
 			<div class="max-w-[720px] mx-auto">
 				<RelatedPosts currentId={id} category={category} />
@@ -191,27 +201,39 @@ const breadcrumbSchema = {
 
 		<Footer />
 
-		<!-- Table of Contents script -->
+		<!-- Read time + Table of Contents script -->
 		<script>
 			const article = document.getElementById('article-content');
 			const toc = document.getElementById('toc');
 			const tocList = document.getElementById('toc-list');
+			const readTimeEl = document.getElementById('read-time');
 
-			if (article && toc && tocList) {
-				const headings = article.querySelectorAll('h2');
-				if (headings.length >= 3) {
-					toc.classList.remove('hidden');
-					headings.forEach((heading, i) => {
-						const id = heading.id || `section-${i}`;
-						heading.id = id;
-						const li = document.createElement('li');
-						const a = document.createElement('a');
-						a.href = `#${id}`;
-						a.textContent = heading.textContent;
-						a.className = 'text-copper hover:text-copper-dark transition-colors';
-						li.appendChild(a);
-						tocList.appendChild(li);
-					});
+			if (article) {
+				// Calculate read time (~230 words per minute)
+				const text = article.textContent || '';
+				const words = text.trim().split(/\s+/).length;
+				const minutes = Math.max(1, Math.round(words / 230));
+				if (readTimeEl) {
+					readTimeEl.textContent = `${minutes} min read`;
+				}
+
+				// Build table of contents
+				if (toc && tocList) {
+					const headings = article.querySelectorAll('h2');
+					if (headings.length >= 3) {
+						toc.classList.remove('hidden');
+						headings.forEach((heading, i) => {
+							const id = heading.id || `section-${i}`;
+							heading.id = id;
+							const li = document.createElement('li');
+							const a = document.createElement('a');
+							a.href = `#${id}`;
+							a.textContent = heading.textContent;
+							a.className = 'text-copper hover:text-copper-dark transition-colors';
+							li.appendChild(a);
+							tocList.appendChild(li);
+						});
+					}
 				}
 			}
 		</script>
