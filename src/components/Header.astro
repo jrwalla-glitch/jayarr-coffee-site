@@ -1,6 +1,5 @@
 ---
 import { SITE_TITLE } from '../consts';
-import { CATEGORIES } from '../content.config';
 import Search from './Search.astro';
 
 const pathname = Astro.url.pathname;
@@ -16,34 +15,18 @@ const isHome = pathname === '/';
       JayArr Coffee
     </a>
     <div class="hidden md:flex items-center gap-8">
-      <!-- Articles with category dropdown -->
-      <div class="relative group">
-        <a href="/blog" class:list={[
-          'text-sm uppercase tracking-widest transition-colors',
-          pathname.startsWith('/blog') ? 'text-copper' : 'text-cream/80 hover:text-cream'
-        ]}>Articles</a>
-        <div class="absolute top-full left-1/2 -translate-x-1/2 pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-          <div class="bg-charcoal-light border border-white/10 rounded-sm py-2 min-w-[160px] shadow-xl">
-            {CATEGORIES.map((cat) => (
-              <a
-                href={`/blog/category/${cat.toLowerCase()}/`}
-                class:list={[
-                  'block px-4 py-2 text-sm transition-colors',
-                  pathname === `/blog/category/${cat.toLowerCase()}/`
-                    ? 'text-copper'
-                    : 'text-cream/70 hover:text-cream hover:bg-white/5'
-                ]}
-              >
-                {cat}
-              </a>
-            ))}
-          </div>
-        </div>
-      </div>
       <a href="/explore" class:list={[
         'text-sm uppercase tracking-widest transition-colors',
         pathname.startsWith('/explore') ? 'text-copper' : 'text-cream/80 hover:text-cream'
       ]}>Explore</a>
+      <a href="/blog" class:list={[
+        'text-sm uppercase tracking-widest transition-colors',
+        pathname.startsWith('/blog') ? 'text-copper' : 'text-cream/80 hover:text-cream'
+      ]}>Articles</a>
+      <a href="/tools" class:list={[
+        'text-sm uppercase tracking-widest transition-colors',
+        pathname.startsWith('/tools') ? 'text-copper' : 'text-cream/80 hover:text-cream'
+      ]}>Tools</a>
       <a href="/videos" class:list={[
         'text-sm uppercase tracking-widest transition-colors',
         pathname.startsWith('/videos') ? 'text-copper' : 'text-cream/80 hover:text-cream'
@@ -73,15 +56,9 @@ const isHome = pathname === '/';
   <!-- Mobile menu -->
   <div id="mobile-menu" class="hidden md:hidden bg-charcoal/95 backdrop-blur-sm border-t border-white/10">
     <div class="px-6 py-4 flex flex-col gap-4">
-      <a href="/blog" class="text-sm uppercase tracking-widest text-cream/80 hover:text-cream">Articles</a>
-      <div class="pl-4 flex flex-col gap-2">
-        {CATEGORIES.map((cat) => (
-          <a href={`/blog/category/${cat.toLowerCase()}/`} class="text-sm text-cream/60 hover:text-cream transition-colors">
-            {cat}
-          </a>
-        ))}
-      </div>
       <a href="/explore" class="text-sm uppercase tracking-widest text-cream/80 hover:text-cream">Explore</a>
+      <a href="/blog" class="text-sm uppercase tracking-widest text-cream/80 hover:text-cream">Articles</a>
+      <a href="/tools" class="text-sm uppercase tracking-widest text-cream/80 hover:text-cream">Tools</a>
       <a href="/videos" class="text-sm uppercase tracking-widest text-cream/80 hover:text-cream">Videos</a>
       <a href="/about" class="text-sm uppercase tracking-widest text-cream/80 hover:text-cream">About</a>
     </div>

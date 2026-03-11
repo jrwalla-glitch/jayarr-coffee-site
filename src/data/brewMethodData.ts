@@ -162,7 +162,9 @@ export const methods: BrewMethod[] = [
       { methodId: 'v60', relationship: 'Both percolation, but phin\'s metal filter and slow drip produce a heavier, oilier concentrate' },
       { methodId: 'french-press', relationship: 'Both use metal filters for body, but phin is gravity percolation, not immersion' },
     ],
-    articles: [],
+    articles: [
+      { slug: 'vietnamese-phin-guide', title: 'How to Brew Vietnamese Phin Coffee: The Complete Guide to Ca Phe Sua Da' },
+    ],
   },
 
   // ═══════════════════════════════════════
@@ -280,7 +282,9 @@ export const methods: BrewMethod[] = [
       { methodId: 'french-press', relationship: 'Both unfiltered immersion, but Turkish uses powder-fine grounds and heat for a far more intense extraction' },
       { methodId: 'espresso', relationship: 'Both produce concentrated, intense coffee — Turkish through long contact time, espresso through pressure' },
     ],
-    articles: [],
+    articles: [
+      { slug: 'turkish-coffee-guide', title: 'How to Make Turkish Coffee: The World\'s Oldest Brewing Method, Done Right' },
+    ],
   },
 
   // ═══════════════════════════════════════
@@ -329,7 +333,7 @@ export const methods: BrewMethod[] = [
       { methodId: 'aeropress', relationship: 'Both produce concentrated coffee with manual pressure, very different technique' },
     ],
     articles: [
-      { slug: 'moka-pot-brewing-guide', title: 'How to Use a Moka Pot: Complete Guide to Stovetop Espresso' },
+      { slug: 'moka-pot-brewing-guide', title: 'How to Use a Moka Pot: The Complete Guide to Stovetop Espresso' },
       { slug: 'coffee-grind-size-guide-what-grind-for-every-brew-method', title: 'Coffee Grind Size Guide: Right Grind for Every Brew Method' },
     ],
   },

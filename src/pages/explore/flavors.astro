@@ -19,6 +19,21 @@ import FlavorBloom from '../../components/FlavorBloom.svelte';
       <FlavorBloom client:load />
     </main>
 
+    <!-- Bridge to Tools -->
+    <section class="bg-charcoal py-12">
+      <div class="max-w-3xl mx-auto px-6 text-center">
+        <span class="text-xs uppercase tracking-widest text-copper font-medium">Put It Into Practice</span>
+        <h2 class="font-serif text-xl md:text-2xl font-bold text-cream mt-2 mb-6">Related Tools</h2>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="/tools/fix-my-coffee/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
+            Fix My Coffee
+          </a>
+          <a href="/tools/grind-guide/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
+            Grind Size Guide
+          </a>
+        </div>
+      </div>
+    </section>
     <Footer />
   </body>
 </html>
