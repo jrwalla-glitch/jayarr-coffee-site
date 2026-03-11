@@ -3,6 +3,28 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE } from '../consts';
+import { getCollection } from 'astro:content';
+
+// Extract YouTube video IDs from blog posts by checking heroImage filenames
+// (which match YouTube video IDs) and post content for iframe embeds
+const allPosts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+// Extract YouTube embeds from post body content
+const videoPosts: { title: string; videoId: string; slug: string }[] = [];
+
+for (const post of allPosts) {
+	const body = post.body || '';
+	const match = body.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]+)/);
+	if (match) {
+		videoPosts.push({
+			title: post.data.title,
+			videoId: match[1],
+			slug: post.id,
+		});
+	}
+}
 ---
 
 <!doctype html>
@@ -18,34 +40,41 @@ import { SITE_TITLE } from '../consts';
 			<div class="max-w-6xl mx-auto px-6">
 				<span class="text-xs uppercase tracking-widest text-copper font-medium">Watch</span>
 				<h1 class="font-serif text-5xl md:text-6xl font-bold text-cream mt-2">Videos</h1>
+				<p class="text-cream/60 mt-4 max-w-2xl">
+					{videoPosts.length} videos — in-depth coffee content from scoring breakdowns to brewing science.
+					Subscribe on <a href="https://www.youtube.com/@jayarrcoffee" target="_blank" rel="noopener" class="text-copper hover:text-copper-light underline underline-offset-2">YouTube</a> for new videos.
+				</p>
 			</div>
 		</div>
 
 		<main class="max-w-6xl mx-auto px-6 py-16">
-			<p class="text-warm-gray text-center mb-12 max-w-2xl mx-auto">
-				In-depth coffee content — scoring breakdowns, brewing science, honest reviews, and more.
-				Subscribe on <a href="https://www.youtube.com/@jayarrcoffee" target="_blank" rel="noopener" class="text-copper hover:text-copper-dark underline underline-offset-2">YouTube</a> to catch new videos.
-			</p>
-
-			<!-- Recent videos -->
-			<div class="max-w-4xl mx-auto space-y-12">
-				<div>
-					<div class="aspect-video rounded-sm overflow-hidden bg-charcoal">
-						<iframe class="w-full h-full" src="https://www.youtube.com/embed/nK_nJa3LCcM" title="Best Gooseneck Kettle for Pour Over Coffee 2026 (Top 7)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+				{videoPosts.map((video) => (
+					<div>
+						<div class="aspect-video rounded-sm overflow-hidden bg-charcoal">
+							<iframe
+								class="w-full h-full"
+								src={`https://www.youtube.com/embed/${video.videoId}`}
+								title={video.title}
+								frameborder="0"
+								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+								allowfullscreen
+								loading="lazy"
+							></iframe>
+						</div>
+						<a href={`/blog/${video.slug}/`} class="block mt-3 group">
+							<h3 class="font-serif text-base font-bold text-charcoal group-hover:text-copper transition-colors leading-snug">
+								{video.title}
+							</h3>
+							<span class="text-xs text-copper mt-1 inline-block">Read article &rarr;</span>
+						</a>
 					</div>
-					<h3 class="font-serif text-lg font-bold text-charcoal mt-3">Best Gooseneck Kettle for Pour Over Coffee 2026 (Top 7)</h3>
-				</div>
-				<div>
-					<div class="aspect-video rounded-sm overflow-hidden bg-charcoal">
-						<iframe class="w-full h-full" src="https://www.youtube.com/embed/PubLiiJr8kw" title="Why Water Matters More Than Your Coffee Beans" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-					</div>
-					<h3 class="font-serif text-lg font-bold text-charcoal mt-3">Why Water Matters More Than Your Coffee Beans</h3>
-				</div>
+				))}
 			</div>
 
-			<div class="text-center mt-12">
+			<div class="text-center mt-16">
 				<a href="https://www.youtube.com/@jayarrcoffee" target="_blank" rel="noopener" class="inline-block border border-charcoal text-charcoal px-8 py-3 text-sm uppercase tracking-widest hover:bg-charcoal hover:text-cream transition-all duration-300">
-					View All on YouTube
+					Subscribe on YouTube
 				</a>
 			</div>
 		</main>

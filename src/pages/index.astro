@@ -1,14 +1,46 @@
 ---
+import { Image } from 'astro:assets';
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import { getCollection } from 'astro:content';
+import heroImage from '../assets/blog/hero-coffee-farm.jpg';
 
-const posts = (await getCollection('blog')).sort(
+const allPosts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-).slice(0, 6);
+);
+const latestPosts = allPosts.slice(0, 6);
+
+// Popular posts — hand-picked high-value articles
+const popularSlugs = [
+	'coffee-grind-size-guide-what-grind-for-every-brew-method',
+	'why-water-matters-more-than-your-coffee-beans',
+	'ultimate-pour-over-coffee-guide-and-best-v60-technique',
+	'whats-the-ideal-coffee-brewing-temperature',
+	'why-and-how-you-should-use-an-aeropress',
+	'how-to-use-a-french-press-the-most-amazing-coffee-youve-ever-had',
+];
+const popularPosts = popularSlugs
+	.map(slug => allPosts.find(p => p.id === slug))
+	.filter(Boolean);
+
+// Category counts
+const categoryCounts = allPosts.reduce((acc, post) => {
+	const cat = post.data.category || 'Uncategorized';
+	acc[cat] = (acc[cat] || 0) + 1;
+	return acc;
+}, {} as Record<string, number>);
+
+const categoryDescriptions: Record<string, string> = {
+	Origins: 'In-depth guides to coffee-growing regions around the world',
+	Brewing: 'Method guides, technique breakdowns, and extraction science',
+	Equipment: 'Honest reviews of grinders, brewers, and espresso machines',
+	Science: 'Water chemistry, grind analysis, altitude effects, and more',
+	Drinks: 'Espresso drinks explained, from cortados to flat whites',
+	Recipes: 'Coffee recipes you can actually make at home',
+};
 ---
 
 <!doctype html>
@@ -38,10 +70,13 @@ const posts = (await getCollection('blog')).sort(
 		<!-- Hero Section -->
 		<section class="relative h-[85vh] md:h-screen min-h-[500px] flex items-center justify-center overflow-hidden">
 			<div class="absolute inset-0">
-				<img
-					src="/images/hero-coffee-farm.jpg"
+				<Image
+					src={heroImage}
 					alt="Coffee farm at golden hour"
+					width={1920}
+					height={1080}
 					class="w-full h-full object-cover object-center"
+					loading="eager"
 				/>
 				<div class="absolute inset-0 bg-gradient-to-b from-charcoal/60 via-charcoal/30 to-charcoal/80"></div>
 			</div>
@@ -74,23 +109,30 @@ const posts = (await getCollection('blog')).sort(
 				</a>
 			</div>
 
-			{posts.length > 0 && (
+			{latestPosts.length > 0 && (
 				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
-					{posts.map((post) => (
+					{latestPosts.map((post) => (
 						<a href={`/blog/${post.id}/`} class="group block">
 							<article>
 								{post.data.heroImage && (
 									<div class="aspect-[16/10] overflow-hidden rounded-sm mb-4">
-										<img
-											src={post.data.heroImage.src}
+										<Image
+											width={720}
+											height={450}
+											src={post.data.heroImage}
 											alt={post.data.title}
 											class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
 										/>
 									</div>
 								)}
-								<time class="text-xs uppercase tracking-widest text-warm-gray">
-									<FormattedDate date={post.data.pubDate} />
-								</time>
+								<div class="flex items-center gap-3 mb-1">
+									{post.data.category && (
+										<span class="text-xs uppercase tracking-widest text-copper">{post.data.category}</span>
+									)}
+									<time class="text-xs uppercase tracking-widest text-warm-gray">
+										<FormattedDate date={post.data.pubDate} />
+									</time>
+								</div>
 								<h3 class="font-serif text-xl font-bold text-charcoal mt-1 mb-2 group-hover:text-copper transition-colors">
 									{post.data.title}
 								</h3>
@@ -104,6 +146,65 @@ const posts = (await getCollection('blog')).sort(
 					))}
 				</div>
 			)}
+		</section>
+
+		<!-- Browse by Topic -->
+		<section class="bg-charcoal py-24">
+			<div class="max-w-6xl mx-auto px-6">
+				<div class="text-center mb-12">
+					<span class="text-xs uppercase tracking-widest text-copper font-medium">Browse</span>
+					<h2 class="font-serif text-4xl md:text-5xl font-bold text-cream mt-2">Topics</h2>
+				</div>
+				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+					{Object.entries(categoryCounts).map(([cat, count]) => (
+						<a
+							href={`/blog/category/${cat.toLowerCase()}/`}
+							class="group block p-6 border border-white/10 rounded-sm hover:border-copper/40 transition-colors"
+						>
+							<div class="flex items-center justify-between mb-2">
+								<h3 class="font-serif text-xl font-bold text-cream group-hover:text-copper transition-colors">{cat}</h3>
+								<span class="text-xs text-cream/40">{count} articles</span>
+							</div>
+							<p class="text-sm text-cream/60 leading-relaxed">
+								{categoryDescriptions[cat] || ''}
+							</p>
+						</a>
+					))}
+				</div>
+			</div>
+		</section>
+
+		<!-- Popular Articles -->
+		<section class="max-w-6xl mx-auto px-6 py-24">
+			<div class="text-center mb-12">
+				<span class="text-xs uppercase tracking-widest text-copper font-medium">Start Here</span>
+				<h2 class="font-serif text-4xl md:text-5xl font-bold text-charcoal mt-2">Popular Articles</h2>
+			</div>
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8">
+				{popularPosts.map((post) => post && (
+					<a href={`/blog/${post.id}/`} class="group flex gap-4 items-start">
+						{post.data.heroImage && (
+							<div class="w-20 h-20 shrink-0 overflow-hidden rounded-sm">
+								<Image
+									width={160}
+									height={160}
+									src={post.data.heroImage}
+									alt={post.data.title}
+									class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+								/>
+							</div>
+						)}
+						<div>
+							{post.data.category && (
+								<span class="text-xs uppercase tracking-widest text-copper">{post.data.category}</span>
+							)}
+							<h3 class="font-serif text-base font-bold text-charcoal mt-0.5 group-hover:text-copper transition-colors leading-snug">
+								{post.data.title}
+							</h3>
+						</div>
+					</a>
+				))}
+			</div>
 		</section>
 
 		<!-- Featured Video Section -->

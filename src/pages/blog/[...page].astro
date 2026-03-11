@@ -1,0 +1,150 @@
+---
+import { Image } from 'astro:assets';
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+import { CATEGORIES } from '../../content.config';
+
+export const getStaticPaths = (async ({ paginate }) => {
+	const posts = (await getCollection('blog')).sort(
+		(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+	);
+	return paginate(posts, { pageSize: 15 });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={page.currentPage === 1 ? `Articles — ${SITE_TITLE}` : `Articles (Page ${page.currentPage}) — ${SITE_TITLE}`}
+			description="Coffee articles, reviews, and guides from JayArr Coffee."
+		/>
+	</head>
+	<body class="bg-cream">
+		<Header />
+
+		<!-- Page header -->
+		<div class="pt-32 pb-16 bg-charcoal">
+			<div class="max-w-6xl mx-auto px-6">
+				<span class="text-xs uppercase tracking-widest text-copper font-medium">Read</span>
+				<h1 class="font-serif text-5xl md:text-6xl font-bold text-cream mt-2">Articles</h1>
+			</div>
+		</div>
+
+		<!-- Category filter tabs -->
+		<div class="bg-cream-dark border-b border-charcoal/10">
+			<div class="max-w-6xl mx-auto px-6">
+				<div class="flex items-center gap-1 overflow-x-auto py-3 -mb-px scrollbar-hide">
+					<a
+						href="/blog/"
+						class="category-tab whitespace-nowrap px-4 py-2 text-sm font-medium rounded-sm transition-colors text-charcoal bg-cream border border-charcoal/15"
+					>
+						All
+					</a>
+					{CATEGORIES.map((cat) => (
+						<a
+							href={`/blog/category/${cat.toLowerCase()}/`}
+							class="category-tab whitespace-nowrap px-4 py-2 text-sm font-medium rounded-sm transition-colors text-warm-gray hover:text-charcoal hover:bg-cream/50"
+						>
+							{cat}
+						</a>
+					))}
+				</div>
+			</div>
+		</div>
+
+		<!-- Articles grid -->
+		<main class="max-w-6xl mx-auto px-6 py-16">
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+				{page.data.map((post) => (
+					<a href={`/blog/${post.id}/`} class="group block">
+						<article>
+							{post.data.heroImage && (
+								<div class="aspect-[16/10] overflow-hidden rounded-sm mb-4">
+									<Image
+										width={720}
+										height={450}
+										src={post.data.heroImage}
+										alt={post.data.title}
+										class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+									/>
+								</div>
+							)}
+							<div class="flex items-center gap-3 mb-1">
+								{post.data.category && (
+									<span class="text-xs uppercase tracking-widest text-copper">{post.data.category}</span>
+								)}
+								<time class="text-xs uppercase tracking-widest text-warm-gray">
+									<FormattedDate date={post.data.pubDate} />
+								</time>
+								<span class="text-xs text-warm-gray/60">{Math.max(1, Math.round((post.body?.split(/\s+/).length || 0) / 230))} min read</span>
+							</div>
+							<h2 class="font-serif text-xl font-bold text-charcoal mt-1 mb-2 group-hover:text-copper transition-colors">
+								{post.data.title}
+							</h2>
+							{post.data.description && (
+								<p class="text-sm text-warm-gray leading-relaxed line-clamp-3">
+									{post.data.description}
+								</p>
+							)}
+						</article>
+					</a>
+				))}
+			</div>
+
+			<!-- Pagination -->
+			{page.lastPage > 1 && (
+				<nav class="flex items-center justify-center gap-2 mt-16" aria-label="Pagination">
+					{page.url.prev ? (
+						<a
+							href={page.url.prev}
+							class="px-4 py-2 text-sm border border-charcoal/20 text-charcoal hover:bg-charcoal hover:text-cream transition-colors rounded-sm"
+						>
+							&larr; Previous
+						</a>
+					) : (
+						<span class="px-4 py-2 text-sm border border-charcoal/10 text-warm-gray/40 rounded-sm cursor-not-allowed">
+							&larr; Previous
+						</span>
+					)}
+
+					{Array.from({ length: page.lastPage }, (_, i) => i + 1).map((num) => (
+						<a
+							href={num === 1 ? '/blog/' : `/blog/${num}/`}
+							class:list={[
+								'w-10 h-10 flex items-center justify-center text-sm rounded-sm transition-colors',
+								num === page.currentPage
+									? 'bg-charcoal text-cream'
+									: 'border border-charcoal/20 text-charcoal hover:bg-charcoal hover:text-cream',
+							]}
+						>
+							{num}
+						</a>
+					))}
+
+					{page.url.next ? (
+						<a
+							href={page.url.next}
+							class="px-4 py-2 text-sm border border-charcoal/20 text-charcoal hover:bg-charcoal hover:text-cream transition-colors rounded-sm"
+						>
+							Next &rarr;
+						</a>
+					) : (
+						<span class="px-4 py-2 text-sm border border-charcoal/10 text-warm-gray/40 rounded-sm cursor-not-allowed">
+							Next &rarr;
+						</span>
+					)}
+				</nav>
+			)}
+		</main>
+
+		<Footer />
+	</body>
+</html>
