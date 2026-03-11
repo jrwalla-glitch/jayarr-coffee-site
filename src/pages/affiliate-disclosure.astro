@@ -1,0 +1,85 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`Affiliate Disclosure — ${SITE_TITLE}`} description="FTC affiliate disclosure for JayArr Coffee. How we earn from product recommendations and what that means for you." />
+	</head>
+	<body class="bg-cream">
+		<Header />
+
+		<!-- Page header -->
+		<div class="pt-32 pb-16 bg-charcoal">
+			<div class="max-w-6xl mx-auto px-6">
+				<span class="text-xs uppercase tracking-widest text-copper font-medium">Legal</span>
+				<h1 class="font-serif text-5xl md:text-6xl font-bold text-cream mt-2">Affiliate Disclosure</h1>
+			</div>
+		</div>
+
+		<main class="py-16 px-6">
+			<div class="prose">
+				<p><strong>Last updated:</strong> March 10, 2026</p>
+
+				<h2>How We Earn</h2>
+				<p>
+					JayArr Coffee is a participant in the <strong>Amazon Services LLC Associates Program</strong>,
+					an affiliate advertising program designed to provide a means for sites to earn advertising
+					fees by advertising and linking to Amazon.com.
+				</p>
+				<p>
+					This means that some links on this website are affiliate links. When you click on one of
+					these links and make a purchase, we may receive a small commission at <strong>no additional
+					cost to you</strong>. The price you pay is exactly the same whether you use our affiliate
+					link or go directly to the retailer.
+				</p>
+
+				<h2>Our Commitment to Honesty</h2>
+				<p>
+					Affiliate relationships do not influence our reviews, recommendations, or editorial content.
+					We recommend products because we believe they are genuinely useful to our readers, not
+					because of the commission we might earn.
+				</p>
+				<p>
+					We will always:
+				</p>
+				<ul>
+					<li>Give honest opinions regardless of affiliate relationships</li>
+					<li>Clearly identify when content contains affiliate links</li>
+					<li>Only recommend products we would use ourselves</li>
+					<li>Prioritize our readers' interests over commission potential</li>
+				</ul>
+
+				<h2>How to Identify Affiliate Links</h2>
+				<p>
+					Affiliate links on this site typically point to Amazon.com product searches and include
+					our tracking tag. In the page source code, these links are marked with
+					<code>rel="sponsored"</code> per Google's webmaster guidelines.
+				</p>
+				<p>
+					Individual articles that contain affiliate links include a disclosure notice
+					at the bottom of the post.
+				</p>
+
+				<h2>FTC Compliance</h2>
+				<p>
+					This disclosure is provided in accordance with the Federal Trade Commission's
+					guidelines on endorsements and testimonials. For more information, visit the
+					<a href="https://www.ftc.gov/business-guidance/resources/ftcs-endorsement-guides-what-people-are-asking" target="_blank" rel="noopener">FTC's Endorsement Guides</a>.
+				</p>
+
+				<h2>Questions</h2>
+				<p>
+					If you have questions about our affiliate relationships, reach out through our
+					<a href="https://www.youtube.com/@jayarrcoffee" target="_blank" rel="noopener">YouTube channel</a>.
+				</p>
+			</div>
+		</main>
+
+		<Footer />
+	</body>
+</html>

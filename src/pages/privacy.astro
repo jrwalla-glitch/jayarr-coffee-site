@@ -1,0 +1,128 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`Privacy Policy — ${SITE_TITLE}`} description="Privacy policy for JayArr Coffee. How we handle your data, cookies, and third-party services." />
+	</head>
+	<body class="bg-cream">
+		<Header />
+
+		<!-- Page header -->
+		<div class="pt-32 pb-16 bg-charcoal">
+			<div class="max-w-6xl mx-auto px-6">
+				<span class="text-xs uppercase tracking-widest text-copper font-medium">Legal</span>
+				<h1 class="font-serif text-5xl md:text-6xl font-bold text-cream mt-2">Privacy Policy</h1>
+			</div>
+		</div>
+
+		<main class="py-16 px-6">
+			<div class="prose">
+				<p><strong>Last updated:</strong> March 10, 2026</p>
+
+				<p>
+					JayArr Coffee ("we," "us," or "our") operates the website jayarr.coffee (the "Site").
+					This page explains what data we collect, how we use it, and your choices.
+				</p>
+
+				<h2>Information We Collect</h2>
+
+				<h3>Analytics</h3>
+				<p>
+					We use Google Analytics 4 to understand how visitors use the Site. Google Analytics collects
+					data such as your IP address (anonymized), browser type, device type, pages visited, and
+					time spent on pages. This data is aggregated and does not personally identify you.
+				</p>
+				<p>
+					Google Analytics uses cookies. You can opt out by installing the
+					<a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics Opt-out Browser Add-on</a>
+					or by disabling cookies in your browser settings.
+				</p>
+				<p>
+					For more information, see <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a>.
+				</p>
+
+				<h3>Newsletter</h3>
+				<p>
+					If you subscribe to our newsletter, we collect your email address. We use this solely to send
+					you coffee-related content. You can unsubscribe at any time using the link in every email.
+					We do not sell, share, or rent your email address to third parties.
+				</p>
+
+				<h2>Affiliate Links</h2>
+				<p>
+					Some links on this Site are affiliate links, primarily through the Amazon Associates Program.
+					When you click an affiliate link and make a purchase, we may earn a small commission at no
+					additional cost to you. These links are marked with <code>rel="sponsored"</code> in the page source.
+				</p>
+				<p>
+					For full details on our affiliate relationships, see our
+					<a href="/affiliate-disclosure">Affiliate Disclosure</a>.
+				</p>
+
+				<h2>Cookies</h2>
+				<p>
+					The Site uses cookies for:
+				</p>
+				<ul>
+					<li><strong>Analytics:</strong> Google Analytics cookies to measure site usage</li>
+					<li><strong>Functionality:</strong> Basic cookies to remember your preferences</li>
+				</ul>
+				<p>
+					We do not use advertising cookies or tracking pixels. You can disable cookies
+					in your browser settings at any time.
+				</p>
+
+				<h2>Third-Party Services</h2>
+				<p>We use the following third-party services:</p>
+				<ul>
+					<li><strong>Google Analytics</strong> — site analytics</li>
+					<li><strong>YouTube</strong> — embedded video content (subject to <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a>)</li>
+					<li><strong>Amazon Associates</strong> — affiliate product links</li>
+					<li><strong>Vercel</strong> — site hosting</li>
+				</ul>
+
+				<h2>Data Retention</h2>
+				<p>
+					Analytics data is retained for 14 months through Google Analytics, after which it is
+					automatically deleted. Newsletter subscriber data is retained until you unsubscribe.
+				</p>
+
+				<h2>Your Rights</h2>
+				<p>
+					You have the right to:
+				</p>
+				<ul>
+					<li>Opt out of analytics tracking (see above)</li>
+					<li>Unsubscribe from our newsletter at any time</li>
+					<li>Request deletion of any personal data we hold</li>
+				</ul>
+
+				<h2>Children's Privacy</h2>
+				<p>
+					The Site is not directed at children under 13. We do not knowingly collect personal
+					information from children.
+				</p>
+
+				<h2>Changes to This Policy</h2>
+				<p>
+					We may update this privacy policy from time to time. Changes will be posted on this page
+					with an updated revision date.
+				</p>
+
+				<h2>Contact</h2>
+				<p>
+					Questions about this privacy policy? Reach out through our
+					<a href="https://www.youtube.com/@jayarrcoffee" target="_blank" rel="noopener">YouTube channel</a>.
+				</p>
+			</div>
+		</main>
+
+		<Footer />
+	</body>
+</html>
