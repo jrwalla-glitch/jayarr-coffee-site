@@ -10,10 +10,11 @@ interface Props {
   subtitle: string;
   columns: string[];
   rows: Row[];
+  rowLabel?: string;
   footnote?: string;
 }
 
-const { title, subtitle, columns, rows, footnote } = Astro.props;
+const { title, subtitle, columns, rows, rowLabel = '', footnote } = Astro.props;
 ---
 
 <aside class="infographic-comparison" role="complementary" aria-label={title}>
@@ -27,7 +28,8 @@ const { title, subtitle, columns, rows, footnote } = Astro.props;
     <table>
       <thead>
         <tr>
-          <th class="col-name">Method</th>
+          {rowLabel && <th class="col-name">{rowLabel}</th>}
+          {!rowLabel && <th class="col-name"></th>}
           {columns.map((col) => <th>{col}</th>)}
           {rows[0]?.result !== undefined && <th class="col-result">Result</th>}
         </tr>

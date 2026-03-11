@@ -1,0 +1,328 @@
+---
+interface Origin {
+	name: string;
+	group: string;
+	harvest: number[];
+	arrival: number[];
+}
+
+interface QuarterTip {
+	label: string;
+	buy: string;
+	arriving: string;
+}
+
+interface Props {
+	title: string;
+	subtitle: string;
+	origins: Origin[];
+	tips?: QuarterTip[];
+	footnote?: string;
+}
+
+const { title, subtitle, origins, tips, footnote } = Astro.props;
+
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+// Group origins by region
+const groups = [...new Set(origins.map((o) => o.group))];
+---
+
+<aside class="infographic-calendar" role="complementary" aria-label={title}>
+	<header class="ig-header">
+		<span class="ig-brand">JayArr Coffee</span>
+		<h2 class="ig-title">{title}</h2>
+		<p class="ig-subtitle">{subtitle}</p>
+	</header>
+
+	<!-- Legend -->
+	<div class="cal-legend">
+		<span class="legend-item"><span class="legend-dot legend-harvest"></span> Harvest</span>
+		<span class="legend-item"><span class="legend-dot legend-arrival"></span> Peak Arrival</span>
+	</div>
+
+	<!-- Calendar Grid -->
+	<div class="cal-scroll">
+		<table class="cal-table" role="grid">
+			<thead>
+				<tr>
+					<th class="col-origin">Origin</th>
+					{months.map((m) => <th class="col-month">{m}</th>)}
+				</tr>
+			</thead>
+			<tbody>
+				{groups.map((group) => (
+					<>
+						<tr class="group-row">
+							<td colspan="13" class="group-label">{group}</td>
+						</tr>
+						{origins
+							.filter((o) => o.group === group)
+							.map((origin) => (
+								<tr class="origin-row">
+									<td class="origin-name">{origin.name}</td>
+									{months.map((_, i) => {
+										const month = i + 1;
+										const isHarvest = origin.harvest.includes(month);
+										const isArrival = origin.arrival.includes(month);
+										return (
+											<td
+												class:list={[
+													'cal-cell',
+													isHarvest && isArrival && 'cell-both',
+													isHarvest && !isArrival && 'cell-harvest',
+													!isHarvest && isArrival && 'cell-arrival',
+												]}
+												aria-label={
+													isHarvest && isArrival
+														? `${origin.name} ${months[i]}: harvest and arrival`
+														: isHarvest
+															? `${origin.name} ${months[i]}: harvest`
+															: isArrival
+																? `${origin.name} ${months[i]}: arrival`
+																: undefined
+												}
+											>
+												{isHarvest && isArrival ? '●' : isHarvest ? '●' : isArrival ? '●' : ''}
+											</td>
+										);
+									})}
+								</tr>
+							))}
+					</>
+				))}
+			</tbody>
+		</table>
+	</div>
+
+	<!-- Quarterly Strategy Tips -->
+	{tips && tips.length > 0 && (
+		<div class="cal-tips">
+			{tips.map((tip) => (
+				<div class="tip-box">
+					<span class="tip-label">{tip.label}</span>
+					<p class="tip-buy"><strong>Buy:</strong> {tip.buy}</p>
+					<p class="tip-arriving"><strong>Arriving:</strong> {tip.arriving}</p>
+				</div>
+			))}
+		</div>
+	)}
+
+	{footnote && <p class="cal-footnote">{footnote}</p>}
+
+	<div class="ig-footer">jayarr.coffee</div>
+</aside>
+
+<style>
+	.infographic-calendar {
+		max-width: 720px;
+		margin: 2.5rem auto;
+		font-family: 'Inter', system-ui, sans-serif;
+		color: var(--color-charcoal, #1A1A1A);
+		-webkit-font-smoothing: antialiased;
+	}
+
+	.ig-header {
+		text-align: center;
+		margin-bottom: 1.5rem;
+	}
+
+	.ig-brand {
+		display: block;
+		font-weight: 600;
+		font-size: 0.8125rem;
+		letter-spacing: 3px;
+		text-transform: uppercase;
+		color: var(--color-copper, #C17A3A);
+		margin-bottom: 0.75rem;
+	}
+
+	.ig-title {
+		font-family: 'Playfair Display', Georgia, serif;
+		font-weight: 900;
+		font-size: 2rem;
+		color: var(--color-charcoal, #1A1A1A);
+		line-height: 1.15;
+		margin: 0 0 0.5rem;
+		letter-spacing: -0.02em;
+	}
+
+	.ig-subtitle {
+		font-size: 0.9375rem;
+		color: var(--color-warm-gray, #6B6560);
+		margin: 0;
+	}
+
+	.cal-legend {
+		display: flex;
+		justify-content: center;
+		gap: 1.5rem;
+		margin-bottom: 1.25rem;
+		font-size: 0.8125rem;
+		color: var(--color-warm-gray, #6B6560);
+	}
+
+	.legend-item {
+		display: flex;
+		align-items: center;
+		gap: 0.375rem;
+	}
+
+	.legend-dot {
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+	}
+
+	.legend-harvest {
+		background-color: #3A6B35;
+	}
+
+	.legend-arrival {
+		background-color: #2C5F8A;
+	}
+
+	.cal-scroll {
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.cal-table {
+		width: 100%;
+		border-collapse: collapse;
+		min-width: 600px;
+	}
+
+	.cal-table th {
+		font-size: 0.6875rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--color-warm-gray, #6B6560);
+		padding: 0.5rem 0.25rem;
+		text-align: center;
+		border-bottom: 2px solid var(--color-copper, #C17A3A);
+	}
+
+	.col-origin {
+		text-align: left !important;
+		padding-left: 0 !important;
+		min-width: 120px;
+		position: sticky;
+		left: 0;
+		background: var(--color-cream, #F5F0E8);
+		z-index: 1;
+	}
+
+	.col-month {
+		width: calc((100% - 120px) / 12);
+	}
+
+	.group-row td {
+		font-size: 0.6875rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		color: var(--color-copper, #C17A3A);
+		padding: 0.75rem 0 0.25rem;
+		border: none;
+	}
+
+	.group-label {
+		position: sticky;
+		left: 0;
+		background: var(--color-cream, #F5F0E8);
+	}
+
+	.origin-row {
+		border-bottom: 1px solid rgba(155, 149, 144, 0.15);
+	}
+
+	.origin-name {
+		font-size: 0.8125rem;
+		font-weight: 500;
+		color: var(--color-charcoal, #1A1A1A);
+		padding: 0.5rem 0.5rem 0.5rem 0;
+		white-space: nowrap;
+		position: sticky;
+		left: 0;
+		background: var(--color-cream, #F5F0E8);
+		z-index: 1;
+	}
+
+	.cal-cell {
+		text-align: center;
+		padding: 0.375rem 0.125rem;
+		font-size: 0.625rem;
+		line-height: 1;
+	}
+
+	.cell-harvest {
+		color: #3A6B35;
+		background: rgba(58, 107, 53, 0.1);
+	}
+
+	.cell-arrival {
+		color: #2C5F8A;
+		background: rgba(44, 95, 138, 0.1);
+	}
+
+	.cell-both {
+		color: #3A6B35;
+		background: linear-gradient(135deg, rgba(58, 107, 53, 0.15) 50%, rgba(44, 95, 138, 0.15) 50%);
+	}
+
+	.cal-tips {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 0.75rem;
+		margin-top: 1.5rem;
+	}
+
+	.tip-box {
+		background: var(--color-cream-dark, #EBE4D8);
+		border-radius: 4px;
+		padding: 0.875rem 1rem;
+	}
+
+	.tip-label {
+		display: block;
+		font-weight: 600;
+		font-size: 0.8125rem;
+		color: var(--color-copper, #C17A3A);
+		margin-bottom: 0.375rem;
+	}
+
+	.tip-buy,
+	.tip-arriving {
+		font-size: 0.75rem;
+		color: var(--color-warm-gray, #6B6560);
+		margin: 0.125rem 0;
+		line-height: 1.4;
+	}
+
+	.cal-footnote {
+		font-size: 0.75rem;
+		color: var(--color-warm-gray-light, #9B9590);
+		text-align: center;
+		margin-top: 1rem;
+		font-style: italic;
+	}
+
+	.ig-footer {
+		text-align: center;
+		padding: 1.25rem 0 0;
+		font-size: 0.75rem;
+		color: var(--color-warm-gray-light, #9B9590);
+	}
+
+	@media (max-width: 480px) {
+		.ig-title {
+			font-size: 1.5rem;
+		}
+
+		.cal-tips {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

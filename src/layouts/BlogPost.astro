@@ -5,23 +5,135 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
+import RelatedPosts from '../components/RelatedPosts.astro';
+import { SITE_TITLE } from '../consts';
 
-type Props = CollectionEntry<'blog'>['data'];
+type Props = CollectionEntry<'blog'>['data'] & { id: string };
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, category, id } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+// JSON-LD Article structured data
+const articleSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Article',
+	headline: title,
+	description: description,
+	image: heroImage ? new URL(heroImage.src, Astro.site).toString() : undefined,
+	datePublished: pubDate.toISOString(),
+	dateModified: (updatedDate ?? pubDate).toISOString(),
+	author: {
+		'@type': 'Organization',
+		name: SITE_TITLE,
+		url: Astro.site?.toString(),
+	},
+	publisher: {
+		'@type': 'Organization',
+		name: SITE_TITLE,
+		url: Astro.site?.toString(),
+	},
+	mainEntityOfPage: {
+		'@type': 'WebPage',
+		'@id': canonicalURL.toString(),
+	},
+};
+
+// Breadcrumb structured data
+const breadcrumbSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'BreadcrumbList',
+	itemListElement: [
+		{
+			'@type': 'ListItem',
+			position: 1,
+			name: 'Home',
+			item: Astro.site?.toString(),
+		},
+		{
+			'@type': 'ListItem',
+			position: 2,
+			name: 'Articles',
+			item: new URL('/blog/', Astro.site).toString(),
+		},
+		...(category
+			? [
+					{
+						'@type': 'ListItem',
+						position: 3,
+						name: category,
+						item: new URL(`/blog/category/${category.toLowerCase()}/`, Astro.site).toString(),
+					},
+					{
+						'@type': 'ListItem',
+						position: 4,
+						name: title,
+						item: canonicalURL.toString(),
+					},
+				]
+			: [
+					{
+						'@type': 'ListItem',
+						position: 3,
+						name: title,
+						item: canonicalURL.toString(),
+					},
+				]),
+	],
+};
 ---
 
 <html lang="en">
 	<head>
-		<BaseHead title={title} description={description} />
+		<BaseHead
+			title={title}
+			description={description}
+			image={heroImage}
+			isArticle={true}
+			pubDate={pubDate}
+			updatedDate={updatedDate}
+		/>
+		<script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+		<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 	</head>
 	<body class="bg-cream">
 		<Header />
 
+		<!-- Breadcrumbs -->
+		<div class="pt-24 pb-0 bg-charcoal">
+			<nav class="max-w-3xl mx-auto px-6" aria-label="Breadcrumb">
+				<ol class="flex items-center gap-2 text-xs text-cream/40">
+					<li><a href="/" class="hover:text-cream/60 transition-colors">Home</a></li>
+					<li class="select-none">/</li>
+					<li><a href="/blog/" class="hover:text-cream/60 transition-colors">Articles</a></li>
+					{category && (
+						<>
+							<li class="select-none">/</li>
+							<li>
+								<a href={`/blog/category/${category.toLowerCase()}/`} class="hover:text-cream/60 transition-colors">
+									{category}
+								</a>
+							</li>
+						</>
+					)}
+					<li class="select-none">/</li>
+					<li class="text-cream/60 truncate max-w-[200px]">{title}</li>
+				</ol>
+			</nav>
+		</div>
+
 		<!-- Article header -->
-		<div class="pt-32 pb-12 bg-charcoal">
+		<div class="pt-6 pb-12 bg-charcoal">
 			<div class="max-w-3xl mx-auto px-6 text-center">
-				<time class="text-xs uppercase tracking-widest text-copper">
+				{category && (
+					<a
+						href={`/blog/category/${category.toLowerCase()}/`}
+						class="inline-block text-xs uppercase tracking-widest text-copper hover:text-copper-light transition-colors mb-3"
+					>
+						{category}
+					</a>
+				)}
+				<time class="block text-xs uppercase tracking-widest text-cream/50">
 					<FormattedDate date={pubDate} />
 				</time>
 				{updatedDate && (
@@ -51,13 +163,54 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 			</div>
 		)}
 
+		<!-- Table of Contents (auto-generated from h2 headings) -->
+		<nav id="toc" class="hidden max-w-[720px] mx-auto px-6 mt-10 mb-2">
+			<details class="bg-cream-dark rounded-sm p-5 group" open>
+				<summary class="cursor-pointer text-xs uppercase tracking-widest text-warm-gray font-medium select-none list-none flex items-center justify-between">
+					<span>In This Article</span>
+					<svg class="w-4 h-4 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+				</summary>
+				<ol id="toc-list" class="mt-4 flex flex-col gap-2 text-sm text-charcoal/70"></ol>
+			</details>
+		</nav>
+
 		<!-- Article body -->
 		<main class="py-16 px-6">
-			<article class="prose">
+			<article class="prose" id="article-content">
 				<slot />
 			</article>
+
+			<!-- Related Posts -->
+			<div class="max-w-[720px] mx-auto">
+				<RelatedPosts currentId={id} category={category} />
+			</div>
 		</main>
 
 		<Footer />
+
+		<!-- Table of Contents script -->
+		<script>
+			const article = document.getElementById('article-content');
+			const toc = document.getElementById('toc');
+			const tocList = document.getElementById('toc-list');
+
+			if (article && toc && tocList) {
+				const headings = article.querySelectorAll('h2');
+				if (headings.length >= 3) {
+					toc.classList.remove('hidden');
+					headings.forEach((heading, i) => {
+						const id = heading.id || `section-${i}`;
+						heading.id = id;
+						const li = document.createElement('li');
+						const a = document.createElement('a');
+						a.href = `#${id}`;
+						a.textContent = heading.textContent;
+						a.className = 'text-copper hover:text-copper-dark transition-colors';
+						li.appendChild(a);
+						tocList.appendChild(li);
+					});
+				}
+			}
+		</script>
 	</body>
 </html>

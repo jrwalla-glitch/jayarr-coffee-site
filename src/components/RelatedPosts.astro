@@ -1,0 +1,57 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+
+interface Props {
+	currentId: string;
+	category?: string;
+	limit?: number;
+}
+
+const { currentId, category, limit = 3 } = Astro.props;
+
+const allPosts = await getCollection('blog');
+
+// Priority: same category first, then recent posts
+let related = allPosts
+	.filter((p) => p.id !== currentId)
+	.sort((a, b) => {
+		const aMatch = category && a.data.category === category ? 1 : 0;
+		const bMatch = category && b.data.category === category ? 1 : 0;
+		if (aMatch !== bMatch) return bMatch - aMatch;
+		return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+	})
+	.slice(0, limit);
+---
+
+{related.length > 0 && (
+	<aside class="mt-16 pt-12 border-t border-charcoal/10">
+		<h2 class="font-serif text-2xl font-bold text-charcoal mb-8">You Might Also Enjoy</h2>
+		<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+			{related.map((post) => (
+				<a href={`/blog/${post.id}/`} class="group block">
+					<article>
+						{post.data.heroImage && (
+							<div class="aspect-[16/10] overflow-hidden rounded-sm mb-3">
+								<Image
+									width={360}
+									height={225}
+									src={post.data.heroImage}
+									alt={post.data.title}
+									class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+								/>
+							</div>
+						)}
+						{post.data.category && (
+							<span class="text-xs uppercase tracking-widest text-copper">{post.data.category}</span>
+						)}
+						<h3 class="font-serif text-lg font-bold text-charcoal mt-1 group-hover:text-copper transition-colors leading-snug">
+							{post.data.title}
+						</h3>
+					</article>
+				</a>
+			))}
+		</div>
+	</aside>
+)}

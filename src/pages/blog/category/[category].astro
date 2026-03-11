@@ -1,0 +1,98 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import BaseHead from '../../../components/BaseHead.astro';
+import Footer from '../../../components/Footer.astro';
+import FormattedDate from '../../../components/FormattedDate.astro';
+import Header from '../../../components/Header.astro';
+import { SITE_TITLE } from '../../../consts';
+import { CATEGORIES } from '../../../content.config';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('blog');
+	return CATEGORIES.map((category) => ({
+		params: { category: category.toLowerCase() },
+		props: {
+			category,
+			posts: posts
+				.filter((p) => p.data.category === category)
+				.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+		},
+	}));
+}
+
+const { category, posts } = Astro.props;
+
+const categoryDescriptions: Record<string, string> = {
+	Origins: 'Where coffee comes from — regions, farms, terroir, and the people who grow it.',
+	Equipment: 'Grinders, brewers, kettles, and the gear that makes great coffee possible.',
+	Brewing: 'Methods, techniques, and recipes for extracting the best from your beans.',
+	Science: 'The chemistry, physics, and biology behind what makes coffee taste the way it does.',
+	Recipes: 'Coffee drinks, preparations, and creative concoctions to make at home.',
+	Drinks: 'Espresso drinks, specialty beverages, and the culture of coffee consumption.',
+};
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`${category} — ${SITE_TITLE}`}
+			description={categoryDescriptions[category] || `${category} articles from ${SITE_TITLE}.`}
+		/>
+	</head>
+	<body class="bg-cream">
+		<Header />
+
+		<!-- Page header -->
+		<div class="pt-32 pb-16 bg-charcoal">
+			<div class="max-w-6xl mx-auto px-6">
+				<a href="/blog/" class="text-xs uppercase tracking-widest text-copper hover:text-copper-light transition-colors">
+					&larr; All Articles
+				</a>
+				<h1 class="font-serif text-5xl md:text-6xl font-bold text-cream mt-4">{category}</h1>
+				<p class="text-cream/60 mt-3 max-w-xl">{categoryDescriptions[category]}</p>
+			</div>
+		</div>
+
+		<!-- Articles grid -->
+		<main class="max-w-6xl mx-auto px-6 py-16">
+			{posts.length === 0 ? (
+				<p class="text-warm-gray text-center py-12">No articles in this category yet.</p>
+			) : (
+				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+					{posts.map((post) => (
+						<a href={`/blog/${post.id}/`} class="group block">
+							<article>
+								{post.data.heroImage && (
+									<div class="aspect-[16/10] overflow-hidden rounded-sm mb-4">
+										<Image
+											width={720}
+											height={450}
+											src={post.data.heroImage}
+											alt={post.data.title}
+											class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+										/>
+									</div>
+								)}
+								<time class="text-xs uppercase tracking-widest text-warm-gray">
+									<FormattedDate date={post.data.pubDate} />
+								</time>
+								<h2 class="font-serif text-xl font-bold text-charcoal mt-1 mb-2 group-hover:text-copper transition-colors">
+									{post.data.title}
+								</h2>
+								{post.data.description && (
+									<p class="text-sm text-warm-gray leading-relaxed line-clamp-3">
+										{post.data.description}
+									</p>
+								)}
+							</article>
+						</a>
+					))}
+				</div>
+			)}
+		</main>
+
+		<Footer />
+	</body>
+</html>

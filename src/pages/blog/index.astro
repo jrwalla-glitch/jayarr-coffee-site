@@ -6,6 +6,7 @@ import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
 import { SITE_TITLE } from '../../consts';
+import { CATEGORIES } from '../../content.config';
 
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
@@ -28,11 +29,33 @@ const posts = (await getCollection('blog')).sort(
 			</div>
 		</div>
 
+		<!-- Category filter tabs -->
+		<div class="bg-cream-dark border-b border-charcoal/10">
+			<div class="max-w-6xl mx-auto px-6">
+				<div class="flex items-center gap-1 overflow-x-auto py-3 -mb-px scrollbar-hide">
+					<button
+						data-category="all"
+						class="category-tab whitespace-nowrap px-4 py-2 text-sm font-medium rounded-sm transition-colors text-charcoal bg-cream border border-charcoal/15"
+					>
+						All
+					</button>
+					{CATEGORIES.map((cat) => (
+						<button
+							data-category={cat}
+							class="category-tab whitespace-nowrap px-4 py-2 text-sm font-medium rounded-sm transition-colors text-warm-gray hover:text-charcoal hover:bg-cream/50"
+						>
+							{cat}
+						</button>
+					))}
+				</div>
+			</div>
+		</div>
+
 		<!-- Articles grid -->
 		<main class="max-w-6xl mx-auto px-6 py-16">
-			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+			<div id="posts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
 				{posts.map((post) => (
-					<a href={`/blog/${post.id}/`} class="group block">
+					<a href={`/blog/${post.id}/`} class="group block post-card" data-category={post.data.category || ''}>
 						<article>
 							{post.data.heroImage && (
 								<div class="aspect-[16/10] overflow-hidden rounded-sm mb-4">
@@ -45,9 +68,14 @@ const posts = (await getCollection('blog')).sort(
 									/>
 								</div>
 							)}
-							<time class="text-xs uppercase tracking-widest text-warm-gray">
-								<FormattedDate date={post.data.pubDate} />
-							</time>
+							<div class="flex items-center gap-3 mb-1">
+								{post.data.category && (
+									<span class="text-xs uppercase tracking-widest text-copper">{post.data.category}</span>
+								)}
+								<time class="text-xs uppercase tracking-widest text-warm-gray">
+									<FormattedDate date={post.data.pubDate} />
+								</time>
+							</div>
 							<h2 class="font-serif text-xl font-bold text-charcoal mt-1 mb-2 group-hover:text-copper transition-colors">
 								{post.data.title}
 							</h2>
@@ -63,5 +91,32 @@ const posts = (await getCollection('blog')).sort(
 		</main>
 
 		<Footer />
+
+		<script>
+			const tabs = document.querySelectorAll('.category-tab');
+			const cards = document.querySelectorAll('.post-card');
+
+			tabs.forEach((tab) => {
+				tab.addEventListener('click', () => {
+					const category = (tab as HTMLElement).dataset.category;
+
+					// Update active tab styling
+					tabs.forEach((t) => {
+						t.className = 'category-tab whitespace-nowrap px-4 py-2 text-sm font-medium rounded-sm transition-colors text-warm-gray hover:text-charcoal hover:bg-cream/50';
+					});
+					tab.className = 'category-tab whitespace-nowrap px-4 py-2 text-sm font-medium rounded-sm transition-colors text-charcoal bg-cream border border-charcoal/15';
+
+					// Filter posts
+					cards.forEach((card) => {
+						const cardCategory = (card as HTMLElement).dataset.category;
+						if (category === 'all' || cardCategory === category) {
+							(card as HTMLElement).style.display = '';
+						} else {
+							(card as HTMLElement).style.display = 'none';
+						}
+					});
+				});
+			});
+		</script>
 	</body>
 </html>

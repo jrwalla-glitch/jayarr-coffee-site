@@ -1,0 +1,174 @@
+---
+title: "Coffee Grind Size: Micron Chart with Grinder Settings"
+description: "Micron ranges for every brew method plus dial-in settings for Comandante, 1Zpresso, Baratza Encore, Niche Zero, Fellow Ode, and more."
+pubDate: "Mar 07 2026"
+updatedDate: "Mar 10 2026"
+heroImage: "../../assets/blog/coffee-grind-size-micron-chart.jpg"
+category: "Brewing"
+---
+import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
+import ReferenceGuide from '../../components/infographics/ReferenceGuide.astro';
+import FAQ from '../../components/FAQ.astro';
+
+Most grind size advice is vague. "Medium-fine, like table salt." That gets you in the ballpark, but it doesn't tell you what number to set your [Comandante](https://www.amazon.com/s?k=Comandante+C40+Coffee+Grinder&tag=jayarrcoffee-20) to, or which [Baratza Encore](https://www.amazon.com/s?k=Baratza+Encore+Coffee+Grinder&tag=jayarrcoffee-20) setting matches a V60 grind.
+
+This guide puts actual numbers on grind size. Micron ranges for every brew method, translated into specific settings for nine popular grinders. These are starting points — every coffee behaves differently — but they'll get you close enough to dial in by taste in one or two adjustments. For a broader overview of grind size principles, see our [grind size guide](/blog/coffee-grind-size-guide-what-grind-for-every-brew-method/).
+
+## Why Grind Size Is Measured in Microns
+
+A micron (micrometer) is one-thousandth of a millimeter. Coffee particle size spans roughly 100-1500 microns depending on the brew method, from powdery Turkish grinds to the coarse chunks used for [cold brew](/blog/whats-great-about-cold-brew-toddy-cold-brew-tutorial/).
+
+Measuring in microns matters because it removes ambiguity. "Medium-fine" means different things to different people. 500-800 microns does not.
+
+No grinder produces uniform particles. Every grind contains a distribution — a bell curve of sizes with some fines (tiny particles below roughly 100 microns) and some boulders (large chunks above roughly 1000 microns). The median particle size is your target, but the fines deserve attention too. Research from Jonathan Gagne shows that the D10 value (the 10th percentile — the size below which 10% of particles fall) determines the coffee bed's flow resistance more than the average or median particle size. A small percentage of fines can dominate your [extraction](/blog/coffee-extraction-yield-explained/) by clogging the filter bed and dramatically increasing contact time.
+
+This is why grind *quality* matters as much as grind *setting*, and why switching grinders changes flavor more than any other single variable — more than water, [temperature](/blog/whats-the-ideal-coffee-brewing-temperature/), technique, or ratio.
+
+## Micron Ranges by Brew Method
+
+These ranges represent the median particle size (D50) you're targeting. Your grinder's actual output will span a wider distribution around this center point.
+
+<ComparisonTable
+  title="Grind Size Micron Ranges"
+  subtitle="Median particle size (D50) targets for every brew method"
+  rowLabel="Brew Method"
+  columns={["Micron Range", "Texture Analog", "Contact Time"]}
+  rows={[
+    { name: "Turkish (ibrik/cezve)", values: ["under 200", "Flour, powder", "2-3 min (boiled)"] },
+    { name: "Espresso", values: ["200-400", "Powdered sugar", "25-35 seconds"] },
+    { name: "Moka Pot", values: ["400-500", "Fine sand", "3-5 minutes"] },
+    { name: "AeroPress", values: ["400-700", "Table salt to fine sand", "1-3 minutes"] },
+    { name: "Pour-Over (V60)", values: ["500-800", "Table salt", "2:30-3:30"] },
+    { name: "Flat-Bottom Drip", values: ["600-900", "Medium sand", "4-5 minutes"] },
+    { name: "Chemex", values: ["600-900", "Medium-coarse sand", "4-5 minutes"] },
+    { name: "Cupping", values: ["800-1000", "Coarse sand", "4 min (immersion)"] },
+    { name: "French Press", values: ["800-1200", "Sea salt, raw sugar", "4-5 minutes"] },
+    { name: "Cold Brew", values: ["1000-1500", "Peppercorn, raw sugar", "12-24 hours"] }
+  ]}
+  footnote="Ranges are starting points. Adjust finer for sour cups, coarser for bitter cups."
+/>
+
+**A few notes on these ranges:**
+
+The [AeroPress](/blog/why-and-how-you-should-use-an-aeropress/) range is deliberately wide. Competition recipes often use surprisingly coarse grinds with short steep times, while traditional recipes use finer grinds. The AeroPress is one of the most forgiving brewers precisely because you can compensate with time, temperature, and pressure.
+
+Chemex sits at the same micron range as flat-bottom drip despite being a cone-shaped brewer. The Chemex's bonded paper filter is roughly 20-30% thicker than standard filters, creating significant flow resistance. You compensate with a slightly coarser grind than you'd use for a [V60](/blog/ultimate-pour-over-coffee-guide-and-best-v60-technique/).
+
+Cupping — the professional tasting method — uses an immersion technique at a grind coarser than most people expect. The SCA cupping protocol specifies a grind slightly coarser than typical drip.
+
+## Grinder Settings Translation Chart
+
+Every grinder's numbering system is arbitrary. Click 20 on a Comandante is not the same as setting 20 on a Baratza Encore. The chart below translates micron targets into the specific dial or click setting for nine popular grinders.
+
+### The Master Chart
+
+<ComparisonTable
+  title="Grind Settings by Grinder"
+  subtitle="Starting points for every brew method — dial in by taste"
+  rowLabel="Brew Method"
+  columns={["Microns", "Comandante C40", "1Zpresso JX-Pro", "Timemore C2/C3", "Baratza Encore", "Virtuoso+", "Niche Zero", "Fellow Ode Gen 2", "Hario Skerton"]}
+  rows={[
+    { name: "Turkish", values: ["under 200", "6-8", "1.0-1.5", "--", "--", "--", "3-6", "--", "--"] },
+    { name: "Espresso", values: ["200-400", "10-15", "1.8-2.5", "--", "ESP: 2-5", "--", "8-15", "--", "--"] },
+    { name: "Moka Pot", values: ["400-500", "15-18", "2.5-2.8", "12-14", "4-8", "4-8", "15-20", "1-2", "3-5"] },
+    { name: "AeroPress", values: ["400-700", "18-24", "2.8-3.5", "14-18", "6-15", "6-15", "25-32", "2-4", "4-6"] },
+    { name: "V60 Pour-Over", values: ["500-800", "22-28", "3.0-3.8", "18-24", "12-20", "12-20", "28-35", "3-5", "6-8"] },
+    { name: "Kalita / Drip", values: ["600-900", "24-30", "3.2-4.0", "20-26", "15-24", "15-24", "30-38", "4-6", "7-9"] },
+    { name: "Chemex", values: ["600-900", "24-30", "3.2-4.0", "20-26", "15-24", "15-24", "30-38", "4-6", "7-9"] },
+    { name: "Cupping", values: ["800-1000", "26-32", "3.5-4.5", "22-28", "20-28", "20-28", "34-42", "5-7", "7-9"] },
+    { name: "French Press", values: ["800-1200", "30-36", "4.0-5.0", "24-30", "28-35", "34-39", "40-48", "7-9", "8-10"] },
+    { name: "Cold Brew", values: ["1000-1500", "34-40", "4.5-5.5", "28-34", "32-38", "36-40", "44-50", "9-11", "9-11"] }
+  ]}
+  footnote={'\"--\" means not recommended for that grinder. Every coffee, grinder, and water source behaves differently — treat these as starting points.'}
+/>
+
+### Hand Grinder Notes
+
+**[Comandante C40 (MK4)](https://www.amazon.com/s?k=Comandante+C40+Coffee+Grinder&tag=jayarrcoffee-20)** — The reference hand grinder. Nitro Blade burrs, roughly 30 microns per click. Covers the full range from Turkish to cold brew.
+
+**[1Zpresso JX-Pro](https://www.amazon.com/s?k=1Zpresso+JX-Pro+Coffee+Grinder&tag=jayarrcoffee-20)** — Best-value hand grinder for espresso and filter. 12.5 microns per click gives fine enough adjustment steps for [espresso](/blog/espresso-battle-royale-reviews-of-gaggia-breville-bambino-and-phillips-3200/) dialing. At $130-160, it rivals electric grinders at $300 or more.
+
+**1Zpresso J-Max** — Similar range to the JX-Pro but with finer adjustment steps at 8.8 microns per click. More precision when dialing espresso, where small changes have outsized effects.
+
+**Timemore C2/C3** — The go-to budget hand grinder. The C3 upgraded to S2C burrs. Adequate for filter brewing but lacks the fine resolution needed for espresso precision.
+
+**Hario Skerton** — A common entry-level grinder, but known for inconsistency at coarser settings because the inner burr wobbles without a stabilizer. Settings are approximate.
+
+For a full comparison, see our [top 10 manual grinders](/blog/top-10-best-manual-coffee-grinders/) roundup.
+
+### Electric Grinder Notes
+
+**[Baratza Encore / Encore ESP](https://www.amazon.com/s?k=Baratza+Encore+Coffee+Grinder&tag=jayarrcoffee-20)** — The workhorse entry-level electric. Numbered 1-40. The Encore ESP has upgraded M2 burrs with better espresso capability, but the standard Encore is still too coarse for proper espresso.
+
+**[Baratza Virtuoso+](https://www.amazon.com/s?k=Baratza+Virtuoso+Coffee+Grinder&tag=jayarrcoffee-20)** — Same form factor as the Encore but with upgraded 40mm conical burrs and a digital timer. Slightly better grind uniformity across the range.
+
+**[Niche Zero](https://www.amazon.com/s?k=Niche+Zero+Coffee+Grinder&tag=jayarrcoffee-20)** — 63mm Mazzer conical burrs, near-zero retention, single-dose design. The grinder that disrupted the mid-range market. Handles both espresso and filter well, though conical burrs produce a bimodal distribution less ideal for maximum light-roast clarity.
+
+**[Fellow Ode Gen 2](https://www.amazon.com/s?k=Fellow+Ode+Gen+2+Coffee+Grinder&tag=jayarrcoffee-20)** — 64mm flat burrs (SSP-designed) with outstanding filter grind consistency. Numbered 1-11. Purpose-built for filter coffee — it cannot grind fine enough for espresso, and that is by design.
+
+For more detail, check our [best electric grinders](/blog/top-5-best-electric-coffee-grinders/) guide.
+
+## Why These Are Ranges, Not Single Numbers
+
+You'll notice every recommendation is a range, not a precise setting. That's intentional. Several factors shift where your ideal grind sits within (or even outside) these ranges:
+
+<ReferenceGuide
+  title="Grind Size Variable Modifiers"
+  subtitle="Factors that shift your ideal grind setting"
+  items={[
+    { label: "Fresh Beans (under 2 weeks)", description: "CO2 creates turbulence, accelerates extraction", value: "Grind 1-2 steps coarser" },
+    { label: "Stale Beans (over 4 weeks)", description: "Lost volatiles, needs more extraction", value: "Grind 1-2 steps finer" },
+    { label: "Dark Roast", description: "Brittle, porous, extracts faster", value: "Grind 1-2 steps coarser" },
+    { label: "Light Roast", description: "Dense, hard, resists extraction", value: "Grind 1-2 steps finer" },
+    { label: "Higher Dose", description: "Deeper bed increases contact time", value: "Grind slightly coarser" },
+    { label: "High-Altitude Beans", description: "Denser beans resist extraction", value: "Grind 1-2 clicks finer" }
+  ]}
+/>
+
+**Coffee freshness.** Freshly roasted coffee (within 2-3 weeks of roast) releases CO2 during brewing, which creates turbulence and can accelerate extraction. You may need to grind slightly coarser for fresh beans. Stale coffee (more than a month past roast) has lost volatile compounds and needs a finer grind to extract enough flavor.
+
+**Roast level.** Dark roasts are more brittle and more porous — they shatter into smaller particles more easily and extract faster. Grind coarser for dark roasts than you would for the same method with a light roast. Light roasts are denser and harder, requiring finer grinding and more aggressive extraction.
+
+**Dose.** A higher dose of coffee in the same brewer creates a deeper bed, increasing contact time. You can compensate by grinding slightly coarser when updosing, or finer when underdosing.
+
+**Bean density and origin.** High-altitude beans (Ethiopian, Kenyan, Colombian highlands) are denser and harder. They resist extraction slightly more than lower-altitude beans, sometimes calling for a click or two finer than baseline.
+
+## How to Dial In by Taste
+
+Start with the middle of the recommended range for your grinder and brew method. Taste the result. Then adjust:
+
+**If the coffee tastes sour, thin, or acidic** — you're under-extracting. Grind finer to increase surface area and [extraction](/blog/coffee-extraction-yield-explained/). On the Comandante, move 2-3 clicks finer. On the Encore or Virtuoso, adjust 1-2 numbers down. On the Niche Zero, 2-3 numbers down.
+
+**If the coffee tastes bitter, harsh, or astringent** — you're over-extracting. Grind coarser to reduce surface area. Same adjustment increments: 2-3 clicks on hand grinders, 1-2 numbers on stepped electric grinders.
+
+**If the coffee tastes both sour and bitter simultaneously** — this usually signals uneven extraction rather than a simple grind size problem. Your grinder may be producing too wide a particle distribution. Before changing the grind setting, try improving your technique: more consistent pouring for [pour-over](/blog/ultimate-pour-over-coffee-guide-and-best-v60-technique/), better distribution for espresso. If the problem persists across different coffees, it may be a grinder quality issue.
+
+**If the coffee tastes flat or muted** — the grind might be close but the coffee could be stale, or water temperature could be too low. Check freshness and make sure your water is in the 195-205 degrees Fahrenheit (91-96 degrees Celsius) range. See our [brew temperature guide](/blog/whats-the-ideal-coffee-brewing-temperature/) for more detail.
+
+Make one change at a time. If you adjust grind size and temperature simultaneously, you won't know which fixed (or broke) the cup.
+
+## The D10 Factor: What Most Charts Miss
+
+Most grind charts show you the median particle size. But Gagne's research demonstrates that the D10 — the size at which 10% of particles are smaller — is what actually controls flow rate through the coffee bed. A grinder that produces a median particle of 600 microns with a D10 of 150 microns will brew very differently from one that produces the same median with a D10 of 250 microns, even at the "same" setting.
+
+This is why the same Comandante click number can produce different results after you change burrs, after significant burr wear, or after deep cleaning that removes accumulated fines. It's also why two people can follow the same recipe on the same grinder model and get different cups — manufacturing tolerances and burr alignment vary unit to unit.
+
+The takeaway: use the numbers in this guide as starting points. Your specific grinder, your specific coffee, and your specific water will need their own calibration. But now you know what ballpark you're aiming for.
+
+## A Note on Grinder Upgrades
+
+If you're consistently struggling to dial in — if the adjustment window seems impossibly narrow, or you can never quite eliminate simultaneous sourness and bitterness — the grinder is likely the bottleneck. A grinder with a tighter particle distribution gives you a wider window of settings that produce good results.
+
+The [hand grinder](/blog/top-10-best-manual-coffee-grinders/) market has made high-quality grinding remarkably accessible. A [1Zpresso JX-Pro](https://www.amazon.com/s?k=1Zpresso+JX-Pro+Coffee+Grinder&tag=jayarrcoffee-20) at $130-160 rivals [electric grinders](/blog/top-5-best-electric-coffee-grinders/) at $300 or more. The [Comandante C40](https://www.amazon.com/s?k=Comandante+C40+Coffee+Grinder&tag=jayarrcoffee-20) at $280-310 competes with electrics twice its price. And the DF64 platform with SSP aftermarket burrs ($400 + $200) gets you 80-90% of $1,500 grinder performance.
+
+Invest in the grinder first. It matters more than the brewer, the kettle, the scale, or the beans themselves. Everything else is refinement. The grinder is the foundation.
+
+---
+
+<FAQ items={[
+  { question: "What grind size in microns should I use for pour-over?", answer: "For a V60-style cone pour-over, target 500-800 microns. Flat-bottom brewers like the Kalita Wave and batch drip machines run slightly coarser at 600-900 microns because the flat bed slows drainage. These are median particle sizes — your actual grind will contain a distribution of finer and coarser particles around this center point. Start in the middle of the range and adjust finer if the coffee tastes sour, coarser if it tastes bitter." },
+  { question: "What Comandante click setting should I use for espresso vs. filter?", answer: "For espresso on a Comandante C40 MK4, start at 10-15 clicks from zero. For V60 pour-over, start at 22-28 clicks. For French press, 30-36 clicks. Each click is roughly 30 microns, so adjusting 2-3 clicks makes a noticeable difference. These are starting points — dial in by taste, and expect fresh, light-roast beans to need the finer end of each range." },
+  { question: "Why does the same grinder setting taste different with different coffees?", answer: "Four factors shift the ideal grind point: freshness (fresh beans need coarser, stale beans finer), roast level (dark roasts extract faster, need coarser), bean density (high-altitude beans are harder, may need finer), and dose (more coffee in the brewer means more contact time, may need coarser). The same Comandante click or Encore number will over-extract a dark-roast Brazilian and under-extract a light-roast Ethiopian Yirgacheffe. Treat every new bag as a fresh dial-in." },
+  { question: "Can the Baratza Encore grind fine enough for espresso?", answer: "The standard Baratza Encore cannot reliably grind fine enough for espresso. Its coarsest useful range starts around AeroPress territory (setting 6-15). The Encore ESP variant, with upgraded M2 burrs, can reach espresso-fine grinds at settings 2-5, but it still lacks the stepless micro-adjustment that dedicated espresso grinders provide. If espresso is your primary brew method, consider a 1Zpresso JX-Pro, Niche Zero, or Turin DF64 instead." },
+  { question: "What is D10 and why does it matter more than average grind size?", answer: "D10 is the particle size at which 10% of your grind is smaller. Research shows that D10 — not the average or median — determines how fast water flows through the coffee bed. A small fraction of fine particles can clog the bed and dramatically slow drainage, increasing extraction across all particles. This is why two grinders set to the same medium can produce wildly different cups: the one with more fines will brew slower and extract more. It is also why grind uniformity matters as much as grind setting." }
+]} />

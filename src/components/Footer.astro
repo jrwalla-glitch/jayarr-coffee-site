@@ -1,10 +1,12 @@
 ---
+import { CATEGORIES } from '../content.config';
+
 const today = new Date();
 ---
 
 <footer class="bg-charcoal text-cream/70">
   <div class="max-w-6xl mx-auto px-6 py-16">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
       <!-- Brand -->
       <div>
         <h3 class="font-serif text-2xl font-bold text-cream mb-4">JayArr Coffee</h3>
@@ -12,11 +14,21 @@ const today = new Date();
           Exploring specialty coffee through science, scoring, and honest reviews. From origin to cup.
         </p>
       </div>
+      <!-- Categories -->
+      <div>
+        <h4 class="text-xs uppercase tracking-widest text-copper mb-4">Topics</h4>
+        <div class="flex flex-col gap-3">
+          {CATEGORIES.map((cat) => (
+            <a href={`/blog/category/${cat.toLowerCase()}/`} class="text-sm hover:text-cream transition-colors py-1">{cat}</a>
+          ))}
+        </div>
+      </div>
       <!-- Navigation -->
       <div>
         <h4 class="text-xs uppercase tracking-widest text-copper mb-4">Navigate</h4>
         <div class="flex flex-col gap-3">
-          <a href="/blog" class="text-sm hover:text-cream transition-colors py-1">Articles</a>
+          <a href="/blog" class="text-sm hover:text-cream transition-colors py-1">All Articles</a>
+          <a href="/explore" class="text-sm hover:text-cream transition-colors py-1">Explore Flavors</a>
           <a href="/videos" class="text-sm hover:text-cream transition-colors py-1">Videos</a>
           <a href="/about" class="text-sm hover:text-cream transition-colors py-1">About</a>
         </div>

@@ -1,6 +1,9 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
+export const CATEGORIES = ['Origins', 'Equipment', 'Brewing', 'Science', 'Recipes', 'Drinks'] as const;
+export type Category = typeof CATEGORIES[number];
+
 const blog = defineCollection({
 	// Load Markdown and MDX files in the `src/content/blog/` directory.
 	loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx}' }),
@@ -13,6 +16,7 @@ const blog = defineCollection({
 			pubDate: z.coerce.date(),
 			updatedDate: z.coerce.date().optional(),
 			heroImage: image().optional(),
+			category: z.enum(['Origins', 'Equipment', 'Brewing', 'Science', 'Recipes', 'Drinks']).optional(),
 		}),
 });
 
