@@ -1,0 +1,38 @@
+---
+const today = new Date();
+---
+
+<footer class="bg-db-bg border-t border-db-border">
+  <div class="max-w-6xl mx-auto px-6 py-16">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+      <!-- Brand -->
+      <div>
+        <h3 class="font-db-serif text-2xl font-semibold text-db-text mb-3">Deep Brew Mode</h3>
+        <p class="text-sm text-db-text-muted leading-relaxed">
+          Precision tools for the obsessive home brewer. Built on peer-reviewed coffee science.
+        </p>
+      </div>
+      <!-- Tools -->
+      <div>
+        <h4 class="text-xs uppercase tracking-widest text-db-copper mb-4 font-db-mono">Tools</h4>
+        <div class="flex flex-col gap-3">
+          <a href="/deep-brew/water" class="text-sm text-db-text-muted hover:text-db-text transition-colors">Water Recipe Builder</a>
+          <a href="/deep-brew/extraction" class="text-sm text-db-text-muted hover:text-db-text transition-colors">Extraction Diagnostic</a>
+          <a href="/deep-brew/calibrator" class="text-sm text-db-text-muted hover:text-db-text transition-colors">Grind-Roast Calibrator</a>
+        </div>
+      </div>
+      <!-- Switch back -->
+      <div>
+        <h4 class="text-xs uppercase tracking-widest text-db-copper mb-4 font-db-mono">Navigate</h4>
+        <div class="flex flex-col gap-3">
+          <a href="/" class="text-sm text-db-text-muted hover:text-db-text transition-colors">Explorer Mode</a>
+          <a href="/blog" class="text-sm text-db-text-muted hover:text-db-text transition-colors">Articles</a>
+          <a href="https://www.youtube.com/@jayarrcoffee" target="_blank" rel="noopener" class="text-sm text-db-text-muted hover:text-db-text transition-colors">YouTube</a>
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-db-border mt-12 pt-8 text-center text-xs text-db-text-muted/40">
+      &copy; {today.getFullYear()} JayArr Coffee. All rights reserved.
+    </div>
+  </div>
+</footer>

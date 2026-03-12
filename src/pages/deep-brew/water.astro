@@ -1,0 +1,88 @@
+---
+import DeepBrewLayout from '../../layouts/DeepBrewLayout.astro';
+import WaterRecipeBuilder from '../../components/tools/WaterRecipeBuilder.svelte';
+---
+
+<DeepBrewLayout
+  title="Water Recipe Builder | Deep Brew Mode | JayArr Coffee"
+  description="Plot your water chemistry against 10 named coffee water recipes on an interactive scatter chart. Get DIY mineral concentrate instructions for Rao/Perger, Barista Hustle, RPavlis, TWW, and more."
+>
+  <!-- Hero -->
+  <section class="pt-28 pb-8 md:pt-32 md:pb-12">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <a href="/deep-brew/" class="font-db-mono text-xs uppercase tracking-[0.2em] text-db-text-muted/50 hover:text-db-copper transition-colors">
+        &larr; Deep Brew Mode
+      </a>
+      <h1 class="font-db-serif text-3xl md:text-5xl font-bold mt-3 mb-3"
+          style="background: linear-gradient(135deg, var(--color-db-text) 0%, var(--color-db-copper) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        Water Recipe Builder
+      </h1>
+      <p class="text-db-text-muted max-w-xl mx-auto leading-relaxed text-sm mb-1">
+        See where your water falls against 9 named recipes. Pick a target. Get the exact DIY formula.
+      </p>
+      <p class="font-db-mono text-xs text-db-text-muted/40 tracking-wider">
+        GH &times; KH &times; SCA
+      </p>
+    </div>
+  </section>
+
+  <!-- Tool -->
+  <section class="pb-16 md:pb-24">
+    <div class="max-w-3xl mx-auto px-6">
+      <WaterRecipeBuilder client:load />
+    </div>
+  </section>
+
+  <!-- Methodology -->
+  <section class="py-16 bg-db-surface border-t border-db-border">
+    <div class="max-w-3xl mx-auto px-6">
+      <div class="font-db-mono text-xs tracking-[0.2em] uppercase text-db-copper mb-4">Methodology</div>
+      <h2 class="font-db-serif text-xl md:text-2xl font-semibold text-db-text mb-6">How This Works</h2>
+
+      <div class="space-y-6 text-sm text-db-text-muted leading-relaxed">
+        <div>
+          <h3 class="font-db-serif text-base font-semibold text-db-text mb-1">The Two-Bottle Method</h3>
+          <p>
+            Most DIY water recipes use two mineral concentrates. Bottle 1 adds General Hardness (GH) via magnesium sulfate (Epsom salt). Bottle 2 adds Carbonate Hardness (KH) via sodium bicarbonate (baking soda). Our concentrates are calibrated so 1 mL per liter = 1 ppm, making the math simple: a recipe calling for GH 76 needs 76 mL of Bottle 1 per liter of final water.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="font-db-serif text-base font-semibold text-db-text mb-1">Why GH and KH Matter</h3>
+          <p>
+            GH (hardness) determines extraction power &mdash; how much flavor your water pulls from coffee. KH (alkalinity) acts as a buffer, controlling how much acidity survives into the cup. The ratio between them shapes the overall flavor profile: high GH:KH = bright and complex, low GH:KH = smooth and muted.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="font-db-serif text-base font-semibold text-db-text mb-1">The SCA Standard</h3>
+          <p>
+            The Specialty Coffee Association publishes a target of 150 ppm TDS, 68 ppm GH, and 40 ppm KH (1.7:1 ratio). The shaded zone on the chart represents the broader acceptable range. Most well-regarded recipes cluster near or within this zone.
+          </p>
+        </div>
+
+        <div class="pt-4 border-t border-db-border">
+          <span class="font-db-mono text-xs text-db-text-muted/40 tracking-wider uppercase">Sources</span>
+          <p class="mt-2 text-xs text-db-text-muted/50">
+            SCA Water Quality Standards (2019). Hendon, C. et al. "The Role of Dissolved Cations in Coffee Extraction" (Journal of Agricultural and Food Chemistry, 2014). Rao, S. "Everything But Espresso" (2010). Barista Hustle DIY Water Recipes (2017).
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related -->
+  <section class="py-12">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <span class="font-db-mono text-xs uppercase tracking-widest text-db-copper">Related</span>
+      <div class="flex flex-wrap justify-center gap-3 mt-4">
+        <a href="/blog/why-water-matters-more-than-your-coffee-beans/" class="border border-db-border text-db-text-muted px-5 py-2 text-xs uppercase tracking-widest hover:border-db-copper/50 hover:text-db-text transition-all rounded">
+          Water Science Article
+        </a>
+        <a href="/deep-brew/" class="border border-db-border text-db-text-muted px-5 py-2 text-xs uppercase tracking-widest hover:border-db-copper/50 hover:text-db-text transition-all rounded">
+          All Deep Brew Tools
+        </a>
+      </div>
+    </div>
+  </section>
+</DeepBrewLayout>

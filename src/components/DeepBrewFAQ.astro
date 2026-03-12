@@ -1,0 +1,93 @@
+---
+interface FAQItem {
+	question: string;
+	answer: string;
+}
+
+interface Props {
+	items: FAQItem[];
+}
+
+const { items } = Astro.props;
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: items.map((item) => ({
+		'@type': 'Question',
+		name: item.question,
+		acceptedAnswer: {
+			'@type': 'Answer',
+			text: item.answer,
+		},
+	})),
+};
+---
+
+<section class="db-faq-section" aria-label="Frequently Asked Questions">
+	<div class="db-faq-divider"></div>
+	<h2 class="db-faq-heading">Frequently Asked Questions</h2>
+	<dl class="db-faq-list">
+		{items.map((item) => (
+			<div class="db-faq-item">
+				<dt class="db-faq-question">{item.question}</dt>
+				<dd class="db-faq-answer">{item.answer}</dd>
+			</div>
+		))}
+	</dl>
+</section>
+
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+<style>
+	.db-faq-section {
+		max-width: 720px;
+		margin: 3rem auto 0;
+	}
+
+	.db-faq-divider {
+		height: 1px;
+		background: linear-gradient(90deg, transparent, var(--color-db-copper, #D27D2D), transparent);
+		opacity: 0.3;
+		margin-bottom: 2.5rem;
+	}
+
+	.db-faq-heading {
+		font-family: 'Cormorant Garamond', Georgia, serif;
+		font-weight: 700;
+		font-size: 2rem;
+		color: var(--color-db-text, #E2E8F0);
+		margin: 0 0 1.5rem;
+	}
+
+	.db-faq-list {
+		margin: 0;
+		padding: 0;
+	}
+
+	.db-faq-item {
+		padding: 1.25rem 0;
+		border-bottom: 1px solid rgba(210, 125, 45, 0.12);
+	}
+
+	.db-faq-item:last-child {
+		border-bottom: none;
+	}
+
+	.db-faq-question {
+		font-family: 'Inter', system-ui, sans-serif;
+		font-weight: 600;
+		font-size: 1.0625rem;
+		color: var(--color-db-text, #E2E8F0);
+		margin: 0 0 0.5rem;
+		line-height: 1.4;
+	}
+
+	.db-faq-answer {
+		font-family: 'Inter', system-ui, sans-serif;
+		font-size: 1rem;
+		line-height: 1.7;
+		color: var(--color-db-text-muted, #94A3B8);
+		margin: 0;
+	}
+</style>

@@ -1,0 +1,29 @@
+---
+/**
+ * Dark theme wrapper for infographic components.
+ * Overrides CSS custom properties so existing light-themed infographic
+ * components render correctly on the Deep Brew dark background.
+ *
+ * Usage in MDX:
+ *   <DeepBrewInfographic>
+ *     <ComparisonTable title="..." subtitle="..." columns={[...]} rows={[...]} />
+ *   </DeepBrewInfographic>
+ */
+---
+
+<div class="db-ig-wrapper">
+	<slot />
+</div>
+
+<style>
+	.db-ig-wrapper {
+		/* Swap light-theme vars to dark-theme equivalents */
+		--color-charcoal: #E2E8F0;
+		--color-copper: #D27D2D;
+		--color-copper-light: #E89144;
+		--color-warm-gray: #94A3B8;
+		--color-warm-gray-light: #64748B;
+		--color-cream-dark: #161B22;
+		--color-cream: #0B0E14;
+	}
+</style>

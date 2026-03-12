@@ -1,0 +1,166 @@
+---
+const pathname = Astro.url.pathname;
+const isLabPage = pathname.startsWith('/deep-brew/water') || pathname.startsWith('/deep-brew/extraction') || pathname.startsWith('/deep-brew/calibrator');
+const isResearchPage = pathname.startsWith('/deep-brew/research');
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-db-bg/95 backdrop-blur-sm border-b border-db-border" id="db-header">
+  <nav class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <!-- Logo -->
+    <a href="/deep-brew" class="flex items-center gap-2 group">
+      <span class="font-serif text-lg font-bold text-db-text-muted tracking-tight group-hover:text-db-text transition-colors">JayArr Coffee</span>
+      <span class="text-db-border font-light text-lg">/</span>
+      <span class="font-db-serif text-xl font-bold text-db-text tracking-tight group-hover:text-db-copper transition-colors">Deep Brew</span>
+    </a>
+
+    <!-- Desktop nav -->
+    <div class="hidden md:flex items-center gap-8">
+      <!-- The Lab dropdown -->
+      <div class="relative" id="lab-dropdown">
+        <button
+          class:list={[
+            'flex items-center gap-1.5 text-sm uppercase tracking-widest transition-colors font-db-mono',
+            isLabPage ? 'text-db-copper' : 'text-db-text-muted hover:text-db-text'
+          ]}
+          id="lab-trigger"
+          aria-expanded="false"
+          aria-haspopup="true"
+        >
+          The Lab
+          <svg class="w-3.5 h-3.5 transition-transform" id="lab-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          </svg>
+        </button>
+
+        <!-- Dropdown panel -->
+        <div id="lab-panel" class="absolute top-full right-0 mt-3 w-64 bg-db-surface border border-db-border rounded-lg shadow-xl opacity-0 invisible transition-all duration-200 -translate-y-1" style="pointer-events: none;">
+          <div class="p-2">
+            <a href="/deep-brew/water" class:list={[
+              'flex items-center gap-3 px-3 py-2.5 rounded-md transition-colors group',
+              pathname.startsWith('/deep-brew/water') ? 'bg-db-copper/10 text-db-copper' : 'text-db-text-muted hover:bg-db-border/30 hover:text-db-text'
+            ]}>
+              <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 0-6.23.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
+              </svg>
+              <div>
+                <div class="text-xs uppercase tracking-widest font-db-mono">Water Recipe Builder</div>
+                <div class="text-[10px] text-db-text-muted/60 mt-0.5 normal-case tracking-normal">DIY mineral concentrates</div>
+              </div>
+            </a>
+            <a href="/deep-brew/extraction" class:list={[
+              'flex items-center gap-3 px-3 py-2.5 rounded-md transition-colors group',
+              pathname.startsWith('/deep-brew/extraction') ? 'bg-db-copper/10 text-db-copper' : 'text-db-text-muted hover:bg-db-border/30 hover:text-db-text'
+            ]}>
+              <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
+              </svg>
+              <div>
+                <div class="text-xs uppercase tracking-widest font-db-mono">Extraction Diagnostic</div>
+                <div class="text-[10px] text-db-text-muted/60 mt-0.5 normal-case tracking-normal">Taste-to-chemistry fixes</div>
+              </div>
+            </a>
+            <a href="/deep-brew/calibrator" class:list={[
+              'flex items-center gap-3 px-3 py-2.5 rounded-md transition-colors group',
+              pathname.startsWith('/deep-brew/calibrator') ? 'bg-db-copper/10 text-db-copper' : 'text-db-text-muted hover:bg-db-border/30 hover:text-db-text'
+            ]}>
+              <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+              </svg>
+              <div>
+                <div class="text-xs uppercase tracking-widest font-db-mono">Grind-Roast Calibrator</div>
+                <div class="text-[10px] text-db-text-muted/60 mt-0.5 normal-case tracking-normal">Skip the wasted shots</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Research -->
+      <a href="/deep-brew/research" class:list={[
+        'text-sm uppercase tracking-widest transition-colors font-db-mono',
+        isResearchPage ? 'text-db-copper' : 'text-db-text-muted hover:text-db-text'
+      ]}>Research</a>
+
+      <!-- Divider -->
+      <div class="w-px h-5 bg-db-border"></div>
+
+      <!-- Back to Explorer Mode -->
+      <a href="/" class="flex items-center gap-2 text-sm text-db-text-muted hover:text-db-amber transition-colors group">
+        <svg class="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+        </svg>
+        <span class="uppercase tracking-widest text-xs">Explorer Mode</span>
+      </a>
+    </div>
+
+    <!-- Mobile -->
+    <div class="flex items-center gap-4 md:hidden">
+      <a href="/" class="text-db-text-muted hover:text-db-amber transition-colors text-xs uppercase tracking-widest">
+        Explorer
+      </a>
+      <button id="db-menu-btn" class="text-db-text" aria-label="Open menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div id="db-mobile-menu" class="hidden md:hidden bg-db-bg/95 backdrop-blur-sm border-t border-db-border">
+    <div class="px-6 py-4 flex flex-col gap-3">
+      <div class="font-db-mono text-[10px] uppercase tracking-[0.2em] text-db-copper mb-1">The Lab</div>
+      <a href="/deep-brew/water" class="text-sm uppercase tracking-widest text-db-text-muted hover:text-db-text font-db-mono pl-3">Water</a>
+      <a href="/deep-brew/extraction" class="text-sm uppercase tracking-widest text-db-text-muted hover:text-db-text font-db-mono pl-3">Extraction</a>
+      <a href="/deep-brew/calibrator" class="text-sm uppercase tracking-widest text-db-text-muted hover:text-db-text font-db-mono pl-3">Calibrator</a>
+      <div class="h-px bg-db-border my-1"></div>
+      <a href="/deep-brew/research" class="text-sm uppercase tracking-widest text-db-text-muted hover:text-db-text font-db-mono">Research</a>
+      <div class="h-px bg-db-border my-1"></div>
+      <a href="/" class="text-sm uppercase tracking-widest text-db-amber hover:text-db-copper-hover">Back to Explorer Mode</a>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Mobile menu toggle
+  const btn = document.getElementById('db-menu-btn');
+  const menu = document.getElementById('db-mobile-menu');
+  btn?.addEventListener('click', () => {
+    menu?.classList.toggle('hidden');
+  });
+
+  // Desktop Lab dropdown
+  const dropdown = document.getElementById('lab-dropdown');
+  const trigger = document.getElementById('lab-trigger');
+  const panel = document.getElementById('lab-panel');
+  const chevron = document.getElementById('lab-chevron');
+
+  if (dropdown && trigger && panel && chevron) {
+    let timeout: ReturnType<typeof setTimeout>;
+
+    const show = () => {
+      clearTimeout(timeout);
+      panel.style.pointerEvents = 'auto';
+      panel.classList.remove('opacity-0', 'invisible', '-translate-y-1');
+      panel.classList.add('opacity-100', 'visible', 'translate-y-0');
+      chevron.classList.add('rotate-180');
+      trigger.setAttribute('aria-expanded', 'true');
+    };
+
+    const hide = () => {
+      timeout = setTimeout(() => {
+        panel.style.pointerEvents = 'none';
+        panel.classList.add('opacity-0', 'invisible', '-translate-y-1');
+        panel.classList.remove('opacity-100', 'visible', 'translate-y-0');
+        chevron.classList.remove('rotate-180');
+        trigger.setAttribute('aria-expanded', 'false');
+      }, 150);
+    };
+
+    dropdown.addEventListener('mouseenter', show);
+    dropdown.addEventListener('mouseleave', hide);
+    trigger.addEventListener('click', () => {
+      const expanded = trigger.getAttribute('aria-expanded') === 'true';
+      expanded ? hide() : show();
+    });
+  }
+</script>

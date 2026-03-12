@@ -1,0 +1,260 @@
+---
+title: "The Flavor Volatiles of Coffee: OAV Thresholds, Character-Impact Compounds, and Why Your Coffee Smells the Way It Does"
+description: "Fewer than 30 volatile compounds define coffee aroma. Learn which ones matter most by Odor Activity Value, how they form during roasting, and why they disappear so fast."
+pubDate: "Mar 12 2026"
+category: "Chemistry"
+tags: ["volatiles", "OAV", "2-furfurylthiol", "aroma", "Strecker degradation", "thiols", "roast chemistry", "flavor"]
+---
+
+import DeepBrewFAQ from '../../components/DeepBrewFAQ.astro';
+import DeepBrewInfographic from '../../components/infographics/DeepBrewInfographic.astro';
+import ReferenceGuide from '../../components/infographics/ReferenceGuide.astro';
+import MethodCards from '../../components/infographics/MethodCards.astro';
+
+Roasted coffee contains over 1,000 identified volatile organic compounds. That number gets tossed around a lot in coffee literature, usually as a way of saying "coffee is complex." It is. But that figure is also deeply misleading, because the vast majority of those compounds exist at concentrations so low they contribute nothing to what you actually smell.
+
+The real number that matters is closer to 30. Fewer than 30 volatiles in roasted coffee have an Odor Activity Value greater than 1 -- meaning their concentration exceeds their sensory detection threshold. And within that group, a handful of compounds do almost all the heavy lifting. Understanding which ones they are, how they form, and how fast they disappear is the difference between appreciating coffee aroma as a vague "complexity" and understanding it as a set of specific chemical drivers you can manipulate through roasting, grinding, and brewing.
+
+## What OAV Actually Means (and Why It's the Only Metric That Matters)
+
+Odor Activity Value is the ratio of a compound's concentration in a food matrix to its detection threshold in that same matrix:
+
+**OAV = Concentration / Sensory Threshold**
+
+An OAV of 1 means the compound is present at exactly its detection threshold -- barely perceptible. An OAV of 10 means it's present at 10 times its threshold. An OAV of 2,000 means it dominates.
+
+This is a deceptively simple equation, but it overturns a common misconception: that the most abundant volatiles are the most important. They're not. A compound present at 500 ppb with a threshold of 1,000 ppb (OAV = 0.5) contributes nothing perceptible. A compound present at 0.05 ppb with a threshold of 0.01 ppb (OAV = 5) shapes the entire aromatic profile.
+
+This is why GC-MS chromatograms -- which show concentration peaks -- are poor predictors of sensory experience. The compounds that make the tallest peaks on a chromatogram are often sensorially irrelevant. The compounds that define coffee's character barely register as blips. Werner Grosch's work in the 1990s (2), applying Aroma Extract Dilution Analysis (AEDA) and calculating OAVs for coffee volatiles, fundamentally reframed how we understand coffee aroma. Before Grosch, the field was cataloging compounds. After Grosch, it was ranking them by impact.
+
+## The Top 10 Character-Impact Compounds
+
+These are the volatiles that define what coffee smells like. Ranked by OAV, with formation pathways and sensory descriptors:
+
+<DeepBrewInfographic>
+  <ReferenceGuide
+    title="OAV Leaderboard: The 15 Most Potent Coffee Odorants"
+    subtitle="Ranked by Odor Activity Value — the ratio of concentration to sensory detection threshold"
+    items={[
+      { label: "2-Furfurylthiol", description: "Roasted coffee (character impact) — Cysteine + furfural (Strecker). Threshold: 0.01 ppb", value: "OAV >2,000", dotScale: 1.0 },
+      { label: "Methanethiol", description: "Fresh coffee, sulfurous — Cysteine/methionine degradation. Threshold: 0.02 ppb", value: "ROAV ~1,971", dotScale: 0.95 },
+      { label: "Furaneol (HDMF)", description: "Caramel, cotton candy — Sucrose caramelization. Threshold: 30 ppb", value: "OAV 196–250", dotScale: 0.55 },
+      { label: "3-Methylbutanal", description: "Malty, dark chocolate — Leucine (Strecker). Threshold: 0.2 ppb", value: "OAV ~140", dotScale: 0.45 },
+      { label: "beta-Damascenone", description: "Honey, fruity, jam — Carotenoid degradation. Threshold: 0.002 ppb", value: "OAV 30–57", dotScale: 0.3 },
+      { label: "2-Methyl-3-furanthiol", description: "Meaty, roasted, brothy — Cysteine + dicarbonyls. Threshold: 0.007 ppb", value: "OAV 20–30", dotScale: 0.25 },
+      { label: "2-Methylpropanal", description: "Malty, chocolate, cocoa — Valine (Strecker). Threshold: 1 ppb", value: "OAV ~20–40", dotScale: 0.25 },
+      { label: "3-Mercapto-3-methylbutyl formate", description: "Catty, roasted, sulfurous — Thiol esterification. Threshold: 0.001–0.01 ppb", value: "OAV ~15–30", dotScale: 0.22 },
+      { label: "Vanillin", description: "Vanilla, sweet — Ferulic acid degradation. Threshold: 20 ppb", value: "OAV ~10–20", dotScale: 0.18 },
+      { label: "Diacetyl", description: "Buttery, creamy — Maillard intermediate. Threshold: 15 ppb", value: "OAV ~10–15", dotScale: 0.15 },
+      { label: "2-Ethyl-3,5-dimethylpyrazine", description: "Earthy, roasted, nutty — Aminoketone condensation. Threshold: 0.04 ppb", value: "OAV ~8–15", dotScale: 0.13 },
+      { label: "Guaiacol", description: "Smoky, phenolic — CGA thermal decomposition. Threshold: 3 ppb", value: "OAV ~5–12", dotScale: 0.1 },
+      { label: "Phenylacetaldehyde", description: "Honey, floral, rose — Phenylalanine (Strecker). Threshold: 4 ppb", value: "OAV ~5–10", dotScale: 0.08 },
+      { label: "4-Vinylguaiacol", description: "Spicy, clove — CGA lactone breakdown. Threshold: 3 ppb", value: "OAV ~5–10", dotScale: 0.08 },
+      { label: "Maltol", description: "Caramel, toasty — Sucrose caramelization. Threshold: 35 ppb", value: "OAV ~5–8", dotScale: 0.06 },
+    ]}
+    scaleLabel={{ start: "Lower OAV", end: "Higher OAV" }}
+    footnote="OAV = Concentration / Sensory Threshold. Only compounds with OAV > 1 are perceptible. Methanethiol value is ROAV (Relative Odor Activity Value), a related metric conveying equivalent sensory magnitude."
+  />
+</DeepBrewInfographic>
+
+| Rank | Compound | Threshold (water) | OAV Range | Sensory Descriptor | Compound Family | Formation Pathway |
+|------|----------|-------------------|-----------|-------------------|-----------------|-------------------|
+| 1 | 2-Furfurylthiol | 0.01 ppb | >2,000 | Roasted coffee (character impact) | Thiol/furan | Cysteine + furfural (Strecker) |
+| 2 | Methanethiol | 0.02 ppb | ~1,971 (ROAV) | Fresh coffee, sulfurous | Thiol | Cysteine/methionine degradation |
+| 3 | Furaneol (HDMF) | 30 ppb | 196-250 | Caramel, cotton candy, burnt sugar | Furanone | Sucrose caramelization |
+| 4 | 3-Methylbutanal | 0.2 ppb | ~140 | Malty, dark chocolate | Strecker aldehyde | Leucine (Strecker) |
+| 5 | beta-Damascenone | 0.002 ppb | 30-57 | Honey, fruity, jam, cooked apple | Norisoprenoid | Carotenoid degradation |
+| 6 | 2-Methyl-3-furanthiol | 0.007 ppb | 20-30 | Meaty, roasted, brothy | Thiol/furan | Cysteine + dicarbonyls |
+| 7 | 2-Methylpropanal | 1 ppb | ~20-40 | Malty, chocolate, cocoa | Strecker aldehyde | Valine (Strecker) |
+| 8 | 3-Mercapto-3-methylbutyl formate | 0.001-0.01 ppb | ~15-30 | Catty, roasted, sulfurous | Thiol/ester | Thiol esterification |
+| 9 | Vanillin | 20 ppb | ~10-20 | Vanilla, sweet | Phenolic aldehyde | Ferulic acid degradation |
+| 10 | Diacetyl (2,3-butanedione) | 15 ppb | ~10-15 | Buttery, creamy | Diketone | Maillard intermediate |
+
+Three things jump out from this table. First, the top two compounds are both sulfur-containing thiols -- and they account for more OAV than everything else combined. Second, the thresholds span five orders of magnitude, from 30 ppb (furaneol) down to 0.001 ppb (3-mercapto-3-methylbutyl formate). Third, every single compound on this list is formed during roasting. Green coffee smells like hay and grass. Everything that makes coffee smell like *coffee* is a thermal transformation product.
+
+## 2-Furfurylthiol: The Single Most Important Coffee Odorant
+
+If you had to point to one molecule and say "this is the smell of coffee," it would be 2-furfurylthiol (2-FFT, also called furfuryl mercaptan). Its OAV exceeds 2,000 in brewed coffee. Its detection threshold is 0.01 parts per billion -- meaning you can smell it at a concentration of roughly 10 molecules per trillion.
+
+The formation pathway is a textbook case of [Strecker degradation intersecting with furan chemistry](/deep-brew/research/maillard-caramelization-strecker/). During roasting, the amino acid cysteine undergoes Strecker degradation -- reacting with alpha-dicarbonyl intermediates from Maillard Stage 2 -- to produce mercaptoacetaldehyde, a highly reactive sulfur-containing intermediate. This thiol intermediate then condenses with furfural, which is generated by both 1,2-enolization of Maillard intermediates (under acidic conditions) and direct sugar dehydration during caramelization. The result is 2-furfurylthiol -- a true intersection product requiring both the Maillard and caramelization pathways to supply its precursors. The entire pathway depends on having sulfur-containing amino acids, alpha-dicarbonyls, and sugar-derived furfural present simultaneously at temperatures above 150C.
+
+The sensory descriptor for 2-FFT is simply "roasted coffee." Not caramel, not chocolate, not fruit -- just the archetypal, instantly recognizable coffee smell that hits you when you walk into a roastery or open a bag of fresh beans. It is the character-impact compound: remove it, and coffee doesn't smell like coffee anymore.
+
+The catch: 2-FFT is catastrophically unstable in brewed coffee. At serving temperature, 84% of it is gone within 60 minutes. The primary degradation mechanism is not evaporation (though that contributes) but conjugation with [melanoidin](/deep-brew/research/melanoidins-body-color-health/) phenolic compounds. The melanoidins -- those same high-molecular-weight Maillard polymers that give coffee its body and brown color (10-18% of roasted coffee dry weight, up to 25% of brew dry solids) -- act as thiol scavengers, chemically sequestering 2-FFT into non-volatile conjugates. The coffee is still there, the melanoidins are still there, but the molecule responsible for "coffee smell" has been silenced.
+
+This is the chemical explanation for why a pot of coffee that's been sitting on a warmer for an hour smells fundamentally different from a fresh pour. The compound that defines the aroma is largely gone.
+
+## The Sulfur Backbone: Why Thiols Run the Show
+
+It's not just 2-furfurylthiol. The sulfur-containing volatiles as a class are disproportionately responsible for coffee aroma. Methanethiol (ROAV ~1,971), 2-methyl-3-furanthiol (OAV 20-30), 3-mercapto-3-methylbutyl formate (threshold as low as 0.001 ppb), and dimethyl trisulfide all contribute. Collectively, the thiols and sulfides form what flavor chemists call the "sulfur backbone" of coffee aroma.
+
+Why sulfur? Two reasons. First, the human olfactory system has extraordinary sensitivity to sulfur compounds -- an evolutionary adaptation for detecting spoiled food. Thresholds for thiols are typically 100-10,000 times lower than for corresponding alcohols or aldehydes. Second, coffee's amino acid profile includes significant cysteine and methionine, both sulfur-containing, and both feed into thiol formation during Strecker degradation. Cysteine is the critical player -- flavor chemists call it the "sulfur gateway" of coffee aroma -- producing not only the mercaptoacetaldehyde that forms 2-furfurylthiol, but also methanethiol, dimethyl sulfide, and various thiophenes through secondary degradation reactions.
+
+Methanethiol deserves special mention. It forms through both cysteine degradation (the primary route) and further degradation of methional, the Strecker aldehyde from methionine. Its sensory descriptor at high concentration is "rotten cabbage" -- not appetizing. At the trace levels present in fresh coffee, it reads as "fresh, roasty, sulfurous" and is a key contributor to the aroma burst when you first grind or brew. Like 2-FFT, it's highly volatile and unstable; 72% is lost within 60 minutes in brewed coffee. The parallel degradation of the two highest-activity compounds explains why the first sip of a fresh cup is a qualitatively different sensory experience from the fifth sip twenty minutes later. (Note: methanethiol's commonly cited activity value of ~1,971 is a Relative Odor Activity Value, or ROAV, calculated slightly differently from standard OAV but conveying the same magnitude of sensory dominance.)
+
+## Furanones and Maltol: The "Sweet" Odorants
+
+If the thiols are the backbone, the furanones are the flesh. 4-Hydroxy-2,5-dimethyl-3(2H)-furanone (furaneol, or HDMF) is the dominant "sweet" odorant in coffee, with an OAV of 196-250. Its sensory descriptor -- caramel, cotton candy, burnt sugar -- explains why we perceive coffee as "sweet" even when it contains essentially zero residual sucrose.
+
+This is the [sweetness paradox](/deep-brew/research/sweetness-paradox-roasting/) in chemical terms: sucrose in Arabica beans (6-9% of dry weight, roughly twice the 3-5% in Robusta) is almost completely destroyed by medium roast -- dropping to 0-0.5%. Yet medium-roast coffee tastes sweeter than light roast. The explanation is that caramelization of sucrose produces furaneol, maltol, and other furanones that activate olfactory sweetness -- a retronasal aroma effect that the brain interprets as taste. You're not tasting sugar. You're smelling sugar's decomposition products and your brain is filing it under "sweet."
+
+Maltol (3-hydroxy-2-methyl-4-pyranone) reinforces this effect. Its threshold is higher than furaneol's, so it contributes less individually, but the combination of furaneol + maltol + diacetyl creates a powerful sweet-caramel-buttery gestalt that defines the sweetness character of well-developed medium roasts.
+
+Diacetyl (2,3-butanedione, threshold 15 ppb) adds the buttery dimension. It forms via both Maillard Stage 2 fragmentation and sucrose caramelization -- its total concentration is the sum of both pathways. Winemakers and brewers know diacetyl as a defect at high concentrations; in coffee, at its natural levels, it's a desirable contributor to the perception of richness and creaminess.
+
+## Pyrazines: The "Roasty" Odorants
+
+Pyrazines are nitrogen-containing heterocyclic compounds formed when Strecker degradation aminoketones self-condense. They're responsible for the nutty, earthy, and roasted notes that distinguish coffee from, say, caramel candy.
+
+The key pyrazines in coffee:
+
+| Pyrazine | Sensory Descriptor | Roast Level Dependence |
+|----------|-------------------|----------------------|
+| 2-Ethyl-3,5-dimethylpyrazine | Earthy, roasted, nutty | Peaks at medium, declines at dark |
+| 2-Ethyl-3,6-dimethylpyrazine | Earthy, potato, roasted | Increases through medium |
+| 2,3-Diethyl-5-methylpyrazine | Nutty, musty, cocoa | Peaks at medium-dark |
+| 2-Methylpyrazine | Nutty, roasty, popcorn | Increases steadily with roast |
+| 2-Isobutyl-3-methoxypyrazine | Green pepper, earthy | Degrades at dark roast |
+
+Pyrazine formation is strongly roast-dependent. In green coffee, pyrazines are essentially absent. They begin forming during the [Maillard reaction](/deep-brew/research/maillard-caramelization-strecker/) (150-200C) as aminoketone byproducts from Strecker degradation condense with each other. Their concentration increases through medium roast, then either plateaus or declines as they themselves undergo further thermal decomposition at dark roast temperatures (>220C).
+
+This roast-level dependence is one reason medium roasts have a broader, more complex aromatic profile than dark roasts. At medium, you have pyrazines (roasty/nutty) coexisting with furanones (sweet/caramel) and residual thiols (coffee character). At dark roast, the pyrazines are degrading, the furanones are shifting toward burnt, and phenolic compounds are ascending.
+
+## beta-Damascenone: The Fruity/Honey Note with an Absurd Threshold
+
+beta-Damascenone doesn't fit neatly into any of the above families. It's a norisoprenoid -- a degradation product of carotenoid pigments in the green bean -- with a detection threshold of 0.002 ppb. Two parts per trillion. At that threshold, it's the second most potent odorant in coffee by sensitivity, behind only 3-mercapto-3-methylbutyl formate.
+
+Its sensory descriptor is honey, fruity, jam, cooked apple -- the kind of notes that specialty coffee cuppers often attribute to "origin character" or "terroir." In reality, beta-damascenone is formed during roasting when carotenoid pigments thermally degrade. Its concentration is influenced by bean origin (higher carotenoid content = more damascenone precursors), but its formation is a roasting event.
+
+With an OAV of 30-57 in brewed coffee, beta-damascenone punches well above its concentration. It's a classic "character-impact compound at sub-ppb levels" -- you'd never find it on a GC-MS chromatogram without knowing to look for it, yet it's responsible for the fruity/honey top notes that distinguish a high-quality light-medium roast from a generic one.
+
+## How Roast Level Shifts the Volatile Profile
+
+The volatile profile of coffee is not static -- it transforms dramatically across the roast spectrum. Think of it as a shifting orchestra where different instrument sections rise and fall:
+
+<DeepBrewInfographic>
+  <MethodCards
+    title="The Aroma Wheel Deconstructed"
+    subtitle="Sensory categories mapped to their chemical drivers — compounds with OAV > 1 in brewed coffee"
+    methods={[
+      {
+        name: "Roasty",
+        metrics: [
+          { label: "2-Furfurylthiol", value: "OAV >2,000", color: "#F5A623" },
+          { label: "2-Methylpyrazine", value: "OAV ~5–8", color: "#6B3A2A" },
+          { label: "2-Ethyl-3,5-dimethylpyrazine", value: "OAV ~8–15", color: "#6B3A2A" },
+          { label: "Guaiacol", value: "OAV ~5–12", color: "#8B2500" },
+        ],
+        notes: ["Dominated by 2-FFT (the 'coffee' smell). Pyrazines add nutty/earthy depth. Guaiacol rises at dark roast.", "Formation: Strecker degradation (cysteine + furfural) + aminoketone condensation."],
+      },
+      {
+        name: "Sweet",
+        metrics: [
+          { label: "Furaneol (HDMF)", value: "OAV 196–250", color: "#D4762C" },
+          { label: "Maltol", value: "OAV ~5–8", color: "#D4762C" },
+          { label: "Diacetyl", value: "OAV ~10–15", color: "#DEB887" },
+          { label: "Vanillin", value: "OAV ~10–20", color: "#D4762C" },
+        ],
+        notes: ["Olfactory sweetness despite zero residual sucrose. Brain interprets caramel/vanilla aromas as 'sweet.'", "Formation: Sucrose caramelization + Maillard Stage 2 fragmentation + ferulic acid degradation."],
+      },
+      {
+        name: "Fruity / Floral",
+        metrics: [
+          { label: "beta-Damascenone", value: "OAV 30–57", color: "#2E8B57" },
+          { label: "Phenylacetaldehyde", value: "OAV ~5–10", color: "#2E8B57" },
+          { label: "Linalool", value: "OAV ~3–5", color: "#2E8B57" },
+        ],
+        notes: ["The 'origin character' notes cuppers attribute to terroir. Highest in light-medium roasts.", "Formation: Carotenoid thermal degradation + phenylalanine Strecker degradation."],
+      },
+      {
+        name: "Sulfurous / Savory",
+        metrics: [
+          { label: "Methanethiol", value: "ROAV ~1,971", color: "#F5A623" },
+          { label: "2-Methyl-3-furanthiol", value: "OAV 20–30", color: "#F5A623" },
+          { label: "3-Mercapto-3-methylbutyl formate", value: "OAV ~15–30", color: "#F5A623" },
+        ],
+        notes: ["The 'sulfur backbone' — disproportionate sensory impact due to human olfactory sensitivity to thiols.", "Formation: Cysteine/methionine degradation. Catastrophically unstable — lost within minutes to hours."],
+      },
+      {
+        name: "Earthy / Nutty",
+        metrics: [
+          { label: "3-Methylbutanal", value: "OAV ~140", color: "#8B6914" },
+          { label: "2-Methylpropanal", value: "OAV ~20–40", color: "#8B6914" },
+          { label: "2,3-Diethyl-5-methylpyrazine", value: "OAV ~3–5", color: "#6B3A2A" },
+        ],
+        notes: ["Strecker aldehydes (malty/chocolate) + pyrazines (nutty/cocoa). The 'body' of coffee aroma.", "Formation: Leucine and valine Strecker degradation + aminoketone self-condensation."],
+      },
+    ]}
+    footnote="Wedge size in the original aroma wheel reflects cumulative OAV contribution. Roasty and Sulfurous categories dominate total sensory impact."
+  />
+</DeepBrewInfographic>
+
+### Light Roast (Agtron ~70, ~205C internal)
+- **Dominant volatiles:** Pyrazines (nutty/roasty), Strecker aldehydes (malty/chocolate), beta-damascenone (fruity/honey)
+- **Character:** Complex, bright, origin-forward. Higher total volatile count. More pyrazine diversity.
+- **Acids:** Citric and malic still intact, providing brightness. CGAs only 50-60% degraded. CGA lactones (3-CQL) peak at light-medium roast (~230 mg/100g Arabica, ~254 mg/100g Robusta), contributing 60-70% of perceived bitterness at this stage.
+- **Thiols:** 2-FFT present but at lower concentration than medium (less Maillard time = less cysteine conversion)
+
+### Medium Roast (Agtron ~55, ~220C internal)
+- **Dominant volatiles:** 2-FFT peaks, furanones peak (sweetness maximum), pyrazines plateau, phenylacetaldehyde (honey/floral)
+- **Character:** Balanced. Maximum perceived sweetness despite zero residual sucrose. Broadest volatile diversity.
+- **The sweet spot:** Furanone formation from caramelization is at maximum. Maillard has had enough time to fully convert cysteine to 2-FFT. Pyrazines haven't yet degraded.
+
+### Dark Roast (Agtron ~35, ~230-240C internal)
+- **Dominant volatiles:** Guaiacol (smoky/phenolic), 4-vinylguaiacol (spicy/clove), phenol (medicinal), p-cresol (tarry)
+- **Character:** Smoky, roasty, less complex. Phenolic compounds from thermal decomposition of [chlorogenic acid](/deep-brew/research/chlorogenic-acid-cascades/) lactones dominate. CGAs are 85-95% degraded; phenylindanes (formed via 4-vinylcatechol from CGA lactone breakdown) produce the harsh, lingering bitterness signature of dark roasts.
+- **Losses:** Pyrazines degrading. Furanones shifting from caramel to burnt. beta-Damascenone declining. Strecker aldehydes at maximum but masked by phenolics.
+- **Gain:** Guaiacol and related phenols create the "dark roast" character -- smoky, slightly medicinal, sometimes ashy. Quinic acid accumulates from CGA hydrolysis, adding dry astringency.
+
+The transition from medium to dark is essentially a handoff from furanone/pyrazine dominance to phenol/guaiacol dominance. This is why dark roasts taste more similar to each other across origins than light roasts do -- the phenolic compounds that dominate at high temperature are less origin-dependent than the precursor-dependent compounds (damascenone, specific pyrazines) that characterize lighter roasts.
+
+## Practical Implications: What This Means for Your Coffee
+
+### Why Fresh Grinding Matters -- Quantified
+
+The volatile half-life data makes the case for grinding immediately before brewing:
+
+| Compound | Role | Behavior Post-Grind |
+|----------|------|-------------------|
+| 2-Furfurylthiol | Character impact | Rapid oxidation; hours, not days |
+| Methanethiol | Fresh coffee aroma | Extremely volatile; minutes to hours |
+| Strecker aldehydes | Malty/chocolate | Moderate volatility; degrade over hours |
+| Pyrazines | Nutty/roasty | Relatively stable; days |
+| Furanones | Sweet/caramel | Moderate stability; days |
+
+The compounds you lose first after grinding -- the thiols -- are the ones with the highest OAVs. You're losing the most impactful 1% of the volatile profile within the first hour. The pyrazines and furanones are more stable, which is why day-old pre-ground coffee still smells "roasty" and "caramelly" but lacks the immediate punch of freshly ground. The sulfur backbone evaporates; the furanone/pyrazine body remains.
+
+This also explains Scott Rao's counterintuitive finding (1) that blind tasters preferred 12-hour pre-ground drip coffee over freshly ground: the violent burst of CO2 and volatile release during fresh grinding can create turbulence and uneven extraction. The pre-ground coffee extracted more evenly, and while it had lost some thiol character, the improved [extraction uniformity](/deep-brew/research/extraction-sequence-explained/) compensated. For espresso, where extraction precision is paramount and the concentrated format amplifies volatile loss, grinding to order remains non-negotiable.
+
+### Why Reheated Coffee Smells Different
+
+The 84% loss of 2-FFT, 72% loss of methanethiol, and 68% loss of 3-methyl-1H-pyrrole within 60 minutes at serving temperature explains everything. The melanoidin-thiol conjugation mechanism is temperature-accelerated. Reheating doesn't regenerate these compounds -- the thiols are chemically bound to melanoidin polymers in non-volatile form. What remains in reheated coffee is the stable portion of the volatile profile: furanones (now reading as slightly burnt rather than caramel), phenolics, and pyrazines. The result is a flat, generic "coffee-ish" smell that has lost its character-impact compound entirely.
+
+### Why Light Roasts Smell Different -- It's Not Just "More Acidic"
+
+The common explanation for light roast character is "more acidity." That's partially true (more citric and malic acid survive), but the volatile profile tells a more complete story. Light roasts have higher pyrazine diversity (more nutty/earthy complexity), more beta-damascenone (fruity/honey), less guaiacol (less smoky), and lower 2-FFT (less of the classic "coffee" smell). The overall aroma is shifted toward the earthy-fruity-floral quadrant and away from the smoky-caramel-roasty quadrant. It's not just a matter of acid levels; it's a fundamentally different volatile orchestra.
+
+### The Aroma Burst When You Open the Bag
+
+That rush of smell when you first open a freshly roasted bag of coffee is dominated by two things: CO2 (carrying dissolved volatiles with it as it escapes the bean matrix) and the immediate evaporation of the highest-vapor-pressure compounds -- primarily methanethiol and other low-molecular-weight sulfur species. This is the "fresh roast" smell that fades within days as the bean's internal CO2 pressure equilibrates and the surface thiols oxidize. By two weeks post-roast (stored whole bean, sealed), the thiol load at the bean surface is substantially diminished. The coffee isn't stale -- the furanones, pyrazines, and Strecker aldehydes are still intact inside the bean matrix -- but the immediate olfactory impact of opening the bag is reduced.
+
+Grinding unlocks a second burst: fracturing the bean releases trapped CO2 and the volatiles dissolved within it. This is the mechanical equivalent of opening a carbonated beverage. The volatiles that were protected inside intact cell structures are suddenly exposed to air. This is the window -- between grinding and the first sip of brewed coffee -- where the full volatile profile is briefly available. It lasts minutes, not hours.
+
+---
+
+Coffee aroma is not a mystery wrapped in 1,000 compounds. It's a story told by fewer than 30, dominated by 5, and defined by 1. The molecule that makes coffee smell like coffee -- 2-furfurylthiol -- is formed through a specific [Strecker degradation](/deep-brew/research/maillard-caramelization-strecker/) pathway, peaks at medium roast, and is 84% gone within an hour of brewing. Everything about how we store, grind, and serve coffee is, at the molecular level, a race against the degradation of a sulfur-containing furan with a detection threshold of 10 parts per trillion. That's the flavor chemistry of coffee in a single sentence.
+
+## References
+
+1. Rao, S. *Everything But Espresso*. Self-published, 2010.
+2. Grosch, W. "Aroma compounds in coffee: a review." *Nahrung/Food* 42, no. 6 (1998): 344–350.
+
+<DeepBrewFAQ items={[
+  { question: "Why does reheated coffee smell different from fresh-brewed?", answer: "The two highest-activity compounds -- 2-furfurylthiol (OAV >2,000) and methanethiol (ROAV ~1,971) -- degrade rapidly at serving temperature. Within 60 minutes, 84% of 2-furfurylthiol and 72% of methanethiol are gone. The primary mechanism is not evaporation but chemical conjugation: melanoidin polymers in the brew bond with these sulfur compounds, converting them into non-volatile forms. Reheating does not reverse this reaction. What remains is the stable portion of the volatile profile -- furanones, pyrazines, and phenolics -- producing a flat, generic smell that lacks the character-impact compound." },
+  { question: "What compounds are responsible for the fresh-ground aroma burst?", answer: "Two mechanisms produce the grinding aroma burst. First, CO2 trapped inside intact bean cells is released when the cell structure fractures, carrying dissolved volatiles with it. Second, low-molecular-weight sulfur compounds at freshly exposed surfaces immediately evaporate: methanethiol (threshold 0.02 ppb), dimethyl sulfide, and 2-furfurylthiol. These are the compounds with the lowest detection thresholds and highest OAVs. The burst is intense because it concentrates hours' worth of slow surface evaporation into seconds of sudden cell rupture." },
+  { question: "Why do light roasts have more volatile complexity than dark roasts?", answer: "Light roasts retain higher diversity in pyrazines (nutty/earthy, formed via aminoketone self-condensation during Strecker degradation) and origin-dependent norisoprenoids like beta-damascenone (fruity/honey, from carotenoid thermal degradation). At dark roast temperatures (>220C), pyrazines begin thermally decomposing and beta-damascenone declines. Simultaneously, phenolic compounds -- guaiacol, 4-vinylguaiacol, phenol -- ascend as chlorogenic acid lactones break down. Dark roasts shift from a multi-family volatile profile to a phenol-dominated one, which is why dark roasts from different origins taste more similar to each other." },
+  { question: "If coffee has over 1,000 volatile compounds, why do only ~30 matter?", answer: "Because concentration alone does not determine sensory impact -- the ratio of concentration to detection threshold (OAV) does. Most of those 1,000+ identified volatiles exist at concentrations far below their sensory thresholds, meaning they are chemically present but perceptually invisible. A compound at 500 ppb with a threshold of 1,000 ppb (OAV = 0.5) contributes nothing. Werner Grosch's Aroma Extract Dilution Analysis work in the 1990s established this principle for coffee, identifying fewer than 30 compounds with OAV > 1 and demonstrating that the remaining 970+ are sensorially irrelevant as individual contributors." },
+  { question: "How does beta-damascenone have such a low detection threshold?", answer: "beta-Damascenone's threshold of 0.002 ppb (2 parts per trillion) reflects extraordinary sensitivity of human olfactory receptors to certain structural motifs. Norisoprenoids like damascenone have a molecular geometry that fits specific olfactory receptor binding sites with very high affinity. This is not unique to coffee -- beta-damascenone is a potent odorant in wine, beer, tea, and many fruits. In coffee, it forms when carotenoid pigments thermally degrade during roasting. Beans with higher carotenoid content (influenced by variety, altitude, and processing) produce more damascenone precursors." },
+  { question: "Does the brewing method affect which volatiles end up in the cup?", answer: "Significantly. Metal filters (French press, espresso) allow lipid-soluble volatiles and oils to pass through, while paper filters trap them. Temperature matters too: cold brew extracts dramatically fewer volatiles than hot brewing. GC-MS analysis found 36 volatile compounds in cold brew, but 25 of those were present at higher concentrations in hot brew. The absence of certain bitter volatiles in cold brew lets sweet and fruity notes emerge by removal of masking, not by enhancement. Espresso concentrates volatiles by 8-12x relative to filter coffee (TDS 8-12% vs. 1.15-1.35%), which is why espresso has such intense aromatic impact." },
+  { question: "Why does specialty coffee focus on light-to-medium roast for cupping?", answer: "SCA cupping protocol targets light-medium roast (Agtron ~55-60) because this range represents the broadest volatile diversity -- where furanone formation from caramelization is substantial, cysteine-to-2-furfurylthiol conversion is well underway, and pyrazines haven't yet begun thermal decomposition. It's where all four major volatile families (thiols, furanones, pyrazines, Strecker aldehydes) coexist at significant OAVs, while enough origin-dependent precursor compounds remain legible in the cup. Light-medium roast maximizes total sensorially relevant compounds above OAV = 1." },
+]} />

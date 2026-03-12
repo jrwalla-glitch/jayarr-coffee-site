@@ -1,0 +1,128 @@
+---
+import { getCollection } from 'astro:content';
+import DeepBrewLayout from '../../../layouts/DeepBrewLayout.astro';
+import FormattedDate from '../../../components/FormattedDate.astro';
+import { DB_CATEGORIES } from '../../../content.config';
+
+const allPosts = (await getCollection('deepbrew'))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<DeepBrewLayout
+	title="Research | Deep Brew Mode"
+	description="Long-form coffee science articles grounded in peer-reviewed research. No fluff. No affiliate bait. Just the research that changes how you brew."
+>
+	<!-- Hero -->
+	<section class="pt-24 pb-16">
+		<div class="max-w-4xl mx-auto px-6 text-center">
+			<div class="font-db-mono text-xs tracking-[0.3em] uppercase text-db-copper mb-4">Deep Brew Research</div>
+			<h1 class="font-db-serif text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight"
+					style="background: linear-gradient(135deg, var(--color-db-text) 0%, var(--color-db-copper) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+				The Research
+			</h1>
+			<p class="text-db-text-muted max-w-xl mx-auto leading-relaxed">
+				Long-form articles built on peer-reviewed coffee science. Every claim cited. Every number sourced.
+			</p>
+		</div>
+	</section>
+
+	<!-- Category filter -->
+	<section class="pb-8">
+		<div class="max-w-4xl mx-auto px-6">
+			<div class="flex items-center justify-center gap-3 flex-wrap" id="category-filters">
+				<button
+					data-category="all"
+					class="filter-btn active font-db-mono text-xs uppercase tracking-widest px-3 py-1.5 rounded-md border transition-all duration-200 text-db-copper border-db-copper/40 bg-db-copper/10"
+				>
+					All
+				</button>
+				{DB_CATEGORIES.map((cat) => (
+					<button
+						data-category={cat}
+						class="filter-btn font-db-mono text-xs uppercase tracking-widest px-3 py-1.5 rounded-md border transition-all duration-200 text-db-text-muted border-db-border hover:border-db-copper/30 hover:text-db-text"
+					>
+						{cat}
+					</button>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<!-- Articles grid -->
+	<section class="pb-24">
+		<div class="max-w-4xl mx-auto px-6">
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="articles-grid">
+				{allPosts.map((post) => (
+					<a href={`/deep-brew/research/${post.id}/`} data-category={post.data.category} class="article-card group block p-6 bg-db-surface rounded-lg border border-db-border hover:border-db-copper/40 transition-all duration-300">
+						<div class="flex items-center gap-2 mb-3">
+							<span class="font-db-mono text-[10px] uppercase tracking-[0.15em] text-db-copper/70 bg-db-copper/10 px-2 py-0.5 rounded">
+								{post.data.category}
+							</span>
+							<span class="font-db-mono text-[10px] text-db-text-muted/40">
+								<FormattedDate date={post.data.pubDate} />
+							</span>
+						</div>
+						<h2 class="font-db-serif text-lg font-semibold text-db-text group-hover:text-db-copper transition-colors mb-2 leading-snug">
+							{post.data.title}
+						</h2>
+						<p class="text-sm text-db-text-muted leading-relaxed mb-3 line-clamp-3">
+							{post.data.description}
+						</p>
+						<span class="font-db-mono text-xs text-db-copper/60 uppercase tracking-widest group-hover:text-db-copper transition-colors">
+							Read Article &rarr;
+						</span>
+					</a>
+				))}
+			</div>
+
+			<div id="empty-state" class="hidden text-center py-16">
+				<p class="text-db-text-muted">No articles found in this category.</p>
+			</div>
+		</div>
+	</section>
+</DeepBrewLayout>
+
+<script>
+	const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+	const cards = document.querySelectorAll<HTMLElement>('.article-card');
+	const emptyState = document.getElementById('empty-state');
+
+	const activeClasses = ['text-db-copper', 'border-db-copper/40', 'bg-db-copper/10'];
+	const inactiveClasses = ['text-db-text-muted', 'border-db-border', 'hover:border-db-copper/30', 'hover:text-db-text'];
+
+	buttons.forEach((btn) => {
+		btn.addEventListener('click', () => {
+			const category = btn.dataset.category;
+
+			buttons.forEach((b) => {
+				b.classList.remove(...activeClasses);
+				b.classList.add(...inactiveClasses);
+			});
+			btn.classList.remove(...inactiveClasses);
+			btn.classList.add(...activeClasses);
+
+			let visible = 0;
+			cards.forEach((card) => {
+				if (category === 'all' || card.dataset.category === category) {
+					card.style.display = '';
+					visible++;
+				} else {
+					card.style.display = 'none';
+				}
+			});
+
+			if (emptyState) {
+				emptyState.classList.toggle('hidden', visible > 0);
+			}
+		});
+	});
+</script>
+
+<style>
+	.line-clamp-3 {
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+</style>

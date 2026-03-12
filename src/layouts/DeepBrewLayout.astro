@@ -1,0 +1,26 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import DeepBrewHeader from '../components/DeepBrewHeader.astro';
+import DeepBrewFooter from '../components/DeepBrewFooter.astro';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} />
+  </head>
+  <body class="bg-db-bg text-db-text font-sans antialiased" style="background-color: var(--color-db-bg); color: var(--color-db-text);">
+    <DeepBrewHeader />
+    <main class="pt-16">
+      <slot />
+    </main>
+    <DeepBrewFooter />
+  </body>
+</html>

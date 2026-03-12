@@ -1,0 +1,98 @@
+---
+import DeepBrewLayout from '../../layouts/DeepBrewLayout.astro';
+import ExtractionDiagnostic from '../../components/tools/ExtractionDiagnostic.svelte';
+---
+
+<DeepBrewLayout
+  title="Extraction Diagnostic | Deep Brew Mode | JayArr Coffee"
+  description="A taste-first diagnostic tool. Describe what you experience — sour, bitter, thin, heavy — and get method-specific fixes mapped to extraction science. V60, Espresso, French Press, AeroPress, Chemex, Cold Brew, Moka Pot."
+>
+  <!-- Hero -->
+  <section class="pt-28 pb-8 md:pt-32 md:pb-12">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <a href="/deep-brew/" class="font-db-mono text-xs uppercase tracking-[0.2em] text-db-text-muted/50 hover:text-db-copper transition-colors">
+        &larr; Deep Brew Mode
+      </a>
+      <h1 class="font-db-serif text-3xl md:text-5xl font-bold mt-3 mb-3"
+          style="background: linear-gradient(135deg, var(--color-db-text) 0%, var(--color-db-copper) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        Extraction Diagnostic
+      </h1>
+      <p class="text-db-text-muted max-w-xl mx-auto leading-relaxed text-sm mb-1">
+        Tell us what you taste. We&rsquo;ll tell you what went wrong &mdash; and exactly how to fix it for your brew method.
+      </p>
+      <p class="font-db-mono text-xs text-db-text-muted/40 tracking-wider">
+        EY% &times; TDS &times; SCA
+      </p>
+    </div>
+  </section>
+
+  <!-- Tool -->
+  <section class="pb-16 md:pb-24">
+    <div class="max-w-4xl mx-auto px-6">
+      <ExtractionDiagnostic client:load />
+    </div>
+  </section>
+
+  <!-- Methodology -->
+  <section class="py-16 bg-db-surface border-t border-db-border">
+    <div class="max-w-3xl mx-auto px-6">
+      <div class="font-db-mono text-xs tracking-[0.2em] uppercase text-db-copper mb-4">Methodology</div>
+      <h2 class="font-db-serif text-xl md:text-2xl font-semibold text-db-text mb-6">How This Works</h2>
+
+      <div class="space-y-6 text-sm text-db-text-muted leading-relaxed">
+        <div>
+          <h3 class="font-db-serif text-base font-semibold text-db-text mb-1">The Extraction Curve</h3>
+          <p>
+            Coffee extraction is sequential. Organic acids dissolve first (they&rsquo;re small, polar molecules), followed by sugars and Maillard reaction products, then finally the heavier bitter compounds &mdash; CGA lactones and phenylindanes. Every cup is a snapshot of how far along this dissolving curve you went. Too little extraction: sour and underdeveloped. Too much: harsh and bitter. The sweet spot lives in the middle.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="font-db-serif text-base font-semibold text-db-text mb-1">Acids &rarr; Sugars &rarr; Bitters</h3>
+          <p>
+            The three stages aren&rsquo;t equal in volume. Acids make up roughly 10&ndash;15% of soluble mass but dissolve earliest and fastest. Sugars and Maillard products represent the bulk of pleasant flavor (40&ndash;50%) and come next. Bitter compounds dissolve last &mdash; they&rsquo;re large, complex molecules that need more energy (time, heat, surface area) to extract. The goal is to dissolve enough sugars to balance the acids without pulling significant bitters.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="font-db-serif text-base font-semibold text-db-text mb-1">The SCA 18&ndash;22% Standard</h3>
+          <p>
+            The Specialty Coffee Association established the 18&ndash;22% extraction yield range through decades of sensory research. At this range, trained tasters consistently rate coffee highest for flavor quality. Below 18%, acid compounds dominate and the cup tastes sour or underdeveloped. Above 22%, bitter compounds accumulate faster than flavor complexity increases. The &ldquo;Gold Cup&rdquo; standard pairs this with 1.15&ndash;1.35% TDS for filter coffee.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="font-db-serif text-base font-semibold text-db-text mb-1">Strength vs. Extraction</h3>
+          <p>
+            These are independent variables, which is why this tool uses two sliders. Extraction Yield (EY%) measures what percentage of the coffee&rsquo;s mass was dissolved &mdash; it determines flavor balance (sour vs. bitter). Total Dissolved Solids (TDS%) measures the concentration of those dissolved compounds in your cup &mdash; it determines body (thin vs. heavy). You can have high extraction at low strength (bitter and watery) or low extraction at high strength (sour and intense). Fixing your coffee requires identifying which axis is off.
+          </p>
+        </div>
+
+        <div class="pt-4 border-t border-db-border">
+          <span class="font-db-mono text-xs text-db-text-muted/40 tracking-wider uppercase">Sources</span>
+          <p class="mt-2 text-xs text-db-text-muted/50">
+            SCA Brewing Standards (2019). Lockhart, E.E. "The Soluble Solids in Beverage Coffee as an Index to Cup Quality" (Coffee Brewing Institute, 1957). Rao, S. "Everything But Espresso" (2010). Hendon, C. et al. "The Role of Dissolved Cations in Coffee Extraction" (Journal of Agricultural and Food Chemistry, 2014). Specialty Coffee Association of America. "Gold Cup" Brewing Standard.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related -->
+  <section class="py-12">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <span class="font-db-mono text-xs uppercase tracking-widest text-db-copper">Related</span>
+      <div class="flex flex-wrap justify-center gap-3 mt-4">
+        <a href="/deep-brew/water/" class="border border-db-border text-db-text-muted px-5 py-2 text-xs uppercase tracking-widest hover:border-db-copper/50 hover:text-db-text transition-all rounded">
+          Water Recipe Builder
+        </a>
+        <a href="/blog/coffee-extraction-explained/" class="border border-db-border text-db-text-muted px-5 py-2 text-xs uppercase tracking-widest hover:border-db-copper/50 hover:text-db-text transition-all rounded">
+          Extraction Article
+        </a>
+        <a href="/deep-brew/" class="border border-db-border text-db-text-muted px-5 py-2 text-xs uppercase tracking-widest hover:border-db-copper/50 hover:text-db-text transition-all rounded">
+          All Deep Brew Tools
+        </a>
+      </div>
+    </div>
+  </section>
+</DeepBrewLayout>

@@ -1,0 +1,250 @@
+---
+title: "The Extraction Sequence: What Dissolves First, What Dissolves Last, and Why It Matters"
+description: "Coffee extraction follows a predictable three-phase sequence governed by molecular weight and polarity. Understanding these phases explains the 18-22% EY sweet spot and every brewing variable you control."
+pubDate: "Mar 12 2026"
+category: "Chemistry"
+tags: ["extraction", "brewing science", "extraction yield", "TDS", "coffee chemistry", "SCA brewing"]
+---
+
+import DeepBrewFAQ from '../../components/DeepBrewFAQ.astro';
+import DeepBrewInfographic from '../../components/infographics/DeepBrewInfographic.astro';
+import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
+import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
+
+Coffee extraction is not random dissolution. It is sequential. Compounds leave the ground coffee particle and enter solution in a predictable order determined by molecular weight, polarity, and solubility kinetics. Small, polar molecules dissolve first. Large, nonpolar molecules dissolve last. The entire flavor arc of a cup of coffee -- from the initial bright acidity through the sweet middle to the bitter finish -- is a direct consequence of this extraction sequence.
+
+Understanding the sequence transforms brewing from trial-and-error into applied chemistry. Every variable you control -- grind size, temperature, time, ratio -- is a lever that determines how deep into the sequence you go. Stop early and you get sour, underdeveloped coffee. Push too far and you get harsh, astringent coffee. The 18-22% extraction yield window that the SCA recommends is not arbitrary. It is the range where you've captured enough of the middle-phase sweetness to balance the early-phase acids without dragging in excessive late-phase bitterness.
+
+## The Physics of Sequential Dissolution
+
+The Noyes-Whitney equation governs extraction rate:
+
+**dm/dt = D x A x (C_sat - C_bulk) / L**
+
+Extraction rate depends on the diffusion coefficient (D), the surface area (A), the concentration gradient between the particle surface and the bulk solution (C_sat - C_bulk), and the boundary layer thickness (L). Every compound has its own diffusion coefficient based on molecular size -- smaller molecules diffuse faster. And every compound has its own saturation concentration based on polarity and structure -- more polar compounds dissolve more readily in water.
+
+These two factors -- diffusion rate and solubility -- determine the extraction order. They are the reason citric acid enters solution within seconds while phenylindanes require minutes of contact time.
+
+But there's a third factor that's often overlooked: where the compound sits within the coffee particle. Roasting creates a porous, honeycomb-like cell structure. Compounds on or near the surface dissolve almost immediately on contact with water. Compounds trapped in interior cells require water to penetrate through the porous matrix before dissolution can begin. Finer grinding exposes more interior surface area, which is why grind size affects not just extraction rate but extraction evenness across compound families.
+
+## Phase 1: The Fast Fraction (0-14% Extraction Yield)
+
+The first compounds to dissolve are the smallest and most polar: organic acids, caffeine, and light volatile aromatics. In a pour-over, this phase plays out primarily during the bloom and the first main pour. In espresso, it's the first 5-8 seconds of flow.
+
+<DeepBrewInfographic>
+  <ProcessFlow
+    title="The Extraction Timeline"
+    subtitle="Molecular size and polarity govern the extraction sequence. Every cup follows this order."
+    steps={[
+      { label: "Phase 1: Fast Fraction", sublabel: "0-14% EY", description: "Citric acid, malic acid, phosphoric acid, caffeine, light volatile aromatics (2-furfurylthiol, methanethiol)", detail: "Dissolves in SECONDS. Taste: sour, bright, thin, unbalanced. Even severely underextracted coffee has full caffeine." },
+      { label: "Phase 2: Sweet Middle", sublabel: "14-20% EY", description: "Caramelization products (furanones, maltol), Maillard products (pyrazines, pyrroles), low/mid MW melanoidins, lipid emulsions, sugar browning products", detail: "Where flavor lives. Nutty, caramel, chocolate, toffee. Maximum sugar-acid balance at 18-20% EY." },
+      { label: "Phase 3: Slow Fraction", sublabel: "20-26% EY", description: "CGA lactones, phenylindanes, quinic acid, high MW melanoidins, polyphenols, cellulose derivatives", detail: "Bitterness and astringency accumulate. Woody/papery at extremes. Quality grinders push this wall to 23-24% EY." },
+    ]}
+    compare={[
+      { title: "SCA Sweet Spot (18-22% EY)", points: ["Phase 2 fully captured", "Phase 3 controlled", "Maximum sugar-acid balance"] },
+      { title: "Grinder Impact", points: ["Low-fines burrs allow 23-24% EY", "Blade grinders hit bitterness at 19%", "Fines race to Phase 3 while boulders lag in Phase 1"] },
+    ]}
+    footnote="The sequence is fixed — acids first, sugars second, bitters third. Temperature compresses the timeline without reordering it."
+  />
+</DeepBrewInfographic>
+
+### Organic Acids
+
+Citric, malic, phosphoric, acetic, and lactic acids are small molecules with high water solubility. They dissolve almost immediately on contact with hot water.
+
+Here's the critical finding from recent sensory research: of these acids, only citric acid consistently exceeds its individual sensory detection threshold in brewed coffee. Malic, acetic, and lactic acids are typically below their individual detection thresholds. The perceived "acidity" of coffee is primarily citric acid plus pH effects plus matrix synergism -- the phenomenon where subthreshold concentrations of multiple acids combine to produce a perceived acid sensation greater than any single acid alone.
+
+| Acid | Green Bean (g/kg) | Sensory Threshold Status | Taste Character |
+|---|---|---|---|
+| Citric | 8-13 | Consistently above threshold | Bright, clean, citrus |
+| Malic | 4-12 | Typically below threshold | Apple-like tartness |
+| Phosphoric | 1-3 | Just at threshold | Bright, sparkling (Kenyan signature) |
+| Acetic | 1-2 (green Arabica) | Below threshold in light roasts | Vinegar at high concentrations |
+| Lactic | &lt;1 | Below threshold | Creamy, mild |
+
+Citric acid decreases with roasting: 8-13 g/kg in green coffee, 5-10 g/kg at light roast, 1-3 g/kg at dark roast. This is why dark roasts taste less acidic -- the primary above-threshold acid is being thermally destroyed. Malic acid follows the same declining trajectory.
+
+Phosphoric acid is the exception. It's an inorganic mineral acid, thermally stable, and it actually increases slightly during roasting. It contributes the bright, sparkling, almost effervescent acidity characteristic of Kenyan coffees, which have unusually high phosphoric acid content due to soil chemistry. Phosphoric acid sits right at its detection threshold in most brews -- just enough to add a lift without being identifiable as a distinct taste.
+
+### Caffeine
+
+Caffeine is small (194 Da), moderately polar, and thermally stable. It dissolves early and fast -- the majority of caffeine extraction occurs in Phase 1. This is why even severely underextracted coffee still delivers a full caffeine dose. Caffeine contributes roughly 10-15% of total perceived bitterness, and because it extracts early, its bitterness is present across the entire extraction spectrum.
+
+### Light Volatiles
+
+The most volatile aroma compounds -- thiols, aldehydes, light furanones -- escape into the headspace rapidly. 2-Furfurylthiol, the character-impact odorant of fresh coffee (threshold: 0.01 ppb, OAV >2000), begins dissipating the moment water contacts grounds (1). In brewed coffee at serving temperature, 2-furfurylthiol concentration drops 84% within 60 minutes, primarily through conjugation with [melanoidin](/deep-brew/research/melanoidins-body-color-health/) phenolic compounds that sequester the thiol. Methanethiol drops 72% in the same window. These compounds define "freshness" in the cup, and they're gone first.
+
+### The Taste of Phase 1 Alone
+
+If you could isolate Phase 1 extraction -- and you effectively can, by deliberately underextracting -- you'd taste: sharp, biting acidity. Bright but unbalanced. Sour without sweetness. Possibly salty or minerally. Thin body. This is what a 12% EY cup tastes like, and it's why underextracted coffee is unpleasant despite extracting the compounds that sound desirable in isolation (acids, aromatics, caffeine).
+
+## Phase 2: The Sweet Middle (14-20% Extraction Yield)
+
+This is where coffee becomes worth drinking. Phase 2 dissolves the mid-weight compounds produced by the [Maillard reaction and caramelization](/deep-brew/research/maillard-caramelization-strecker/) during roasting: sugar browning products, furanones, maltol, low-to-mid molecular weight melanoidins, and lipid emulsions.
+
+### Caramelization Products and Perceived Sweetness
+
+Sucrose constitutes 6-9% of Arabica dry weight (roughly double Robusta's 3-5%) (3), but it's entirely destroyed by medium roast. Caramelization begins at ~160-170C and peaks at 170-200C, pyrolyzing sucrose into hundreds of products. The [sweetness paradox](/deep-brew/research/sweetness-paradox-roasting/): total sugar content decreases during roasting, yet perceived sweetness increases through light-to-medium roast. Four mechanisms explain this:
+
+1. Caramelization products (furanones, maltol, cyclotene) create olfactory sweetness -- they smell sweet, and the brain integrates retronasal aroma with taste to create a "sweet" percept.
+2. Maillard products (pyrazines, pyrroles, thiophenes) enhance the sweet aroma perception retronasally.
+3. Suppression of organic acids through thermal degradation unmasks sweet character that was previously overshadowed.
+4. True sucrose sweetness is gone by medium roast. What remains is entirely aroma-mediated "sweetness." No sugar is being tasted.
+
+These mid-weight caramelization and Maillard products dissolve in the 14-20% EY window. They require more contact time than acids because they're larger molecules, but they dissolve readily enough that normal brewing captures them fully within the SCA recommended range.
+
+### Melanoidins and Body
+
+[Melanoidins](/deep-brew/research/melanoidins-body-color-health/) are high-molecular-weight brown polymers from the Maillard reaction -- 10-18% of roasted coffee dry weight, up to 25% of brew dry solids. They are among the most abundant compounds in brewed coffee by mass. They are also heterogeneous: they incorporate polysaccharide backbones, protein fragments, CGA residues, and Maillard intermediates into a cross-linked polymer matrix.
+
+Low and intermediate molecular weight melanoidins (&lt;12 kDa) dissolve in Phase 2 and contribute body, viscosity, and brown color. High molecular weight melanoidins (>12 kDa) dissolve more slowly and extend into Phase 3. Light roasting favors intermediate MW melanoidins; extended roasting shifts the distribution toward HMW melanoidins, which is why darker roasts produce more body at the same TDS.
+
+Melanoidins are also potent antioxidants -- in dark roasts where most intact CGAs have been destroyed, melanoidin-bound phenolics provide the bulk of remaining antioxidant activity.
+
+### Lipid Emulsions
+
+Coffee oils don't dissolve in water -- they form emulsions stabilized by proteins and melanoidins. This emulsification happens during Phase 2 as the surfactant proteins and melanoidins themselves dissolve and begin coating lipid droplets. In unfiltered methods (French press, espresso), these lipid emulsions contribute creamy mouthfeel and perceived sweetness (3). Paper filtration traps most lipids, which is why paper-filtered coffee has cleaner but thinner body.
+
+### The Taste of Phase 2
+
+Phase 2 is where every desirable coffee flavor lives. Nutty, caramel, chocolate, toffee, honey, vanilla, malty. Balanced acidity (Phase 1 acids are still present, now balanced by Phase 2 sweetness). Developing body. This is what makes the 18-20% EY range taste so good -- you've fully captured Phase 2 while the Phase 1 acids provide brightness and lift.
+
+## Phase 3: The Slow Fraction (20-26% Extraction Yield)
+
+Push past 20% EY and you begin extracting the slow fraction: high molecular weight melanoidins, CGA lactones, phenylindanes, quinic acid, polyphenols, and cellulose degradation products.
+
+### CGA Degradation Products
+
+[CGA lactones](/deep-brew/research/chlorogenic-acid-cascades/) -- the dominant bitterness compounds in light-to-medium roasts -- are less polar than their parent CGAs and dissolve more slowly. At moderate extraction (18-20% EY), CGA lactone concentration in the cup provides structured, clean bitterness. Push to 22-24%, and the lactone concentration tips from structural to dominant. Phenylindanes, the harshest of the CGA degradation products, are the least polar and extract last -- they're the primary reason over-extracted dark roast tastes acrid.
+
+Quinic acid is an exception within this family. Despite being a Phase 3 contributor to bitterness, quinic acid is moderately polar and begins dissolving in late Phase 2. It accumulates in dark roast from 2-4 g/kg (green) to 8-12 g/kg. In dark-roast brews pushed past 22% EY, quinic acid contributes a dry, astringent quality distinct from either CGA lactone or phenylindane bitterness.
+
+### Polyphenols and Astringency
+
+Non-CGA polyphenols -- condensed tannins, proanthocyanidins -- dissolve slowly due to their high molecular weight. They contribute astringency: the mouth-puckering, drying sensation caused by polyphenol-protein complexation with salivary proteins. This is the same mechanism as red wine astringency. At 18-20% EY, polyphenol extraction is minimal. At 24-26%, it becomes the dominant tactile sensation.
+
+### Cellulose Derivatives
+
+At extreme extraction (above 24-26% EY), water begins breaking down cellulose-derived compounds that contribute woody, papery, and cardboard-like off-flavors. These are the last compounds to dissolve and the clearest indicators that extraction has gone too far.
+
+### The Taste of Phase 3 Excess
+
+Over-extracted coffee tastes: bitter (persistent, not clean), astringent (drying, tannic), hollow (the bitterness masks Phase 2 sweetness), and woody or papery at extreme levels. The finish is long and unpleasant. This is what a 25% EY cup tastes like from most grinders -- the entire Phase 3 slate has been extracted, and it overwhelms everything else.
+
+## The 18-22% Sweet Spot: Exactly Why This Range Works
+
+The SCA's 18-22% EY recommendation is a direct consequence of the three-phase extraction sequence:
+
+- **Below 18%:** Phase 1 is complete, Phase 2 is incomplete. You have all the acids but not enough sweetness and body to balance them. Sour, thin, underdeveloped.
+- **18-20%:** Phase 1 complete, Phase 2 substantially complete, Phase 3 minimal. Maximum sugar-acid balance. Sweet, complex, balanced. This is the quality peak for most coffees on most grinders.
+- **20-22%:** Phase 2 fully complete, early Phase 3 entering. Enough controlled bitterness to add complexity. Still balanced if the grinder produces uniform particles. Starting to thin out the sweetness-to-bitterness ratio.
+- **Above 22%:** Phase 3 compounds accumulating. Bitterness and astringency begin to dominate. For most grinder-coffee combinations, this is where quality declines.
+
+The critical caveat: grind uniformity modifies these boundaries. A high-quality grinder with a narrow particle size distribution (low span) can produce delicious coffee at 23-24% EY because all particles are extracted evenly -- no fines dragging in Phase 3 compounds while boulders are still in Phase 1. A blade grinder or low-quality burr grinder may hit the bitterness wall at 19% because its fines are at 26% EY while its boulders are at 12%.
+
+## TDS and EY: The Two Axes of Brewing
+
+Extraction yield and brew strength (TDS) are independent variables. This distinction is essential and widely misunderstood.
+
+**Extraction yield** = what percentage of the ground coffee mass dissolved into the water. It tells you how deep into the extraction sequence you went.
+
+**TDS (Total Dissolved Solids)** = what percentage of the final beverage is dissolved coffee material. It tells you how concentrated the brew is.
+
+You can have any combination:
+
+<DeepBrewInfographic>
+  <ComparisonTable
+    title="The EY x TDS Matrix"
+    subtitle="Strength and extraction are independent — you can be over-extracted AND weak"
+    rowLabel="Scenario"
+    columns={["EY", "TDS", "Taste", "How It Happens"]}
+    rows={[
+      { name: "Under + Weak", values: ["Low (&lt;18%)", "Low (&lt;1.15%)", "Sour and watery", "Too little coffee, too much water, coarse grind"] },
+      { name: "Under + Strong", values: ["Low (&lt;18%)", "High (>1.35%)", "Sour and intense", "Lots of coffee, very coarse grind, short time"] },
+      { name: "Good + Good", values: ["18-22%", "1.15-1.35%", "Balanced", "SCA Gold Cup zone"], result: "Sweet spot" },
+      { name: "Over + Weak", values: ["High (>22%)", "Low (&lt;1.15%)", "Bitter and watery", "Too much water through fine grounds"] },
+      { name: "Over + Strong", values: ["High (>22%)", "High (>1.35%)", "Bitter and heavy", "Fine grind, high ratio, long time"] },
+    ]}
+    footnote="EY is controlled by grind size, temperature, and time (how deep into the sequence). TDS is controlled by the coffee-to-water ratio (how concentrated). A refractometer measures TDS directly; EY is calculated from TDS, beverage weight, and dose."
+  />
+</DeepBrewInfographic>
+
+The "diner coffee" failure mode is Over + Weak: too much water pushed through old grounds, extracting everything (high EY) but diluting it to nothing (low TDS). Bitter and watery simultaneously.
+
+The key insight: these two axes are controlled by different variables.
+
+**EY is controlled by:** grind size (finer = more extraction), temperature (hotter = more extraction), and time (longer = more extraction). These variables determine how deep into the sequence you go.
+
+**TDS is controlled by:** the coffee-to-water ratio (more coffee per unit water = higher TDS). This variable determines concentration.
+
+A refractometer measures TDS directly. EY is calculated from TDS, beverage weight, and dose.
+
+## Temperature: Faster Kinetics, Same Sequence
+
+Higher water temperature increases the diffusion coefficient for all compounds and raises saturation concentrations. The result: faster extraction across all three phases. But the sequence doesn't change. Acids still dissolve first, sugars second, bitters third. Temperature compresses the timeline without reordering it.
+
+However -- same EY at different temperatures does not produce the same flavor. This is one of Gagne's key findings (1). Higher temperatures disproportionately accelerate the extraction of certain compound families. At 96C, the bitter fraction enters solution sooner (in clock time) than at 88C, even if both brews end at 20% EY. The kinetic profile is different, and the cup composition is measurably different.
+
+Practical implication: lowering brew temperature is a tool for managing bitterness in dark roasts. You can reach 20% EY at 88C with longer contact time, and the cup will have less late-phase bitterness than the same 20% EY reached at 96C in less time.
+
+## Grind Size: Surface Area and Uniformity
+
+Finer grinding does two things: increases total surface area (faster extraction) and reduces the distance from particle center to surface (more even extraction within each particle). Both effects push EY higher for a given time and temperature.
+
+But grind size also introduces fines. A particle 10x smaller than the median has 1000x less volume but enormously more surface area per unit mass. Fines extract 5-10x faster than median-sized particles. In any brew containing fines, the fine fraction is deep into Phase 3 while the coarse fraction is still in Phase 1. This is the fundamental problem of uneven extraction: the average EY might read 20%, but you're tasting a mixture of 28% fines extract and 14% boulder extract. The cup registers as simultaneously sour AND bitter.
+
+This is why Gagne argues that the D10 value (10th percentile particle size -- the fines) determines the hydraulic resistance of a coffee bed and is the most important grinder metric (1). It's also why high-uniformity grinders justify their price: they allow you to push deeper into the extraction sequence without the fines penalty.
+
+## Time: Diminishing Returns After Phase 2
+
+Extraction follows a logarithmic curve -- the first minute of contact time extracts far more than the fifth minute. Phase 1 compounds dissolve in seconds. Phase 2 compounds dissolve in 1-3 minutes for most grind sizes. Phase 3 compounds require 3+ minutes.
+
+In percolation methods (pour-over, drip), fresh water continuously passes through the coffee, maintaining the concentration gradient (C_sat - C_bulk) at a high level. This enables higher EY in less total time. In immersion methods (French press, cupping), the water approaches equilibrium with the coffee, the concentration gradient drops, and extraction slows dramatically. This is why immersion methods reach equilibrium more slowly -- French press actually achieves 20-22% EY given sufficient steep time (4+ minutes), but the rate of extraction decelerates sharply as the concentration gradient diminishes, and extending steep time past 4-5 minutes adds very little additional yield.
+
+The practical takeaway: in pour-over, the majority of flavor development happens in the first 2 minutes of contact. Extending brew time past 3:30-4:00 mostly adds Phase 3 extraction. In immersion, the steep time matters less than you'd think -- French press reaches 20-22% EY by the 4-minute mark, and extending past that adds negligible yield because the concentration gradient has largely collapsed.
+
+## Method-Specific Extraction Windows
+
+Each brewing method has characteristic EY and TDS ranges that reflect its physics:
+
+| Method | Typical EY | Typical TDS | Physics | Phase Balance |
+|---|---|---|---|---|
+| Filter (pour-over, drip) | 18-22% | 1.15-1.35% | Percolation. Fresh water maintains gradient. | Full Phase 1 + 2, controlled Phase 3 |
+| Espresso | 18-22% | 8-12% | High pressure. Fine grind. Short time. | Compressed sequence -- all phases rapid |
+| French press | 20-22% | 1.4-1.6% | Immersion. Gradient declines toward equilibrium. | Full Phase 1 + 2, limited Phase 3 |
+| Cold brew | 14-18% | Variable (concentrate) | Low temp. Very slow kinetics. 12-24 hrs. | Acid-shifted -- less bitter compound extraction |
+
+Cold brew is the most interesting deviation. Low temperature dramatically reduces diffusion coefficients, but it also changes the relative extraction rates between compound families. Cold water extracts acids and caffeine reasonably well (they're small and polar enough) but extracts CGA lactones, phenylindanes, and high-MW [melanoidins](/deep-brew/research/melanoidins-body-color-health/) poorly. Despite similar pH to hot brew (4.85-5.13 for both), cold brew has 28-50% lower titratable acidity, fewer melanoidins (lighter color, lower body, lower antioxidant activity), and fewer bitter volatiles. The result is a brew with noticeable caffeine, reduced acidity, and very low bitterness -- a fundamentally different Phase 1/Phase 2/Phase 3 ratio than any hot-brewed method. Fuller and Rao (2017) showed that caffeine and CGAs reach equilibrium by ~6-7 hours; steeping beyond that adds negligible extraction of those compounds, though other compounds may continue dissolving slowly (2).
+
+## Pushing Deeper Into the Sweet Middle
+
+The practical goal of advanced brewing is to maximize Phase 2 extraction while controlling Phase 3. Several techniques target this specifically:
+
+**Grind uniformity.** The highest-impact single variable. Eliminating fines removes the particles that race ahead into Phase 3 while the rest of the bed is still in Phase 2. High-uniformity grinders (flat burrs, SSP geometry, sharp burrs) allow you to grind finer and extract deeper without the Phase 3 fines penalty.
+
+**Temperature management.** Start hot to drive Phase 1 and early Phase 2 quickly, then let the slurry cool slightly through late Phase 2. Declining temperature slows Phase 3 compound extraction. Gagne's finding that plastic V60s maintain the most stable slurry temperature (averaging ~84C with 99C kettle water) is relevant here (1) -- stable temperature avoids both the under-extraction of a too-cool brew and the over-extraction of sustained high temperature.
+
+**Pulse pouring.** Multiple small pours create cycles of percolation and immersion. During the immersion phase (between pours), interstitial water concentration rises toward saturation, then fresh water during the next pour flushes concentrated extract out and restarts the gradient. This alternation allows more total extraction without the extended Phase 3 contact of a single long pour.
+
+**Bypass brewing.** Deliberately brew at high strength (high dose, lower water volume, higher EY) to fully capture Phase 2, then dilute to target TDS with clean water. The added water reduces concentration without adding extraction. The result is a cup with full Phase 2 development at a normal drinking strength, with less Phase 3 contamination than you'd get from extracting the same weight of water through the coffee bed.
+
+**Preinfusion for espresso.** Slow, low-pressure wetting lets the coffee bed hydrate evenly before full pressure drives extraction (4). This reduces channeling -- and channels are Phase 3 express lanes, over-extracting narrow paths while leaving adjacent coffee in Phase 1.
+
+The extraction sequence is not a metaphor. It is a physical reality governed by dissolution kinetics, and every choice you make in the brewing process determines where in that sequence your cup lands. The best coffee occupies the sweet middle -- fully past the sour beginning, stopped before the bitter end.
+
+## References
+
+1. Gagne, J. *The Physics of Filter Coffee*. Montreal: Self-published, 2020.
+2. Fuller, M. and Rao, N.Z. "The Effect of Time, Roasting Temperature, and Grind Size on Caffeine and Chlorogenic Acid Concentrations in Cold Brew Coffee." *Scientific Reports* 7, no. 17979 (2017).
+3. Hoffmann, J. *The World Atlas of Coffee*, 2nd ed. Mitchell Beazley, 2018.
+4. Rao, S. *Espresso Extraction: Measurement and Mastery*. Self-published, 2013.
+
+<DeepBrewFAQ items={[
+  { question: "Why can't you just extract more to get more sweetness?", answer: "Because extraction is sequential, not selective. You can't extract more Phase 2 compounds (sweetness, body) without also extracting Phase 3 compounds (bitterness, astringency). Sweetness peaks in the 18-20% EY range because that's where caramelization products, furanones, and Maillard intermediates have fully dissolved. Pushing past 22%, the additional material is predominantly CGA lactones, phenylindanes, quinic acid, and polyphenols that add bitterness masking the sweetness already present. The only way to increase sweetness without increasing bitterness is to improve grind uniformity, eliminating fines that race ahead into Phase 3." },
+  { question: "Does cold brew follow the same extraction sequence as hot brew?", answer: "The sequence is the same -- acids first, sugars second, bitters third -- but the rate differentials between phases change dramatically. Low temperature disproportionately slows dissolution of larger, less polar compounds (CGA lactones, phenylindanes, high-MW melanoidins). The result is a fundamentally different phase ratio: cold brew at 16% EY has proportionally more Phase 1 compounds and fewer Phase 3 compounds than hot brew at 16% EY. Fuller and Rao (2017) showed caffeine and CGAs reach equilibrium by ~6-7 hours. Cold brew also has 28-50% lower titratable acidity than hot brew despite similar pH." },
+  { question: "How do immersion methods differ from percolation in extraction dynamics?", answer: "The critical difference is the concentration gradient. In percolation (pour-over, drip), fresh water continuously contacts the coffee, maintaining a high gradient that drives efficient extraction. In immersion (French press, cupping), surrounding water becomes increasingly concentrated, the gradient drops, and extraction slows toward equilibrium. French press reaches 20-22% EY with 4+ minutes, but most yield arrives in the first 2-3 minutes. Immersion brews tend to have simpler flavor profiles not because they extract less total material, but because the declining gradient means Phase 3 compounds enter solution gradually and in lower concentrations." },
+  { question: "What's the actual evidence for the 18-22% sweet spot?", answer: "The range traces back to E.E. Lockhart's work at MIT in the 1950s, where consumer preference testing established the boundaries. The SCA adopted these as the Brewing Control Chart standard. The evidence is primarily sensory -- trained and consumer panels consistently rate coffees in this range highest. Gagne has demonstrated that high-uniformity grinders can produce excellent cups at 23-24% EY. The molecular explanation reinforces the sensory data: 18% is roughly where Phase 2 products reach full extraction, and 22% is where Phase 3 compounds begin to dominate. Recent work by Guinard and Ristenpart (UC Davis) proposed revising the chart, finding the ideal zone may be slightly different than Lockhart's original rectangle." },
+  { question: "If the extraction sequence is fixed, why does water temperature change the flavor at the same EY?", answer: "Because temperature changes the kinetic profile even when the endpoint is the same. At 96C, all compound families dissolve faster, but the acceleration isn't uniform. Large, less polar molecules (CGA degradation products, high-MW melanoidins) see dramatic rate increases, while small polar molecules (acids, caffeine) see modest increases. At 96C, the Phase 3 fraction enters solution sooner and has more opportunity to reach equilibrium concentrations. At 88C with longer brew time to the same 20% EY, Phase 3 compounds dissolve more slowly and may not reach the same concentration. This is why lowering temperature is effective for managing bitterness in dark roasts." },
+  { question: "Can a refractometer tell you which phase you're in?", answer: "Not directly. A refractometer measures total dissolved solids, giving you TDS from which you calculate EY. But it cannot distinguish between acids, sugars, and bitter compounds. A cup at 20% EY could be beautifully balanced (uniform extraction) or taste both sour and bitter (uneven extraction from mixed fines and boulders). The refractometer gives position on the EY x TDS matrix, which is useful for diagnosis, but tells nothing about extraction uniformity. That requires tasting. The combination of refractometer data and palate assessment is the diagnostic gold standard." },
+  { question: "Why does espresso extract the same EY range as filter but taste so different?", answer: "The EY range is similar (18-22%), but TDS is radically different -- 8-12% for espresso versus 1.15-1.35% for filter. Espresso concentrates the same dissolved material into much less water. At 10% TDS, you're tasting compounds at roughly 8x filter concentration. This changes perception: bitterness that reads as pleasant structure at 1.3% TDS can read as aggressive at 10% TDS. Additionally, espresso's fine grind under 9 bar pressure compresses the entire extraction sequence into 25-35 seconds -- all three phases happen nearly simultaneously rather than sequentially over 3-4 minutes." },
+]} />

@@ -1,0 +1,246 @@
+---
+title: "The Sweetness Paradox: How Roasting Destroys 100% of Sugar But Creates Peak Perceived Sweetness"
+description: "Arabica beans contain 6-9% sucrose, yet medium roast — with effectively zero sugar remaining — tastes the sweetest. Three converging mechanisms explain why sugar destruction creates peak sweetness."
+pubDate: "Mar 12 2026"
+category: "Roasting"
+tags: ["sweetness", "caramelization", "sucrose", "Maillard reaction", "sensory science", "roast level", "flavor chemistry"]
+---
+
+import DeepBrewFAQ from '../../components/DeepBrewFAQ.astro';
+import DeepBrewInfographic from '../../components/infographics/DeepBrewInfographic.astro';
+import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
+import ReferenceGuide from '../../components/infographics/ReferenceGuide.astro';
+
+Arabica coffee beans contain 6-9% sucrose by dry weight (1). That's a significant sugar load -- more than many fruits by percentage. It's one of the fundamental reasons Arabica tastes better than Robusta (3-5% sucrose) (2). You'd think roasting would preserve at least some of that sweetness. It doesn't. By medium roast, effectively 100% of the sucrose is destroyed. The beans contain 0-0.5% residual sugar (1).
+
+And yet medium roast consistently tastes the sweetest.
+
+This is not a subjective impression. Trained sensory panels score medium roasts higher on sweetness than either light or dark roasts. Cuppers reach for descriptors like caramel, brown sugar, honey, butterscotch -- all words that describe sugar or sugar-derived products -- to characterize coffees that contain no measurable sugar. The sweetness is real in every perceptual sense. It's just not coming from sugar.
+
+Understanding this paradox requires pulling apart three separate mechanisms that converge at medium roast to create peak perceived sweetness, then diverge again at dark roast to destroy it.
+
+## The Sucrose Destruction Curve
+
+Sucrose begins breaking down the moment bean temperature crosses 160-170C (320-338F). This is the [caramelization](/deep-brew/research/maillard-caramelization-strecker/) onset -- the temperature at which sucrose undergoes thermal decomposition in the absence of amino acids. The reaction accelerates rapidly. By 190-200C, near-total sucrose loss has occurred.
+
+Map this against roast levels:
+
+| Roast Level | Bean Temperature | Approximate Sucrose Remaining |
+|-------------|-----------------|-------------------------------|
+| Green (unroasted) | Ambient | 6-9% dwb (Arabica) |
+| Light (Agtron ~70) | ~205C | Trace amounts |
+| Medium (Agtron ~55) | ~220C | 0-0.5% |
+| Dark (Agtron ~35) | ~230-240C | Effectively zero |
+
+The curve is not linear. It's a cliff. Sucrose doesn't gradually decline through roasting -- it hangs on through the drying phase, begins fragmenting rapidly at caramelization onset, and is functionally gone by the time the bean reaches first crack temperatures. The roaster who drops a medium roast has dropped a coffee with no sucrose. The sweetness that cupper perceives is entirely post-sugar.
+
+The critical insight: sucrose doesn't simply vanish. It fragments into hundreds of decomposition products. Some of those products happen to be among the most potent sweetness-signaling molecules known to food chemistry.
+
+## What Replaces the Sugar: Caramelization Products
+
+When sucrose undergoes thermal decomposition, the initial products are glucose and fructose (simple inversion), which themselves rapidly degrade into a cascade of volatile and non-volatile compounds. The volatiles that matter most for sweetness perception are the furanones.
+
+### Furaneol (4-Hydroxy-2,5-dimethyl-3(2H)-furanone, HDMF)
+
+Furaneol is the dominant sweet-signaling [volatile](/deep-brew/research/flavor-volatiles-oav-guide/) in roasted coffee. Its sensory descriptor is unambiguous: caramel, cotton candy, burnt sugar. Its detection threshold in water is 30 ppb, and its Odor Activity Value in brewed coffee ranges from 196 to 250 (1). That OAV means furaneol is present at nearly 200 times the concentration required to detect it. It is not subtle.
+
+Furaneol forms directly from sucrose caramelization. No amino acids required -- this is purely thermal sugar chemistry. Its concentration peaks when sucrose is being most actively destroyed, which means peak furaneol production coincides with the transition from light to medium roast.
+
+### Maltol (3-Hydroxy-2-methyl-4-pyranone)
+
+Maltol reinforces the caramel/sweet signal. Its individual threshold is higher than furaneol's, so it contributes less on a per-molecule basis, but the combination of furaneol and maltol creates a synergistic sweetness perception that exceeds what either compound produces alone. Maltol's sensory character leans toward cotton candy and toasted marshmallow -- the kind of sweetness that specialty cuppers file under "caramel" or "toffee."
+
+### Diacetyl (2,3-Butanedione)
+
+Diacetyl adds the buttery, butterscotch dimension. It's technically a [Maillard intermediate](/deep-brew/research/maillard-caramelization-strecker/) rather than a pure caramelization product -- formed during the reaction of reducing sugars with amino acids -- but it reinforces the same sweet-creamy gestalt. Its detection threshold is 15 ppb (1), and at the levels present in medium-roast coffee, it contributes meaningfully to the perception of richness and sweetness. Winemakers and brewers know diacetyl as a defect at high concentrations. In coffee, it's a desirable player.
+
+### The Ensemble Effect
+
+No single caramelization product creates the full sweetness perception. It's the ensemble -- furaneol + maltol + diacetyl + dozens of minor furanones, pyranones, and lactones -- that produces what we experience as "sweet coffee." This is important because it means sweetness isn't a single lever you can turn. It's a chorus of volatile molecules, each with its own formation kinetics, peak concentration, and degradation curve.
+
+## Olfactory Sweetness vs. Gustatory Sweetness
+
+Here's where the paradox gets mechanistically interesting. None of the compounds listed above activate sweet taste receptors on the tongue. They are volatile molecules. They create perceived sweetness through smell, not taste.
+
+<DeepBrewInfographic>
+  <ProcessFlow
+    title="The Three Pathways to Perceived Sweetness"
+    subtitle="Three mechanisms converge at medium roast to create peak sweetness"
+    steps={[
+      { label: "Caramelization Products", sublabel: "Olfactory Sweetness", description: "Sucrose thermal decomposition produces volatile furanones. Furaneol (OAV 196-250), Maltol, and Diacetyl (15 ppb threshold) create caramel, cotton candy, and butterscotch aromas.", detail: "Pathway: retronasal olfaction — volatiles travel from mouth to olfactory epithelium. Peak at medium roast (maximum sugar destruction rate = maximum product formation)." },
+      { label: "Acid Suppression", sublabel: "Sweet Unmasking", description: "Citric acid degrades from 8-13 g/kg (green) to 3-6 g/kg (medium) — a 50-70% reduction. Acid suppresses sweet perception; as it drops, sweetness is unmasked.", detail: "Citric acid is the ONLY organic acid consistently above detection threshold in brewed coffee. Brew pH shifts from 4.85 (light) to ~5.00 (medium)." },
+      { label: "Maillard Byproducts", sublabel: "Sweet-Roasty Complexity", description: "Strecker degradation produces aldehydes with sweet associations: 2-Methylpropanal (chocolate, 1 ppb threshold), 3-Methylbutanal (dark chocolate, OAV ~140), Phenylacetaldehyde (honey/floral).", detail: "Pyrazines (nutty/roasted) anchor sweetness in a roasty context. Without them, sweetness reads as candy-like. With them, it reads as coffee." }
+    ]}
+    compare={[
+      { title: "Convergence: Perceived Sweetness", points: ["Your brain integrates olfactory sweet signals with taste input — no sugar required", "Cross-modal perception: the brain learned to associate these aromas with sweetness from a lifetime of eating caramel, toffee, and chocolate"] },
+      { title: "Why Dark Roasts Lose It", points: ["Furanones degrade above 220-230°C — net concentration drops", "Quinic acid accumulates: 2-4 g/kg (green) → 8-12 g/kg (dark) — directly suppresses sweetness", "Phenylindanes form: harsh, lingering bitterness overwhelms olfactory sweet signal"] }
+    ]}
+    footnote="Peak sweetness occurs at minimum sugar content. Sucrose is a precursor, not a product."
+  />
+</DeepBrewInfographic>
+
+The pathway is retronasal olfaction. When you sip coffee, volatile caramelization products travel from the liquid in your mouth upward through the nasopharynx to the olfactory epithelium. Your olfactory receptors detect furaneol, maltol, and related compounds. Your brain receives signals that it has learned to associate with "sweet" -- because every time you've eaten caramel, toffee, cotton candy, or toasted marshmallow, these same volatiles were present alongside actual sugar.
+
+This is cross-modal perception. The brain integrates olfactory "sweet" signals with gustatory input and produces a unified percept: this coffee tastes sweet. It doesn't matter that there's no sugar stimulating taste receptors. The olfactory signal is so strongly associated with sweetness that the brain fills in the gap.
+
+This distinction matters practically. Olfactory sweetness is volatile-dependent. Anything that reduces volatile concentration in the cup -- [staling](/deep-brew/research/aroma-staling-kinetics/), excessive brew temperature driving off volatiles, cold serving temperature reducing retronasal transport -- will reduce perceived sweetness even if the chemical composition of the non-volatile fraction is unchanged.
+
+It also explains why cupping (with its aggressive slurp, which maximizes retronasal volatile transport) can reveal sweetness that normal sipping from a mug does not. The delivery mechanism matters as much as the chemistry.
+
+## The Acid Suppression Effect
+
+The second mechanism driving the sweetness peak at medium roast is the progressive destruction of organic acids.
+
+Organic acids in coffee follow a well-characterized pattern during roasting:
+
+| Acid | Green (g/kg) | Light Roast | Medium Roast | Dark Roast | Trend |
+|------|-------------|-------------|--------------|------------|-------|
+| Citric | 8-13 | 5-10 | 3-6 | 1-3 | Decreases steadily |
+| Malic | 4-12 | 3-6 | 1-3 | &lt;1 | Decreases steadily |
+| Quinic | 2-4 | 4-6 | 6-8 | 8-12 | Increases (CGA degradation product) |
+| Acetic | 1-2 | 2-4 | 4-6 | 6-10+ | Increases |
+
+Citric acid is the only organic acid in brewed coffee that consistently exceeds its sensory detection threshold. Malic, acetic, and lactic acids are typically below individual thresholds. So when we talk about "acidity" in coffee, we're primarily talking about citric acid plus overall pH effects.
+
+The relevant mechanism for sweetness: acid suppresses sweet perception. This is a well-documented psychophysical interaction. In mixed solutions, increasing acid concentration reduces the perceived intensity of sweetness, and vice versa. The two modalities are antagonistic.
+
+As roasting progresses from light to medium, citric acid drops from 8-13 g/kg to 3-6 g/kg. That's a 50-70% reduction. The suppressive effect on sweetness weakens proportionally. Caramelization products are increasing while the acid that masks them is decreasing. The sweetness signal strengthens from both directions simultaneously.
+
+Brew pH tells the same story from a different angle: light roast brews at approximately pH 4.85, dark roast at approximately pH 5.10. The medium roast sits between these, with enough acid reduction to unmask sweetness but enough residual citric character to provide the brightness that makes sweetness perceptible as "clean" rather than "flat."
+
+## Maillard's Contribution: Sweet-Roasty Complexity
+
+The third pathway to perceived sweetness runs through the [Maillard reaction](/deep-brew/research/maillard-caramelization-strecker/), specifically Strecker degradation.
+
+When alpha-dicarbonyl intermediates from the Maillard reaction react with amino acids, they produce Strecker aldehydes -- each with a characteristic aroma. Two of these aldehydes contribute directly to sweetness perception:
+
+| Amino Acid Precursor | Strecker Aldehyde | Sensory Character |
+|----------------------|-------------------|-------------------|
+| Valine | 2-Methylpropanal | Malty, chocolate, cocoa |
+| Leucine | 3-Methylbutanal | Malty, dark chocolate |
+| Phenylalanine | Phenylacetaldehyde | Honey, floral, rose |
+
+2-Methylpropanal has a detection threshold of just 1 ppb and an OAV classified as "very high" in brewed coffee (1). 3-Methylbutanal, at 0.2 ppb threshold and an OAV around 140, is even more potent by concentration ratio (1). These compounds don't read as "sugar sweet" -- they read as "chocolate," "malt," "cocoa" -- but those descriptors carry strong sweetness associations. A cupper tasting dark chocolate notes in a medium roast is partially responding to Strecker aldehydes, and those aldehydes reinforce the overall sweetness gestalt.
+
+Phenylacetaldehyde adds honey and floral notes. Its contribution is subtler but important: it's the molecule most responsible for the "honey-like sweetness" descriptor that shows up repeatedly in specialty cupping notes for well-developed medium roasts.
+
+The aminoketone byproducts of Strecker degradation also self-condense to form pyrazines (nutty, roasted), which add the "toasted" quality that anchors sweetness in a roasty context. Without pyrazines, the sweetness would read as candy-like. With them, it reads as coffee.
+
+## The Medium-Roast Peak: Where Three Curves Converge
+
+The sweetness peak at medium roast is not a single phenomenon. It's the simultaneous convergence of three curves:
+
+**Curve 1 -- Caramelization product generation:** Sucrose is being actively destroyed, producing maximum concentrations of furaneol, maltol, diacetyl, and related sweet volatiles. Production rate peaks when the most sugar is being consumed per unit time.
+
+**Curve 2 -- Acid suppression release:** Citric acid has dropped enough (50-70% from green) to significantly reduce its antagonistic effect on sweetness perception, but hasn't yet been replaced by quinic acid's bitter-astringent character.
+
+**Curve 3 -- Maillard sweet-roasty products:** Strecker aldehydes and pyrazines are at or near peak concentration, adding chocolate/malty/honey dimensions that reinforce sweet perception.
+
+All three curves favor medium roast. Move lighter, and you gain acid (which suppresses sweetness) while losing caramelization products (which haven't formed yet). Move darker, and all three mechanisms reverse.
+
+## Why Dark Roasts Lose Sweetness
+
+The decline in perceived sweetness past medium roast is driven by three compounding factors:
+
+### Caramelization Product Degradation
+
+The same thermal energy that creates furanones and maltol will destroy them with continued heating. These are volatile organic molecules with finite thermal stability. Past 220-230C, furaneol begins degrading faster than it forms. The net concentration drops. The cotton-candy/caramel signal weakens.
+
+### Quinic Acid Accumulation
+
+Quinic acid is a degradation product of [chlorogenic acids](/deep-brew/research/chlorogenic-acid-cascades/) (CGAs). As CGAs break down during roasting (from 62-86 mg/g in green Arabica to 3-10 mg/g in dark roast) (1), quinic acid accumulates steadily:
+
+- Green: 2-4 g/kg
+- Medium: 6-8 g/kg
+- Dark: 8-12 g/kg
+
+Quinic acid's sensory character is dry, astringent, and bitter. It's the signature bitterness compound of dark roasts (1). Unlike caffeine (which contributes only 10-15% of perceived bitterness) (1), quinic acid's impact is both gustatory and tactile -- it dries the palate. This bitterness directly suppresses sweetness perception through the same antagonistic mechanism that acid does, but more aggressively.
+
+### Phenylindane Formation
+
+At dark roast temperatures, chlorogenic acid lactones (the dominant bitterness source in light-to-medium roasts, contributing 60-70% of perceived bitterness) further degrade via 4-vinylcatechol into phenylindanes. These are harsh, lingering, drying bitter compounds. They account for roughly 10-15% of total perceived bitterness in dark roasts, but their character is qualitatively different from lactone bitterness -- more astringent, more persistent, more punishing to sweetness perception.
+
+The combined effect of caramelization product degradation, quinic acid accumulation, and phenylindane formation creates a bitterness wall that overwhelms whatever residual sweet-signaling volatiles remain. The sweetness is still there chemically. You just can't taste it through the bitterness.
+
+## The Temperature and Extraction Connection
+
+The sweetness paradox extends from roasting into brewing. The same volatile compounds responsible for olfactory sweetness are differentially extracted depending on water temperature, contact time, and [extraction yield](/deep-brew/research/extraction-sequence-explained/).
+
+<DeepBrewInfographic>
+  <ReferenceGuide
+    title="Sugar In vs. Sweetness Out"
+    subtitle="The sweetness paradox across roast levels"
+    items={[
+      { label: "Green (unroasted)", description: "6-9% sucrose (dwb). Maximum sugar, zero perceived sweetness.", value: "6-9% sugar", dotScale: 0 },
+      { label: "Light (Agtron ~70)", description: "Trace sucrose. Acids dominate and suppress sweetness. Furaneol just beginning to form.", value: "Score: 3-4", dotScale: 3 },
+      { label: "Medium-Light", description: "Sucrose nearly gone. Caramelization products rising fast. Acid suppression weakening.", value: "Score: 6-7", dotScale: 6 },
+      { label: "Medium (Agtron ~55)", description: "0-0.5% sucrose. PEAK: Furaneol (OAV 196-250) at maximum. Citric acid down 50-70%. Strecker aldehydes at peak.", value: "Score: 8-9", dotScale: 9 },
+      { label: "Medium-Dark", description: "Zero sucrose. Furanones degrading. Quinic acid rising (6-8 g/kg). Sweet signal weakening.", value: "Score: 6-7", dotScale: 6 },
+      { label: "Dark (Agtron ~35)", description: "Zero sucrose. Furanones largely destroyed. Quinic acid (8-12 g/kg) + phenylindanes overwhelm sweetness.", value: "Score: 3-4", dotScale: 3 }
+    ]}
+    scaleLabel={{ start: "Less Sweet", end: "More Sweet" }}
+    footnote="Peak sweetness occurs at minimum sugar content. Sucrose is a precursor, not a product. The sweetness you taste is the volatile ghost of sugar's destruction."
+  />
+</DeepBrewInfographic>
+
+Caramelization products and Maillard sweet compounds sit in the middle of the extraction sequence. They dissolve after the fast-extracting acids but before the slow-extracting bitter polyphenols and phenylindanes:
+
+| Extraction Phase | Compounds | Taste | Approximate Yield |
+|-----------------|-----------|-------|-------------------|
+| Fast (first 30-40%) | Citric/malic acids, caffeine, light volatiles | Sour, bright | 0-14% EY |
+| Middle (next 30-40%) | Caramelization products, lipid emulsions, low-MW melanoidins | Sweet, caramel, body | 14-20% EY |
+| Slow (final 20-30%) | HMW melanoidins, polysaccharides, CGA lactones, phenylindanes, quinic acid | Bitter, astringent, woody | 20-26% EY |
+
+Under-extraction (&lt;18% EY) tastes sour because you've dissolved the acids but haven't yet reached the sweet-compound extraction window. Over-extraction (>22% EY) tastes bitter because you've pulled out everything desirable and are now dissolving the compounds that mask sweetness (1). The 18-22% sweet spot is the extraction range that captures maximum caramelization product concentration relative to acid and bitterness loads (3).
+
+Water temperature complicates this. Hotter water extracts more volatile sweetness compounds per unit time, but it also accelerates bitter compound extraction and drives off volatiles through evaporation. The optimization puzzle is identical at the brewing level as it is at the roasting level: maximize sweet-compound delivery while minimizing the things that suppress or mask it.
+
+## Pressure and Sweetness: The Hidden Roast Variable
+
+Rob Hoos's work on internal bean pressure adds a layer to the sweetness story (4). During roasting, moisture converts to steam, creating internal pressures up to 25 atm (25 bar) (5). This pressure influences reaction rates for both caramelization and the Maillard reaction.
+
+Hoos found that caramelization is primarily driven by terminal temperature, not time (4). This means sweetness level is somewhat disconnected from development time duration. A roaster can manipulate end temperature independently of development time to dial in caramelization products:
+
+- Low end temperature: more residual sugar character, sweeter, but potential vegetal tones from insufficient pyrolysis
+- Optimal end temperature: balanced sweetness plus complexity from caramels
+- High end temperature: pyrolysis dominates, bitter/ashen, caramelization products degraded
+
+Hoos's experimental data on an SHB Guatemalan showed that a mere 6F drop in end temperature shifted flavor from "peach pie, molasses, honey, caramel" to "vegetal peach, green tea, raw sugar" -- still sweet, but less developed (4). A 6F increase shifted toward "molasses, savory, chocolate, jagged body" -- more complex but less clean sweetness. The sweet spot is narrow.
+
+## Robusta vs. Arabica: Why the Gap Is Fundamental
+
+Arabica's 6-9% sucrose versus Robusta's 3-5% is not just a quantitative difference (2). It's a qualitative one. With roughly twice the caramelization precursor material, Arabica produces proportionally more furaneol, more maltol, more of every caramelization product that drives olfactory sweetness. The sweetness gap between species is baked in at the green-bean level and amplified by roasting.
+
+This is also why Arabica benefits more from careful [roast profiling](/deep-brew/research/cultivar-roast-profiles-hoos/). There's more sucrose to manage, more caramelization product to optimize. Over-roasting Arabica wastes a larger absolute quantity of sweetness precursor than over-roasting Robusta. The stakes of hitting the medium-roast sweet spot are higher with better raw material.
+
+## Practical Implications
+
+If you want maximum perceived sweetness in the cup, the protocol is straightforward in principle and demanding in execution:
+
+**Roast:** Target the medium window. Specifically, aim for the zone where caramelization products are at peak generation (sucrose actively being destroyed), citric acid has dropped 50-70% from green levels, and quinic acid/phenylindane accumulation hasn't yet overwhelmed the sweet signal. For most Arabica coffees, this is Agtron 50-60, internal bean temperature approximately 215-225C at drop.
+
+**Brew:** Extract 19-20% yield (3). This is the window where caramelization products and Maillard sweet compounds are maximally dissolved while bitter tail-end compounds remain largely in the grounds. Use water at 93-96C for optimal volatile extraction without excessive evaporative loss (1).
+
+**Serve immediately.** Olfactory sweetness depends on volatile concentration. The same [staling kinetics](/deep-brew/research/aroma-staling-kinetics/) that strip 2-furfurylthiol (84% loss in 60 minutes) (1) also degrade furaneol and related sweet volatiles. A fresh pour from a fresh brew is measurably sweeter than the same coffee ten minutes later.
+
+**Grind to order.** Pre-ground coffee begins losing volatiles within 30 minutes due to the vastly increased surface area. The sweet-signaling molecules are among the first to dissipate.
+
+The sweetness paradox resolves into a clean principle: sugar is a precursor, not a product. The sweetness in your cup was never sucrose. It was always the volatile ghost of sucrose -- the aromatic signature of sugar's destruction, perceived through a neural shortcut that your brain learned long before you ever drank coffee.
+
+## References
+
+1. Gagne, J. *The Physics of Filter Coffee*. Self-published, 2020.
+2. Hoffmann, J. *The World Atlas of Coffee*, 2nd ed. Mitchell Beazley, 2018.
+3. Rao, S. *Everything But Espresso*. Self-published, 2010.
+4. Hoos, R. *Modulating the Flavor Profile of Coffee: One Roaster's Manifesto*. Self-published, 2015.
+5. Illy, A. and Viani, R. *Espresso Coffee: The Science of Quality*, 2nd ed. Elsevier Academic Press, 2005.
+
+<DeepBrewFAQ items={[
+  { question: "If sugar is destroyed during roasting, what ARE the sweet-tasting molecules in coffee?", answer: "They're not sweet-tasting in the gustatory sense -- they're sweet-smelling. The primary sweetness drivers are volatile caramelization products: furaneol (OAV of 196-250 in brewed coffee) which smells like caramel and cotton candy, maltol which reinforces the toffee/marshmallow signal, and diacetyl which adds butterscotch character. These molecules activate olfactory receptors via retronasal transport during sipping, and your brain interprets them as sweet through cross-modal perception -- a learned association between these aromas and actual sugar consumption." },
+  { question: "Is the sweetness in a medium roast real or an illusion?", answer: "It's real in every way that matters for perception. Cross-modal sweetness (olfactory signals interpreted as sweet taste) activates the same hedonic brain regions as gustatory sweetness from actual sugar. Trained sensory panelists consistently score medium roasts higher on sweetness intensity than light or dark roasts, and this is reproducible across origins and panel compositions. The mechanism is different from sugar sweetness -- it's aroma-mediated rather than taste-receptor-mediated -- but the perceptual output is indistinguishable." },
+  { question: "Why do some light roasts taste sweet despite having MORE acid?", answer: "Three factors can push light-roast sweetness above the baseline. First, origin: high-altitude Arabica with 8-9% sucrose has more caramelization precursor, so even limited caramelization at light roast produces meaningful furaneol. Second, process: natural (dry-processed) coffees often retain more sugar-derived flavor compounds. Third, beta-damascenone -- a norisoprenoid with a detection threshold of 0.002 ppb and sensory descriptors of honey and fruity jam -- forms from carotenoid degradation during roasting and is present even at light roast levels. But in absolute terms, light roasts taste less sweet than medium roasts because the acid load actively suppresses sweet perception." },
+  { question: "Can brewing technique compensate for a roast that went past peak sweetness?", answer: "Partially. If a roast has passed the medium sweet spot into medium-dark territory, you can maximize sweet compound extraction while limiting bitter extraction by targeting around 18-19% extraction yield. Finer grind with shorter contact time extracts more of the fast- and mid-dissolving sweet compounds while leaving late-dissolving quinic acid and phenylindanes in the grounds. Lower brew temperature (90-92C instead of 94-96C) also favors volatile sweetness over bitter extraction. But there's a limit -- if phenylindanes have already formed in the roast, no brewing technique removes them from the bean." },
+  { question: "Does origin or variety affect the sweetness peak roast level?", answer: "Yes, measurably. Higher-sucrose varieties (Bourbon, SL-28, Geisha) have more caramelization precursor material, so their sweetness peak tends to be broader -- the window between not enough caramelization and too much bitterness is wider. Lower-sucrose beans (Catimor, commodity Robusta) have a narrower sweet spot and a lower absolute sweetness ceiling. Origin-driven acid profiles also shift the peak: Kenyan coffees with high phosphoric acid can maintain perceived sweetness at lighter roast levels than a Brazil with predominantly citric acidity." },
+  { question: "Why does reheated coffee taste less sweet?", answer: "Two mechanisms. First, volatile loss: the caramelization products that create olfactory sweetness (furaneol, maltol, diacetyl) are volatile compounds that evaporate during the initial heating, cooling, and reheating cycle. Second, melanoidin-thiol conjugation: melanoidins in the brew covalently bind volatile thiols and other reactive volatiles over time, converting them from free aromatic molecules into bound non-volatile conjugates. The coffee still contains the molecular remnants of sweetness, but they're locked up and can no longer reach your olfactory receptors." },
+  { question: "If I want the sweetest possible cup, what's the single most impactful variable?", answer: "Roast level, and it's not close. Getting the roast into the medium sweet spot (Agtron 50-60, roughly 215-225C internal bean temperature at drop) is worth more than any brewing optimization. A perfectly brewed dark roast will never taste as sweet as a reasonably brewed medium roast, because the dark roast has already degraded its caramelization products and accumulated bitterness compounds that no extraction technique can remove. After roast level, the next highest-impact variable is freshness -- both of the roast (peak at 7-21 days post-roast) and of the grind (volatiles begin dissipating within 30 minutes). Extraction yield (targeting 19-20%) comes third." }
+]} />

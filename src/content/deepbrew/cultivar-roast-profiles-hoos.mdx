@@ -1,0 +1,329 @@
+---
+title: "Cultivar Roast Profiles: Why Genetics Determine Your Roast — The Hoos Framework"
+description: "Rob Hoos's cultivar-first framework organizes 20 Arabica varieties into four roast groups, proving that genetics — not origin — determine profile timing, first crack speed, and cup quality."
+pubDate: "Mar 12 2026"
+category: "Roasting"
+tags: ["cultivar", "roast profiling", "Rob Hoos", "Arabica varieties", "first crack", "Maillard reaction", "specialty coffee"]
+---
+
+import DeepBrewFAQ from '../../components/DeepBrewFAQ.astro';
+import DeepBrewInfographic from '../../components/infographics/DeepBrewInfographic.astro';
+import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
+import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
+
+Most roasters build profiles around origin, processing method, or roast level. They dial in a "Kenya profile" or a "washed profile" or chase a target end temperature. Rob Hoos argues they have the hierarchy backward.
+
+In *Cultivar: A Practical Guide for Coffee Roasters* (2025), Hoos presents a framework that reorders the variables controlling a roast profile into a strict hierarchy: cultivar first, processing second, roast level third (1). The cultivar — the genetic identity of the coffee plant — determines time to first crack. Processing modifies development time. Roast level is a target you arrive at, not a variable you manipulate independently.
+
+This is not theoretical hand-waving. Hoos backs the framework with specific profile timings for 20 cultivars organized into four groups, a universal mathematical ratio governing the drying phase, and processing-specific adjustments measured in seconds (1). The system is precise enough to apply on Monday morning.
+
+## The Hierarchy: Why Cultivar Comes First
+
+The logic is rooted in chemistry and physics. A coffee bean's cultivar determines its density, physical cell structure, and chemical composition — the ratios of sugars, organic acids, lipids, and proteins locked into the green bean (1). These properties dictate how fast the bean absorbs heat, conducts heat internally, and reaches the threshold temperature and pressure where first crack occurs.
+
+Processing modifies the surface chemistry and sugar availability of the bean — real effects, but ones that manifest only after first crack, during the development phase. Roast level (end temperature) determines how far you carry the [caramelization and pyrolysis reactions](/deep-brew/research/maillard-caramelization-strecker/). It is an output, not an input.
+
+Put differently: cultivar sets the playing field, processing adjusts one phase within it, and roast level is where you choose to stop. If you get the cultivar timing wrong, no amount of adjustment to development or end temperature will recover the cup.
+
+## The Four Cultivar Groups
+
+Hoos organizes all commercially relevant Arabica cultivars into four groups based on roast behavior (1). Each group shares a baseline profile expressed in his notation system: **Yellow time | MAI time | Development time** — where Yellow is the drying phase (charge to color change), MAI is the Maillard-to-first-crack interval, and Development is first crack to drop.
+
+<DeepBrewInfographic>
+  <ComparisonTable
+    title="The Four Cultivar Groups"
+    subtitle="Roast behavior organized by genetics, not origin"
+    rowLabel="Group"
+    columns={["Typical FC", "Profile (Y | MAI | Dev)", "Key Varieties", "Sweet Spot"]}
+    rows={[
+      { name: "Typica (Group 1)", values: ["~7:30", "4:15 | 3:15 | 1:30", "Typica, Maragogipe, Pache, Pacamara, SL-34, Catuai", "Standard"] },
+      { name: "Ethiopian (Group 3)", values: ["~7:30", "4:15-4:30 | 3:15 | 1:30", "Ethiopian Heirloom, Gesha, Pink Bourbon, Sidra, Papayo", "Standard to Wide"] },
+      { name: "Bourbon (Group 2)", values: ["~8:30-9:00", "4:45-5:00 | 3:45-4:00 | 1:25", "Bourbon, Caturra, Pacas, SL-28", "Standard"] },
+      { name: "Hybrid/Timor (Group 4)", values: ["7:00-9:00", "Variable — follow dominant parent", "Castillo, Tabi, H1/Centroamericano, Catimor, Sarchimor", "Moderate to Narrow"] },
+    ]}
+    footnote="Same origin (Kenya, Scott Labs), different groups: SL-34 → Typica speed (FC ~7:30), SL-28 → Bourbon speed (FC ~8:30). Pink Bourbon is genetically Ethiopian — NOT Bourbon. Framework: Rob Hoos, Cultivar (2025)."
+  />
+</DeepBrewInfographic>
+
+### Group 1: Typica (Fast Roast, First Crack ~7:30)
+
+**Baseline profile: 4:15 | 3:15 | 1:30**
+
+Typica-group cultivars are lower density and reach first crack faster. They prefer quicker profiles and are more susceptible to tipping (internal steam venting from the embryo tip when charge temperature is too high for the bean's density).
+
+| Cultivar | Yellow | MAI | Dev | FC | Sweet Spot | Notes |
+|---|---|---|---|---|---|---|
+| Typica | 4:15 | 3:15 | 1:30 | ~7:30 | Standard | The baseline reference for the entire framework |
+| Maragogipe | 4:15 | 3:15 | 1:30 | ~7:30 | Standard | Giant bean mutation. Defect-prone, high tipping risk |
+| Pache | 4:15–5:00 | 3:15–4:00 | ~1:30 | 7:30–8:30 | Massive | Typica x Caturra. Very forgiving — tolerates wide MAI range |
+| Pacamara | 4:15 | 3:15–3:45 | **1:45** | ~7:30 | Moderate | Needs extra dev time or acidity is aggressive/unresolved |
+| SL-34 | 4:15 | 3:15 | 1:30 | ~7:30 | Standard | Kenya origin. Darkens visually fast — don't trust color |
+| Catuai | 4:15–5:00 | 2:15–4:00 | 1:30 | 7:30–8:30 | Huge range | Transitional. Must sample roast to determine direction |
+
+Pacamara is the outlier. At 1:45 development versus the standard 1:30, it demands 15 seconds more post-crack time than its groupmates (1). Skip that extra development and the cup presents aggressive, unresolved acidity. Catuai is the wild card — a Caturra x Mundo Novo cross that can behave like either parent (3). You cannot predict Catuai from the bag label. Sample roast it and let the first crack timing reveal its true group.
+
+### Group 2: Bourbon (Slow Roast, First Crack ~8:30–9:00)
+
+**Baseline profile: 4:45–5:00 | 3:45–4:00 | 1:25**
+
+Bourbon-group beans are denser, require more total energy input, and need a longer [Maillard phase](/deep-brew/research/maillard-caramelization-strecker/) to develop their characteristic body and complexity (1). The extended MAI produces more [melanoidins](/deep-brew/research/melanoidins-body-color-health/) — the high-molecular-weight browning products responsible for mouthfeel and perceived body (2).
+
+| Cultivar | Yellow | MAI | Dev | FC | Sweet Spot | Notes |
+|---|---|---|---|---|---|---|
+| Bourbon | 4:45–5:00 | 3:45–4:00 | 1:25 | 8:30–9:00 | Standard | The specialty workhorse. Higher density than Typica |
+| Caturra | 4:45–5:00 | 3:45–4:00 | 1:20–1:25 | 8:30–9:00 | Standard | Bourbon dwarf mutation. More acidity than Bourbon |
+| Pacas | 4:45–5:00 | 3:45–4:00 | 1:20–1:25 | 8:30–9:00 | Narrow | Bourbon mutation from El Salvador. Less forgiving |
+| SL-28 | 4:45–5:00 | 3:45–4:00 | 1:25 | 8:30–9:00 | Standard | Kenya origin — but roasts like Bourbon, NOT Typica |
+
+### The SL-28 vs. SL-34 Distinction
+
+This is the framework's most commercially important insight, and the one most likely to be misapplied in production roasting.
+
+SL-28 and SL-34 are both Kenyan selections developed at Scott Agricultural Laboratories (3). Same country, same institution. A roaster receiving a Kenyan lot might reasonably assume both cultivars roast similarly.
+
+They do not.
+
+| | SL-28 | SL-34 |
+|---|---|---|
+| Origin | Kenya (Scott Labs) | Kenya (Scott Labs) |
+| Roast group | **Bourbon (slow)** | **Typica (fast)** |
+| First crack | ~8:30–9:00 | ~7:30 |
+| MAI duration | 3:45–4:00 | 3:15 |
+| Profile action | Slow down, extend MAI | Speed up, standard MAI |
+
+SL-28 roasts on the Bourbon schedule: first crack at 8:30–9:00, with a long MAI of 3:45–4:00. SL-34 roasts on the Typica schedule: first crack at 7:30, standard MAI of 3:15 (1). The difference is a full minute of first crack timing and 30–45 seconds of MAI duration.
+
+Apply a Typica-speed profile to SL-28 and you will rush it to first crack before melanoidin development is complete — thin body, underdeveloped complexity. Apply a Bourbon-speed profile to SL-34 and you will overdevelop the MAI, producing heavy, dull flavors that obscure the bright blackcurrant character the cultivar is prized for.
+
+Origin tells you nothing. Genetics tells you everything.
+
+### Group 3: Ethiopian (Fast Roast, First Crack ~7:30)
+
+**Baseline profile: 4:15–4:30 | 3:15 | 1:30**
+
+Ethiopian-group cultivars reach first crack at similar speed to Typica but represent a genetically distinct lineage. The group includes some of specialty coffee's most celebrated and expensive cultivars.
+
+| Cultivar | Yellow | MAI | Dev | FC | Sweet Spot | Notes |
+|---|---|---|---|---|---|---|
+| Ethiopian Heirloom | 4:15–4:30 | 3:15 | 1:30 | ~7:30 | Variable | Catch-all for landraces. Each lot may differ |
+| Gesha/Geisha | 4:15–4:30 | 3:15 | 1:30 | ~7:30 | Standard | Tipping-susceptible — lower charge temp |
+| Pink Bourbon | 4:15 | 3:15 | 1:20 | ~7:30 | Standard | **Genetically Ethiopian. NOT Bourbon.** |
+| Sidra | 4:15 | 3:15 | 1:20 | ~7:30 | Wide | Ethiopian variety in Ecuador. Very forgiving |
+| Papayo | 4:20 | 3:00 | 1:20 | ~7:20 | Narrow | Rare. Demands precise timing |
+
+**The Pink Bourbon Trap**
+
+Pink Bourbon is genetically an Ethiopian landrace. The name is a lie (1).
+
+A roaster receives a bag labeled "Pink Bourbon." Instinct says Bourbon group: slow roast, target first crack at 8:30, extended MAI of 3:45–4:00. Genetics say Ethiopian group: fast roast, first crack at 7:30, standard MAI of 3:15.
+
+Following the name costs a full minute on first crack timing and produces a fundamentally different cup. The extended MAI overdevelops the Maillard reaction for this bean's density and composition, burying the floral and tropical fruit character that makes Pink Bourbon valuable under heavy, muddy body.
+
+Genetic testing has confirmed this (3). Pink Bourbon is not a color variant of Bourbon. It is an Ethiopian landrace that acquired its name through misidentification that stuck. Hoos identifies this as his most commercially actionable insight (1) — and it is difficult to disagree. Every roaster buying Pink Bourbon lots is either profiling them correctly (Ethiopian speed) or leaving significant cup quality on the table.
+
+### Group 4: Hybrid/Timor (Variable — Follow the Dominant Parent)
+
+**No single baseline — profiles follow the dominant parent cultivar**
+
+Group 4 encompasses the disease-resistant hybrids bred from Timor Hybrid (a natural Arabica x Robusta interspecific cross). These cultivars exist because of their rust resistance and yield. The roasting challenge is managing the herbaceous, vegetal character contributed by their Robusta ancestry.
+
+| Cultivar | Yellow | MAI | Dev | FC | Sweet Spot | Notes |
+|---|---|---|---|---|---|---|
+| Castillo | 4:45 | 4:00 | 1:30 | 8:30–9:00 | Moderate | Colombia's main variety. Slow roast like Bourbon parent |
+| Tabi | 4:15 | 3:45 | 1:30 | ~8:00 | Moderate | Transitional timing. More specialty potential |
+| H1/Centroamericano | 4:15 | 2:45 | 1:30 | **~7:00** | Moderate | Fastest FC of any cultivar. Rume Sudan parent |
+| Catimor | 4:45 | 4:15 | **1:30–2:00** | **~9:00** | Narrow | Slowest FC. Most challenging hybrid |
+| Sarchimor | 4:45 | 4:15 | **1:30–2:00** | 8:30–9:00 | Narrow | Needs extended MAI and dev |
+
+The speed extremes within this single group are remarkable. H1/Centroamericano reaches first crack at approximately 7:00 — the fastest of any cultivar in the entire framework — because it follows its Rume Sudan parent (Ethiopian-speed genetics) (1). Catimor reaches first crack at approximately 9:00 — the slowest of any cultivar — because it needs maximum energy to drive reactions through its dense, Robusta-influenced cell structure (1). That is a 2-minute spread within one group.
+
+Catimor and Sarchimor require development times of 1:30–2:00, which is 25–50% longer than the standard 1:20–1:30 (1). The extra time is needed to break down herbaceous compounds from the Robusta lineage. The longer MAI (4:15) generates additional [melanoidins](/deep-brew/research/melanoidins-body-color-health/) that mask residual vegetal notes with body (2). If you underdevelop a Group 4 hybrid, the cup reads green, herbal, and astringent — the Robusta heritage announcing itself.
+
+## The Profile Notation System
+
+Hoos's notation — Yellow | MAI | Dev — expresses a complete roast profile in three numbers (1). This is not arbitrary. Each number corresponds to one of the three independent phases a roaster controls.
+
+**Example: Washed Bourbon**
+- Yellow: 4:45–5:00 (charge to color change)
+- MAI: 3:45–4:00 (color change to first crack)
+- Dev: 1:25 (first crack to drop)
+- Total roast time: ~10:00–10:25
+
+**Example: Natural Gesha**
+- Yellow: 4:15–4:30 (charge to color change)
+- MAI: 3:15 (color change to first crack)
+- Dev: 1:15 (1:30 base minus 0:15 natural adjustment)
+- Total roast time: ~8:45–9:00
+
+The notation makes cross-cultivar comparison immediate. At a glance, you can see that Bourbon needs approximately 60 additional seconds of total roast time compared to Gesha — all of it in the yellowing and MAI phases. Development times are close. The difference is in how long the bean needs to reach first crack, not what happens after.
+
+## The Yellowing Ratio: 0.56
+
+Hoos identifies a consistent mathematical relationship that holds across all four cultivar groups (1):
+
+**Yellowing time = First crack time x 0.56**
+
+This means the drying phase consistently occupies approximately 56% of the time from charge to first crack, regardless of cultivar group (1). The ratio provides both a planning tool and a diagnostic.
+
+| First Crack Time | Predicted Yellow | Observed Yellow |
+|---|---|---|
+| 7:00 | 3:55 | ~4:15 |
+| 7:30 | 4:12 | ~4:15 |
+| 8:00 | 4:29 | ~4:30–4:45 |
+| 8:30 | 4:46 | ~4:45–5:00 |
+| 9:00 | 5:02 | ~4:45–5:00 |
+
+If your yellowing time significantly deviates from this ratio, something is off — charge temperature is wrong for the bean density, airflow is miscalibrated, or the cultivar identity on the bag may be incorrect.
+
+**Phase percentage ranges across all cultivars:**
+
+| Phase | Percentage of Total Roast |
+|---|---|
+| Drying (to yellow) | 43–51% |
+| Maillard/MAI (yellow to FC) | 32–44% |
+| Development (FC to drop) | 12–20% |
+
+## The Four Levers
+
+The *Cultivar* framework builds on Hoos's earlier work in *Modulating the Flavor Profile of Coffee* (2), which established the four independently controllable phases of a roast and their flavor consequences.
+
+<DeepBrewInfographic>
+  <ProcessFlow
+    title="The Hoos Four-Lever Model"
+    subtitle="Four controllable phases from charge to drop"
+    steps={[
+      { label: "Drying", sublabel: "43-51% of total roast", description: "Charge → Yellow (~150°C). Free moisture driven off as steam. No chemical reactions.", detail: "Establishes internal pressure profile governing all subsequent reactions. Defect risks: tipping, scorching, facing." },
+      { label: "MAI (Maillard)", sublabel: "32-44% of total roast", description: "Yellow → First Crack (~196°C). Amino acids + reducing sugars → melanoidins + 600+ volatile compounds.", detail: "Flavor progression: Brown sugar → Maple syrup → Honey/Vanilla → Molasses. Longer MAI = heavier body, more complexity." },
+      { label: "Development", sublabel: "12-20% of total roast", description: "First Crack → Drop. Simultaneous Maillard continuation, acid degradation, caramelization, Strecker degradation, pyrolysis.", detail: "Acid balance: Bitter/Vegetal (underdeveloped) → Balanced/Sweet (sweet spot) → Dull/Flat (overdeveloped). Processing adjustments apply here." },
+      { label: "End Temperature", sublabel: "Drop point decision", description: "Degree of caramelization determined by terminal temperature. Measure by weight loss, not color.", detail: "&lt;11% underdeveloped, 11-13% light, 14-16% medium, 17-18% dark." }
+    ]}
+    compare={[
+      { title: "Key Number: 0.56 Ratio", points: ["Yellowing time = FC time × 0.56", "Holds across all four cultivar groups", "Use as diagnostic — deviation signals wrong charge temp or misidentified cultivar"] },
+      { title: "First Crack Timing", points: ["Set by cultivar genetics", "Typica/Ethiopian: ~7:30", "Bourbon: ~8:30-9:00", "Hybrid: 7:00-9:00"] }
+    ]}
+    footnote="Framework: Rob Hoos, Modulating the Flavor Profile of Coffee + Cultivar (2025)."
+  />
+</DeepBrewInfographic>
+
+### Lever 1: Drying Phase
+
+Controls the internal pressure profile of the bean. Heat drives moisture outward as steam, creating a pressure wall that moves inward. This pressure — reaching up to 25 atmospheres per Illy and Viani's measurements (4) — governs reaction kinetics for the remainder of the roast.
+
+Longer drying establishes lower internal pressure, favoring full melanoidin development (more body, more complexity). Shorter drying creates higher pressure, compressing reactions (more clarity, less body, higher defect risk from tipping and scorching) (2).
+
+The drying phase does not directly produce [flavor compounds](/deep-brew/research/flavor-volatiles-oav-guide/). Its impact is entirely mediated through the pressure profile it establishes (2).
+
+### Lever 2: MAI Phase
+
+Controls body and flavor complexity through the Maillard reaction. During this phase, amino acids react with reducing sugars to produce melanoidins (body, mouthfeel) and more than 600 volatile organic compounds (flavor complexity).
+
+The flavor progression as MAI lengthens is consistent and directional:
+
+**Brown sugar → Maple syrup → Honey/vanilla → Molasses**
+
+Shorter MAI produces lighter body, simpler flavors, and greater clarity. Longer MAI produces heavier body, more complex flavors, and reduced clarity. The progression is a one-way street — you cannot get molasses depth from a short MAI or brown sugar lightness from a long one.
+
+There is a pressure interaction here that explains why faster roasts produce less body even though high pressure accelerates most reactions. Research by Bristo and Isaacs (1999) showed that high pressure actually *suppresses* Maillard volatile products and *hinders* melanoidin formation (5). Fast roast = higher internal bean pressure = Maillard reaction specifically underperforms relative to other reactions. This is why a fast-roasted coffee can be fully developed in every other respect yet still lack body — the pressure physics work against melanoidin production specifically.
+
+Hoos's cupping data across five origins confirmed that slow-MAI roasts consistently scored higher on body metrics while fast-MAI roasts scored higher on clarity and brightness (2). Neither is superior; they are different targets.
+
+### Lever 3: Development Phase
+
+Controls organic acid balance and continued Maillard complexity. After first crack, multiple reactions run simultaneously: continued Maillard reaction with new reactants from caramelization, organic acid degradation, sucrose caramelization, Strecker degradation, and pyrolysis. They cannot be isolated.
+
+The acid progression through development:
+
+**Bitter/vegetal (excess CGAs) → Bitter + citric/malic → Sweet + balanced → Dull → Bland**
+
+[Chlorogenic acids](/deep-brew/research/chlorogenic-acid-cascades/) (CGAs) are the primary bitterness source in coffee. They degrade during development into quinic and caffeic acids. Citric and malic acids — the pleasant, fruity acids — also degrade during development but more slowly. The sweet spot is the window where enough CGAs have decomposed to remove bitterness while enough citric and malic acid remains to provide vibrancy.
+
+Fast development leaves too many CGAs intact: the cup reads bitter and vegetal. Slow development degrades all acids: the cup reads flat and dull. The window is narrow — washed coffees typically work within a 1:20–1:45 development range, and anaerobic lots compress to roughly a 5-second margin of error.
+
+### Lever 4: End Temperature
+
+Controls caramelization degree, measured most reliably by weight loss rather than temperature or color.
+
+| Weight Loss | Roast Degree | Character |
+|---|---|---|
+| &lt;11% | Underdeveloped | Vegetal, grassy, sour — insufficient reaction completion |
+| 11–13% | Light | Origin character preserved. Acidity prominent |
+| 14–16% | Medium | Balanced. Body increases, some origin character traded for roast character |
+| 17–18% | Dark | Roast character dominates. Pyrolysis flavors |
+
+SL-34 darkens visually faster than its actual roast development — a roaster relying on color alone will pull it too early. Weight loss is the only cultivar-agnostic measure of roast degree.
+
+## Processing Adjustments
+
+Processing is the second variable in the hierarchy. It modifies **development time only** — yellowing and MAI times remain unchanged regardless of processing method.
+
+| Processing | Dev Adjustment vs. Washed | Rationale |
+|---|---|---|
+| Washed | Baseline | Clean surface, predictable development |
+| Natural | -0:15 to -0:20 | Sugars already developed on fruit during drying. Caramelize faster |
+| Anaerobic | -0:10 | Fermentation compounds are volatile. Tight window |
+
+**The anaerobic margin:** Anaerobic processing produces the tightest roasting window of any processing method. The fermentation-derived esters and organic acids that give anaerobic coffees their distinctive character begin breaking down almost immediately after first crack. Hoos estimates the margin of error at approximately 5 seconds (1). Five seconds too long and the fermentation character dissipates into generic sweetness. Five seconds too short and the fermentation reads sharp and acetic.
+
+This is why anaerobic coffees have a reputation for being difficult to roast. The difficulty is real, but it is not the cultivar — it is the processing. A washed version of the same cultivar would have a 20–30 second window. The anaerobic version compresses that to 5.
+
+**Practical example:**
+
+| Scenario | Cultivar Dev | Processing Adj | Final Dev |
+|---|---|---|---|
+| Washed Bourbon | 1:25 | None | 1:25 |
+| Natural Bourbon | 1:25 | -0:15 | 1:10 |
+| Anaerobic Ethiopian | 1:30 | -0:10 | 1:20 |
+| Washed Catimor | 1:30–2:00 | None | 1:30–2:00 |
+| Natural Gesha | 1:30 | -0:15 | 1:15 |
+
+## The 25% Problem
+
+Hoos flags a challenge that limits the precision of any cultivar-based system: approximately 25% of Arabica coffee undergoes cross-pollination (1). This means the cultivar stated on the bag may not match the genetics of the bean in the roaster.
+
+"Ethiopian Heirloom" is the most extreme case — it is a catch-all for hundreds of genetically distinct landraces, each of which may roast differently (3). But even named cultivars on well-documented farms can hybridize with neighboring plants. Genetic testing frequently contradicts farm-stated variety (3).
+
+The practical implication is that the cultivar group framework provides a starting point, not a guarantee. If a coffee labeled "Bourbon" reaches first crack at 7:30 instead of 8:30, trust the bean. It is telling you it has Typica-speed genetics regardless of what the bag says. The first crack timing IS the diagnostic.
+
+## The Decision Tree
+
+Hoos's framework reduces to a five-step profiling process:
+
+1. **Identify the cultivar** → Determine the target first crack time and group baseline
+2. **Assess reliability** → If cultivar identity is uncertain, sample roast and let FC timing reveal the true group
+3. **Determine processing** → Adjust development time (shorter for natural, tightest for anaerobic)
+4. **Set roast level target** → Measure by weight loss, not color or time
+5. **First roast: use group baseline** → Then adjust based on cupping results
+
+**If you have no cultivar information at all:**
+- Start with Typica baseline (4:15 | 3:15 | 1:30)
+- If first crack arrives late (~8:30+), you are in Bourbon territory — extend MAI on the next roast
+- If first crack arrives early (~7:00), you may have Ethiopian or H1 genetics — compress MAI
+- The bean will tell you which group it belongs to by when it cracks
+
+## Why This Matters for Production Roasting
+
+The Hoos framework solves a problem that origin-based or processing-based profiling cannot: it explains why the same origin, the same processing, and the same target roast level produce different cups depending on cultivar.
+
+A Kenyan washed coffee roasted to 13% weight loss should taste like a Kenyan washed light roast. But if that Kenyan coffee is SL-28, it needs Bourbon timing (FC at 8:30, MAI of 3:45). If it is SL-34, it needs Typica timing (FC at 7:30, MAI of 3:15). Apply the wrong schedule and the cup will be recognizably wrong — underdeveloped or overdeveloped in the MAI phase — despite hitting every other target correctly.
+
+The same logic applies to the Colombian roaster working with Castillo. Castillo is a Timor hybrid that needs slow-roast Bourbon-parent timing and extended development to manage its herbaceous character. Profiling it like a generic "Colombian washed" without accounting for the Robusta genetics in its lineage means accepting vegetal notes that the framework can eliminate.
+
+Cultivar is not an interesting footnote on the bag. It is the first variable. Profile from there.
+
+## References
+
+1. Hoos, R. *Cultivar: A Practical Guide for Coffee Roasters*. Self-published, 2025.
+2. Hoos, R. *Modulating the Flavor Profile of Coffee: One Roaster's Manifesto*. Self-published, 2015.
+3. World Coffee Research. *Arabica Coffee Varieties Catalog*. Portland: WCR, 2023.
+4. Illy, A. and Viani, R. *Espresso Coffee: The Science of Quality*, 2nd ed. Elsevier Academic Press, 2005.
+5. Bristo, M. and Isaacs, N.S. "The effect of high pressure on the formation of volatile products in a model Maillard reaction." *Journal of the Chemical Society, Perkin Transactions 2* (1999): 2217–2218.
+
+<DeepBrewFAQ items={[
+  { question: "Why does SL-28 roast like a Bourbon when it's from Kenya?", answer: "Because roast behavior is determined by genetics, not geography. SL-28 and SL-34 were both selected at Scott Agricultural Laboratories in Kenya, but they trace to different genetic lineages. SL-28's density, cell structure, and chemical composition produce roast kinetics that match the Bourbon group: first crack arrives at approximately 8:30-9:00, and the bean needs the longer MAI (3:45-4:00) characteristic of high-density Bourbon-type cultivars. SL-34, despite the same Kenyan origin, has Typica-group density and reaches first crack at approximately 7:30. The practical consequence is a full minute of difference in first crack timing between two cultivars that a roaster might assume behave identically because they share an origin." },
+  { question: "Can you successfully roast a natural-processed Ethiopian with a Bourbon profile?", answer: "You can roast it, but you will not get a good cup. An Ethiopian cultivar (first crack at ~7:30) applied to Bourbon timing (first crack target ~8:30) means an extra 60 seconds of MAI, producing excessive melanoidin development -- heavier body and muddier flavors than the bean's composition is optimized for. Then, because natural processing already requires shortened development (-0:15 to -0:20 versus washed baseline), and you have overdeveloped the early phases, the development window becomes nearly impossible to calibrate correctly. The correct approach is Ethiopian group MAI timing (3:15) with natural processing development adjustment (1:30 base minus 0:15, yielding 1:15)." },
+  { question: "How reliable is the 0.56 yellowing ratio across different charge temperatures?", answer: "Hoos presents it as a consistent relationship across all four cultivar groups, and his data supports it within a reasonable tolerance. The ratio predicts yellowing time within approximately 15-20 seconds of observed values across the full range of first crack times from 7:00 to 9:00. Charge temperature affects absolute timing, but the ratio between yellowing and total time to first crack remains stable because both phases compress together. The ratio is most useful as a diagnostic: if you are targeting a Bourbon-speed profile (FC at 8:30) and your yellowing arrives at 3:50 instead of the predicted ~4:45, you have either overcharged for the bean density or you are working with a cultivar that is not actually Bourbon-group genetics." },
+  { question: "What happens if you overdevelop a Group 4 Hybrid?", answer: "It depends on the hybrid. For Castillo and Tabi (Bourbon-parent dominant), overdevelopment produces the same progression seen in any coffee pushed past the sweet spot: acid degradation flattens the cup, residual sugars caramelize past sweetness into bitterness, and the profile reads dull and ashen. For Catimor and Sarchimor, where development times of 1:30-2:00 are already extreme, pushing beyond 2:00 trades one flaw for another -- the vegetal character disappears but is replaced by flat, acrid, over-pyrolyzed notes. The window is narrow in both directions: too short and it tastes green, too long and it tastes burnt." },
+  { question: "Is the 5-second margin for anaerobic processing realistic?", answer: "It is realistic in the sense that it reflects the volatility of fermentation-derived flavor compounds, but it varies by specific fermentation protocol. A lightly fermented anaerobic will have a somewhat wider window than an intensively fermented lot. The 5-second figure represents the tightest practical case. Most production roasters cannot achieve batch-to-batch consistency within a 5-second window on development time. The practical response is either to roast anaerobic lots on smaller, more controllable batch sizes, or to accept that some batch-to-batch variation in fermentation character is inherent in the product." },
+  { question: "If 25% of Arabica cross-pollinates, can the cultivar framework be trusted?", answer: "The 25% cross-pollination rate means one in four beans may not match the stated cultivar, but it does not mean the framework is unreliable. It means the framework must be applied diagnostically, not prescriptively. The cultivar group system gives you a starting profile based on the bag label. The first crack timing on your sample roast either confirms or contradicts that starting point. If a coffee labeled Bourbon reaches first crack at 7:30, the bean has Typica-speed genetics regardless of the farm certificate. Trust the bean, not the bag. The framework remains the most systematic approach because it maps roast behavior to observable physical events rather than relying on potentially unreliable label information." },
+  { question: "How does the Hoos framework interact with different roaster types (drum, fluid bed, hybrid)?", answer: "Hoos developed the framework primarily on drum roasters, and the specific timings are calibrated to drum roasting's conductive-plus-convective heat transfer profile. Fluid bed roasters tend to compress all phase timings -- a Bourbon that reaches first crack at 8:30 on a drum may reach it at 7:00-7:30 on a fluid bed. The absolute timings shift, but the ratios and relationships hold: Bourbon-group cultivars will still reach first crack later than Typica-group cultivars on the same machine, the 0.56 yellowing ratio will still approximate, and processing adjustments remain directionally correct. Establish your machine's baseline by profiling one known cultivar, then apply the group offsets relative to that baseline." }
+]} />

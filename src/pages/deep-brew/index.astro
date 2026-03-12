@@ -1,0 +1,264 @@
+---
+import DeepBrewLayout from '../../layouts/DeepBrewLayout.astro';
+---
+
+<DeepBrewLayout
+  title="Deep Brew Mode | JayArr Coffee"
+  description="Precision brewing tools for the obsessive coffee enthusiast. Water chemistry, extraction diagnostics, and grind calibration — built on peer-reviewed science."
+>
+  <!-- Hero -->
+  <section class="relative min-h-[85vh] md:min-h-screen flex items-center justify-center overflow-hidden">
+    <!-- Background gradient -->
+    <div class="absolute inset-0 bg-gradient-to-b from-db-bg via-db-bg to-db-surface">
+      <!-- Radial warm glow -->
+      <div class="absolute inset-0" style="background: radial-gradient(ellipse at 50% 40%, rgba(210, 125, 45, 0.06) 0%, transparent 70%);"></div>
+    </div>
+
+    <div class="relative z-10 text-center px-6 max-w-4xl">
+      <!-- Label -->
+      <div class="font-db-mono text-xs tracking-[0.3em] uppercase text-db-copper mb-6 opacity-90">
+        Precision Brewing Tools
+      </div>
+
+      <!-- Title -->
+      <h1 class="font-db-serif text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight"
+          style="background: linear-gradient(135deg, var(--color-db-text) 0%, var(--color-db-copper) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        Deep Brew Mode
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="text-lg md:text-xl text-db-text-muted max-w-2xl mx-auto mb-4 leading-relaxed font-light">
+        You've measured your water to the milligram. Welcome home.
+      </p>
+      <p class="text-sm text-db-text-muted/60 max-w-xl mx-auto mb-12">
+        Three instruments built on peer-reviewed coffee science. Designed for the brewer who wants to understand <em>why</em>, not just <em>how</em>.
+      </p>
+
+      <!-- Divider -->
+      <div class="w-20 h-px mx-auto mb-16" style="background: linear-gradient(90deg, transparent, var(--color-db-copper), transparent);"></div>
+
+      <!-- The Lab -->
+      <div class="font-db-mono text-[10px] tracking-[0.3em] uppercase text-db-text-muted/40 mb-3">Enter</div>
+      <h2 class="font-db-serif text-2xl md:text-3xl font-semibold text-db-text mb-8"
+          style="background: linear-gradient(135deg, var(--color-db-copper) 0%, var(--color-db-amber) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        The Lab
+      </h2>
+
+      <!-- Tool Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        <!-- Water Recipe Builder -->
+        <a href="/deep-brew/water" class="group block p-6 md:p-8 bg-db-surface rounded-lg border border-db-border hover:border-db-copper/40 transition-all duration-300">
+          <div class="text-db-copper mb-4">
+            <svg class="w-8 h-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 0-6.23.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
+            </svg>
+          </div>
+          <h3 class="font-db-serif text-xl font-semibold text-db-text group-hover:text-db-copper transition-colors mb-2">
+            Water Recipe Builder
+          </h3>
+          <p class="text-sm text-db-text-muted leading-relaxed mb-4">
+            Map your water chemistry. See where you stand against 10 named recipes. Get DIY mineral concentrate instructions.
+          </p>
+          <span class="font-db-mono text-xs text-db-copper/70 uppercase tracking-widest group-hover:text-db-copper transition-colors">
+            Open Tool &rarr;
+          </span>
+        </a>
+
+        <!-- Extraction Diagnostic -->
+        <a href="/deep-brew/extraction" class="group block p-6 md:p-8 bg-db-surface rounded-lg border border-db-border hover:border-db-copper/40 transition-all duration-300">
+          <div class="text-db-copper mb-4">
+            <svg class="w-8 h-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
+            </svg>
+          </div>
+          <h3 class="font-db-serif text-xl font-semibold text-db-text group-hover:text-db-copper transition-colors mb-2">
+            Extraction Diagnostic
+          </h3>
+          <p class="text-sm text-db-text-muted leading-relaxed mb-4">
+            Describe what you taste. See where you are on the extraction curve. Get method-specific fixes backed by chemistry.
+          </p>
+          <span class="font-db-mono text-xs text-db-copper/70 uppercase tracking-widest group-hover:text-db-copper transition-colors">
+            Open Tool &rarr;
+          </span>
+        </a>
+
+        <!-- Grind-Roast Calibrator -->
+        <a href="/deep-brew/calibrator" class="group block p-6 md:p-8 bg-db-surface rounded-lg border border-db-border hover:border-db-copper/40 transition-all duration-300">
+          <div class="text-db-copper mb-4">
+            <svg class="w-8 h-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            </svg>
+          </div>
+          <h3 class="font-db-serif text-xl font-semibold text-db-text group-hover:text-db-copper transition-colors mb-2">
+            Grind-Roast Calibrator
+          </h3>
+          <p class="text-sm text-db-text-muted leading-relaxed mb-4">
+            Input your grinder, roast level, and origin. Get a calibrated starting point instead of 3-5 wasted shots.
+          </p>
+          <span class="font-db-mono text-xs text-db-copper/70 uppercase tracking-widest group-hover:text-db-copper transition-colors">
+            Open Tool &rarr;
+          </span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce">
+      <svg class="w-5 h-5 text-db-text-muted/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+    </div>
+  </section>
+
+  <!-- Philosophy Section -->
+  <section class="py-24 bg-db-surface">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <div class="font-db-mono text-xs tracking-[0.3em] uppercase text-db-copper mb-4">The Approach</div>
+      <h2 class="font-db-serif text-3xl md:text-4xl font-semibold text-db-text mb-6">Three Invisible Walls</h2>
+      <p class="text-db-text-muted leading-relaxed mb-8">
+        Most serious home brewers hit three barriers they can't diagnose on their own. Your grinder is dialed in. Your technique is solid. But something is still off. These tools target the variables that separate good from exceptional.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left mt-12">
+        <div class="p-6 rounded-lg border border-db-border">
+          <div class="font-db-mono text-xs text-db-copper mb-3">Wall 01</div>
+          <h3 class="font-db-serif text-lg font-semibold text-db-text mb-2">Water Composition</h3>
+          <p class="text-sm text-db-text-muted leading-relaxed">
+            The single biggest lever most people never touch. Your tap water's mineral content determines which flavor compounds dissolve and which get left behind.
+          </p>
+        </div>
+        <div class="p-6 rounded-lg border border-db-border">
+          <div class="font-db-mono text-xs text-db-copper mb-3">Wall 02</div>
+          <h3 class="font-db-serif text-lg font-semibold text-db-text mb-2">Extraction Evenness</h3>
+          <p class="text-sm text-db-text-muted leading-relaxed">
+            You taste something wrong but can't name what's happening chemically. Acids extract first, sugars next, bitter compounds last. Where you stop changes everything.
+          </p>
+        </div>
+        <div class="p-6 rounded-lg border border-db-border">
+          <div class="font-db-mono text-xs text-db-copper mb-3">Wall 03</div>
+          <h3 class="font-db-serif text-lg font-semibold text-db-text mb-2">Grind-Roast Interaction</h3>
+          <p class="text-sm text-db-text-muted leading-relaxed">
+            The same grind setting performs completely differently across roast levels and origins. Bean density, solubility, and cell structure all shift with the roast.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Research -->
+  <section class="py-24">
+    <div class="max-w-4xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <div class="font-db-mono text-xs tracking-[0.3em] uppercase text-db-copper mb-4">Featured Research</div>
+        <h2 class="font-db-serif text-3xl md:text-4xl font-semibold text-db-text mb-4">Deep Dives</h2>
+        <p class="text-db-text-muted max-w-xl mx-auto leading-relaxed">
+          Long-form articles grounded in coffee science. No fluff. No affiliate bait. Just the research that changes how you brew.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Article card 1 -->
+        <a href="/deep-brew/research/extraction-sequence-explained/" class="group block p-6 bg-db-surface rounded-lg border border-db-border hover:border-db-copper/40 transition-all duration-300">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="font-db-mono text-[10px] uppercase tracking-[0.15em] text-db-copper/70 bg-db-copper/10 px-2 py-0.5 rounded">Chemistry</span>
+          </div>
+          <h3 class="font-db-serif text-lg font-semibold text-db-text group-hover:text-db-copper transition-colors mb-2">
+            The Extraction Sequence
+          </h3>
+          <p class="text-sm text-db-text-muted leading-relaxed mb-3">
+            Acids extract first, sugars second, bitter compounds last. The precise order determines everything you taste in the cup.
+          </p>
+          <span class="font-db-mono text-xs text-db-copper/60 uppercase tracking-widest group-hover:text-db-copper transition-colors">
+            Read Article &rarr;
+          </span>
+        </a>
+
+        <!-- Article card 2 -->
+        <a href="/deep-brew/research/espresso-physics-darcy-law/" class="group block p-6 bg-db-surface rounded-lg border border-db-border hover:border-db-copper/40 transition-all duration-300">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="font-db-mono text-[10px] uppercase tracking-[0.15em] text-db-copper/70 bg-db-copper/10 px-2 py-0.5 rounded">Physics</span>
+          </div>
+          <h3 class="font-db-serif text-lg font-semibold text-db-text group-hover:text-db-copper transition-colors mb-2">
+            Espresso Physics &amp; Darcy's Law
+          </h3>
+          <p class="text-sm text-db-text-muted leading-relaxed mb-3">
+            Why 9 bars of pressure, 25&ndash;35 seconds, and puck resistance are connected by a 150-year-old fluid dynamics equation.
+          </p>
+          <span class="font-db-mono text-xs text-db-copper/60 uppercase tracking-widest group-hover:text-db-copper transition-colors">
+            Read Article &rarr;
+          </span>
+        </a>
+
+        <!-- Article card 3 -->
+        <a href="/deep-brew/research/flavor-volatiles-oav-guide/" class="group block p-6 bg-db-surface rounded-lg border border-db-border hover:border-db-copper/40 transition-all duration-300">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="font-db-mono text-[10px] uppercase tracking-[0.15em] text-db-copper/70 bg-db-copper/10 px-2 py-0.5 rounded">Chemistry</span>
+          </div>
+          <h3 class="font-db-serif text-lg font-semibold text-db-text group-hover:text-db-copper transition-colors mb-2">
+            Flavor Volatiles &amp; OAV
+          </h3>
+          <p class="text-sm text-db-text-muted leading-relaxed mb-3">
+            Over 1,000 volatile compounds, but only ~40 matter. How odor activity values separate the signal from the noise.
+          </p>
+          <span class="font-db-mono text-xs text-db-copper/60 uppercase tracking-widest group-hover:text-db-copper transition-colors">
+            Read Article &rarr;
+          </span>
+        </a>
+
+        <!-- Article card 4 -->
+        <a href="/deep-brew/research/maillard-caramelization-strecker/" class="group block p-6 bg-db-surface rounded-lg border border-db-border hover:border-db-copper/40 transition-all duration-300">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="font-db-mono text-[10px] uppercase tracking-[0.15em] text-db-copper/70 bg-db-copper/10 px-2 py-0.5 rounded">Chemistry</span>
+          </div>
+          <h3 class="font-db-serif text-lg font-semibold text-db-text group-hover:text-db-copper transition-colors mb-2">
+            Maillard, Caramelization &amp; Strecker
+          </h3>
+          <p class="text-sm text-db-text-muted leading-relaxed mb-3">
+            The three browning reactions that create coffee flavor. How temperature, time, and precursor chemistry interact during roasting.
+          </p>
+          <span class="font-db-mono text-xs text-db-copper/60 uppercase tracking-widest group-hover:text-db-copper transition-colors">
+            Read Article &rarr;
+          </span>
+        </a>
+      </div>
+
+      <div class="text-center mt-8">
+        <a href="/deep-brew/research" class="inline-flex items-center gap-2 font-db-mono text-sm text-db-text-muted hover:text-db-copper transition-colors uppercase tracking-widest">
+          All Research
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Science Backing -->
+  <section class="py-24 bg-db-surface">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <div class="font-db-mono text-xs tracking-[0.3em] uppercase text-db-copper mb-4">The Foundation</div>
+      <h2 class="font-db-serif text-3xl md:text-4xl font-semibold text-db-text mb-6">Built on Real Research</h2>
+      <p class="text-db-text-muted leading-relaxed mb-12">
+        Every recommendation traces back to published science. Not influencer opinions. Not brand partnerships. Peer-reviewed papers and verified data.
+      </p>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div class="p-5 bg-db-bg rounded-lg border border-db-border">
+          <div class="font-db-mono text-2xl text-db-copper font-medium mb-1">13</div>
+          <div class="text-xs text-db-text-muted uppercase tracking-wider">Source Papers</div>
+        </div>
+        <div class="p-5 bg-db-bg rounded-lg border border-db-border">
+          <div class="font-db-mono text-2xl text-db-copper font-medium mb-1">10</div>
+          <div class="text-xs text-db-text-muted uppercase tracking-wider">Water Recipes</div>
+        </div>
+        <div class="p-5 bg-db-bg rounded-lg border border-db-border">
+          <div class="font-db-mono text-2xl text-db-amber font-medium mb-1">1,000+</div>
+          <div class="text-xs text-db-text-muted uppercase tracking-wider">VOCs Mapped</div>
+        </div>
+        <div class="p-5 bg-db-bg rounded-lg border border-db-border">
+          <div class="font-db-mono text-2xl text-db-amber font-medium mb-1">18-22%</div>
+          <div class="text-xs text-db-text-muted uppercase tracking-wider">Sweet Spot</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</DeepBrewLayout>

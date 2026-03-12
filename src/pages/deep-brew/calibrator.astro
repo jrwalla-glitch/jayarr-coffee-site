@@ -1,0 +1,105 @@
+---
+import DeepBrewLayout from '../../layouts/DeepBrewLayout.astro';
+import GrindCalibrator from '../../components/tools/GrindCalibrator.svelte';
+---
+
+<DeepBrewLayout
+  title="Grind-Roast Calibrator | Deep Brew Mode | JayArr Coffee"
+  description="Select your grinder, brew method, and roast level. Get a precise grind setting starting point calibrated to your specific hardware. 11 grinders, 7 brew methods, roast and processing adjustments."
+>
+  <!-- Hero -->
+  <section class="pt-28 pb-8 md:pt-32 md:pb-12">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <a href="/deep-brew/" class="font-db-mono text-xs uppercase tracking-[0.2em] text-db-text-muted/50 hover:text-db-copper transition-colors">
+        &larr; Deep Brew Mode
+      </a>
+      <h1 class="font-db-serif text-3xl md:text-5xl font-bold mt-3 mb-3"
+          style="background: linear-gradient(135deg, var(--color-db-text) 0%, var(--color-db-copper) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        Grind-Roast Calibrator
+      </h1>
+      <p class="text-db-text-muted max-w-xl mx-auto leading-relaxed text-sm mb-1">
+        Select your grinder, brew method, and roast level. Get a precise starting point &mdash; calibrated to your specific hardware.
+      </p>
+      <p class="font-db-mono text-xs text-db-text-muted/40 tracking-wider">
+        GRIND &middot; ROAST &middot; BREW
+      </p>
+    </div>
+  </section>
+
+  <!-- Tool -->
+  <section class="pb-16 md:pb-24">
+    <div class="max-w-4xl mx-auto px-6">
+      <GrindCalibrator client:load />
+    </div>
+  </section>
+
+  <!-- Methodology -->
+  <section class="py-16 bg-db-surface border-t border-db-border">
+    <div class="max-w-3xl mx-auto px-6">
+      <div class="font-db-mono text-xs tracking-[0.2em] uppercase text-db-copper mb-4">Methodology</div>
+      <h2 class="font-db-serif text-xl md:text-2xl font-semibold text-db-text mb-6">How This Works</h2>
+
+      <div class="space-y-6 text-sm text-db-text-muted leading-relaxed">
+        <div>
+          <h3 class="font-db-serif text-base font-semibold text-db-text mb-1">Grind Size Is the Biggest Variable</h3>
+          <p>
+            Of all the variables in coffee brewing &mdash; water temperature, dose, ratio, pour technique &mdash; grind size has the largest impact on extraction yield. It determines surface area, which directly controls how much of the coffee&rsquo;s soluble material dissolves into your cup. Getting grind size right for your specific grinder is the single most impactful improvement most home brewers can make.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="font-db-serif text-base font-semibold text-db-text mb-1">Why Settings Vary Between Grinders</h3>
+          <p>
+            A &ldquo;medium grind&rdquo; means different things on different grinders. A Comandante C40 at 25 clicks, a Baratza Encore at setting 15, and a Niche Zero at dial 40 all produce roughly similar particle sizes for V60. The mapping from particle size to dial/click number depends on burr geometry, step resolution, and calibration. This tool translates your target brew method into your grinder&rsquo;s native language.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="font-db-serif text-base font-semibold text-db-text mb-1">Roast Level Changes Everything</h3>
+          <p>
+            Roasting transforms the bean&rsquo;s physical structure. Light roasts are dense with tightly packed cells &mdash; they resist extraction and need a finer grind to compensate. Dark roasts are porous and brittle &mdash; they extract easily (sometimes too easily) and benefit from a coarser grind. The adjustment follows bean solubility: as roast level increases, so does the ease of extraction, requiring progressively coarser grinding to maintain balance.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="font-db-serif text-base font-semibold text-db-text mb-1">Processing: A Secondary Factor</h3>
+          <p>
+            Coffee processing method (washed, honey, natural) also affects solubility, but the effect is smaller than roast level. Natural-processed coffees have more degraded cellular structure and higher surface sugars, making them extract faster. Honey process falls between washed and natural. These adjustments are additive to roast level and should be treated as suggestions &mdash; the evidence base is directional rather than precisely quantified.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="font-db-serif text-base font-semibold text-db-text mb-1">Starting Point, Not Endpoint</h3>
+          <p>
+            Every setting in this tool is a calibrated starting point &mdash; not a final answer. Coffee varies by origin, altitude, age, and individual palate preference. Use the recommended setting as your first brew, then adjust by 1&ndash;2 steps based on taste: too sour or thin means grind finer; too bitter or heavy means grind coarser. The confidence rating tells you how much to trust each number.
+          </p>
+        </div>
+
+        <div class="pt-4 border-t border-db-border">
+          <span class="font-db-mono text-xs text-db-text-muted/40 tracking-wider uppercase">Data Sources</span>
+          <p class="mt-2 text-xs text-db-text-muted/50">
+            Grinder settings compiled from manufacturer documentation (Baratza, Fellow, Niche, 1Zpresso, Eureka, Kinu, Timemore), retailer guides (Clive Coffee, Prima Coffee, Basic Barista), independent review databases (Honest Coffee Guide, Coffee Chronicler, Complete Home Barista), and community consensus (Reddit r/coffee, Home-Barista.com, CoffeeForums UK). Roast adjustments based on cross-referenced guidance from Complete Home Barista, QIKA Coffee, Spiller &amp; Tait, Perfect Daily Grind, and Counter Culture Coffee. Processing adjustments derived from directional guidance in KEA Coffee and Clive Coffee resources.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related -->
+  <section class="py-12">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <span class="font-db-mono text-xs uppercase tracking-widest text-db-copper">Related</span>
+      <div class="flex flex-wrap justify-center gap-3 mt-4">
+        <a href="/deep-brew/extraction/" class="border border-db-border text-db-text-muted px-5 py-2 text-xs uppercase tracking-widest hover:border-db-copper/50 hover:text-db-text transition-all rounded">
+          Extraction Diagnostic
+        </a>
+        <a href="/deep-brew/water/" class="border border-db-border text-db-text-muted px-5 py-2 text-xs uppercase tracking-widest hover:border-db-copper/50 hover:text-db-text transition-all rounded">
+          Water Recipe Builder
+        </a>
+        <a href="/deep-brew/" class="border border-db-border text-db-text-muted px-5 py-2 text-xs uppercase tracking-widest hover:border-db-copper/50 hover:text-db-text transition-all rounded">
+          All Deep Brew Tools
+        </a>
+      </div>
+    </div>
+  </section>
+</DeepBrewLayout>
