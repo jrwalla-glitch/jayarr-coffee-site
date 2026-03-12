@@ -1,0 +1,123 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`Terms of Service — ${SITE_TITLE}`} description="Terms of service for JayArr Coffee. Rules and guidelines for using our website." />
+	</head>
+	<body class="bg-cream">
+		<Header />
+
+		<!-- Page header -->
+		<div class="pt-32 pb-16 bg-charcoal">
+			<div class="max-w-6xl mx-auto px-6">
+				<span class="text-xs uppercase tracking-widest text-copper font-medium">Legal</span>
+				<h1 class="font-serif text-5xl md:text-6xl font-bold text-cream mt-2">Terms of Service</h1>
+			</div>
+		</div>
+
+		<main class="py-16 px-6">
+			<div class="prose">
+				<p><strong>Last updated:</strong> March 11, 2026</p>
+
+				<p>
+					Welcome to JayArr Coffee ("we," "us," or "our"). By accessing or using jayarr.coffee
+					(the "Site"), you agree to these Terms of Service. If you do not agree, please do not
+					use the Site.
+				</p>
+
+				<h2>Use of the Site</h2>
+				<p>
+					The Site provides coffee-related educational content, product reviews, brewing guides,
+					and tools. You may use the Site for personal, non-commercial purposes. You agree not to:
+				</p>
+				<ul>
+					<li>Reproduce, distribute, or republish our content without written permission</li>
+					<li>Use automated tools to scrape or collect data from the Site</li>
+					<li>Attempt to interfere with the Site's operation or security</li>
+					<li>Use the Site for any unlawful purpose</li>
+				</ul>
+
+				<h2>Content and Accuracy</h2>
+				<p>
+					We strive to provide accurate, up-to-date information about coffee, brewing methods,
+					and products. However, all content is provided "as is" for informational purposes only.
+					We make no guarantees about the completeness or accuracy of any information on the Site.
+				</p>
+				<p>
+					Product recommendations reflect our honest opinions. Prices, availability, and product
+					specifications may change without notice. Always verify current details with the retailer.
+				</p>
+
+				<h2>Affiliate Links and Third-Party Sites</h2>
+				<p>
+					The Site contains affiliate links to third-party websites, primarily Amazon.com. We are
+					not responsible for the content, policies, or practices of any third-party sites. Your
+					use of third-party sites is governed by their respective terms and policies.
+				</p>
+				<p>
+					For details on our affiliate relationships, see our
+					<a href="/affiliate-disclosure">Affiliate Disclosure</a>.
+				</p>
+
+				<h2>Intellectual Property</h2>
+				<p>
+					All original content on the Site — including text, images, graphics, videos, and logos —
+					is owned by JayArr Coffee and protected by copyright law. The JayArr Coffee name and
+					logo are our trademarks.
+				</p>
+				<p>
+					You may share links to our content and quote brief excerpts with proper attribution.
+					For any other use, please contact us.
+				</p>
+
+				<h2>User Conduct</h2>
+				<p>
+					If you interact with the Site through comments, forms, or other features, you agree to
+					provide accurate information and to conduct yourself respectfully. We reserve the right
+					to remove any content that is spam, abusive, or otherwise inappropriate.
+				</p>
+
+				<h2>Disclaimer of Warranties</h2>
+				<p>
+					The Site is provided "as is" and "as available" without warranties of any kind, either
+					express or implied. We do not warrant that the Site will be uninterrupted, error-free,
+					or free of harmful components.
+				</p>
+
+				<h2>Limitation of Liability</h2>
+				<p>
+					To the fullest extent permitted by law, JayArr Coffee shall not be liable for any
+					indirect, incidental, or consequential damages arising from your use of the Site or
+					reliance on any information provided.
+				</p>
+
+				<h2>Changes to These Terms</h2>
+				<p>
+					We may update these terms from time to time. Changes will be posted on this page with
+					an updated revision date. Continued use of the Site after changes constitutes acceptance
+					of the revised terms.
+				</p>
+
+				<h2>Governing Law</h2>
+				<p>
+					These terms are governed by the laws of the United States. Any disputes shall be
+					resolved in accordance with applicable federal and state law.
+				</p>
+
+				<h2>Contact</h2>
+				<p>
+					Questions about these terms? Reach out through our
+					<a href="https://www.youtube.com/@jayarrcoffee" target="_blank" rel="noopener">YouTube channel</a>.
+				</p>
+			</div>
+		</main>
+
+		<Footer />
+	</body>
+</html>
