@@ -10,6 +10,24 @@ category: "Science"
 import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
 import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
 import FAQ from '../../components/FAQ.astro';
+import AnswerBox from '../../components/AnswerBox.astro';
+import HowToSchema from '../../components/HowToSchema.astro';
+
+<AnswerBox answer="Store whole beans in an airtight container at cool room temperature, away from light and heat. Peak flavor is 7–14 days post-roast. For long-term storage, vacuum-seal single doses and freeze — this slows oxidation ~15x and preserves quality for 6–12 months. Never refrigerate coffee (humidity + odor absorption). Grind immediately before brewing — ground coffee stales within 30 minutes." />
+
+<HowToSchema
+  name="How to Freeze Coffee Beans for Long-Term Storage"
+  description="The single-dose freezer method used by competition baristas to preserve coffee quality for 6-12 months."
+  steps={[
+    { name: "Portion immediately", text: "Divide beans into single-dose quantities (15-20g for filter, 17-19g for espresso) the day you open the bag or receive fresh beans from the roaster." },
+    { name: "Vacuum seal each dose", text: "Use a vacuum sealer with small bags for near-zero oxygen environment. Zip-locks with air removed are acceptable but not ideal." },
+    { name: "Label each dose", text: "Write the coffee name and roast date on each bag. Frozen coffee is easy to forget — labeling helps you use older doses first." },
+    { name: "Place in the freezer", text: "Store toward the back where temperature is most stable, away from the door. Consistent temperature prevents micro-condensation cycles." },
+    { name: "Grind from frozen", text: "Pull one dose and grind immediately without thawing. Cold beans are more brittle and fracture more uniformly, producing a tighter particle size distribution (Hendon)." },
+    { name: "Never refreeze", text: "Use what you pull. Each freeze-thaw cycle outside a vacuum seal introduces condensation that accelerates staling." }
+  ]}
+  totalTime="PT10M"
+/>
 
 You paid $18 for a bag of freshly roasted single-origin beans. You've read about the origin, the processing method, the altitude. The roaster sent a card about the farm. And then you set the bag on the counter next to the stove, or dropped it into the fridge, or poured the beans into a decorative glass jar in direct sunlight.
 

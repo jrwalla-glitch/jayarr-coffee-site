@@ -10,6 +10,21 @@ category: "Brewing"
 import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
 import FAQ from '../../components/FAQ.astro';
 import ToolCallout from '../../components/ToolCallout.astro';
+import HowToSchema from '../../components/HowToSchema.astro';
+
+<HowToSchema
+  name="How to Make Pour Over Coffee (V60 Method)"
+  description="A complete step-by-step guide to making pour over coffee with a Hario V60, based on specialty coffee research."
+  steps={[
+    { name: "Heat water to 200-205°F (93-96°C)", text: "For light roasts, use the upper end (96°C). For dark roasts, drop to 91-93°C. Use a gooseneck kettle for pour control." },
+    { name: "Grind 22g of coffee to medium-fine", text: "Target a consistency slightly finer than sea salt. Adjust based on drawdown time — aim for 3:00-3:30 total brew." },
+    { name: "Rinse the filter and preheat", text: "Place a V60 filter in the dripper and rinse with hot water. This removes papery taste, creates a seal, and preheats the device." },
+    { name: "Add coffee and bloom with 44-66g water", text: "Pour 2-3x the coffee weight in water, starting from center and spiraling out. Swirl gently. Wait 30-45 seconds for CO2 to escape and grounds to saturate." },
+    { name: "Pour in slow concentric circles to 360g total", text: "Pour steadily in concentric circles, avoiding the filter walls. Maintain an even water level above the bed. Target 360g total water for a 1:16.4 ratio." },
+    { name: "Wait for drawdown to complete", text: "The bed should drain completely by 3:00-3:30. If faster, grind finer. If slower, grind coarser. A flat, even bed at the end indicates good extraction." }
+  ]}
+  totalTime="PT4M"
+/>
 
 Pour over coffee has earned its reputation in specialty shops for one reason: when you nail the technique, it produces a cup so clean and flavorful that other methods feel blunt by comparison. But there's a lot of outdated advice floating around, and the science of pour over has advanced significantly in the past few years. This guide covers what actually matters, including a few things that might surprise you.
 

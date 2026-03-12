@@ -9,6 +9,24 @@ category: "Brewing"
 
 import ReferenceGuide from '../../components/infographics/ReferenceGuide.astro';
 import FAQ from '../../components/FAQ.astro';
+import AnswerBox from '../../components/AnswerBox.astro';
+import HowToSchema from '../../components/HowToSchema.astro';
+
+<AnswerBox answer="Bitter coffee is almost always overextracted — you've dissolved past the sugars and caramels into the harsh dry distillates (Stage 4 compounds). The fix, in order: grind coarser, lower water temperature (especially for dark roasts), reduce contact time, and check bean freshness. Stale beans and over-roasted beans carry elevated quinic acid that tastes bitter regardless of technique." />
+
+<HowToSchema
+  name="How to Fix Bitter Coffee"
+  description="A step-by-step troubleshooting guide for bitter coffee, from the most common cause to the least."
+  steps={[
+    { name: "Grind coarser", text: "Too-fine a grind increases surface area and accelerates extraction into bitter dry distillates. Adjust 1-2 steps coarser at a time. Aim for a V60 drawdown of 3:00-3:30." },
+    { name: "Lower water temperature", text: "Drop to 195-200°F (91-93°C) for dark roasts, 200-205°F (93-96°C) for light. Higher temperatures extract bitter compounds faster." },
+    { name: "Shorten contact time", text: "Reduce steep time for immersion methods. For pour-over, grind coarser to speed drawdown. Extraction keeps running into bitter Stage 4 compounds with extended contact." },
+    { name: "Check bean freshness", text: "Use beans within 2-4 weeks of the roast date. Stale beans have elevated quinic acid and depleted aromatics, producing bitterness regardless of technique." },
+    { name: "Improve distribution", text: "Even grounds, pre-wet evenly, careful pour technique. Channeling causes simultaneous over- and under-extraction — bitter and weak at once." },
+    { name: "Never hold brewed coffee on heat", text: "Quinic acid forms rapidly in brewed coffee held above 170°F. Brew fresh and drink immediately, or pour into a thermal carafe." },
+    { name: "Evaluate the beans", text: "If bitterness persists despite correct technique, the beans may be over-roasted. Source specialty-grade coffee from a roaster who prints roast dates." }
+  ]}
+/>
 
 Bitter coffee is the most common complaint in home brewing, and it's also the most misdiagnosed. The instinct is to blame the beans — dark roast, bad quality, cheap grocery store coffee. Sometimes that's right. But more often, bitter coffee is a technique problem, and technique problems are fixable.
 

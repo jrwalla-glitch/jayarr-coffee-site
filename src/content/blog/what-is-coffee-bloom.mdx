@@ -9,6 +9,23 @@ category: "Brewing"
 
 import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
 import FAQ from '../../components/FAQ.astro';
+import AnswerBox from '../../components/AnswerBox.astro';
+import HowToSchema from '../../components/HowToSchema.astro';
+
+<AnswerBox answer="Coffee bloom is the initial wetting phase of pour-over brewing where a small amount of hot water saturates the grounds before the main pour. Its primary function is establishing capillary contact between water and every ground particle — not just releasing CO2. Use 2–3x the coffee dose weight in water, wait 30–45 seconds, and swirl for even distribution. Vigorous bubbling means fresh beans; flat bloom means stale beans." />
+
+<HowToSchema
+  name="How to Bloom Coffee for Pour Over"
+  description="The correct bloom technique for pour-over coffee, ensuring even saturation for balanced extraction."
+  steps={[
+    { name: "Heat water to brew temperature", text: "Use the same temperature you'll brew with — 200-205°F (93-96°C) for light-to-medium roasts. Bloom water at a different temperature causes uneven extraction." },
+    { name: "Add bloom water", text: "Pour 2-3 times the coffee dose weight slowly from center outward. For 22g of coffee, use 44-66g of water. The goal is complete saturation without water draining through." },
+    { name: "Swirl the dripper", text: "Immediately swirl the dripper after adding bloom water to ensure every part of the dry bed gets wet. This is especially important for flat-bottom drippers like the Kalita Wave." },
+    { name: "Wait 30-45 seconds", text: "Allow time for capillary wetting to reach the interior of every ground particle. For very fresh beans (within 5 days of roast), extend to 45-50 seconds." },
+    { name: "Begin the main pour", text: "Once bubbling subsides and the bed is evenly saturated, begin your main pour. Water now encounters soluble compounds with no gas-pocket barriers for maximum extraction evenness." }
+  ]}
+  totalTime="PT1M"
+/>
 
 Pour hot water over fresh coffee grounds and something happens. The bed heaves, a dome forms, and CO2 bubbles break the surface. Most guides tell you this is degassing — the coffee "releasing trapped CO2" before you can brew. It's a reasonable description of what you can see, but it misses what's actually important.
 

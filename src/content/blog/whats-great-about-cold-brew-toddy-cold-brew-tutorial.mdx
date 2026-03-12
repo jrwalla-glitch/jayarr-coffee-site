@@ -10,6 +10,20 @@ category: "Brewing"
 import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
 import FAQ from '../../components/FAQ.astro';
 import ExploreCallout from '../../components/ExploreCallout.astro';
+import HowToSchema from '../../components/HowToSchema.astro';
+
+<HowToSchema
+  name="How to Make Cold Brew Coffee"
+  description="A simple cold brew method using coarse grounds and room-temperature or refrigerator steeping for a smooth, sweet concentrate."
+  steps={[
+    { name: "Grind coffee coarse", text: "Use a very coarse grind — like raw sugar or coarser. Fine grinds will over-extract during the long steep and produce bitter, muddy cold brew." },
+    { name: "Combine coffee and cold water at 1:8 ratio", text: "Use 1 gram of coffee per 8 grams of water for a concentrate. For a standard batch: 100g coffee to 800g water. Room temperature or cold water both work." },
+    { name: "Steep for 16-24 hours", text: "Cover and steep at room temperature (faster, slightly more body) or in the refrigerator (slower, cleaner). 18-20 hours is the sweet spot for most setups." },
+    { name: "Filter through paper or cloth", text: "Strain through a fine mesh, then filter through paper or a cloth filter for a clean concentrate. The Toddy system handles this in one step." },
+    { name: "Dilute and serve", text: "Cold brew concentrate is strong. Dilute 1:1 with water or milk over ice. Adjust ratio to taste. Concentrate keeps in the fridge for 7-10 days." }
+  ]}
+  totalTime="PT24H"
+/>
 
 Cold brew is the simplest way to make coffee. Grounds go in water. You wait. That's it. No temperature control, no pour technique, no timing precision. And the result is a smooth, sweet concentrate that lasts in your fridge for a week or more.
 

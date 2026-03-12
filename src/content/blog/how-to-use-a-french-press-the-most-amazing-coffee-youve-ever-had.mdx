@@ -10,6 +10,21 @@ category: "Brewing"
 import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
 import FAQ from '../../components/FAQ.astro';
 import ToolCallout from '../../components/ToolCallout.astro';
+import HowToSchema from '../../components/HowToSchema.astro';
+
+<HowToSchema
+  name="How to Make French Press Coffee (Hoffmann Method)"
+  description="The James Hoffmann French press technique for a clean, full-bodied cup with minimal sediment."
+  steps={[
+    { name: "Boil water and grind coarse", text: "Use a coarse grind (like raw sugar). Ratio: 60-70g per liter of water. Boil water fully — the French press loses heat quickly, so starting hot compensates." },
+    { name: "Add coffee and pour all water at once", text: "Add grounds to the press, start a timer, and pour all the water in one go. Do not stir." },
+    { name: "Wait 4 minutes", text: "Let the coffee steep undisturbed for 4 minutes. A crust of grounds will form on the surface." },
+    { name: "Break the crust and skim", text: "After 4 minutes, use a spoon to break the crust and stir gently. Then skim off the foam and floating grounds with two spoons." },
+    { name: "Wait 5-8 more minutes", text: "Let the coffee sit for another 5-8 minutes without plunging. This allows fine particles to settle to the bottom, dramatically reducing sediment." },
+    { name: "Plunge gently and pour immediately", text: "Press the plunger down just to the surface — do not press to the bottom. Pour all coffee out immediately. Do not leave coffee in the press." }
+  ]}
+  totalTime="PT12M"
+/>
 
 The French press is the most honest brewer you can own. There's no paper filter hiding imperfections, no complex mechanism between you and the coffee. Just hot water, coarse grounds, and a metal screen. What you get is the fullest, most textured cup of coffee any home method can produce -- and if you follow the technique I'm about to share, it might genuinely be the best coffee you've ever made.
 

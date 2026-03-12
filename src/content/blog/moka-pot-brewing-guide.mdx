@@ -9,6 +9,21 @@ category: "Brewing"
 import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
 import FAQ from '../../components/FAQ.astro';
 import ToolCallout from '../../components/ToolCallout.astro';
+import HowToSchema from '../../components/HowToSchema.astro';
+
+<HowToSchema
+  name="How to Use a Moka Pot (Stovetop Espresso)"
+  description="Step-by-step guide to brewing strong, rich coffee with a moka pot — the mistakes to avoid and the technique that works."
+  steps={[
+    { name: "Fill the bottom chamber with hot water", text: "Fill to just below the safety valve with pre-boiled water. Starting with hot water reduces the time the coffee spends over heat, preventing bitter, burnt flavors." },
+    { name: "Fill the filter basket with medium-fine grounds", text: "Fill the basket completely and level off — do not tamp. Use a grind slightly coarser than espresso, finer than drip." },
+    { name: "Assemble and place on medium-low heat", text: "Screw the top on firmly (use a towel — the bottom is hot). Place on medium-low heat with the lid open so you can watch the extraction." },
+    { name: "Watch for the stream of coffee", text: "Coffee should flow out steadily, not sputter. A dark, honey-colored stream is ideal. If it sputters and spits, heat is too high." },
+    { name: "Remove from heat when sputtering begins", text: "As soon as the stream lightens and starts sputtering, remove from heat immediately. Run the bottom under cold water to stop extraction." },
+    { name: "Serve immediately", text: "Pour right away. Moka pot coffee left on the stove or in the pot continues to degrade. Stir before pouring to mix the early, stronger extraction with the later, lighter flow." }
+  ]}
+  totalTime="PT5M"
+/>
 
 The moka pot is one of the most misunderstood coffee makers in any kitchen. Invented by Alfonso Bialetti in 1933, the little octagonal brewer has sold over 300 million units worldwide and is standard equipment in virtually every Italian household. It makes strong, concentrated coffee that's closer to espresso than drip -- but it's not actually espresso, and understanding what it *is* will help you make better coffee with it.
 

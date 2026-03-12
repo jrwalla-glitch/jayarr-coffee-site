@@ -1,0 +1,41 @@
+---
+interface Props {
+	answer: string;
+}
+
+const { answer } = Astro.props;
+---
+
+<aside class="answer-box" role="note" aria-label="Key takeaway">
+	<div class="answer-label">The Short Answer</div>
+	<p class="answer-text">{answer}</p>
+</aside>
+
+<style>
+	.answer-box {
+		max-width: 720px;
+		margin: 0 auto 2rem;
+		padding: 1.25rem 1.5rem;
+		background: #f8f6f3;
+		border-left: 3px solid var(--color-copper, #B87333);
+		border-radius: 0 4px 4px 0;
+	}
+
+	.answer-label {
+		font-family: 'Inter', system-ui, sans-serif;
+		font-size: 0.6875rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--color-copper, #B87333);
+		margin-bottom: 0.5rem;
+	}
+
+	.answer-text {
+		font-family: 'Inter', system-ui, sans-serif;
+		font-size: 1rem;
+		line-height: 1.7;
+		color: var(--color-charcoal, #1A1A1A);
+		margin: 0;
+	}
+</style>
