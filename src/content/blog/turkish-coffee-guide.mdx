@@ -9,6 +9,20 @@ category: "Brewing"
 import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
 import FAQ from '../../components/FAQ.astro';
 import ToolCallout from '../../components/ToolCallout.astro';
+import HowToSchema from '../../components/HowToSchema.astro';
+
+<HowToSchema
+  name="How to Make Turkish Coffee"
+  description="The traditional method for brewing Turkish coffee in a cezve (ibrik) — 500 years of technique, done right."
+  steps={[
+    { name: "Combine cold water, coffee, and sugar in the cezve", text: "Add 60-70ml of cold water per cup, 7-10g of extra-fine ground coffee (finer than espresso — almost powder), and sugar to taste. Stir to combine before heating." },
+    { name: "Heat slowly on low flame", text: "Place the cezve on the lowest heat setting. Slow heating is critical — it allows proper extraction and foam development. Do not stir after placing on heat." },
+    { name: "Watch for the foam to rise", text: "As the coffee heats, a dark foam will form on the surface. When the foam rises toward the rim of the cezve, remove from heat immediately. Do not let it boil over." },
+    { name: "Pour and serve with grounds", text: "Pour slowly into small cups (fincan), distributing the foam evenly. The grounds go in the cup — they settle to the bottom as you drink. Do not filter." },
+    { name: "Wait 1-2 minutes before drinking", text: "Let the grounds settle to the bottom of the cup. Drink slowly — stop when you reach the thick sediment at the bottom. Serve with a glass of water." }
+  ]}
+  totalTime="PT4M"
+/>
 
 Turkish coffee is the oldest continuously practiced brewing method in the world. While pour over and espresso get the specialty spotlight, people in Istanbul, Athens, Beirut, and Cairo have been making coffee the same way for over five hundred years — grinding beans to powder, simmering them in a small copper pot, and pouring the whole thing, grounds and all, into a cup.
 

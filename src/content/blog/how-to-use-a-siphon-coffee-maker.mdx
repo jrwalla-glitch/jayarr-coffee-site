@@ -10,6 +10,21 @@ category: "Brewing"
 import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
 import FAQ from '../../components/FAQ.astro';
 import ExploreCallout from '../../components/ExploreCallout.astro';
+import HowToSchema from '../../components/HowToSchema.astro';
+
+<HowToSchema
+  name="How to Brew Coffee with a Siphon (Vacuum) Brewer"
+  description="Step-by-step guide to brewing with a siphon coffee maker — immersion brewing plus vacuum filtration for the cleanest, most transparent cup possible."
+  steps={[
+    { name: "Prepare the cloth filter", text: "Soak the cloth filter in hot water for a few minutes, then attach it to the upper chamber with the chain and hook. A clean, pre-soaked filter prevents off-flavors." },
+    { name: "Add water to the lower globe and heat", text: "Fill the lower globe with hot water (pre-heated speeds the process). Place on the heat source — butane burner, halogen beam, or alcohol lamp." },
+    { name: "Seat the upper chamber", text: "Once the water begins to boil, insert the upper chamber with its filter into the lower globe. A tight seal is essential — the pressure differential drives the brewing physics." },
+    { name: "Add coffee when water rises", text: "As water is pushed up into the upper chamber by steam pressure, add 20-25g of medium-fine ground coffee. Stir gently to ensure all grounds are saturated." },
+    { name: "Steep for 60-90 seconds, then remove heat", text: "Let the coffee brew in the upper chamber for 60-90 seconds, stirring once at the start. Then remove the heat source." },
+    { name: "Watch the drawdown", text: "As the lower globe cools, the vacuum pulls brewed coffee back down through the cloth filter. The drawdown should take 60-90 seconds. Remove the upper chamber and serve immediately." }
+  ]}
+  totalTime="PT10M"
+/>
 
 The siphon brewer looks like a chemistry experiment and produces some of the cleanest, most transparent coffee you can make at home. It combines full immersion brewing (like a French press) with vacuum filtration — and the result is coffee with the body of immersion and the clarity of paper-filtered pour-over. Nothing else quite replicates it.
 
