@@ -1,0 +1,33 @@
+---
+interface ListItem {
+	name: string;
+	url?: string;
+	position?: number;
+}
+
+interface Props {
+	name: string;
+	description?: string;
+	items: ListItem[];
+}
+
+const { name, description, items } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+const itemListSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'ItemList',
+	name,
+	...(description ? { description } : {}),
+	url: canonicalURL.href,
+	numberOfItems: items.length,
+	itemListElement: items.map((item, i) => ({
+		'@type': 'ListItem',
+		position: item.position || i + 1,
+		name: item.name,
+		...(item.url ? { url: item.url } : {}),
+	})),
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} />

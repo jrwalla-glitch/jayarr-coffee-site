@@ -1,0 +1,66 @@
+---
+interface ProductItem {
+	name: string;
+	brand: string;
+	price?: string;
+	rating?: number;
+	ratingCount?: number;
+	description?: string;
+	url?: string;
+	image?: string;
+	verdict?: string;
+}
+
+interface Props {
+	products: ProductItem[];
+	reviewAuthor?: string;
+}
+
+const { products, reviewAuthor = 'JayArr' } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+const schemas = products.map((product) => ({
+	'@context': 'https://schema.org',
+	'@type': 'Product',
+	name: product.name,
+	brand: {
+		'@type': 'Brand',
+		name: product.brand,
+	},
+	...(product.description ? { description: product.description } : {}),
+	...(product.image ? { image: product.image } : {}),
+	...(product.price
+		? {
+				offers: {
+					'@type': 'Offer',
+					price: product.price.replace(/[^0-9.]/g, ''),
+					priceCurrency: 'USD',
+					availability: 'https://schema.org/InStock',
+					...(product.url ? { url: product.url } : {}),
+				},
+			}
+		: {}),
+	review: {
+		'@type': 'Review',
+		author: {
+			'@type': 'Person',
+			name: reviewAuthor,
+		},
+		reviewBody: product.verdict || product.description || '',
+		...(product.rating
+			? {
+					reviewRating: {
+						'@type': 'Rating',
+						ratingValue: product.rating,
+						bestRating: 5,
+						...(product.ratingCount ? { ratingCount: product.ratingCount } : {}),
+					},
+				}
+			: {}),
+	},
+}));
+---
+
+{schemas.map((schema) => (
+	<script type="application/ld+json" set:html={JSON.stringify(schema)} />
+))}

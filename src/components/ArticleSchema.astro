@@ -1,0 +1,45 @@
+---
+interface Props {
+	title: string;
+	description: string;
+	pubDate: string;
+	updatedDate?: string;
+	heroImage?: string;
+	category?: string;
+}
+
+const { title, description, pubDate, updatedDate, heroImage, category } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+const articleSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Article',
+	headline: title,
+	description,
+	datePublished: pubDate,
+	...(updatedDate ? { dateModified: updatedDate } : {}),
+	...(heroImage ? { image: new URL(heroImage, Astro.site).href } : {}),
+	...(category ? { articleSection: category } : {}),
+	url: canonicalURL.href,
+	author: {
+		'@type': 'Person',
+		name: 'JayArr',
+		url: 'https://jayarr.coffee/about/',
+	},
+	publisher: {
+		'@type': 'Organization',
+		name: 'JayArr Coffee',
+		url: 'https://jayarr.coffee',
+		logo: {
+			'@type': 'ImageObject',
+			url: 'https://jayarr.coffee/apple-touch-icon.png',
+		},
+	},
+	mainEntityOfPage: {
+		'@type': 'WebPage',
+		'@id': canonicalURL.href,
+	},
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
