@@ -16,6 +16,30 @@ interface Props {
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const { title, description, image = FallbackImage, isArticle = false, pubDate, updatedDate } = Astro.props;
+
+// Differentiate <title> from <h1> — append site name unless this IS the homepage
+const isHomepage = title === SITE_TITLE;
+const pageTitle = isHomepage ? SITE_TITLE : `${title} | ${SITE_TITLE}`;
+
+// Breadcrumb data from URL path
+const pathSegments = Astro.url.pathname.split('/').filter(Boolean);
+const breadcrumbs = [
+	{ name: 'Home', url: Astro.site?.href || 'https://jayarr.coffee/' },
+	...pathSegments.map((seg, i) => ({
+		name: seg.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+		url: new URL(pathSegments.slice(0, i + 1).join('/') + '/', Astro.site || 'https://jayarr.coffee').href,
+	})),
+];
+const breadcrumbSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'BreadcrumbList',
+	itemListElement: breadcrumbs.map((b, i) => ({
+		'@type': 'ListItem',
+		position: i + 1,
+		name: b.name,
+		item: b.url,
+	})),
+};
 ---
 
 <!-- Global Metadata -->
@@ -47,8 +71,13 @@ const { title, description, image = FallbackImage, isArticle = false, pubDate, u
 <script defer src="/_vercel/insights/script.js"></script>
 
 <!-- Primary Meta Tags -->
-<title>{title}</title>
-<meta name="title" content={title} />
+<title>{pageTitle}</title>
+<meta name="title" content={pageTitle} />
+
+<!-- BreadcrumbList Schema -->
+{pathSegments.length > 0 && (
+	<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+)}
 <meta name="description" content={description} />
 
 <!-- Open Graph / Facebook -->
