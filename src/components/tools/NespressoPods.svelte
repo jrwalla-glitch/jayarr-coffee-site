@@ -187,235 +187,248 @@
 {/snippet}
 
 <div class="nespresso-tool">
+  <div class="explorer-layout" class:explorer-layout--panel-open={selectedPod}>
 
-  <!-- Line toggle -->
-  <div class="line-toggle">
-    <button class="line-btn" class:line-btn--active={lineFilter === 'all'} onclick={() => { lineFilter = 'all'; categoryFilter = 'all'; }}>
-      All Pods
-    </button>
-    <button class="line-btn" class:line-btn--active={lineFilter === 'vertuo'} onclick={() => { lineFilter = 'vertuo'; categoryFilter = 'all'; }}>
-      Vertuo
-    </button>
-    <button class="line-btn" class:line-btn--active={lineFilter === 'original'} onclick={() => { lineFilter = 'original'; categoryFilter = 'all'; }}>
-      Original
-    </button>
-  </div>
+    <!-- Left column: filters + grid -->
+    <div class="explorer-main">
 
-  <!-- Search -->
-  <div class="search-row">
-    <input
-      type="text"
-      class="search-input"
-      placeholder="Search pods by name, flavor, or mood..."
-      bind:value={searchQuery}
-    />
-  </div>
+      <!-- Line toggle -->
+      <div class="line-toggle">
+        <button class="line-btn" class:line-btn--active={lineFilter === 'all'} onclick={() => { lineFilter = 'all'; categoryFilter = 'all'; }}>
+          All Pods
+        </button>
+        <button class="line-btn" class:line-btn--active={lineFilter === 'vertuo'} onclick={() => { lineFilter = 'vertuo'; categoryFilter = 'all'; }}>
+          Vertuo
+        </button>
+        <button class="line-btn" class:line-btn--active={lineFilter === 'original'} onclick={() => { lineFilter = 'original'; categoryFilter = 'all'; }}>
+          Original
+        </button>
+      </div>
 
-  <!-- Filter bar -->
-  <div class="filter-bar">
-    <div class="filter-group">
-      <label class="filter-label">Category</label>
-      <select class="filter-select" bind:value={categoryFilter}>
-        <option value="all">All Categories</option>
-        {#each categories as cat}
-          <option value={cat}>{cat}</option>
-        {/each}
-      </select>
-    </div>
-
-    <div class="filter-group">
-      <label class="filter-label">Roast</label>
-      <select class="filter-select" bind:value={roastFilter}>
-        <option value="all">All Roasts</option>
-        {#each roastLevels as roast}
-          <option value={roast}>{roast}</option>
-        {/each}
-      </select>
-    </div>
-
-    <div class="filter-group">
-      <label class="filter-label">Sort</label>
-      <select class="filter-select" bind:value={sortBy}>
-        <option value="name">Name</option>
-        <option value="intensity">Intensity</option>
-        <option value="roast">Roast Level</option>
-      </select>
-    </div>
-  </div>
-
-  <!-- Toggles & intensity -->
-  <div class="toggle-row">
-    <button class="toggle-btn" class:toggle-btn--active={showDecafOnly} onclick={() => showDecafOnly = !showDecafOnly}>
-      Decaf
-    </button>
-    <button class="toggle-btn" class:toggle-btn--active={showFlavoredOnly} onclick={() => showFlavoredOnly = !showFlavoredOnly}>
-      Flavored
-    </button>
-
-    <div class="intensity-filter">
-      <span class="filter-label">Intensity {intensityRange[0]}–{intensityRange[1]}</span>
-      <div class="range-inputs">
-        <input type="range" min="1" max="13" bind:value={intensityRange[0]}
-          oninput={(e) => { if (Number(e.target.value) > intensityRange[1]) intensityRange[0] = intensityRange[1]; }}
-        />
-        <input type="range" min="1" max="13" bind:value={intensityRange[1]}
-          oninput={(e) => { if (Number(e.target.value) < intensityRange[0]) intensityRange[1] = intensityRange[0]; }}
+      <!-- Search -->
+      <div class="search-row">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Search pods by name, flavor, or mood..."
+          bind:value={searchQuery}
         />
       </div>
-    </div>
 
-    {#if lineFilter !== 'all' || categoryFilter !== 'all' || roastFilter !== 'all' || searchQuery || showDecafOnly || showFlavoredOnly || intensityRange[0] !== 1 || intensityRange[1] !== 13}
-      <button class="clear-btn" onclick={clearFilters}>Clear all</button>
-    {/if}
-  </div>
-
-  <!-- Results count -->
-  <p class="results-count">
-    {filtered.length} pod{filtered.length !== 1 ? 's' : ''}
-  </p>
-
-  <!-- Pod grid -->
-  <div class="pod-grid">
-    {#each filtered as pod (pod.name + pod.line)}
-      <button
-        class="pod-card"
-        class:pod-card--selected={selectedPodName === pod.name}
-        onclick={() => selectPod(pod.name)}
-      >
-        <!-- Capsule SVG -->
-        <div class="pod-capsule">
-          {#if pod.line === 'original'}
-            {@render originalCapsule(pod.color_hex, 'c-' + pod.name.replace(/\s+/g, '-'))}
-          {:else}
-            {@render vertuoCapsule(pod.color_hex, 'c-' + pod.name.replace(/\s+/g, '-'))}
-          {/if}
-        </div>
-
-        <!-- Pod info -->
-        <span class="pod-name">{pod.name}</span>
-        <span class="pod-meta">{pod.category}</span>
-
-        <!-- Intensity dots -->
-        {#if pod.intensity != null}
-          <div class="intensity-dots">
-            {#each intensityDots(pod.intensity) as filled}
-              <span class="dot" class:dot--filled={filled}></span>
+      <!-- Filter bar -->
+      <div class="filter-bar">
+        <div class="filter-group">
+          <label class="filter-label">Category</label>
+          <select class="filter-select" bind:value={categoryFilter}>
+            <option value="all">All Categories</option>
+            {#each categories as cat}
+              <option value={cat}>{cat}</option>
             {/each}
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Roast</label>
+          <select class="filter-select" bind:value={roastFilter}>
+            <option value="all">All Roasts</option>
+            {#each roastLevels as roast}
+              <option value={roast}>{roast}</option>
+            {/each}
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Sort</label>
+          <select class="filter-select" bind:value={sortBy}>
+            <option value="name">Name</option>
+            <option value="intensity">Intensity</option>
+            <option value="roast">Roast Level</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Toggles & intensity -->
+      <div class="toggle-row">
+        <button class="toggle-btn" class:toggle-btn--active={showDecafOnly} onclick={() => showDecafOnly = !showDecafOnly}>
+          Decaf
+        </button>
+        <button class="toggle-btn" class:toggle-btn--active={showFlavoredOnly} onclick={() => showFlavoredOnly = !showFlavoredOnly}>
+          Flavored
+        </button>
+
+        <div class="intensity-filter">
+          <span class="filter-label">Intensity {intensityRange[0]}–{intensityRange[1]}</span>
+          <div class="range-inputs">
+            <input type="range" min="1" max="13" bind:value={intensityRange[0]}
+              oninput={(e) => { if (Number(e.target.value) > intensityRange[1]) intensityRange[0] = intensityRange[1]; }}
+            />
+            <input type="range" min="1" max="13" bind:value={intensityRange[1]}
+              oninput={(e) => { if (Number(e.target.value) < intensityRange[0]) intensityRange[1] = intensityRange[0]; }}
+            />
           </div>
-        {:else}
-          <span class="pod-meta" style="font-style:italic">N/A</span>
+        </div>
+
+        {#if lineFilter !== 'all' || categoryFilter !== 'all' || roastFilter !== 'all' || searchQuery || showDecafOnly || showFlavoredOnly || intensityRange[0] !== 1 || intensityRange[1] !== 13}
+          <button class="clear-btn" onclick={clearFilters}>Clear all</button>
         {/if}
+      </div>
 
-        <!-- Tags -->
-        <div class="pod-tags">
-          {#if pod.decaf}<span class="tag tag--decaf">Decaf</span>{/if}
-          {#if pod.flavored}<span class="tag tag--flavored">Flavored</span>{/if}
-          <span class="tag tag--line">{pod.line === 'vertuo' ? 'Vertuo' : 'Original'}</span>
-        </div>
-      </button>
-    {/each}
-  </div>
+      <!-- Results count -->
+      <p class="results-count">
+        {filtered.length} pod{filtered.length !== 1 ? 's' : ''}
+      </p>
 
-  {#if filtered.length === 0}
-    <div class="empty-state">
-      <p>No pods match your filters.</p>
-      <button class="clear-btn" onclick={clearFilters}>Clear filters</button>
-    </div>
-  {/if}
+      <!-- Pod grid -->
+      <div class="pod-grid">
+        {#each filtered as pod (pod.name + pod.line)}
+          <button
+            class="pod-card"
+            class:pod-card--selected={selectedPodName === pod.name}
+            onclick={() => selectPod(pod.name)}
+          >
+            <!-- Capsule SVG -->
+            <div class="pod-capsule">
+              {#if pod.line === 'original'}
+                {@render originalCapsule(pod.color_hex, 'c-' + pod.name.replace(/\s+/g, '-'))}
+              {:else}
+                {@render vertuoCapsule(pod.color_hex, 'c-' + pod.name.replace(/\s+/g, '-'))}
+              {/if}
+            </div>
 
-  <!-- Detail panel -->
-  {#if selectedPod}
-    <div class="detail-panel">
-      <div class="detail-top">
-        <div class="detail-capsule">
-          {#if selectedPod.line === 'original'}
-            {@render originalCapsule(selectedPod.color_hex, 'detail-og')}
-          {:else}
-            {@render vertuoCapsule(selectedPod.color_hex, 'detail-vt')}
-          {/if}
-        </div>
+            <!-- Pod info -->
+            <span class="pod-name">{pod.name}</span>
+            <span class="pod-meta">{pod.category}</span>
 
-        <div class="detail-header">
-          <h3 class="detail-name">{selectedPod.name}</h3>
-          <div class="detail-badges">
-            <span class="detail-line-badge">{selectedPod.line === 'vertuo' ? 'Vertuo' : 'Original'}</span>
-            <span class="detail-size-badge">{cupSizeLabel(selectedPod.cup_size)}</span>
-          </div>
-          {#if selectedPod.intensity != null}
-            <div class="detail-intensity">
-              <span class="detail-intensity-num">{selectedPod.intensity}</span>
-              <div class="detail-intensity-dots">
-                {#each intensityDots(selectedPod.intensity) as filled}
-                  <span class="dot-lg" class:dot-lg--filled={filled}></span>
+            <!-- Intensity dots -->
+            {#if pod.intensity != null}
+              <div class="intensity-dots">
+                {#each intensityDots(pod.intensity) as filled}
+                  <span class="dot" class:dot--filled={filled}></span>
                 {/each}
               </div>
-              <span class="detail-intensity-label">Intensity</span>
+            {:else}
+              <span class="pod-meta" style="font-style:italic">N/A</span>
+            {/if}
+
+            <!-- Tags -->
+            <div class="pod-tags">
+              {#if pod.decaf}<span class="tag tag--decaf">Decaf</span>{/if}
+              {#if pod.flavored}<span class="tag tag--flavored">Flavored</span>{/if}
+              <span class="tag tag--line">{pod.line === 'vertuo' ? 'Vertuo' : 'Original'}</span>
             </div>
-          {/if}
-        </div>
+          </button>
+        {/each}
       </div>
 
-      <div class="detail-body">
-        <div class="detail-meta-grid">
-          {#if selectedPod.roast_level}
-            <div class="meta-item">
-              <span class="section-label">Roast</span>
-              <p class="meta-value">{selectedPod.roast_level}</p>
+      {#if filtered.length === 0}
+        <div class="empty-state">
+          <p>No pods match your filters.</p>
+          <button class="clear-btn" onclick={clearFilters}>Clear filters</button>
+        </div>
+      {/if}
+
+    </div><!-- /.explorer-main -->
+
+    <!-- Right column: detail panel -->
+    {#if selectedPod}
+      <aside class="detail-panel">
+        <div class="detail-panel-inner">
+          <button class="detail-close" onclick={() => selectedPodName = null} aria-label="Close detail panel">
+            &times;
+          </button>
+
+          <!-- Color accent bar from pod color -->
+          <div class="detail-accent" style="background:{selectedPod.color_hex}"></div>
+
+          <div class="detail-top">
+            <div class="detail-capsule">
+              {#if selectedPod.line === 'original'}
+                {@render originalCapsule(selectedPod.color_hex, 'detail-og')}
+              {:else}
+                {@render vertuoCapsule(selectedPod.color_hex, 'detail-vt')}
+              {/if}
             </div>
-          {/if}
-          {#if selectedPod.blend}
-            <div class="meta-item">
-              <span class="section-label">Blend</span>
-              <p class="meta-value">{selectedPod.blend === 'A' ? 'Arabica' : selectedPod.blend === 'R' ? 'Robusta' : 'Arabica / Robusta'}</p>
+
+            <div class="detail-header">
+              <h3 class="detail-name">{selectedPod.name}</h3>
+              <div class="detail-badges">
+                <span class="detail-line-badge">{selectedPod.line === 'vertuo' ? 'Vertuo' : 'Original'}</span>
+                <span class="detail-size-badge">{cupSizeLabel(selectedPod.cup_size)}</span>
+              </div>
+              {#if selectedPod.intensity != null}
+                <div class="detail-intensity">
+                  <span class="detail-intensity-num">{selectedPod.intensity}</span>
+                  <div class="detail-intensity-dots">
+                    {#each intensityDots(selectedPod.intensity) as filled}
+                      <span class="dot-lg" class:dot-lg--filled={filled}></span>
+                    {/each}
+                  </div>
+                  <span class="detail-intensity-label">Intensity</span>
+                </div>
+              {/if}
             </div>
-          {/if}
-          {#if selectedPod.aroma}
-            <div class="meta-item">
-              <span class="section-label">Aroma</span>
-              <p class="meta-value">{selectedPod.aroma}</p>
+          </div>
+
+          <div class="detail-body">
+            <div class="detail-meta-grid">
+              {#if selectedPod.roast_level}
+                <div class="meta-item">
+                  <span class="section-label">Roast</span>
+                  <p class="meta-value">{selectedPod.roast_level}</p>
+                </div>
+              {/if}
+              {#if selectedPod.blend}
+                <div class="meta-item">
+                  <span class="section-label">Blend</span>
+                  <p class="meta-value">{selectedPod.blend === 'A' ? 'Arabica' : selectedPod.blend === 'R' ? 'Robusta' : 'Arabica / Robusta'}</p>
+                </div>
+              {/if}
+              {#if selectedPod.aroma}
+                <div class="meta-item">
+                  <span class="section-label">Aroma</span>
+                  <p class="meta-value">{selectedPod.aroma}</p>
+                </div>
+              {/if}
+              <div class="meta-item">
+                <span class="section-label">Category</span>
+                <p class="meta-value">{selectedPod.category}</p>
+              </div>
             </div>
-          {/if}
-          <div class="meta-item">
-            <span class="section-label">Category</span>
-            <p class="meta-value">{selectedPod.category}</p>
+
+            {#if selectedPod.description}
+              <p class="detail-desc">{selectedPod.description}</p>
+            {/if}
+
+            {#if selectedPod.best_for}
+              <div class="best-for">
+                <span class="section-label">Best For</span>
+                <p class="best-for-text">{selectedPod.best_for}</p>
+              </div>
+            {/if}
+
+            {#if tryAlsoPod}
+              <div class="try-also">
+                <span class="section-label">Try Also</span>
+                <button class="try-also-btn" onclick={selectTryAlso}>
+                  <span class="try-also-swatch" style="background:{tryAlsoPod.color_hex}"></span>
+                  {tryAlsoPod.name}
+                  <span class="try-also-line">{tryAlsoPod.line === 'vertuo' ? 'Vertuo' : 'Original'}</span>
+                  &rarr;
+                </button>
+              </div>
+            {/if}
+
+            {#if selectedPod.amazon_url}
+              <a href={selectedPod.amazon_url} target="_blank" rel="noopener" class="amazon-link">
+                View on Amazon &rarr;
+              </a>
+            {/if}
           </div>
         </div>
+      </aside>
+    {/if}
 
-        {#if selectedPod.description}
-          <p class="detail-desc">{selectedPod.description}</p>
-        {/if}
-
-        {#if selectedPod.best_for}
-          <div class="best-for">
-            <span class="section-label">Best For</span>
-            <p class="best-for-text">{selectedPod.best_for}</p>
-          </div>
-        {/if}
-
-        {#if tryAlsoPod}
-          <div class="try-also">
-            <span class="section-label">Try Also</span>
-            <button class="try-also-btn" onclick={selectTryAlso}>
-              <span class="try-also-swatch" style="background:{tryAlsoPod.color_hex}"></span>
-              {tryAlsoPod.name}
-              <span class="try-also-line">{tryAlsoPod.line === 'vertuo' ? 'Vertuo' : 'Original'}</span>
-              &rarr;
-            </button>
-          </div>
-        {/if}
-
-        {#if selectedPod.amazon_url}
-          <a href={selectedPod.amazon_url} target="_blank" rel="noopener" class="amazon-link">
-            View on Amazon &rarr;
-          </a>
-        {/if}
-      </div>
-
-      <button class="detail-close" onclick={() => selectedPodName = null}>
-        &times;
-      </button>
-    </div>
-  {/if}
+  </div><!-- /.explorer-layout -->
 </div>
 
 <style>
@@ -423,6 +436,25 @@
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
+  }
+
+  /* === Explorer Layout: two-column when panel open === */
+  .explorer-layout {
+    display: flex;
+    gap: 0;
+    align-items: flex-start;
+  }
+  .explorer-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    transition: flex 0.3s ease;
+  }
+  .explorer-layout--panel-open .explorer-main {
+    flex: 0 0 62%;
+    max-width: 62%;
   }
 
   /* === Line Toggle === */
@@ -569,9 +601,6 @@
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 0.6rem;
   }
-  @media (max-width: 480px) {
-    .pod-grid { grid-template-columns: repeat(2, 1fr); }
-  }
 
   .pod-card {
     display: flex;
@@ -658,32 +687,56 @@
   }
   .empty-state p { margin-bottom: 0.75rem; }
 
-  /* === Detail Panel === */
+  /* === Detail Panel — right-side sticky panel, dark charcoal === */
   .detail-panel {
-    position: relative;
-    border-left: 4px solid #C17A3A;
-    padding: 1.25rem;
-    background: rgba(61, 37, 24, 0.03);
-    animation: fadeIn 0.25s ease;
+    flex: 0 0 38%;
+    max-width: 38%;
+    position: sticky;
+    top: 6rem;
+    align-self: flex-start;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+    animation: slideInRight 0.3s ease;
   }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
+  @keyframes slideInRight {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .detail-panel-inner {
+    position: relative;
+    background: #2C2C2C;
+    color: #F5F0E8;
+    padding: 1.5rem 1.25rem 1.25rem;
+    border-left: 3px solid #C17A3A;
+  }
+
+  /* Accent bar from pod color */
+  .detail-accent {
+    height: 4px;
+    margin: -1.5rem -1.25rem 1.25rem;
+    opacity: 0.85;
   }
 
   .detail-close {
     position: absolute;
-    top: 0.5rem;
-    right: 0.75rem;
-    background: none;
-    border: none;
-    font-size: 1.3rem;
-    color: #8A8070;
+    top: 0.6rem;
+    right: 0.6rem;
+    background: rgba(245, 240, 232, 0.08);
+    border: 1px solid rgba(245, 240, 232, 0.12);
+    font-size: 1.2rem;
+    color: #B8AD9E;
     cursor: pointer;
-    padding: 0.2rem;
+    padding: 0.15rem 0.45rem;
     line-height: 1;
+    transition: all 0.2s;
+    z-index: 2;
   }
-  .detail-close:hover { color: #1A1A1A; }
+  .detail-close:hover {
+    color: #F5F0E8;
+    background: rgba(193, 122, 58, 0.3);
+    border-color: #C17A3A;
+  }
 
   .detail-top {
     display: flex;
@@ -693,11 +746,7 @@
 
   .detail-capsule {
     flex-shrink: 0;
-    width: 80px;
-  }
-  .detail-capsule-svg {
-    width: 100%;
-    height: auto;
+    width: 72px;
   }
 
   .detail-header {
@@ -706,10 +755,12 @@
   }
   .detail-name {
     font-family: 'Playfair Display', serif;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 700;
-    color: #1A1A1A;
+    color: #F5F0E8;
     margin: 0 0 0.35rem;
+    line-height: 1.2;
+    padding-right: 1.5rem;
   }
   .detail-badges {
     display: flex;
@@ -722,8 +773,8 @@
     text-transform: uppercase;
     letter-spacing: 0.08em;
     padding: 0.15rem 0.4rem;
-    background: rgba(26, 26, 26, 0.06);
-    color: #5C4A38;
+    background: rgba(245, 240, 232, 0.08);
+    color: #D4C9B8;
     font-weight: 500;
   }
 
@@ -747,9 +798,9 @@
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: rgba(26, 26, 26, 0.08);
+    background: rgba(245, 240, 232, 0.12);
   }
-  .dot-lg--filled { background: #3D2518; }
+  .dot-lg--filled { background: #C17A3A; }
   .detail-intensity-label {
     font-size: 0.6rem;
     text-transform: uppercase;
@@ -771,23 +822,23 @@
 
   .detail-meta-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 0.75rem;
     margin-bottom: 1rem;
     padding-bottom: 1rem;
-    border-bottom: 1px solid rgba(26, 26, 26, 0.06);
+    border-bottom: 1px solid rgba(245, 240, 232, 0.08);
   }
   .meta-item {}
   .meta-value {
     font-size: 0.82rem;
     font-weight: 600;
-    color: #1A1A1A;
+    color: #F5F0E8;
     margin: 0;
   }
 
   .detail-desc {
     font-size: 0.8rem;
-    color: #3D2518;
+    color: #D4C9B8;
     line-height: 1.65;
     margin: 0 0 1rem;
   }
@@ -797,7 +848,7 @@
   }
   .best-for-text {
     font-size: 0.82rem;
-    color: #1A1A1A;
+    color: #F5F0E8;
     font-weight: 500;
     margin: 0;
     font-style: italic;
@@ -811,18 +862,18 @@
     align-items: center;
     gap: 0.35rem;
     padding: 0.35rem 0.6rem;
-    border: 1px solid rgba(26, 26, 26, 0.12);
-    background: transparent;
+    border: 1px solid rgba(245, 240, 232, 0.15);
+    background: rgba(245, 240, 232, 0.04);
     cursor: pointer;
     font-size: 0.75rem;
     font-weight: 500;
-    color: #1A1A1A;
+    color: #F5F0E8;
     font-family: inherit;
     transition: all 0.2s;
   }
   .try-also-btn:hover {
     border-color: #C17A3A;
-    background: rgba(193, 122, 58, 0.04);
+    background: rgba(193, 122, 58, 0.15);
   }
   .try-also-swatch {
     width: 10px;
@@ -836,18 +887,83 @@
   }
 
   .amazon-link {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
     font-size: 0.65rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: #C17A3A;
+    color: #2C2C2C;
+    background: #C17A3A;
     text-decoration: none;
-    font-weight: 500;
-    margin-top: 0.25rem;
+    font-weight: 600;
+    padding: 0.5rem 0.85rem;
+    margin-top: 0.5rem;
+    transition: all 0.2s;
   }
-  .amazon-link:hover { color: #A8632E; text-decoration: underline; }
+  .amazon-link:hover { background: #A8632E; color: #F5F0E8; text-decoration: none; }
+
+  /* Scrollbar styling for detail panel */
+  .detail-panel::-webkit-scrollbar {
+    width: 4px;
+  }
+  .detail-panel::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .detail-panel::-webkit-scrollbar-thumb {
+    background: rgba(193, 122, 58, 0.3);
+    border-radius: 2px;
+  }
 
   /* === Responsive === */
+
+  /* Tablets: slightly adjust proportions */
+  @media (max-width: 1024px) {
+    .explorer-layout--panel-open .explorer-main {
+      flex: 0 0 55%;
+      max-width: 55%;
+    }
+    .detail-panel {
+      flex: 0 0 45%;
+      max-width: 45%;
+    }
+  }
+
+  /* Mobile: panel becomes bottom overlay */
+  @media (max-width: 768px) {
+    .explorer-layout {
+      flex-direction: column;
+    }
+    .explorer-layout--panel-open .explorer-main {
+      flex: 1 1 auto;
+      max-width: 100%;
+    }
+    .detail-panel {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      top: auto;
+      flex: none;
+      max-width: 100%;
+      max-height: 70vh;
+      z-index: 100;
+      animation: slideUpMobile 0.3s ease;
+      box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.4);
+    }
+    .detail-panel-inner {
+      border-left: none;
+      border-top: 3px solid #C17A3A;
+    }
+    .detail-accent {
+      margin: -1.5rem -1.25rem 1.25rem;
+    }
+  }
+  @keyframes slideUpMobile {
+    from { opacity: 0; transform: translateY(100%); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   @media (max-width: 600px) {
     .filter-bar { flex-direction: column; gap: 0.5rem; }
     .intensity-filter { margin-left: 0; }
@@ -855,5 +971,9 @@
     .detail-top { flex-direction: column; align-items: center; text-align: center; }
     .detail-intensity { justify-content: center; }
     .detail-badges { justify-content: center; }
+  }
+
+  @media (max-width: 480px) {
+    .pod-grid { grid-template-columns: repeat(2, 1fr); }
   }
 </style>

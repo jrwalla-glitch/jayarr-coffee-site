@@ -16,7 +16,8 @@
       "description": "A full-sized coffee built for those who want something substantial to sip through. The Arabica/Robusta blend delivers a grounding woodiness backed by solid body and a persistent crema — more character than a typical medium blend. Reliable and sturdy without demanding your full attention.",
       "roast_level": "Medium",
       "best_for": "Long morning sessions — satisfying and sturdy without being aggressive",
-      "try_also": "Stormio"
+      "try_also": "Stormio",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Alto+Onice+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Alto Ambrato",
@@ -31,7 +32,8 @@
       "description": "A gentle giant — 414ml of soft, sweet coffee that leans into caramel and toasted grain without ever getting heavy. Pure Arabica at a low intensity means the flavors are delicate and forgiving, which makes it an ideal choice for slow mornings or anyone who wants a big mug that doesn't push back. Easy, pleasant, no surprises.",
       "roast_level": "Light",
       "best_for": "Easy weekend mornings — sweet, gentle, and genuinely crowd-pleasing",
-      "try_also": "Giornio"
+      "try_also": "Giornio",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Alto+Ambrato+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Intenso",
@@ -46,7 +48,8 @@
       "description": "Exactly what it says. This Arabica/Robusta blend punches hard at intensity 9, but the brown sugar sweetness keeps it from going harsh — there's genuine complexity in the roast character that elevates it above a generic dark coffee. The Robusta brings thickness and crema that makes it satisfying black or with milk. A workhorse pod.",
       "roast_level": "Medium-Dark",
       "best_for": "Bold black coffee drinkers who want strength with sweetness, not bitterness",
-      "try_also": "Alto Intenso"
+      "try_also": "Alto Intenso",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Intenso+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Stormio",
@@ -61,7 +64,8 @@
       "description": "Rare to find this level of complexity from a pure Arabica at intensity 8. The spice and woody notes give Stormio a dry, structured character — almost like a medium-dark single origin with savory undertones. It's not for everyone, but if you're bored of safe, smooth coffees, this is the Vertuo mug pod that'll actually interest you.",
       "roast_level": "Medium-Dark",
       "best_for": "Black coffee drinkers who want character and complexity, not just strength",
-      "try_also": "Alto Intenso"
+      "try_also": "Alto Intenso",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Stormio+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Odacio",
@@ -76,7 +80,8 @@
       "description": "A versatile middle-ground mug coffee that earns its place as an everyday option. The cereal base keeps it grounded and approachable, while the hint of fruitiness stops it from being boring. Pure Arabica at intensity 7 means it's assertive enough to drink black but won't overwhelm with milk either. The definition of a reliable default.",
       "roast_level": "Medium",
       "best_for": "All-purpose everyday mug — black or with milk, morning or afternoon",
-      "try_also": "Arondio"
+      "try_also": "Arondio",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Odacio+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Mexico",
@@ -91,7 +96,8 @@
       "description": "A single-origin Mexican coffee that leans into its rustic side. 'Wild roasted' hints at a slightly untamed, earthy roast character — think less polished European blend, more campfire morning. Pure Arabica at a medium intensity means the terroir can actually show through. A good choice if you want a sense of place in your cup.",
       "roast_level": "Medium",
       "best_for": "Single-origin curious drinkers who want something with a sense of place",
-      "try_also": "Alto Intenso"
+      "try_also": "Alto Intenso",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Mexico+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Melozio",
@@ -106,7 +112,8 @@
       "description": "The quintessential approachable mug coffee. Melozio is smooth, predictable, and inoffensive in the best possible sense — it's the pod you reach for when you just want coffee without any fanfare. The cereal-forward profile is soft and comforting, and the pure Arabica blend keeps everything clean. A perennial favorite for good reason.",
       "roast_level": "Medium",
       "best_for": "The reliable default — smooth, easy, works for everyone",
-      "try_also": "Arondio"
+      "try_also": "Arondio",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Melozio+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Colombia",
@@ -121,7 +128,8 @@
       "description": "Colombia consistently produces some of the world's cleanest, most expressive arabica, and this pod shows exactly why. The red fruit brightness — think dried cranberry or light cherry rather than jam — comes through with clarity, balanced by just enough body to feel like a proper espresso. One of the most approachable single-origins in the entire range.",
       "roast_level": "Medium",
       "best_for": "Espresso drinkers who want to actually taste where their coffee comes from",
-      "try_also": "Vivalto Lungo"
+      "try_also": "Vivalto Lungo",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Colombia+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Elvazio",
@@ -137,7 +145,8 @@
       "roast_level": "Light",
       "best_for": "Light roast loyalists and pour-over drinkers trying capsules for the first time",
       "try_also": "Aflorazio",
-      "discontinued": true
+      "discontinued": true,
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Elvazio+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Giornio",
@@ -153,7 +162,8 @@
       "roast_level": "Light",
       "best_for": "Delicate palates and tea drinkers making the switch to coffee",
       "try_also": "Aflorazio",
-      "discontinued": true
+      "discontinued": true,
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Giornio+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Solelio",
@@ -168,7 +178,8 @@
       "description": "At intensity 2, Solelio is the lightest possible expression of coffee in capsule form — closer to a blonde roast than anything else in the lineup. The red fruit brightness keeps it genuinely pleasant rather than just watery, and the cereal backbone gives it just enough structure to feel like coffee. A niche pod, but a good one for iced coffee or ultra-light drinkers.",
       "roast_level": "Light",
       "best_for": "Ultra-light coffee drinkers, or iced coffee where you don't want bitterness",
-      "try_also": "Alto Dolce"
+      "try_also": "Alto Dolce",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Solelio+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Bianco Forte",
@@ -184,7 +195,8 @@
       "description": "This one isn't trying to be subtle — it's engineered specifically to cut through steamed milk. The dark roast creates a sharp, assertive backbone that doesn't disappear when you add a splash (or a lot) of milk. Use it for lattes and flat whites where it does its job better than almost anything else in the lineup; drink it black and it'll feel one-dimensional.",
       "roast_level": "Dark",
       "best_for": "Lattes, flat whites, and any milk-based drink where you want the coffee to actually show up",
-      "try_also": "Fortado"
+      "try_also": "Fortado",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Bianco+Forte+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Half Caffeinato",
@@ -199,7 +211,8 @@
       "description": "Half the caffeine, and a distinctly biscuit-like sweetness that makes it more pleasant than most half-caff options — think shortbread or digestive biscuit, soft and lightly sweet. A sensible choice for anyone who loves the ritual of an afternoon coffee but wants to sleep before midnight. The mild, accessible profile makes it easy to drink every day without fatigue.",
       "roast_level": "Medium",
       "best_for": "Afternoon coffee drinkers who want the ritual without the late-night consequences",
-      "try_also": "Decaffeinato Ontuoso"
+      "try_also": "Decaffeinato Ontuoso",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Half+Caffeinato+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Decaffeinato",
@@ -215,7 +228,8 @@
       "description": "One of the better decaf capsule options on the market. The malted sweetness gives it a rounder, more satisfying profile than the pale, watery result decaf often defaults to, and intensity 6 means it actually tastes like coffee. If you normally avoid decaf because it feels like a compromise, this one is worth reconsidering.",
       "roast_level": "Medium",
       "best_for": "Evening coffee drinkers who refuse to sacrifice flavor for sleep",
-      "try_also": "Decaffeinato Ontuoso"
+      "try_also": "Decaffeinato Ontuoso",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Decaffeinato+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Fortado",
@@ -230,7 +244,8 @@
       "description": "The gran lungo format hits the sweet spot between a lungo and a full mug, and Fortado uses it well. The cocoa and oak wood notes are complex and adult — this drinks like a properly crafted medium-dark blend, not a diluted espresso. The Robusta addition provides density and thick crema that make it one of the more satisfying pods in the entire Vertuo range.",
       "roast_level": "Medium-Dark",
       "best_for": "Black coffee drinkers who want complexity and body in a medium-sized cup",
-      "try_also": "Scuro"
+      "try_also": "Scuro",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Fortado+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Arondio",
@@ -245,7 +260,8 @@
       "description": "A clean, balanced gran lungo that punches above its modest cereal descriptor. The Robusta component gives it slightly more structure and body than you'd expect at intensity 6 — smooth but never watery, which is exactly the fine line that makes a middle-ground coffee work. A dependable morning or afternoon option that requires zero thought.",
       "roast_level": "Medium",
       "best_for": "Balanced daily driver in a satisfying mid-sized cup",
-      "try_also": "Melozio"
+      "try_also": "Melozio",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Arondio+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Ethiopia",
@@ -260,7 +276,8 @@
       "description": "Nespresso's Vertuo take on Ethiopian beans brings the light, fruity, floral profile you'd expect — jasmine and citrus fruit in a gentle gran lungo format. It's a real departure from the rest of the Vertuo lineup, which tends to lean darker. If you've never had a naturally processed Ethiopian coffee, this is an accessible starting point.",
       "roast_level": "Light",
       "best_for": "Exploring light, fruity coffee without commitment",
-      "try_also": "Ethiopia (Original)"
+      "try_also": "Ethiopia (Original)",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Ethiopia+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Decaffeinato Ontuoso",
@@ -277,7 +294,8 @@
       "roast_level": "Light",
       "best_for": "Caffeine-free gran lungo for evenings or late afternoon",
       "try_also": "Decaffeinato",
-      "discontinued": true
+      "discontinued": true,
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Decaffeinato+Ontuoso+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Scuro",
@@ -292,7 +310,8 @@
       "description": "Scuro hits the sweet spot between roasted depth and approachable balance — dark enough to hold its ground in a latte, but not so aggressive that it turns harsh under steam. It doesn't try to be interesting; it just reliably produces a good result across any milk format. For everyday milk drinks, this is the safe bet that never disappoints.",
       "roast_level": "Medium-Dark",
       "best_for": "Everyday lattes — consistent, roasted, easy to pair with any milk",
-      "try_also": "Indonesia"
+      "try_also": "Indonesia",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Scuro+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Chiaro",
@@ -307,7 +326,8 @@
       "description": "Chiaro is designed to complement rather than compete with milk — a lighter, sweeter espresso that brings a cereal-like warmth to larger milk drinks without any bitterness getting in the way. It works best in longer drinks where you want the coffee presence felt rather than tasted. A good choice for those who find regular espresso too aggressive under milk.",
       "roast_level": "Medium",
       "best_for": "Large lattes and white coffees — soft coffee presence, no edge",
-      "try_also": "Linizio Lungo"
+      "try_also": "Linizio Lungo",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Chiaro+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Bianco Leggero",
@@ -324,7 +344,8 @@
       "roast_level": "Light",
       "best_for": "Milk drink builders — lattes, flat whites, and cappuccinos",
       "try_also": "Volluto",
-      "discontinued": true
+      "discontinued": true,
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Bianco+Leggero+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Diavolitto",
@@ -339,7 +360,8 @@
       "description": "The name means little devil in Italian, and it earns it. At intensity 11 with a robusta backbone, Diavolitto punches out dense, dark espresso with notes of dry wood, tobacco, and leather that linger long after the cup is empty. This is the pod you reach for when you want your espresso to wake you up, not coddle you.",
       "roast_level": "Dark",
       "best_for": "Hardcore espresso drinkers who want maximum intensity, no compromise",
-      "try_also": "Ispirazione Palermo Kazaar"
+      "try_also": "Ispirazione Palermo Kazaar",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Diavolitto+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Altissio",
@@ -354,7 +376,8 @@
       "description": "Altissio is the Vertuo lineup's workhorse espresso — a balanced arabica-robusta blend that hits with real cereal depth and roasted grain character without going dark and punishing. At intensity 9 it's assertive enough to cut through milk but nuanced enough to drink straight, making it one of the most versatile pulls in the Vertuo range. If you're stocking just one espresso pod, this is a defensible choice.",
       "roast_level": "Medium-Dark",
       "best_for": "All-purpose espresso — works black, works in milk drinks",
-      "try_also": "Ispirazione Firenze Arpeggio"
+      "try_also": "Ispirazione Firenze Arpeggio",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Altissio+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Voltesso",
@@ -369,7 +392,8 @@
       "description": "Voltesso plays in a gentler register — an all-arabica espresso with a biscuit warmth that makes it about as approachable as espresso gets. At intensity 4 there's no bitterness to manage and no sharp edges, just a clean, mildly sweet shot that works well for anyone easing into espresso or wanting something light mid-afternoon. It won't excite serious espresso drinkers, but that's not its job.",
       "roast_level": "Light",
       "best_for": "Espresso newcomers and gentle afternoon pick-me-ups",
-      "try_also": "Volluto"
+      "try_also": "Volluto",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Voltesso+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Decaffeinato Intenso",
@@ -386,7 +410,8 @@
       "roast_level": "Medium",
       "best_for": "Evening espresso lovers who actually need to sleep tonight",
       "try_also": "Ispirazione Roma",
-      "discontinued": true
+      "discontinued": true,
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Decaffeinato+Intenso+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Roasted Hazelnut",
@@ -402,7 +427,8 @@
       "description": "Hazelino doesn't try to hide what it is — a medium arabica mug that leans into real hazelnut flavor with a warmth that reads as nutty-sweet rather than syrupy or artificial. At intensity 6 across 230ml it's built for comfort drinking: the kind of mug you make on a slow morning when you want something a little indulgent that's still recognizably coffee. Add a splash of oat milk and it becomes genuinely great.",
       "roast_level": "Medium",
       "best_for": "Flavored coffee fans who still want real coffee backbone",
-      "try_also": "Ispirazione Genova Livanto"
+      "try_also": "Ispirazione Genova Livanto",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Roasted+Hazelnut+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Golden Caramel",
@@ -418,7 +444,8 @@
       "description": "Caramelizio nails the flavored coffee sweet spot — the caramel isn't cloyingly sweet but adds a buttery, amber warmth that rounds out the arabica base beautifully. At intensity 6 over a full 230ml it drinks like a dessert coffee that remembered it's still supposed to be coffee. It's a genuine crowd-pleaser that won't embarrass you when guests ask for something interesting.",
       "roast_level": "Medium",
       "best_for": "Sweet coffee lovers who want something more interesting than plain milk",
-      "try_also": "Ispirazione Genova Livanto"
+      "try_also": "Ispirazione Genova Livanto",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Golden+Caramel+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Sweet Vanilla",
@@ -434,7 +461,8 @@
       "description": "Vanilla is a tough flavor to pull off in coffee without tipping into dessert-counter territory, and Vanizio mostly succeeds. The arabica base is mild enough to let the vanilla carry through without fighting the coffee, resulting in a mug that's subtly aromatic and genuinely pleasant across 230ml. It's the easiest morning coffee in the Vertuo lineup — sweet, smooth, zero friction.",
       "roast_level": "Medium",
       "best_for": "Light-roast fans who want something sweet and uncomplicated",
-      "try_also": "Bianco Leggero"
+      "try_also": "Bianco Leggero",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Sweet+Vanilla+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Ispirazione Napoli",
@@ -449,7 +477,8 @@
       "description": "Named after the city that invented the espresso ritual, Ispirazione Napoli is robusta-dominant at intensity 13 — which means maximum crema, bitter-dark roasted cocoa, and a finish that lingers with authority. This isn't subtle coffee; it's a tiny cup of concentrated intention, the kind of shot you'd pull standing at a bar in the shadow of Vesuvius. If you want your espresso to mean something, start here.",
       "roast_level": "Dark",
       "best_for": "Purists who want the real Naples espresso experience — dark, dense, uncompromising",
-      "try_also": "Diavolitto"
+      "try_also": "Diavolitto",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Ispirazione+Napoli+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Ispirazione Palermo Kazaar",
@@ -464,7 +493,8 @@
       "description": "Palermo Kazaar is the spice-forward outlier in the Italian collection — robusta-dominant at intensity 12, it delivers a sharp, peppery bite layered over bitter dark roast that's genuinely unique in the Nespresso lineup. The spicy character isn't caramel-warmth spice but actual black pepper and chicory sharpness. A divisive pod: some people call it their daily driver, others try it once. Either way, it's memorable.",
       "roast_level": "Dark",
       "best_for": "Espresso adventurers who want something they won't find at a typical cafe",
-      "try_also": "Diavolitto"
+      "try_also": "Diavolitto",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Ispirazione+Palermo+Kazaar+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Ispirazione Ristretto Italiano",
@@ -479,7 +509,8 @@
       "description": "At 25ml this is the smallest pour in the lineup, and Ispirazione Ristretto Italiano treats that constraint as a canvas. The concentrated arabica-robusta blend goes intensely roasted — charred wood and dark chocolate at the edges — in a format so short you're done before you've fully processed what just happened. It's the pod to reach for when you want maximum expression in a single, decisive sip.",
       "roast_level": "Dark",
       "best_for": "Ristretto devotees who want intensity distilled to its purest form",
-      "try_also": "Diavolitto"
+      "try_also": "Diavolitto",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Ispirazione+Ristretto+Italiano+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Ispirazione Firenze Arpeggio",
@@ -494,7 +525,8 @@
       "description": "Firenze Arpeggio is a crowd-pleaser built on 100% arabica — at intensity 9 it delivers rich cocoa depth without any robusta sharpness or bitterness. The result is a smooth, chocolate-forward espresso that's more approachable than its intensity suggests, with a gentle roundness that works well with or without milk. It's the pod you'd recommend to someone coming from chocolate-heavy cafe lattes who wants to try real espresso.",
       "roast_level": "Medium-Dark",
       "best_for": "Chocolate lovers transitioning toward black espresso",
-      "try_also": "Altissio"
+      "try_also": "Altissio",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Ispirazione+Firenze+Arpeggio+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Ispirazione Roma",
@@ -509,7 +541,8 @@
       "description": "Roma is a mid-intensity espresso with quiet authority — the arabica-robusta blend contributes a subtle woodiness and just enough robusta structure to give it proper body and crema without tipping into harsh territory. At intensity 8 it sits in the sweet spot between approachable and serious: a well-balanced Italian-style espresso that doesn't demand anything from you but rewards attention. Reliable in the best sense of the word.",
       "roast_level": "Medium-Dark",
       "best_for": "Everyday espresso drinkers who want balance over drama",
-      "try_also": "Envivo Lungo"
+      "try_also": "Envivo Lungo",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Ispirazione+Roma+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Ispirazione Venezia",
@@ -524,7 +557,8 @@
       "description": "Venezia shares Roma's intensity level but tilts toward a darker, more roasted character — this is coffee that's been pushed further in the drum, adding a dry, toasted quality that lands somewhere between cocoa and bitter chocolate. The arabica-robusta blend has enough body to work straight or as a milk drink base without getting lost. A solid choice for those who want roasted depth without the full dark-roast commitment.",
       "roast_level": "Medium-Dark",
       "best_for": "Roast-forward drinkers who stop just short of going full dark",
-      "try_also": "Altissio"
+      "try_also": "Altissio",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Ispirazione+Venezia+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Ispirazione Genova Livanto",
@@ -539,7 +573,8 @@
       "description": "Livanto is the mellow diplomat of the Italian collection — a 100% arabica espresso at intensity 6 with genuine roasted caramel sweetness that makes it accessible without being boring. The arabica base keeps things clean and slightly sweet, landing closer to a Viennese roast than a traditional Italian style. It's the pod for the office pod drawer or for when someone says they'd like espresso, but not too strong.",
       "roast_level": "Medium",
       "best_for": "Espresso-curious beginners and anyone who prefers gentle over bold",
-      "try_also": "Caramelizio"
+      "try_also": "Caramelizio",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Ispirazione+Genova+Livanto+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Capriccio",
@@ -554,7 +589,8 @@
       "description": "Capriccio occupies the quiet middle ground of the Original espresso lineup — a medium arabica-robusta blend that keeps everything balanced and restrained. The cereal aroma gives it a malty, bread-crust character that's comforting rather than exciting, and at intensity 5 it won't challenge you. That's exactly the point: this is an uncomplicated, any-time espresso for people who want quality without commitment.",
       "roast_level": "Medium",
       "best_for": "The no-drama daily driver — easygoing and dependable",
-      "try_also": "Voltesso"
+      "try_also": "Voltesso",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Capriccio+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Volluto",
@@ -569,7 +605,8 @@
       "description": "Volluto is the Original lineup's gentle espresso and has been around long enough to earn genuine trust. At intensity 4, the biscuit and cereal notes are soft and mildly sweet with no sharp edges or dark roast harshness to contend with. It's the shot you pull on a slow morning when coffee should be easy, not an event — and it does that job very well.",
       "roast_level": "Light",
       "best_for": "Light roast lovers and espresso beginners who want zero bitterness",
-      "try_also": "Voltesso"
+      "try_also": "Voltesso",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Volluto+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Cosi",
@@ -584,7 +621,8 @@
       "description": "Cosi is the fruity outlier in the Original espresso range — a light-roast 100% arabica shot with genuine brightness and a clean, slightly citrusy character that sets it apart from every other pod in this lineup. At intensity 4 it's more tea-like than espresso-typical, with none of the roasty depth you'd expect from a darker pod. For specialty coffee drinkers used to light-roast pour-overs who want to try Nespresso without abandoning their flavor preferences, Cosi is the entry point.",
       "roast_level": "Light",
       "best_for": "Specialty coffee fans and light-roast drinkers who want fruit, not roast",
-      "try_also": "Voltesso"
+      "try_also": "Voltesso",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Cosi+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Cape Town Envivo Lungo",
@@ -599,7 +637,8 @@
       "description": "Envivo Lungo is built for the longer pour — at 110ml it needs enough structure to stay interesting across every sip, and the arabica-robusta blend with its woody, earthy depth delivers that. Intensity 9 in lungo format reads differently than in espresso: more like a well-extracted filter coffee with real body and a dry, forested finish. If the Original espresso pods feel too short to satisfy but you don't want a thin mug, this is your pod.",
       "roast_level": "Medium-Dark",
       "best_for": "Lungo drinkers who want espresso-level depth without the concentration",
-      "try_also": "Ispirazione Roma"
+      "try_also": "Ispirazione Roma",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Cape+Town+Envivo+Lungo+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Stockholm Fortissio Lungo",
@@ -614,7 +653,8 @@
       "description": "Fortissio Lungo is the lungo for arabica purists — at intensity 8 with a distinct malted character, it delivers coffee that reads almost like a classic drip brew but with more presence and body. The 100% arabica blend keeps things smooth and free of robusta bitterness, letting the malty, cereal warmth carry through the full 110ml pour. It's an easy-drinking lungo with enough backbone to feel genuinely substantial.",
       "roast_level": "Medium-Dark",
       "best_for": "Filter coffee drinkers who want something bigger and more satisfying than espresso",
-      "try_also": "Ispirazione Firenze Arpeggio"
+      "try_also": "Ispirazione Firenze Arpeggio",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Stockholm+Fortissio+Lungo+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Tokyo Vivalto Lungo",
@@ -629,7 +669,8 @@
       "description": "One of Nespresso's more thoughtfully composed lungos — a multi-origin arabica blend that balances toasted cereal warmth with subtle fruit brightness without either note overwhelming the other. The 110ml pour gives the flavors room to breathe in a way a short espresso never could. For lungo drinkers who want something with actual depth, this is the natural starting point.",
       "roast_level": "Light",
       "best_for": "Lungo drinkers who want complexity without intensity",
-      "try_also": "Ethiopia"
+      "try_also": "Ethiopia",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Tokyo+Vivalto+Lungo+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Vienna Linizio Lungo",
@@ -644,7 +685,8 @@
       "description": "Pure, uncomplicated comfort in a cup — Linizio is all malted cereal warmth and no friction. It's the lungo you reach for when you want coffee to feel easy: no brightness to manage, no bitterness to get past, just a long, smooth pour that goes down without asking anything of you. Ideal for those who like their mornings slow and their coffee gentle.",
       "roast_level": "Light",
       "best_for": "Easy morning drinking — mellow, smooth, zero complexity",
-      "try_also": "Nicaragua"
+      "try_also": "Nicaragua",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Vienna+Linizio+Lungo+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Ispirazione Ristretto Italiana Decaffeinato",
@@ -660,7 +702,8 @@
       "description": "A decaf that genuinely earns its ristretto credentials — the robusta in this blend gives it a thick, concentrated body and intensely roasted character that most caffeine-free pods never come close to achieving. Pulled at 25ml, it's dark, punchy, and full of crema. If you've written off decaf as a lesser experience, this is the pod that might change your mind.",
       "roast_level": "Medium-Dark",
       "best_for": "Late-night espresso lovers who won't compromise on intensity",
-      "try_also": "Vivalto Lungo Decaffeinato"
+      "try_also": "Vivalto Lungo Decaffeinato",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Ispirazione+Ristretto+Italiana+Decaffeinato+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Firenze Arpeggio Decaffeinato",
@@ -676,7 +719,8 @@
       "description": "The Arpeggio is one of Nespresso's most celebrated espressos, and the decaf version preserves its best quality: that smooth, deep cocoa character. It's rich without being heavy and satisfying without the caffeine that usually comes with it. An excellent after-dinner choice — the kind of cup that pairs naturally with a square of dark chocolate.",
       "roast_level": "Medium-Dark",
       "best_for": "After-dinner espresso, decaf drinkers who want richness over edge",
-      "try_also": "Ispirazione Ristretto Italiana Decaffeinato"
+      "try_also": "Ispirazione Ristretto Italiana Decaffeinato",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Firenze+Arpeggio+Decaffeinato+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Volluto Decaffeinato",
@@ -692,7 +736,8 @@
       "description": "A gentle, sweet decaf that forgoes the dark-roasted bitterness most caffeine-free pods resort to in order to feel substantial. The biscuit and cereal notes are soft and comforting — this is the decaf equivalent of a biscuit tin, not a roastery. Brew it long and it becomes a remarkably easy sipper for the afternoon or evening.",
       "roast_level": "Light",
       "best_for": "Decaf drinkers who prefer sweetness and softness over dark intensity",
-      "try_also": "Vivalto Lungo Decaffeinato"
+      "try_also": "Vivalto Lungo Decaffeinato",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Volluto+Decaffeinato+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Vivalto Lungo Decaffeinato",
@@ -709,7 +754,8 @@
       "roast_level": "Light",
       "best_for": "Evening lungo — long cup, floral lift, zero caffeine",
       "try_also": "Volluto Decaffeinato",
-      "discontinued": true
+      "discontinued": true,
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Vivalto+Lungo+Decaffeinato+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "India",
@@ -724,7 +770,8 @@
       "description": "Indian robusta has a reputation for distinctive, almost peppery assertiveness, and this Master Origin pod doesn't soften it for easy consumption. The spice note is real and lingers well after the cup is empty, the body is thick, and the overall impression is confident and earthy. A single-origin espresso with a genuine point of view.",
       "roast_level": "Dark",
       "best_for": "Spice hunters and those who want a single-origin that actually challenges them",
-      "try_also": "Corto"
+      "try_also": "Corto",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+India+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Indonesia",
@@ -739,7 +786,8 @@
       "description": "Sumatra and Java have long been the reference points for earthy, full-bodied coffee, and this Indonesian Master Origin captures that spirit faithfully in capsule form. The woody, tobacco-like character is grounded and complex — there's no acidity to speak of, just a rich, lingering depth. A natural fit for drinkers who find bright, fruity espressos too sharp.",
       "roast_level": "Medium-Dark",
       "best_for": "Full-body espresso lovers who want zero acidity",
-      "try_also": "Scuro"
+      "try_also": "Scuro",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Indonesia+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Colombia",
@@ -754,7 +802,8 @@
       "description": "Colombia consistently produces some of the world's cleanest, most expressive arabica, and this pod shows exactly why. The red fruit brightness — think dried cranberry or light cherry rather than jam — comes through with clarity, balanced by just enough body to feel like a proper espresso. One of the most approachable single-origins in the entire range.",
       "roast_level": "Medium",
       "best_for": "Espresso drinkers who want to actually taste where their coffee comes from",
-      "try_also": "Vivalto Lungo"
+      "try_also": "Vivalto Lungo",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Colombia+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Nicaragua",
@@ -769,7 +818,8 @@
       "description": "Nicaragua's coffee scene is quietly impressive, and this Master Origin pod makes a gentle but convincing case for it. Sweet, smooth, and biscuity — it's the kind of espresso that won't challenge you but will make you happy every single time. A solid daily driver for anyone who wants something softer than the Colombian but more interesting than a standard commercial blend.",
       "roast_level": "Medium",
       "best_for": "New espresso drinkers, or anyone who wants sweet and smooth over sharp and bright",
-      "try_also": "Linizio Lungo"
+      "try_also": "Linizio Lungo",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Nicaragua+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Ethiopia",
@@ -784,7 +834,8 @@
       "description": "Ethiopia is where coffee originated, and this pod carries that heritage into something genuinely unusual for a capsule machine. The floral character — jasmine, bergamot, something almost tea-like — is delicate and best appreciated slowly as a short espresso you actually pause to smell before drinking. If you've only ever thought of espresso as bold and dark, this one will rearrange your assumptions.",
       "roast_level": "Light",
       "best_for": "Tea drinkers crossing over, or experienced drinkers who want something genuinely delicate",
-      "try_also": "Vivalto Lungo"
+      "try_also": "Vivalto Lungo",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Ethiopia+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Corto",
@@ -800,7 +851,8 @@
       "description": "Corto is engineered to survive steamed milk — and it does, thanks to the robusta component that keeps the flavor sharp and the body thick even when you bury it in foam. The spice note reads clearly through a cappuccino or flat white in a way that gentler arabica blends simply can't manage. If your milk drinks always taste more milky than coffee, this is the fix.",
       "roast_level": "Medium-Dark",
       "best_for": "Flat white and cappuccino drinkers who want to actually taste the espresso",
-      "try_also": "India"
+      "try_also": "India",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Corto+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Scuro",
@@ -816,7 +868,8 @@
       "description": "Scuro hits the sweet spot between roasted depth and approachable balance — dark enough to hold its ground in a latte, but not so aggressive that it turns harsh under steam. It doesn't try to be interesting; it just reliably produces a good result across any milk format. For everyday milk drinks, this is the safe bet that never disappoints.",
       "roast_level": "Medium-Dark",
       "best_for": "Everyday lattes — consistent, roasted, easy to pair with any milk",
-      "try_also": "Indonesia"
+      "try_also": "Indonesia",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Scuro+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Chiaro",
@@ -832,7 +885,8 @@
       "description": "Chiaro is designed to complement rather than compete with milk — a lighter, sweeter espresso that brings a cereal-like warmth to larger milk drinks without any bitterness getting in the way. It works best in longer drinks where you want the coffee presence felt rather than tasted. A good choice for those who find regular espresso too aggressive under milk.",
       "roast_level": "Medium",
       "best_for": "Large lattes and white coffees — soft coffee presence, no edge",
-      "try_also": "Linizio Lungo"
+      "try_also": "Linizio Lungo",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Chiaro+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Caramello",
@@ -848,7 +902,8 @@
       "description": "Caramelito earns its place by keeping the caramel note warm and genuine rather than synthetic and cloying. The arabica base gives it real coffee structure that most flavored pods sacrifice entirely in favor of sweetness. Pull it over ice with milk and you have a genuinely good iced caramel latte without a syrup pump — or drink it straight as a sweet dessert espresso.",
       "roast_level": "Medium",
       "best_for": "Sweet espresso drinkers, dessert coffee, and iced drinks",
-      "try_also": "Linizio Lungo"
+      "try_also": "Linizio Lungo",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Caramello+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Cioccolatino",
@@ -864,7 +919,8 @@
       "description": "Coffee and chocolate are natural partners, and Ciocattino plays that combination straight without overdoing it. The chocolate note runs dark and earthy rather than sweet and milky, which keeps it from feeling like a dessert syrup — there's genuine cocoa bitterness here working in harmony with the espresso underneath. If you'd normally add cocoa to your shot, just start here.",
       "roast_level": "Medium",
       "best_for": "Mocha lovers and anyone who instinctively reaches for chocolate with their coffee",
-      "try_also": "Firenze Arpeggio Decaffeinato"
+      "try_also": "Firenze Arpeggio Decaffeinato",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Cioccolatino+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Vaniglia",
@@ -880,7 +936,8 @@
       "description": "Vanilla in coffee can easily go wrong, and Vanilio gets it right — the flavoring reads as smooth and creamy rather than artificial, sitting quietly behind a real espresso rather than masking it. Steam milk into it and you have a solid vanilla latte without touching a syrup bottle. Especially approachable for guests who'd otherwise reach for something labeled caramel macchiato.",
       "roast_level": "Medium",
       "best_for": "Vanilla latte fans and a gentle entry point for non-coffee-drinkers",
-      "try_also": "Volluto Decaffeinato"
+      "try_also": "Volluto Decaffeinato",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Vaniglia+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Maple Pecan",
@@ -896,7 +953,8 @@
       "description": "An indulgent flavored pod that nails the maple-pecan combination without tasting artificial. The caramel sweetness of maple syrup weaves through a cereal-forward coffee base, with toasty pecan adding warmth and depth. Works beautifully as a dessert espresso or with steamed milk.",
       "roast_level": "Medium",
       "best_for": "After-dinner treat or sweet morning pick-me-up",
-      "try_also": "Caramelito"
+      "try_also": "Caramelito",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Maple+Pecan+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Arpeggio Extra",
@@ -911,7 +969,8 @@
       "description": "Takes the beloved Arpeggio and dials up the density. Same deep cocoa character but with a thicker, more velvety crema and a more pronounced roast bite. If regular Arpeggio is your go-to but you wish it hit harder, this is the upgrade. Dense enough to cut through milk without losing its identity.",
       "roast_level": "Medium-Dark",
       "best_for": "Arpeggio lovers who want more intensity without switching profiles",
-      "try_also": "Ispirazione Firenze Arpeggio"
+      "try_also": "Ispirazione Firenze Arpeggio",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Arpeggio+Extra+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Rich Chocolate",
@@ -927,7 +986,8 @@
       "description": "A cocoa-forward mug that actually delivers on its chocolate promise without tasting artificial. The medium roast lets the chocolate flavoring integrate naturally with the coffee's own body, making it feel more like a mocha shortcut than a flavored gimmick. Good with milk, but perfectly drinkable black if you want dessert vibes without the dairy.",
       "roast_level": "Medium",
       "best_for": "Afternoon treat — chocolate flavor without the sugar crash",
-      "try_also": "Cioccolatino"
+      "try_also": "Cioccolatino",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Rich+Chocolate+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Whiskey Essence",
@@ -943,7 +1003,8 @@
       "description": "A concentrated double espresso with whiskey-inspired flavoring — no alcohol, just the smoky-sweet oak and vanilla notes you'd associate with bourbon. It's an unusual pod that works surprisingly well as an after-dinner coffee or mixed into a milk drink. Polarizing by design, but the people who love it really love it.",
       "roast_level": "Medium-Dark",
       "best_for": "After-dinner coffee with a sophisticated twist",
-      "try_also": "Scuro"
+      "try_also": "Scuro",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Whiskey+Essence+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Bianco Doppio",
@@ -959,7 +1020,8 @@
       "description": "Specifically designed to shine in milk-based drinks — the caramel and biscuit notes are calibrated to cut through steamed milk rather than stand alone. On its own it's sweet and a bit one-dimensional, but add 4-6 oz of frothed milk and it transforms into a proper latte with bakery-shop character. The Barista Creations milk pods are genuinely useful if you make lattes daily.",
       "roast_level": "Medium",
       "best_for": "Homemade lattes — built for milk, not for sipping black",
-      "try_also": "Bianco Forte"
+      "try_also": "Bianco Forte",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Bianco+Doppio+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Bianco Piccolo",
@@ -975,7 +1037,8 @@
       "description": "The smaller sibling of the Bianco lineup — a dark-roasted espresso built to punch through a small milk drink like a cortado or flat white. It's roasted darker than most Vertuo espressos specifically so the coffee flavor survives the milk. Not great black, but that's not the point.",
       "roast_level": "Dark",
       "best_for": "Cortados and flat whites — concentrated milk-drink base",
-      "try_also": "Bianco Forte"
+      "try_also": "Bianco Forte",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Bianco+Piccolo+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Double Espresso Dolce",
@@ -990,7 +1053,8 @@
       "description": "The gentle option in the double espresso format — malty cereal sweetness at a moderate intensity that won't overwhelm. It's the double espresso for people who find Scuro too intense but want more volume than a standard espresso. Pleasant and approachable, with a biscuity quality that works well with a splash of milk.",
       "roast_level": "Medium",
       "best_for": "Mild double espresso — approachable without being bland",
-      "try_also": "Chiaro"
+      "try_also": "Chiaro",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Double+Espresso+Dolce+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Ice Leggero",
@@ -1005,7 +1069,8 @@
       "description": "Designed to be brewed directly over ice — the blend is calibrated so the fruit-forward, delicate flavors don't wash out when diluted by melting ice. It's lighter and brighter than Ice Forte, making it the better choice for a refreshing afternoon iced coffee. Genuinely one of the better iced pod options on the market.",
       "roast_level": "Medium",
       "best_for": "Iced coffee — fruity and refreshing over ice",
-      "try_also": "Ice Forte"
+      "try_also": "Ice Forte",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Ice+Leggero+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Ice Forte",
@@ -1020,7 +1085,8 @@
       "description": "The bold counterpart to Ice Leggero — a high-intensity mug-sized brew meant to survive a full glass of ice without losing its backbone. The darker roast and higher intensity mean the coffee flavor stays assertive even as the ice dilutes it. If you want iced coffee that tastes like actual coffee and not flavored water, this is the one.",
       "roast_level": "Dark",
       "best_for": "Strong iced coffee — holds up to ice without fading",
-      "try_also": "Stormio"
+      "try_also": "Stormio",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Ice+Forte+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Stormio Boost",
@@ -1035,7 +1101,8 @@
       "description": "Stormio's bigger, caffeinated sibling — same spicy-woody profile but with extra caffeine added via Robusta-heavy processing. If regular Stormio is your go-to and you just need more kick, this saves you from double-podding. The flavor profile is nearly identical to the original, just with more fuel in the tank.",
       "roast_level": "Dark",
       "best_for": "Extra caffeine without switching flavors",
-      "try_also": "Stormio"
+      "try_also": "Stormio",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Stormio+Boost+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Melozio Boost",
@@ -1050,7 +1117,8 @@
       "description": "The extra-caffeine version of the best-selling Melozio — same smooth cereal sweetness with roughly 20% more caffeine. It's the practical choice for Melozio fans who want a bigger morning boost without changing their flavor. Tastes close enough to the original that you might not notice the difference if you weren't told.",
       "roast_level": "Medium",
       "best_for": "Melozio fans who need more morning caffeine",
-      "try_also": "Melozio"
+      "try_also": "Melozio",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Melozio+Boost+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Melozio Decaffeinato",
@@ -1066,7 +1134,8 @@
       "description": "Decaf Melozio — same smooth, cereal-sweet profile in a caffeine-free format. Given how popular the original Melozio is, this fills an obvious gap. The decaffeination process doesn't strip much character here; it's still recognizably Melozio, just without the jolt. A solid evening mug.",
       "roast_level": "Medium",
       "best_for": "Evening mug — Melozio flavor without the caffeine",
-      "try_also": "Melozio"
+      "try_also": "Melozio",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Melozio+Decaffeinato+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Altissio Decaffeinato",
@@ -1082,7 +1151,8 @@
       "description": "A decaf espresso that actually tastes like it means business — intensity 9 with full body and bold character. Most decaf espressos feel like a compromise, but this one retains enough roast depth and mouthfeel to satisfy. If you drink espresso after dinner and need to sleep, this is the answer.",
       "roast_level": "Dark",
       "best_for": "After-dinner espresso — full flavor without the insomnia",
-      "try_also": "Altissio"
+      "try_also": "Altissio",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Altissio+Decaffeinato+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Fortado Decaffeinato",
@@ -1098,7 +1168,8 @@
       "description": "Decaf Fortado — the cocoa and oak wood notes carry over well from the original, keeping most of the richness intact. At intensity 8, it's one of the more assertive decaf options in the Vertuo range. A legitimate option for evening gran lungo drinkers who want substance without stimulation.",
       "roast_level": "Medium-Dark",
       "best_for": "Evening gran lungo — rich and woody without caffeine",
-      "try_also": "Fortado"
+      "try_also": "Fortado",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Fortado+Decaffeinato+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Costa Rica",
@@ -1113,7 +1184,8 @@
       "description": "Single-origin Costa Rican beans in a gran lungo format — malty sweetness with a cereal-grain backbone that's clean and straightforward. Costa Rican coffees tend to be well-balanced rather than flashy, and this follows that pattern. A dependable mid-intensity option for anyone who prefers their coffee uncomplicated.",
       "roast_level": "Medium",
       "best_for": "Clean, balanced gran lungo — no surprises, just good coffee",
-      "try_also": "Colombia"
+      "try_also": "Colombia",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Costa+Rica+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Nocciola",
@@ -1129,7 +1201,8 @@
       "description": "The Original line's hazelnut offering — a medium-intensity espresso with toasted hazelnut flavoring that integrates well with the coffee base. It's less sweet than you might expect from a flavored pod, which is a plus. Works nicely as a quick flavored espresso or stretched into a hazelnut latte.",
       "roast_level": "Medium",
       "best_for": "Quick hazelnut espresso — subtle flavor, not candy-sweet",
-      "try_also": "Roasted Hazelnut"
+      "try_also": "Roasted Hazelnut",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Nocciola+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Freddo Intenso",
@@ -1144,7 +1217,8 @@
       "description": "A high-intensity espresso built for iced drinks — the dark roast and Robusta content ensure the coffee flavor punches through ice and milk. At intensity 9, it's one of the strongest iced-specific pods in the Original range. Brew it into a glass of ice for an instant iced espresso that doesn't taste watered down.",
       "roast_level": "Dark",
       "best_for": "Iced espresso — bold enough to survive ice dilution",
-      "try_also": "Ispirazione Palermo Kazaar"
+      "try_also": "Ispirazione Palermo Kazaar",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Freddo+Intenso+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Freddo Delicato",
@@ -1159,7 +1233,8 @@
       "description": "The lighter iced espresso option — fruity and delicate, designed to taste refreshing over ice rather than intense. Pure Arabica at intensity 5 gives it a clean, bright quality that works better in warm weather than the heavier Freddo Intenso. A nice change of pace if you find most iced coffees too aggressive.",
       "roast_level": "Medium",
       "best_for": "Light iced espresso — refreshing and fruity over ice",
-      "try_also": "Freddo Intenso"
+      "try_also": "Freddo Intenso",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Freddo+Delicato+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Buenos Aires Lungo",
@@ -1174,7 +1249,8 @@
       "description": "Part of the World Explorations range — a medium-intensity lungo with warm woody and spice notes that evoke Argentine cafe culture. It's roasted to bring out the wood character without going dark, resulting in a balanced cup that's interesting without being challenging. A solid lungo alternative to the renamed city series.",
       "roast_level": "Medium",
       "best_for": "Interesting lungo — warm spice notes for a change of pace",
-      "try_also": "Vienna Linizio Lungo"
+      "try_also": "Vienna Linizio Lungo",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Buenos+Aires+Lungo+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Shanghai Lungo",
@@ -1189,7 +1265,8 @@
       "description": "A low-intensity lungo with an unexpectedly fruity profile — sweet red fruit notes that set it apart from the more traditional lungo offerings. It's light and approachable, almost tea-like in its delicacy. Best for anyone who finds most lungos too roasty and wants something brighter in their morning cup.",
       "roast_level": "Light",
       "best_for": "Fruit-forward lungo — unusually light and tea-like",
-      "try_also": "Tokyo Vivalto Lungo"
+      "try_also": "Tokyo Vivalto Lungo",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Shanghai+Lungo+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Paris Espresso",
@@ -1204,7 +1281,8 @@
       "description": "A cereal-noted espresso from the World Explorations range — medium intensity with a biscuity, grain-forward character that feels distinctly Parisian cafe. It's not bold or flashy, just a well-composed, balanced espresso that pairs well with pastries. The kind of coffee that rewards simplicity.",
       "roast_level": "Medium",
       "best_for": "Balanced espresso — classic cafe character with pastry pairings",
-      "try_also": "Ispirazione Genova Livanto"
+      "try_also": "Ispirazione Genova Livanto",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Paris+Espresso+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Istanbul Espresso",
@@ -1219,7 +1297,8 @@
       "description": "A bold, spice-forward espresso that channels the intensity of Turkish coffee culture. The Arabica/Robusta blend at intensity 8 delivers a punchy, full-bodied shot with warm spice notes and a lingering finish. It's assertive without being one-note — there's genuine complexity underneath the boldness.",
       "roast_level": "Dark",
       "best_for": "Bold spiced espresso — full-bodied with a lingering finish",
-      "try_also": "Ispirazione Napoli"
+      "try_also": "Ispirazione Napoli",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Istanbul+Espresso+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Rio de Janeiro Espresso",
@@ -1234,7 +1313,8 @@
       "description": "High-intensity pure Arabica with a roasted sweetness that evokes Brazilian coffee tradition — caramelized sugar and dark roast character in a concentrated shot. At intensity 9 with no Robusta, all that strength comes from the roast rather than the blend, giving it a different kind of boldness than the Robusta-blended heavy hitters.",
       "roast_level": "Dark",
       "best_for": "Sweet, dark espresso — intense Arabica without Robusta bitterness",
-      "try_also": "Ispirazione Napoli"
+      "try_also": "Ispirazione Napoli",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Original+Rio+de+Janeiro+Espresso+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Vivida",
@@ -1249,7 +1329,8 @@
       "description": "One of the lightest Vertuo mugs you can get — Vivida is all about delicate fruit and floral notes that don't try to hide behind roast. Pure Arabica at intensity 3 means it's genuinely gentle, more like a fragrant tea-lover's coffee. If you normally add milk to mellow things out, try this one black first.",
       "roast_level": "Light",
       "best_for": "Anyone who thinks most coffee is too strong — a true light-roast mug",
-      "try_also": "Solelio"
+      "try_also": "Solelio",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Vivida+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Café Joyeux",
@@ -1264,7 +1345,8 @@
       "description": "A straightforward, crowd-pleasing mug that doesn't lean too hard in any direction. Balanced and smooth with no sharp edges — just clean, approachable coffee. It's the pod you'd hand to someone who says 'I just want a normal cup of coffee' and mean it as a compliment.",
       "roast_level": "Medium",
       "best_for": "Everyday drinking — the no-drama daily driver",
-      "try_also": "Colombia"
+      "try_also": "Colombia",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Caf+Joyeux+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Il Caffè",
@@ -1279,7 +1361,8 @@
       "description": "Nespresso's answer to 'make it as strong as possible.' Il Caffè matches Diavolitto's intensity 11 but trades the leather-and-wood profile for a straight dark-roast punch. The Robusta adds body and crema that won't quit. Not subtle, not trying to be — this is concentrated power in a tiny cup.",
       "roast_level": "Dark",
       "best_for": "When you want maximum intensity in espresso format — no compromises",
-      "try_also": "Diavolitto"
+      "try_also": "Diavolitto",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Il+Caff+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Orafio",
@@ -1294,7 +1377,8 @@
       "description": "A mid-range espresso with a golden, cereal-sweet character that's approachable without being bland. Pure Arabica keeps it clean, and the sweetness feels natural rather than flavored. Think toasted grain and a hint of honey — it's the kind of shot that works equally well straight or with a splash of milk.",
       "roast_level": "Medium",
       "best_for": "A sweet, easy espresso shot — great gateway to drinking espresso black",
-      "try_also": "Voltesso"
+      "try_also": "Voltesso",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Orafio+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Peru Organic",
@@ -1309,7 +1393,8 @@
       "description": "Nespresso's organic entry in the Master Origin lineup delivers exactly what you'd hope from Peruvian beans — bright floral notes up front, clean fruit in the middle, and a surprisingly refined finish for a pod. The organic certification is a bonus, but the cup quality stands on its own. One of the more interesting single-origin espressos in the Vertuo range.",
       "roast_level": "Medium",
       "best_for": "Single-origin fans who want organic without sacrificing flavor complexity",
-      "try_also": "Ethiopia"
+      "try_also": "Ethiopia",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Peru+Organic+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Sweet Vanilla Decaffeinato",
@@ -1326,7 +1411,8 @@
       "description": "The evening dessert coffee — all the vanilla-caramel sweetness of the regular Sweet Vanilla, but decaf so you can actually drink it after dinner. Intensity 6 means it has enough body to carry the flavoring without tasting hollow. A rare find: flavored AND decaf in a full mug size.",
       "roast_level": "Medium",
       "best_for": "After-dinner treat — dessert-sweet without the caffeine",
-      "try_also": "Sweet Vanilla"
+      "try_also": "Sweet Vanilla",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Sweet+Vanilla+Decaffeinato+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Double Espresso Chiaro Decaffeinato",
@@ -1342,7 +1428,8 @@
       "description": "The decaf version of Chiaro keeps the woody, earthy foundation but strips out the caffeine. At 80ml, it's still got enough volume for a proper flat white base. If you like your evening latte to taste like actual coffee rather than just hot milk, this is the move.",
       "roast_level": "Medium",
       "best_for": "Evening flat whites and lattes — real coffee flavor, no caffeine",
-      "try_also": "Chiaro"
+      "try_also": "Chiaro",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Double+Espresso+Chiaro+Decaffeinato+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Starbucks Creamy Vanilla",
@@ -1358,7 +1445,8 @@
       "description": "Starbucks' take on vanilla for the Vertuo system leans sweeter and more dessert-like than Nespresso's own Sweet Vanilla. There's a distinct shortbread cookie note that makes it feel indulgent. If you're the person who orders a vanilla latte at Starbucks, this is literally made for you — same flavor DNA in pod form.",
       "roast_level": "Medium",
       "best_for": "Vanilla latte lovers — the Starbucks cafe flavor at home",
-      "try_also": "Sweet Vanilla"
+      "try_also": "Sweet Vanilla",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Starbucks+Creamy+Vanilla+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Starbucks Single Origin Colombia",
@@ -1373,7 +1461,8 @@
       "description": "Starbucks' Colombian single-origin through Nespresso has more roast development than the standard Nespresso Colombia — nuttier, more herbal, and a touch more assertive at intensity 7. It drinks like a medium-dark diner coffee in the best possible way. Solid and unpretentious.",
       "roast_level": "Medium-Dark",
       "best_for": "A robust everyday mug with Starbucks-style roast character",
-      "try_also": "Colombia"
+      "try_also": "Colombia",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Starbucks+Single+Origin+Colombia+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Starbucks Blonde Espresso Roast",
@@ -1388,7 +1477,8 @@
       "description": "Starbucks' Blonde Espresso has been a cafe hit, and the Vertuo version captures that same smooth, sweet profile pretty faithfully. It's lighter than a traditional espresso roast but not weak — just gentler. If you've been ordering Blonde shots at Starbucks and wondering if the pod version holds up, it does.",
       "roast_level": "Light",
       "best_for": "Starbucks Blonde fans — same smooth sweetness, pod convenience",
-      "try_also": "Voltesso"
+      "try_also": "Voltesso",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Starbucks+Blonde+Espresso+Roast+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Starbucks Espresso Roast",
@@ -1403,7 +1493,8 @@
       "description": "The Starbucks signature dark roast in espresso form — this is what you're getting when you order a standard espresso at any Starbucks location. Rich molasses sweetness cut with caramel, and the Robusta adds serious body. Intensity 11 puts it at the top of the scale alongside Diavolitto and Il Caffè, but the flavor profile is distinctly Starbucks dark.",
       "roast_level": "Dark",
       "best_for": "Starbucks regulars who want their familiar dark espresso at home",
-      "try_also": "Il Caffè"
+      "try_also": "Il Caffè",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Starbucks+Espresso+Roast+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Togetherness Blend",
@@ -1418,7 +1509,8 @@
       "description": "A honey-sweet double espresso with a woody backbone — it's positioned right in the middle of the intensity range, which makes it versatile enough for straight sipping or milk drinks. The name suggests sharing, and it actually works as a conversation coffee: interesting enough to comment on, smooth enough not to overwhelm.",
       "roast_level": "Medium",
       "best_for": "A well-rounded double espresso — works black or with milk",
-      "try_also": "Chiaro"
+      "try_also": "Chiaro",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Togetherness+Blend+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Cafecito de Puerto Rico",
@@ -1433,7 +1525,8 @@
       "description": "A tribute to Puerto Rico's coffee heritage, and it delivers with authority. Dark cocoa and black pepper create a bold, almost spicy cup that's unmistakably Caribbean in character. At intensity 10 with an Arabica/Robusta blend, it's built for people who want their double espresso to punch. One of the more distinctive pods in the entire Vertuo lineup.",
       "roast_level": "Dark",
       "best_for": "Bold coffee lovers — a distinctive, spicy double espresso with real character",
-      "try_also": "Scuro"
+      "try_also": "Scuro",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Cafecito+de+Puerto+Rico+capsules&tag=jayarrcoffee-20"
     },
     {
       "name": "Ginseng Delight",
@@ -1449,7 +1542,8 @@
       "description": "One of Nespresso's more unusual offerings — actual ginseng flavoring in a full mug of coffee. It's sweet and herbal in a way that feels more like a wellness drink than a traditional coffee, which is either exactly what you want or completely not. At intensity 5, the coffee base is mild enough to let the ginseng shine through.",
       "roast_level": "Medium",
       "best_for": "Something different — a ginseng-infused coffee for the adventurous",
-      "try_also": "Elvazio"
+      "try_also": "Elvazio",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Ginseng+Delight+capsules&tag=jayarrcoffee-20"
     }
   ]
 }
