@@ -1,0 +1,60 @@
+---
+import BaseHead from '../../../components/BaseHead.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import NespressoPods from '../../../components/tools/NespressoPods.svelte';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title="Nespresso Pod Explorer — JayArr Coffee"
+			description="Explore every Nespresso capsule — filter by line, intensity, roast, and flavor. Compare Original and Vertuo pods side by side."
+		/>
+	</head>
+	<body class="bg-cream">
+		<Header />
+
+		<!-- Hero -->
+		<section class="bg-charcoal pt-32 pb-12 md:pb-16">
+			<div class="max-w-3xl mx-auto px-6 text-center">
+				<a href="/tools/" class="text-xs uppercase tracking-widest text-cream/40 hover:text-copper transition-colors">
+					&larr; All Tools
+				</a>
+				<h1 class="font-serif text-3xl md:text-5xl font-bold text-cream mt-3 mb-3">Nespresso Pod Explorer</h1>
+				<p class="text-cream/60 max-w-lg mx-auto leading-relaxed text-sm">
+					Every Nespresso capsule in one place. Filter, compare, and find your next favorite pod.
+				</p>
+			</div>
+		</section>
+
+		<!-- Explorer -->
+		<section class="py-12 md:py-16">
+			<div class="max-w-4xl mx-auto px-6">
+				<NespressoPods client:load />
+			</div>
+		</section>
+
+		<!-- Related articles -->
+		<section class="bg-charcoal py-12">
+			<div class="max-w-3xl mx-auto px-6 text-center">
+				<span class="text-xs uppercase tracking-widest text-copper font-medium">Learn More</span>
+				<h2 class="font-serif text-xl md:text-2xl font-bold text-cream mt-2 mb-6">Related Articles</h2>
+				<div class="flex flex-wrap justify-center gap-4">
+					<a href="/blog/what-is-nespresso-and-which-is-the-best/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
+						Nespresso Guide
+					</a>
+					<a href="/blog/espresso-vs-drip-coffee/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
+						Espresso vs Drip
+					</a>
+					<a href="/blog/whats-different-about-ristretto-or-lungo-espresso-shots/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
+						Ristretto vs Lungo
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<Footer />
+	</body>
+</html>

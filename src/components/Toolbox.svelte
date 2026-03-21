@@ -12,6 +12,8 @@
     { id: 'freshness', name: 'Freshness Tracker', desc: 'Know when your beans are at their best', href: '/tools/freshness/' },
     { id: 'drink-builder', name: 'Drink Builder', desc: 'Build espresso drinks with the right proportions', href: '/tools/drink-builder/' },
     { id: 'grind-guide', name: 'Grind Guide', desc: 'Match your grind size to your brew method', href: '/tools/grind-guide/' },
+    { id: 'nespresso-pods', name: 'Nespresso Pods', desc: 'Explore every Nespresso capsule — filter, compare, discover', href: '/tools/nespresso-pods/' },
+    { id: 'espresso-machines', name: 'Espresso Machines', desc: 'Brochure-style guide — flip through machines, compare specs', href: '/tools/espresso-machines/' },
   ];
 
   let activeDesc = $derived(

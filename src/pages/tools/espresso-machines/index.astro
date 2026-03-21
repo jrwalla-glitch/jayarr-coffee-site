@@ -1,0 +1,63 @@
+---
+import BaseHead from '../../../components/BaseHead.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import EspressoMachines from '../../../components/tools/EspressoMachines.svelte';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title="Espresso Machine Guide — JayArr Coffee"
+			description="Browse 24 espresso machines — semi-auto, super-auto, and Nespresso. Compare specs, prices, and find the right machine for your setup."
+		/>
+	</head>
+	<body class="bg-cream">
+		<Header />
+
+		<!-- Hero -->
+		<section class="bg-charcoal pt-32 pb-12 md:pb-16">
+			<div class="max-w-3xl mx-auto px-6 text-center">
+				<a href="/tools/" class="text-xs uppercase tracking-widest text-cream/40 hover:text-copper transition-colors">
+					&larr; All Tools
+				</a>
+				<h1 class="font-serif text-3xl md:text-5xl font-bold text-cream mt-3 mb-3">Espresso Machine Guide</h1>
+				<p class="text-cream/60 max-w-lg mx-auto leading-relaxed text-sm">
+					Flip through 24 machines across every category — from your first semi-auto to prosumer dual-boilers to one-touch super-autos.
+				</p>
+			</div>
+		</section>
+
+		<!-- Explorer -->
+		<section class="py-12 md:py-16">
+			<div class="max-w-5xl mx-auto px-6">
+				<EspressoMachines client:load />
+			</div>
+		</section>
+
+		<!-- Related articles -->
+		<section class="bg-charcoal py-12">
+			<div class="max-w-3xl mx-auto px-6 text-center">
+				<span class="text-xs uppercase tracking-widest text-copper font-medium">Learn More</span>
+				<h2 class="font-serif text-xl md:text-2xl font-bold text-cream mt-2 mb-6">Related Articles</h2>
+				<div class="flex flex-wrap justify-center gap-4">
+					<a href="/blog/best-espresso-machines-under-500-2026-7-picks-for-every-budget/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
+						Under $500 Guide
+					</a>
+					<a href="/blog/best-espresso-machines-under-200/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
+						Under $200 Guide
+					</a>
+					<a href="/blog/espresso-battle-royale-reviews-of-gaggia-breville-bambino-and-phillips-3200/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
+						Espresso Battle Royale
+					</a>
+					<a href="/blog/how-to-dial-in-espresso/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
+						Dialing In Espresso
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<Footer />
+	</body>
+</html>

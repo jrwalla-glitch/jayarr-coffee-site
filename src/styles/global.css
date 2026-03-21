@@ -1,21 +1,38 @@
 @import "tailwindcss";
 
 @theme {
+  /* Coffee Roastery Palette — "The Roasted Archive" */
+
+  /* Surface hierarchy (light) */
   --color-cream: #F5F0E8;
-  --color-cream-dark: #EBE4D8;
+  --color-cream-warm: #F0E9DA;    /* surface-container-low */
+  --color-cream-dark: #EBE4D8;    /* surface-container */
+  --color-cream-dim: #DFD8CA;     /* surface-container-high */
+
+  /* Surface hierarchy (dark) */
   --color-charcoal: #1A1A1A;
-  --color-charcoal-light: #2A2A2A;
+  --color-charcoal-light: #2A2A2A;    /* surface-container */
+  --color-charcoal-mid: #333333;      /* surface-container-high */
+  --color-charcoal-lighter: #3D3D3D;  /* surface-container-highest */
+
+  /* Brand accent — copper */
   --color-copper: #C17A3A;
   --color-copper-light: #D4944F;
   --color-copper-dark: #A66830;
+  --color-copper-muted: rgba(193, 122, 58, 0.12);
+
+  /* Neutrals */
   --color-warm-gray: #6B6560;
   --color-warm-gray-light: #9B9590;
+
+  /* Typography */
   --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 
   /* Deep Brew Mode */
   --color-db-bg: #0B0E14;
   --color-db-surface: #161B22;
+  --color-db-surface-high: #1C2230;  /* elevated cards in deep brew */
   --color-db-hover: #21262D;
   --color-db-text: #E2E8F0;
   --color-db-text-muted: #94A3B8;
@@ -25,6 +42,16 @@
   --color-db-border: rgba(210, 125, 45, 0.15);
   --font-db-serif: 'Cormorant Garamond', Georgia, serif;
   --font-db-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Spacing reference (use Tailwind's built-in scale for utilities;
+     these are for custom CSS where you want named semantic spacing) */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
 }
 
 html {
