@@ -11,11 +11,31 @@ import FlavorBloom from '../../components/FlavorBloom.svelte';
       title="Flavor Bloom — Discover Your Coffee Flavor | JayArr Coffee"
       description="Explore coffee flavors with our interactive Flavor Bloom. Find your perfect coffee by flavor profile — fruity, floral, sweet, nutty, spiced, or earthy."
     />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Flavor Bloom",
+      "url": "https://jayarr.coffee/explore/flavors/",
+      "description": "Explore coffee flavors with our interactive Flavor Bloom. Find your perfect coffee by flavor profile — fruity, floral, sweet, nutty, spiced, or earthy.",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "JayArr Coffee",
+        "url": "https://jayarr.coffee"
+      }
+    })}></script>
   </head>
   <body class="bg-cream">
     <Header />
 
     <main class="pt-20 pb-20">
+      <h1 class="sr-only">Flavor Bloom</h1>
       <FlavorBloom client:load />
     </main>
 

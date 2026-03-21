@@ -9,13 +9,33 @@ import ExploreGallery from '../components/ExploreGallery.svelte';
   <head>
     <BaseHead
       title="Explore — The Coffee Collection | JayArr Coffee"
-      description="Three interactive studies in coffee science. Explore origins on our world map, discover brewing methods through star constellations, and find your perfect flavor with our botanical tasting guide."
+      description="Three interactive studies in coffee science. Explore origins on our world map, discover brewing methods through constellations, and find your perfect flavor."
     />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "The Coffee Collection",
+      "url": "https://jayarr.coffee/explore/",
+      "description": "Three interactive studies in coffee science. Explore origins on our world map, discover brewing methods through constellations, and find your perfect flavor.",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "JayArr Coffee",
+        "url": "https://jayarr.coffee"
+      }
+    })}></script>
   </head>
   <body class="bg-cream">
     <Header />
 
     <main class="pt-20 pb-20">
+      <h1 class="sr-only">The Coffee Collection</h1>
       <ExploreGallery client:load />
     </main>
 

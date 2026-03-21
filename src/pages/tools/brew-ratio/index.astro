@@ -12,6 +12,25 @@ import BrewRatio from '../../../components/tools/BrewRatio.svelte';
 			title="Brew Ratio Calculator — JayArr Coffee"
 			description="Calculate the perfect coffee-to-water ratio for any brew method. Pour over, French press, AeroPress, cold brew, espresso, and more."
 		/>
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "WebApplication",
+			"name": "Brew Ratio Calculator",
+			"url": "https://jayarr.coffee/tools/brew-ratio/",
+			"description": "Calculate the perfect coffee-to-water ratio for any brew method. Pour over, French press, AeroPress, cold brew, espresso, and more.",
+			"applicationCategory": "UtilityApplication",
+			"operatingSystem": "Any",
+			"offers": {
+				"@type": "Offer",
+				"price": "0",
+				"priceCurrency": "USD"
+			},
+			"publisher": {
+				"@type": "Organization",
+				"name": "JayArr Coffee",
+				"url": "https://jayarr.coffee"
+			}
+		})}></script>
 	</head>
 	<body class="bg-cream">
 		<Header />

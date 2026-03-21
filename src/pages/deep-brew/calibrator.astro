@@ -7,6 +7,27 @@ import GrindCalibrator from '../../components/tools/GrindCalibrator.svelte';
   title="Grind-Roast Calibrator | Deep Brew Mode | JayArr Coffee"
   description="Select your grinder, brew method, and roast level. Get a precise grind setting starting point calibrated to your specific hardware. 11 grinders, 7 brew methods, roast and processing adjustments."
 >
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Grind-Roast Calibrator",
+      "url": "https://jayarr.coffee/deep-brew/calibrator/",
+      "description": "Select your grinder, brew method, and roast level. Get a precise grind setting starting point calibrated to your specific hardware. 11 grinders, 7 brew methods, roast and processing adjustments.",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "JayArr Coffee",
+        "url": "https://jayarr.coffee"
+      }
+    })}></script>
+  </Fragment>
   <!-- Hero -->
   <section class="pt-28 pb-8 md:pt-32 md:pb-12">
     <div class="max-w-3xl mx-auto px-6 text-center">

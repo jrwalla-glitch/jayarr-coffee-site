@@ -12,6 +12,25 @@ import EspressoMachines from '../../../components/tools/EspressoMachines.svelte'
 			title="Espresso Machine Guide — JayArr Coffee"
 			description="Browse 24 espresso machines — semi-auto, super-auto, and Nespresso. Compare specs, prices, and find the right machine for your setup."
 		/>
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "WebApplication",
+			"name": "Espresso Machine Guide",
+			"url": "https://jayarr.coffee/tools/espresso-machines/",
+			"description": "Browse 24 espresso machines — semi-auto, super-auto, and Nespresso. Compare specs, prices, and find the right machine for your setup.",
+			"applicationCategory": "UtilityApplication",
+			"operatingSystem": "Any",
+			"offers": {
+				"@type": "Offer",
+				"price": "0",
+				"priceCurrency": "USD"
+			},
+			"publisher": {
+				"@type": "Organization",
+				"name": "JayArr Coffee",
+				"url": "https://jayarr.coffee"
+			}
+		})}></script>
 	</head>
 	<body class="bg-cream">
 		<Header />

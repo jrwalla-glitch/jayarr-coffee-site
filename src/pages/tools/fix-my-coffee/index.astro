@@ -12,6 +12,25 @@ import FixMyCoffee from '../../../components/tools/FixMyCoffee.svelte';
 			title="Fix My Coffee — JayArr Coffee"
 			description="Diagnose and fix common coffee brewing problems. Sour, bitter, weak, or muddy — find the science-backed fix for what went wrong."
 		/>
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "WebApplication",
+			"name": "Fix My Coffee Diagnostic",
+			"url": "https://jayarr.coffee/tools/fix-my-coffee/",
+			"description": "Diagnose and fix common coffee brewing problems. Sour, bitter, weak, or muddy — find the science-backed fix for what went wrong.",
+			"applicationCategory": "UtilityApplication",
+			"operatingSystem": "Any",
+			"offers": {
+				"@type": "Offer",
+				"price": "0",
+				"priceCurrency": "USD"
+			},
+			"publisher": {
+				"@type": "Organization",
+				"name": "JayArr Coffee",
+				"url": "https://jayarr.coffee"
+			}
+		})}></script>
 	</head>
 	<body class="bg-cream">
 		<Header />

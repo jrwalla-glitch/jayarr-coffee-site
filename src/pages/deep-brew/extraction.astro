@@ -5,8 +5,29 @@ import ExtractionDiagnostic from '../../components/tools/ExtractionDiagnostic.sv
 
 <DeepBrewLayout
   title="Extraction Diagnostic | Deep Brew Mode | JayArr Coffee"
-  description="A taste-first diagnostic tool. Describe what you experience — sour, bitter, thin, heavy — and get method-specific fixes mapped to extraction science. V60, Espresso, French Press, AeroPress, Chemex, Cold Brew, Moka Pot."
+  description="Describe what you taste — sour, bitter, thin, heavy — and get method-specific fixes mapped to extraction science for V60, espresso, French press, and more."
 >
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Extraction Diagnostic",
+      "url": "https://jayarr.coffee/deep-brew/extraction/",
+      "description": "Describe what you taste — sour, bitter, thin, heavy — and get method-specific fixes mapped to extraction science for V60, espresso, French press, and more.",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "JayArr Coffee",
+        "url": "https://jayarr.coffee"
+      }
+    })}></script>
+  </Fragment>
   <!-- Hero -->
   <section class="pt-28 pb-8 md:pt-32 md:pb-12">
     <div class="max-w-3xl mx-auto px-6 text-center">

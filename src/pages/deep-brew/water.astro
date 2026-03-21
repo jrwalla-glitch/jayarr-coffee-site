@@ -7,6 +7,27 @@ import WaterRecipeBuilder from '../../components/tools/WaterRecipeBuilder.svelte
   title="Water Recipe Builder | Deep Brew Mode | JayArr Coffee"
   description="Plot your water chemistry against 10 named coffee water recipes on an interactive scatter chart. Get DIY mineral concentrate instructions for Rao/Perger, Barista Hustle, RPavlis, TWW, and more."
 >
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Water Recipe Builder",
+      "url": "https://jayarr.coffee/deep-brew/water/",
+      "description": "Plot your water chemistry against 10 named coffee water recipes on an interactive scatter chart. Get DIY mineral concentrate instructions for Rao/Perger, Barista Hustle, RPavlis, TWW, and more.",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "JayArr Coffee",
+        "url": "https://jayarr.coffee"
+      }
+    })}></script>
+  </Fragment>
   <!-- Hero -->
   <section class="pt-28 pb-8 md:pt-32 md:pb-12">
     <div class="max-w-3xl mx-auto px-6 text-center">

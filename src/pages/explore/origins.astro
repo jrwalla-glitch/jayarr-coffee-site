@@ -9,13 +9,33 @@ import CoffeeMap from '../../components/CoffeeMap.svelte';
   <head>
     <BaseHead
       title="Coffee Origin Map — Explore Where Coffee Grows | JayArr Coffee"
-      description="Explore coffee origins across the globe with our interactive map. Click any country to discover its coffee story — flavor profiles, growing regions, harvest seasons, and in-depth articles."
+      description="Explore coffee origins with our interactive world map. Click any country to discover its coffee story — flavor profiles, growing regions, and harvest seasons."
     />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Coffee Origin Map",
+      "url": "https://jayarr.coffee/explore/origins/",
+      "description": "Explore coffee origins with our interactive world map. Click any country to discover its coffee story — flavor profiles, growing regions, and harvest seasons.",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "JayArr Coffee",
+        "url": "https://jayarr.coffee"
+      }
+    })}></script>
   </head>
   <body class="bg-cream">
     <Header />
 
     <main class="pt-20 pb-20">
+      <h1 class="sr-only">Coffee Origin Map</h1>
       <CoffeeMap client:load />
     </main>
 

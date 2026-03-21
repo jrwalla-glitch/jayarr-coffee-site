@@ -12,6 +12,25 @@ import CaffeineCalc from '../../../components/tools/CaffeineCalc.svelte';
 			title="Caffeine Calculator — JayArr Coffee"
 			description="Track your daily caffeine intake by brew method. See how close you are to the FDA's 400mg limit — with science-backed data for every coffee type."
 		/>
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "WebApplication",
+			"name": "Caffeine Calculator",
+			"url": "https://jayarr.coffee/tools/caffeine/",
+			"description": "Track your daily caffeine intake by brew method. See how close you are to the FDA's 400mg limit — with science-backed data for every coffee type.",
+			"applicationCategory": "HealthApplication",
+			"operatingSystem": "Any",
+			"offers": {
+				"@type": "Offer",
+				"price": "0",
+				"priceCurrency": "USD"
+			},
+			"publisher": {
+				"@type": "Organization",
+				"name": "JayArr Coffee",
+				"url": "https://jayarr.coffee"
+			}
+		})}></script>
 	</head>
 	<body class="bg-cream">
 		<Header />

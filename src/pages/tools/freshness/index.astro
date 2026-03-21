@@ -12,6 +12,25 @@ import FreshnessTracker from '../../../components/tools/FreshnessTracker.svelte'
 			title="Coffee Freshness Tracker — JayArr Coffee"
 			description="Enter your roast date and see exactly where your beans are in their freshness lifecycle. Know when to brew, when to freeze, and when to buy fresh."
 		/>
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "WebApplication",
+			"name": "Coffee Freshness Tracker",
+			"url": "https://jayarr.coffee/tools/freshness/",
+			"description": "Enter your roast date and see exactly where your beans are in their freshness lifecycle. Know when to brew, when to freeze, and when to buy fresh.",
+			"applicationCategory": "UtilityApplication",
+			"operatingSystem": "Any",
+			"offers": {
+				"@type": "Offer",
+				"price": "0",
+				"priceCurrency": "USD"
+			},
+			"publisher": {
+				"@type": "Organization",
+				"name": "JayArr Coffee",
+				"url": "https://jayarr.coffee"
+			}
+		})}></script>
 	</head>
 	<body class="bg-cream">
 		<Header />

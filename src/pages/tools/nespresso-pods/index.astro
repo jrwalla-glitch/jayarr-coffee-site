@@ -12,6 +12,25 @@ import NespressoPods from '../../../components/tools/NespressoPods.svelte';
 			title="Nespresso Pod Explorer — JayArr Coffee"
 			description="Explore every Nespresso capsule — filter by line, intensity, roast, and flavor. Compare Original and Vertuo pods side by side."
 		/>
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "WebApplication",
+			"name": "Nespresso Pod Explorer",
+			"url": "https://jayarr.coffee/tools/nespresso-pods/",
+			"description": "Explore every Nespresso capsule — filter by line, intensity, roast, and flavor. Compare Original and Vertuo pods side by side.",
+			"applicationCategory": "UtilityApplication",
+			"operatingSystem": "Any",
+			"offers": {
+				"@type": "Offer",
+				"price": "0",
+				"priceCurrency": "USD"
+			},
+			"publisher": {
+				"@type": "Organization",
+				"name": "JayArr Coffee",
+				"url": "https://jayarr.coffee"
+			}
+		})}></script>
 	</head>
 	<body class="bg-cream">
 		<Header />

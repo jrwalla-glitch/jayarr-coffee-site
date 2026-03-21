@@ -12,6 +12,25 @@ import GrindGuide from '../../../components/tools/GrindGuide.svelte';
 			title="Coffee Grind Size Guide — JayArr Coffee"
 			description="Visual grind size reference with micron ranges for every brew method. From Turkish extra-fine to cold brew extra-coarse — know exactly how fine to grind."
 		/>
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "WebApplication",
+			"name": "Coffee Grind Size Guide",
+			"url": "https://jayarr.coffee/tools/grind-guide/",
+			"description": "Visual grind size reference with micron ranges for every brew method. From Turkish extra-fine to cold brew extra-coarse — know exactly how fine to grind.",
+			"applicationCategory": "UtilityApplication",
+			"operatingSystem": "Any",
+			"offers": {
+				"@type": "Offer",
+				"price": "0",
+				"priceCurrency": "USD"
+			},
+			"publisher": {
+				"@type": "Organization",
+				"name": "JayArr Coffee",
+				"url": "https://jayarr.coffee"
+			}
+		})}></script>
 	</head>
 	<body class="bg-cream">
 		<Header />

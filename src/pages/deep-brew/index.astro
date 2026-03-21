@@ -6,6 +6,27 @@ import DeepBrewLayout from '../../layouts/DeepBrewLayout.astro';
   title="Deep Brew Mode | JayArr Coffee"
   description="Precision brewing tools for the obsessive coffee enthusiast. Water chemistry, extraction diagnostics, and grind calibration — built on peer-reviewed science."
 >
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Deep Brew Mode",
+      "url": "https://jayarr.coffee/deep-brew/",
+      "description": "Precision brewing tools for the obsessive coffee enthusiast. Water chemistry, extraction diagnostics, and grind calibration — built on peer-reviewed science.",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "JayArr Coffee",
+        "url": "https://jayarr.coffee"
+      }
+    })}></script>
+  </Fragment>
   <!-- Hero -->
   <section class="relative min-h-[85vh] md:min-h-screen flex items-center justify-center overflow-hidden">
     <!-- Background gradient -->

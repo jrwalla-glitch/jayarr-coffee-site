@@ -12,6 +12,25 @@ import Toolbox from '../../components/Toolbox.svelte';
 			title="Coffee Toolkit — JayArr Coffee"
 			description="Practical coffee tools: brew ratio calculator, coffee diagnostic, caffeine tracker, freshness guide, drink builder, and grind size reference."
 		/>
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "WebApplication",
+			"name": "Coffee Toolkit",
+			"url": "https://jayarr.coffee/tools/",
+			"description": "Practical coffee tools: brew ratio calculator, coffee diagnostic, caffeine tracker, freshness guide, drink builder, and grind size reference.",
+			"applicationCategory": "UtilityApplication",
+			"operatingSystem": "Any",
+			"offers": {
+				"@type": "Offer",
+				"price": "0",
+				"priceCurrency": "USD"
+			},
+			"publisher": {
+				"@type": "Organization",
+				"name": "JayArr Coffee",
+				"url": "https://jayarr.coffee"
+			}
+		})}></script>
 	</head>
 	<body class="bg-cream">
 		<Header />

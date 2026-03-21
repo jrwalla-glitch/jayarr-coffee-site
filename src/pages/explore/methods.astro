@@ -9,13 +9,33 @@ import BrewExplorer from '../../components/BrewExplorer.svelte';
   <head>
     <BaseHead
       title="Brew Explorer — The Brewing Constellations | JayArr Coffee"
-      description="Explore coffee brewing methods through an interactive star chart. Click any constellation to discover the science behind pour over, French press, espresso, and more."
+      description="Explore coffee brewing methods through an interactive star chart. Click any constellation to discover the science behind pour over, French press, and espresso."
     />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Brew Explorer",
+      "url": "https://jayarr.coffee/explore/methods/",
+      "description": "Explore coffee brewing methods through an interactive star chart. Click any constellation to discover the science behind pour over, French press, and espresso.",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "JayArr Coffee",
+        "url": "https://jayarr.coffee"
+      }
+    })}></script>
   </head>
   <body class="bg-cream">
     <Header />
 
     <main class="pt-20 pb-20">
+      <h1 class="sr-only">The Brewing Constellations</h1>
       <BrewExplorer client:load />
     </main>
 

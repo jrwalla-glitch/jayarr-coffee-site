@@ -12,6 +12,25 @@ import DrinkBuilder from '../../../components/tools/DrinkBuilder.svelte';
 			title="Espresso Drink Builder — JayArr Coffee"
 			description="Visual guide to espresso drink proportions. See exactly what goes into a latte, cappuccino, cortado, flat white, americano, and more."
 		/>
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "WebApplication",
+			"name": "Espresso Drink Builder",
+			"url": "https://jayarr.coffee/tools/drink-builder/",
+			"description": "Visual guide to espresso drink proportions. See exactly what goes into a latte, cappuccino, cortado, flat white, americano, and more.",
+			"applicationCategory": "UtilityApplication",
+			"operatingSystem": "Any",
+			"offers": {
+				"@type": "Offer",
+				"price": "0",
+				"priceCurrency": "USD"
+			},
+			"publisher": {
+				"@type": "Organization",
+				"name": "JayArr Coffee",
+				"url": "https://jayarr.coffee"
+			}
+		})}></script>
 	</head>
 	<body class="bg-cream">
 		<Header />
