@@ -272,6 +272,18 @@
             <p class="description-text">{currentMachine.description}</p>
           </div>
 
+          <!-- Buy button -->
+          {#if currentMachine.amazon_url}
+            <a
+              href={currentMachine.amazon_url}
+              target="_blank"
+              rel="noopener noreferrer nofollow sponsored"
+              class="buy-button"
+            >
+              Check Price on Amazon
+            </a>
+          {/if}
+
           <!-- Physical specs -->
           <div class="physical-specs">
             <span class="physical-spec">{currentMachine.dimensions_inches}"</span>
@@ -611,6 +623,26 @@
     color: #4A4540;
     line-height: 1.65;
     margin: 0;
+  }
+
+  /* === Buy Button === */
+  .buy-button {
+    display: inline-block;
+    background: #C17A3A;
+    color: #FFF;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    text-align: center;
+    transition: background 0.2s ease;
+    margin-top: 0.25rem;
+  }
+  .buy-button:hover {
+    background: #A66830;
   }
 
   /* === Physical Specs === */
