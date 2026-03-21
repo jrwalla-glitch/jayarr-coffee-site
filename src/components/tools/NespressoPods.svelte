@@ -438,23 +438,15 @@
     gap: 1.25rem;
   }
 
-  /* === Explorer Layout: two-column when panel open === */
+  /* === Explorer Layout: panel overlays on right, grid stays full width === */
   .explorer-layout {
-    display: flex;
-    gap: 0;
-    align-items: flex-start;
+    position: relative;
   }
   .explorer-main {
-    flex: 1;
-    min-width: 0;
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
-    transition: flex 0.3s ease;
-  }
-  .explorer-layout--panel-open .explorer-main {
-    flex: 0 0 62%;
-    max-width: 62%;
   }
 
   /* === Line Toggle === */
@@ -687,16 +679,18 @@
   }
   .empty-state p { margin-bottom: 0.75rem; }
 
-  /* === Detail Panel — right-side sticky panel, dark charcoal === */
+  /* === Detail Panel — fixed overlay on right, doesn't displace grid === */
   .detail-panel {
-    flex: 0 0 38%;
-    max-width: 38%;
-    position: sticky;
-    top: 6rem;
-    align-self: flex-start;
-    max-height: calc(100vh - 8rem);
+    position: fixed;
+    top: 5rem;
+    right: 1.5rem;
+    width: 360px;
+    max-height: calc(100vh - 6rem);
     overflow-y: auto;
-    animation: slideInRight 0.3s ease;
+    z-index: 50;
+    animation: slideInRight 0.25s ease;
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.25), 0 4px 16px rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
   }
   @keyframes slideInRight {
     from { opacity: 0; transform: translateX(20px); }
@@ -919,35 +913,24 @@
 
   /* Tablets: slightly adjust proportions */
   @media (max-width: 1024px) {
-    .explorer-layout--panel-open .explorer-main {
-      flex: 0 0 55%;
-      max-width: 55%;
-    }
     .detail-panel {
-      flex: 0 0 45%;
-      max-width: 45%;
+      width: 320px;
+      right: 1rem;
     }
   }
 
   /* Mobile: panel becomes bottom overlay */
   @media (max-width: 768px) {
-    .explorer-layout {
-      flex-direction: column;
-    }
-    .explorer-layout--panel-open .explorer-main {
-      flex: 1 1 auto;
-      max-width: 100%;
-    }
     .detail-panel {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
       top: auto;
-      flex: none;
-      max-width: 100%;
+      width: 100%;
       max-height: 70vh;
       z-index: 100;
+      border-radius: 12px 12px 0 0;
       animation: slideUpMobile 0.3s ease;
       box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.4);
     }
