@@ -10,6 +10,7 @@
   let currentIndex = $state(0);
   let isTransitioning = $state(false);
   let transitionDirection = $state('right');
+  let infoTab = $state('overview');
 
   // --- Derived ---
   const tabCounts = $derived({
@@ -97,6 +98,7 @@
     if (tab === activeTab) return;
     activeTab = tab;
     currentIndex = 0;
+    infoTab = 'overview';
   }
 
   function navigate(direction) {
@@ -106,6 +108,7 @@
       : (currentIndex - 1 + totalInCategory) % totalInCategory;
     transitionDirection = direction === 'next' ? 'right' : 'left';
     isTransitioning = true;
+    infoTab = 'overview';
     setTimeout(() => {
       currentIndex = newIndex;
       isTransitioning = false;
@@ -116,6 +119,7 @@
     if (index === currentIndex || isTransitioning) return;
     transitionDirection = index > currentIndex ? 'right' : 'left';
     isTransitioning = true;
+    infoTab = 'overview';
     setTimeout(() => {
       currentIndex = index;
       isTransitioning = false;
@@ -261,60 +265,101 @@
             <p class="info-tagline">{currentMachine.best_for}</p>
           </div>
 
-          <!-- Specs Grid -->
-          <div class="specs-grid">
-            <div class="spec-item">
-              <span class="spec-label">Type</span>
-              <span class="spec-value">{formatType(currentMachine.type)}</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-label">Boiler</span>
-              <span class="spec-value">{formatBoiler(currentMachine.boiler_type)}</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-label">Pressure</span>
-              <span class="spec-value">{currentMachine.pressure_bar} bar</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-label">Grinder</span>
-              <span class="spec-value">{formatGrinder(currentMachine.grinder)}</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-label">Steam</span>
-              <span class="spec-value">{formatSteam(currentMachine.steam_wand)}</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-label">PID</span>
-              <span class="spec-value">{currentMachine.pid_control ? 'Yes' : 'No'}</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-label">Pre-Infusion</span>
-              <span class="spec-value">{currentMachine.pre_infusion ? 'Yes' : 'No'}</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-label">Tank</span>
-              <span class="spec-value">{currentMachine.water_tank_liters}L</span>
-            </div>
-          </div>
-
-          <!-- Key Features -->
-          <div class="features-section">
-            <span class="section-label">Key Features</span>
-            <ul class="features-list">
-              {#each currentMachine.key_features as feature}
-                <li>{feature}</li>
-              {/each}
-            </ul>
-          </div>
-
-          <!-- Description -->
-          <div class="description-section">
-            <span class="section-label">Our Take</span>
-            <p class="description-text">{currentMachine.description}</p>
-          </div>
-
-          <!-- Review Section -->
+          <!-- Info Tab Buttons -->
           {#if currentMachine.jayarr_score}
+            <div class="info-tab-bar">
+              <button
+                class="info-tab-btn"
+                class:info-tab-btn--active={infoTab === 'overview'}
+                onclick={() => infoTab = 'overview'}
+              >Overview</button>
+              <button
+                class="info-tab-btn"
+                class:info-tab-btn--active={infoTab === 'reviews'}
+                onclick={() => infoTab = 'reviews'}
+              >Reviews</button>
+            </div>
+          {/if}
+
+          <!-- Overview Tab -->
+          {#if infoTab === 'overview'}
+
+            <!-- Specs Grid -->
+            <div class="specs-grid">
+              <div class="spec-item">
+                <span class="spec-label">Type</span>
+                <span class="spec-value">{formatType(currentMachine.type)}</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Boiler</span>
+                <span class="spec-value">{formatBoiler(currentMachine.boiler_type)}</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Pressure</span>
+                <span class="spec-value">{currentMachine.pressure_bar} bar</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Grinder</span>
+                <span class="spec-value">{formatGrinder(currentMachine.grinder)}</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Steam</span>
+                <span class="spec-value">{formatSteam(currentMachine.steam_wand)}</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">PID</span>
+                <span class="spec-value">{currentMachine.pid_control ? 'Yes' : 'No'}</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Pre-Infusion</span>
+                <span class="spec-value">{currentMachine.pre_infusion ? 'Yes' : 'No'}</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Tank</span>
+                <span class="spec-value">{currentMachine.water_tank_liters}L</span>
+              </div>
+            </div>
+
+            <!-- Key Features -->
+            <div class="features-section">
+              <span class="section-label">Key Features</span>
+              <ul class="features-list">
+                {#each currentMachine.key_features as feature}
+                  <li>{feature}</li>
+                {/each}
+              </ul>
+            </div>
+
+            <!-- Description -->
+            <div class="description-section">
+              <span class="section-label">Our Take</span>
+              <p class="description-text">{currentMachine.description}</p>
+            </div>
+
+            <!-- Buy button -->
+            {#if currentMachine.amazon_url}
+              <a
+                href={currentMachine.amazon_url}
+                target="_blank"
+                rel="noopener noreferrer nofollow sponsored"
+                class="buy-button"
+              >
+                Check Price on Amazon
+              </a>
+            {/if}
+
+            <!-- Physical specs -->
+            <div class="physical-specs">
+              <span class="physical-spec">{currentMachine.dimensions_inches}"</span>
+              <span class="physical-divider">&middot;</span>
+              <span class="physical-spec">{currentMachine.weight_lbs} lbs</span>
+            </div>
+
+          {/if}
+
+          <!-- Reviews Tab -->
+          {#if infoTab === 'reviews' && currentMachine.jayarr_score}
+
             <div class="review-section">
 
               <!-- JayArr Score Badge -->
@@ -382,26 +427,8 @@
               </div>
 
             </div>
-          {/if}
 
-          <!-- Buy button -->
-          {#if currentMachine.amazon_url}
-            <a
-              href={currentMachine.amazon_url}
-              target="_blank"
-              rel="noopener noreferrer nofollow sponsored"
-              class="buy-button"
-            >
-              Check Price on Amazon
-            </a>
           {/if}
-
-          <!-- Physical specs -->
-          <div class="physical-specs">
-            <span class="physical-spec">{currentMachine.dimensions_inches}"</span>
-            <span class="physical-divider">&middot;</span>
-            <span class="physical-spec">{currentMachine.weight_lbs} lbs</span>
-          </div>
 
         </div>
       </div>
@@ -628,6 +655,40 @@
     line-height: 1.4;
     margin: 0.2rem 0 0;
     font-style: italic;
+  }
+
+  /* === Info Tab Bar === */
+  .info-tab-bar {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.08);
+    margin-bottom: 0.25rem;
+  }
+
+  .info-tab-btn {
+    padding: 0.4rem 0.75rem;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.65rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #9B9590;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .info-tab-btn:hover {
+    color: #6B6560;
+  }
+
+  .info-tab-btn--active {
+    color: #C17A3A;
+    border-bottom-color: #C17A3A;
+    font-weight: 600;
   }
 
   /* === Specs Grid === */
