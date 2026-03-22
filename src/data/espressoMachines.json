@@ -25,8 +25,48 @@
       ],
       "best_for": "Beginners who want real espresso in a tiny footprint",
       "color_hex": "#C0C0C0",
-      "description": "The fastest path from zero to real espresso without spending a fortune \u2014 3-second heat-up and pre-infusion do more work than you'd expect at this price. The trade-off is that it has no grinder, so you'll need to budget another $100\u2013200 for a decent burr grinder or you're leaving most of its potential on the table. At 6.3 inches wide, it's legitimately tiny, which makes it a standout if counter space is your biggest constraint.",
-      "amazon_url": "https://www.amazon.com/s?k=Breville+Bambino+BES450&tag=jayarrcoffee-20"
+      "description": "The fastest path from zero to real espresso without spending a fortune — 3-second heat-up and pre-infusion do more work than you'd expect at this price. The trade-off is that it has no grinder, so you'll need to budget another $100–200 for a decent burr grinder or you're leaving most of its potential on the table. At 6.3 inches wide, it's legitimately tiny, which makes it a standout if counter space is your biggest constraint.",
+      "amazon_url": "https://www.amazon.com/s?k=Breville+Bambino+BES450&tag=jayarrcoffee-20",
+      "jayarr_score": 90,
+      "critic_scores": [
+        {
+          "source": "Tom's Guide",
+          "score": 100,
+          "url": "https://www.tomsguide.com/home/coffee-makers/sage-breville-bambino-review"
+        },
+        {
+          "source": "Coffeedant",
+          "score": 90,
+          "url": "https://coffeedant.com/espresso-machine/breville-bambino/"
+        },
+        {
+          "source": "Reviewed (Wirecutter-adjacent)",
+          "score": 90,
+          "url": "https://www.reviewed.com/cooking/content/breville-bambino-best-espresso-machine-according-to-experts"
+        },
+        {
+          "source": "The Kitchn",
+          "score": 88,
+          "url": "https://www.thekitchn.com/breville-bambino-affordable-espresso-machine-review-23148054"
+        }
+      ],
+      "amazon_rating": 4.2,
+      "amazon_review_count": 2854,
+      "critic_consensus": "Reviewers universally praise the Breville Bambino as the best budget espresso machine available, with Tom's Guide awarding it a rare perfect score. The 3-second ThermoJet heat-up, consistent extraction, and flexible manual steam wand deliver cafe-quality results at an entry-level price. The main trade-off is the lack of a built-in grinder, requiring a separate purchase.",
+      "common_pros": [
+        "3-second heat-up via ThermoJet system",
+        "Excellent espresso quality with rich crema for the price",
+        "Extremely compact footprint ideal for small kitchens",
+        "Powerful, flexible manual steam wand",
+        "PID temperature control at a budget price point"
+      ],
+      "common_cons": [
+        "No built-in grinder - requires separate espresso grinder",
+        "Small water reservoir requires frequent refilling",
+        "Plastic build feels less premium than price suggests",
+        "Single-wall baskets sold separately",
+        "54mm portafilter limits aftermarket accessory options"
+      ]
     },
     {
       "name": "Breville Bambino Plus",
@@ -40,7 +80,7 @@
       "steam_wand": "auto_frother",
       "water_tank_liters": 1.9,
       "dimensions_inches": "7.5 x 13.5 x 12.0",
-      "weight_lbs": 12.0,
+      "weight_lbs": 12,
       "pid_control": false,
       "pre_infusion": true,
       "pod_compatible": null,
@@ -52,8 +92,48 @@
       ],
       "best_for": "Beginners who want automatic milk frothing without the bulk",
       "color_hex": "#C0C0C0",
-      "description": "Essentially the same machine as the Bambino with an automatic steam wand swapped in for the manual one \u2014 that's what the $200 premium buys you. If you're intimidated by texturing milk by hand and want silky drinks from day one, that's a fair trade; if you're willing to learn the manual wand (which produces better microfoam anyway), save the money. The auto frother makes drinks fast and consistently good enough, but it won't help you pour latte art.",
-      "amazon_url": "https://www.amazon.com/s?k=Breville+Bambino+Plus+BES500&tag=jayarrcoffee-20"
+      "description": "Essentially the same machine as the Bambino with an automatic steam wand swapped in for the manual one — that's what the $200 premium buys you. If you're intimidated by texturing milk by hand and want silky drinks from day one, that's a fair trade; if you're willing to learn the manual wand (which produces better microfoam anyway), save the money. The auto frother makes drinks fast and consistently good enough, but it won't help you pour latte art.",
+      "amazon_url": "https://www.amazon.com/s?k=Breville+Bambino+Plus+BES500&tag=jayarrcoffee-20",
+      "jayarr_score": 86,
+      "critic_scores": [
+        {
+          "source": "Tom's Guide",
+          "score": 90,
+          "url": "https://www.tomsguide.com/home/home-appliances/breville-sage-bambino-plus-review"
+        },
+        {
+          "source": "Coffeedant",
+          "score": 84,
+          "url": "https://coffeedant.com/espresso-machine/breville-bambino/"
+        },
+        {
+          "source": "Wirecutter",
+          "score": 88,
+          "url": "https://www.nytimes.com/wirecutter/reviews/best-espresso-machine-for-beginners/"
+        },
+        {
+          "source": "Coffeeness",
+          "score": 84,
+          "url": "https://www.coffeeness.de/en/breville-bambino-plus-review/"
+        }
+      ],
+      "amazon_rating": 4.3,
+      "amazon_review_count": 8500,
+      "critic_consensus": "The Bambino Plus is Wirecutter's top pick for beginners thanks to its automatic milk frothing and ThermoJet heating. Reviewers note it's more beginner-friendly than the standard Bambino due to automatic temperature sensing in the steam wand, but the auto-frother produces inconsistent results and some reliability concerns have surfaced. Most coffee experts suggest the base Bambino offers better value.",
+      "common_pros": [
+        "Automatic milk frothing with temperature sensor",
+        "3-second ThermoJet heat-up time",
+        "Wirecutter's top pick for beginner espresso machines",
+        "Compact design suitable for small spaces",
+        "Consistent, quality espresso extraction"
+      ],
+      "common_cons": [
+        "Auto steam wand produces inconsistent milk texture",
+        "Significantly more expensive than base Bambino for marginal gains",
+        "Some reported reliability issues with auto-frother",
+        "No built-in grinder",
+        "Lightweight build feels less durable"
+      ]
     },
     {
       "name": "De'Longhi Dedica Deluxe",
@@ -79,8 +159,48 @@
       ],
       "best_for": "Space-constrained kitchens that need a slim, affordable semi-auto",
       "color_hex": "#808080",
-      "description": "At under $250 and 6 inches wide, the Dedica earns its place in cramped kitchens, and the thermoblock heats up quickly enough that it doesn't feel like a compromise machine for everyday use. The panarello wand injects air automatically and makes frothed milk easy, but it can't produce the flat microfoam you need for lattes \u2014 you get foam, not texture. Worth knowing: the included portafilter uses pressurized baskets that forgive inconsistent grind, which is beginner-friendly but will eventually feel limiting.",
-      "amazon_url": "https://www.amazon.com/s?k=DeLonghi+Dedica+Deluxe+EC685&tag=jayarrcoffee-20"
+      "description": "At under $250 and 6 inches wide, the Dedica earns its place in cramped kitchens, and the thermoblock heats up quickly enough that it doesn't feel like a compromise machine for everyday use. The panarello wand injects air automatically and makes frothed milk easy, but it can't produce the flat microfoam you need for lattes — you get foam, not texture. Worth knowing: the included portafilter uses pressurized baskets that forgive inconsistent grind, which is beginner-friendly but will eventually feel limiting.",
+      "amazon_url": "https://www.amazon.com/s?k=DeLonghi+Dedica+Deluxe+EC685&tag=jayarrcoffee-20",
+      "jayarr_score": 77,
+      "critic_scores": [
+        {
+          "source": "TechRadar",
+          "score": 80,
+          "url": "https://www.techradar.com/reviews/delonghi-dedica-style-ec685"
+        },
+        {
+          "source": "Coffeedant",
+          "score": 74,
+          "url": "https://coffeedant.com/espresso-machine/delonghi-dedica/"
+        },
+        {
+          "source": "Coffeeness",
+          "score": 70,
+          "url": "https://www.coffeeness.de/en/delonghi-dedica-review/"
+        },
+        {
+          "source": "TechGearLab",
+          "score": 68,
+          "url": "https://www.techgearlab.com/reviews/kitchen/espresso-machine/delonghi-ec685m"
+        }
+      ],
+      "amazon_rating": 4.3,
+      "amazon_review_count": 9200,
+      "critic_consensus": "The Dedica Deluxe is praised for its ultra-slim 6-inch footprint and attractive price point, making it a popular entry-level option. However, reviewers consistently note that espresso quality is average out of the box, tasting slightly watery compared to competitors. Significant improvements are possible with a non-pressurized basket and a proper grinder, which transform it into a capable budget machine.",
+      "common_pros": [
+        "Ultra-slim 6-inch design perfect for tight counter spaces",
+        "Attractive entry-level price point",
+        "Quick 40-second heat-up time",
+        "Significantly improved with aftermarket non-pressurized basket",
+        "Clean, attractive stainless steel design"
+      ],
+      "common_cons": [
+        "Espresso tastes watery with stock pressurized basket",
+        "Thermoblock produces inconsistent temperatures",
+        "Panarello steam wand limits milk quality",
+        "Requires aftermarket mods to reach its potential",
+        "Small drip tray fills quickly"
+      ]
     },
     {
       "name": "Gaggia Classic Pro",
@@ -94,7 +214,7 @@
       "steam_wand": "commercial",
       "water_tank_liters": 2.1,
       "dimensions_inches": "8.0 x 9.5 x 14.2",
-      "weight_lbs": 19.0,
+      "weight_lbs": 19,
       "pid_control": false,
       "pre_infusion": false,
       "pod_compatible": null,
@@ -106,8 +226,53 @@
       ],
       "best_for": "Hobbyists who want commercial-grade components at a home price",
       "color_hex": "#C0C0C0",
-      "description": "One of the most respected value plays in home espresso because you're getting a 58mm commercial portafilter, a properly calibrated 9-bar OPV, and a brass boiler in a machine under $600 \u2014 those are specs that matter. The single boiler means you'll wait 30\u201345 seconds between pulling a shot and steaming milk, which is a real friction point if you're making drinks for multiple people. It's not plug-and-play, but it rewards the learning curve and has a massive modding community if you want to add a PID later.",
-      "amazon_url": "https://www.amazon.com/s?k=Gaggia+Classic+Pro+EVO/E24&tag=jayarrcoffee-20"
+      "description": "One of the most respected value plays in home espresso because you're getting a 58mm commercial portafilter, a properly calibrated 9-bar OPV, and a brass boiler in a machine under $600 — those are specs that matter. The single boiler means you'll wait 30–45 seconds between pulling a shot and steaming milk, which is a real friction point if you're making drinks for multiple people. It's not plug-and-play, but it rewards the learning curve and has a massive modding community if you want to add a PID later.",
+      "amazon_url": "https://www.amazon.com/s?k=Gaggia+Classic+Pro+EVO/E24&tag=jayarrcoffee-20",
+      "jayarr_score": 85,
+      "critic_scores": [
+        {
+          "source": "Tom's Guide",
+          "score": 80,
+          "url": "https://www.tomsguide.com/home/coffee-makers/gaggia-classic-e24-evo-pro-review"
+        },
+        {
+          "source": "TechRadar",
+          "score": 80,
+          "url": "https://www.techradar.com/home/coffee-machines/tired-of-espresso-machines-you-have-to-micromanage-for-great-results-i-tested-one-that-satisfies-coffee-snobs-with-no-effort"
+        },
+        {
+          "source": "Coffeedant",
+          "score": 90,
+          "url": "https://coffeedant.com/espresso-machine/gaggia-classic-evo-pro/"
+        },
+        {
+          "source": "Coffee Chronicler",
+          "score": 84,
+          "url": "https://coffeechronicler.com/gaggia-classic-pro-review/"
+        },
+        {
+          "source": "Whole Latte Love",
+          "score": 85,
+          "url": "https://www.wholelattelove.com/blogs/reviews/gaggia-classic-pro-e24-review"
+        }
+      ],
+      "amazon_rating": 4.4,
+      "amazon_review_count": 1570,
+      "critic_consensus": "The Gaggia Classic Pro EVO is considered the gold standard for enthusiast starter machines. The latest E24 revision improves thermal stability with a larger brass boiler and brass group head, delivering consistently great espresso. Reviewers love the upgrade potential and decade-plus durability but note the lack of PID (requiring temperature surfing), confusing setup instructions, and a learning curve that may frustrate casual users.",
+      "common_pros": [
+        "Commercial-grade 58mm portafilter with widely available accessories",
+        "Improved brass boiler and group head for better thermal stability",
+        "Powerful commercial-style steam wand",
+        "Built to last 10+ years with simple, serviceable design",
+        "Extensive modding community and upgrade path (PID, OPV, etc.)"
+      ],
+      "common_cons": [
+        "No PID temperature controller (requires temperature surfing)",
+        "Steep learning curve for beginners",
+        "Confusing setup instructions and lackluster user manual",
+        "Cranky portafilter lock-in",
+        "No built-in grinder"
+      ]
     },
     {
       "name": "Breville Barista Express",
@@ -119,22 +284,67 @@
       "pressure_bar": 15,
       "grinder": "conical_burr",
       "steam_wand": "commercial",
-      "water_tank_liters": 2.0,
+      "water_tank_liters": 2,
       "dimensions_inches": "12.5 x 13.8 x 15.9",
-      "weight_lbs": 23.0,
+      "weight_lbs": 23,
       "pid_control": true,
       "pre_infusion": true,
       "pod_compatible": null,
       "key_features": [
         "Integrated conical burr grinder with 16 settings",
-        "PID digital temperature control at 200\u00b0F",
+        "PID digital temperature control at 200°F",
         "67oz water reservoir",
         "Low pressure pre-infusion"
       ],
       "best_for": "All-in-one buyers who want grinding and brewing in a single machine",
       "color_hex": "#C0C0C0",
-      "description": "The integrated grinder genuinely lowers the barrier to good espresso \u2014 you're not juggling two machines, and the PID-controlled temperature is more than most competitors offer at this price. The built-in conical burr grinder is decent but not exceptional, and because it's integrated you can't upgrade it later when your palate grows; you'd need to buy a whole new machine. Still the most sensible all-in-one if you want a single-appliance setup that produces real espresso without a steep learning curve.",
-      "amazon_url": "https://www.amazon.com/s?k=Breville+Barista+Express+BES870&tag=jayarrcoffee-20"
+      "description": "The integrated grinder genuinely lowers the barrier to good espresso — you're not juggling two machines, and the PID-controlled temperature is more than most competitors offer at this price. The built-in conical burr grinder is decent but not exceptional, and because it's integrated you can't upgrade it later when your palate grows; you'd need to buy a whole new machine. Still the most sensible all-in-one if you want a single-appliance setup that produces real espresso without a steep learning curve.",
+      "amazon_url": "https://www.amazon.com/s?k=Breville+Barista+Express+BES870&tag=jayarrcoffee-20",
+      "jayarr_score": 86,
+      "critic_scores": [
+        {
+          "source": "TechGearLab",
+          "score": 86,
+          "url": "https://www.techgearlab.com/reviews/kitchen/espresso-machine/breville-barista-express"
+        },
+        {
+          "source": "TechRadar",
+          "score": 90,
+          "url": "https://www.techradar.com/home/coffee-machines/dont-miss-out-again-the-excellent-breville-barista-express-is-back-to-its-black-friday-price-on-amazon"
+        },
+        {
+          "source": "Coffeeness",
+          "score": 82,
+          "url": "https://www.coffeeness.de/en/breville-barista-express-review/"
+        },
+        {
+          "source": "Whole Latte Love",
+          "score": 84,
+          "url": "https://www.wholelattelove.com/blogs/reviews/breville-barista-express-bes870xl-review"
+        },
+        {
+          "source": "Coffee Chronicler",
+          "score": 78,
+          "url": "https://coffeechronicler.com/breville-barista-express-review/"
+        }
+      ],
+      "amazon_rating": 4.6,
+      "amazon_review_count": 14200,
+      "critic_consensus": "The #1 selling espresso machine in North America for nearly a decade, the Barista Express earns its reputation as the best all-in-one machine for home baristas. The integrated conical burr grinder, dose-control, and solid extraction produce espresso with sweet undertones and rich crema. Critics note the grinder can be inconsistent at finer settings and the learning curve is moderate, but the value proposition at its price is hard to beat.",
+      "common_pros": [
+        "Integrated conical burr grinder with dose control",
+        "Excellent espresso quality with rich crema",
+        "Strong value as an all-in-one machine",
+        "Digital PID temperature control",
+        "Large water tank and bean hopper"
+      ],
+      "common_cons": [
+        "Built-in grinder is adequate but not exceptional at fine settings",
+        "Moderate learning curve to dial in",
+        "Can be messy during grinding and tamping",
+        "Thermocoil limits back-to-back steam performance",
+        "Large footprint on counter"
+      ]
     },
     {
       "name": "Breville Barista Express Impress",
@@ -146,22 +356,62 @@
       "pressure_bar": 15,
       "grinder": "conical_burr",
       "steam_wand": "commercial",
-      "water_tank_liters": 2.0,
+      "water_tank_liters": 2,
       "dimensions_inches": "13.9 x 16.0 x 16.0",
-      "weight_lbs": 23.0,
+      "weight_lbs": 23,
       "pid_control": true,
       "pre_infusion": true,
       "pod_compatible": null,
       "key_features": [
-        "Assisted tamping with 22lb auto-impression and 7\u00b0 twist",
+        "Assisted tamping with 22lb auto-impression and 7° twist",
         "Integrated conical burr grinder with 25 settings",
         "Intelligent dosing indicator",
         "Low pressure pre-infusion"
       ],
       "best_for": "Beginners who want built-in tamping guidance for consistent shots",
       "color_hex": "#C0C0C0",
-      "description": "The assisted tamping is more useful than it sounds \u2014 inconsistent tamp pressure is one of the most common beginner mistakes, and removing that variable means your extraction problems are actually diagnosable. You're paying about $100 more than the standard Express for the tamping system and a few extra grind settings, which is reasonable if tamping consistency is a genuine concern but harder to justify if you're comfortable with technique. The underlying machine is identical to the Express, so don't expect a quality jump beyond that one feature.",
-      "amazon_url": "https://www.amazon.com/s?k=Breville+Barista+Express+Impress+BES876&tag=jayarrcoffee-20"
+      "description": "The assisted tamping is more useful than it sounds — inconsistent tamp pressure is one of the most common beginner mistakes, and removing that variable means your extraction problems are actually diagnosable. You're paying about $100 more than the standard Express for the tamping system and a few extra grind settings, which is reasonable if tamping consistency is a genuine concern but harder to justify if you're comfortable with technique. The underlying machine is identical to the Express, so don't expect a quality jump beyond that one feature.",
+      "amazon_url": "https://www.amazon.com/s?k=Breville+Barista+Express+Impress+BES876&tag=jayarrcoffee-20",
+      "jayarr_score": 90,
+      "critic_scores": [
+        {
+          "source": "Coffeedant",
+          "score": 90,
+          "url": "https://coffeedant.com/espresso-machine/breville-barista-express-impress-bes876/"
+        },
+        {
+          "source": "Top Ten Reviews",
+          "score": 90,
+          "url": "https://www.toptenreviews.com/breville-barista-express-impress-review"
+        },
+        {
+          "source": "Coffeeness",
+          "score": 88,
+          "url": "https://www.coffeeness.de/en/breville-barista-express-impress-review/"
+        },
+        {
+          "source": "Best Buy (user)",
+          "score": 94,
+          "url": "https://www.bestbuy.com/site/reviews/breville-the-barista-express-impress-espresso-machine-brushed-stainless-steel/6513689"
+        }
+      ],
+      "amazon_rating": 4.5,
+      "amazon_review_count": 3200,
+      "critic_consensus": "The Barista Express Impress solves the biggest pain point of the original: inconsistent tamping and dosing. Its intelligent dosing system and assisted tamping mechanism deliver cafe-quality espresso with minimal skill, making it ideal for multi-user households. Reviewers unanimously praise the consistency improvement but note the steam wand is the weak link, taking too long and not producing silky microfoam.",
+      "common_pros": [
+        "Intelligent dosing and assisted tamping for consistent shots",
+        "Dramatically reduces learning curve vs. original Barista Express",
+        "Built-in conical burr grinder with dose control",
+        "ThermoJet 3-second heat-up (upgraded from original)",
+        "Intuitive LCD interface"
+      ],
+      "common_cons": [
+        "Steam wand is slow and doesn't produce ideal microfoam",
+        "More expensive than original Barista Express",
+        "Thermocoil limits steam power for back-to-back lattes",
+        "Grinder retention can be an issue",
+        "Large countertop footprint"
+      ]
     },
     {
       "name": "Rancilio Silvia V6",
@@ -173,7 +423,7 @@
       "pressure_bar": 15,
       "grinder": null,
       "steam_wand": "commercial",
-      "water_tank_liters": 2.0,
+      "water_tank_liters": 2,
       "dimensions_inches": "9.5 x 11.0 x 13.0",
       "weight_lbs": 30.9,
       "pid_control": false,
@@ -187,8 +437,48 @@
       ],
       "best_for": "Technique-focused enthusiasts who want a machine that lasts decades",
       "color_hex": "#C0C0C0",
-      "description": "The Silvia has been the gold standard for entry-level prosumer espresso for over two decades because it's built like a piece of commercial equipment that happens to sit on a home counter. The single boiler is the main friction: you'll temp-surf (wait for the boiler to cool slightly) before pulling shots, and steaming milk after brewing requires a full re-heat cycle, which takes discipline. Most serious users add a PID controller for $150\u2013200, which fixes the temperature stability and makes it a different machine \u2014 budget for that from the start.",
-      "amazon_url": "https://www.amazon.com/s?k=Rancilio+Silvia+V6+Silvia+M+V6&tag=jayarrcoffee-20"
+      "description": "The Silvia has been the gold standard for entry-level prosumer espresso for over two decades because it's built like a piece of commercial equipment that happens to sit on a home counter. The single boiler is the main friction: you'll temp-surf (wait for the boiler to cool slightly) before pulling shots, and steaming milk after brewing requires a full re-heat cycle, which takes discipline. Most serious users add a PID controller for $150–200, which fixes the temperature stability and makes it a different machine — budget for that from the start.",
+      "amazon_url": "https://www.amazon.com/s?k=Rancilio+Silvia+V6+Silvia+M+V6&tag=jayarrcoffee-20",
+      "jayarr_score": 81,
+      "critic_scores": [
+        {
+          "source": "Tom's Guide",
+          "score": 70,
+          "url": "https://www.tomsguide.com/home/coffee-makers/rancilio-silvia-v6-review"
+        },
+        {
+          "source": "Coffeedant",
+          "score": 82,
+          "url": "https://coffeedant.com/espresso-machine/rancilio-silvia/"
+        },
+        {
+          "source": "TechGearLab",
+          "score": 80,
+          "url": "https://www.techgearlab.com/reviews/kitchen/espresso-machine/rancilio-silvia"
+        },
+        {
+          "source": "Coffee Chronicler",
+          "score": 78,
+          "url": "https://coffeechronicler.com/rancilio-silvia-review/"
+        }
+      ],
+      "amazon_rating": 4.4,
+      "amazon_review_count": 980,
+      "critic_consensus": "The Rancilio Silvia V6 is a beautifully built, commercial-grade single boiler that produces excellent espresso in skilled hands. The 58mm group head, iron frame construction, and powerful steam wand make it a workhorse that can last decades. However, the lack of PID means temperature surfing is required, making it a poor choice for beginners or anyone wanting push-button convenience. Tom's Guide calls it 'not for beginners.'",
+      "common_pros": [
+        "Commercial-grade build quality with iron frame and stainless steel",
+        "Exceptional espresso quality when properly dialed in",
+        "Powerful professional steam wand",
+        "Standard 58mm portafilter with wide accessory compatibility",
+        "Can last 15-20+ years with basic maintenance"
+      ],
+      "common_cons": [
+        "No PID temperature control requires temperature surfing",
+        "Steep learning curve - not beginner friendly",
+        "Long heat-up time compared to thermojet machines",
+        "Single boiler means waiting between brewing and steaming",
+        "Expensive for what you get without PID"
+      ]
     },
     {
       "name": "Breville Barista Pro",
@@ -200,7 +490,7 @@
       "pressure_bar": 15,
       "grinder": "conical_burr",
       "steam_wand": "commercial",
-      "water_tank_liters": 2.0,
+      "water_tank_liters": 2,
       "dimensions_inches": "13.5 x 13.9 x 13.5",
       "weight_lbs": 20.4,
       "pid_control": true,
@@ -214,8 +504,48 @@
       ],
       "best_for": "Intermediate users who want fast heat-up and a built-in grinder",
       "color_hex": "#C0C0C0",
-      "description": "The ThermoJet heat-up and the Baratza-grade burrs make this a genuinely faster, more refined version of the Barista Express, and the shot timer on the LCD is a small feature that becomes surprisingly useful once you're dialing in beans. At $850 it's in awkward territory \u2014 not far from the Barista Touch above it, and the $150 gap to the Express below is hard to fully justify unless fast heat-up and more grind settings are priorities. The 30 grind settings give real room to work with different roast levels, which the Express's 16 settings don't always.",
-      "amazon_url": "https://www.amazon.com/s?k=Breville+Barista+Pro+BES878&tag=jayarrcoffee-20"
+      "description": "The ThermoJet heat-up and the Baratza-grade burrs make this a genuinely faster, more refined version of the Barista Express, and the shot timer on the LCD is a small feature that becomes surprisingly useful once you're dialing in beans. At $850 it's in awkward territory — not far from the Barista Touch above it, and the $150 gap to the Express below is hard to fully justify unless fast heat-up and more grind settings are priorities. The 30 grind settings give real room to work with different roast levels, which the Express's 16 settings don't always.",
+      "amazon_url": "https://www.amazon.com/s?k=Breville+Barista+Pro+BES878&tag=jayarrcoffee-20",
+      "jayarr_score": 86,
+      "critic_scores": [
+        {
+          "source": "Coffeedant",
+          "score": 82,
+          "url": "https://coffeedant.com/espresso-machine/breville-barista-pro-bes878/"
+        },
+        {
+          "source": "Owly Choice",
+          "score": 90,
+          "url": "https://owlychoice.com/breville-barista-pro-review/"
+        },
+        {
+          "source": "Coffeeness",
+          "score": 84,
+          "url": "https://www.coffeeness.de/en/breville-barista-pro-review/"
+        },
+        {
+          "source": "The Coffee Maven",
+          "score": 82,
+          "url": "https://www.thecoffeemaven.com/reviews/breville-barista-pro-bes878"
+        }
+      ],
+      "amazon_rating": 4.4,
+      "amazon_review_count": 3178,
+      "critic_consensus": "The Barista Pro upgrades the Express with ThermoJet 3-second heat-up, a digital LCD display, and improved workflow speed. Reviewers praise the speed and intuitive interface but note the integrated grinder, while adequate, still can't match a dedicated grinder. Some reliability concerns have surfaced in long-term user reviews, preventing a higher overall rating.",
+      "common_pros": [
+        "3-second ThermoJet heat-up time",
+        "Intuitive digital LCD interface with shot timer",
+        "Integrated conical burr grinder",
+        "Faster workflow than Barista Express",
+        "Sleek, modern design"
+      ],
+      "common_cons": [
+        "Integrated grinder is adequate but not exceptional",
+        "Some reliability concerns reported by long-term users",
+        "Premium price over Barista Express for incremental improvements",
+        "Thermocoil limits steam power for milk drinks",
+        "Large countertop footprint"
+      ]
     },
     {
       "name": "Breville Barista Touch",
@@ -227,9 +557,9 @@
       "pressure_bar": 15,
       "grinder": "conical_burr",
       "steam_wand": "auto_frother",
-      "water_tank_liters": 2.0,
+      "water_tank_liters": 2,
       "dimensions_inches": "12.4 x 12.8 x 13.4",
-      "weight_lbs": 24.0,
+      "weight_lbs": 24,
       "pid_control": true,
       "pre_infusion": true,
       "pod_compatible": null,
@@ -241,8 +571,48 @@
       ],
       "best_for": "Households that want one-touch cafe drinks with full customization",
       "color_hex": "#C0C0C0",
-      "description": "The touchscreen and one-touch presets make this genuinely easy for a household where multiple people want different drinks without learning anything \u2014 you save recipes and hit go. At $1,000 you're paying a significant premium for convenience over the Barista Pro, and the automatic milk texturing produces consistently good results but removes the feedback loop that helps you actually improve. If dialing in espresso sounds like a chore, this is your machine; if it sounds like the point, you're buying the wrong thing.",
-      "amazon_url": "https://www.amazon.com/s?k=Breville+Barista+Touch+BES880&tag=jayarrcoffee-20"
+      "description": "The touchscreen and one-touch presets make this genuinely easy for a household where multiple people want different drinks without learning anything — you save recipes and hit go. At $1,000 you're paying a significant premium for convenience over the Barista Pro, and the automatic milk texturing produces consistently good results but removes the feedback loop that helps you actually improve. If dialing in espresso sounds like a chore, this is your machine; if it sounds like the point, you're buying the wrong thing.",
+      "amazon_url": "https://www.amazon.com/s?k=Breville+Barista+Touch+BES880&tag=jayarrcoffee-20",
+      "jayarr_score": 88,
+      "critic_scores": [
+        {
+          "source": "Coffeedant",
+          "score": 82,
+          "url": "https://coffeedant.com/espresso-machine/breville-barista-touch-bes880bss/"
+        },
+        {
+          "source": "Coffeeness",
+          "score": 86,
+          "url": "https://www.coffeeness.de/en/breville-barista-touch-review/"
+        },
+        {
+          "source": "Best Buy (user)",
+          "score": 94,
+          "url": "https://www.bestbuy.com/site/reviews/breville-the-barista-touch-espresso-machine-with-9-bars-of-pressure-milk-frother-and-integrated-grinder-stainless-steel/6203022"
+        },
+        {
+          "source": "The Coffee Maven",
+          "score": 84,
+          "url": "https://www.thecoffeemaven.com/reviews/breville-barista-touch-bes880"
+        }
+      ],
+      "amazon_rating": 4.5,
+      "amazon_review_count": 4600,
+      "critic_consensus": "The Barista Touch is Breville's most user-friendly semi-automatic, featuring a touchscreen that guides every step and automatic milk frothing. Reviewers agree it produces the best all-in-one experience for families and non-enthusiasts, with 90-second lattes. However, the touchscreen interface doesn't dramatically improve espresso quality over the cheaper Barista Pro, and some users report ER05 error codes and durability concerns after the first year.",
+      "common_pros": [
+        "Intuitive color touchscreen with customizable drink presets",
+        "Automatic milk frothing with adjustable temperature",
+        "ThermoJet 3-second heat-up",
+        "Integrated grinder with dose control",
+        "Family-friendly - everyone can use it successfully"
+      ],
+      "common_cons": [
+        "Premium price for touchscreen convenience",
+        "Some reported ER05 error codes and reliability issues",
+        "Automatic frother can't match manual steam wand control",
+        "Grinder quality same as Barista Express/Pro",
+        "Touchscreen adds complexity without improving shot quality"
+      ]
     },
     {
       "name": "Breville Oracle",
@@ -256,7 +626,7 @@
       "steam_wand": "auto_frother",
       "water_tank_liters": 2.5,
       "dimensions_inches": "16.1 x 14.7 x 17.8",
-      "weight_lbs": 35.0,
+      "weight_lbs": 35,
       "pid_control": true,
       "pre_infusion": true,
       "pod_compatible": null,
@@ -268,8 +638,48 @@
       ],
       "best_for": "Prosumers who want cafe-quality automation with manual override",
       "color_hex": "#C0C0C0",
-      "description": "Automatic grinding, dosing, tamping, and milk texturing at $2,200 \u2014 it's genuinely impressive as a one-machine solution and the dual boilers mean you can steam while pulling a shot with no waiting. The trade-off for all that automation is that when something goes wrong with the grinder or the auto-tamper, the repair is expensive and the machine is down; you're also locked into Breville's component ecosystem. Compared to what you could build with a standalone La Marzocco Linea Mini and a quality separate grinder at a similar price, you're trading control and longevity for convenience.",
-      "amazon_url": "https://www.amazon.com/s?k=Breville+Oracle+BES980&tag=jayarrcoffee-20"
+      "description": "Automatic grinding, dosing, tamping, and milk texturing at $2,200 — it's genuinely impressive as a one-machine solution and the dual boilers mean you can steam while pulling a shot with no waiting. The trade-off for all that automation is that when something goes wrong with the grinder or the auto-tamper, the repair is expensive and the machine is down; you're also locked into Breville's component ecosystem. Compared to what you could build with a standalone La Marzocco Linea Mini and a quality separate grinder at a similar price, you're trading control and longevity for convenience.",
+      "amazon_url": "https://www.amazon.com/s?k=Breville+Oracle+BES980&tag=jayarrcoffee-20",
+      "jayarr_score": 85,
+      "critic_scores": [
+        {
+          "source": "Coffeedant",
+          "score": 82,
+          "url": "https://coffeedant.com/espresso-machine/breville-oracle-bes980x/"
+        },
+        {
+          "source": "The Coffee Maven",
+          "score": 92,
+          "url": "https://www.thecoffeemaven.com/reviews/breville-oracle-bes980xl"
+        },
+        {
+          "source": "Whole Latte Love",
+          "score": 86,
+          "url": "https://www.wholelattelove.com/products/breville-bes980xl-the-oracle"
+        },
+        {
+          "source": "Coffeeness",
+          "score": 80,
+          "url": "https://www.coffeeness.de/en/breville-oracle-review/"
+        }
+      ],
+      "amazon_rating": 4.3,
+      "amazon_review_count": 1850,
+      "critic_consensus": "The Oracle automates grinding, dosing, tamping, and milk texturing while maintaining dual PID-controlled boilers for temperature stability. It produces cafe-quality drinks in 90 seconds with minimal skill. However, reliability is the Oracle's Achilles heel: predictable solenoid failures after year 3, grinder inconsistencies in manual mode, and a realistic 5-7 year lifespan make it an excellent but not lifetime machine at its premium price.",
+      "common_pros": [
+        "Automated dosing, tamping, and milk texturing",
+        "Dual PID-controlled boilers for simultaneous brew and steam",
+        "Cafe-quality drinks with minimal barista skill",
+        "Digital temperature control within +/-2F",
+        "90-second latte workflow"
+      ],
+      "common_cons": [
+        "Predictable solenoid failures after ~3 years of use",
+        "Very expensive for a 5-7 year realistic lifespan",
+        "Grinder manual mode shows +/-3-5g dosing variation",
+        "Large, heavy footprint",
+        "Complex internals make repairs costly"
+      ]
     },
     {
       "name": "Lelit Bianca V3",
@@ -283,7 +693,7 @@
       "steam_wand": "commercial",
       "water_tank_liters": 2.5,
       "dimensions_inches": "11.4 x 19.1 x 15.8",
-      "weight_lbs": 58.0,
+      "weight_lbs": 58,
       "pid_control": true,
       "pre_infusion": true,
       "pod_compatible": null,
@@ -295,8 +705,48 @@
       ],
       "best_for": "Advanced home baristas who want full pressure profiling control",
       "color_hex": "#C0C0C0",
-      "description": "The flow control paddle is the headline feature \u2014 it lets you manually adjust water flow throughout the extraction, which is how you achieve the pressure profiles that high-end specialty cafes use to develop sweetness and reduce bitterness in complex beans. Dual insulated boilers mean zero wait between shot and steam, and a rotary pump is noticeably quieter than vibration pumps and can be plumbed in permanently. This is a machine for people who've already mastered the basics and want to go deeper \u2014 it's not intuitive out of the box, and it demands a serious grinder (budget $500\u2013800 minimum) to justify the investment.",
-      "amazon_url": "https://www.amazon.com/s?k=Lelit+Bianca+V3+PL162T&tag=jayarrcoffee-20"
+      "description": "The flow control paddle is the headline feature — it lets you manually adjust water flow throughout the extraction, which is how you achieve the pressure profiles that high-end specialty cafes use to develop sweetness and reduce bitterness in complex beans. Dual insulated boilers mean zero wait between shot and steam, and a rotary pump is noticeably quieter than vibration pumps and can be plumbed in permanently. This is a machine for people who've already mastered the basics and want to go deeper — it's not intuitive out of the box, and it demands a serious grinder (budget $500–800 minimum) to justify the investment.",
+      "amazon_url": "https://www.amazon.com/s?k=Lelit+Bianca+V3+PL162T&tag=jayarrcoffee-20",
+      "jayarr_score": 93,
+      "critic_scores": [
+        {
+          "source": "Coffeedant",
+          "score": 92,
+          "url": "https://coffeedant.com/espresso-machine/lelit-bianca-pl162t/"
+        },
+        {
+          "source": "Coffeeblog UK",
+          "score": 94,
+          "url": "https://coffeeblog.co.uk/lelit-bianca-v3-review/"
+        },
+        {
+          "source": "Coffeeness",
+          "score": 90,
+          "url": "https://www.coffeeness.de/en/lelit-bianca-review/"
+        },
+        {
+          "source": "Seattle Coffee Gear",
+          "score": 92,
+          "url": "https://www.seattlecoffeegear.com/blogs/scg-blog/crew-review-lelit-bianca"
+        }
+      ],
+      "amazon_rating": 4.8,
+      "amazon_review_count": 85,
+      "critic_consensus": "The Lelit Bianca V3 is considered the reference point for enthusiast E61 dual-boiler machines at its price. The combination of stainless steel boilers, quiet rotary pump, true group-mounted flow control paddle, and practical LCC firmware makes it exceptional for light roasts and advanced techniques. Reviewers universally praise its build quality, espresso clarity, and flow profiling capability, noting it's approachable for dedicated beginners yet deep enough for obsessive home baristas.",
+      "common_pros": [
+        "True flow control paddle mounted on E61 group head",
+        "Dual stainless steel boilers with PID control",
+        "Ultra-quiet rotary pump (can plumb in)",
+        "Excellent build quality with wood accents and clean design",
+        "LCC firmware with shot timer and temperature control"
+      ],
+      "common_cons": [
+        "High price point - significant investment",
+        "Requires a quality grinder (not included)",
+        "Large footprint and heavy (60+ lbs)",
+        "E61 group head requires regular backflushing",
+        "Overkill for those who just want quick lattes"
+      ]
     },
     {
       "name": "Profitec Go",
@@ -322,8 +772,48 @@
       ],
       "best_for": "Espresso purists who want PID precision in a compact German-made machine",
       "color_hex": "#C0C0C0",
-      "description": "The PID and shot timer on a single-boiler machine at $1,200 is the kind of spec that German engineering tends to deliver well \u2014 precise, compact, and built to last. Saturated group heads retain heat more consistently than the E61 group heads found on machines in this range, which is a genuine advantage for back-to-back shots. The single boiler limitation still applies: you're waiting between brew and steam, and if you make a lot of milk drinks, this will get old faster than a dual-boiler setup.",
-      "amazon_url": "https://www.amazon.com/s?k=Profitec+Go+Go&tag=jayarrcoffee-20"
+      "description": "The PID and shot timer on a single-boiler machine at $1,200 is the kind of spec that German engineering tends to deliver well — precise, compact, and built to last. Saturated group heads retain heat more consistently than the E61 group heads found on machines in this range, which is a genuine advantage for back-to-back shots. The single boiler limitation still applies: you're waiting between brew and steam, and if you make a lot of milk drinks, this will get old faster than a dual-boiler setup.",
+      "amazon_url": "https://www.amazon.com/s?k=Profitec+Go+Go&tag=jayarrcoffee-20",
+      "jayarr_score": 87,
+      "critic_scores": [
+        {
+          "source": "Coffeedant",
+          "score": 86,
+          "url": "https://coffeedant.com/espresso-machine/profitec-go/"
+        },
+        {
+          "source": "Whole Latte Love",
+          "score": 88,
+          "url": "https://www.wholelattelove.com/blogs/reviews/profitec-go-review"
+        },
+        {
+          "source": "Home Grounds",
+          "score": 86,
+          "url": "https://www.homegrounds.co/profitec-go-review/"
+        },
+        {
+          "source": "CoffeeGeek",
+          "score": 84,
+          "url": "https://coffeegeek.com/reviews/firstlooks/profitec-go-espresso-machine-first-look/"
+        }
+      ],
+      "amazon_rating": 4.5,
+      "amazon_review_count": 120,
+      "critic_consensus": "The Profitec Go has quickly become the go-to premium single boiler under $1000. Its ring group, user-adjustable PID, shot timer display, front-mounted pressure gauge, and adjustable OPV offer the best feature set at this price. Reviewers praise its fast heat-up, excellent shot consistency, and compact pro-grade build. The main trade-off is single-boiler milk drink sequencing and the absence of a hot water tap.",
+      "common_pros": [
+        "PID temperature control with shot timer on display",
+        "Front-mounted pressure gauge for real-time feedback",
+        "User-adjustable OPV accessible from under cup tray",
+        "Fast heat-up with ECO standby mode",
+        "Excellent build quality in a compact prosumer form factor"
+      ],
+      "common_cons": [
+        "Single boiler means sequential brew-then-steam workflow",
+        "No hot water tap",
+        "Limited aftermarket accessories (non-standard group)",
+        "Higher price than Gaggia Classic Pro for single-boiler design",
+        "Small water tank for frequent use"
+      ]
     },
     {
       "name": "De'Longhi Magnifica S",
@@ -349,8 +839,48 @@
       ],
       "best_for": "Budget super-auto buyers who want fresh bean-to-cup convenience",
       "color_hex": "#C0C0C0",
-      "description": "The most affordable way to get fresh-ground bean-to-cup drinks without any manual effort \u2014 you load beans, press a button, and get something espresso-adjacent in about 30 seconds. The output isn't true espresso in the traditional sense; super-autos use lower pressure and shorter contact time than semi-autos, and the panarello frother produces milk foam rather than textured microfoam. If your goal is caffeinated convenience over craft, this delivers on that well; if you're comparing it to semi-auto espresso, it's a different category.",
-      "amazon_url": "https://www.amazon.com/s?k=DeLonghi+Magnifica+S+ECAM22110SB&tag=jayarrcoffee-20"
+      "description": "The most affordable way to get fresh-ground bean-to-cup drinks without any manual effort — you load beans, press a button, and get something espresso-adjacent in about 30 seconds. The output isn't true espresso in the traditional sense; super-autos use lower pressure and shorter contact time than semi-autos, and the panarello frother produces milk foam rather than textured microfoam. If your goal is caffeinated convenience over craft, this delivers on that well; if you're comparing it to semi-auto espresso, it's a different category.",
+      "amazon_url": "https://www.amazon.com/s?k=DeLonghi+Magnifica+S+ECAM22110SB&tag=jayarrcoffee-20",
+      "jayarr_score": 80,
+      "critic_scores": [
+        {
+          "source": "Coffeeness",
+          "score": 76,
+          "url": "https://www.coffeeness.de/en/delonghi-ecam-22-110-review/"
+        },
+        {
+          "source": "The Coffee Maven",
+          "score": 78,
+          "url": "https://www.thecoffeemaven.com/reviews/delonghi-magnifica-xs-ecam22110"
+        },
+        {
+          "source": "TechGearLab",
+          "score": 74,
+          "url": "https://www.techgearlab.com/reviews/kitchen/espresso-machine/delonghi-magnifica"
+        },
+        {
+          "source": "Coffee Dino",
+          "score": 80,
+          "url": "https://coffeedino.com/delonghi-magnifica-s-ecam22110sb-review/"
+        }
+      ],
+      "amazon_rating": 4.4,
+      "amazon_review_count": 11500,
+      "critic_consensus": "The Magnifica S is the best-selling budget super-automatic for good reason: one-touch brewing, built-in grinder, and quick pre-heat at a modest price. Amazon reviewers love the push-button convenience and drink quality. Critics note espresso quality is decent but not exceptional compared to semi-automatics, the manual cappuccino system is clunky, and the brew unit requires regular cleaning to maintain performance.",
+      "common_pros": [
+        "One-touch automatic brewing from bean to cup",
+        "Built-in steel burr grinder with adjustable settings",
+        "Excellent value as entry-level super-automatic",
+        "Compact design for a super-automatic machine",
+        "Quick pre-heat and fast brewing"
+      ],
+      "common_cons": [
+        "Manual Panarello cappuccino system is clunky",
+        "Espresso quality decent but not comparable to semi-automatics",
+        "Brew unit requires regular removal and cleaning",
+        "Plastic build quality feels cheap at times",
+        "Limited drink customization compared to pricier models"
+      ]
     },
     {
       "name": "Philips 3200 LatteGo",
@@ -376,8 +906,48 @@
       ],
       "best_for": "Families who want easy milk drinks with the simplest cleanup",
       "color_hex": "#1A1A1A",
-      "description": "The LatteGo milk system is genuinely the easiest to clean in this category \u2014 two pieces, rinse under the tap, done \u2014 which matters more than it sounds if you're making milk drinks daily. Ceramic burrs last essentially forever and the AquaClean filter claim of 5,000 cups without descaling is mostly accurate, making ongoing maintenance lighter than competitors. Like all super-autos, you're trading shot quality for push-button simplicity \u2014 the drinks are good, not great, which is a worthwhile trade for some households and a deal-breaker for others.",
-      "amazon_url": "https://www.amazon.com/s?k=Philips+3200+LatteGo+EP3241&tag=jayarrcoffee-20"
+      "description": "The LatteGo milk system is genuinely the easiest to clean in this category — two pieces, rinse under the tap, done — which matters more than it sounds if you're making milk drinks daily. Ceramic burrs last essentially forever and the AquaClean filter claim of 5,000 cups without descaling is mostly accurate, making ongoing maintenance lighter than competitors. Like all super-autos, you're trading shot quality for push-button simplicity — the drinks are good, not great, which is a worthwhile trade for some households and a deal-breaker for others.",
+      "amazon_url": "https://www.amazon.com/s?k=Philips+3200+LatteGo+EP3241&tag=jayarrcoffee-20",
+      "jayarr_score": 81,
+      "critic_scores": [
+        {
+          "source": "Tom's Guide",
+          "score": 70,
+          "url": "https://www.tomsguide.com/reviews/philips-3200-series-fully-automatic-espresso-machine-w-lattego"
+        },
+        {
+          "source": "Coffeedant",
+          "score": 86,
+          "url": "https://coffeedant.com/espresso-machine/philips-3200-lattego/"
+        },
+        {
+          "source": "TechGearLab",
+          "score": 72,
+          "url": "https://www.techgearlab.com/reviews/kitchen/espresso-machine/phillips-3200"
+        },
+        {
+          "source": "Home Grounds",
+          "score": 80,
+          "url": "https://www.homegrounds.co/philips-3200-lattego-review/"
+        }
+      ],
+      "amazon_rating": 4.5,
+      "amazon_review_count": 7800,
+      "critic_consensus": "The Philips 3200 LatteGo is the easiest daily cappuccino machine with the simplest milk cleanup of any super-automatic. The two-piece LatteGo milk system pops off and rinses in seconds. Tom's Guide notes the coffee is 'solid if unspectacular,' and critics agree it prioritizes convenience over coffee quality. Best for users who value low-maintenance operation over third-wave espresso standards.",
+      "common_pros": [
+        "LatteGo milk system is extremely easy to clean (two pieces, dishwasher safe)",
+        "Simple, intuitive touch interface",
+        "Five drink varieties including iced coffee",
+        "Ceramic burr grinder with 12 settings",
+        "Rock-solid reliability and low-maintenance operation"
+      ],
+      "common_cons": [
+        "Coffee quality is solid but unspectacular",
+        "Milk foam could be denser and hotter",
+        "Machine is noisier than competitors",
+        "Small water tank needs frequent refilling",
+        "Limited customization options"
+      ]
     },
     {
       "name": "De'Longhi Dinamica",
@@ -403,8 +973,48 @@
       ],
       "best_for": "Iced coffee lovers who want a super-auto that does hot and cold",
       "color_hex": "#C0C0C0",
-      "description": "TrueBrew Over Ice is the differentiator here \u2014 it brews coffee at higher concentration so it doesn't taste watered down over ice, which is a real functional advantage if iced coffee is part of your daily routine. The steel burr grinder with 13 settings is adequate but won't satisfy someone transitioning from a dedicated grinder setup, and the panarello frothing wand produces serviceable foam without much control. At $850 it's competing against the Philips 3200 LatteGo, which offers a cleaner milk system and ceramic burrs \u2014 pick this one specifically if iced drinks matter to you.",
-      "amazon_url": "https://www.amazon.com/s?k=DeLonghi+Dinamica+ECAM35025SB&tag=jayarrcoffee-20"
+      "description": "TrueBrew Over Ice is the differentiator here — it brews coffee at higher concentration so it doesn't taste watered down over ice, which is a real functional advantage if iced coffee is part of your daily routine. The steel burr grinder with 13 settings is adequate but won't satisfy someone transitioning from a dedicated grinder setup, and the panarello frothing wand produces serviceable foam without much control. At $850 it's competing against the Philips 3200 LatteGo, which offers a cleaner milk system and ceramic burrs — pick this one specifically if iced drinks matter to you.",
+      "amazon_url": "https://www.amazon.com/s?k=DeLonghi+Dinamica+ECAM35025SB&tag=jayarrcoffee-20",
+      "jayarr_score": 85,
+      "critic_scores": [
+        {
+          "source": "Tech Advisor",
+          "score": 80,
+          "url": "https://www.techadvisor.com/article/719689/delonghi-dinamica-review.html"
+        },
+        {
+          "source": "Coffeeness",
+          "score": 80,
+          "url": "https://www.coffeeness.de/en/delonghi-dinamica-review/"
+        },
+        {
+          "source": "Best Buy (user)",
+          "score": 92,
+          "url": "https://www.bestbuy.com/site/reviews/delonghi-delonghi-dinamica-fully-automatic-coffee-and-espresso-machine-with-premium-adjustable-frother-chrome-and-black/6471998"
+        },
+        {
+          "source": "Craft Coffee Spot",
+          "score": 82,
+          "url": "https://craftcoffeespot.com/espresso/delonghi-dinamica-review/"
+        }
+      ],
+      "amazon_rating": 4.4,
+      "amazon_review_count": 4200,
+      "critic_consensus": "The Dinamica sits in the sweet spot of De'Longhi's super-automatic lineup, adding TrueBrew Over Ice technology and a premium adjustable frother to the Magnifica S formula. Reviewers praise the smooth iced coffee, versatile drink menu, and sub-40-second heat time. The adjustable frother is a significant upgrade over the Magnifica's Panarello. Best Buy users rate it 4.6/5 with 91% recommending it.",
+      "common_pros": [
+        "TrueBrew Over Ice technology for smooth iced coffee",
+        "Premium adjustable milk frother (major upgrade over Magnifica S)",
+        "Built-in steel burr grinder with 13 settings",
+        "Less than 40-second heat-up time",
+        "Wide variety of programmable drink options"
+      ],
+      "common_cons": [
+        "Pricier than Magnifica S without dramatic quality improvement",
+        "Brew unit still requires regular manual cleaning",
+        "Espresso purists will find quality lacking vs. semi-automatics",
+        "Plastic construction in some areas",
+        "Water tank could be larger for heavy use"
+      ]
     },
     {
       "name": "Jura E4",
@@ -430,8 +1040,48 @@
       ],
       "best_for": "Black coffee purists who want Jura quality without the milk system",
       "color_hex": "#1A1A1A",
-      "description": "The E4 is the right Jura for people who drink black espresso and Americanos and don't want to pay for a milk system they'll never use \u2014 Swiss build quality and the Professional Aroma Grinder in a simpler, cheaper package. At $1,399 for a machine with no milk capability, you're paying a significant Jura brand premium, and there are capable super-autos from De'Longhi and Philips at half the price that make black coffee. The case for spending the extra money is build quality, longevity, and Jura's proprietary cleaning automation \u2014 if you plan to own it for 10 years, that math can work out.",
-      "amazon_url": "https://www.amazon.com/s?k=Jura+E4+15466&tag=jayarrcoffee-20"
+      "description": "The E4 is the right Jura for people who drink black espresso and Americanos and don't want to pay for a milk system they'll never use — Swiss build quality and the Professional Aroma Grinder in a simpler, cheaper package. At $1,399 for a machine with no milk capability, you're paying a significant Jura brand premium, and there are capable super-autos from De'Longhi and Philips at half the price that make black coffee. The case for spending the extra money is build quality, longevity, and Jura's proprietary cleaning automation — if you plan to own it for 10 years, that math can work out.",
+      "amazon_url": "https://www.amazon.com/s?k=Jura+E4+15466&tag=jayarrcoffee-20",
+      "jayarr_score": 84,
+      "critic_scores": [
+        {
+          "source": "Coffeeness",
+          "score": 84,
+          "url": "https://www.coffeeness.de/en/jura-e4-coffee-maker-review/"
+        },
+        {
+          "source": "Home Coffee Expert",
+          "score": 82,
+          "url": "https://homecoffeeexpert.com/jura-e4-review/"
+        },
+        {
+          "source": "Track5 Coffee",
+          "score": 80,
+          "url": "https://track5coffee.com/espresso-machines/jura/e4-review/"
+        },
+        {
+          "source": "Bean to Brew Review",
+          "score": 78,
+          "url": "https://www.beantobrewreview.com/en/reviews/jura-e4-57130"
+        }
+      ],
+      "amazon_rating": 4.5,
+      "amazon_review_count": 680,
+      "critic_consensus": "The Jura E4 produces the best espresso of any super-automatic in its class thanks to the Pulse Extraction Process (P.E.P.) and large brewing basket. Black coffee enthusiasts will find it exceptional for Americanos and long blacks. However, at nearly double the price of comparable De'Longhi machines, the E4's major drawback is the complete absence of a milk frother, making it a poor choice for latte and cappuccino drinkers.",
+      "common_pros": [
+        "Best-in-class espresso via Pulse Extraction Process (P.E.P.)",
+        "Premium Swiss build quality and sleek design",
+        "Excellent for Americanos and long black coffee",
+        "Quiet operation and compact for a Jura",
+        "Easy maintenance with automatic cleaning cycles"
+      ],
+      "common_cons": [
+        "No milk frother - black coffee only",
+        "Very expensive for a machine without milk capability",
+        "Narrow appeal - only for dedicated black coffee drinkers",
+        "Jura smart connect sold separately",
+        "Limited drink variety compared to competitors at this price"
+      ]
     },
     {
       "name": "Jura E6",
@@ -457,8 +1107,48 @@
       ],
       "best_for": "Premium one-touch buyers who want Swiss engineering and milk drinks",
       "color_hex": "#F5F5F5",
-      "description": "Swiss engineering and 11 one-touch drinks including cappuccino in a machine that's genuinely simple to maintain \u2014 the CLEARYL water filter and automated cleaning programs mean you're not thinking about the machine, you're thinking about your coffee. The 12.2% aroma increase claim refers to grinder redesign between generations, which translates to noticeable flavor improvement over older Jura models if you're upgrading. At $1,699 you're paying top dollar in the super-auto category, and that premium buys build quality and longevity rather than features you couldn't get elsewhere for less.",
-      "amazon_url": "https://www.amazon.com/s?k=Jura+E6+15559&tag=jayarrcoffee-20"
+      "description": "Swiss engineering and 11 one-touch drinks including cappuccino in a machine that's genuinely simple to maintain — the CLEARYL water filter and automated cleaning programs mean you're not thinking about the machine, you're thinking about your coffee. The 12.2% aroma increase claim refers to grinder redesign between generations, which translates to noticeable flavor improvement over older Jura models if you're upgrading. At $1,699 you're paying top dollar in the super-auto category, and that premium buys build quality and longevity rather than features you couldn't get elsewhere for less.",
+      "amazon_url": "https://www.amazon.com/s?k=Jura+E6+15559&tag=jayarrcoffee-20",
+      "jayarr_score": 87,
+      "critic_scores": [
+        {
+          "source": "Coffeedant",
+          "score": 81,
+          "url": "https://coffeedant.com/espresso-machine/jura-e6/"
+        },
+        {
+          "source": "Tech Advisor",
+          "score": 90,
+          "url": "https://www.techadvisor.com/article/1554125/jura-e6-coffee-machine-review.html"
+        },
+        {
+          "source": "Home Grounds",
+          "score": 84,
+          "url": "https://www.homegrounds.co/jura-e6-review/"
+        },
+        {
+          "source": "Rolling Stone",
+          "score": 86,
+          "url": "https://www.rollingstone.com/product-recommendations/lifestyle/jura-e6-review-best-automatic-espresso-machine-1234707221/"
+        }
+      ],
+      "amazon_rating": 4.5,
+      "amazon_review_count": 520,
+      "critic_consensus": "The Jura E6 adds the Fine Foam frother to the E4's excellent P.E.P. espresso, making it a complete cappuccino-first machine. Tech Advisor gave it 4.5/5 for fast, barista-quality espresso with easy milk drinks. Reviewers love the coffee quality, sleek design, and quiet operation. The main criticism is the premium price for what is essentially an E4 with a milk system, and the screen looks like a touchscreen but requires button navigation.",
+      "common_pros": [
+        "Pulse Extraction Process (P.E.P.) for excellent espresso",
+        "Fine Foam frother for quality cappuccinos and lattes",
+        "Premium Swiss build quality with sleek design",
+        "Very quiet operation",
+        "Easy one-touch drink preparation"
+      ],
+      "common_cons": [
+        "Premium price - expensive vs. De'Longhi alternatives",
+        "Screen looks like touchscreen but uses button navigation",
+        "Compact drink menu compared to competitors",
+        "Jura-proprietary cleaning tablets required",
+        "Milk system not as easy to clean as Philips LatteGo"
+      ]
     },
     {
       "name": "De'Longhi Eletta Explore",
@@ -484,8 +1174,48 @@
       ],
       "best_for": "Year-round coffee drinkers who want hot drinks, iced lattes, and cold brew in one",
       "color_hex": "#C0C0C0",
-      "description": "The genuine standout feature is Cold Extraction Technology \u2014 it produces something closer to actual cold brew than iced coffee workarounds, and for year-round drinkers who rotate between hot lattes and cold coffee, that's a meaningful capability gap over competitors. Bean Adapt Technology automatically adjusts grind and extraction parameters when you switch bean types, which reduces the dialing-in friction that makes super-autos frustrating for people who like to explore different origins. At $1,500 it's the most expensive De'Longhi super-auto, and the premium is only worth it if you'll actually use the cold extraction; otherwise the Dinamica does most of the same job for $650 less.",
-      "amazon_url": "https://www.amazon.com/s?k=DeLonghi+Eletta+Explore+ECAM45086S&tag=jayarrcoffee-20"
+      "description": "The genuine standout feature is Cold Extraction Technology — it produces something closer to actual cold brew than iced coffee workarounds, and for year-round drinkers who rotate between hot lattes and cold coffee, that's a meaningful capability gap over competitors. Bean Adapt Technology automatically adjusts grind and extraction parameters when you switch bean types, which reduces the dialing-in friction that makes super-autos frustrating for people who like to explore different origins. At $1,500 it's the most expensive De'Longhi super-auto, and the premium is only worth it if you'll actually use the cold extraction; otherwise the Dinamica does most of the same job for $650 less.",
+      "amazon_url": "https://www.amazon.com/s?k=DeLonghi+Eletta+Explore+ECAM45086S&tag=jayarrcoffee-20",
+      "jayarr_score": 90,
+      "critic_scores": [
+        {
+          "source": "TechRadar",
+          "score": 90,
+          "url": "https://www.techradar.com/home/coffee-machines/delonghi-eletta-explore-review"
+        },
+        {
+          "source": "Coffeedant",
+          "score": 86,
+          "url": "https://coffeedant.com/espresso-machine/delonghi-eletta-explore-ecam450/"
+        },
+        {
+          "source": "Home Coffee Expert",
+          "score": 90,
+          "url": "https://homecoffeeexpert.com/delonghi-eletta-explore-review/"
+        },
+        {
+          "source": "Tom's Coffee Corner",
+          "score": 86,
+          "url": "https://tomscoffeecorner.com/delonghi-eletta-explore-espresso-machine-review/"
+        }
+      ],
+      "amazon_rating": 4.7,
+      "amazon_review_count": 2400,
+      "critic_consensus": "The Eletta Explore is one of the very few super-automatics that nails both hot and cold milk drinks and delivers legitimate cold brew. TechRadar called it one of the best bean-to-cup machines tested. Its hot foam, cold foam, and real cold brew capabilities make it a year-round cafe machine. Customers are delighted by consistent quality and ease of use, with 4.7/5 stars across major retailers.",
+      "common_pros": [
+        "Real cold brew function - not just iced coffee",
+        "Hot and cold foam for year-round drink versatility",
+        "Over 40 drink recipes via color touchscreen",
+        "Excellent build quality with metal construction",
+        "De'Longhi Coffee Link app connectivity"
+      ],
+      "common_cons": [
+        "Premium price point in the super-automatic category",
+        "Large footprint for counter space",
+        "Cold brew takes several minutes per serving",
+        "Water tank could be larger for heavy use",
+        "Occasional reports of drip tray overflow"
+      ]
     },
     {
       "name": "Nespresso VertuoPlus",
@@ -511,8 +1241,48 @@
       ],
       "best_for": "Convenience seekers who want multiple cup sizes with zero effort",
       "color_hex": "#4A4A4A",
-      "description": "The Centrifusion system is clever engineering \u2014 spinning the capsule at 7,000 RPM creates a legitimate crema and allows different capsule sizes, which the Original Line can't do. You're locked into Vertuo pods at roughly $1\u20131.10 each with limited third-party options, so this is a long-term commitment to Nespresso's supply chain, not just a hardware purchase. The motorized head and large water tank make the daily workflow genuinely smooth, which is the actual value proposition here.",
-      "amazon_url": "https://www.amazon.com/s?k=Nespresso+VertuoPlus+ENV150&tag=jayarrcoffee-20"
+      "description": "The Centrifusion system is clever engineering — spinning the capsule at 7,000 RPM creates a legitimate crema and allows different capsule sizes, which the Original Line can't do. You're locked into Vertuo pods at roughly $1–1.10 each with limited third-party options, so this is a long-term commitment to Nespresso's supply chain, not just a hardware purchase. The motorized head and large water tank make the daily workflow genuinely smooth, which is the actual value proposition here.",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+VertuoPlus+ENV150&tag=jayarrcoffee-20",
+      "jayarr_score": 82,
+      "critic_scores": [
+        {
+          "source": "Tom's Guide",
+          "score": 80,
+          "url": "https://www.tomsguide.com/reviews/nespresso-vertuo-plus-review"
+        },
+        {
+          "source": "TechRadar",
+          "score": 70,
+          "url": "https://www.techradar.com/reviews/nespresso-vertuo-plus-review"
+        },
+        {
+          "source": "Coffeedant",
+          "score": 84,
+          "url": "https://coffeedant.com/espresso-machine/nespresso-vertuo-plus/"
+        },
+        {
+          "source": "Taste of Home",
+          "score": 80,
+          "url": "https://www.tasteofhome.com/article/nespresso-vertuo-plus-review/"
+        }
+      ],
+      "amazon_rating": 4.5,
+      "amazon_review_count": 28000,
+      "critic_consensus": "The VertuoPlus is the most reliable Vertuo Line machine, with significantly lower failure rates than the Vertuo Next and users reporting 5-7 years of reliable service. It produces high-quality single-serve coffee and espresso via Centrifusion technology. The motorized lid and large water tank add convenience. The main drawbacks are proprietary pod lock-in at $1.00-2.25 per pod and somewhat cooler brew temperatures (155-165F).",
+      "common_pros": [
+        "Most reliable Vertuo machine with 5-7 year lifespan",
+        "Motorized lid for one-touch operation",
+        "Centrifusion technology produces quality crema",
+        "Large 40oz water tank",
+        "Brews multiple cup sizes from espresso to alto"
+      ],
+      "common_cons": [
+        "Proprietary Vertuo pods at $1.00-2.25 each",
+        "Locked into Nespresso ecosystem",
+        "Brew temperature runs cooler than ideal (155-165F)",
+        "Lid mechanism can jam occasionally",
+        "No milk frothing capability (requires separate Aeroccino)"
+      ]
     },
     {
       "name": "Nespresso Vertuo Next",
@@ -538,8 +1308,48 @@
       ],
       "best_for": "Eco-conscious buyers who want the widest Vertuo size range",
       "color_hex": "#1C2541",
-      "description": "The cheapest way into the Vertuo ecosystem with the widest size range including the 18oz Carafe, which is useful if you want drip-coffee-sized cups from a pod machine. The Wi-Fi and Bluetooth connectivity mostly exists for firmware updates and reorder reminders \u2014 it's not something you'll interact with meaningfully day-to-day. The 54% recycled plastic body is a real material improvement over earlier Vertuo machines, and at $159 it's an easy recommendation if Vertuo convenience is what you're after.",
-      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Next+ENV120&tag=jayarrcoffee-20"
+      "description": "The cheapest way into the Vertuo ecosystem with the widest size range including the 18oz Carafe, which is useful if you want drip-coffee-sized cups from a pod machine. The Wi-Fi and Bluetooth connectivity mostly exists for firmware updates and reorder reminders — it's not something you'll interact with meaningfully day-to-day. The 54% recycled plastic body is a real material improvement over earlier Vertuo machines, and at $159 it's an easy recommendation if Vertuo convenience is what you're after.",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Next+ENV120&tag=jayarrcoffee-20",
+      "jayarr_score": 79,
+      "critic_scores": [
+        {
+          "source": "Tom's Guide",
+          "score": 90,
+          "url": "https://www.tomsguide.com/reviews/nespresso-vertuo-next"
+        },
+        {
+          "source": "TechRadar",
+          "score": 80,
+          "url": "https://www.techradar.com/reviews/nespresso-vertuo-next"
+        },
+        {
+          "source": "Reviewed",
+          "score": 74,
+          "url": "https://www.reviewed.com/cooking/content/nespresso-vertuo-next-review"
+        },
+        {
+          "source": "Top Ten Reviews",
+          "score": 70,
+          "url": "https://www.toptenreviews.com/nespresso-vertuo-next-coffee-machine-review"
+        }
+      ],
+      "amazon_rating": 4,
+      "amazon_review_count": 18000,
+      "critic_consensus": "The Vertuo Next is sleek and easy to use, but has severe reliability problems that drag down its overall score. Analysis of 10,000+ user reviews shows 42% of 1-star reviews mention leaking, and 38% cite premature failure. The manual lever brew head often fails to seal properly with capsules. Professional reviewers who test short-term give higher scores, but long-term owner experience reveals significant durability issues.",
+      "common_pros": [
+        "Slim, modern design with eco-friendly materials",
+        "WiFi and Bluetooth connectivity",
+        "Compatible with all Vertuo pod sizes",
+        "Quick heat-up and easy operation",
+        "Good coffee quality when functioning properly"
+      ],
+      "common_cons": [
+        "Serious reliability issues - 42% of negative reviews cite leaking",
+        "Premature failure within months to a year is common",
+        "Manual lever mechanism fails to seal properly",
+        "Significantly less reliable than VertuoPlus",
+        "Pod costs remain high at $1.00-2.25 each"
+      ]
     },
     {
       "name": "Nespresso Vertuo Creatista",
@@ -551,9 +1361,9 @@
       "pressure_bar": 19,
       "grinder": null,
       "steam_wand": "commercial",
-      "water_tank_liters": 2.0,
+      "water_tank_liters": 2,
       "dimensions_inches": "9.1 x 16.5 x 12.6",
-      "weight_lbs": 16.0,
+      "weight_lbs": 16,
       "pid_control": false,
       "pre_infusion": false,
       "pod_compatible": "vertuo",
@@ -565,8 +1375,48 @@
       ],
       "best_for": "Nespresso fans who want real latte art capability",
       "color_hex": "#C0C0C0",
-      "description": "The only Vertuo machine with a real Breville steam wand, which means you can actually practice latte art on top of your Nespresso drinks \u2014 that's a legitimate niche that the standard auto-frother attachments don't fill. At $600 you're paying a significant premium for that wand, and serious baristas who want to develop milk technique would be better served by a $300 semi-auto and a $150 grinder where the espresso underneath the milk is also genuinely good. If you love the convenience of Vertuo pods and specifically want the steam wand capability, though, there's nothing else in this category that offers it.",
-      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Creatista+BVE850&tag=jayarrcoffee-20"
+      "description": "The only Vertuo machine with a real Breville steam wand, which means you can actually practice latte art on top of your Nespresso drinks — that's a legitimate niche that the standard auto-frother attachments don't fill. At $600 you're paying a significant premium for that wand, and serious baristas who want to develop milk technique would be better served by a $300 semi-auto and a $150 grinder where the espresso underneath the milk is also genuinely good. If you love the convenience of Vertuo pods and specifically want the steam wand capability, though, there's nothing else in this category that offers it.",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Vertuo+Creatista+BVE850&tag=jayarrcoffee-20",
+      "jayarr_score": 87,
+      "critic_scores": [
+        {
+          "source": "Tom's Guide",
+          "score": 80,
+          "url": "https://www.tomsguide.com/home/coffee-makers/nespresso-vertuo-creatista-review"
+        },
+        {
+          "source": "Homes & Gardens",
+          "score": 90,
+          "url": "https://www.homesandgardens.com/reviews/breville-nespresso-vertuo-creatista-review"
+        },
+        {
+          "source": "TechRadar",
+          "score": 90,
+          "url": "https://www.techradar.com/home/coffee-machines/nespresso-vertuo-creatista-review-a-premium-capsule-coffee-machine-with-barista-style-features"
+        },
+        {
+          "source": "Top Ten Reviews",
+          "score": 84,
+          "url": "https://www.toptenreviews.com/nespresso-vertuo-creatista-review"
+        }
+      ],
+      "amazon_rating": 4.4,
+      "amazon_review_count": 1500,
+      "critic_consensus": "The Vertuo Creatista is the best Nespresso Vertuo machine available, combining Vertuo pod technology with a real Breville automatic steam wand. Homes & Gardens calls it the best single-serve machine they've used. It's the only Vertuo machine with built-in milk frothing for latte art-quality microfoam. However, it's expensive, bulky, and the espresso quality still can't rival a proper semi-automatic machine.",
+      "common_pros": [
+        "Built-in automatic steam wand for real microfoam",
+        "Only Vertuo machine capable of latte art",
+        "Premium Breville build quality with stainless steel",
+        "Adjustable milk temperature and texture settings",
+        "Compatible with all Vertuo pod sizes"
+      ],
+      "common_cons": [
+        "Very expensive for a capsule machine ($500+)",
+        "Bulky footprint for a Nespresso machine",
+        "Espresso quality still limited by pod system",
+        "Some reports of water tray leaking",
+        "Ongoing pod costs add up significantly"
+      ]
     },
     {
       "name": "Nespresso Pixie",
@@ -592,8 +1442,48 @@
       ],
       "best_for": "Small-space dwellers who want Original Line intensity in the smallest form",
       "color_hex": "#4A4A4A",
-      "description": "The smallest Original Line machine that doesn't feel cheap \u2014 the metal body at 4.7 inches wide is genuinely compact and durable, and 19-bar pump pressure produces the thick crema Original Line is known for. There's no milk system whatsoever, so if you want lattes you'll need a separate frother (the Aeroccino bundle is worth it), but for straight espresso shots the Pixie does everything the larger Original Line machines do in a much smaller box. It's the honest choice for single-shot espresso drinkers who care about footprint over features.",
-      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Pixie+C61&tag=jayarrcoffee-20"
+      "description": "The smallest Original Line machine that doesn't feel cheap — the metal body at 4.7 inches wide is genuinely compact and durable, and 19-bar pump pressure produces the thick crema Original Line is known for. There's no milk system whatsoever, so if you want lattes you'll need a separate frother (the Aeroccino bundle is worth it), but for straight espresso shots the Pixie does everything the larger Original Line machines do in a much smaller box. It's the honest choice for single-shot espresso drinkers who care about footprint over features.",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Pixie+C61&tag=jayarrcoffee-20",
+      "jayarr_score": 82,
+      "critic_scores": [
+        {
+          "source": "Tom's Guide",
+          "score": 80,
+          "url": "https://www.tomsguide.com/reviews/nespresso-pixie"
+        },
+        {
+          "source": "The Coffee Maven",
+          "score": 82,
+          "url": "https://www.thecoffeemaven.com/reviews/nespresso-pixie"
+        },
+        {
+          "source": "Real Homes",
+          "score": 80,
+          "url": "https://www.realhomes.com/reviews/nespresso-pixie"
+        },
+        {
+          "source": "Home Coffee Expert",
+          "score": 76,
+          "url": "https://homecoffeeexpert.com/nespresso-pixie-review/"
+        }
+      ],
+      "amazon_rating": 4.4,
+      "amazon_review_count": 6200,
+      "critic_consensus": "The Nespresso Pixie is the best bang-for-your-buck Original Line machine, delivering no-fuss espresso in a durable, scratch-resistant aluminum case with the smallest footprint of any Nespresso. Reviewers love the build quality, 25-second heat-up, and consistent extraction from the 19-bar pump. It's the purist's Nespresso - espresso-only with no milk frother - which is either a pro or con depending on your needs.",
+      "common_pros": [
+        "Premium aluminum build quality - durable and scratch-resistant",
+        "Extremely compact footprint (smallest Nespresso)",
+        "25-second heat-up time",
+        "19-bar pump for consistent extraction",
+        "Compatible with all Original Line pods (including third-party)"
+      ],
+      "common_cons": [
+        "No built-in milk frother",
+        "Very small water tank (24oz) requires frequent refilling",
+        "Original Line only (no large coffee sizes)",
+        "Pod costs add up over time",
+        "Limited to espresso and lungo - no full coffee cup"
+      ]
     },
     {
       "name": "Nespresso CitiZ",
@@ -605,7 +1495,7 @@
       "pressure_bar": 19,
       "grinder": null,
       "steam_wand": "none",
-      "water_tank_liters": 1.0,
+      "water_tank_liters": 1,
       "dimensions_inches": "5.2 x 14.6 x 10.9",
       "weight_lbs": 8.9,
       "pid_control": false,
@@ -619,8 +1509,48 @@
       ],
       "best_for": "Style-conscious Original Line buyers who want a larger water tank",
       "color_hex": "#F5F5F5",
-      "description": "The 34oz water tank is the largest in the basic Original Line lineup, which matters more than it sounds if you make multiple cups daily and hate refilling \u2014 that's the practical reason to choose this over the Pixie. The retro-industrial design is distinctive and genuinely well-executed, and the folding drip tray means you can fit a tall glass or travel mug without removing parts. You're paying about $40 more than the Pixie mostly for the design and tank size, which is either worth it or it isn't based purely on your aesthetic preferences.",
-      "amazon_url": "https://www.amazon.com/s?k=Nespresso+CitiZ+EN267&tag=jayarrcoffee-20"
+      "description": "The 34oz water tank is the largest in the basic Original Line lineup, which matters more than it sounds if you make multiple cups daily and hate refilling — that's the practical reason to choose this over the Pixie. The retro-industrial design is distinctive and genuinely well-executed, and the folding drip tray means you can fit a tall glass or travel mug without removing parts. You're paying about $40 more than the Pixie mostly for the design and tank size, which is either worth it or it isn't based purely on your aesthetic preferences.",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+CitiZ+EN267&tag=jayarrcoffee-20",
+      "jayarr_score": 79,
+      "critic_scores": [
+        {
+          "source": "Tom's Guide",
+          "score": 80,
+          "url": "https://www.tomsguide.com/home/kitchen-dining/nespresso-citiz-coffee-maker-review"
+        },
+        {
+          "source": "Expert Reviews",
+          "score": 57,
+          "url": "https://www.expertreviews.co.uk/home-garden/small-appliances/coffee-machines/nespresso-citiz-review"
+        },
+        {
+          "source": "The Coffee Maven",
+          "score": 80,
+          "url": "https://www.thecoffeemaven.com/reviews/nespresso-citiz"
+        },
+        {
+          "source": "Real Homes",
+          "score": 82,
+          "url": "https://www.realhomes.com/reviews/nespresso-citiz-espresso-maker"
+        }
+      ],
+      "amazon_rating": 4.5,
+      "amazon_review_count": 4800,
+      "critic_consensus": "The CitiZ is the premium Original Line machine with a refined, retro-industrial design and excellent flavor extraction. Tom's Guide calls it 'simple yet luxurious.' It shares the same 19-bar pump as the Pixie but adds a larger water tank and more polished aesthetics. Expert Reviews scored it lower (4/7) due to the high price for a simple pod machine, which is the main criticism across reviews.",
+      "common_pros": [
+        "Elegant retro-industrial design with premium materials",
+        "Excellent espresso flavor extraction",
+        "Larger water tank than Pixie (34oz)",
+        "Customizable brew volumes",
+        "Quick heat-up and simple two-button operation"
+      ],
+      "common_cons": [
+        "Expensive for a relatively simple pod machine ($265+)",
+        "No built-in milk frother in base model",
+        "Original Line only - no large coffee sizes",
+        "Interface may be too simple for some users",
+        "Pod costs add up over time"
+      ]
     },
     {
       "name": "Nespresso Lattissima One",
@@ -632,7 +1562,7 @@
       "pressure_bar": 19,
       "grinder": null,
       "steam_wand": "auto_frother",
-      "water_tank_liters": 1.0,
+      "water_tank_liters": 1,
       "dimensions_inches": "6.1 x 12.8 x 10.1",
       "weight_lbs": 9.3,
       "pid_control": false,
@@ -646,8 +1576,48 @@
       ],
       "best_for": "Original Line users who want one-touch lattes without a separate frother",
       "color_hex": "#1A1A1A",
-      "description": "The single-serve milk jug is the smart design choice here \u2014 you pour exactly what you need, which means no leftover heated milk sitting in a container and less waste than machines with larger milk tanks. At $449 it's the priciest way into one-touch Original Line lattes, but the convenience of a fully integrated system without buying a separate Aeroccino is real if you make milk drinks every day. Worth comparing against the Bambino Plus at $50 more, which uses real espresso rather than pods and will produce noticeably better drinks if you're willing to buy a grinder.",
-      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Lattissima+One+EN510&tag=jayarrcoffee-20"
+      "description": "The single-serve milk jug is the smart design choice here — you pour exactly what you need, which means no leftover heated milk sitting in a container and less waste than machines with larger milk tanks. At $449 it's the priciest way into one-touch Original Line lattes, but the convenience of a fully integrated system without buying a separate Aeroccino is real if you make milk drinks every day. Worth comparing against the Bambino Plus at $50 more, which uses real espresso rather than pods and will produce noticeably better drinks if you're willing to buy a grinder.",
+      "amazon_url": "https://www.amazon.com/s?k=Nespresso+Lattissima+One+EN510&tag=jayarrcoffee-20",
+      "jayarr_score": 81,
+      "critic_scores": [
+        {
+          "source": "Tom's Guide",
+          "score": 80,
+          "url": "https://www.tomsguide.com/reviews/nespresso-Lattissima-one"
+        },
+        {
+          "source": "TechRadar",
+          "score": 80,
+          "url": "https://www.techradar.com/reviews/delonghi-lattissima-one-review"
+        },
+        {
+          "source": "Real Homes",
+          "score": 78,
+          "url": "https://www.realhomes.com/reviews/nespresso-lattissima-one-review"
+        },
+        {
+          "source": "Consumer Reports",
+          "score": 72,
+          "url": "https://www.consumerreports.org/appliances/coffee-makers/nespresso-lattissima-one-espresso-maker-en500bw-w/m395401/"
+        }
+      ],
+      "amazon_rating": 4.4,
+      "amazon_review_count": 3800,
+      "critic_consensus": "The Lattissima One is the simplest way to get one-touch cappuccinos from a Nespresso machine. The built-in milk system heats and froths automatically with a tiny 4oz container that's easy to clean. Tom's Guide and TechRadar both gave it 4/5 stars. The main limitations are that milk texture can't be adjusted, the milk container is small (single serving), and it's Original Line only, so no large coffee cups.",
+      "common_pros": [
+        "One-touch milk-based drinks (cappuccino, latte)",
+        "18-second heat-up time (15 more for milk)",
+        "Simple 3-button interface (espresso, lungo, milk)",
+        "Compact design ideal for small spaces and dorms",
+        "Easy-to-clean detachable milk container"
+      ],
+      "common_cons": [
+        "Milk texture cannot be adjusted",
+        "Very small milk container (4oz, single serving only)",
+        "Original Line only - no large coffee cup option",
+        "Milk system adds bulk vs. Pixie/CitiZ",
+        "Pod costs add up over time"
+      ]
     }
   ]
 }

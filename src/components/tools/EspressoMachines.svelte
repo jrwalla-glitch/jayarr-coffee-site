@@ -71,6 +71,27 @@
     return '$' + price.toLocaleString('en-US');
   }
 
+  function scoreColor(score) {
+    if (score >= 85) return '#4CAF50';
+    if (score >= 75) return '#FFA726';
+    return '#EF5350';
+  }
+
+  function scoreLabel(score) {
+    if (score >= 90) return 'Excellent';
+    if (score >= 85) return 'Great';
+    if (score >= 80) return 'Good';
+    if (score >= 75) return 'Mixed';
+    return 'Below Avg';
+  }
+
+  function renderStars(rating) {
+    const full = Math.floor(rating);
+    const half = rating - full >= 0.25 && rating - full < 0.75;
+    const empty = 5 - full - (half ? 1 : 0);
+    return '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(empty);
+  }
+
   // --- Navigation ---
   function switchTab(tab) {
     if (tab === activeTab) return;
@@ -291,6 +312,77 @@
             <span class="section-label">Our Take</span>
             <p class="description-text">{currentMachine.description}</p>
           </div>
+
+          <!-- Review Section -->
+          {#if currentMachine.jayarr_score}
+            <div class="review-section">
+
+              <!-- JayArr Score Badge -->
+              <div class="review-header">
+                <div class="jayarr-badge" style:background-color={scoreColor(currentMachine.jayarr_score)}>
+                  <span class="badge-score">{currentMachine.jayarr_score}</span>
+                  <span class="badge-label">{scoreLabel(currentMachine.jayarr_score)}</span>
+                </div>
+                <span class="section-label" style="margin-bottom: 0;">JayArr Score</span>
+              </div>
+
+              <!-- Score Breakdown: Critics + Audience -->
+              <div class="score-breakdown">
+                <!-- Left: Critic Scores -->
+                <div class="score-column">
+                  <span class="section-label">Critic Scores</span>
+                  <div class="critic-list">
+                    {#each currentMachine.critic_scores as critic}
+                      <a href={critic.url} target="_blank" rel="noopener noreferrer" class="critic-row">
+                        <span class="critic-name">{critic.source}</span>
+                        <span class="critic-pill" style:background-color={scoreColor(critic.score)}>{critic.score}</span>
+                      </a>
+                    {/each}
+                  </div>
+                </div>
+
+                <!-- Right: Audience Score -->
+                <div class="score-column">
+                  <span class="section-label">Audience Score</span>
+                  <div class="audience-block">
+                    <div class="amazon-stars">{renderStars(currentMachine.amazon_rating)}</div>
+                    <div class="amazon-detail">
+                      <span class="amazon-rating">{currentMachine.amazon_rating.toFixed(1)}</span>
+                      <span class="amazon-count">({currentMachine.amazon_review_count.toLocaleString('en-US')} reviews)</span>
+                    </div>
+                    <span class="amazon-source">Amazon</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Critic Consensus -->
+              <div class="consensus-block">
+                <span class="section-label">Critic Consensus</span>
+                <p class="consensus-text">{currentMachine.critic_consensus}</p>
+              </div>
+
+              <!-- Strengths / Weaknesses -->
+              <div class="pros-cons-grid">
+                <div class="pros-column">
+                  <span class="section-label">Strengths</span>
+                  <ul class="pros-list">
+                    {#each currentMachine.common_pros as pro}
+                      <li><span class="pro-icon">+</span>{pro}</li>
+                    {/each}
+                  </ul>
+                </div>
+                <div class="cons-column">
+                  <span class="section-label">Weaknesses</span>
+                  <ul class="cons-list">
+                    {#each currentMachine.common_cons as con}
+                      <li><span class="con-icon">&minus;</span>{con}</li>
+                    {/each}
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+          {/if}
 
           <!-- Buy button -->
           {#if currentMachine.amazon_url}
@@ -799,6 +891,213 @@
     white-space: nowrap;
   }
 
+  /* === Review Section === */
+  .review-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(26, 26, 26, 0.08);
+  }
+
+  .review-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .jayarr-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 6px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .badge-score {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .badge-label {
+    font-size: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    opacity: 0.9;
+    line-height: 1;
+    margin-top: 0.15rem;
+  }
+
+  /* Score Breakdown */
+  .score-breakdown {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .score-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .critic-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .critic-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    text-decoration: none;
+    padding: 0.2rem 0;
+    border-radius: 2px;
+    transition: background 0.15s;
+  }
+
+  .critic-row:hover {
+    background: rgba(193, 122, 58, 0.04);
+  }
+
+  .critic-name {
+    font-size: 0.68rem;
+    color: #4A4540;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+
+  .critic-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 30px;
+    height: 20px;
+    padding: 0 5px;
+    border-radius: 10px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  /* Audience Score */
+  .audience-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .amazon-stars {
+    font-size: 1rem;
+    color: #F5A623;
+    letter-spacing: 0.04em;
+    line-height: 1;
+  }
+
+  .amazon-detail {
+    display: flex;
+    align-items: baseline;
+    gap: 0.3rem;
+  }
+
+  .amazon-rating {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #2C2C2C;
+  }
+
+  .amazon-count {
+    font-size: 0.65rem;
+    color: #9B9590;
+  }
+
+  .amazon-source {
+    font-size: 0.55rem;
+    color: #9B9590;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+  }
+
+  /* Consensus */
+  .consensus-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    border-left: 3px solid #C17A3A;
+    padding-left: 0.75rem;
+  }
+
+  .consensus-text {
+    font-size: 0.72rem;
+    color: #4A4540;
+    line-height: 1.6;
+    margin: 0;
+    font-style: italic;
+  }
+
+  /* Pros & Cons */
+  .pros-cons-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .pros-column,
+  .cons-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .pros-list,
+  .cons-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .pros-list li,
+  .cons-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.35rem;
+    font-size: 0.7rem;
+    color: #2C2C2C;
+    line-height: 1.4;
+  }
+
+  .pro-icon {
+    color: #4CAF50;
+    font-weight: 700;
+    font-size: 0.8rem;
+    line-height: 1.2;
+    flex-shrink: 0;
+  }
+
+  .con-icon {
+    color: #EF5350;
+    font-weight: 700;
+    font-size: 0.8rem;
+    line-height: 1.2;
+    flex-shrink: 0;
+  }
+
   /* === Responsive: Mobile === */
   @media (max-width: 768px) {
     .brochure-content {
@@ -836,6 +1135,14 @@
 
     .info-price {
       font-size: 1.15rem;
+    }
+
+    .score-breakdown {
+      grid-template-columns: 1fr;
+    }
+
+    .pros-cons-grid {
+      grid-template-columns: 1fr;
     }
 
     .specs-grid {
