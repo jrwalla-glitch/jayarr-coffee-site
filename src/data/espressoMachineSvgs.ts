@@ -6037,4 +6037,2312 @@ export const machineSvgs: Record<string, string> = {
   <!-- ======== WATER TANK HINT (behind body, visible at right edge) ======== -->
   <rect x="240" y="78" width="14" height="255" rx="4" fill="rgba(50,60,70,0.1)" stroke="rgba(80,90,100,0.08)" stroke-width="0.5"/>
 </svg>`,
+
+  "Jura ENA 4": `<svg width="400" height="430" viewBox="0 0 400 430">
+  <defs>
+    <!-- Piano Black — deep glossy black, must read against #1A1A1A bg -->
+    <linearGradient id="piano-black" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1E1E1E"/>
+      <stop offset="12%" stop-color="#282828"/>
+      <stop offset="35%" stop-color="#2E2E2E"/>
+      <stop offset="50%" stop-color="#2C2C2C"/>
+      <stop offset="65%" stop-color="#2A2A2A"/>
+      <stop offset="88%" stop-color="#252525"/>
+      <stop offset="100%" stop-color="#1E1E1E"/>
+    </linearGradient>
+    <linearGradient id="chrome" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#A0A0A0"/>
+      <stop offset="30%" stop-color="#D0D0D0"/>
+      <stop offset="50%" stop-color="#E0E0E0"/>
+      <stop offset="70%" stop-color="#C8C8C8"/>
+      <stop offset="100%" stop-color="#A0A0A0"/>
+    </linearGradient>
+    <linearGradient id="spout-body" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#222"/>
+      <stop offset="30%" stop-color="#333"/>
+      <stop offset="50%" stop-color="#383838"/>
+      <stop offset="70%" stop-color="#333"/>
+      <stop offset="100%" stop-color="#222"/>
+    </linearGradient>
+    <linearGradient id="spout-chrome" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#888"/>
+      <stop offset="25%" stop-color="#C0C0C0"/>
+      <stop offset="50%" stop-color="#DDD"/>
+      <stop offset="75%" stop-color="#BBB"/>
+      <stop offset="100%" stop-color="#888"/>
+    </linearGradient>
+    <!-- Display panel background -->
+    <linearGradient id="display-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1A1A1A"/>
+      <stop offset="50%" stop-color="#151515"/>
+      <stop offset="100%" stop-color="#121212"/>
+    </linearGradient>
+    <!-- Glossy highlight -->
+    <linearGradient id="piano-gloss" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.06)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </linearGradient>
+    <!-- Water tank translucent blue fill -->
+    <linearGradient id="tank-fill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="rgba(140,190,220,0.25)"/>
+      <stop offset="30%" stop-color="rgba(120,175,210,0.18)"/>
+      <stop offset="60%" stop-color="rgba(100,165,205,0.22)"/>
+      <stop offset="100%" stop-color="rgba(80,150,195,0.15)"/>
+    </linearGradient>
+    <!-- Crystal diamond crosshatch pattern -->
+    <pattern id="crystal-diamond" x="0" y="0" width="14" height="14" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="14" y2="14" stroke="rgba(180,215,240,0.18)" stroke-width="0.5"/>
+      <line x1="14" y1="0" x2="0" y2="14" stroke="rgba(180,215,240,0.18)" stroke-width="0.5"/>
+      <line x1="7" y1="0" x2="7" y2="14" stroke="rgba(160,200,230,0.06)" stroke-width="0.3"/>
+      <line x1="0" y1="7" x2="14" y2="7" stroke="rgba(160,200,230,0.06)" stroke-width="0.3"/>
+    </pattern>
+    <!-- Tank highlight gloss -->
+    <linearGradient id="tank-gloss" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.0)"/>
+      <stop offset="20%" stop-color="rgba(255,255,255,0.06)"/>
+      <stop offset="40%" stop-color="rgba(255,255,255,0.12)"/>
+      <stop offset="55%" stop-color="rgba(255,255,255,0.04)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0.0)"/>
+    </linearGradient>
+    <!-- Water level gradient -->
+    <linearGradient id="water-level" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="rgba(70,140,190,0.0)"/>
+      <stop offset="25%" stop-color="rgba(70,140,190,0.0)"/>
+      <stop offset="28%" stop-color="rgba(70,140,190,0.08)"/>
+      <stop offset="100%" stop-color="rgba(60,130,180,0.22)"/>
+    </linearGradient>
+    <!-- Clip for tank to sit behind the body edge -->
+    <clipPath id="tank-clip">
+      <rect x="272" y="25" width="80" height="365"/>
+    </clipPath>
+  </defs>
+
+  <!-- Shadow -->
+  <ellipse cx="185" cy="418" rx="145" ry="8" fill="rgba(255,255,255,0.04)"/>
+
+  <!-- ======== WATER TANK — crystal diamond-pattern, right side ======== -->
+  <g clip-path="url(#tank-clip)">
+    <!-- Tank outer shell — slightly rounded rectangle -->
+    <rect x="275" y="35" width="60" height="337" rx="8" ry="8"
+          fill="#1A2530" stroke="rgba(140,190,220,0.2)" stroke-width="0.6"/>
+    <!-- Translucent blue tinted body -->
+    <rect x="275" y="35" width="60" height="337" rx="8" ry="8"
+          fill="url(#tank-fill)"/>
+    <!-- Crystal diamond crosshatch overlay -->
+    <rect x="275" y="35" width="60" height="337" rx="8" ry="8"
+          fill="url(#crystal-diamond)"/>
+    <!-- Water level — gradient showing water inside -->
+    <rect x="275" y="35" width="60" height="337" rx="8" ry="8"
+          fill="url(#water-level)"/>
+    <!-- Glossy vertical highlight — simulates light catching the curved plastic -->
+    <rect x="275" y="35" width="60" height="337" rx="8" ry="8"
+          fill="url(#tank-gloss)"/>
+    <!-- Top rim / cap of the tank -->
+    <rect x="278" y="33" width="54" height="8" rx="4" ry="3"
+          fill="#222830" stroke="rgba(140,190,220,0.15)" stroke-width="0.4"/>
+    <!-- Subtle water surface line at ~30% from top -->
+    <line x1="280" y1="136" x2="330" y2="136"
+          stroke="rgba(100,175,220,0.2)" stroke-width="0.6"/>
+    <line x1="282" y1="137" x2="328" y2="137.3"
+          stroke="rgba(100,175,220,0.08)" stroke-width="1.2"/>
+    <!-- Light refraction lines inside the water -->
+    <line x1="285" y1="177" x2="290" y2="350" stroke="rgba(120,180,215,0.05)" stroke-width="1.5"/>
+    <line x1="310" y1="151" x2="315" y2="360" stroke="rgba(120,180,215,0.04)" stroke-width="1"/>
+    <!-- Edge shadow where tank meets machine body -->
+    <rect x="275" y="37" width="4" height="335" fill="rgba(0,0,0,0.25)"/>
+  </g>
+
+  <!-- ======== MONOLITHIC BODY — single Piano Black block ======== -->
+  <!-- The ENA 4 is one continuous flat-faced black block -->
+  <path d="
+    M58 30
+    Q58 22 66 20
+    L274 20
+    Q282 22 282 30
+    L282 375
+    Q282 382 274 384
+    L66 384
+    Q58 382 58 375
+    Z
+  " fill="url(#piano-black)" stroke="#3A3A3A" stroke-width="0.6"/>
+
+  <!-- Top highlight — glossy reflection arc -->
+  <path d="M66 20 L274 20 Q282 22 282 30 L282 38 Q170 44 58 38 L58 30 Q58 22 66 20 Z" fill="url(#piano-gloss)"/>
+  <!-- Left edge ambient light -->
+  <rect x="58" y="30" width="2.5" height="345" fill="rgba(255,255,255,0.02)"/>
+  <!-- Subtle diagonal gloss strip — piano black sheen -->
+  <path d="M67 28 L73 28 L73 350 L67 350 Z" fill="rgba(255,255,255,0.015)"/>
+  <!-- Piano black glossy reflection — curved highlight across upper body -->
+  <path d="M62 120 Q170 108 278 120 L278 125 Q170 113 62 125 Z" fill="rgba(255,255,255,0.02)"/>
+  <!-- Subtle right edge shadow for 3D depth -->
+  <rect x="279.5" y="30" width="2.5" height="345" fill="rgba(0,0,0,0.15)"/>
+
+  <!-- ======== DISPLAY/CONTROL PANEL — recessed dark area at top ======== -->
+  <!-- This is a single recessed panel housing symbols and buttons -->
+  <rect x="78" y="34" width="184" height="70" rx="5" fill="url(#display-bg)" stroke="#282828" stroke-width="0.4"/>
+  <!-- Top inner shadow -->
+  <rect x="80" y="36" width="180" height="2.5" rx="1.5" fill="rgba(0,0,0,0.2)"/>
+
+  <!-- ======== SYMBOL ROW — 4 illuminated drink icons ======== -->
+  <!-- Small amber/gold coffee cup symbols -->
+
+  <!-- Symbol 1: Espresso (small cup) -->
+  <g opacity="0.75">
+    <rect x="107" y="47" width="6" height="7" rx="1" fill="none" stroke="#C8A050" stroke-width="0.7"/>
+    <rect x="113" y="48.5" width="2" height="3.5" rx="0.7" fill="none" stroke="#C8A050" stroke-width="0.5"/>
+    <ellipse cx="110" cy="47" rx="2.3" ry="0.5" fill="rgba(200,160,80,0.35)"/>
+  </g>
+
+  <!-- Symbol 2: Espresso Doppio -->
+  <g opacity="0.75">
+    <rect x="139" y="47" width="6" height="7" rx="1" fill="none" stroke="#C8A050" stroke-width="0.7"/>
+    <rect x="141.5" y="47" width="6" height="7" rx="1" fill="none" stroke="#C8A050" stroke-width="0.5"/>
+    <ellipse cx="143" cy="47" rx="3" ry="0.5" fill="rgba(200,160,80,0.35)"/>
+  </g>
+
+  <!-- Symbol 3: Coffee (tall mug) — active/highlighted -->
+  <g opacity="1.0">
+    <rect x="171" y="45" width="7" height="9.5" rx="1.2" fill="none" stroke="#D4A86A" stroke-width="0.9"/>
+    <rect x="178" y="47" width="2.2" height="4" rx="0.7" fill="none" stroke="#D4A86A" stroke-width="0.6"/>
+    <ellipse cx="174.5" cy="45" rx="2.8" ry="0.6" fill="rgba(212,168,106,0.5)"/>
+  </g>
+
+  <!-- Symbol 4: Cafe Doppio -->
+  <g opacity="0.75">
+    <rect x="203" y="45" width="7" height="9.5" rx="1.2" fill="none" stroke="#C8A050" stroke-width="0.7"/>
+    <rect x="205.5" y="45" width="7" height="9.5" rx="1.2" fill="none" stroke="#C8A050" stroke-width="0.5"/>
+    <ellipse cx="208" cy="45" rx="3.5" ry="0.6" fill="rgba(200,160,80,0.35)"/>
+  </g>
+
+  <!-- ======== 4 BUTTONS — below symbols, extremely subtle ======== -->
+  <!-- On the real machine these are barely visible black-on-black -->
+  <circle cx="110" cy="72" r="4.5" fill="#121212" stroke="#222" stroke-width="0.4"/>
+  <circle cx="143" cy="72" r="4.5" fill="#121212" stroke="#222" stroke-width="0.4"/>
+  <!-- Active button gets a faint ring -->
+  <circle cx="175" cy="72" r="4.5" fill="#141414" stroke="#2E2E2E" stroke-width="0.5"/>
+  <circle cx="208" cy="72" r="4.5" fill="#121212" stroke="#222" stroke-width="0.4"/>
+
+  <!-- Tiny LED indicator dots -->
+  <circle cx="110" cy="80" r="0.5" fill="#333"/>
+  <circle cx="143" cy="80" r="0.5" fill="#333"/>
+  <circle cx="175" cy="80" r="0.6" fill="rgba(200,160,80,0.4)"/>
+  <circle cx="208" cy="80" r="0.5" fill="#333"/>
+
+  <!-- ======== HORIZONTAL SEAM — between panel and main body ======== -->
+  <line x1="58" y1="110" x2="282" y2="110" stroke="#252525" stroke-width="0.6"/>
+  <line x1="58" y1="111" x2="282" y2="111" stroke="rgba(255,255,255,0.012)" stroke-width="0.3"/>
+
+  <!-- ======== JURA LOGO MEDALLION — centered on flat front face ======== -->
+  <!-- The logo sits on the flat Piano Black surface between panel and niche -->
+  <circle cx="170" cy="142" r="14.5" fill="#1E1E1E" stroke="#555" stroke-width="1"/>
+  <circle cx="170" cy="142" r="13" fill="#272727" stroke="rgba(255,255,255,0.06)" stroke-width="0.3"/>
+  <text x="170" y="147" text-anchor="middle" font-size="10.5" font-family="sans-serif" fill="#CCC" font-style="italic" font-weight="700">jura</text>
+
+  <!-- ENA 4 model text -->
+  <text x="170" y="170" text-anchor="middle" font-size="7" font-family="sans-serif" fill="#666" font-weight="400" letter-spacing="1.5">ENA 4</text>
+
+  <!-- ======== DISPENSING NICHE — proportional cavity with depth ======== -->
+  <!-- The dispensing niche is a recessed area cut into the flat front -->
+  <rect x="100" y="195" width="140" height="150" rx="5" fill="#0A0A0A"/>
+  <!-- Inner wall shadows for recessed depth -->
+  <rect x="100" y="195" width="2.5" height="150" fill="rgba(255,255,255,0.015)"/>
+  <rect x="237.5" y="195" width="2.5" height="150" fill="rgba(0,0,0,0.15)"/>
+  <rect x="100" y="195" width="140" height="5" rx="3" fill="rgba(0,0,0,0.25)"/>
+  <!-- Bottom inner shadow -->
+  <rect x="100" y="340" width="140" height="3" fill="rgba(0,0,0,0.1)"/>
+  <!-- Subtle ambient reflection on niche back wall -->
+  <rect x="105" y="310" width="130" height="30" rx="3" fill="rgba(255,255,255,0.008)"/>
+
+  <!-- ======== SPOUT — descending from top of niche ======== -->
+  <!-- Spout mount housing -->
+  <rect x="157" y="196" width="26" height="9" rx="3" fill="#333" stroke="#444" stroke-width="0.3"/>
+  <!-- Height adjust tab -->
+  <rect x="184" y="198.5" width="4" height="4.5" rx="1" fill="#2C2C2C" stroke="#444" stroke-width="0.3"/>
+
+  <!-- Main spout body -->
+  <rect x="162" y="205" width="16" height="28" rx="2" fill="url(#spout-body)" stroke="#444" stroke-width="0.3"/>
+  <!-- Chrome highlight on spout body -->
+  <rect x="168" y="207" width="2.5" height="24" rx="1" fill="rgba(255,255,255,0.05)"/>
+
+  <!-- Dual nozzle tubes -->
+  <rect x="164" y="233" width="3.5" height="24" rx="1.3" fill="url(#spout-body)" stroke="#444" stroke-width="0.3"/>
+  <rect x="172.5" y="233" width="3.5" height="24" rx="1.3" fill="url(#spout-body)" stroke="#444" stroke-width="0.3"/>
+  <!-- Spreader bar -->
+  <rect x="163" y="245" width="14" height="1.8" rx="0.8" fill="#444"/>
+
+  <!-- Chrome nozzle tips -->
+  <ellipse cx="165.8" cy="258" rx="2.3" ry="2.8" fill="url(#spout-chrome)"/>
+  <ellipse cx="174.3" cy="258" rx="2.3" ry="2.8" fill="url(#spout-chrome)"/>
+  <!-- Nozzle openings -->
+  <ellipse cx="165.8" cy="259" rx="1.3" ry="1.8" fill="#888"/>
+  <ellipse cx="174.3" cy="259" rx="1.3" ry="1.8" fill="#888"/>
+
+  <!-- ======== FLAT BODY — narrow strip between niche and drip tray ======== -->
+  <!-- Subtle horizontal seam above drip tray -->
+  <line x1="60" y1="355" x2="280" y2="355" stroke="#252525" stroke-width="0.4"/>
+
+  <!-- ======== DRIP TRAY — chrome plated, extends slightly wider ======== -->
+  <path d="
+    M52 375
+    L52 392
+    Q52 404 70 406
+    L270 406
+    Q288 404 288 392
+    L288 375
+    Z
+  " fill="url(#chrome)" stroke="#BBB" stroke-width="0.5"/>
+  <!-- Black grate inset -->
+  <rect x="66" y="379" width="208" height="18" rx="2" fill="#181818"/>
+  <!-- Grate vertical lines -->
+  <line x1="84" y1="383" x2="84" y2="394" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="105" y1="383" x2="105" y2="394" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="126" y1="383" x2="126" y2="394" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="147" y1="383" x2="147" y2="394" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="168" y1="383" x2="168" y2="394" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="189" y1="383" x2="189" y2="394" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="210" y1="383" x2="210" y2="394" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="231" y1="383" x2="231" y2="394" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="252" y1="383" x2="252" y2="394" stroke="#2A2A2A" stroke-width="0.5"/>
+  <!-- Chrome trim line -->
+  <line x1="60" y1="400" x2="280" y2="400" stroke="#C0C0C0" stroke-width="0.5"/>
+  <!-- Black base -->
+  <path d="M62 404 Q62 415 80 417 L260 417 Q278 415 278 404 Z" fill="#1E1E1E"/>
+  <line x1="74" y1="417" x2="266" y2="417" stroke="#555" stroke-width="0.3"/>
+
+  <!-- ======== BEAN HOPPER LID — subtle on top ======== -->
+  <ellipse cx="170" cy="21" rx="35" ry="3" fill="#2A2A2A" stroke="#3A3A3A" stroke-width="0.4"/>
+  <ellipse cx="170" cy="20.5" rx="25" ry="1.8" fill="rgba(255,255,255,0.02)"/>
+</svg>`,
+  "Jura ENA 8": `<svg width="380" height="430" viewBox="0 0 380 430">
+  <defs>
+    <!-- Metropolitan Black — deep piano black with slight warm undertone -->
+    <linearGradient id="metro-black" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1E1E1E"/>
+      <stop offset="15%" stop-color="#282828"/>
+      <stop offset="40%" stop-color="#2E2E2E"/>
+      <stop offset="60%" stop-color="#2B2B2B"/>
+      <stop offset="85%" stop-color="#242424"/>
+      <stop offset="100%" stop-color="#1E1E1E"/>
+    </linearGradient>
+    <!-- Matte black front face — Metropolitan Black is ALL black -->
+    <linearGradient id="brushed-alum" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2A2A2A"/>
+      <stop offset="12%" stop-color="#303030"/>
+      <stop offset="30%" stop-color="#333"/>
+      <stop offset="50%" stop-color="#313131"/>
+      <stop offset="70%" stop-color="#323232"/>
+      <stop offset="88%" stop-color="#2E2E2E"/>
+      <stop offset="100%" stop-color="#2A2A2A"/>
+    </linearGradient>
+    <linearGradient id="chrome" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#A0A0A0"/>
+      <stop offset="30%" stop-color="#D0D0D0"/>
+      <stop offset="50%" stop-color="#E0E0E0"/>
+      <stop offset="70%" stop-color="#C8C8C8"/>
+      <stop offset="100%" stop-color="#A0A0A0"/>
+    </linearGradient>
+    <linearGradient id="chrome-v" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C0C0C0"/>
+      <stop offset="40%" stop-color="#D8D8D8"/>
+      <stop offset="60%" stop-color="#D0D0D0"/>
+      <stop offset="100%" stop-color="#A8A8A8"/>
+    </linearGradient>
+    <linearGradient id="gloss-black" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2A2A2A"/>
+      <stop offset="20%" stop-color="#181818"/>
+      <stop offset="50%" stop-color="#111"/>
+      <stop offset="80%" stop-color="#151515"/>
+      <stop offset="100%" stop-color="#1A1A1A"/>
+    </linearGradient>
+    <linearGradient id="spout-chrome" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#888"/>
+      <stop offset="25%" stop-color="#C0C0C0"/>
+      <stop offset="50%" stop-color="#DDD"/>
+      <stop offset="75%" stop-color="#BBB"/>
+      <stop offset="100%" stop-color="#888"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Shadow -->
+  <ellipse cx="170" cy="418" rx="120" ry="8" fill="rgba(255,255,255,0.04)"/>
+
+  <!-- ======== WATER TANK — crystal-pattern, right side (prominent on ENA 8) ======== -->
+  <!-- Tank runs full height of body: top of machine body (y=22) down to drip tray (y=368) -->
+  <rect x="283" y="22" width="32" height="346" rx="4" fill="rgba(45,55,70,0.50)" stroke="rgba(120,140,160,0.35)" stroke-width="0.6"/>
+  <!-- Crystal diamond crosshatch pattern — faceted rows spanning full tank height -->
+  <path d="M287 37 L295 47 L303 37 L295 27 Z" fill="none" stroke="rgba(160,200,240,0.10)" stroke-width="0.5"/>
+  <path d="M295 47 L303 57 L311 47 L303 37 Z" fill="none" stroke="rgba(160,200,240,0.08)" stroke-width="0.5"/>
+  <path d="M287 57 L295 67 L303 57 L295 47 Z" fill="none" stroke="rgba(160,200,240,0.10)" stroke-width="0.5"/>
+  <path d="M295 67 L303 77 L311 67 L303 57 Z" fill="none" stroke="rgba(160,200,240,0.08)" stroke-width="0.5"/>
+  <path d="M287 77 L295 87 L303 77 L295 67 Z" fill="none" stroke="rgba(160,200,240,0.10)" stroke-width="0.5"/>
+  <path d="M295 87 L303 97 L311 87 L303 77 Z" fill="none" stroke="rgba(160,200,240,0.08)" stroke-width="0.5"/>
+  <path d="M287 97 L295 107 L303 97 L295 87 Z" fill="none" stroke="rgba(160,200,240,0.10)" stroke-width="0.5"/>
+  <path d="M295 107 L303 117 L311 107 L303 97 Z" fill="none" stroke="rgba(160,200,240,0.08)" stroke-width="0.5"/>
+  <path d="M287 117 L295 127 L303 117 L295 107 Z" fill="none" stroke="rgba(160,200,240,0.10)" stroke-width="0.5"/>
+  <path d="M295 127 L303 137 L311 127 L303 117 Z" fill="none" stroke="rgba(160,200,240,0.08)" stroke-width="0.5"/>
+  <path d="M287 137 L295 147 L303 137 L295 127 Z" fill="none" stroke="rgba(160,200,240,0.10)" stroke-width="0.5"/>
+  <path d="M295 147 L303 157 L311 147 L303 137 Z" fill="none" stroke="rgba(160,200,240,0.08)" stroke-width="0.5"/>
+  <path d="M287 157 L295 167 L303 157 L295 147 Z" fill="none" stroke="rgba(160,200,240,0.10)" stroke-width="0.5"/>
+  <path d="M295 167 L303 177 L311 167 L303 157 Z" fill="none" stroke="rgba(160,200,240,0.08)" stroke-width="0.5"/>
+  <path d="M287 177 L295 187 L303 177 L295 167 Z" fill="none" stroke="rgba(160,200,240,0.10)" stroke-width="0.5"/>
+  <path d="M295 187 L303 197 L311 187 L303 177 Z" fill="none" stroke="rgba(160,200,240,0.08)" stroke-width="0.5"/>
+  <path d="M287 197 L295 207 L303 197 L295 187 Z" fill="none" stroke="rgba(160,200,240,0.10)" stroke-width="0.5"/>
+  <path d="M295 207 L303 217 L311 207 L303 197 Z" fill="none" stroke="rgba(160,200,240,0.08)" stroke-width="0.5"/>
+  <path d="M287 217 L295 227 L303 217 L295 207 Z" fill="none" stroke="rgba(160,200,240,0.10)" stroke-width="0.5"/>
+  <path d="M295 227 L303 237 L311 227 L303 217 Z" fill="none" stroke="rgba(160,200,240,0.08)" stroke-width="0.5"/>
+  <path d="M287 237 L295 247 L303 237 L295 227 Z" fill="none" stroke="rgba(160,200,240,0.10)" stroke-width="0.5"/>
+  <path d="M295 247 L303 257 L311 247 L303 237 Z" fill="none" stroke="rgba(160,200,240,0.08)" stroke-width="0.5"/>
+  <path d="M287 257 L295 267 L303 257 L295 247 Z" fill="none" stroke="rgba(160,200,240,0.10)" stroke-width="0.5"/>
+  <path d="M295 267 L303 277 L311 267 L303 257 Z" fill="none" stroke="rgba(160,200,240,0.08)" stroke-width="0.5"/>
+  <path d="M287 277 L295 287 L303 277 L295 267 Z" fill="none" stroke="rgba(160,200,240,0.10)" stroke-width="0.5"/>
+  <path d="M295 287 L303 297 L311 287 L303 277 Z" fill="none" stroke="rgba(160,200,240,0.08)" stroke-width="0.5"/>
+  <path d="M287 297 L295 307 L303 297 L295 287 Z" fill="none" stroke="rgba(160,200,240,0.10)" stroke-width="0.5"/>
+  <path d="M295 307 L303 317 L311 307 L303 297 Z" fill="none" stroke="rgba(160,200,240,0.08)" stroke-width="0.5"/>
+  <path d="M287 317 L295 327 L303 317 L295 307 Z" fill="none" stroke="rgba(160,200,240,0.10)" stroke-width="0.5"/>
+  <path d="M295 327 L303 337 L311 327 L303 317 Z" fill="none" stroke="rgba(160,200,240,0.08)" stroke-width="0.5"/>
+  <path d="M287 337 L295 347 L303 337 L295 327 Z" fill="none" stroke="rgba(160,200,240,0.10)" stroke-width="0.5"/>
+  <path d="M295 347 L303 357 L311 347 L303 337 Z" fill="none" stroke="rgba(160,200,240,0.08)" stroke-width="0.5"/>
+  <path d="M287 357 L295 367 L303 357 L295 347 Z" fill="none" stroke="rgba(160,200,240,0.10)" stroke-width="0.5"/>
+  <!-- Crosshatch diagonal lines for extra faceted texture -->
+  <line x1="287" y1="27" x2="311" y2="51" stroke="rgba(160,200,240,0.05)" stroke-width="0.3"/>
+  <line x1="287" y1="67" x2="311" y2="91" stroke="rgba(160,200,240,0.05)" stroke-width="0.3"/>
+  <line x1="287" y1="107" x2="311" y2="131" stroke="rgba(160,200,240,0.05)" stroke-width="0.3"/>
+  <line x1="287" y1="147" x2="311" y2="171" stroke="rgba(160,200,240,0.05)" stroke-width="0.3"/>
+  <line x1="287" y1="187" x2="311" y2="211" stroke="rgba(160,200,240,0.05)" stroke-width="0.3"/>
+  <line x1="287" y1="227" x2="311" y2="251" stroke="rgba(160,200,240,0.05)" stroke-width="0.3"/>
+  <line x1="287" y1="267" x2="311" y2="291" stroke="rgba(160,200,240,0.05)" stroke-width="0.3"/>
+  <line x1="287" y1="307" x2="311" y2="331" stroke="rgba(160,200,240,0.05)" stroke-width="0.3"/>
+  <line x1="287" y1="347" x2="311" y2="368" stroke="rgba(160,200,240,0.05)" stroke-width="0.3"/>
+  <line x1="311" y1="27" x2="287" y2="51" stroke="rgba(160,200,240,0.05)" stroke-width="0.3"/>
+  <line x1="311" y1="67" x2="287" y2="91" stroke="rgba(160,200,240,0.05)" stroke-width="0.3"/>
+  <line x1="311" y1="107" x2="287" y2="131" stroke="rgba(160,200,240,0.05)" stroke-width="0.3"/>
+  <line x1="311" y1="147" x2="287" y2="171" stroke="rgba(160,200,240,0.05)" stroke-width="0.3"/>
+  <line x1="311" y1="187" x2="287" y2="211" stroke="rgba(160,200,240,0.05)" stroke-width="0.3"/>
+  <line x1="311" y1="227" x2="287" y2="251" stroke="rgba(160,200,240,0.05)" stroke-width="0.3"/>
+  <line x1="311" y1="267" x2="287" y2="291" stroke="rgba(160,200,240,0.05)" stroke-width="0.3"/>
+  <line x1="311" y1="307" x2="287" y2="331" stroke="rgba(160,200,240,0.05)" stroke-width="0.3"/>
+  <line x1="311" y1="347" x2="287" y2="368" stroke="rgba(160,200,240,0.05)" stroke-width="0.3"/>
+  <!-- Water level — subtle blue tint in lower portion -->
+  <rect x="285" y="200" width="28" height="163" rx="3" fill="rgba(70,110,170,0.06)"/>
+  <!-- Tank highlight / vertical reflection -->
+  <rect x="291" y="27" width="4" height="336" rx="2" fill="rgba(255,255,255,0.06)"/>
+  <!-- Tank top cap -->
+  <rect x="285" y="18" width="28" height="6" rx="3" fill="rgba(60,60,70,0.7)" stroke="rgba(120,140,160,0.3)" stroke-width="0.4"/>
+
+  <!-- ======== MONOLITHIC BODY — single unified shape ======== -->
+  <!-- The ENA 8 is a compact, unified block — NOT 3-section like E-line -->
+  <path d="
+    M58 32
+    Q58 25 64 22
+    L276 22
+    Q282 25 282 32
+    L282 368
+    Q282 376 276 378
+    L64 378
+    Q58 376 58 368
+    Z
+  " fill="url(#metro-black)" stroke="#3A3A3A" stroke-width="0.8"/>
+  <!-- Top highlight — glossy reflection on Metropolitan Black -->
+  <path d="M64 22 L276 22 Q282 25 282 32 L282 40 Q170 46 58 40 L58 32 Q58 25 64 22 Z" fill="rgba(255,255,255,0.04)"/>
+  <!-- Left edge ambient light -->
+  <path d="M58 32 L61 32 L61 368 L58 368 Z" fill="rgba(255,255,255,0.025)"/>
+  <!-- Right edge shadow -->
+  <path d="M279 32 L282 32 L282 368 L279 368 Z" fill="rgba(0,0,0,0.08)"/>
+
+  <!-- ======== BRUSHED ALUMINUM FRONT PANEL — the signature sloping face ======== -->
+  <rect x="70" y="36" width="200" height="312" rx="5" fill="url(#brushed-alum)"/>
+  <!-- Subtle vertical brushed-metal texture lines -->
+  <line x1="90" y1="40" x2="90" y2="344" stroke="rgba(255,255,255,0.018)" stroke-width="0.3"/>
+  <line x1="115" y1="40" x2="115" y2="344" stroke="rgba(255,255,255,0.014)" stroke-width="0.3"/>
+  <line x1="140" y1="40" x2="140" y2="344" stroke="rgba(255,255,255,0.018)" stroke-width="0.3"/>
+  <line x1="170" y1="40" x2="170" y2="344" stroke="rgba(255,255,255,0.014)" stroke-width="0.3"/>
+  <line x1="200" y1="40" x2="200" y2="344" stroke="rgba(255,255,255,0.018)" stroke-width="0.3"/>
+  <line x1="225" y1="40" x2="225" y2="344" stroke="rgba(255,255,255,0.014)" stroke-width="0.3"/>
+  <line x1="250" y1="40" x2="250" y2="344" stroke="rgba(255,255,255,0.018)" stroke-width="0.3"/>
+  <!-- Top glossy reflection on aluminum -->
+  <rect x="70" y="36" width="200" height="16" rx="5" fill="rgba(255,255,255,0.035)"/>
+  <!-- Left edge highlight on aluminum panel -->
+  <rect x="70" y="36" width="3" height="312" fill="rgba(255,255,255,0.035)"/>
+
+  <!-- ======== 2.8" TFT TOUCHSCREEN DISPLAY ======== -->
+  <!-- Display bezel -->
+  <rect x="108" y="50" width="124" height="68" rx="5" fill="#0E0E0E" stroke="#444" stroke-width="0.5"/>
+  <!-- Inner screen -->
+  <rect x="113" y="54" width="114" height="60" rx="3" fill="#0A0A1E"/>
+  <!-- Screen backlight glow -->
+  <rect x="113" y="54" width="114" height="60" rx="3" fill="none" stroke="rgba(60,100,180,0.2)" stroke-width="1"/>
+  <!-- Subtle screen reflection -->
+  <path d="M113 54 L227 54 L227 62 Q170 66 113 62 Z" fill="rgba(255,255,255,0.04)"/>
+
+  <!-- Drink icons on screen — 2x3 grid -->
+  <!-- Row 1 -->
+  <!-- Espresso -->
+  <rect x="117" y="59" width="34" height="17" rx="2" fill="#14143A" stroke="rgba(90,130,210,0.4)" stroke-width="0.4"/>
+  <rect x="130" y="62" width="5" height="7" rx="1" fill="none" stroke="#D4A76A" stroke-width="0.8"/>
+  <ellipse cx="132.5" cy="61.5" rx="3.5" ry="1" fill="rgba(200,160,90,0.5)"/>
+  <text x="134" y="73.5" text-anchor="middle" font-size="2.6" fill="#9AACCC" font-family="sans-serif">Espresso</text>
+
+  <!-- Coffee -->
+  <rect x="154" y="59" width="34" height="17" rx="2" fill="#14143A" stroke="rgba(90,130,210,0.4)" stroke-width="0.4"/>
+  <rect x="165" y="61" width="7" height="8.5" rx="1.5" fill="none" stroke="#D4A76A" stroke-width="0.8"/>
+  <ellipse cx="168.5" cy="60.5" rx="4.5" ry="1" fill="rgba(200,160,90,0.5)"/>
+  <text x="171" y="73.5" text-anchor="middle" font-size="2.6" fill="#9AACCC" font-family="sans-serif">Coffee</text>
+
+  <!-- Cappuccino — highlighted/selected -->
+  <rect x="191" y="59" width="34" height="17" rx="2" fill="#1A1A48" stroke="rgba(120,160,240,0.5)" stroke-width="0.6"/>
+  <rect x="202" y="61" width="7" height="8.5" rx="1.5" fill="none" stroke="#D4A76A" stroke-width="0.8"/>
+  <ellipse cx="205.5" cy="66" rx="3.5" ry="1.8" fill="rgba(240,240,240,0.35)"/>
+  <text x="208" y="73.5" text-anchor="middle" font-size="2.3" fill="#AABBDD" font-family="sans-serif">Cappuccino</text>
+
+  <!-- Row 2 -->
+  <!-- Latte macchiato -->
+  <rect x="117" y="79" width="34" height="17" rx="2" fill="#14143A" stroke="rgba(90,130,210,0.4)" stroke-width="0.4"/>
+  <rect x="128" y="81" width="6" height="10.5" rx="1" fill="none" stroke="#D4A76A" stroke-width="0.7"/>
+  <rect x="129" y="84" width="4" height="2.2" rx="0.4" fill="rgba(240,240,240,0.3)"/>
+  <rect x="129" y="87.5" width="4" height="2.2" rx="0.4" fill="rgba(200,160,90,0.35)"/>
+  <text x="134" y="93.5" text-anchor="middle" font-size="2.3" fill="#9AACCC" font-family="sans-serif">Latte macc.</text>
+
+  <!-- Flat white -->
+  <rect x="154" y="79" width="34" height="17" rx="2" fill="#14143A" stroke="rgba(90,130,210,0.4)" stroke-width="0.4"/>
+  <rect x="165" y="81.5" width="7" height="8" rx="1.5" fill="none" stroke="#D4A76A" stroke-width="0.7"/>
+  <ellipse cx="168.5" cy="86" rx="3.2" ry="1.4" fill="rgba(240,240,240,0.3)"/>
+  <text x="171" y="93.5" text-anchor="middle" font-size="2.6" fill="#9AACCC" font-family="sans-serif">Flat white</text>
+
+  <!-- Cortado -->
+  <rect x="191" y="79" width="34" height="17" rx="2" fill="#14143A" stroke="rgba(90,130,210,0.4)" stroke-width="0.4"/>
+  <rect x="203" y="82" width="5" height="7" rx="1" fill="none" stroke="#D4A76A" stroke-width="0.7"/>
+  <rect x="204" y="84" width="3" height="1.8" rx="0.4" fill="rgba(240,240,240,0.25)"/>
+  <text x="208" y="93.5" text-anchor="middle" font-size="2.6" fill="#9AACCC" font-family="sans-serif">Cortado</text>
+
+  <!-- ======== JURA LOGO — centered below display ======== -->
+  <circle cx="170" cy="140" r="14" fill="#3E3E3E" stroke="#CCC" stroke-width="1.2"/>
+  <circle cx="170" cy="140" r="12.5" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.3"/>
+  <text x="170" y="145" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#EEE" font-style="italic" font-weight="700">jura</text>
+
+  <!-- ENA 8 model text -->
+  <text x="170" y="166" text-anchor="middle" font-size="8" font-family="sans-serif" fill="#AAA" font-weight="400" letter-spacing="2">ENA 8</text>
+
+  <!-- ======== PANEL SEAM LINES — visible separation between sections ======== -->
+  <!-- Upper seam — between display/controls area and logo section -->
+  <line x1="70" y1="128" x2="270" y2="128" stroke="#1E1E1E" stroke-width="0.6"/>
+  <line x1="70" y1="128.8" x2="270" y2="128.8" stroke="rgba(255,255,255,0.025)" stroke-width="0.3"/>
+  <!-- Main seam — between upper control panel and lower dispensing section -->
+  <line x1="70" y1="180" x2="270" y2="180" stroke="#1A1A1A" stroke-width="1.2"/>
+  <line x1="70" y1="181" x2="270" y2="181" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+  <!-- Body side seam — runs along the left and right edges of the front panel -->
+  <line x1="58" y1="180" x2="70" y2="180" stroke="#1A1A1A" stroke-width="0.8"/>
+  <line x1="270" y1="180" x2="282" y2="180" stroke="#1A1A1A" stroke-width="0.8"/>
+  <!-- Lower seam — above the drip tray area -->
+  <line x1="70" y1="348" x2="270" y2="348" stroke="#1E1E1E" stroke-width="0.6"/>
+  <line x1="70" y1="348.8" x2="270" y2="348.8" stroke="rgba(255,255,255,0.025)" stroke-width="0.3"/>
+  <!-- Vertical panel split lines — subtle side seams on body -->
+  <line x1="70" y1="36" x2="70" y2="348" stroke="#1C1C1C" stroke-width="0.5"/>
+  <line x1="270" y1="36" x2="270" y2="348" stroke="#1C1C1C" stroke-width="0.5"/>
+
+  <!-- ======== GLOSSY BLACK DISPENSING AREA ======== -->
+  <rect x="70" y="182" width="200" height="166" rx="4" fill="url(#gloss-black)"/>
+  <!-- Dispensing niche — recessed dark cavity -->
+  <rect x="98" y="196" width="144" height="135" rx="4" fill="#0D0D0D"/>
+  <!-- Niche left wall subtle edge -->
+  <rect x="98" y="196" width="3" height="135" fill="rgba(255,255,255,0.02)"/>
+  <!-- Niche right wall shadow -->
+  <rect x="239" y="196" width="3" height="135" fill="rgba(0,0,0,0.1)"/>
+  <!-- Niche top shadow -->
+  <rect x="98" y="196" width="144" height="5" fill="rgba(0,0,0,0.2)"/>
+  <!-- Glossy reflection band on outer panel -->
+  <path d="M70 182 L270 182 L270 197 Q170 205 70 197 Z" fill="rgba(255,255,255,0.025)"/>
+
+  <!-- ======== ILLUMINATED SPOUT — height-adjustable dual dispenser ======== -->
+  <!-- Spout housing/slide rail -->
+  <rect x="155" y="197" width="30" height="12" rx="3" fill="#444" stroke="#555" stroke-width="0.4"/>
+  <!-- Height adjust tab -->
+  <rect x="186" y="200" width="5" height="6" rx="1" fill="#333" stroke="#555" stroke-width="0.3"/>
+  <!-- Main spout body -->
+  <rect x="160" y="209" width="20" height="28" rx="2" fill="url(#spout-chrome)" stroke="#999" stroke-width="0.3"/>
+  <!-- Chrome highlight strip on spout body -->
+  <rect x="168" y="211" width="3" height="24" rx="1" fill="rgba(255,255,255,0.15)"/>
+  <!-- Dual nozzles -->
+  <rect x="163" y="237" width="4.5" height="24" rx="1.5" fill="url(#spout-chrome)" stroke="#999" stroke-width="0.3"/>
+  <rect x="172.5" y="237" width="4.5" height="24" rx="1.5" fill="url(#spout-chrome)" stroke="#999" stroke-width="0.3"/>
+  <!-- Spout spreader bar -->
+  <rect x="162" y="248" width="16" height="2.5" rx="1" fill="#BBB"/>
+  <!-- Nozzle openings -->
+  <ellipse cx="165.3" cy="262" rx="2.5" ry="3" fill="#999"/>
+  <ellipse cx="174.8" cy="262" rx="2.5" ry="3" fill="#999"/>
+  <!-- Illumination glow under spout (warm amber — signature ENA 8 feature) -->
+  <ellipse cx="170" cy="264" rx="18" ry="6" fill="rgba(210,140,50,0.12)"/>
+  <ellipse cx="170" cy="266" rx="12" ry="4" fill="rgba(210,140,50,0.08)"/>
+  <ellipse cx="170" cy="268" rx="6" ry="2" fill="rgba(220,160,60,0.06)"/>
+
+  <!-- Cup platform area at bottom of niche -->
+  <rect x="110" y="318" width="120" height="8" rx="2" fill="#161616" stroke="#222" stroke-width="0.3"/>
+  <!-- Cup platform subtle highlight -->
+  <rect x="120" y="318" width="100" height="2" rx="1" fill="rgba(255,255,255,0.015)"/>
+
+  <!-- ======== MILK FROTHER ATTACHMENT — right side connector + tube ======== -->
+  <!-- Connector housing on body edge -->
+  <rect x="272" y="215" width="10" height="16" rx="2.5" fill="#363636" stroke="#5A5A5A" stroke-width="0.6"/>
+  <!-- Chrome connector ring -->
+  <rect x="282" y="217" width="14" height="12" rx="3.5" fill="#505050" stroke="#777" stroke-width="0.5"/>
+  <!-- Connector highlight -->
+  <rect x="283" y="218" width="12" height="3.5" rx="1.5" fill="rgba(255,255,255,0.08)"/>
+  <!-- Connector chrome dot -->
+  <circle cx="289" cy="223" r="2.5" fill="#666" stroke="#888" stroke-width="0.3"/>
+  <!-- Silicone milk siphon tube going down to container -->
+  <path d="M296 229 Q302 229 302 236 L302 285 Q302 294 295 294" stroke="#585858" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M296 229 Q302 229 302 236 L302 285 Q302 294 295 294" stroke="rgba(255,255,255,0.06)" stroke-width="0.6" fill="none"/>
+  <!-- Tube end / milk pickup -->
+  <circle cx="293" cy="294" r="3" fill="#4A4A4A" stroke="#666" stroke-width="0.4"/>
+  <circle cx="293" cy="294" r="1.2" fill="#555"/>
+
+  <!-- ======== DRIP TRAY — chrome plated ======== -->
+  <path d="
+    M54 368
+    L54 386
+    Q54 398 70 400
+    L270 400
+    Q286 398 286 386
+    L286 368
+    Z
+  " fill="url(#chrome)" stroke="#BBB" stroke-width="0.5"/>
+  <!-- Black grate inset -->
+  <rect x="66" y="373" width="208" height="18" rx="2" fill="#181818"/>
+  <!-- Grate lines -->
+  <line x1="82" y1="377" x2="82" y2="388" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="105" y1="377" x2="105" y2="388" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="128" y1="377" x2="128" y2="388" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="151" y1="377" x2="151" y2="388" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="174" y1="377" x2="174" y2="388" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="197" y1="377" x2="197" y2="388" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="220" y1="377" x2="220" y2="388" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="243" y1="377" x2="243" y2="388" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="266" y1="377" x2="266" y2="388" stroke="#2A2A2A" stroke-width="0.5"/>
+  <!-- Chrome trim line -->
+  <line x1="60" y1="394" x2="280" y2="394" stroke="#C0C0C0" stroke-width="0.5"/>
+  <!-- Black base -->
+  <path d="M62 398 Q62 408 78 410 L262 410 Q278 408 278 398 Z" fill="#181818"/>
+  <!-- Base chrome trim -->
+  <line x1="72" y1="410" x2="268" y2="410" stroke="#888" stroke-width="0.3"/>
+
+  <!-- ======== BEAN HOPPER LID — subtle on top ======== -->
+  <ellipse cx="170" cy="23" rx="38" ry="4" fill="#262626" stroke="#3A3A3A" stroke-width="0.5"/>
+  <ellipse cx="170" cy="22" rx="28" ry="2" fill="rgba(255,255,255,0.03)"/>
+  <!-- Hopper lid handle/edge -->
+  <rect x="162" y="18" width="16" height="4" rx="2" fill="#2E2E2E" stroke="#3A3A3A" stroke-width="0.3"/>
+</svg>`,
+  "Jura E8": `<svg width="380" height="460" viewBox="0 0 380 460">
+  <defs>
+    <!-- Dark Inox — dark metallic silver with subtle warm undertone -->
+    <linearGradient id="dark-inox" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#3E4044"/>
+      <stop offset="15%" stop-color="#515458"/>
+      <stop offset="35%" stop-color="#5C5F64"/>
+      <stop offset="50%" stop-color="#585B60"/>
+      <stop offset="70%" stop-color="#545760"/>
+      <stop offset="85%" stop-color="#4A4D52"/>
+      <stop offset="100%" stop-color="#3E4044"/>
+    </linearGradient>
+    <linearGradient id="dark-inox-v" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#565960"/>
+      <stop offset="30%" stop-color="#4E5158"/>
+      <stop offset="60%" stop-color="#454850"/>
+      <stop offset="100%" stop-color="#3C3F46"/>
+    </linearGradient>
+    <linearGradient id="chrome" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#A0A0A0"/>
+      <stop offset="30%" stop-color="#D0D0D0"/>
+      <stop offset="50%" stop-color="#E0E0E0"/>
+      <stop offset="70%" stop-color="#C8C8C8"/>
+      <stop offset="100%" stop-color="#A0A0A0"/>
+    </linearGradient>
+    <linearGradient id="chrome-v" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C0C0C0"/>
+      <stop offset="40%" stop-color="#D8D8D8"/>
+      <stop offset="60%" stop-color="#D0D0D0"/>
+      <stop offset="100%" stop-color="#A8A8A8"/>
+    </linearGradient>
+    <linearGradient id="gloss-black" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2A2A2A"/>
+      <stop offset="20%" stop-color="#181818"/>
+      <stop offset="50%" stop-color="#111"/>
+      <stop offset="80%" stop-color="#151515"/>
+      <stop offset="100%" stop-color="#1A1A1A"/>
+    </linearGradient>
+    <linearGradient id="spout-chrome" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#888"/>
+      <stop offset="25%" stop-color="#C0C0C0"/>
+      <stop offset="50%" stop-color="#DDD"/>
+      <stop offset="75%" stop-color="#BBB"/>
+      <stop offset="100%" stop-color="#888"/>
+    </linearGradient>
+    <!-- Screen glow gradient -->
+    <linearGradient id="screen-glow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1A1A2E"/>
+      <stop offset="50%" stop-color="#16162A"/>
+      <stop offset="100%" stop-color="#111128"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Shadow -->
+  <ellipse cx="190" cy="445" rx="140" ry="10" fill="rgba(255,255,255,0.04)"/>
+
+  <!-- ======== 3-SECTION BODY ======== -->
+  <!-- LEFT WING (shorter, starts lower, angled side, smooth chrome finish) -->
+  <path d="
+    M48 65
+    Q38 65 34 69
+    L26 380
+    Q26 395 42 398
+    L105 398
+    L105 65
+    Z
+  " fill="url(#dark-inox)" stroke="#666" stroke-width="0.8"/>
+  <!-- Left wing subtle edge highlight -->
+  <path d="M48 65 L34 69 L26 380 L42 398 L105 398 L105 395 L40 395 Q30 392 30 378 L38 70 Q40 66 48 65 Z" fill="rgba(255,255,255,0.03)"/>
+
+  <!-- Vertical division line left -->
+  <line x1="105" y1="65" x2="105" y2="398" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+
+  <!-- CENTER SECTION (taller, extends higher) -->
+  <path d="
+    M105 28
+    Q105 24 109 24
+    L271 24
+    Q275 24 275 28
+    L275 398
+    L105 398
+    Z
+  " fill="url(#dark-inox)" stroke="#666" stroke-width="0.8"/>
+  <!-- Top highlight on center — metallic reflection -->
+  <path d="M109 24 L271 24 Q275 24 275 28 L275 34 Q190 38 105 34 L105 28 Q105 24 109 24 Z" fill="rgba(255,255,255,0.06)"/>
+  <!-- Left edge ambient light strip on center panel -->
+  <path d="M105 28 L108 28 L108 398 L105 398 Z" fill="rgba(255,255,255,0.04)"/>
+
+  <!-- RIGHT WING (shorter, starts lower, angled side) -->
+  <path d="
+    M275 65
+    L275 398
+    L338 398
+    Q354 395 354 380
+    L346 69
+    Q344 65 332 65
+    Z
+  " fill="url(#dark-inox)" stroke="#666" stroke-width="0.8"/>
+  <!-- Right wing edge highlight -->
+  <path d="M332 65 Q340 66 342 70 L350 378 Q352 392 340 395 L275 395 L275 398 L338 398 Q354 395 354 380 L346 69 Q344 65 332 65 Z" fill="rgba(255,255,255,0.04)"/>
+  <!-- Vertical division line right -->
+  <line x1="275" y1="65" x2="275" y2="398" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+
+  <!-- ======== 2.8" COLOR TOUCHSCREEN DISPLAY ======== -->
+  <!-- Chrome bezel surround — premium E8 feature -->
+  <rect x="114" y="33" width="152" height="76" rx="6" fill="url(#chrome)" stroke="#AAA" stroke-width="0.4"/>
+  <!-- Dark inner frame -->
+  <rect x="117" y="36" width="146" height="70" rx="4" fill="#1A1A1E" stroke="#444" stroke-width="0.3"/>
+
+  <!-- Color touchscreen — 2.8" TFT, vibrant backlit display -->
+  <rect x="126" y="42" width="128" height="52" rx="3" fill="#0A0A1E"/>
+  <!-- Screen backlight glow effect -->
+  <rect x="126" y="42" width="128" height="52" rx="3" fill="none" stroke="rgba(60,100,180,0.25)" stroke-width="1.2"/>
+  <!-- Subtle screen reflection -->
+  <path d="M126 42 L254 42 L254 50 Q190 55 126 50 Z" fill="rgba(255,255,255,0.04)" rx="3"/>
+
+  <!-- Drink icons on screen — 2x3 grid of colorful selections -->
+  <!-- Row 1 -->
+  <!-- Espresso -->
+  <rect x="131" y="47" width="36" height="20" rx="2.5" fill="#14143A" stroke="rgba(90,130,210,0.4)" stroke-width="0.5"/>
+  <rect x="144" y="52" width="6" height="8" rx="1" fill="none" stroke="#D4A76A" stroke-width="1"/>
+  <ellipse cx="147" cy="51.5" rx="4.5" ry="1.2" fill="rgba(200,160,90,0.5)"/>
+  <text x="149" y="63.5" text-anchor="middle" font-size="3.2" fill="#9AACCC" font-family="sans-serif">Espresso</text>
+
+  <!-- Coffee -->
+  <rect x="172" y="47" width="36" height="20" rx="2.5" fill="#14143A" stroke="rgba(90,130,210,0.4)" stroke-width="0.5"/>
+  <rect x="184" y="50" width="8" height="10" rx="1.5" fill="none" stroke="#D4A76A" stroke-width="1"/>
+  <ellipse cx="188" cy="49.5" rx="5.5" ry="1.4" fill="rgba(200,160,90,0.5)"/>
+  <text x="190" y="63.5" text-anchor="middle" font-size="3.2" fill="#9AACCC" font-family="sans-serif">Coffee</text>
+
+  <!-- Cappuccino — highlighted/selected -->
+  <rect x="213" y="47" width="36" height="20" rx="2.5" fill="#1A1A48" stroke="rgba(120,160,240,0.5)" stroke-width="0.7"/>
+  <rect x="225" y="50" width="8" height="10" rx="1.5" fill="none" stroke="#D4A76A" stroke-width="1"/>
+  <ellipse cx="229" cy="55" rx="4.5" ry="2.2" fill="rgba(240,240,240,0.35)"/>
+  <text x="231" y="63.5" text-anchor="middle" font-size="2.8" fill="#AABBDD" font-family="sans-serif">Cappuccino</text>
+
+  <!-- Row 2 -->
+  <!-- Latte macchiato -->
+  <rect x="131" y="71" width="36" height="20" rx="2.5" fill="#14143A" stroke="rgba(90,130,210,0.4)" stroke-width="0.5"/>
+  <rect x="142" y="73.5" width="7" height="12" rx="1.5" fill="none" stroke="#D4A76A" stroke-width="0.8"/>
+  <rect x="143" y="76.5" width="5" height="3" rx="0.5" fill="rgba(240,240,240,0.3)"/>
+  <rect x="143" y="80.5" width="5" height="3" rx="0.5" fill="rgba(200,160,90,0.35)"/>
+  <text x="149" y="88" text-anchor="middle" font-size="2.6" fill="#9AACCC" font-family="sans-serif">Latte macc.</text>
+
+  <!-- Flat white -->
+  <rect x="172" y="71" width="36" height="20" rx="2.5" fill="#14143A" stroke="rgba(90,130,210,0.4)" stroke-width="0.5"/>
+  <rect x="184" y="74" width="8" height="9.5" rx="1.5" fill="none" stroke="#D4A76A" stroke-width="0.8"/>
+  <ellipse cx="188" cy="78.5" rx="4" ry="1.8" fill="rgba(240,240,240,0.3)"/>
+  <text x="190" y="88" text-anchor="middle" font-size="2.8" fill="#9AACCC" font-family="sans-serif">Flat white</text>
+
+  <!-- Milk foam -->
+  <rect x="213" y="71" width="36" height="20" rx="2.5" fill="#14143A" stroke="rgba(90,130,210,0.4)" stroke-width="0.5"/>
+  <rect x="225" y="74" width="8" height="9.5" rx="1.5" fill="none" stroke="#BBBBD8" stroke-width="0.8"/>
+  <ellipse cx="229" cy="78.5" rx="4" ry="2.2" fill="rgba(240,240,240,0.4)"/>
+  <text x="231" y="88" text-anchor="middle" font-size="2.8" fill="#9AACCC" font-family="sans-serif">Milk foam</text>
+
+  <!-- ======== 6 OPERATING BUTTONS — 3 per side, outside chrome bezel ======== -->
+  <!-- Left side buttons — illuminated touch-sensitive with icons -->
+  <!-- Button 1: Power/standby -->
+  <circle cx="111" cy="48" r="4.5" fill="#2A2A30" stroke="#777" stroke-width="0.6"/>
+  <circle cx="111" cy="48" r="2.8" fill="none" stroke="#AAA" stroke-width="0.7"/>
+  <path d="M111 45.5 L111 47.5" stroke="#AAA" stroke-width="0.7"/>
+
+  <!-- Button 2: Scroll up -->
+  <circle cx="111" cy="62" r="4.5" fill="#2A2A30" stroke="#777" stroke-width="0.6"/>
+  <path d="M108 63.5 L111 60 L114 63.5" fill="none" stroke="#AAA" stroke-width="0.8"/>
+
+  <!-- Button 3: Select/confirm -->
+  <circle cx="111" cy="76" r="4.5" fill="#2A2A30" stroke="#777" stroke-width="0.6"/>
+  <circle cx="111" cy="76" r="2" fill="#999"/>
+
+  <!-- Right side buttons — illuminated touch-sensitive with icons -->
+  <!-- Button 4: Back/menu -->
+  <circle cx="269" cy="48" r="4.5" fill="#2A2A30" stroke="#777" stroke-width="0.6"/>
+  <path d="M267 46 L271 46 L271 50 L267 50 Z" fill="none" stroke="#AAA" stroke-width="0.6"/>
+  <path d="M267 47.5 L265.5 48 L267 48.5" fill="#AAA"/>
+
+  <!-- Button 5: Scroll down -->
+  <circle cx="269" cy="62" r="4.5" fill="#2A2A30" stroke="#777" stroke-width="0.6"/>
+  <path d="M266 60.5 L269 64 L272 60.5" fill="none" stroke="#AAA" stroke-width="0.8"/>
+
+  <!-- Button 6: Maintenance/settings -->
+  <circle cx="269" cy="76" r="4.5" fill="#2A2A30" stroke="#777" stroke-width="0.6"/>
+  <circle cx="269" cy="76" r="2.5" fill="none" stroke="#AAA" stroke-width="0.6"/>
+  <circle cx="269" cy="76" r="1" fill="#AAA"/>
+
+  <!-- ======== ROTARY DIAL — in right wing, chrome surround ======== -->
+  <!-- Chrome outer ring -->
+  <circle cx="314" cy="82" r="19" fill="url(#chrome)" stroke="#999" stroke-width="0.5"/>
+  <!-- Dark inner disc -->
+  <circle cx="314" cy="82" r="15" fill="#2A2A2E" stroke="#555" stroke-width="0.5"/>
+  <!-- Inner knob -->
+  <circle cx="314" cy="82" r="10" fill="#333338"/>
+  <!-- Center dot -->
+  <circle cx="314" cy="82" r="3" fill="#3C3C42"/>
+  <!-- Detent marks on chrome ring -->
+  <circle cx="314" cy="82" r="17" fill="none" stroke="#888" stroke-width="0.5" stroke-dasharray="1.5,2.5"/>
+  <!-- Arrow indicator above dial -->
+  <path d="M302 64 Q314 56 326 64" fill="none" stroke="#888" stroke-width="1"/>
+  <line x1="314" y1="58" x2="314" y2="62" stroke="#888" stroke-width="1"/>
+
+  <!-- ======== JURA LOGO PANEL — chrome accent panel, centered ======== -->
+  <rect x="155" y="116" width="70" height="62" rx="4" fill="url(#chrome-v)" stroke="#BBB" stroke-width="0.5"/>
+  <!-- Subtle glossy reflection on chrome panel -->
+  <rect x="157" y="118" width="66" height="22" rx="3" fill="rgba(255,255,255,0.08)"/>
+  <!-- Jura logo circle -->
+  <circle cx="190" cy="138" r="14" fill="#222" stroke="#DDD" stroke-width="1.2"/>
+  <circle cx="190" cy="138" r="12.5" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="0.3"/>
+  <text x="190" y="143" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#EEE" font-style="italic" font-weight="700">jura</text>
+  <!-- E 8 model text -->
+  <text x="190" y="170" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#777" font-weight="500" letter-spacing="3">E 8</text>
+
+  <!-- ======== PANEL SEAM LINE — horizontal division ======== -->
+  <line x1="72" y1="182" x2="308" y2="182" stroke="#3A3A40" stroke-width="1.5"/>
+  <line x1="72" y1="183" x2="308" y2="183" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+
+  <!-- ======== BLACK GLOSSY DISPENSING AREA ======== -->
+  <rect x="72" y="184" width="236" height="168" rx="5" fill="url(#gloss-black)"/>
+  <!-- Dispensing niche recessed area — darker inner cavity -->
+  <rect x="110" y="197" width="160" height="138" rx="4" fill="#0D0D0D"/>
+  <!-- Niche left wall shadow -->
+  <rect x="110" y="197" width="4" height="138" fill="rgba(255,255,255,0.02)"/>
+  <!-- Niche right wall shadow -->
+  <rect x="266" y="197" width="4" height="138" fill="rgba(0,0,0,0.1)"/>
+  <!-- Niche top shadow -->
+  <rect x="110" y="197" width="160" height="6" fill="rgba(0,0,0,0.2)"/>
+  <!-- Glossy reflection band on outer panel -->
+  <path d="M72 184 L308 184 L308 200 Q190 208 72 200 Z" fill="rgba(255,255,255,0.025)"/>
+  <!-- Subtle vertical reflection -->
+  <path d="M78 282 L95 184 L102 184 L85 282 Z" fill="rgba(255,255,255,0.01)"/>
+
+  <!-- ======== SPOUT — adjustable height HP3 coffee + milk dispenser ======== -->
+  <!-- Spout housing/slide rail -->
+  <rect x="172" y="198" width="36" height="14" rx="3" fill="#555" stroke="#666" stroke-width="0.4"/>
+  <!-- Height adjust tab on right -->
+  <rect x="209" y="201" width="6" height="8" rx="1.5" fill="#444" stroke="#666" stroke-width="0.3"/>
+  <!-- Main spout body — compact HP3 unit -->
+  <rect x="178" y="212" width="24" height="30" rx="2.5" fill="url(#spout-chrome)" stroke="#999" stroke-width="0.3"/>
+  <!-- Chrome highlight strip on spout body -->
+  <rect x="188" y="214" width="3" height="26" rx="1" fill="rgba(255,255,255,0.15)"/>
+  <!-- Dual coffee nozzle tubes — two separate parallel spouts -->
+  <rect x="180" y="242" width="7" height="28" rx="3" fill="url(#spout-chrome)" stroke="#999" stroke-width="0.3"/>
+  <rect x="193" y="242" width="7" height="28" rx="3" fill="url(#spout-chrome)" stroke="#999" stroke-width="0.3"/>
+  <!-- Chrome highlights on each nozzle tube -->
+  <rect x="182.5" y="244" width="2" height="24" rx="1" fill="rgba(255,255,255,0.15)"/>
+  <rect x="195.5" y="244" width="2" height="24" rx="1" fill="rgba(255,255,255,0.15)"/>
+  <!-- Spout spreader bar connecting the two nozzles -->
+  <rect x="179" y="252" width="22" height="3" rx="1" fill="#BBB" stroke="#999" stroke-width="0.2"/>
+  <!-- Nozzle tip flanges — flared ends on each tube -->
+  <ellipse cx="183.5" cy="270" rx="4.2" ry="2.2" fill="url(#spout-chrome)" stroke="#999" stroke-width="0.3"/>
+  <ellipse cx="196.5" cy="270" rx="4.2" ry="2.2" fill="url(#spout-chrome)" stroke="#999" stroke-width="0.3"/>
+  <!-- Nozzle openings — dark holes at each tip -->
+  <ellipse cx="183.5" cy="271" rx="2.8" ry="1.5" fill="#444"/>
+  <ellipse cx="196.5" cy="271" rx="2.8" ry="1.5" fill="#444"/>
+
+  <!-- ======== MILK / CAPPUCCINO SPOUT — chrome tube, right side ======== -->
+  <defs>
+    <linearGradient id="milk-tube-chrome" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#999"/>
+      <stop offset="20%" stop-color="#C8C8C8"/>
+      <stop offset="40%" stop-color="#E2E2E2"/>
+      <stop offset="55%" stop-color="#F0F0F0"/>
+      <stop offset="70%" stop-color="#D8D8D8"/>
+      <stop offset="85%" stop-color="#B8B8B8"/>
+      <stop offset="100%" stop-color="#909090"/>
+    </linearGradient>
+    <linearGradient id="milk-knob-chrome" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#888"/>
+      <stop offset="30%" stop-color="#BBB"/>
+      <stop offset="50%" stop-color="#D0D0D0"/>
+      <stop offset="70%" stop-color="#B8B8B8"/>
+      <stop offset="100%" stop-color="#888"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Mounting bracket at top — where tube connects to machine body -->
+  <rect x="282" y="116" width="18" height="10" rx="2" fill="url(#milk-knob-chrome)" stroke="#AAA" stroke-width="0.4"/>
+  <rect x="284" y="118" width="14" height="6" rx="1.5" fill="rgba(255,255,255,0.08)"/>
+
+  <!-- Main chrome vertical tube — slight curve via path -->
+  <path d="
+    M288 126
+    Q287 160 286 200
+    Q285.8 220 285.5 245
+  " fill="none" stroke="url(#milk-tube-chrome)" stroke-width="10" stroke-linecap="round"/>
+  <!-- Chrome highlight stripe running down the tube -->
+  <path d="
+    M291 126
+    Q290 160 289 200
+    Q288.8 220 288.5 245
+  " fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Dark edge on left side of tube for depth -->
+  <path d="
+    M284 126
+    Q283 160 282 200
+    Q281.8 220 281.5 245
+  " fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Adjustment knob near top of tube -->
+  <ellipse cx="296" cy="148" rx="6" ry="5.5" fill="url(#milk-knob-chrome)" stroke="#AAA" stroke-width="0.4"/>
+  <ellipse cx="296" cy="148" rx="4" ry="3.8" fill="#3A3A40" stroke="#666" stroke-width="0.3"/>
+  <!-- Knob grip ridges -->
+  <line x1="293" y1="146" x2="293" y2="150" stroke="rgba(255,255,255,0.12)" stroke-width="0.5"/>
+  <line x1="295" y1="145.5" x2="295" y2="150.5" stroke="rgba(255,255,255,0.12)" stroke-width="0.5"/>
+  <line x1="297" y1="145.5" x2="297" y2="150.5" stroke="rgba(255,255,255,0.12)" stroke-width="0.5"/>
+  <line x1="299" y1="146" x2="299" y2="150" stroke="rgba(255,255,255,0.12)" stroke-width="0.5"/>
+  <!-- Knob indicator dot -->
+  <circle cx="296" cy="148" r="1" fill="#555"/>
+
+  <!-- Nozzle tip at bottom — flared dispensing end -->
+  <ellipse cx="285.5" cy="245" rx="6.5" ry="3" fill="url(#milk-tube-chrome)" stroke="#AAA" stroke-width="0.3"/>
+  <ellipse cx="285.5" cy="247" rx="5" ry="2" fill="#888" stroke="#777" stroke-width="0.3"/>
+  <!-- Nozzle opening -->
+  <ellipse cx="285.5" cy="248" rx="3" ry="1.2" fill="#555"/>
+
+  <!-- ======== DRIP TRAY ======== -->
+  <!-- Chrome tray surround -->
+  <path d="
+    M30 380
+    L30 400
+    Q30 418 55 420
+    L325 420
+    Q350 418 350 400
+    L350 380
+    Z
+  " fill="url(#chrome)" stroke="#BBB" stroke-width="0.5"/>
+  <!-- Black grate inset -->
+  <rect x="50" y="385" width="280" height="22" rx="3" fill="#181818"/>
+  <!-- Grate lines -->
+  <line x1="75" y1="390" x2="75" y2="403" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="105" y1="390" x2="105" y2="403" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="135" y1="390" x2="135" y2="403" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="165" y1="390" x2="165" y2="403" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="195" y1="390" x2="195" y2="403" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="225" y1="390" x2="225" y2="403" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="255" y1="390" x2="255" y2="403" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="285" y1="390" x2="285" y2="403" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="315" y1="390" x2="315" y2="403" stroke="#2A2A2A" stroke-width="0.5"/>
+  <!-- Chrome trim line on drip tray -->
+  <line x1="40" y1="411" x2="340" y2="411" stroke="#C0C0C0" stroke-width="0.5"/>
+  <!-- Black base -->
+  <path d="M42 418 Q42 432 68 434 L312 434 Q338 432 338 418 Z" fill="#1E1E22"/>
+  <!-- Base chrome trim -->
+  <line x1="60" y1="434" x2="320" y2="434" stroke="#888" stroke-width="0.3"/>
+</svg>`,
+  "Jura J8": `<svg width="390" height="460" viewBox="0 0 390 460">
+  <defs>
+    <!-- Midnight Silver body gradient — dark gunmetal, not bright silver -->
+    <linearGradient id="midnight-silver" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#4A4A52"/>
+      <stop offset="15%" stop-color="#5C5C66"/>
+      <stop offset="40%" stop-color="#686874"/>
+      <stop offset="60%" stop-color="#646470"/>
+      <stop offset="85%" stop-color="#56565E"/>
+      <stop offset="100%" stop-color="#4A4A52"/>
+    </linearGradient>
+    <linearGradient id="midnight-silver-v" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#626270"/>
+      <stop offset="30%" stop-color="#5A5A66"/>
+      <stop offset="60%" stop-color="#525260"/>
+      <stop offset="100%" stop-color="#4A4A55"/>
+    </linearGradient>
+    <linearGradient id="chrome" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#A0A0A0"/>
+      <stop offset="30%" stop-color="#D0D0D0"/>
+      <stop offset="50%" stop-color="#E0E0E0"/>
+      <stop offset="70%" stop-color="#C8C8C8"/>
+      <stop offset="100%" stop-color="#A0A0A0"/>
+    </linearGradient>
+    <linearGradient id="chrome-v" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C0C0C0"/>
+      <stop offset="40%" stop-color="#D8D8D8"/>
+      <stop offset="60%" stop-color="#D0D0D0"/>
+      <stop offset="100%" stop-color="#A8A8A8"/>
+    </linearGradient>
+    <linearGradient id="gloss-black" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2A2A2A"/>
+      <stop offset="20%" stop-color="#181818"/>
+      <stop offset="50%" stop-color="#111"/>
+      <stop offset="80%" stop-color="#151515"/>
+      <stop offset="100%" stop-color="#1A1A1A"/>
+    </linearGradient>
+    <linearGradient id="spout-chrome" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#888"/>
+      <stop offset="25%" stop-color="#C0C0C0"/>
+      <stop offset="50%" stop-color="#DDD"/>
+      <stop offset="75%" stop-color="#BBB"/>
+      <stop offset="100%" stop-color="#888"/>
+    </linearGradient>
+    <!-- Bright chrome gradient for prominent milk spout -->
+    <linearGradient id="milk-spout-chrome" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#A0A0A8"/>
+      <stop offset="15%" stop-color="#C8C8D0"/>
+      <stop offset="40%" stop-color="#E8E8EE"/>
+      <stop offset="55%" stop-color="#F0F0F4"/>
+      <stop offset="70%" stop-color="#D8D8E0"/>
+      <stop offset="90%" stop-color="#B0B0B8"/>
+      <stop offset="100%" stop-color="#9898A0"/>
+    </linearGradient>
+    <linearGradient id="milk-spout-chrome-v" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#D0D0D8"/>
+      <stop offset="30%" stop-color="#E0E0E8"/>
+      <stop offset="60%" stop-color="#D8D8E0"/>
+      <stop offset="100%" stop-color="#B8B8C0"/>
+    </linearGradient>
+    <!-- Screen glow for touchscreen -->
+    <linearGradient id="screen-glow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1A1A2E"/>
+      <stop offset="50%" stop-color="#16213E"/>
+      <stop offset="100%" stop-color="#1A1A2E"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Shadow -->
+  <ellipse cx="195" cy="445" rx="145" ry="10" fill="rgba(255,255,255,0.04)"/>
+
+  <!-- ======== BEAN HOPPER (top of machine) ======== -->
+  <!-- Hopper lid — dark tinted plastic, slightly recessed on top of center -->
+  <rect x="140" y="18" width="114" height="8" rx="3" fill="#3A3A42" stroke="#4A4A52" stroke-width="0.4"/>
+  <!-- Hopper lid handle ridge -->
+  <rect x="175" y="19" width="44" height="3" rx="1.5" fill="#484850"/>
+  <line x1="185" y1="20.5" x2="209" y2="20.5" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+
+  <!-- ======== 3-SECTION BODY — Midnight Silver ======== -->
+  <!-- LEFT WING (shorter, starts lower, angled side) -->
+  <path d="
+    M52 68
+    Q42 68 38 72
+    L30 380
+    Q30 395 46 398
+    L110 398
+    L110 68
+    Z
+  " fill="url(#midnight-silver)" stroke="#777" stroke-width="0.5"/>
+  <!-- Left wing subtle edge highlight -->
+  <path d="M52 68 L38 72 L30 380 L46 398 L110 398 L110 395 L44 395 Q34 392 34 378 L42 73 Q44 69 52 68 Z" fill="rgba(255,255,255,0.03)"/>
+
+  <!-- Vertical division line left -->
+  <line x1="110" y1="68" x2="110" y2="398" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+
+  <!-- CENTER SECTION (taller, extends higher) -->
+  <path d="
+    M110 28
+    Q110 24 114 24
+    L280 24
+    Q284 24 284 28
+    L284 398
+    L110 398
+    Z
+  " fill="url(#midnight-silver)" stroke="#777" stroke-width="0.5"/>
+  <!-- Top highlight on center — glossy reflection -->
+  <path d="M114 24 L280 24 Q284 24 284 28 L284 34 Q197 38 110 34 L110 28 Q110 24 114 24 Z" fill="rgba(255,255,255,0.06)"/>
+  <!-- Left edge ambient light strip on center panel -->
+  <path d="M110 28 L113 28 L113 398 L110 398 Z" fill="rgba(255,255,255,0.03)"/>
+
+  <!-- RIGHT WING (shorter, starts lower, angled side — NO rotary dial on J8) -->
+  <path d="
+    M284 68
+    L284 398
+    L348 398
+    Q364 395 364 380
+    L356 72
+    Q354 68 342 68
+    Z
+  " fill="url(#midnight-silver)" stroke="#777" stroke-width="0.5"/>
+  <!-- Right wing edge highlight -->
+  <path d="M342 68 Q350 69 352 73 L360 378 Q362 392 350 395 L284 395 L284 398 L348 398 Q364 395 364 380 L356 72 Q354 68 342 68 Z" fill="rgba(255,255,255,0.03)"/>
+  <!-- Vertical division line right -->
+  <line x1="284" y1="68" x2="284" y2="398" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+
+  <!-- ======== 4.3" COLOR TOUCHSCREEN — large, centered in center section ======== -->
+  <!-- Outer bezel — recessed dark frame -->
+  <rect x="120" y="34" width="154" height="82" rx="5" fill="#111" stroke="#2A2A2A" stroke-width="0.5"/>
+  <!-- Inner screen bezel -->
+  <rect x="125" y="38" width="144" height="74" rx="4" fill="#0A0A0A"/>
+  <!-- Active screen area with subtle blue-tinted glow -->
+  <rect x="129" y="42" width="136" height="66" rx="3" fill="url(#screen-glow)"/>
+
+  <!-- Touchscreen drink grid — 2x3 layout showing specialty selection -->
+  <!-- Row 1 -->
+  <rect x="133" y="46" width="40" height="18" rx="2" fill="#222838" stroke="#3A4058" stroke-width="0.3"/>
+  <text x="138" y="54" font-size="3.5" fill="#8899BB" font-family="sans-serif">Espresso</text>
+  <rect x="138" y="56" width="8" height="5" rx="1" fill="none" stroke="#AA8855" stroke-width="0.4"/>
+
+  <rect x="177" y="46" width="40" height="18" rx="2" fill="#222838" stroke="#3A4058" stroke-width="0.3"/>
+  <text x="182" y="54" font-size="3.2" fill="#8899BB" font-family="sans-serif">Cappuccino</text>
+  <rect x="198" y="56" width="8" height="5" rx="1" fill="none" stroke="#AA8855" stroke-width="0.4"/>
+
+  <rect x="221" y="46" width="40" height="18" rx="2" fill="#222838" stroke="#3A4058" stroke-width="0.3"/>
+  <text x="226" y="54" font-size="3.2" fill="#8899BB" font-family="sans-serif">Flat White</text>
+  <rect x="242" y="56" width="8" height="5" rx="1" fill="none" stroke="#AA8855" stroke-width="0.4"/>
+
+  <!-- Row 2 -->
+  <rect x="133" y="68" width="40" height="18" rx="2" fill="#222838" stroke="#3A4058" stroke-width="0.3"/>
+  <text x="138" y="76" font-size="3.5" fill="#8899BB" font-family="sans-serif">Latte</text>
+  <rect x="138" y="78" width="8" height="5" rx="1" fill="none" stroke="#AA8855" stroke-width="0.4"/>
+
+  <rect x="177" y="68" width="40" height="18" rx="2" fill="#253020" stroke="#3A5030" stroke-width="0.3"/>
+  <text x="180" y="76" font-size="3" fill="#88AA77" font-family="sans-serif">Sweet Foam</text>
+  <rect x="198" y="78" width="8" height="5" rx="1" fill="none" stroke="#77AA55" stroke-width="0.4"/>
+
+  <rect x="221" y="68" width="40" height="18" rx="2" fill="#222838" stroke="#3A4058" stroke-width="0.3"/>
+  <text x="226" y="76" font-size="3.5" fill="#8899BB" font-family="sans-serif">Ristretto</text>
+  <rect x="242" y="78" width="8" height="5" rx="1" fill="none" stroke="#AA8855" stroke-width="0.4"/>
+
+  <!-- Navigation dots at bottom of screen -->
+  <circle cx="185" cy="102" r="1.5" fill="#556688"/>
+  <circle cx="192" cy="102" r="1.5" fill="#334466"/>
+  <circle cx="199" cy="102" r="1.5" fill="#334466"/>
+  <circle cx="206" cy="102" r="1.5" fill="#334466"/>
+
+  <!-- Screen edge highlight — premium glass look -->
+  <rect x="129" y="42" width="136" height="2" rx="1" fill="rgba(255,255,255,0.06)"/>
+
+  <!-- ======== RIGHT WING — smooth panel with power button and Wi-Fi indicator ======== -->
+  <!-- Subtle power button on right wing -->
+  <circle cx="320" cy="82" r="6" fill="#3A3A42" stroke="#555" stroke-width="0.5"/>
+  <circle cx="320" cy="82" r="4.5" fill="none" stroke="#666" stroke-width="0.6"/>
+  <path d="M320 78" stroke="#666" stroke-width="0.7"/>
+  <circle cx="320" cy="82" r="4.5" fill="none" stroke="#666" stroke-width="0.6"/>
+  <path d="M320 77.5 L320 80" stroke="#777" stroke-width="0.8"/>
+  <!-- Wi-Fi indicator below power button -->
+  <path d="M312 100 Q320 94 328 100" fill="none" stroke="#4A4A52" stroke-width="0.6"/>
+  <path d="M315 98 Q320 95 325 98" fill="none" stroke="#4A4A52" stroke-width="0.6"/>
+  <circle cx="320" cy="100" r="0.8" fill="#4A4A52"/>
+
+  <!-- ======== JURA LOGO PANEL — centered below screen ======== -->
+  <rect x="162" y="124" width="70" height="54" rx="4" fill="#3E3E46" stroke="#555" stroke-width="0.5"/>
+  <!-- Subtle glossy reflection on logo panel -->
+  <rect x="164" y="126" width="66" height="18" rx="3" fill="rgba(255,255,255,0.02)"/>
+  <!-- Jura logo circle — signature branding -->
+  <circle cx="197" cy="142" r="14" fill="#2A2A30" stroke="#BBB" stroke-width="1.2"/>
+  <circle cx="197" cy="142" r="12.5" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.3"/>
+  <text x="197" y="147" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#DDD" font-style="italic" font-weight="700">jura</text>
+  <!-- J 8 model text -->
+  <text x="197" y="170" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#999" font-weight="500" letter-spacing="3">J 8</text>
+
+  <!-- ======== PANEL SEAM LINE — horizontal division ======== -->
+  <line x1="76" y1="182" x2="318" y2="182" stroke="#3A3A42" stroke-width="1.5"/>
+  <line x1="76" y1="183" x2="318" y2="183" stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/>
+
+  <!-- ======== BLACK GLOSSY DISPENSING AREA ======== -->
+  <rect x="76" y="184" width="242" height="170" rx="5" fill="url(#gloss-black)"/>
+  <!-- Dispensing niche recessed area — darker inner cavity -->
+  <rect x="114" y="197" width="166" height="140" rx="4" fill="#0D0D0D"/>
+  <!-- Niche left wall shadow -->
+  <rect x="114" y="197" width="4" height="140" fill="rgba(255,255,255,0.02)"/>
+  <!-- Niche right wall shadow -->
+  <rect x="276" y="197" width="4" height="140" fill="rgba(0,0,0,0.1)"/>
+  <!-- Niche top shadow -->
+  <rect x="114" y="197" width="166" height="6" fill="rgba(0,0,0,0.2)"/>
+  <!-- Glossy reflection band on outer panel -->
+  <path d="M76 184 L318 184 L318 200 Q197 208 76 200 Z" fill="rgba(255,255,255,0.025)"/>
+  <!-- Subtle vertical reflection -->
+  <path d="M82 280 L99 184 L106 184 L89 280 Z" fill="rgba(255,255,255,0.01)"/>
+
+  <!-- ======== SPOUT HOUSING RAIL — shared top rail across dispensing niche ======== -->
+  <rect x="145" y="198" width="104" height="12" rx="3" fill="#444" stroke="#555" stroke-width="0.4"/>
+  <!-- Housing rail chrome accent line -->
+  <line x1="150" y1="204" x2="244" y2="204" stroke="#555" stroke-width="0.3"/>
+  <!-- Height adjust tab on right end of rail -->
+  <rect x="241" y="201" width="5" height="6" rx="1" fill="#333" stroke="#555" stroke-width="0.3"/>
+
+  <!-- ======== COFFEE SPOUT — dual chrome nozzles, centered in niche ======== -->
+  <!-- Main spout body — centered at roughly x=190 -->
+  <rect x="182" y="210" width="16" height="30" rx="2" fill="url(#spout-chrome)" stroke="#999" stroke-width="0.3"/>
+  <!-- Chrome highlight strip on spout body -->
+  <rect x="188" y="212" width="3" height="26" rx="1" fill="rgba(255,255,255,0.15)"/>
+  <!-- Dual coffee nozzles -->
+  <rect x="184" y="240" width="4" height="26" rx="1.5" fill="url(#spout-chrome)" stroke="#999" stroke-width="0.3"/>
+  <rect x="192" y="240" width="4" height="26" rx="1.5" fill="url(#spout-chrome)" stroke="#999" stroke-width="0.3"/>
+  <!-- Spout spreader bar connecting the two nozzles -->
+  <rect x="183" y="252" width="14" height="3" rx="1" fill="#BBB"/>
+  <!-- Nozzle openings -->
+  <ellipse cx="186" cy="267" rx="2.5" ry="3" fill="#999"/>
+  <ellipse cx="194" cy="267" rx="2.5" ry="3" fill="#999"/>
+
+  <!-- ======== MILK SPOUT — OUTSIDE the black niche, on the silver body panel to the RIGHT ======== -->
+  <!-- Positioned on the silver body panel between the niche right edge and the body right edge -->
+  <!-- Mounting bracket on silver panel -->
+  <rect x="288" y="196" width="18" height="8" rx="2" fill="url(#milk-spout-chrome)" stroke="#999" stroke-width="0.4"/>
+  <!-- Adjustment knob -->
+  <circle cx="297" cy="210" r="7" fill="url(#milk-spout-chrome)" stroke="#BBB" stroke-width="0.5"/>
+  <circle cx="297" cy="210" r="4.5" fill="#505058" stroke="#999" stroke-width="0.4"/>
+  <circle cx="297" cy="207" r="0.8" fill="#CCC"/>
+  <!-- Milk spout tube — shorter than coffee nozzles, chrome -->
+  <rect x="291" y="216" width="12" height="60" rx="3" fill="url(#milk-spout-chrome)" stroke="#C0C0C0" stroke-width="0.5"/>
+  <!-- Chrome highlight -->
+  <rect x="296" y="218" width="3" height="56" rx="1" fill="rgba(255,255,255,0.18)"/>
+  <!-- Left shadow -->
+  <rect x="291" y="218" width="2" height="56" rx="1" fill="rgba(0,0,0,0.08)"/>
+  <!-- Chrome band -->
+  <rect x="292" y="240" width="10" height="2.5" rx="1" fill="#D8D8E0" stroke="#BBB" stroke-width="0.3"/>
+  <!-- Nozzle tip -->
+  <ellipse cx="297" cy="278" rx="7" ry="3" fill="url(#milk-spout-chrome)" stroke="#BBB" stroke-width="0.3"/>
+  <ellipse cx="297" cy="279" rx="3" ry="2" fill="#888"/>
+
+
+  <!-- ======== COFFEE EYE CUP SENSOR — integrated into left niche wall ======== -->
+  <circle cx="122" cy="220" r="3.5" fill="#181818" stroke="#333" stroke-width="0.5"/>
+  <circle cx="122" cy="220" r="2" fill="#222"/>
+  <circle cx="122" cy="220" r="1" fill="#3A4455"/>
+  <!-- Sensor subtle glow -->
+  <circle cx="122" cy="220" r="4" fill="none" stroke="rgba(100,120,160,0.15)" stroke-width="0.5"/>
+
+  <!-- ======== CUP ILLUMINATION — warm amber LEDs on sides of niche ======== -->
+  <rect x="116" y="300" width="3" height="14" rx="1" fill="#3D2E18"/>
+  <rect x="116.5" y="302" width="2" height="10" rx="0.5" fill="#5A4020" opacity="0.9"/>
+  <rect x="275" y="300" width="3" height="14" rx="1" fill="#3D2E18"/>
+  <rect x="275.5" y="302" width="2" height="10" rx="0.5" fill="#5A4020" opacity="0.9"/>
+  <!-- Warm light glow on niche floor -->
+  <ellipse cx="197" cy="332" rx="40" ry="4" fill="rgba(80,60,20,0.08)"/>
+
+  <!-- ======== CUP PLATFORM — subtle shelf at bottom of niche ======== -->
+  <rect x="118" y="326" width="158" height="8" rx="2" fill="#161616" stroke="#252525" stroke-width="0.3"/>
+  <line x1="122" y1="330" x2="272" y2="330" stroke="#222" stroke-width="0.3"/>
+
+  <!-- ======== DRIP TRAY ======== -->
+  <!-- Chrome tray surround -->
+  <path d="
+    M34 380
+    L34 400
+    Q34 418 59 420
+    L335 420
+    Q360 418 360 400
+    L360 380
+    Z
+  " fill="url(#chrome)" stroke="#BBB" stroke-width="0.5"/>
+  <!-- Black grate inset -->
+  <rect x="54" y="385" width="286" height="22" rx="3" fill="#181818"/>
+  <!-- Grate lines -->
+  <line x1="79" y1="390" x2="79" y2="403" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="109" y1="390" x2="109" y2="403" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="139" y1="390" x2="139" y2="403" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="169" y1="390" x2="169" y2="403" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="199" y1="390" x2="199" y2="403" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="229" y1="390" x2="229" y2="403" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="259" y1="390" x2="259" y2="403" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="289" y1="390" x2="289" y2="403" stroke="#2A2A2A" stroke-width="0.5"/>
+  <line x1="319" y1="390" x2="319" y2="403" stroke="#2A2A2A" stroke-width="0.5"/>
+  <!-- Chrome trim line on drip tray -->
+  <line x1="44" y1="411" x2="350" y2="411" stroke="#C0C0C0" stroke-width="0.5"/>
+  <!-- Black base -->
+  <path d="M46 418 Q46 432 72 434 L322 434 Q348 432 348 418 Z" fill="#181818"/>
+  <!-- Base chrome trim -->
+  <line x1="64" y1="434" x2="330" y2="434" stroke="#888" stroke-width="0.3"/>
+</svg>`,
+  "Jura S8": `<svg width="400" height="480" viewBox="0 0 400 480">
+  <defs>
+    <!-- Moonlight Silver gradient for wings -->
+    <linearGradient id="silver-body" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#C8C8C8"/>
+      <stop offset="15%" stop-color="#DCDCDC"/>
+      <stop offset="40%" stop-color="#E8E8E8"/>
+      <stop offset="60%" stop-color="#E4E4E4"/>
+      <stop offset="85%" stop-color="#D8D8D8"/>
+      <stop offset="100%" stop-color="#C4C4C4"/>
+    </linearGradient>
+    <!-- Chrome accent gradient -->
+    <linearGradient id="chrome" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#A0A0A0"/>
+      <stop offset="25%" stop-color="#CDCDCD"/>
+      <stop offset="50%" stop-color="#E0E0E0"/>
+      <stop offset="75%" stop-color="#C8C8C8"/>
+      <stop offset="100%" stop-color="#A0A0A0"/>
+    </linearGradient>
+    <!-- Chrome vertical gradient for spouts -->
+    <linearGradient id="chrome-v" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#999"/>
+      <stop offset="20%" stop-color="#C0C0C0"/>
+      <stop offset="45%" stop-color="#DDD"/>
+      <stop offset="55%" stop-color="#D8D8D8"/>
+      <stop offset="80%" stop-color="#BBB"/>
+      <stop offset="100%" stop-color="#999"/>
+    </linearGradient>
+    <!-- Glossy black panel -->
+    <linearGradient id="gloss-black" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2A2A2A"/>
+      <stop offset="15%" stop-color="#1E1E1E"/>
+      <stop offset="50%" stop-color="#141414"/>
+      <stop offset="85%" stop-color="#181818"/>
+      <stop offset="100%" stop-color="#1C1C1C"/>
+    </linearGradient>
+    <!-- Screen gradient -->
+    <linearGradient id="screen-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1A1A1A"/>
+      <stop offset="100%" stop-color="#111"/>
+    </linearGradient>
+    <!-- Drip tray gradient -->
+    <linearGradient id="tray-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#333"/>
+      <stop offset="50%" stop-color="#222"/>
+      <stop offset="100%" stop-color="#1A1A1A"/>
+    </linearGradient>
+    <!-- Milk frother chrome -->
+    <linearGradient id="frother-chrome" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#AAA"/>
+      <stop offset="30%" stop-color="#D5D5D5"/>
+      <stop offset="50%" stop-color="#E8E8E8"/>
+      <stop offset="70%" stop-color="#D0D0D0"/>
+      <stop offset="100%" stop-color="#AAA"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ======== SHADOW ======== -->
+  <ellipse cx="200" cy="462" rx="155" ry="11" fill="rgba(255,255,255,0.04)"/>
+
+  <!-- ======== LEFT SILVER WING ======== -->
+  <path d="
+    M52 30
+    Q40 30 36 36
+    L28 388
+    Q28 402 48 406
+    L110 406
+    L110 30
+    Z
+  " fill="url(#silver-body)" stroke="#BBB" stroke-width="0.5"/>
+  <!-- Left wing subtle edge shadow -->
+  <path d="M52 30 Q42 30 38 36 L30 388 Q30 400 48 404 L56 404 Q36 400 36 388 L44 36 Q46 32 52 30 Z" fill="rgba(0,0,0,0.04)"/>
+
+  <!-- ======== RIGHT SILVER WING ======== -->
+  <path d="
+    M290 30
+    L290 406
+    L352 406
+    Q372 402 372 388
+    L364 36
+    Q360 30 348 30
+    Z
+  " fill="url(#silver-body)" stroke="#BBB" stroke-width="0.5"/>
+  <!-- Right wing subtle edge highlight -->
+  <path d="M348 30 Q356 32 358 36 L366 388 Q366 400 352 404 L344 404 Q364 400 364 388 L356 36 Q354 32 348 30 Z" fill="rgba(255,255,255,0.05)"/>
+
+  <!-- ======== CENTER BLACK PANEL ======== -->
+  <path d="
+    M110 28
+    Q110 24 114 24
+    L286 24
+    Q290 24 290 28
+    L290 406
+    L110 406
+    Z
+  " fill="url(#gloss-black)"/>
+  <!-- Subtle gloss reflection on center panel -->
+  <path d="M110 28 Q110 24 114 24 L286 24 Q290 24 290 28 L290 50 Q200 58 110 50 Z" fill="rgba(255,255,255,0.025)"/>
+
+  <!-- Division lines between wings and center -->
+  <line x1="110" y1="30" x2="110" y2="406" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+  <line x1="290" y1="30" x2="290" y2="406" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+
+  <!-- ======== 4.3" TOUCHSCREEN ======== -->
+  <!-- Screen bezel -->
+  <rect x="120" y="36" width="160" height="118" rx="5" fill="#0D0D0D" stroke="#2A2A2A" stroke-width="0.5"/>
+  <!-- Screen inner -->
+  <rect x="126" y="42" width="148" height="106" rx="3" fill="url(#screen-bg)"/>
+
+  <!-- Top status bar -->
+  <text x="134" y="52" font-size="4" fill="#888" font-family="sans-serif" font-weight="600">P</text>
+  <!-- Status bar indicators -->
+  <rect x="148" y="47" width="2" height="6" rx="0.5" fill="#555"/>
+  <rect x="156" y="47" width="30" height="6" rx="1" fill="#333" stroke="#444" stroke-width="0.3"/>
+  <rect x="156" y="47" width="18" height="6" rx="1" fill="#4488CC"/>
+  <rect x="192" y="47" width="2" height="6" rx="0.5" fill="#555"/>
+  <!-- WiFi icon (simplified) -->
+  <path d="M248 47 Q252 44 256 47" stroke="#666" stroke-width="0.6" fill="none"/>
+  <path d="M250 49 Q252 47 254 49" stroke="#666" stroke-width="0.6" fill="none"/>
+  <circle cx="252" cy="51" r="0.8" fill="#666"/>
+  <!-- Settings icon -->
+  <rect x="262" y="47" width="6" height="6" rx="1" fill="none" stroke="#555" stroke-width="0.5"/>
+
+  <!-- Drink grid — 2 rows x 4 columns (refined icons) -->
+  <!-- Row 1: Espresso -->
+  <rect x="130" y="58" width="33" height="26" rx="2" fill="#222" stroke="#3A3A3A" stroke-width="0.4"/>
+  <text x="147" y="80" text-anchor="middle" font-size="3.4" fill="#AAA" font-family="sans-serif">Espresso</text>
+  <!-- Cup icon -->
+  <path d="M140 63 L140 70 Q140 72 142 72 L148 72 Q150 72 150 70 L150 63 Z" fill="none" stroke="#BB9966" stroke-width="0.5"/>
+  <path d="M150 65 Q153 65 153 68 Q153 71 150 71" fill="none" stroke="#BB9966" stroke-width="0.4"/>
+
+  <!-- Kaffee -->
+  <rect x="166" y="58" width="33" height="26" rx="2" fill="#222" stroke="#3A3A3A" stroke-width="0.4"/>
+  <text x="183" y="80" text-anchor="middle" font-size="3.4" fill="#AAA" font-family="sans-serif">Kaffee</text>
+  <path d="M176 63 L176 71 Q176 73 178 73 L184 73 Q186 73 186 71 L186 63 Z" fill="none" stroke="#BB9966" stroke-width="0.5"/>
+  <path d="M186 65 Q189 65 189 68 Q189 71 186 71" fill="none" stroke="#BB9966" stroke-width="0.4"/>
+
+  <!-- 2x Kaffee -->
+  <rect x="202" y="58" width="33" height="26" rx="2" fill="#222" stroke="#3A3A3A" stroke-width="0.4"/>
+  <text x="219" y="80" text-anchor="middle" font-size="3.4" fill="#AAA" font-family="sans-serif">2x Kaffee</text>
+  <path d="M210 63 L210 70 Q210 72 212 72 L216 72 Q218 72 218 70 L218 63 Z" fill="none" stroke="#BB9966" stroke-width="0.5"/>
+  <path d="M220 63 L220 70 Q220 72 222 72 L226 72 Q228 72 228 70 L228 63 Z" fill="none" stroke="#BB9966" stroke-width="0.5"/>
+
+  <!-- Heisswasser -->
+  <rect x="238" y="58" width="33" height="26" rx="2" fill="#222" stroke="#3A3A3A" stroke-width="0.4"/>
+  <text x="255" y="80" text-anchor="middle" font-size="2.8" fill="#AAA" font-family="sans-serif">Heisswasser</text>
+  <path d="M250 63 L250 70 Q250 72 252 72 L256 72 Q258 72 258 70 L258 63 Z" fill="none" stroke="#6699CC" stroke-width="0.5"/>
+  <path d="M252 60 Q253 58 254 60" stroke="#6699CC" stroke-width="0.3" fill="none"/>
+
+  <!-- Row 2: Cappuccino -->
+  <rect x="130" y="88" width="33" height="26" rx="2" fill="#222" stroke="#3A3A3A" stroke-width="0.4"/>
+  <text x="147" y="110" text-anchor="middle" font-size="2.8" fill="#AAA" font-family="sans-serif">Cappuccino</text>
+  <path d="M140 93 L140 100 Q140 102 142 102 L148 102 Q150 102 150 100 L150 93 Z" fill="none" stroke="#DDBB88" stroke-width="0.5"/>
+  <path d="M140 96 L150 96" stroke="#EECC99" stroke-width="0.3"/>
+
+  <!-- Latte Macchiato -->
+  <rect x="166" y="88" width="33" height="26" rx="2" fill="#222" stroke="#3A3A3A" stroke-width="0.4"/>
+  <text x="183" y="110" text-anchor="middle" font-size="2.5" fill="#AAA" font-family="sans-serif">Latte Macch.</text>
+  <path d="M177 91 L177 102 Q177 104 179 104 L185 104 Q187 104 187 102 L187 91 Z" fill="none" stroke="#DDBB88" stroke-width="0.5"/>
+  <path d="M177 95 L187 95" stroke="#EED" stroke-width="0.3"/>
+  <path d="M177 99 L187 99" stroke="#DDBB88" stroke-width="0.3"/>
+
+  <!-- Flat White -->
+  <rect x="202" y="88" width="33" height="26" rx="2" fill="#222" stroke="#3A3A3A" stroke-width="0.4"/>
+  <text x="219" y="110" text-anchor="middle" font-size="2.8" fill="#AAA" font-family="sans-serif">Flat White</text>
+  <path d="M212 93 L212 100 Q212 102 214 102 L220 102 Q222 102 222 100 L222 93 Z" fill="none" stroke="#DDBB88" stroke-width="0.5"/>
+  <path d="M212 96 L222 96" stroke="#EED" stroke-width="0.3"/>
+
+  <!-- Milchschaum -->
+  <rect x="238" y="88" width="33" height="26" rx="2" fill="#222" stroke="#3A3A3A" stroke-width="0.4"/>
+  <text x="255" y="110" text-anchor="middle" font-size="2.5" fill="#AAA" font-family="sans-serif">Milchschaum</text>
+  <path d="M248 91 L248 102 Q248 104 250 104 L256 104 Q258 104 258 102 L258 91 Z" fill="none" stroke="#EEE" stroke-width="0.5"/>
+  <path d="M248 95 L258 95" stroke="#EEE" stroke-width="0.3"/>
+
+  <!-- Navigation dots at bottom of screen -->
+  <circle cx="193" cy="142" r="1.5" fill="#4488CC"/>
+  <circle cx="200" cy="142" r="1.5" fill="#444"/>
+  <circle cx="207" cy="142" r="1.5" fill="#444"/>
+
+  <!-- ======== JURA LOGO PANEL ======== -->
+  <!-- Chrome circle with Jura logo -->
+  <circle cx="200" cy="178" r="18" fill="url(#chrome)" stroke="#AAA" stroke-width="0.5"/>
+  <circle cx="200" cy="178" r="15" fill="#1A1A1A" stroke="#444" stroke-width="0.5"/>
+  <text x="200" y="182" text-anchor="middle" font-size="10" font-family="Georgia, serif" fill="#CCC" font-style="italic" font-weight="700">jura</text>
+
+  <!-- S8 model text -->
+  <text x="200" y="210" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#777" font-weight="500" letter-spacing="2">S 8</text>
+
+  <!-- ======== DUAL CHROME SPOUTS (H-configuration) ======== -->
+  <!-- Spout housing/bridge at top -->
+  <rect x="168" y="224" width="64" height="16" rx="5" fill="#444" stroke="#666" stroke-width="0.4"/>
+  <!-- Chrome accent on bridge -->
+  <rect x="172" y="227" width="56" height="10" rx="3" fill="url(#chrome)" stroke="#AAA" stroke-width="0.2"/>
+  <!-- Height adjust tab -->
+  <rect x="226" y="228" width="6" height="7" rx="1.5" fill="#555" stroke="#666" stroke-width="0.3"/>
+
+  <!-- Left spout tube -->
+  <rect x="179" y="240" width="12" height="72" rx="4" fill="url(#chrome-v)" stroke="#BBB" stroke-width="0.3"/>
+  <!-- Left spout highlight -->
+  <rect x="182" y="244" width="3" height="64" rx="1" fill="rgba(255,255,255,0.08)"/>
+  <!-- Left spout nozzle -->
+  <ellipse cx="185" cy="314" rx="6.5" ry="4" fill="#999" stroke="#AAA" stroke-width="0.3"/>
+
+  <!-- Right spout tube -->
+  <rect x="209" y="240" width="12" height="72" rx="4" fill="url(#chrome-v)" stroke="#BBB" stroke-width="0.3"/>
+  <!-- Right spout highlight -->
+  <rect x="212" y="244" width="3" height="64" rx="1" fill="rgba(255,255,255,0.08)"/>
+  <!-- Right spout nozzle -->
+  <ellipse cx="215" cy="314" rx="6.5" ry="4" fill="#999" stroke="#AAA" stroke-width="0.3"/>
+
+  <!-- Connecting bridge between spouts (upper) -->
+  <rect x="189" y="252" width="22" height="6" rx="2" fill="url(#chrome)" stroke="#BBB" stroke-width="0.2"/>
+
+  <!-- Small chrome drip plate under spouts -->
+  <rect x="174" y="318" width="52" height="5" rx="1.5" fill="url(#chrome)" stroke="#AAA" stroke-width="0.2"/>
+
+  <!-- ======== MILK FROTHER (right side, integrated with wing) ======== -->
+  <!-- Shadow behind frother -->
+  <rect x="354" y="95" width="6" height="145" rx="2" fill="rgba(0,0,0,0.15)"/>
+  <!-- Upper chrome frother tube -->
+  <rect x="349" y="88" width="12" height="65" rx="5" fill="url(#frother-chrome)" stroke="#BBB" stroke-width="0.4"/>
+  <!-- Frother highlight -->
+  <rect x="351" y="92" width="3" height="57" rx="1" fill="rgba(255,255,255,0.12)"/>
+  <!-- Black mount bracket on wing -->
+  <rect x="344" y="148" width="22" height="26" rx="5" fill="#252525" stroke="#444" stroke-width="0.6"/>
+  <!-- Adjustment knob -->
+  <circle cx="355" cy="161" r="8" fill="#383838" stroke="#555" stroke-width="0.6"/>
+  <circle cx="355" cy="161" r="5.5" fill="#2A2A2A" stroke="#444" stroke-width="0.3"/>
+  <circle cx="355" cy="161" r="2.5" fill="#383838"/>
+  <!-- Knob indicator dot -->
+  <circle cx="355" cy="155" r="0.8" fill="#666"/>
+  <!-- Lower chrome frother nozzle -->
+  <rect x="349" y="174" width="12" height="62" rx="4" fill="url(#frother-chrome)" stroke="#AAA" stroke-width="0.4"/>
+  <!-- Lower tube highlight -->
+  <rect x="351" y="178" width="3" height="54" rx="1" fill="rgba(255,255,255,0.1)"/>
+  <!-- Nozzle tip -->
+  <ellipse cx="355" cy="238" rx="6" ry="3.5" fill="#999" stroke="#AAA" stroke-width="0.3"/>
+
+  <!-- ======== LOWER BLACK PANEL (below spouts) ======== -->
+  <!-- Access door / waste container panel -->
+  <rect x="135" y="328" width="130" height="52" rx="4" fill="#161616" stroke="#282828" stroke-width="0.4"/>
+  <!-- Panel divider line -->
+  <line x1="140" y1="354" x2="260" y2="354" stroke="rgba(255,255,255,0.025)" stroke-width="0.5"/>
+  <!-- Small pull tab -->
+  <rect x="192" y="344" width="16" height="3" rx="1" fill="#333"/>
+
+  <!-- ======== DRIP TRAY ======== -->
+  <path d="
+    M30 388
+    L30 412
+    Q30 426 55 428
+    L345 428
+    Q370 426 370 412
+    L370 388
+    Z
+  " fill="#333" stroke="#444" stroke-width="0.5"/>
+  <!-- Drip tray top edge highlight -->
+  <line x1="35" y1="389" x2="365" y2="389" stroke="#444" stroke-width="0.5"/>
+  <!-- Drip tray grill area -->
+  <rect x="48" y="393" width="304" height="24" rx="3" fill="#1E1E1E" stroke="#3A3A3A" stroke-width="0.5"/>
+  <!-- Horizontal grill lines (visible) -->
+  <line x1="55" y1="398" x2="345" y2="398" stroke="#333" stroke-width="0.8"/>
+  <line x1="55" y1="402" x2="345" y2="402" stroke="#333" stroke-width="0.8"/>
+  <line x1="55" y1="406" x2="345" y2="406" stroke="#333" stroke-width="0.8"/>
+  <line x1="55" y1="410" x2="345" y2="410" stroke="#333" stroke-width="0.8"/>
+  <line x1="55" y1="414" x2="345" y2="414" stroke="#333" stroke-width="0.8"/>
+
+  <!-- ======== BLACK BASE ======== -->
+  <path d="M46 426 Q46 440 72 442 L328 442 Q354 440 354 426 Z" fill="#222"/>
+</svg>`,
+  "Jura J8 twin": `<svg width="380" height="460" viewBox="0 0 380 460">
+  <defs>
+    <linearGradient id="diamond-black" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1E1E1E"/>
+      <stop offset="12%" stop-color="#2A2A2A"/>
+      <stop offset="35%" stop-color="#323232"/>
+      <stop offset="50%" stop-color="#353535"/>
+      <stop offset="65%" stop-color="#323232"/>
+      <stop offset="88%" stop-color="#2A2A2A"/>
+      <stop offset="100%" stop-color="#1E1E1E"/>
+    </linearGradient>
+    <linearGradient id="chrome" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#A0A0A0"/>
+      <stop offset="30%" stop-color="#D0D0D0"/>
+      <stop offset="50%" stop-color="#E0E0E0"/>
+      <stop offset="70%" stop-color="#C8C8C8"/>
+      <stop offset="100%" stop-color="#A0A0A0"/>
+    </linearGradient>
+    <linearGradient id="chrome-v" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C0C0C0"/>
+      <stop offset="40%" stop-color="#D8D8D8"/>
+      <stop offset="60%" stop-color="#D0D0D0"/>
+      <stop offset="100%" stop-color="#A8A8A8"/>
+    </linearGradient>
+    <linearGradient id="gloss-black" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2A2A2A"/>
+      <stop offset="20%" stop-color="#181818"/>
+      <stop offset="50%" stop-color="#111"/>
+      <stop offset="80%" stop-color="#151515"/>
+      <stop offset="100%" stop-color="#1A1A1A"/>
+    </linearGradient>
+    <linearGradient id="spout-chrome" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#888"/>
+      <stop offset="25%" stop-color="#C0C0C0"/>
+      <stop offset="50%" stop-color="#DDD"/>
+      <stop offset="75%" stop-color="#BBB"/>
+      <stop offset="100%" stop-color="#888"/>
+    </linearGradient>
+    <linearGradient id="hopper-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3A3A3A"/>
+      <stop offset="50%" stop-color="#2A2A2A"/>
+      <stop offset="100%" stop-color="#222"/>
+    </linearGradient>
+    <radialGradient id="screen-glow" cx="0.5" cy="0.4" r="0.7">
+      <stop offset="0%" stop-color="#1E1E30"/>
+      <stop offset="60%" stop-color="#12121E"/>
+      <stop offset="100%" stop-color="#0A0A12"/>
+    </radialGradient>
+    <!-- Drink glass gradients -->
+    <linearGradient id="espresso-fill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8B5E3C"/>
+      <stop offset="30%" stop-color="#6B3F1F"/>
+      <stop offset="100%" stop-color="#4A2A10"/>
+    </linearGradient>
+    <linearGradient id="latte-fill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#E8D5B8"/>
+      <stop offset="20%" stop-color="#D4B896"/>
+      <stop offset="60%" stop-color="#8B5E3C"/>
+      <stop offset="100%" stop-color="#4A2A10"/>
+    </linearGradient>
+    <linearGradient id="cappuccino-fill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F0E0CC"/>
+      <stop offset="30%" stop-color="#D4B896"/>
+      <stop offset="70%" stop-color="#6B3F1F"/>
+      <stop offset="100%" stop-color="#4A2A10"/>
+    </linearGradient>
+    <!-- Dial gradient for premium feel -->
+    <radialGradient id="dial-grad" cx="0.4" cy="0.35" r="0.6">
+      <stop offset="0%" stop-color="#3A3A3A"/>
+      <stop offset="50%" stop-color="#2A2A2A"/>
+      <stop offset="100%" stop-color="#1E1E1E"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Shadow -->
+  <ellipse cx="190" cy="445" rx="145" ry="10" fill="rgba(255,255,255,0.04)"/>
+
+  <!-- ======== MAIN BODY — monolithic Diamond Black ======== -->
+
+  <!-- LEFT WING (curved, tapers inward toward top) -->
+  <path d="
+    M55 58
+    Q42 58 38 64
+    L28 380
+    Q28 395 44 398
+    L108 398
+    L108 58
+    Z
+  " fill="url(#diamond-black)" stroke="#444" stroke-width="0.6"/>
+  <!-- Left wing edge highlight -->
+  <path d="M55 58 Q44 58 40 64 L30 378 Q30 392 44 395 L48 395 L38 66 Q40 60 55 58 Z" fill="rgba(255,255,255,0.03)"/>
+  <!-- Left wing subtle body reflection -->
+  <path d="M60 80 L56 300 L62 300 L66 80 Z" fill="rgba(255,255,255,0.015)"/>
+
+  <!-- CENTER SECTION (taller, extends to top for bean hoppers) -->
+  <path d="
+    M108 20
+    Q108 16 112 16
+    L268 16
+    Q272 16 272 20
+    L272 398
+    L108 398
+    Z
+  " fill="url(#diamond-black)" stroke="#444" stroke-width="0.6"/>
+  <!-- Top highlight -->
+  <path d="M112 16 L268 16 Q272 16 272 20 L272 28 Q190 32 108 28 L108 20 Q108 16 112 16 Z" fill="rgba(255,255,255,0.04)"/>
+  <!-- Left edge ambient strip -->
+  <path d="M108 20 L111 20 L111 398 L108 398 Z" fill="rgba(255,255,255,0.025)"/>
+
+  <!-- RIGHT WING (curved, tapers inward toward top) -->
+  <path d="
+    M272 58
+    L272 398
+    L336 398
+    Q352 395 352 380
+    L344 64
+    Q342 58 325 58
+    Z
+  " fill="url(#diamond-black)" stroke="#444" stroke-width="0.6"/>
+  <!-- Right wing edge highlight -->
+  <path d="M325 58 Q338 60 340 66 L332 395 L336 395 Q350 392 350 378 L344 64 Q342 58 325 58 Z" fill="rgba(255,255,255,0.03)"/>
+
+  <!-- Vertical division lines -->
+  <line x1="108" y1="58" x2="108" y2="398" stroke="rgba(255,255,255,0.025)" stroke-width="0.8"/>
+  <line x1="272" y1="58" x2="272" y2="398" stroke="rgba(255,255,255,0.025)" stroke-width="0.8"/>
+
+  <!-- ======== DUAL BEAN HOPPERS — on top of center section ======== -->
+  <!-- Chrome trim strip across top -->
+  <rect x="112" y="16" width="156" height="3.5" rx="1" fill="url(#chrome)" opacity="0.7"/>
+
+  <!-- Left hopper well -->
+  <rect x="116" y="2" width="72" height="17" rx="3" fill="url(#hopper-grad)" stroke="#444" stroke-width="0.6"/>
+  <rect x="120" y="4" width="64" height="12" rx="2" fill="#151515"/>
+  <!-- Bean texture in left hopper -->
+  <ellipse cx="132" cy="9" rx="3.5" ry="2" fill="#3A2A1A" opacity="0.7"/>
+  <ellipse cx="140" cy="8" rx="4" ry="2.5" fill="#422E1C" opacity="0.65"/>
+  <ellipse cx="148" cy="9.5" rx="3" ry="2" fill="#3A2A1A" opacity="0.7"/>
+  <ellipse cx="156" cy="8" rx="3.5" ry="2" fill="#422E1C" opacity="0.55"/>
+  <ellipse cx="164" cy="9" rx="3" ry="2" fill="#3A2A1A" opacity="0.6"/>
+  <ellipse cx="137" cy="12" rx="3" ry="1.5" fill="#4A3420" opacity="0.5"/>
+  <ellipse cx="152" cy="11.5" rx="3" ry="1.5" fill="#3A2A1A" opacity="0.45"/>
+  <!-- Left grinder dial — with concentric detail -->
+  <circle cx="152" cy="9" r="6" fill="#2E2E2E" stroke="#555" stroke-width="0.6"/>
+  <circle cx="152" cy="9" r="4.5" fill="#333" stroke="#444" stroke-width="0.3"/>
+  <circle cx="152" cy="9" r="2.5" fill="#3A3A3A"/>
+  <line x1="152" y1="4" x2="152" y2="6" stroke="#888" stroke-width="0.6"/>
+  <!-- Hopper rim highlight -->
+  <rect x="118" y="3" width="66" height="1.5" rx="0.5" fill="rgba(255,255,255,0.04)"/>
+
+  <!-- Right hopper well -->
+  <rect x="192" y="2" width="72" height="17" rx="3" fill="url(#hopper-grad)" stroke="#444" stroke-width="0.6"/>
+  <rect x="196" y="4" width="64" height="12" rx="2" fill="#151515"/>
+  <!-- Bean texture in right hopper -->
+  <ellipse cx="210" cy="9" rx="3.5" ry="2" fill="#3A2A1A" opacity="0.7"/>
+  <ellipse cx="218" cy="8" rx="4" ry="2.5" fill="#422E1C" opacity="0.65"/>
+  <ellipse cx="226" cy="9.5" rx="3" ry="2" fill="#3A2A1A" opacity="0.7"/>
+  <ellipse cx="234" cy="8" rx="3.5" ry="2" fill="#422E1C" opacity="0.55"/>
+  <ellipse cx="242" cy="9" rx="3" ry="2" fill="#3A2A1A" opacity="0.6"/>
+  <ellipse cx="215" cy="12" rx="3" ry="1.5" fill="#4A3420" opacity="0.5"/>
+  <ellipse cx="230" cy="11.5" rx="3" ry="1.5" fill="#3A2A1A" opacity="0.45"/>
+  <!-- Right grinder dial — with concentric detail -->
+  <circle cx="228" cy="9" r="6" fill="#2E2E2E" stroke="#555" stroke-width="0.6"/>
+  <circle cx="228" cy="9" r="4.5" fill="#333" stroke="#444" stroke-width="0.3"/>
+  <circle cx="228" cy="9" r="2.5" fill="#3A3A3A"/>
+  <line x1="228" y1="4" x2="228" y2="6" stroke="#888" stroke-width="0.6"/>
+  <!-- Hopper rim highlight -->
+  <rect x="194" y="3" width="66" height="1.5" rx="0.5" fill="rgba(255,255,255,0.04)"/>
+
+  <!-- Divider between hoppers -->
+  <rect x="188" y="2" width="4" height="17" rx="1" fill="#2A2A2A" stroke="#444" stroke-width="0.3"/>
+
+  <!-- ======== 6.7" PANORAMA TOUCHSCREEN DISPLAY ======== -->
+  <!-- THE key visual differentiator — very wide panoramic display -->
+  <!-- Outer bezel frame -->
+  <rect x="68" y="32" width="244" height="92" rx="6" fill="#0D0D0D" stroke="#333" stroke-width="0.8"/>
+  <!-- Bezel top highlight (glossy edge) -->
+  <rect x="72" y="33" width="236" height="2" rx="1" fill="rgba(255,255,255,0.06)"/>
+  <!-- Inner screen area -->
+  <rect x="75" y="37" width="230" height="82" rx="4" fill="url(#screen-glow)"/>
+  <!-- Screen glass reflection (diagonal light streak) -->
+  <path d="M80 37 L120 37 L85 119 L75 119 Z" fill="rgba(255,255,255,0.02)"/>
+
+  <!-- Display content — 2x4 grid of drink selections with glass icons -->
+
+  <!-- Row 1: 4 drinks -->
+  <!-- Espresso -->
+  <rect x="80" y="42" width="52" height="35" rx="2.5" fill="#181825" stroke="#2A2A35" stroke-width="0.3"/>
+  <text x="106" y="49" text-anchor="middle" font-size="3.2" fill="#999" font-family="sans-serif">Espresso</text>
+  <path d="M98 54 L98 68 Q98 70 100 70 L112 70 Q114 70 114 68 L114 54 Z" fill="url(#espresso-fill)" opacity="0.85"/>
+  <rect x="99" y="55" width="14" height="2.5" rx="0.5" fill="#C09060" opacity="0.5"/>
+  <path d="M114 57 Q118 59 114 64" fill="none" stroke="#8B5E3C" stroke-width="0.4"/>
+
+  <!-- Coffee -->
+  <rect x="136" y="42" width="52" height="35" rx="2.5" fill="#181825" stroke="#2A2A35" stroke-width="0.3"/>
+  <text x="162" y="49" text-anchor="middle" font-size="3.2" fill="#999" font-family="sans-serif">Coffee</text>
+  <path d="M154 52 L154 68 Q154 70 156 70 L168 70 Q170 70 170 68 L170 52 Z" fill="url(#espresso-fill)" opacity="0.75"/>
+  <path d="M155 53 Q156 51 155 49" fill="none" stroke="#555" stroke-width="0.3"/>
+  <path d="M159 53 Q160 50 159 48" fill="none" stroke="#555" stroke-width="0.3"/>
+
+  <!-- Cappuccino -->
+  <rect x="192" y="42" width="52" height="35" rx="2.5" fill="#181825" stroke="#2A2A35" stroke-width="0.3"/>
+  <text x="218" y="49" text-anchor="middle" font-size="3" fill="#999" font-family="sans-serif">Cappuccino</text>
+  <path d="M210 53 L210 68 Q210 70 212 70 L224 70 Q226 70 226 68 L226 53 Z" fill="url(#cappuccino-fill)" opacity="0.85"/>
+  <ellipse cx="218" cy="53" rx="8" ry="2" fill="#F0E0CC" opacity="0.4"/>
+
+  <!-- Latte Macchiato -->
+  <rect x="248" y="42" width="52" height="35" rx="2.5" fill="#181825" stroke="#2A2A35" stroke-width="0.3"/>
+  <text x="274" y="49" text-anchor="middle" font-size="2.8" fill="#999" font-family="sans-serif">Latte Macchiato</text>
+  <path d="M267 53 L268 68 Q268 70 270 70 L278 70 Q280 70 280 68 L281 53 Z" fill="url(#latte-fill)" opacity="0.85"/>
+  <rect x="269" y="54" width="10" height="3" rx="0.5" fill="#F0E0CC" opacity="0.4"/>
+  <rect x="269" y="63" width="10" height="3" rx="0.5" fill="#8B5E3C" opacity="0.3"/>
+
+  <!-- Row 2: 4 drinks -->
+  <!-- Flat White -->
+  <rect x="80" y="80" width="52" height="35" rx="2.5" fill="#181825" stroke="#2A2A35" stroke-width="0.3"/>
+  <text x="106" y="87" text-anchor="middle" font-size="3.2" fill="#999" font-family="sans-serif">Flat White</text>
+  <path d="M98 92 L98 106 Q98 108 100 108 L112 108 Q114 108 114 106 L114 92 Z" fill="url(#cappuccino-fill)" opacity="0.75"/>
+  <ellipse cx="106" cy="92" rx="8" ry="1.8" fill="#E8D5B8" opacity="0.4"/>
+
+  <!-- Macchiato -->
+  <rect x="136" y="80" width="52" height="35" rx="2.5" fill="#181825" stroke="#2A2A35" stroke-width="0.3"/>
+  <text x="162" y="87" text-anchor="middle" font-size="3.2" fill="#999" font-family="sans-serif">Macchiato</text>
+  <path d="M155 92 L155 106 Q155 108 157 108 L167 108 Q169 108 169 106 L169 92 Z" fill="url(#espresso-fill)" opacity="0.75"/>
+  <ellipse cx="162" cy="92" rx="7" ry="1.5" fill="#E8D5B8" opacity="0.35"/>
+
+  <!-- Lungo -->
+  <rect x="192" y="80" width="52" height="35" rx="2.5" fill="#181825" stroke="#2A2A35" stroke-width="0.3"/>
+  <text x="218" y="87" text-anchor="middle" font-size="3.2" fill="#999" font-family="sans-serif">Lungo</text>
+  <path d="M210 92 L210 106 Q210 108 212 108 L224 108 Q226 108 226 106 L226 92 Z" fill="url(#espresso-fill)" opacity="0.65"/>
+  <path d="M211 93 Q212 91 211 89" fill="none" stroke="#555" stroke-width="0.3"/>
+
+  <!-- Ristretto -->
+  <rect x="248" y="80" width="52" height="35" rx="2.5" fill="#181825" stroke="#2A2A35" stroke-width="0.3"/>
+  <text x="274" y="87" text-anchor="middle" font-size="3.2" fill="#999" font-family="sans-serif">Ristretto</text>
+  <path d="M268 94 L268 106 Q268 108 270 108 L278 108 Q280 108 280 106 L280 94 Z" fill="url(#espresso-fill)" opacity="0.9"/>
+  <rect x="269" y="95" width="10" height="2" rx="0.5" fill="#C09060" opacity="0.6"/>
+
+  <!-- Navigation dots at bottom of display -->
+  <circle cx="178" cy="117" r="1.2" fill="#555"/>
+  <circle cx="185" cy="117" r="1.5" fill="#AAA"/>
+  <circle cx="192" cy="117" r="1.2" fill="#555"/>
+  <circle cx="199" cy="117" r="1.2" fill="#555"/>
+
+  <!-- ======== JURA LOGO PANEL — chrome rectangle below display ======== -->
+  <rect x="148" y="128" width="84" height="50" rx="4" fill="url(#chrome)" stroke="#BBB" stroke-width="0.4"/>
+  <!-- Multi-stop gloss reflection for metallic feel -->
+  <rect x="150" y="130" width="80" height="14" rx="3" fill="rgba(255,255,255,0.07)"/>
+  <rect x="155" y="165" width="70" height="6" rx="2" fill="rgba(255,255,255,0.03)"/>
+
+  <!-- Jura logo circle -->
+  <circle cx="190" cy="146" r="14" fill="#181818" stroke="#CCC" stroke-width="1.2"/>
+  <circle cx="190" cy="146" r="12.5" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.3"/>
+  <!-- Specular highlight on logo circle -->
+  <path d="M180 138 Q190 134 200 138" fill="rgba(255,255,255,0.06)" stroke="none"/>
+  <text x="190" y="151" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#EEE" font-style="italic" font-weight="700">jura</text>
+
+  <!-- J8 twin model text -->
+  <text x="190" y="172" text-anchor="middle" font-size="7" font-family="sans-serif" fill="#888" font-weight="400" letter-spacing="1">J8 twin</text>
+
+  <!-- ======== ROTARY DIAL — right wing, enhanced depth ======== -->
+  <!-- Outer chrome ring -->
+  <circle cx="312" cy="146" r="18" fill="url(#chrome)" stroke="#999" stroke-width="0.4"/>
+  <!-- Dark dial body -->
+  <circle cx="312" cy="146" r="15" fill="url(#dial-grad)"/>
+  <!-- Concentric texture rings -->
+  <circle cx="312" cy="146" r="13" fill="none" stroke="#3A3A3A" stroke-width="0.3"/>
+  <circle cx="312" cy="146" r="11" fill="none" stroke="#383838" stroke-width="0.3"/>
+  <circle cx="312" cy="146" r="9" fill="none" stroke="#363636" stroke-width="0.3"/>
+  <!-- Inner knob -->
+  <circle cx="312" cy="146" r="6" fill="#333"/>
+  <circle cx="312" cy="146" r="2.5" fill="#3A3A3A"/>
+  <!-- Detent marks -->
+  <circle cx="312" cy="146" r="16.5" fill="none" stroke="#888" stroke-width="0.4" stroke-dasharray="1,2.5"/>
+  <!-- Specular highlight on dial -->
+  <path d="M303 138 Q312 132 321 138" fill="rgba(255,255,255,0.06)" stroke="none"/>
+
+  <!-- ======== PANEL SEAM — horizontal division ======== -->
+  <line x1="50" y1="185" x2="330" y2="185" stroke="#1A1A1A" stroke-width="1.5"/>
+  <line x1="50" y1="186" x2="330" y2="186" stroke="rgba(255,255,255,0.035)" stroke-width="0.5"/>
+
+  <!-- ======== BLACK GLOSSY DISPENSING AREA ======== -->
+  <rect x="55" y="187" width="270" height="168" rx="5" fill="url(#gloss-black)"/>
+  <!-- Glossy reflection band at top -->
+  <path d="M55 187 L325 187 L325 205 Q190 214 55 205 Z" fill="rgba(255,255,255,0.025)"/>
+  <!-- Subtle vertical reflection -->
+  <path d="M62 295 L78 187 L85 187 L69 295 Z" fill="rgba(255,255,255,0.01)"/>
+  <!-- Right side subtle reflection -->
+  <path d="M310 295 L298 187 L305 187 L317 295 Z" fill="rgba(255,255,255,0.008)"/>
+
+  <!-- Dispensing niche — recessed darker area -->
+  <rect x="105" y="200" width="170" height="140" rx="4" fill="#0D0D0D"/>
+  <!-- Niche depth shadows -->
+  <rect x="105" y="200" width="4" height="140" fill="rgba(255,255,255,0.015)"/>
+  <rect x="271" y="200" width="4" height="140" fill="rgba(0,0,0,0.15)"/>
+  <rect x="105" y="200" width="170" height="6" fill="rgba(0,0,0,0.25)"/>
+  <!-- Niche bottom highlight -->
+  <rect x="110" y="336" width="160" height="2" fill="rgba(255,255,255,0.015)"/>
+
+  <!-- Cup illumination (subtle amber glow) -->
+  <ellipse cx="190" cy="332" rx="35" ry="5" fill="rgba(180,130,60,0.05)"/>
+  <ellipse cx="190" cy="332" rx="20" ry="3" fill="rgba(180,130,60,0.04)"/>
+
+  <!-- ======== SPOUT ASSEMBLY — twin spouts: coffee (center-left) + milk (right) ======== -->
+
+  <!-- Shared mounting rail across top of niche -->
+  <rect x="148" y="200" width="100" height="14" rx="3" fill="#444" stroke="#555" stroke-width="0.4"/>
+  <!-- Rail groove detail -->
+  <line x1="153" y1="207" x2="243" y2="207" stroke="#333" stroke-width="0.5"/>
+  <!-- Height-adjust tab (left of center) -->
+  <rect x="196" y="203" width="6" height="7" rx="1.5" fill="#383838" stroke="#555" stroke-width="0.3"/>
+
+  <!-- ===== COFFEE SPOUT (center-left) — dual chrome nozzles ===== -->
+  <!-- Coffee spout main body / mounting plate -->
+  <rect x="158" y="214" width="22" height="30" rx="2" fill="url(#spout-chrome)" stroke="#999" stroke-width="0.3"/>
+  <!-- Chrome highlight strip -->
+  <rect x="167" y="216" width="3" height="26" rx="1" fill="rgba(255,255,255,0.15)"/>
+  <!-- Dark edge definition -->
+  <rect x="158" y="216" width="1.5" height="26" fill="rgba(0,0,0,0.15)"/>
+
+  <!-- Left coffee nozzle -->
+  <rect x="161" y="244" width="5" height="30" rx="2" fill="url(#spout-chrome)" stroke="#999" stroke-width="0.3"/>
+  <!-- Right coffee nozzle -->
+  <rect x="172" y="244" width="5" height="30" rx="2" fill="url(#spout-chrome)" stroke="#999" stroke-width="0.3"/>
+  <!-- Spreader bar connecting nozzles -->
+  <rect x="160" y="256" width="18" height="3" rx="1" fill="#BBB"/>
+  <!-- Left nozzle opening -->
+  <ellipse cx="163.5" cy="275" rx="3" ry="3.5" fill="#888"/>
+  <ellipse cx="163.5" cy="275" rx="2" ry="2.5" fill="#666"/>
+  <!-- Right nozzle opening -->
+  <ellipse cx="174.5" cy="275" rx="3" ry="3.5" fill="#888"/>
+  <ellipse cx="174.5" cy="275" rx="2" ry="2.5" fill="#666"/>
+
+  <!-- ===== MILK SPOUT (right side) — wider/fatter chrome tube ===== -->
+  <!-- Milk spout mounting bracket -->
+  <rect x="210" y="214" width="28" height="14" rx="2.5" fill="url(#spout-chrome)" stroke="#999" stroke-width="0.3"/>
+  <!-- Highlight on bracket -->
+  <rect x="212" y="216" width="24" height="3" rx="1" fill="rgba(255,255,255,0.1)"/>
+
+  <!-- Milk tube — prominent, wider chrome tube -->
+  <rect x="214" y="228" width="20" height="52" rx="6" fill="url(#spout-chrome)" stroke="#999" stroke-width="0.4"/>
+  <!-- Chrome highlight running down tube -->
+  <rect x="222" y="230" width="4" height="48" rx="1.5" fill="rgba(255,255,255,0.18)"/>
+  <!-- Dark left edge for roundness -->
+  <rect x="214" y="230" width="2.5" height="48" rx="1" fill="rgba(0,0,0,0.12)"/>
+  <!-- Chrome band detail mid-tube -->
+  <rect x="212" y="250" width="24" height="4" rx="2" fill="url(#chrome)" opacity="0.5"/>
+
+  <!-- Milk tube nozzle tip — wider opening -->
+  <rect x="216" y="280" width="16" height="6" rx="2.5" fill="url(#spout-chrome)" stroke="#999" stroke-width="0.3"/>
+  <!-- Nozzle opening -->
+  <ellipse cx="224" cy="287" rx="5.5" ry="3" fill="#888"/>
+  <ellipse cx="224" cy="287" rx="3.5" ry="2" fill="#666"/>
+
+  <!-- ======== DRIP TRAY — enhanced grate pattern ======== -->
+  <!-- Chrome tray surround -->
+  <path d="
+    M32 358
+    L32 378
+    Q32 396 58 398
+    L322 398
+    Q348 396 348 378
+    L348 358
+    Z
+  " fill="url(#chrome)" stroke="#BBB" stroke-width="0.5"/>
+  <!-- Chrome top highlight -->
+  <rect x="38" y="359" width="304" height="2" rx="1" fill="rgba(255,255,255,0.08)"/>
+
+  <!-- Black grate inset -->
+  <rect x="50" y="363" width="280" height="24" rx="3" fill="#151515"/>
+  <!-- Vertical grate bars — more visible pattern -->
+  <line x1="65" y1="367" x2="65" y2="384" stroke="#282828" stroke-width="1"/>
+  <line x1="80" y1="367" x2="80" y2="384" stroke="#282828" stroke-width="1"/>
+  <line x1="95" y1="367" x2="95" y2="384" stroke="#282828" stroke-width="1"/>
+  <line x1="110" y1="367" x2="110" y2="384" stroke="#282828" stroke-width="1"/>
+  <line x1="125" y1="367" x2="125" y2="384" stroke="#282828" stroke-width="1"/>
+  <line x1="140" y1="367" x2="140" y2="384" stroke="#282828" stroke-width="1"/>
+  <line x1="155" y1="367" x2="155" y2="384" stroke="#282828" stroke-width="1"/>
+  <line x1="170" y1="367" x2="170" y2="384" stroke="#282828" stroke-width="1"/>
+  <line x1="185" y1="367" x2="185" y2="384" stroke="#282828" stroke-width="1"/>
+  <line x1="200" y1="367" x2="200" y2="384" stroke="#282828" stroke-width="1"/>
+  <line x1="215" y1="367" x2="215" y2="384" stroke="#282828" stroke-width="1"/>
+  <line x1="230" y1="367" x2="230" y2="384" stroke="#282828" stroke-width="1"/>
+  <line x1="245" y1="367" x2="245" y2="384" stroke="#282828" stroke-width="1"/>
+  <line x1="260" y1="367" x2="260" y2="384" stroke="#282828" stroke-width="1"/>
+  <line x1="275" y1="367" x2="275" y2="384" stroke="#282828" stroke-width="1"/>
+  <line x1="290" y1="367" x2="290" y2="384" stroke="#282828" stroke-width="1"/>
+  <line x1="305" y1="367" x2="305" y2="384" stroke="#282828" stroke-width="1"/>
+  <line x1="320" y1="367" x2="320" y2="384" stroke="#282828" stroke-width="1"/>
+  <!-- Horizontal grate bars for grid pattern -->
+  <line x1="55" y1="372" x2="325" y2="372" stroke="#222" stroke-width="0.5"/>
+  <line x1="55" y1="379" x2="325" y2="379" stroke="#222" stroke-width="0.5"/>
+  <!-- Chrome trim line -->
+  <line x1="40" y1="390" x2="340" y2="390" stroke="#C0C0C0" stroke-width="0.5"/>
+
+  <!-- Black base -->
+  <path d="M45 396 Q45 412 72 414 L308 414 Q335 412 335 396 Z" fill="#181818"/>
+  <line x1="65" y1="414" x2="315" y2="414" stroke="#888" stroke-width="0.3"/>
+</svg>`,
+  "Jura Z10": `<svg width="480" height="460" viewBox="-90 0 470 460">
+  <defs>
+    <!-- Dark Inox brushed aluminum — warm dark silver with subtle warmth -->
+    <linearGradient id="dark-inox" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#5E5E56"/>
+      <stop offset="10%" stop-color="#70706A"/>
+      <stop offset="25%" stop-color="#83837B"/>
+      <stop offset="45%" stop-color="#8D8D84"/>
+      <stop offset="55%" stop-color="#8D8D84"/>
+      <stop offset="75%" stop-color="#83837B"/>
+      <stop offset="90%" stop-color="#70706A"/>
+      <stop offset="100%" stop-color="#5E5E56"/>
+    </linearGradient>
+    <linearGradient id="dark-inox-v" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#88887F"/>
+      <stop offset="40%" stop-color="#7E7E76"/>
+      <stop offset="100%" stop-color="#6E6E66"/>
+    </linearGradient>
+    <linearGradient id="chrome" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#A0A0A0"/>
+      <stop offset="25%" stop-color="#D0D0D0"/>
+      <stop offset="50%" stop-color="#E8E8E8"/>
+      <stop offset="75%" stop-color="#D0D0D0"/>
+      <stop offset="100%" stop-color="#A0A0A0"/>
+    </linearGradient>
+    <linearGradient id="spout-chrome" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#999"/>
+      <stop offset="25%" stop-color="#C8C8C8"/>
+      <stop offset="50%" stop-color="#E0E0E0"/>
+      <stop offset="75%" stop-color="#C0C0C0"/>
+      <stop offset="100%" stop-color="#999"/>
+    </linearGradient>
+    <linearGradient id="gloss-black" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#282828"/>
+      <stop offset="25%" stop-color="#181818"/>
+      <stop offset="50%" stop-color="#0F0F0F"/>
+      <stop offset="80%" stop-color="#131313"/>
+      <stop offset="100%" stop-color="#181818"/>
+    </linearGradient>
+    <linearGradient id="screen-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1C1C1C"/>
+      <stop offset="100%" stop-color="#0E0E0E"/>
+    </linearGradient>
+    <!-- Curved logo panel — convex chrome, slightly warm -->
+    <linearGradient id="logo-chrome" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#B0B0A8"/>
+      <stop offset="25%" stop-color="#D0D0C8"/>
+      <stop offset="50%" stop-color="#E0E0D8"/>
+      <stop offset="75%" stop-color="#C8C8C0"/>
+      <stop offset="100%" stop-color="#A0A098"/>
+    </linearGradient>
+    <!-- Logo panel horizontal for wider feel -->
+    <linearGradient id="logo-chrome-h" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#A0A098"/>
+      <stop offset="20%" stop-color="#C0C0B8"/>
+      <stop offset="50%" stop-color="#D8D8D0"/>
+      <stop offset="80%" stop-color="#C0C0B8"/>
+      <stop offset="100%" stop-color="#A0A098"/>
+    </linearGradient>
+    <!-- Water tank translucent blue gradient -->
+    <linearGradient id="tank-blue" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#5A8BA8" stop-opacity="0.22"/>
+      <stop offset="18%" stop-color="#7CB8D8" stop-opacity="0.18"/>
+      <stop offset="40%" stop-color="#9AD0EA" stop-opacity="0.25"/>
+      <stop offset="60%" stop-color="#A8DCF2" stop-opacity="0.28"/>
+      <stop offset="80%" stop-color="#7CB8D8" stop-opacity="0.20"/>
+      <stop offset="100%" stop-color="#5A8BA8" stop-opacity="0.22"/>
+    </linearGradient>
+    <linearGradient id="tank-blue-solid" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#4A7A98"/>
+      <stop offset="20%" stop-color="#6AACCC"/>
+      <stop offset="50%" stop-color="#80C4E0"/>
+      <stop offset="80%" stop-color="#6AACCC"/>
+      <stop offset="100%" stop-color="#4A7A98"/>
+    </linearGradient>
+    <linearGradient id="tank-water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6AACC8" stop-opacity="0.10"/>
+      <stop offset="50%" stop-color="#5098B8" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#3878A0" stop-opacity="0.25"/>
+    </linearGradient>
+    <!-- Diamond/crosshatch crystal pattern -->
+    <pattern id="crystal-diamond" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+      <!-- Diamond grid lines — two diagonals forming a diamond lattice -->
+      <line x1="0" y1="0" x2="16" y2="16" stroke="rgba(180,220,240,0.18)" stroke-width="0.6"/>
+      <line x1="16" y1="0" x2="0" y2="16" stroke="rgba(180,220,240,0.18)" stroke-width="0.6"/>
+      <line x1="8" y1="-8" x2="24" y2="8" stroke="rgba(180,220,240,0.12)" stroke-width="0.4"/>
+      <line x1="-8" y1="8" x2="8" y2="24" stroke="rgba(180,220,240,0.12)" stroke-width="0.4"/>
+      <!-- Diamond center highlights — subtle sparkle at intersections -->
+      <circle cx="8" cy="0" r="0.6" fill="rgba(200,235,255,0.15)"/>
+      <circle cx="0" cy="8" r="0.6" fill="rgba(200,235,255,0.15)"/>
+      <circle cx="16" cy="8" r="0.6" fill="rgba(200,235,255,0.15)"/>
+      <circle cx="8" cy="16" r="0.6" fill="rgba(200,235,255,0.15)"/>
+    </pattern>
+    <!-- Finer secondary crystal pattern -->
+    <pattern id="crystal-fine" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="8" y2="8" stroke="rgba(160,210,240,0.08)" stroke-width="0.3"/>
+      <line x1="8" y1="0" x2="0" y2="8" stroke="rgba(160,210,240,0.08)" stroke-width="0.3"/>
+    </pattern>
+    <!-- Tank vertical highlight for glass effect -->
+    <linearGradient id="tank-gloss" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="rgba(255,255,255,0)" />
+      <stop offset="25%" stop-color="rgba(255,255,255,0.04)" />
+      <stop offset="45%" stop-color="rgba(255,255,255,0.12)" />
+      <stop offset="55%" stop-color="rgba(255,255,255,0.10)" />
+      <stop offset="75%" stop-color="rgba(255,255,255,0.03)" />
+      <stop offset="100%" stop-color="rgba(255,255,255,0)" />
+    </linearGradient>
+  </defs>
+
+  <!-- Shadow under machine -->
+  <ellipse cx="150" cy="448" rx="200" ry="10" fill="rgba(255,255,255,0.04)"/>
+
+  <!-- ======== CRYSTAL WATER TANK — LEFT SIDE ======== -->
+  <!-- The Z10's signature transparent crystal-pattern water tank -->
+  <g id="water-tank">
+    <!-- Tank back shadow — gives depth behind the transparent tank -->
+    <rect x="-27" y="32" width="78" height="331" rx="6" fill="#1E2830" opacity="0.7"/>
+
+    <!-- Tank outer shell — translucent blue-tinted body -->
+    <rect x="-24" y="35" width="72" height="325" rx="5" fill="url(#tank-blue-solid)" opacity="0.18" stroke="rgba(120,180,210,0.35)" stroke-width="0.8"/>
+
+    <!-- Water fill — slightly darker blue toward the bottom -->
+    <rect x="-22" y="38" width="68" height="319" rx="4" fill="url(#tank-water)"/>
+
+    <!-- Crystal diamond pattern overlay — the signature faceted look -->
+    <rect x="-22" y="38" width="68" height="319" rx="4" fill="url(#crystal-diamond)"/>
+
+    <!-- Fine secondary crosshatch layer for additional texture -->
+    <rect x="-22" y="38" width="68" height="319" rx="4" fill="url(#crystal-fine)"/>
+
+    <!-- Glossy vertical reflection streak — glass-like specular highlight -->
+    <rect x="-22" y="38" width="68" height="319" rx="4" fill="url(#tank-gloss)"/>
+
+    <!-- Top highlight edge — light catching the rim -->
+    <rect x="-22" y="35" width="68" height="6" rx="3" fill="rgba(180,220,245,0.12)"/>
+
+    <!-- Water level indicator lines — subtle horizontal marks -->
+    <line x1="-17" y1="100" x2="-13" y2="100" stroke="rgba(150,200,230,0.25)" stroke-width="0.5"/>
+    <line x1="-17" y1="165" x2="-13" y2="165" stroke="rgba(150,200,230,0.25)" stroke-width="0.5"/>
+    <line x1="-17" y1="230" x2="-13" y2="230" stroke="rgba(150,200,230,0.25)" stroke-width="0.5"/>
+    <line x1="-17" y1="295" x2="-13" y2="295" stroke="rgba(150,200,230,0.25)" stroke-width="0.5"/>
+    <line x1="-17" y1="345" x2="-13" y2="345" stroke="rgba(150,200,230,0.25)" stroke-width="0.5"/>
+
+    <!-- Left edge vertical highlight — glass edge refraction -->
+    <line x1="-21" y1="42" x2="-21" y2="354" stroke="rgba(180,220,250,0.10)" stroke-width="1"/>
+
+    <!-- Right edge — where tank meets the machine body, subtle seam -->
+    <line x1="47" y1="38" x2="47" y2="357" stroke="rgba(0,0,0,0.15)" stroke-width="1"/>
+
+    <!-- Bright vertical specular streak — the characteristic glass glint -->
+    <rect x="1" y="48" width="3" height="298" rx="1.5" fill="rgba(220,240,255,0.10)"/>
+    <rect x="19" y="54" width="1.5" height="286" rx="0.75" fill="rgba(220,240,255,0.06)"/>
+
+    <!-- Tank handle/grip indent on left side -->
+    <rect x="-26" y="150" width="4" height="70" rx="2" fill="rgba(80,140,180,0.12)" stroke="rgba(120,180,210,0.18)" stroke-width="0.5"/>
+
+    <!-- Bottom edge shadow -->
+    <rect x="-22" y="354" width="68" height="6" rx="3" fill="rgba(0,0,0,0.10)"/>
+  </g>
+
+  <!-- Upper body — the main aluminum block -->
+  <rect x="48" y="22" width="284" height="342" rx="5" fill="url(#dark-inox)" stroke="#666" stroke-width="0.5"/>
+
+  <!-- Convex-concave front panel effect -->
+  <!-- Left edge depth shadow -->
+  <rect x="48" y="22" width="10" height="342" fill="rgba(0,0,0,0.06)"/>
+  <!-- Right edge depth shadow -->
+  <rect x="322" y="22" width="10" height="342" fill="rgba(0,0,0,0.06)"/>
+  <!-- Central convex highlight — wider, softer -->
+  <path d="M140 22 L240 22 L240 364 L140 364 Z" fill="rgba(255,255,255,0.02)"/>
+  <!-- Top edge highlight -->
+  <path d="M53 22 L327 22 Q332 22 332 27 L332 38 Q190 44 48 38 L48 27 Q48 22 53 22 Z" fill="rgba(255,255,255,0.04)"/>
+
+  <!-- Bean hopper hint at top — dark strip indicating the hopper lid -->
+  <rect x="130" y="22" width="120" height="5" rx="2" fill="rgba(0,0,0,0.15)"/>
+  <rect x="145" y="22" width="90" height="3" rx="1.5" fill="rgba(0,0,0,0.08)"/>
+
+  <!-- Subtle vertical brushed grain lines -->
+  <line x1="75" y1="22" x2="75" y2="364" stroke="rgba(255,255,255,0.008)" stroke-width="0.3"/>
+  <line x1="110" y1="22" x2="110" y2="364" stroke="rgba(255,255,255,0.006)" stroke-width="0.3"/>
+  <line x1="160" y1="22" x2="160" y2="364" stroke="rgba(255,255,255,0.008)" stroke-width="0.3"/>
+  <line x1="220" y1="22" x2="220" y2="364" stroke="rgba(255,255,255,0.008)" stroke-width="0.3"/>
+  <line x1="270" y1="22" x2="270" y2="364" stroke="rgba(255,255,255,0.006)" stroke-width="0.3"/>
+  <line x1="305" y1="22" x2="305" y2="364" stroke="rgba(255,255,255,0.008)" stroke-width="0.3"/>
+
+  <!-- ======== 4.3" TOUCHSCREEN DISPLAY ======== -->
+  <!-- Black bezel — wider, more prominent -->
+  <rect x="105" y="32" width="170" height="95" rx="5" fill="#0C0C0C" stroke="#2A2A2A" stroke-width="0.8"/>
+  <!-- Inner screen -->
+  <rect x="112" y="38" width="156" height="82" rx="3" fill="url(#screen-bg)"/>
+  <!-- Screen bezel inner glow -->
+  <rect x="112" y="38" width="156" height="3" fill="rgba(255,255,255,0.02)"/>
+
+  <!-- Screen content: 2 rows x 4 drink tiles -->
+  <!-- Row 1 -->
+  <!-- Espresso -->
+  <rect x="118" y="44" width="33" height="30" rx="2" fill="#232323" stroke="#333" stroke-width="0.3"/>
+  <rect x="130" y="58" width="8" height="11" rx="1.5" fill="none" stroke="#B8925A" stroke-width="0.7"/>
+  <path d="M131 63 L137 63" stroke="#9A7540" stroke-width="0.5"/>
+  <text x="134" y="55" text-anchor="middle" font-size="3.2" fill="#999" font-family="sans-serif">Espresso</text>
+
+  <!-- Coffee -->
+  <rect x="155" y="44" width="33" height="30" rx="2" fill="#232323" stroke="#333" stroke-width="0.3"/>
+  <rect x="166" y="56" width="10" height="13" rx="1.5" fill="none" stroke="#B8925A" stroke-width="0.7"/>
+  <path d="M167 62 L175 62" stroke="#9A7540" stroke-width="0.5"/>
+  <text x="171" y="55" text-anchor="middle" font-size="3.2" fill="#999" font-family="sans-serif">Coffee</text>
+
+  <!-- Cappuccino -->
+  <rect x="192" y="44" width="33" height="30" rx="2" fill="#232323" stroke="#333" stroke-width="0.3"/>
+  <rect x="203" y="55" width="10" height="14" rx="1.5" fill="none" stroke="#B8925A" stroke-width="0.7"/>
+  <path d="M204 60 L212 60" stroke="#E0D0B0" stroke-width="0.7"/>
+  <path d="M204 64 L212 64" stroke="#9A7540" stroke-width="0.5"/>
+  <text x="208" y="54" text-anchor="middle" font-size="3" fill="#999" font-family="sans-serif">Cappucc.</text>
+
+  <!-- Latte Macchiato -->
+  <rect x="229" y="44" width="33" height="30" rx="2" fill="#232323" stroke="#333" stroke-width="0.3"/>
+  <rect x="240" y="53" width="10" height="16" rx="1.5" fill="none" stroke="#B8925A" stroke-width="0.7"/>
+  <path d="M241 58 L249 58" stroke="#E0D0B0" stroke-width="0.6"/>
+  <path d="M241 62 L249 62" stroke="#9A7540" stroke-width="0.5"/>
+  <path d="M241 66 L249 66" stroke="#E0D0B0" stroke-width="0.4"/>
+  <text x="245" y="53" text-anchor="middle" font-size="2.8" fill="#999" font-family="sans-serif">Latte M.</text>
+
+  <!-- Row 2 -->
+  <!-- Flat White -->
+  <rect x="118" y="78" width="33" height="30" rx="2" fill="#232323" stroke="#333" stroke-width="0.3"/>
+  <rect x="130" y="90" width="8" height="12" rx="1.5" fill="none" stroke="#B8925A" stroke-width="0.7"/>
+  <path d="M131 95 L137 95" stroke="#E0D0B0" stroke-width="0.6"/>
+  <text x="134" y="88" text-anchor="middle" font-size="2.8" fill="#999" font-family="sans-serif">Flat White</text>
+
+  <!-- Cold Brew — blue tint for cold -->
+  <rect x="155" y="78" width="33" height="30" rx="2" fill="#232323" stroke="#333" stroke-width="0.3"/>
+  <rect x="166" y="89" width="10" height="13" rx="1.5" fill="none" stroke="#6B99B8" stroke-width="0.7"/>
+  <circle cx="171" cy="96" r="1.8" fill="none" stroke="#6B99B8" stroke-width="0.4"/>
+  <text x="171" y="87" text-anchor="middle" font-size="2.8" fill="#7BA8C0" font-family="sans-serif">Cold Brew</text>
+
+  <!-- Milk Foam -->
+  <rect x="192" y="78" width="33" height="30" rx="2" fill="#232323" stroke="#333" stroke-width="0.3"/>
+  <rect x="203" y="89" width="10" height="13" rx="1.5" fill="none" stroke="#D8C8A8" stroke-width="0.7"/>
+  <path d="M204 93 Q208 90 212 93" stroke="#E0D0B0" stroke-width="0.6"/>
+  <text x="208" y="88" text-anchor="middle" font-size="2.8" fill="#999" font-family="sans-serif">Milk Foam</text>
+
+  <!-- Hot Water -->
+  <rect x="229" y="78" width="33" height="30" rx="2" fill="#232323" stroke="#333" stroke-width="0.3"/>
+  <rect x="240" y="89" width="10" height="13" rx="1.5" fill="none" stroke="#7BA8C0" stroke-width="0.7"/>
+  <path d="M243 93 L243 99 M245 92 L247 97" stroke="#7BA8C0" stroke-width="0.4"/>
+  <text x="245" y="88" text-anchor="middle" font-size="2.8" fill="#999" font-family="sans-serif">Hot Water</text>
+
+  <!-- Page indicator dots -->
+  <circle cx="172" cy="113" r="1.5" fill="#777"/>
+  <circle cx="180" cy="113" r="1.5" fill="#444"/>
+  <circle cx="188" cy="113" r="1.5" fill="#444"/>
+  <circle cx="196" cy="113" r="1.5" fill="#444"/>
+  <circle cx="204" cy="113" r="1.5" fill="#444"/>
+
+  <!-- ======== CURVED CHROME LOGO PANEL — the Z10's signature convex element ======== -->
+  <!-- Wide convex chrome band — convex/curved top edge, flat bottom, spanning most of body width -->
+  <path d="
+    M62 145
+    Q62 132 70 132
+    L120 132
+    Q190 125 260 132
+    L310 132
+    Q318 132 318 145
+    L318 202
+    Q318 208 310 208
+    L70 208
+    Q62 208 62 202
+    Z
+  " fill="url(#logo-chrome-h)" stroke="#BBB" stroke-width="0.5"/>
+
+  <!-- Convex surface effect — curved highlight across the bowed top -->
+  <path d="M70 132 L120 132 Q190 125 260 132 L310 132 Q318 132 318 145 L318 156 Q190 168 62 156 L62 145 Q62 132 70 132 Z" fill="rgba(255,255,255,0.18)"/>
+  <!-- Secondary convex gleam — center area bright spot -->
+  <ellipse cx="190" cy="164" rx="100" ry="18" fill="rgba(255,255,255,0.04)"/>
+  <!-- Bottom edge shadow for depth -->
+  <path d="M62 196 L318 196 L318 202 Q318 208 310 208 L70 208 Q62 208 62 202 Z" fill="rgba(0,0,0,0.08)"/>
+  <!-- Subtle vertical brush lines on chrome -->
+  <line x1="130" y1="132" x2="130" y2="208" stroke="rgba(255,255,255,0.03)" stroke-width="0.3"/>
+  <line x1="250" y1="132" x2="250" y2="208" stroke="rgba(255,255,255,0.03)" stroke-width="0.3"/>
+
+  <!-- Jura logo circle — prominent, centered in chrome band -->
+  <circle cx="190" cy="163" r="20" fill="#151515" stroke="#555" stroke-width="1.2"/>
+  <circle cx="190" cy="163" r="17.5" fill="#111" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+  <!-- Jura text — italic serif style -->
+  <text x="190" y="169" text-anchor="middle" font-size="14" font-family="Georgia, serif" fill="#DDD" font-style="italic" font-weight="700">jura</text>
+
+  <!-- Z10 model badge — below logo circle -->
+  <text x="190" y="200" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#666" font-weight="400" letter-spacing="3">Z10</text>
+
+  <!-- Small rotary switch on right side of chrome panel -->
+  <circle cx="306" cy="168" r="6" fill="#555" stroke="#888" stroke-width="0.5"/>
+  <circle cx="306" cy="168" r="3.5" fill="#444"/>
+  <circle cx="306" cy="168" r="1.5" fill="#555"/>
+
+  <!-- ======== BLACK SIDE STRIPS — visible between aluminum body and dispensing area ======== -->
+  <!-- These dark strips run vertically on both sides of the dispensing area in the Z10 -->
+  <rect x="60" y="210" width="10" height="148" fill="#1A1A1A"/>
+  <rect x="310" y="210" width="10" height="148" fill="#1A1A1A"/>
+
+  <!-- ======== BLACK DISPENSING CAVITY ======== -->
+  <!-- The black recessed area below the chrome panel and above the drip tray -->
+  <rect x="70" y="210" width="240" height="148" rx="4" fill="url(#gloss-black)"/>
+  <!-- Inner deeper cavity -->
+  <rect x="100" y="218" width="180" height="130" rx="3" fill="#090909"/>
+  <!-- Top shadow inside cavity -->
+  <rect x="100" y="218" width="180" height="6" fill="rgba(0,0,0,0.25)"/>
+  <!-- Left wall subtle light -->
+  <rect x="100" y="218" width="3" height="130" fill="rgba(255,255,255,0.015)"/>
+  <!-- Right wall shadow -->
+  <rect x="277" y="218" width="3" height="130" fill="rgba(0,0,0,0.12)"/>
+  <!-- Glossy reflection across top of black panel -->
+  <path d="M70 210 L310 210 L310 222 Q190 228 70 222 Z" fill="rgba(255,255,255,0.02)"/>
+
+  <!-- ======== SPOUT SYSTEM ======== -->
+  <!-- Spout housing/rail at top of cavity -->
+  <rect x="158" y="220" width="64" height="11" rx="3" fill="#4A4A4A" stroke="#666" stroke-width="0.4"/>
+  <!-- Height-adjust sliding tab on right -->
+  <rect x="223" y="222" width="7" height="7" rx="1" fill="#3A3A3A" stroke="#555" stroke-width="0.3"/>
+
+  <!-- Main spout body — chrome block -->
+  <rect x="170" y="231" width="40" height="22" rx="3" fill="url(#chrome)" stroke="#AAA" stroke-width="0.3"/>
+  <!-- Chrome highlight on body -->
+  <rect x="187" y="233" width="5" height="18" rx="1" fill="rgba(255,255,255,0.18)"/>
+
+  <!-- Dual coffee nozzles — the central pair -->
+  <rect x="179" y="253" width="5" height="28" rx="2" fill="url(#spout-chrome)" stroke="#AAA" stroke-width="0.3"/>
+  <rect x="196" y="253" width="5" height="28" rx="2" fill="url(#spout-chrome)" stroke="#AAA" stroke-width="0.3"/>
+
+  <!-- Milk system nozzle — right side, slightly thinner -->
+  <rect x="207" y="242" width="4" height="34" rx="1.5" fill="url(#spout-chrome)" stroke="#999" stroke-width="0.25"/>
+
+  <!-- Hot water nozzle — left side -->
+  <rect x="169" y="244" width="4" height="30" rx="1.5" fill="url(#spout-chrome)" stroke="#999" stroke-width="0.25"/>
+
+  <!-- Spreader bar -->
+  <rect x="177" y="266" width="26" height="2.5" rx="1" fill="#CCC"/>
+
+  <!-- Nozzle openings -->
+  <ellipse cx="182" cy="282" rx="3" ry="3" fill="#888"/>
+  <ellipse cx="199" cy="282" rx="3" ry="3" fill="#888"/>
+  <ellipse cx="209" cy="277" rx="2" ry="2.5" fill="#777"/>
+  <ellipse cx="171" cy="275" rx="2" ry="2.5" fill="#777"/>
+
+  <!-- Cup illumination — warm amber glow strip at bottom of cavity -->
+  <rect x="140" y="340" width="100" height="2.5" rx="1" fill="#BB9940" opacity="0.25"/>
+  <rect x="155" y="342" width="70" height="2" rx="1" fill="#DDAA44" opacity="0.1"/>
+
+  <!-- Small control buttons on the aluminum body flanking the dispensing area -->
+  <!-- Left button -->
+  <circle cx="82" cy="335" r="4.5" fill="#333" stroke="#555" stroke-width="0.5"/>
+  <circle cx="82" cy="335" r="1.8" fill="#444"/>
+  <!-- Right button — power symbol -->
+  <circle cx="298" cy="335" r="4.5" fill="#333" stroke="#555" stroke-width="0.5"/>
+  <circle cx="298" cy="335" r="1.2" fill="none" stroke="#666" stroke-width="0.7"/>
+  <line x1="298" y1="331.5" x2="298" y2="333.2" stroke="#666" stroke-width="0.7"/>
+
+  <!-- ======== DRIP TRAY — aluminum, wider than the body ======== -->
+  <path d="
+    M32 365
+    L32 395
+    Q32 410 52 412
+    L328 412
+    Q348 410 348 395
+    L348 365
+    Z
+  " fill="url(#dark-inox-v)" stroke="#777" stroke-width="0.5"/>
+  <!-- Top edge highlight on drip tray -->
+  <path d="M32 365 L348 365 L348 372 Q190 376 32 372 Z" fill="rgba(255,255,255,0.05)"/>
+
+  <!-- Black grate inset with vertical lines (matching Z10 reference) -->
+  <rect x="50" y="370" width="280" height="30" rx="3" fill="#151515"/>
+  <!-- Vertical grate lines -->
+  <line x1="68" y1="374" x2="68" y2="396" stroke="#252525" stroke-width="0.6"/>
+  <line x1="82" y1="374" x2="82" y2="396" stroke="#252525" stroke-width="0.6"/>
+  <line x1="96" y1="374" x2="96" y2="396" stroke="#252525" stroke-width="0.6"/>
+  <line x1="110" y1="374" x2="110" y2="396" stroke="#252525" stroke-width="0.6"/>
+  <line x1="124" y1="374" x2="124" y2="396" stroke="#252525" stroke-width="0.6"/>
+  <line x1="138" y1="374" x2="138" y2="396" stroke="#252525" stroke-width="0.6"/>
+  <line x1="152" y1="374" x2="152" y2="396" stroke="#252525" stroke-width="0.6"/>
+  <line x1="166" y1="374" x2="166" y2="396" stroke="#252525" stroke-width="0.6"/>
+  <line x1="180" y1="374" x2="180" y2="396" stroke="#252525" stroke-width="0.6"/>
+  <line x1="194" y1="374" x2="194" y2="396" stroke="#252525" stroke-width="0.6"/>
+  <line x1="208" y1="374" x2="208" y2="396" stroke="#252525" stroke-width="0.6"/>
+  <line x1="222" y1="374" x2="222" y2="396" stroke="#252525" stroke-width="0.6"/>
+  <line x1="236" y1="374" x2="236" y2="396" stroke="#252525" stroke-width="0.6"/>
+  <line x1="250" y1="374" x2="250" y2="396" stroke="#252525" stroke-width="0.6"/>
+  <line x1="264" y1="374" x2="264" y2="396" stroke="#252525" stroke-width="0.6"/>
+  <line x1="278" y1="374" x2="278" y2="396" stroke="#252525" stroke-width="0.6"/>
+  <line x1="292" y1="374" x2="292" y2="396" stroke="#252525" stroke-width="0.6"/>
+  <line x1="306" y1="374" x2="306" y2="396" stroke="#252525" stroke-width="0.6"/>
+  <line x1="320" y1="374" x2="320" y2="396" stroke="#252525" stroke-width="0.6"/>
+
+  <!-- Chrome trim below grate -->
+  <line x1="42" y1="404" x2="338" y2="404" stroke="#999" stroke-width="0.4"/>
+
+  <!-- ======== BLACK BASE ======== -->
+  <path d="M46 410 Q46 428 68 430 L312 430 Q334 428 334 410 Z" fill="#151515"/>
+  <!-- Base edge highlight -->
+  <line x1="62" y1="430" x2="318" y2="430" stroke="#666" stroke-width="0.3"/>
+</svg>`,
 };
