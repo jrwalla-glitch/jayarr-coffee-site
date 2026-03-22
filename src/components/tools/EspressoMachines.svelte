@@ -98,7 +98,7 @@
     if (tab === activeTab) return;
     activeTab = tab;
     currentIndex = 0;
-    infoTab = 'overview';
+    infoTab = 'reviews';
   }
 
   function navigate(direction) {
@@ -108,7 +108,7 @@
       : (currentIndex - 1 + totalInCategory) % totalInCategory;
     transitionDirection = direction === 'next' ? 'right' : 'left';
     isTransitioning = true;
-    infoTab = 'overview';
+    infoTab = 'reviews';
     setTimeout(() => {
       currentIndex = newIndex;
       isTransitioning = false;
@@ -119,7 +119,7 @@
     if (index === currentIndex || isTransitioning) return;
     transitionDirection = index > currentIndex ? 'right' : 'left';
     isTransitioning = true;
-    infoTab = 'overview';
+    infoTab = 'reviews';
     setTimeout(() => {
       currentIndex = index;
       isTransitioning = false;
@@ -270,14 +270,14 @@
             <div class="info-tab-bar">
               <button
                 class="info-tab-btn"
-                class:info-tab-btn--active={infoTab === 'overview'}
-                onclick={() => infoTab = 'overview'}
-              >Overview</button>
-              <button
-                class="info-tab-btn"
                 class:info-tab-btn--active={infoTab === 'reviews'}
                 onclick={() => infoTab = 'reviews'}
               >Reviews</button>
+              <button
+                class="info-tab-btn"
+                class:info-tab-btn--active={infoTab === 'overview'}
+                onclick={() => infoTab = 'overview'}
+              >Overview</button>
             </div>
           {/if}
 
