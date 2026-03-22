@@ -173,6 +173,26 @@
     </button>
   </div>
 
+  <!-- Quick-select bar (directly below tabs) -->
+  {#if filtered.length > 0}
+    <div class="compare-bar">
+      <div class="compare-track">
+        {#each filtered as machine, i (machine.name)}
+          <button
+            class="compare-thumb"
+            class:compare-thumb--active={i === currentIndex}
+            onclick={() => goToMachine(i)}
+            aria-label="Jump to {machine.name}"
+            title={machine.name}
+          >
+            <span class="thumb-name">{machine.name.split(' ').slice(-1)[0]}</span>
+            <span class="thumb-price">{formatPrice(machine.price_usd)}</span>
+          </button>
+        {/each}
+      </div>
+    </div>
+  {/if}
+
   <!-- Main Brochure View -->
   {#if currentMachine}
     <div
@@ -314,23 +334,6 @@
       <span class="page-total">{totalInCategory}</span>
     </div>
 
-    <!-- Quick-compare bar -->
-    <div class="compare-bar">
-      <div class="compare-track">
-        {#each filtered as machine, i (machine.name)}
-          <button
-            class="compare-thumb"
-            class:compare-thumb--active={i === currentIndex}
-            onclick={() => goToMachine(i)}
-            aria-label="Jump to {machine.name}"
-            title={machine.name}
-          >
-            <span class="thumb-name">{machine.name.split(' ').slice(-1)[0]}</span>
-            <span class="thumb-price">{formatPrice(machine.price_usd)}</span>
-          </button>
-        {/each}
-      </div>
-    </div>
   {/if}
 
 </div>
@@ -733,9 +736,9 @@
 
   /* === Quick-Compare Bar === */
   .compare-bar {
-    margin-top: 1.25rem;
-    padding-top: 1rem;
-    border-top: 1px solid rgba(26, 26, 26, 0.06);
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    padding-top: 0;
     overflow-x: auto;
     -ms-overflow-style: none;
     scrollbar-width: none;
