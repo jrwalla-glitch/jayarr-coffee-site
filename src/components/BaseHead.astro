@@ -92,6 +92,7 @@ const breadcrumbSchema = {
 {isArticle && updatedDate && (
 	<meta property="article:modified_time" content={updatedDate.toISOString()} />
 )}
+<meta property="og:site_name" content={SITE_TITLE} />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
