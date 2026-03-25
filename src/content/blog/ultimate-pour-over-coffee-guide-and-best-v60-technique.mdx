@@ -7,10 +7,35 @@ heroImage: "../../assets/blog/aQxxFQqf-tk.jpg"
 category: "Brewing"
 ---
 
+import RecipeSchema from '../../components/RecipeSchema.astro';
 import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
 import FAQ from '../../components/FAQ.astro';
 import ToolCallout from '../../components/ToolCallout.astro';
 import HowToSchema from '../../components/HowToSchema.astro';
+
+<RecipeSchema
+  title="Pour Over Coffee (V60 Method)"
+  description="A complete V60 pour over recipe producing a clean, bright, and complex cup. Uses a bloom step, concentric pours, and the Rao spin for even extraction."
+  prepTime="PT2M"
+  cookTime="PT4M"
+  totalTime="PT4M"
+  recipeYield="1 serving"
+  recipeCategory="Beverage"
+  recipeCuisine="American"
+  recipeIngredient={[
+    "22g medium-fine ground coffee",
+    "340g water at 99°C (just off the boil)",
+    "V60 paper filter"
+  ]}
+  recipeInstructions={[
+    "Place a paper filter in the V60, rinse with hot water, and discard the rinse water. Preheat the dripper and server.",
+    "Add 22g of freshly ground coffee to the filter. Shake gently to level the bed.",
+    "Start your timer. Pour 60-70g of water over the grounds to bloom. Swirl the dripper gently. Wait until 0:45.",
+    "At 0:45, pour in a slow spiral from center outward until you reach 200-210g. Give the dripper a gentle swirl (Rao spin).",
+    "When the water level drops to about 1cm above the bed, pour again in spirals to 340g total. Swirl once more.",
+    "Let the coffee drain completely. Total brew time should be 3:00-3:45. The spent bed should look relatively flat."
+  ]}
+/>
 
 <HowToSchema
   name="How to Make Pour Over Coffee (V60 Method)"

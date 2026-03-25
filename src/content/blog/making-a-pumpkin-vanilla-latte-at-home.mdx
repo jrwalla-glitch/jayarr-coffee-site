@@ -7,8 +7,36 @@ heroImage: "../../assets/blog/DKV55a_2iI8.jpg"
 category: "Recipes"
 ---
 
+import RecipeSchema from '../../components/RecipeSchema.astro';
 import MethodCards from '../../components/infographics/MethodCards.astro';
 import FAQ from '../../components/FAQ.astro';
+
+<RecipeSchema
+  title="Homemade Pumpkin Vanilla Latte"
+  description="A pumpkin vanilla latte made with real pumpkin puree instead of artificial syrup. Cheaper, better-tasting, and available year-round."
+  prepTime="PT5M"
+  cookTime="PT5M"
+  totalTime="PT10M"
+  recipeYield="1 serving"
+  recipeCategory="Beverage"
+  recipeCuisine="American"
+  recipeIngredient={[
+    "8-10 oz strong coffee or 2 shots espresso",
+    "8-10 oz milk (whole or oat milk)",
+    "2 tbsp real pumpkin puree (not pumpkin pie filling)",
+    "1/2 tsp vanilla extract",
+    "1-1.5 tbsp maple syrup",
+    "1/4 tsp pumpkin pie spice",
+    "Pinch of salt"
+  ]}
+  recipeInstructions={[
+    "Brew bold coffee using dark roast (lighter roasts get lost under the milk and spice).",
+    "Combine milk and pumpkin puree in a saucepan. Whisk in vanilla, maple syrup, pumpkin pie spice, and salt.",
+    "Heat the pumpkin milk mixture to 150-160°F, stirring frequently. Froth if you have a frother.",
+    "Pour coffee into your mug, then pour the pumpkin milk mixture over it.",
+    "Dust with cinnamon or pumpkin pie spice. Optional: strain through a fine-mesh strainer for smooth texture."
+  ]}
+/>
 
 The homemade version of a pumpkin latte uses real pumpkin puree instead of artificial syrup, costs about $1.30 per drink (vs about $5.50 at Starbucks), and you can have it any time — not just September through November.
 

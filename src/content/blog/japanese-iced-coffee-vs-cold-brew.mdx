@@ -7,11 +7,37 @@ heroImage: "../../assets/blog/japanese-iced-coffee-vs-cold-brew.jpg"
 category: "Brewing"
 ---
 
+import RecipeSchema from '../../components/RecipeSchema.astro';
 import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
 import FAQ from '../../components/FAQ.astro';
 import AnswerBox from '../../components/AnswerBox.astro';
 import ToolCallout from '../../components/ToolCallout.astro';
 import DeepBrewCallout from '../../components/DeepBrewCallout.astro';
+
+<RecipeSchema
+  title="Japanese Iced Coffee (Flash Brew)"
+  description="Hot pour-over brewed directly over ice to preserve the full acid and aromatic profile of the coffee while serving it cold. Bright, complex, and ready in 5 minutes."
+  prepTime="PT2M"
+  cookTime="PT3M"
+  totalTime="PT5M"
+  recipeYield="1 serving"
+  recipeCategory="Beverage"
+  recipeCuisine="American"
+  recipeIngredient={[
+    "20g coffee ground slightly finer than normal pour over",
+    "180g hot water at 96°C (205°F)",
+    "120g ice"
+  ]}
+  recipeInstructions={[
+    "Place 120g of ice in your server or carafe.",
+    "Set up your pour-over dripper (V60 or similar) on top of the server with a rinsed paper filter.",
+    "Add 20g of coffee ground slightly finer than your usual pour-over setting.",
+    "Bloom with 40-50g of hot water at 96°C for 30-45 seconds.",
+    "Pour the remaining water in slow concentric circles to reach 180g total hot water.",
+    "Let the coffee drip directly onto the ice. The ice melts instantly, chilling the coffee and locking in volatile aromatics.",
+    "Swirl to incorporate any remaining ice. Serve immediately over fresh ice if desired."
+  ]}
+/>
 
 <AnswerBox answer="Flash brew (Japanese iced coffee) and cold brew produce chemically distinct beverages. Flash brew preserves the full acid and aromatic profile of hot coffee — bright, complex, fruit-forward — by brewing hot directly over ice. Cold brew has 28–50% lower titratable acidity (not lower pH — those are nearly identical) and fewer volatile aromatics, producing a smooth, chocolatey cup. Use flash brew for light roast single origins; use cold brew for medium/dark roasts and batch service." />
 

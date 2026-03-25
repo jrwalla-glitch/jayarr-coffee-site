@@ -7,12 +7,38 @@ heroImage: "../../assets/blog/how-to-cup-coffee-at-home.jpg"
 category: "Brewing"
 ---
 
+import RecipeSchema from '../../components/RecipeSchema.astro';
 import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
 import FAQ from '../../components/FAQ.astro';
 import AnswerBox from '../../components/AnswerBox.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
 import HowToSchema from '../../components/HowToSchema.astro';
 import ToolCallout from '../../components/ToolCallout.astro';
+
+<RecipeSchema
+  title="Coffee Cupping (SCA Home Protocol)"
+  description="The SCA-adapted home cupping protocol for evaluating coffee quality. Uses a standardized ratio and steep to remove brewing-method variables, allowing you to taste the coffee itself."
+  prepTime="PT5M"
+  cookTime="PT20M"
+  totalTime="PT25M"
+  recipeYield="2 servings"
+  recipeCategory="Beverage"
+  recipeCuisine="American"
+  recipeIngredient={[
+    "8.25g medium-coarse ground coffee per 150ml cup",
+    "150ml water at 93°C (200°F) per cup",
+    "Cupping spoon or large soup spoon"
+  ]}
+  recipeInstructions={[
+    "Grind each coffee to medium-coarse. Immediately smell the dry grounds (dry fragrance).",
+    "Pour 93°C water directly onto the grounds. Fill to within 3-4mm of the rim. Start a timer. Do not stir.",
+    "At exactly 4 minutes, break the floating crust with three gentle spoon strokes. Inhale deeply as you break — this is the most aromatic moment.",
+    "Skim floating grounds and foam from the surface with two spoons. Rinse spoons between coffees.",
+    "First taste at about 155°F: slurp vigorously from a spoon to spray coffee across your palate. Evaluate acidity, body, and initial flavor.",
+    "Second taste at about 140°F: sweetness becomes more perceptible as coffee cools. Re-evaluate all dimensions.",
+    "Third taste at cool temperature: defects emerge that heat concealed. Complete your scoresheet."
+  ]}
+/>
 
 <ArticleSchema
   title="How to Cup Coffee at Home: A Complete Tasting Guide"

@@ -7,9 +7,34 @@ heroImage: "../../assets/blog/kIYalqE3VLw.jpg"
 category: "Recipes"
 ---
 
+import RecipeSchema from '../../components/RecipeSchema.astro';
 import MethodCards from '../../components/infographics/MethodCards.astro';
 import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
 import FAQ from '../../components/FAQ.astro';
+
+<RecipeSchema
+  title="Homemade French Vanilla Coffee Creamer"
+  description="A simple base recipe for homemade coffee creamer using sweetened condensed milk. Five minutes, real ingredients, and about a dollar per batch. Three flavor variations included."
+  prepTime="PT5M"
+  totalTime="PT5M"
+  recipeYield="3 cups"
+  recipeCategory="Condiment"
+  recipeCuisine="American"
+  recipeIngredient={[
+    "1 can (14 oz) sweetened condensed milk",
+    "1 3/4 cups whole milk (or half and half for extra richness)",
+    "1 tsp vanilla extract",
+    "2 tsp vanilla extract (additional for French Vanilla)",
+    "1/4 tsp almond extract (optional, for depth)"
+  ]}
+  recipeInstructions={[
+    "Combine sweetened condensed milk, whole milk, and vanilla extract in a mason jar.",
+    "For French Vanilla: add 2 tsp additional vanilla extract and 1/4 tsp almond extract.",
+    "Shake vigorously for 30-45 seconds until fully combined.",
+    "Store in a sealed jar in the refrigerator. Lasts 2-3 weeks.",
+    "Shake before each use. Add 1-2 tbsp per cup of coffee."
+  ]}
+/>
 
 Store-bought creamer runs about 5g added sugar per tablespoon, mystery emulsifiers, and $4-5 per bottle. Homemade creamer: five minutes, real ingredients you control, under $1 per batch. Here are three recipes that all use the same base.
 

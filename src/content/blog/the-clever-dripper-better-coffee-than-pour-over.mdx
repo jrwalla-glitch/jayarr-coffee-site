@@ -7,9 +7,34 @@ heroImage: "../../assets/blog/L7BeHoHLjEo.jpg"
 category: "Brewing"
 ---
 
+import RecipeSchema from '../../components/RecipeSchema.astro';
 import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
 import FAQ from '../../components/FAQ.astro';
 import ExploreCallout from '../../components/ExploreCallout.astro';
+
+<RecipeSchema
+  title="Clever Dripper Coffee"
+  description="The easiest way to make consistently great coffee. Immersion brewing with paper filtration produces a clean, full-bodied cup with zero technique required."
+  prepTime="PT1M"
+  cookTime="PT4M"
+  totalTime="PT5M"
+  recipeYield="1 serving"
+  recipeCategory="Beverage"
+  recipeCuisine="American"
+  recipeIngredient={[
+    "20g medium-coarse ground coffee",
+    "300ml water at 200-205°F (93-96°C)",
+    "#4 flat-bottom paper filter"
+  ]}
+  recipeInstructions={[
+    "Insert a #4 flat-bottom filter into the Clever Dripper and rinse with hot water.",
+    "Add 20g of medium-coarse ground coffee.",
+    "Pour 300ml of water at 200-205°F (93-96°C).",
+    "Stir once at 1 minute to ensure all grounds are wet. Put the lid on.",
+    "Wait 4 minutes total.",
+    "Place the Clever Dripper on your cup. The valve opens and drawdown takes 30-45 seconds. Lift off and enjoy."
+  ]}
+/>
 
 The **<a href="https://www.amazon.com/s?k=Clever+Coffee+Dripper&tag=jayarrcoffee-20" rel="sponsored noopener">Clever Dripper</a>** is an immersion brewer that drains through a paper filter — combining French press-style full-contact brewing with pour-over-style clean filtration. It costs $20-30, needs no technique to operate, and produces reliably good coffee. We tested it for a week.
 

@@ -7,10 +7,36 @@ heroImage: "../../assets/blog/60YOhhNMDsc.jpg"
 category: "Brewing"
 ---
 
+import RecipeSchema from '../../components/RecipeSchema.astro';
 import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
 import FAQ from '../../components/FAQ.astro';
 import ExploreCallout from '../../components/ExploreCallout.astro';
 import HowToSchema from '../../components/HowToSchema.astro';
+
+<RecipeSchema
+  title="Cold Brew Coffee (Toddy System)"
+  description="Smooth, sweet cold brew concentrate using the Toddy system's dual filtration. Coarse grounds steep for 14-16 hours, producing a clean concentrate that lasts up to two weeks refrigerated."
+  prepTime="PT10M"
+  cookTime="PT16H"
+  totalTime="PT16H"
+  recipeYield="4 servings"
+  recipeCategory="Beverage"
+  recipeCuisine="American"
+  recipeIngredient={[
+    "340g coarsely ground coffee",
+    "1,680ml (7 cups) cold filtered water",
+    "Toddy brewing system (container, felt filter, paper filter, glass decanter)"
+  ]}
+  recipeInstructions={[
+    "Grind 340g of coffee to a coarse grind, like coarse sea salt.",
+    "Insert the rubber plug into the bottom of the Toddy container. Dampen the felt filter and place it in the bottom.",
+    "Place the paper filter bag inside the container on top of the felt filter. Pour the ground coffee into the bag and distribute evenly.",
+    "Pour 1,680ml of filtered water over the grounds. Stir gently to ensure all grounds contact water.",
+    "Twist the top of the paper bag closed. Leave at room temperature or in the refrigerator for 14-16 hours.",
+    "Position the brewing container over the glass decanter. Release the rubber stopper and let gravity drain the concentrate.",
+    "Store concentrate in the refrigerator. Dilute 1:1 to 1:3 with water or milk when serving over ice."
+  ]}
+/>
 
 <HowToSchema
   name="How to Make Cold Brew Coffee"

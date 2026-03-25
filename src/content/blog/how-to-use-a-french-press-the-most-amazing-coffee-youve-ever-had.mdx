@@ -7,10 +7,32 @@ heroImage: "../../assets/blog/ThGETR0roFk.jpg"
 category: "Brewing"
 ---
 
+import RecipeSchema from '../../components/RecipeSchema.astro';
 import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
 import FAQ from '../../components/FAQ.astro';
 import ToolCallout from '../../components/ToolCallout.astro';
 import HowToSchema from '../../components/HowToSchema.astro';
+
+<RecipeSchema
+  title="French Press Coffee (Hoffmann Method)"
+  description="The James Hoffmann French press technique for a clean, full-bodied cup with minimal sediment. Coarse grounds, a long rest, and a gentle pour produce dramatically less grit than the traditional press method."
+  prepTime="PT2M"
+  totalTime="PT12M"
+  recipeYield="1 serving"
+  recipeCategory="Beverage"
+  recipeCuisine="American"
+  recipeIngredient={[
+    "30g coarsely ground coffee",
+    "500g water, just off the boil (95-100°C / 205-212°F)"
+  ]}
+  recipeInstructions={[
+    "Add 30g of coarse-ground coffee to the French press. Pour all 500g of water in at once. Do not stir.",
+    "Wait 4 minutes. A crust of grounds will form on the surface. Leave it undisturbed.",
+    "Break the crust with a spoon and stir the surface gently three times. Skim off the foam and floating grounds with two spoons.",
+    "Wait 5-8 more minutes without plunging. This allows fine particles to settle to the bottom.",
+    "Press the plunger down just to the surface. Pour all coffee out immediately and gently. Do not press to the bottom. Leave the last inch of liquid in the press."
+  ]}
+/>
 
 <HowToSchema
   name="How to Make French Press Coffee (Hoffmann Method)"

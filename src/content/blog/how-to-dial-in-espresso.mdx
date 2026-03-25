@@ -7,12 +7,36 @@ heroImage: "../../assets/blog/how-to-dial-in-espresso.jpg"
 category: "Brewing"
 ---
 
+import RecipeSchema from '../../components/RecipeSchema.astro';
 import ReferenceGuide from '../../components/infographics/ReferenceGuide.astro';
 import FAQ from '../../components/FAQ.astro';
 import AnswerBox from '../../components/AnswerBox.astro';
 import HowToSchema from '../../components/HowToSchema.astro';
 import ToolCallout from '../../components/ToolCallout.astro';
 import DeepBrewCallout from '../../components/DeepBrewCallout.astro';
+
+<RecipeSchema
+  title="Espresso (Dialed-In Double Shot)"
+  description="A properly dialed-in double espresso using the systematic beginner workflow: fixed dose, 1:2 yield ratio, and taste-based grind adjustments."
+  prepTime="PT2M"
+  cookTime="PT30S"
+  totalTime="PT3M"
+  recipeYield="1 serving"
+  recipeCategory="Beverage"
+  recipeCuisine="American"
+  recipeIngredient={[
+    "18g finely ground coffee (espresso grind)",
+    "Water (machine-supplied, 90-96°C)"
+  ]}
+  recipeInstructions={[
+    "Weigh 18g of coffee into the portafilter basket using a 0.1g scale.",
+    "Use a WDT tool (thin needle) to rake through the grounds, breaking up clumps for even distribution.",
+    "Tamp level and firm (about 15-20 lbs pressure). Focus on levelness, not force.",
+    "Lock the portafilter, place cup on scale, and start the shot and timer simultaneously.",
+    "Stop the shot when the scale reads 36g out. Note the time — target is 25-30 seconds.",
+    "Taste and adjust: if sour/thin, grind finer. If bitter/harsh, grind coarser. Change one variable per shot."
+  ]}
+/>
 
 <AnswerBox answer="Dial in espresso by fixing dose (18g), targeting a 1:2 yield ratio (36g out in 25–30 seconds), then adjusting grind size based on taste: sour means grind finer, bitter means grind coarser. Change one variable per shot. WDT before tamping prevents channeling. Tamping pressure barely matters — levelness is everything." />
 

@@ -6,9 +6,32 @@ updatedDate: "Mar 05 2026"
 heroImage: "../../assets/blog/liNPFIl1a-c.jpg"
 category: "Drinks"
 ---
+import RecipeSchema from '../../components/RecipeSchema.astro';
 import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
 import FAQ from '../../components/FAQ.astro';
 import ToolCallout from '../../components/ToolCallout.astro';
+
+<RecipeSchema
+  title="Bone Dry Cappuccino"
+  description="Espresso topped with dense foam only — no steamed milk. The coffee flavor is front and center, with foam providing texture rather than dilution."
+  prepTime="PT2M"
+  cookTime="PT2M"
+  totalTime="PT4M"
+  recipeYield="1 serving"
+  recipeCategory="Beverage"
+  recipeCuisine="American"
+  recipeIngredient={[
+    "18g finely ground coffee for a double espresso shot",
+    "4-5 oz whole milk (for frothing — only the foam is used)"
+  ]}
+  recipeInstructions={[
+    "Pull a double shot of espresso (about 2 oz) into a prewarmed cup.",
+    "Steam 4-5 oz of milk with extra aeration: keep the steam wand tip near the surface longer than for a latte to create thick, sturdy foam.",
+    "Let the frothed milk sit for 15-20 seconds so liquid separates from foam.",
+    "Spoon foam only onto the espresso, holding back all liquid milk. Fill the cup to the top with dense foam.",
+    "Serve immediately — the foam gradually compresses and mixes with the espresso as you drink."
+  ]}
+/>
 
 A cappuccino has three components: espresso, steamed milk, and foam. The "wet" vs. "dry" distinction is simply which of those last two you emphasize. Push "dry" to its logical extreme — no liquid milk at all, just espresso topped with a thick cap of foam — and you've got a bone dry cappuccino.
 

@@ -6,10 +6,36 @@ heroImage: "../../assets/blog/vietnamese-phin-guide.jpg"
 category: "Brewing"
 ---
 
+import RecipeSchema from '../../components/RecipeSchema.astro';
 import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
 import FAQ from '../../components/FAQ.astro';
 import ToolCallout from '../../components/ToolCallout.astro';
 import HowToSchema from '../../components/HowToSchema.astro';
+
+<RecipeSchema
+  title="Vietnamese Phin Coffee (Ca Phe Sua Da)"
+  description="Bold Vietnamese iced coffee brewed with a phin filter over sweetened condensed milk, then poured over ice. The national drink of Vietnam."
+  prepTime="PT1M"
+  cookTime="PT5M"
+  totalTime="PT6M"
+  recipeYield="1 serving"
+  recipeCategory="Beverage"
+  recipeCuisine="Vietnamese"
+  recipeIngredient={[
+    "14g medium-coarse ground dark roast coffee (traditionally Vietnamese Robusta)",
+    "120ml hot water (95-100°C / 205-212°F)",
+    "2-3 tablespoons sweetened condensed milk",
+    "Ice"
+  ]}
+  recipeInstructions={[
+    "Add 2-3 tablespoons of sweetened condensed milk to the bottom of a heat-resistant glass. Place the phin plate on top.",
+    "Add 14g of ground coffee to the brewing chamber. Level the bed and place the press screen on top with light pressure.",
+    "Add about 30ml of hot water to bloom the grounds. Cover with lid and wait 30-60 seconds.",
+    "Fill the phin with the remaining hot water (90ml). Replace the lid. The coffee should drip slowly over 4-5 minutes.",
+    "When dripping stops, remove the phin. Stir the coffee and condensed milk together until combined.",
+    "Fill a tall glass with ice and pour the coffee-milk mixture over it. Stir once more and serve."
+  ]}
+/>
 
 <HowToSchema
   name="How to Make Vietnamese Phin Coffee (Ca Phe Sua Da)"

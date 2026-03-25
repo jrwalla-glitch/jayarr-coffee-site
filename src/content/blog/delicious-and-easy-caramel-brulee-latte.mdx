@@ -7,8 +7,36 @@ heroImage: "../../assets/blog/MEtE3sokWzM.jpg"
 category: "Recipes"
 ---
 
+import RecipeSchema from '../../components/RecipeSchema.astro';
 import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
 import FAQ from '../../components/FAQ.astro';
+
+<RecipeSchema
+  title="Caramel Brulee Latte"
+  description="A rich, smoky caramel brulee latte with homemade sauce, bold espresso, and steamed milk. Topped with whipped cream and toffee bits."
+  prepTime="PT15M"
+  cookTime="PT5M"
+  totalTime="PT20M"
+  recipeYield="1 serving"
+  recipeCategory="Beverage"
+  recipeCuisine="American"
+  recipeIngredient={[
+    "2-3 tbsp caramel brulee sauce",
+    "1-2 shots espresso (or strong AeroPress/moka pot coffee)",
+    "8 oz milk",
+    "Whipped cream",
+    "Toffee bits or crushed caramel",
+    "For scratch sauce: 1 cup sugar, 1/4 cup hot water, 6 tbsp salted butter, 1/2 cup heavy cream, 1 tsp vanilla, 1/4 tsp sea salt"
+  ]}
+  recipeInstructions={[
+    "Make caramel brulee sauce: heat sugar in a heavy saucepan until deep amber (8-10 min). Remove from heat, carefully add hot water, stir in butter, cream, vanilla, and salt.",
+    "Add 2-3 tbsp sauce to the bottom of your mug.",
+    "Pull 1-2 shots of espresso and pour over the sauce. Stir to dissolve.",
+    "Steam 8 oz milk to 150-155°F with about 1 inch of foam.",
+    "Pour steamed milk over the espresso-sauce mixture, holding back foam with a spoon.",
+    "Top with whipped cream and sprinkle with toffee bits. Optional: caramel drizzle."
+  ]}
+/>
 
 The caramel brulee latte is one of those coffee shop drinks that feels worth the splurge — deep, toasty caramel with a slightly smoky, torched-sugar quality. The good news: it's easy to make at home, costs under a dollar per drink, and you can have it year-round instead of waiting for Starbucks' seasonal release.
 

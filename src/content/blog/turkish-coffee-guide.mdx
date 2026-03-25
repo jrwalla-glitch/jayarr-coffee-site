@@ -6,10 +6,36 @@ heroImage: "../../assets/blog/turkish-coffee-guide.jpg"
 category: "Brewing"
 ---
 
+import RecipeSchema from '../../components/RecipeSchema.astro';
 import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
 import FAQ from '../../components/FAQ.astro';
 import ToolCallout from '../../components/ToolCallout.astro';
 import HowToSchema from '../../components/HowToSchema.astro';
+
+<RecipeSchema
+  title="Traditional Turkish Coffee"
+  description="The world's oldest brewing method done right. Ultra-fine grounds simmered in a cezve with sugar, producing a thick, intensely flavored cup with signature foam."
+  prepTime="PT1M"
+  cookTime="PT3M"
+  totalTime="PT4M"
+  recipeYield="1 serving"
+  recipeCategory="Beverage"
+  recipeCuisine="Turkish"
+  recipeIngredient={[
+    "7-10g extra-fine ground coffee (finer than espresso, almost powder)",
+    "65-75ml cold filtered water",
+    "1 tsp sugar (adjust to taste: sade/none, az sekerli/half, orta/one, sekerli/two)",
+    "1 cracked cardamom pod or pinch of ground cardamom (optional)"
+  ]}
+  recipeInstructions={[
+    "Add cold water to the cezve, then coffee, then sugar. Stir briefly to wet the grounds.",
+    "Place the cezve on the smallest burner at medium-low heat. Do not stir after placing on heat.",
+    "Watch the surface as the coffee heats over 2-3 minutes. A dark foam will form on the surface.",
+    "When the foam rises toward the rim of the cezve, remove from heat immediately. Do not let it boil over.",
+    "Spoon foam into each cup first, then pour the coffee slowly. Do not pour the last few drops.",
+    "Wait 60-90 seconds for the grounds to settle before drinking. Stop when you reach the thick sediment at the bottom."
+  ]}
+/>
 
 <HowToSchema
   name="How to Make Turkish Coffee"

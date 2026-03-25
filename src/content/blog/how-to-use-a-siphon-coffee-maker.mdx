@@ -7,10 +7,35 @@ heroImage: "../../assets/blog/Bd5mooKagX0.jpg"
 category: "Brewing"
 ---
 
+import RecipeSchema from '../../components/RecipeSchema.astro';
 import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
 import FAQ from '../../components/FAQ.astro';
 import ExploreCallout from '../../components/ExploreCallout.astro';
 import HowToSchema from '../../components/HowToSchema.astro';
+
+<RecipeSchema
+  title="Siphon (Vacuum) Brewed Coffee"
+  description="Immersion brewing plus vacuum filtration through a cloth filter for the cleanest, most transparent cup possible. A theatrical weekend ritual that rewards attention."
+  prepTime="PT5M"
+  cookTime="PT5M"
+  totalTime="PT10M"
+  recipeYield="2 servings"
+  recipeCategory="Beverage"
+  recipeCuisine="American"
+  recipeIngredient={[
+    "20g medium ground coffee",
+    "300g hot water (pre-heated speeds the process)",
+    "Cloth filter (pre-soaked in hot water)"
+  ]}
+  recipeInstructions={[
+    "Soak the cloth filter in hot water for a few minutes. Attach it to the upper chamber with the chain and hook.",
+    "Fill the lower globe with hot water. Place on the heat source (butane burner recommended).",
+    "Once the water begins to boil, insert the upper chamber with its filter into the lower globe with a firm seal.",
+    "When water rises into the upper chamber, add 20g of medium ground coffee. Stir gently to saturate all grounds.",
+    "Remove the heat source. Let coffee steep for 60-90 seconds, stirring once at the start.",
+    "As the lower globe cools, brewed coffee filters back down through the cloth filter (60-90 seconds). Remove the upper chamber and serve immediately."
+  ]}
+/>
 
 <HowToSchema
   name="How to Brew Coffee with a Siphon (Vacuum) Brewer"

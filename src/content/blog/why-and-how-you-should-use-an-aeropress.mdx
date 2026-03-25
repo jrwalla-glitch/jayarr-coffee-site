@@ -7,10 +7,35 @@ heroImage: "../../assets/blog/kmXWfHExI64.jpg"
 category: "Brewing"
 ---
 
+import RecipeSchema from '../../components/RecipeSchema.astro';
 import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
 import FAQ from '../../components/FAQ.astro';
 import ExploreCallout from '../../components/ExploreCallout.astro';
 import HowToSchema from '../../components/HowToSchema.astro';
+
+<RecipeSchema
+  title="AeroPress Coffee (Standard Method)"
+  description="Clean, full-flavored coffee in under 2 minutes using the standard AeroPress method. A short immersion steep followed by gentle pressure through a paper filter produces a versatile cup with clarity and body."
+  prepTime="PT1M"
+  cookTime="PT1M30S"
+  totalTime="PT2M"
+  recipeYield="1 serving"
+  recipeCategory="Beverage"
+  recipeCuisine="American"
+  recipeIngredient={[
+    "15g medium-fine ground coffee",
+    "200g water at 85-92°C (185-198°F)",
+    "AeroPress paper filter"
+  ]}
+  recipeInstructions={[
+    "Place a paper filter in the AeroPress cap and rinse with hot water. Screw the cap onto the chamber and place on your mug.",
+    "Add 15g of medium-fine ground coffee to the chamber. Shake gently to level.",
+    "Pour 200g of water, start your timer, and stir gently for 10 seconds to ensure all grounds are saturated.",
+    "Insert the plunger to create a seal but do not press yet. Steep for 60 seconds.",
+    "Press the plunger down slowly and steadily over 20-30 seconds. Stop when you hear a hiss.",
+    "Optional: dilute with 50-100g of hot water to taste (the bypass technique used by competition winners)."
+  ]}
+/>
 
 <HowToSchema
   name="How to Brew Coffee with an AeroPress"

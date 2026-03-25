@@ -6,10 +6,34 @@ updatedDate: "Mar 10 2026"
 heroImage: "../../assets/blog/moka-pot-brewing-guide.jpg"
 category: "Brewing"
 ---
+import RecipeSchema from '../../components/RecipeSchema.astro';
 import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
 import FAQ from '../../components/FAQ.astro';
 import ToolCallout from '../../components/ToolCallout.astro';
 import HowToSchema from '../../components/HowToSchema.astro';
+
+<RecipeSchema
+  title="Moka Pot Coffee (Stovetop Espresso)"
+  description="Strong, rich stovetop coffee using the Bialetti method. Pre-heated water, medium-fine grounds, and an early pull produce a smooth cup without the bitter, metallic taste of traditional moka pot brewing."
+  prepTime="PT2M"
+  cookTime="PT3M"
+  totalTime="PT5M"
+  recipeYield="2 servings"
+  recipeCategory="Beverage"
+  recipeCuisine="American"
+  recipeIngredient={[
+    "Medium-fine ground coffee (enough to fill the filter basket level)",
+    "Pre-boiled hot water (fill to just below the safety valve)"
+  ]}
+  recipeInstructions={[
+    "Fill the bottom chamber with pre-boiled hot water to just below the safety valve.",
+    "Fill the filter basket with medium-fine ground coffee (table salt texture). Level off with your finger — do not tamp.",
+    "Screw the top chamber on firmly using a towel to hold the hot bottom. Place on medium heat with the lid open.",
+    "Watch for a steady, honey-colored stream of coffee flowing into the top chamber after 2-4 minutes.",
+    "When the stream turns pale yellow and starts sputtering (about 80% full), remove from heat immediately. Cool the bottom under cold water to stop extraction.",
+    "Stir the coffee in the top chamber to mix the stronger early extraction with the lighter later flow. Pour and serve immediately."
+  ]}
+/>
 
 <HowToSchema
   name="How to Use a Moka Pot (Stovetop Espresso)"

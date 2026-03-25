@@ -7,8 +7,34 @@ heroImage: "../../assets/blog/ar9BlGtdrDY.jpg"
 category: "Brewing"
 ---
 
+import RecipeSchema from '../../components/RecipeSchema.astro';
 import MethodCards from '../../components/infographics/MethodCards.astro';
 import FAQ from '../../components/FAQ.astro';
+
+<RecipeSchema
+  title="2019 World AeroPress Championship Winning Recipe (Wendelien Brouwer)"
+  description="The best-tasting recipe from our side-by-side test of five WAC winning recipes. Coarse grind, short steep, and deliberate cooling to 60°C produce a perfectly balanced cup with dark fruit and black pepper."
+  prepTime="PT2M"
+  cookTime="PT3M"
+  totalTime="PT5M"
+  recipeYield="1 serving"
+  recipeCategory="Beverage"
+  recipeCuisine="American"
+  recipeIngredient={[
+    "30g coarsely ground coffee",
+    "100g water at 92°C",
+    "100g water for dilution (bypass)",
+    "AeroPress paper filter"
+  ]}
+  recipeInstructions={[
+    "Set up the AeroPress in the inverted position (plunger inserted about 2cm, open end up).",
+    "Add 30g of coarsely ground coffee to the chamber.",
+    "Pour 100g of water at 92°C over 10 seconds.",
+    "Stir 20 times in 10 seconds. Attach the filter cap, push out air, and flip at 0:40.",
+    "Press the plunger down slowly and steadily.",
+    "Add 100g of water to the brewed concentrate. Let cool to 60°C by decanting between cups for best flavor complexity."
+  ]}
+/>
 
 The World AeroPress Championship draws competitors from 60+ countries, all trying to make the best cup of coffee with a $35 brewer. After each year's contest, winning recipes are published online. We brewed the 2015-2019 champions' recipes back to back with the same beans and ranked them.
 

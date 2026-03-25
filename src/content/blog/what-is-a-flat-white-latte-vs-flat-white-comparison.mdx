@@ -7,9 +7,33 @@ heroImage: "../../assets/blog/tH0HaX3zMKk.jpg"
 category: "Drinks"
 ---
 
+import RecipeSchema from '../../components/RecipeSchema.astro';
 import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
 import FAQ from '../../components/FAQ.astro';
 import ToolCallout from '../../components/ToolCallout.astro';
+
+<RecipeSchema
+  title="Flat White"
+  description="A coffee-forward milk drink with ristretto shots and velvety microfoam. Smaller and more intense than a latte, smoother than a cappuccino."
+  prepTime="PT2M"
+  cookTime="PT2M"
+  totalTime="PT4M"
+  recipeYield="1 serving"
+  recipeCategory="Beverage"
+  recipeCuisine="American"
+  recipeIngredient={[
+    "18g finely ground coffee for a double ristretto",
+    "4 oz whole milk (cold from the fridge)"
+  ]}
+  recipeInstructions={[
+    "Grind 18g of coffee, dose into portafilter, and tamp evenly.",
+    "Pull a ristretto: same dose, shorter time (about 20-25 seconds for about 40ml double).",
+    "Steam 4 oz of milk using the stretch-then-roll technique: 3-4 seconds near the surface for air, then angle deeper for 8-10 seconds to create a whirlpool. Heat to 65-70°C (150-158°F).",
+    "Tap the pitcher firmly on the counter to pop surface bubbles, then swirl until the milk looks like glossy wet paint.",
+    "Pour from 2 inches above the cup, aiming for the center. Halfway through, bring the pitcher closer for the microfoam integration.",
+    "Serve immediately in a 5-6 oz cup."
+  ]}
+/>
 
 The flat white came out of Australia and New Zealand in the 1980s, went global when Starbucks added it in 2015, and has since become the default order for people who want to taste their espresso *and* have a creamy milk drink. It sits in a sweet spot: more coffee-forward than a latte, smoother than a cappuccino, larger than a [cortado](/blog/what-is-a-cortado/).
 

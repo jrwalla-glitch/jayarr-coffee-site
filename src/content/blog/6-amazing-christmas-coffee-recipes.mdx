@@ -6,8 +6,37 @@ updatedDate: "Nov 08 2025"
 heroImage: "../../assets/blog/T_-Fy6Jfv2g.jpg"
 category: "Recipes"
 ---
+import RecipeSchema from '../../components/RecipeSchema.astro';
 import MethodCards from '../../components/infographics/MethodCards.astro';
 import FAQ from '../../components/FAQ.astro';
+
+<RecipeSchema
+  title="Peppermint Mocha"
+  description="The most iconic holiday coffee drink, done properly with cocoa powder, peppermint syrup, and a pinch of sea salt. Topped with whipped cream and crushed candy canes."
+  prepTime="PT5M"
+  cookTime="PT5M"
+  totalTime="PT10M"
+  recipeYield="1 serving"
+  recipeCategory="Beverage"
+  recipeCuisine="American"
+  recipeIngredient={[
+    "1-2 shots espresso (double)",
+    "8-10 oz milk",
+    "1 tbsp cocoa powder",
+    "1 tbsp peppermint syrup",
+    "Pinch of sea salt",
+    "Whipped cream",
+    "Crushed candy canes"
+  ]}
+  recipeInstructions={[
+    "Pull a double shot of espresso (or brew strong coffee with an AeroPress or moka pot).",
+    "Combine cocoa powder and peppermint syrup in the bottom of your mug. Add a pinch of sea salt.",
+    "Pour espresso over the cocoa mixture and stir to dissolve.",
+    "Steam 8-10 oz of milk to 150-155°F.",
+    "Pour steamed milk into the espresso-cocoa base.",
+    "Top with whipped cream and crushed candy canes."
+  ]}
+/>
 
 Holiday coffee doesn't have to come from a drive-through. These six recipes use real ingredients (no pumps of syrup from a bottle) and work with whatever coffee setup you have at home. Espresso machine, AeroPress, drip — all fair game.
 

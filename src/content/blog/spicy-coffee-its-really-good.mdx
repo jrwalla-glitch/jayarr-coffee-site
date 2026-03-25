@@ -7,8 +7,35 @@ heroImage: "../../assets/blog/wQhXOziJnvc.jpg"
 category: "Recipes"
 ---
 
+import RecipeSchema from '../../components/RecipeSchema.astro';
 import ReferenceGuide from '../../components/infographics/ReferenceGuide.astro';
 import FAQ from '../../components/FAQ.astro';
+
+<RecipeSchema
+  title="Mexican Cafe de Olla (Spiced Coffee)"
+  description="Traditional Mexican spiced coffee brewed with cinnamon, cloves, star anise, and piloncillo. Rich, warming, and perfect for sharing."
+  prepTime="PT5M"
+  cookTime="PT15M"
+  totalTime="PT20M"
+  recipeYield="4 servings"
+  recipeCategory="Beverage"
+  recipeCuisine="Mexican"
+  recipeIngredient={[
+    "6 cups water",
+    "1/2 cup medium-ground coffee",
+    "1 cinnamon stick",
+    "4 whole cloves",
+    "1 star anise",
+    "1/3 cup piloncillo or brown sugar"
+  ]}
+  recipeInstructions={[
+    "Bring 6 cups of water to a boil with the cinnamon stick, cloves, and star anise.",
+    "Add piloncillo or brown sugar and stir until dissolved.",
+    "Add the ground coffee and return to a boil.",
+    "Remove from heat and let the grounds settle for 5 minutes.",
+    "Strain and serve. Rich, warming, and best shared."
+  ]}
+/>
 
 Adding spices to coffee isn't a modern trend — Turkish, Ethiopian, and Mexican coffee traditions have been doing it for centuries. Spices like cinnamon, cardamom, and cayenne complement coffee's natural flavors rather than masking them, creating a warming, aromatic cup with layers of depth that plain coffee can't match.
 

@@ -7,9 +7,31 @@ heroImage: "../../assets/blog/ljK8fX5DlEU.jpg"
 category: "Drinks"
 ---
 
+import RecipeSchema from '../../components/RecipeSchema.astro';
 import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
 import FAQ from '../../components/FAQ.astro';
 import ToolCallout from '../../components/ToolCallout.astro';
+
+<RecipeSchema
+  title="Cortado"
+  description="Espresso cut with an equal measure of steamed milk. No foam, no flavoring — just two ingredients in perfect balance. The espresso drink that reveals quality."
+  prepTime="PT2M"
+  cookTime="PT1M"
+  totalTime="PT3M"
+  recipeYield="1 serving"
+  recipeCategory="Beverage"
+  recipeCuisine="American"
+  recipeIngredient={[
+    "18g finely ground coffee for a double espresso shot",
+    "2 oz whole milk"
+  ]}
+  recipeInstructions={[
+    "Pull a double shot of espresso (about 2 oz) into a small glass.",
+    "Steam 2 oz of milk to 150-155°F with minimal foam — think microfoam, not cappuccino froth.",
+    "Pour steamed milk slowly into the espresso, letting them integrate into a single cohesive beverage.",
+    "Serve immediately in a 4 oz glass."
+  ]}
+/>
 
 "Cortado" means "cut" in Spanish. That's the whole concept: espresso *cut* with an equal measure of steamed milk. No foam, no flavoring, no 16-ounce cup. Just two ingredients in perfect balance.
 
