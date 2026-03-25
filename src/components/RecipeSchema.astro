@@ -1,0 +1,96 @@
+---
+/**
+ * RecipeSchema.astro — JSON-LD structured data for Recipe rich results
+ *
+ * Usage in an MDX blog post:
+ *
+ *   import RecipeSchema from '../../components/RecipeSchema.astro';
+ *
+ *   <RecipeSchema
+ *     title="Cold Brew Coffee Concentrate"
+ *     description="Smooth, low-acid cold brew concentrate you can make overnight with nothing but a jar, coffee, and water."
+ *     image="https://jayarr.coffee/images/cold-brew.jpg"
+ *     prepTime="PT5M"
+ *     cookTime="PT12H"
+ *     totalTime="PT12H5M"
+ *     recipeYield="4 servings"
+ *     recipeCategory="Beverage"
+ *     recipeCuisine="American"
+ *     recipeIngredient={[
+ *       "100g coarsely ground coffee",
+ *       "700ml cold filtered water",
+ *     ]}
+ *     recipeInstructions={[
+ *       "Combine coffee grounds and water in a mason jar or French press.",
+ *       "Stir gently to ensure all grounds are saturated.",
+ *       "Cover and refrigerate for 12-24 hours.",
+ *       "Strain through a fine-mesh sieve or paper filter.",
+ *       "Dilute concentrate 1:1 with water or milk and serve over ice.",
+ *     ]}
+ *   />
+ *
+ * Required props: title, description, recipeIngredient
+ * All other props are optional and will be omitted from the schema if not provided.
+ * Time fields use ISO 8601 duration format (e.g., "PT30M" = 30 minutes, "PT1H" = 1 hour).
+ */
+
+interface Props {
+	title: string;
+	description: string;
+	image?: string;
+	prepTime?: string;
+	cookTime?: string;
+	totalTime?: string;
+	recipeYield?: string;
+	recipeCategory?: string;
+	recipeCuisine?: string;
+	recipeIngredient: string[];
+	recipeInstructions?: string[];
+	author?: string;
+}
+
+const {
+	title,
+	description,
+	image,
+	prepTime,
+	cookTime,
+	totalTime,
+	recipeYield,
+	recipeCategory,
+	recipeCuisine,
+	recipeIngredient,
+	recipeInstructions,
+	author = 'JayArr',
+} = Astro.props;
+
+const recipeSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Recipe',
+	name: title,
+	description,
+	...(image ? { image } : {}),
+	...(prepTime ? { prepTime } : {}),
+	...(cookTime ? { cookTime } : {}),
+	...(totalTime ? { totalTime } : {}),
+	...(recipeYield ? { recipeYield } : {}),
+	...(recipeCategory ? { recipeCategory } : {}),
+	...(recipeCuisine ? { recipeCuisine } : {}),
+	recipeIngredient,
+	...(recipeInstructions
+		? {
+				recipeInstructions: recipeInstructions.map((text, i) => ({
+					'@type': 'HowToStep',
+					position: i + 1,
+					text,
+				})),
+			}
+		: {}),
+	author: {
+		'@type': 'Person',
+		name: author,
+	},
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(recipeSchema)} />
