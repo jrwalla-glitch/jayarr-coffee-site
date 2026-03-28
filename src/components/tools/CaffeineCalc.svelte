@@ -16,16 +16,13 @@
   ];
 
   const FDA_LIMIT = 400;
-  const PREGNANCY_LIMIT = 200;
   const HALF_LIFE_HOURS = 5;
 
   let log = $state([]);
-  let pregnancyMode = $state(false);
 
-  let activeLimit = $derived(pregnancyMode ? PREGNANCY_LIMIT : FDA_LIMIT);
   let total = $derived(log.reduce((sum, item) => sum + item.mg, 0));
-  let pct = $derived(Math.min((total / activeLimit) * 100, 100));
-  let overLimit = $derived(total > activeLimit);
+  let pct = $derived(Math.min((total / FDA_LIMIT) * 100, 100));
+  let overLimit = $derived(total > FDA_LIMIT);
 
   function addDrink(drink) {
     log = [...log, { ...drink, ts: Date.now(), uid: Math.random() }];
@@ -39,31 +36,16 @@
     log = [];
   }
 
-  // Determine bar color based on percentage of active limit
+  // Determine bar color based on percentage
   function barColor(total) {
-    if (total >= activeLimit) return '#8B2500';
-    if (total >= activeLimit * 0.75) return '#A8632E';
-    if (total >= activeLimit * 0.5) return '#C17A3A';
+    if (total >= FDA_LIMIT) return '#8B2500';
+    if (total >= 300) return '#A8632E';
+    if (total >= 200) return '#C17A3A';
     return 'rgba(193, 122, 58, 0.7)';
   }
 </script>
 
 <div class="caffeine-tool">
-  <!-- Mode toggle -->
-  <div class="mode-section">
-    <button
-      class="mode-toggle"
-      class:active={pregnancyMode}
-      onclick={() => pregnancyMode = !pregnancyMode}
-      aria-pressed={pregnancyMode}
-    >
-      <span class="toggle-track">
-        <span class="toggle-thumb"></span>
-      </span>
-      <span class="toggle-label">Pregnancy mode <span class="toggle-detail">(200 mg ACOG limit)</span></span>
-    </button>
-  </div>
-
   <!-- Total display -->
   <div class="total-section">
     <span class="section-label">Today's Caffeine</span>
@@ -78,19 +60,17 @@
           style:width="{pct}%"
           style:background={barColor(total)}
         ></div>
-        {#if !pregnancyMode}
-          <div class="limit-marker" style:left="{(PREGNANCY_LIMIT / FDA_LIMIT) * 100}%">
-            <span class="marker-label">200</span>
-          </div>
-        {/if}
+        <div class="limit-marker" style:left="50%">
+          <span class="marker-label">200</span>
+        </div>
         <div class="limit-marker limit-marker--end">
-          <span class="marker-label">{activeLimit}</span>
+          <span class="marker-label">400</span>
         </div>
       </div>
       <div class="limit-labels">
-        <span class="limit-note">{pregnancyMode ? 'ACOG pregnancy limit: 200 mg' : 'FDA daily limit: 400 mg'}</span>
+        <span class="limit-note">FDA daily limit: 400 mg</span>
         {#if overLimit}
-          <span class="limit-warning">{pregnancyMode ? 'Over pregnancy limit' : 'Over recommended limit'}</span>
+          <span class="limit-warning">Over recommended limit</span>
         {/if}
       </div>
     </div>
@@ -167,67 +147,6 @@
     display: flex;
     flex-direction: column;
     gap: 2rem;
-  }
-
-  /* === Mode Toggle === */
-  .mode-section {
-    display: flex;
-    justify-content: center;
-  }
-
-  .mode-toggle {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: none;
-    border: 1px solid rgba(26, 26, 26, 0.1);
-    padding: 0.5rem 0.75rem;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .mode-toggle:hover {
-    border-color: rgba(193, 122, 58, 0.35);
-  }
-  .mode-toggle.active {
-    border-color: #C17A3A;
-    background: rgba(193, 122, 58, 0.04);
-  }
-
-  .toggle-track {
-    position: relative;
-    width: 32px;
-    height: 18px;
-    background: rgba(26, 26, 26, 0.12);
-    border-radius: 9px;
-    transition: background 0.2s;
-    flex-shrink: 0;
-  }
-  .active .toggle-track {
-    background: #C17A3A;
-  }
-
-  .toggle-thumb {
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 14px;
-    height: 14px;
-    background: white;
-    border-radius: 50%;
-    transition: transform 0.2s;
-  }
-  .active .toggle-thumb {
-    transform: translateX(14px);
-  }
-
-  .toggle-label {
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: #1A1A1A;
-  }
-  .toggle-detail {
-    font-weight: 400;
-    color: #8A8070;
   }
 
   .section-label {
