@@ -40,6 +40,19 @@ const categoryDescriptions: Record<string, string> = {
 			title={`${category} — ${SITE_TITLE}`}
 			description={categoryDescriptions[category] || `${category} articles from ${SITE_TITLE}.`}
 		/>
+		<script type="application/ld+json" set:html={JSON.stringify({
+			'@context': 'https://schema.org',
+			'@type': 'ItemList',
+			name: `${category} — JayArr Coffee`,
+			description: categoryDescriptions[category] || `${category} articles from JayArr Coffee.`,
+			numberOfItems: posts.length,
+			itemListElement: posts.map((post, i) => ({
+				'@type': 'ListItem',
+				position: i + 1,
+				url: `https://jayarr.coffee/blog/${post.id}/`,
+				name: post.data.title,
+			})),
+		})} />
 	</head>
 	<body class="bg-cream">
 		<Header />
