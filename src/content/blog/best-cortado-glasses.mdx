@@ -10,6 +10,18 @@ videoId: "jR03j895Lys"
 import AnswerBox from '../../components/AnswerBox.astro';
 import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
 import FAQ from '../../components/FAQ.astro';
+import ProductReviewSchema from '../../components/ProductReviewSchema.astro';
+
+<ProductReviewSchema products={[
+  { name: "Duralex Picardie", brand: "Duralex", price: "3", description: "French bistro tempered glass tumbler. 3.1 oz, single wall, nearly indestructible, stackable, dishwasher safe.", verdict: "Cheapest option that works — no cortado-specific features but extremely durable." },
+  { name: "Libbey Gibraltar DuraTuff", brand: "Libbey", price: "4", description: "The original cortado glass. 4.5 oz, faceted sides, heavy base, DuraTuff tempered treatment, commercial-dishwasher safe.", verdict: "Best value — the iconic cortado vessel that launched the American cortado movement." },
+  { name: "Loveramics Twisted", brand: "Loveramics", price: "9", description: "4 oz cortado glass with twisted exterior that refracts light. Curved interior for crema development, stackable, dishwasher safe.", verdict: "Most interesting-looking glass under ten dollars." },
+  { name: "Hearth Double-Wall", brand: "Hearth", price: "8", description: "Handmade borosilicate double-wall glass. 4 oz, kiln-fired, shatter-resistant, floating visual effect.", verdict: "Best double-wall cortado glass — insulated comfort without the twenty-dollar premium." },
+  { name: "notNeutral VERO", brand: "notNeutral", price: "20", description: "Hand-pressed USA-made glass with interior curve shaped for latte art. 4.25 oz, available in 6 colors.", verdict: "Best overall cortado glass — unmatched latte art performance in a cortado format." },
+  { name: "FLUR", brand: "FLUR", price: "20", description: "Handblown double-walled borosilicate glass. 4 oz, floating visual effect, 5 colors, 1-year warranty.", verdict: "Best for photography and Instagram — fragile but visually stunning." },
+  { name: "KRUVE IMAGINE", brand: "KRUVE", price: "20", description: "Laboratory-grade borosilicate double-wall glass with spherical inner wall. 5 oz, vacuum sealed.", verdict: "Oversized for a traditional cortado but excellent latte art canvas." },
+  { name: "Fellow Monty", brand: "Fellow", price: "23", description: "Double-wall ceramic with hidden parabolic slope for crema. Matte finish, stackable with Fellow ecosystem.", verdict: "Best ceramic cortado cup — loses glass visual layering but retains heat better." }
+]} />
 
 <AnswerBox answer="The best cortado glass for most people is the notNeutral VERO ($20) — it's what top specialty shops use, and the interior curve is purpose-built for latte art in a 4.25 oz format. Best value is the Libbey Gibraltar ($4), the original that started the cortado movement. Best double-wall is the Hearth ($8), which gives you the floating look and insulated comfort without the $20 premium." />
 

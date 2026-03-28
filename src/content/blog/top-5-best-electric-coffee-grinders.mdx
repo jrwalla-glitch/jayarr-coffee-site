@@ -9,6 +9,32 @@ videoId: "ojpYSh5HkE0"
 ---
 import RankingList from '../../components/infographics/RankingList.astro';
 import FAQ from '../../components/FAQ.astro';
+import ProductReviewSchema from '../../components/ProductReviewSchema.astro';
+import ItemListSchema from '../../components/ItemListSchema.astro';
+
+<ProductReviewSchema products={[
+  { name: "Baratza Encore ESP", brand: "Baratza", price: "200", description: "40mm conical burr grinder with upgraded M2 burrs for espresso capability. Intuitive single-dial operation.", verdict: "Best for beginners — covers drip through passable espresso with the most intuitive interface." },
+  { name: "Fellow Opus", brand: "Fellow", price: "210", description: "40mm conical burr grinder running at half the noise of competitors. True all-purpose from cold brew through espresso.", verdict: "Best for noise-sensitive households with clean modern aesthetics." },
+  { name: "Fellow Ode Gen 2", brand: "Fellow", price: "320", description: "64mm flat burr grinder with SSP collaboration burrs. Dedicated filter grinder with outstanding consistency.", verdict: "Best filter grinder — clean, clear, complex cups that highlight origin character." },
+  { name: "Turin DF64 Gen 2", brand: "Turin", price: "425", description: "64mm flat burr single-dose platform that accepts aftermarket SSP burrs. Near-endgame quality with SSP upgrade.", verdict: "Best value platform — 80-90% of $1,500 grinder performance with SSP burrs." },
+  { name: "Baratza Sette 270", brand: "Baratza", price: "399", description: "Dedicated espresso grinder with innovative outer-ring rotation design. Ultra-low retention with built-in timer.", verdict: "Best for espresso-only users who value speed and low retention." },
+  { name: "Niche Zero", brand: "Niche", price: "580", description: "63mm Mazzer conical burr single-dose grinder with near-zero retention. Endorsed by James Hoffmann.", verdict: "Best all-purpose single-dose grinder — the most important home grinder of the last decade." },
+  { name: "Eureka Mignon Specialita", brand: "Eureka", price: "649", description: "55mm flat burr espresso grinder with Silent Technology at 70dB and touchscreen timer. Italian-made.", verdict: "Best quiet espresso grinder — set-and-forget consistency with decades of lifespan." }
+]} />
+
+<ItemListSchema
+  name="Best Electric Coffee Grinders 2026"
+  description="Electric grinders ranked from entry level to premium"
+  items={[
+    { name: "Baratza Encore ESP", position: 1 },
+    { name: "Fellow Opus", position: 2 },
+    { name: "Fellow Ode Gen 2", position: 3 },
+    { name: "Turin DF64 Gen 2", position: 4 },
+    { name: "Baratza Sette 270", position: 5 },
+    { name: "Niche Zero", position: 6 },
+    { name: "Eureka Mignon Specialita", position: 7 }
+  ]}
+/>
 
 Your grinder matters more than your coffee maker. More than your beans. More than your water. More than your technique. Coffee scientist Jonathan Gagne puts it bluntly: "Switching grinders changes flavor more than any other single variable." If you take one thing from this article, let it be that.
 

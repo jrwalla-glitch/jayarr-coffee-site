@@ -10,6 +10,28 @@ videoId: "Ijnj7RX-pis"
 
 import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
 import FAQ from '../../components/FAQ.astro';
+import ProductReviewSchema from '../../components/ProductReviewSchema.astro';
+import ItemListSchema from '../../components/ItemListSchema.astro';
+
+<ProductReviewSchema products={[
+  { name: "Hario Drip Scale", brand: "Hario", price: "45", description: "Purpose-built pour-over scale with 0.1g accuracy, integrated timer, and smart auto-off that stays active while the timer runs.", verdict: "Best performance coffee scale for pour-over enthusiasts." },
+  { name: "Airo Style Coffee Scale", brand: "Airo Style", price: "18", description: "Coffee scale with built-in timer, 0.1g accuracy, stainless steel platform, and 5-minute auto-off. AA batteries included.", verdict: "Best overall coffee scale for most people." },
+  { name: "Ozeri Touch Professional Digital Kitchen Scale", brand: "Ozeri", price: "30", description: "Tempered glass kitchen scale with touch-sensitive buttons and 0.1g accuracy. No timer. Uses 3V lithium batteries.", verdict: "Best-looking scale but outperformed by the Hario on functionality." },
+  { name: "Apexstone Coffee Scale", brand: "Apexstone", price: "18", description: "Coffee scale with timer, backlit display, and AAA batteries. Matches Airo Style on paper but feels cheaper in practice.", verdict: "Skip — the Airo Style is the better buy at the same price." },
+  { name: "Etekcity Digital Kitchen Scale", brand: "Etekcity", price: "10", description: "Stainless steel kitchen scale with 0.1g accuracy and AAA batteries. Ultra-portable, iPad Mini sized.", verdict: "Best budget scale and lowest-risk entry point for precision brewing." }
+]} />
+
+<ItemListSchema
+  name="5 Best Coffee Scales Reviewed"
+  description="5 coffee scales tested and ranked for accuracy, features, and value"
+  items={[
+    { name: "Airo Style Coffee Scale", position: 1 },
+    { name: "Etekcity Digital Kitchen Scale", position: 2 },
+    { name: "Hario Drip Scale", position: 3 },
+    { name: "Ozeri Touch Professional", position: 4 },
+    { name: "Apexstone Coffee Scale", position: 5 }
+  ]}
+/>
 
 If you want consistently good coffee, weigh your beans. A scoop of light roast can weigh 25% more than a scoop of dark roast — same volume, completely different brew ratios. A $12 scale eliminates that guesswork instantly.
 

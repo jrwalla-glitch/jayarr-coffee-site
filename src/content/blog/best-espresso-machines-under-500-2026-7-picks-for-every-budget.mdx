@@ -10,6 +10,32 @@ videoId: "hOMqbHGjE_8"
 import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
 import ReferenceGuide from '../../components/infographics/ReferenceGuide.astro';
 import FAQ from '../../components/FAQ.astro';
+import ProductReviewSchema from '../../components/ProductReviewSchema.astro';
+import ItemListSchema from '../../components/ItemListSchema.astro';
+
+<ProductReviewSchema products={[
+  { name: "Casabru 3700 Essential", brand: "Casabru", price: "129", description: "PID-controlled espresso machine with stainless steel body, 3 filter baskets, and compact 6-inch width. Italian-built.", verdict: "Best value — PID temperature control for under $130 is genuinely impressive." },
+  { name: "Flair Classic", brand: "Flair", price: "149", description: "Manual lever espresso maker with full pressure profiling capability. No pump, no electronics.", verdict: "Best for craft — pressure profiling at $149 that rivals $1,500 setups." },
+  { name: "DeLonghi Dedica", brand: "De'Longhi", price: "250", description: "6-inch wide espresso machine with 40-second heat-up, stainless steel build, and steam wand.", verdict: "Best for small spaces but a dead-end upgrade path." },
+  { name: "Breville Bambino", brand: "Breville", price: "300", description: "ThermoJet espresso machine with 3-second heat-up, PID control, pre-infusion, and 54mm portafilter.", verdict: "Outstanding feature set for the price — speed and PID at $300." },
+  { name: "Gaggia Classic Evo Pro", brand: "Gaggia", price: "449", description: "Italian-made espresso machine with 58mm commercial portafilter, solenoid valve, and massive aftermarket ecosystem.", verdict: "Best for enthusiasts — commercial portafilter, incredible build quality, and a 15-20 year lifespan." },
+  { name: "Breville Bambino Plus", brand: "Breville", price: "480", description: "Everything the Bambino offers plus automatic milk texturing across 3 settings, 64 oz water tank, and PID control.", verdict: "Best for milk drinks — automatic microfoam without sacrificing shot quality." },
+  { name: "Breville Barista Express", brand: "Breville", price: "499", description: "Espresso machine with built-in conical burr grinder, PID control, 16 grind settings, and 67 oz water tank.", verdict: "Best overall — built-in grinder, strong community, and one-box simplicity." }
+]} />
+
+<ItemListSchema
+  name="Best Espresso Machines Under $500 in 2026"
+  description="7 espresso machines ranked for every budget from $129 to $499"
+  items={[
+    { name: "Casabru 3700 Essential", position: 1 },
+    { name: "Flair Classic", position: 2 },
+    { name: "DeLonghi Dedica", position: 3 },
+    { name: "Breville Bambino", position: 4 },
+    { name: "Gaggia Classic Evo Pro", position: 5 },
+    { name: "Breville Bambino Plus", position: 6 },
+    { name: "Breville Barista Express", position: 7 }
+  ]}
+/>
 
 You walk into your favorite cafe. The barista pulls a perfect double shot. Rich crema on top, that deep caramel color, steam curling off the surface. You take a sip and think, "Could I make this at home?" The answer is yes — and you don't need to spend $2,000 to get there. The home espresso market has exploded in the last few years, and some seriously impressive machines are now available for under $500. We researched and compared seven of the best options you can buy right now.
 

@@ -11,6 +11,30 @@ import ComparisonTable from '../../components/infographics/ComparisonTable.astro
 import FAQ from '../../components/FAQ.astro';
 import AnswerBox from '../../components/AnswerBox.astro';
 import ToolCallout from '../../components/ToolCallout.astro';
+import ProductReviewSchema from '../../components/ProductReviewSchema.astro';
+import ItemListSchema from '../../components/ItemListSchema.astro';
+
+<ProductReviewSchema products={[
+  { name: "De'Longhi Stilosa EC260BK", brand: "De'Longhi", price: "110", description: "Compact espresso machine with manual steam wand, 15-bar pump, thermoblock boiler, and upgradeable 51mm portafilter.", verdict: "Best overall espresso machine under $200 — real steam wand and room to grow." },
+  { name: "De'Longhi ECP3420", brand: "De'Longhi", price: "145", description: "Budget espresso machine with pressurized portafilter, panarello wand, 15-bar pump, and thermoblock boiler.", verdict: "Dependable and consistent but not a learning platform for espresso technique." },
+  { name: "Breville Bambino", brand: "Breville", price: "185", description: "Thermojet espresso machine with 3-second heat-up, 54mm non-pressurized portafilter, and commercial-style steam wand.", verdict: "Best in class if found under $200 on sale or refurbished — a different tier of machine." },
+  { name: "Flair Neo", brand: "Flair", price: "145", description: "Manual lever espresso maker with 6-9 bars of hand-controlled pressure. No electricity, no pump, no boiler.", verdict: "Best for pure espresso quality on a budget — competes with machines three times the price." },
+  { name: "Mr. Coffee Cafe Barista", brand: "Mr. Coffee", price: "145", description: "Espresso machine with integrated milk reservoir and one-touch buttons for espresso, latte, and cappuccino.", verdict: "Best for hands-off convenience but lowest espresso quality ceiling on the list." },
+  { name: "Gaggia Classic Pro", brand: "Gaggia", price: "200", description: "Commercial-grade home espresso machine with 58mm portafilter, brass boiler, real steam wand, and 3-way solenoid valve. Refurbished pricing.", verdict: "Best long-term investment — a $450 machine available at $200 refurbished, built to last a decade." }
+]} />
+
+<ItemListSchema
+  name="Best Espresso Machines Under $200"
+  description="6 espresso machines ranked for the sub-$200 budget"
+  items={[
+    { name: "De'Longhi Stilosa EC260BK", position: 1 },
+    { name: "De'Longhi ECP3420", position: 2 },
+    { name: "Breville Bambino", position: 3 },
+    { name: "Flair Neo", position: 4 },
+    { name: "Mr. Coffee Cafe Barista", position: 5 },
+    { name: "Gaggia Classic Pro", position: 6 }
+  ]}
+/>
 
 <AnswerBox answer="The best espresso machine under $200 is the De'Longhi Stilosa EC260BK (~$110) for most buyers — it has a real steam wand, an upgradeable 51mm portafilter, and the best learning-to-value ratio at this price. If you can find a refurbished Breville Bambino at $180–200, buy that instead — it's a fundamentally better machine. Pair either with a capable burr grinder ($65–195); the grinder matters more than the machine." />
 

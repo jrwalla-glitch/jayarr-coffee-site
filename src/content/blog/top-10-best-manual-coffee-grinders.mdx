@@ -10,6 +10,34 @@ videoId: "0GLY1Tf8amA"
 
 import RankingList from '../../components/infographics/RankingList.astro';
 import FAQ from '../../components/FAQ.astro';
+import ProductReviewSchema from '../../components/ProductReviewSchema.astro';
+import ItemListSchema from '../../components/ItemListSchema.astro';
+
+<ProductReviewSchema products={[
+  { name: "Timemore C3 Coffee Grinder", brand: "Timemore", price: "75", description: "Budget hand grinder with S2C stainless steel burrs, aluminum body, dual bearings, and smooth click adjustment.", verdict: "Best budget pick — S2C burrs outperform many $200 electric grinders." },
+  { name: "1Zpresso JX Coffee Grinder", brand: "1Zpresso", price: "100", description: "48mm stainless steel burr hand grinder with excellent build quality. Covers pour-over, AeroPress, and French press.", verdict: "Best filter-only value — remarkable quality for $100." },
+  { name: "1Zpresso JX-Pro Coffee Grinder", brand: "1Zpresso", price: "145", description: "48mm stainless steel burr hand grinder with 12.5 micron per click adjustment. Handles espresso through French press.", verdict: "Best overall value hand grinder — the single best value you can buy." },
+  { name: "1Zpresso K-Max Coffee Grinder", brand: "1Zpresso", price: "215", description: "Premium hand grinder with 22 micron per click adjustment, external mechanism, and machined aluminum construction.", verdict: "Best all-rounder in the premium tier considering price-to-performance ratio." },
+  { name: "Kinu M47 Coffee Grinder", brand: "Kinu", price: "269", description: "Precision hand grinder with stepless adjustment at about 10 micron resolution. All-metal, 47mm steel burrs.", verdict: "Best hand grinder for espresso fine-tuning — finest adjustment available." },
+  { name: "Comandante C40 MK4", brand: "Comandante", price: "295", description: "German-engineered hand grinder with Nitro Blade stainless steel burrs. Exceptional grind uniformity for pour-over.", verdict: "Best pour-over clarity — Nitro Blade burrs produce some of the most uniform particles available." },
+  { name: "Timemore C2 Coffee Grinder", brand: "Timemore", price: "55", description: "Budget hand grinder with stainless steel burrs, aluminum body, and dual bearings.", verdict: "Absolute budget floor — solid entry point that killed the budget hand grinder category." },
+  { name: "Hario Mini Mill Slim", brand: "Hario", price: "40", description: "Compact hand grinder with ceramic burrs. Durable but outperformed by Timemore at similar prices.", verdict: "Ceramic longevity is the only remaining advantage over Timemore." }
+]} />
+
+<ItemListSchema
+  name="Best Manual Coffee Grinders 2026"
+  description="Hand grinders ranked from budget to premium"
+  items={[
+    { name: "Timemore C3", position: 1 },
+    { name: "1Zpresso JX", position: 2 },
+    { name: "1Zpresso JX-Pro", position: 3 },
+    { name: "1Zpresso K-Max", position: 4 },
+    { name: "Kinu M47", position: 5 },
+    { name: "Comandante C40 MK4", position: 6 },
+    { name: "Timemore C2", position: 7 },
+    { name: "Hario Mini Mill Slim", position: 8 }
+  ]}
+/>
 
 Here's the dirty secret of the coffee equipment world: a $130 hand grinder produces grind quality that matches or exceeds electric grinders costing $400+. That's not marketing hype — it's physics. Hand grinders are mechanically simpler, which means manufacturers can invest in better burrs and tighter tolerances instead of motors, housings, and noise dampening. Dollar for dollar, hand grinders are the best value in coffee.
 

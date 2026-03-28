@@ -10,6 +10,34 @@ import ComparisonTable from '../../components/infographics/ComparisonTable.astro
 import FAQ from '../../components/FAQ.astro';
 import AnswerBox from '../../components/AnswerBox.astro';
 import ToolCallout from '../../components/ToolCallout.astro';
+import ProductReviewSchema from '../../components/ProductReviewSchema.astro';
+import ItemListSchema from '../../components/ItemListSchema.astro';
+
+<ProductReviewSchema products={[
+  { name: "Hario V60", brand: "Hario", price: "9", description: "Gold-standard pour-over dripper with single drain hole and spiral ribs. Available in plastic, ceramic, glass, and metal.", verdict: "Best overall pour-over dripper — total control and nothing beats it when brewed well." },
+  { name: "Chemex Classic", brand: "Chemex", price: "48", description: "Hourglass carafe dripper-and-server in one. Proprietary thick paper filters produce exceptionally clean, light-bodied cups.", verdict: "Best for entertaining — elegant serving vessel for multiple people." },
+  { name: "Kalita Wave 185", brand: "Kalita", price: "35", description: "Flat-bottom dripper with 3 drain holes and corrugated wave filters for even extraction and forgiving technique.", verdict: "Best for consistency — near-foolproof results without years of V60 practice." },
+  { name: "Melitta Pour Over Dripper", brand: "Melitta", price: "12", description: "The original pour-over dripper since 1908. Small off-center drain hole, uses standard cone filters available everywhere.", verdict: "Best budget option — cheap and reliable, but does not excel at anything." },
+  { name: "Origami Dripper", brand: "Origami", price: "65", description: "Hasami porcelain dripper compatible with both flat-bottom and cone filters. Folded design with silicone ring stand.", verdict: "Most versatile — two drippers in one, but hard to justify on performance alone." },
+  { name: "Fellow Stagg [X]", brand: "Fellow", price: "70", description: "Engineered flat-bottom dripper with vacuum-insulated double-wall construction, narrow opening, and drip-accelerator bottom.", verdict: "Best engineered — maximum consistency with minimum technique variance." },
+  { name: "OXO Brew Pour Over", brand: "OXO", price: "25", description: "Wide cone dripper using standard #4 filters. Better flow than Melitta with very low learning curve.", verdict: "Best for beginners who are not sure about pour-over yet." },
+  { name: "Blue Bottle Dripper", brand: "Blue Bottle", price: "55", description: "Wide cone dripper designed for fast, high-temperature brews. Proprietary paper filters with limited availability.", verdict: "Niche pick — V60-adjacent performance but proprietary filters limit appeal." }
+]} />
+
+<ItemListSchema
+  name="Best Pour Over Coffee Makers 2026"
+  description="8 pour-over drippers ranked and compared"
+  items={[
+    { name: "Hario V60", position: 1 },
+    { name: "Chemex Classic", position: 2 },
+    { name: "Kalita Wave 185", position: 3 },
+    { name: "Melitta Pour Over Dripper", position: 4 },
+    { name: "Origami Dripper", position: 5 },
+    { name: "Fellow Stagg [X]", position: 6 },
+    { name: "OXO Brew Pour Over", position: 7 },
+    { name: "Blue Bottle Dripper", position: 8 }
+  ]}
+/>
 
 <AnswerBox answer="The best pour over coffee maker for most people is the Hario V60 ($9 for the plastic version) — it gives you total control over extraction and nothing in this guide will beat it when brewed well. If you want consistency without mastering technique, the Kalita Wave 185 ($25–$45) is the better choice. Both need a gooseneck kettle and a burr grinder to perform at their best." />
 

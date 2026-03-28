@@ -9,6 +9,32 @@ videoId: "9SGD8FIkxCs"
 ---
 import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
 import FAQ from '../../components/FAQ.astro';
+import ProductReviewSchema from '../../components/ProductReviewSchema.astro';
+import ItemListSchema from '../../components/ItemListSchema.astro';
+
+<ProductReviewSchema products={[
+  { name: "Breville BDC650BSS Grind Control", brand: "Breville", price: "300", description: "SCA-certified grind and brew with adjustable stainless steel burrs, 8 strength settings, thermal carafe, and single-cup or full-carafe brewing.", verdict: "Best overall grind and brew coffee maker. SCA Home Brewer Certified." },
+  { name: "Capresso 465 Coffee Team TS", brand: "Capresso", price: "200", description: "Burr grinder with 5 settings, stainless steel thermal carafe, charcoal water filtration, and programmable brewing.", verdict: "Best value grind and brew — hits the sweet spot of burr grinder plus thermal carafe at a mid-range price." },
+  { name: "Cuisinart DGB-900BC Grind and Brew", brand: "Cuisinart", price: "400", description: "Burr grinder, thermal carafe, 24-hour programming, adjustable grind and strength, charcoal water filter, and 3-year warranty.", verdict: "Premium features but the Capresso delivers 80% of this for 50% of the cost." },
+  { name: "Krups Grind and Brew", brand: "Krups", price: "150", description: "Budget burr grinder coffee maker with 5 grind settings and adjustable brew strength. Glass carafe.", verdict: "Cheapest burr grinder in the category — the quality jump from blade to burr is the biggest upgrade." },
+  { name: "Black+Decker CM5000B", brand: "Black+Decker", price: "60", description: "Budget grind and brew with 24-hour programmable brew, adjustable strength and grind size, blade grinder.", verdict: "Best budget option if you are not ready to invest in a burr machine." },
+  { name: "Melitta Mill and Brew", brand: "Melitta", price: "75", description: "7 grind settings, stainless steel permanent filter, pause-and-serve feature. Blade grinder, glass carafe.", verdict: "Basic budget option with convenient pause-and-serve." },
+  { name: "Gourmia GCM 4500", brand: "Gourmia", price: "100", description: "Compact grind and brew with blade grinder, LCD interface, and glass carafe.", verdict: "Not recommended — overpriced for a blade grinder." }
+]} />
+
+<ItemListSchema
+  name="Best Grind and Brew Coffee Makers"
+  description="7 popular grind and brew drip coffee makers ranked from best to worst"
+  items={[
+    { name: "Breville BDC650BSS Grind Control", position: 1 },
+    { name: "Capresso 465 Coffee Team TS", position: 2 },
+    { name: "Cuisinart DGB-900BC", position: 3 },
+    { name: "Krups Grind and Brew", position: 4 },
+    { name: "Black+Decker CM5000B", position: 5 },
+    { name: "Melitta Mill and Brew", position: 6 },
+    { name: "Gourmia GCM 4500", position: 7 }
+  ]}
+/>
 
 Pre-ground coffee loses aromatic compounds within minutes of grinding. A grind and brew machine handles both steps automatically — grinding beans moments before hot water hits them. If you want better coffee without a manual pour-over ritual, these machines are the best middle ground between convenience and quality.
 

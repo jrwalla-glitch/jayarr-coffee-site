@@ -9,6 +9,15 @@ import { SITE_TITLE } from '../consts';
 <html lang="en">
 	<head>
 		<BaseHead title={`About — ${SITE_TITLE}`} description="About JayArr Coffee and Jay Arr — exploring specialty coffee through science, scoring, and honest reviews since 2020." />
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "Organization",
+			"name": "JayArr Coffee",
+			"url": "https://jayarr.coffee",
+			"logo": "https://jayarr.coffee/images/logo-dark.jpg",
+			"description": "Expert coffee guides, equipment reviews, and brewing science.",
+			"sameAs": []
+		})} />
 	</head>
 	<body class="bg-cream">
 		<Header />
