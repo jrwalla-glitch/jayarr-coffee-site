@@ -130,6 +130,7 @@ const recipeSchema = {
 					name: `Step ${i + 1}`,
 					text,
 					url: `${Astro.url}#step-${i + 1}`,
+					...(resolvedImage ? { image: resolvedImage } : {}),
 				})),
 			}
 		: {}),
