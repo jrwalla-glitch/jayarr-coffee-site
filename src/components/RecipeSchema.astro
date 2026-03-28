@@ -47,6 +47,7 @@ interface Props {
 	recipeIngredient: string[];
 	recipeInstructions?: string[];
 	keywords?: string;
+	videoId?: string;
 	author?: string;
 }
 
@@ -63,6 +64,7 @@ const {
 	recipeIngredient,
 	recipeInstructions,
 	keywords,
+	videoId,
 	author = 'JayArr',
 } = Astro.props;
 
@@ -70,6 +72,28 @@ const {
 const slug = Astro.url.pathname.replace(/^\/blog\//, '').replace(/\/$/, '');
 const fallbackImage = slug ? new URL(`/images/blog/${slug}.jpg`, Astro.site).href : undefined;
 const resolvedImage = image || fallbackImage;
+
+// Auto-derive keywords from recipe title + category + cuisine + site context
+const cleanTitle = title.toLowerCase().replace(/[()[\]]/g, '').replace(/\s+/g, ' ').trim();
+const siteTopic = (Astro.site?.hostname || '').includes('coffee') ? 'coffee'
+	: (Astro.site?.hostname || '').includes('pizza') ? 'pizza'
+	: (Astro.site?.hostname || '').includes('bread') ? 'bread, baking'
+	: (Astro.site?.hostname || '').includes('chocolate') || (Astro.site?.hostname || '').includes('cacao') ? 'chocolate, cacao'
+	: '';
+const autoKeywords = [cleanTitle, recipeCategory?.toLowerCase(), recipeCuisine?.toLowerCase(), siteTopic].filter(Boolean).join(', ');
+const resolvedKeywords = keywords || autoKeywords;
+
+// Generate VideoObject from YouTube video ID
+const videoSchema = videoId ? {
+	video: {
+		'@type': 'VideoObject',
+		name: title,
+		description,
+		thumbnailUrl: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+		contentUrl: `https://www.youtube.com/watch?v=${videoId}`,
+		embedUrl: `https://www.youtube.com/embed/${videoId}`,
+	}
+} : {};
 
 const recipeSchema = {
 	'@context': 'https://schema.org',
@@ -84,7 +108,8 @@ const recipeSchema = {
 	...(recipeCategory ? { recipeCategory } : {}),
 	...(recipeCuisine ? { recipeCuisine } : {}),
 	recipeIngredient,
-	...(keywords ? { keywords } : {}),
+	...(resolvedKeywords ? { keywords: resolvedKeywords } : {}),
+	...videoSchema,
 	...(recipeInstructions
 		? {
 				recipeInstructions: recipeInstructions.map((text, i) => ({
