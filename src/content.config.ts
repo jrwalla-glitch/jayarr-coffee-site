@@ -20,6 +20,7 @@ const blog = defineCollection({
 			updatedDate: z.coerce.date().optional(),
 			heroImage: image().optional(),
 			category: z.enum(['Origins', 'Equipment', 'Brewing', 'Science', 'Recipes', 'Drinks']).optional(),
+			videoId: z.string().optional(),
 		}),
 });
 

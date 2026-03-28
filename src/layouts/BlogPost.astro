@@ -11,7 +11,7 @@ import { SITE_TITLE } from '../consts';
 
 type Props = CollectionEntry<'blog'>['data'] & { id: string };
 
-const { title, description, pubDate, updatedDate, heroImage, category, id } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, category, id, videoId } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
@@ -42,6 +42,18 @@ const articleSchema = {
 		'@id': canonicalURL.toString(),
 	},
 };
+
+// VideoObject structured data (for posts with YouTube embeds that lack RecipeSchema video)
+const videoSchema = videoId ? {
+	'@context': 'https://schema.org',
+	'@type': 'VideoObject',
+	name: title,
+	description: description,
+	thumbnailUrl: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+	contentUrl: `https://www.youtube.com/watch?v=${videoId}`,
+	embedUrl: `https://www.youtube.com/embed/${videoId}`,
+	uploadDate: pubDate.toISOString(),
+} : null;
 
 // Breadcrumb structured data
 const breadcrumbSchema = {
@@ -99,6 +111,7 @@ const breadcrumbSchema = {
 		/>
 		<script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
 		<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+		{videoSchema && <script type="application/ld+json" set:html={JSON.stringify(videoSchema)} />}
 	</head>
 	<body class="bg-cream">
 		<Header />
