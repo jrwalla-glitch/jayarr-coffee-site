@@ -49,6 +49,17 @@ interface Props {
 	keywords?: string;
 	videoId?: string;
 	author?: string;
+	nutrition?: {
+		calories?: string;
+		fatContent?: string;
+		saturatedFatContent?: string;
+		carbohydrateContent?: string;
+		sugarContent?: string;
+		proteinContent?: string;
+		fiberContent?: string;
+		sodiumContent?: string;
+		servingSize?: string;
+	};
 }
 
 const {
@@ -66,6 +77,7 @@ const {
 	keywords,
 	videoId,
 	author = 'JayArr',
+	nutrition,
 } = Astro.props;
 
 // Derive fallback image from page URL slug → /images/blog/{slug}.jpg
@@ -121,6 +133,12 @@ const recipeSchema = {
 				})),
 			}
 		: {}),
+	...(nutrition ? {
+		nutrition: {
+			'@type': 'NutritionInformation',
+			...nutrition,
+		}
+	} : {}),
 	author: {
 		'@type': 'Person',
 		name: author,
