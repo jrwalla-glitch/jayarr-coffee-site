@@ -26,8 +26,8 @@
   --color-warm-gray-light: #9B9590;
 
   /* Typography */
-  --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Playfair Display Variable', 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter Variable', 'Inter', system-ui, -apple-system, sans-serif;
 
   /* Deep Brew Mode */
   --color-db-bg: #0B0E14;
@@ -41,7 +41,7 @@
   --color-db-amber: #F59E0B;
   --color-db-border: rgba(210, 125, 45, 0.15);
   --font-db-serif: 'Cormorant Garamond', Georgia, serif;
-  --font-db-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-db-mono: 'JetBrains Mono Variable', 'JetBrains Mono', 'Fira Code', monospace;
 
   /* Spacing reference (use Tailwind's built-in scale for utilities;
      these are for custom CSS where you want named semantic spacing) */

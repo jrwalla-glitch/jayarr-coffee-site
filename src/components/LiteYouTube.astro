@@ -1,0 +1,99 @@
+---
+/**
+ * LiteYouTube — lightweight YouTube embed facade.
+ * Shows a thumbnail + play button. Loads the real iframe only on click.
+ * Saves ~900KB of JS/CSS per YouTube embed on initial page load.
+ */
+interface Props {
+	videoId: string;
+	title: string;
+	class?: string;
+}
+
+const { videoId, title, class: className } = Astro.props;
+const thumbnailUrl = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+---
+
+<div
+	class:list={['lite-youtube', className]}
+	data-videoid={videoId}
+	style={`background-image: url(${thumbnailUrl})`}
+	role="button"
+	tabindex="0"
+	aria-label={`Play: ${title}`}
+>
+	<button type="button" class="lty-playbtn" aria-label={`Play: ${title}`}>
+		<svg height="100%" viewBox="0 0 68 48" width="100%">
+			<path d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,0,34,0,34,0S12.21,0,6.9,1.55C3.97,2.33,2.27,4.81,1.48,7.74C0,13.05,0,24,0,24s0,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19C12.21,48,34,48,34,48s21.79,0,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C68,34.95,68,24,68,24S68,13.05,66.52,7.74z" fill="#f00"></path>
+			<path d="M 45,24 27,14 27,34" fill="#fff"></path>
+		</svg>
+	</button>
+</div>
+
+<style>
+	.lite-youtube {
+		background-color: #000;
+		position: relative;
+		display: block;
+		contain: content;
+		background-position: center center;
+		background-size: cover;
+		cursor: pointer;
+		aspect-ratio: 16/9;
+		width: 100%;
+	}
+
+	.lty-playbtn {
+		width: 68px;
+		height: 48px;
+		position: absolute;
+		transform: translate(-50%, -50%);
+		top: 50%;
+		left: 50%;
+		z-index: 1;
+		background: transparent;
+		border: none;
+		cursor: pointer;
+		filter: grayscale(100%);
+		transition: filter 0.1s cubic-bezier(0, 0, 0.2, 1);
+	}
+
+	.lite-youtube:hover .lty-playbtn,
+	.lite-youtube:focus .lty-playbtn {
+		filter: none;
+	}
+</style>
+
+<script>
+	function initLiteYouTube() {
+		document.querySelectorAll('.lite-youtube').forEach((el) => {
+			if (el.dataset.initialized) return;
+			el.dataset.initialized = 'true';
+
+			const activate = () => {
+				const videoId = el.dataset.videoid;
+				const iframe = document.createElement('iframe');
+				iframe.width = '100%';
+				iframe.height = '100%';
+				iframe.style.position = 'absolute';
+				iframe.style.inset = '0';
+				iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+				iframe.allow =
+					'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+				iframe.allowFullscreen = true;
+				iframe.frameBorder = '0';
+				iframe.title = el.getAttribute('aria-label')?.replace('Play: ', '') || '';
+				el.replaceWith(iframe);
+			};
+
+			el.addEventListener('click', activate);
+			el.addEventListener('keydown', (e: Event) => {
+				if ((e as KeyboardEvent).key === 'Enter') activate();
+			});
+		});
+	}
+
+	// Run on initial load and on Astro page transitions
+	initLiteYouTube();
+	document.addEventListener('astro:after-swap', initLiteYouTube);
+</script>

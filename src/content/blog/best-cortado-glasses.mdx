@@ -11,6 +11,7 @@ import AnswerBox from '../../components/AnswerBox.astro';
 import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
 import FAQ from '../../components/FAQ.astro';
 import ProductReviewSchema from '../../components/ProductReviewSchema.astro';
+import LiteYouTube from '../../components/LiteYouTube.astro';
 
 <ProductReviewSchema products={[
   { name: "Duralex Picardie", brand: "Duralex", price: "3", description: "French bistro tempered glass tumbler. 3.1 oz, single wall, nearly indestructible, stackable, dishwasher safe.", verdict: "Cheapest option that works — no cortado-specific features but extremely durable." },
@@ -32,7 +33,7 @@ Shape affects latte art. Wall construction affects heat retention. Weight affect
 We tested eight cortado glasses across every price point and ranked them on five criteria: size accuracy for a real cortado, heat retention, build quality, latte art friendliness, and whether they actually improve the drink or just look good on Instagram.
 
 <div style={{position:"relative",paddingBottom:"56.25%",height:0,overflow:"hidden",maxWidth:"100%"}}>
-  <iframe style={{position:"absolute",top:0,left:0,width:"100%",height:"100%"}} src="https://www.youtube.com/embed/jR03j895Lys" title="Best Cortado Glasses 2026" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+  <LiteYouTube videoId="jR03j895Lys" title="Best Cortado Glasses 2026" />
 </div>
 
 <ComparisonTable

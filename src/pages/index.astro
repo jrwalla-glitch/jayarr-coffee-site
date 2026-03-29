@@ -7,6 +7,7 @@ import FormattedDate from '../components/FormattedDate.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import { getCollection } from 'astro:content';
 import heroImage from '../assets/blog/hero-coffee-farm.jpg';
+import LiteYouTube from '../components/LiteYouTube.astro';
 
 const allPosts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -70,6 +71,7 @@ const popularPosts = popularSlugs
 					height={1080}
 					class="w-full h-full object-cover object-center"
 					loading="eager"
+					fetchpriority="high"
 				/>
 				<div class="absolute inset-0 bg-gradient-to-b from-charcoal/60 via-charcoal/30 to-charcoal/80"></div>
 			</div>
@@ -346,14 +348,11 @@ const popularPosts = popularSlugs
 				</div>
 				<div class="max-w-4xl mx-auto">
 					<div class="aspect-video rounded-sm overflow-hidden bg-charcoal-light">
-						<iframe
-							class="w-full h-full"
-							src="https://www.youtube.com/embed/nK_nJa3LCcM"
+						<LiteYouTube
+							videoId="nK_nJa3LCcM"
 							title="Best Gooseneck Kettle for Pour Over Coffee 2026 (Top 7)"
-							frameborder="0"
-							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-							allowfullscreen
-						></iframe>
+							class="w-full h-full rounded-sm"
+						/>
 					</div>
 					<p class="text-cream/50 text-sm text-center mt-4 mb-6">Best Gooseneck Kettle for Pour Over Coffee 2026 (Top 7)</p>
 					<div class="text-center">
