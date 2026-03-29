@@ -95,6 +95,19 @@ const siteTopic = (Astro.site?.hostname || '').includes('coffee') ? 'coffee'
 const autoKeywords = [cleanTitle, recipeCategory?.toLowerCase(), recipeCuisine?.toLowerCase(), siteTopic].filter(Boolean).join(', ');
 const resolvedKeywords = keywords || autoKeywords;
 
+// Auto-derive video upload date from the page's pubDate via content collection
+import { getEntry } from 'astro:content';
+let videoUploadDate: string | undefined;
+if (videoId) {
+	const pageSlug = Astro.url.pathname.replace(/^\/blog\//, '').replace(/\/$/, '');
+	try {
+		const entry = await getEntry('blog', pageSlug);
+		if (entry?.data.pubDate) {
+			videoUploadDate = entry.data.pubDate.toISOString().split('T')[0];
+		}
+	} catch { /* fallback: omit uploadDate */ }
+}
+
 // Generate VideoObject from YouTube video ID
 const videoSchema = videoId ? {
 	video: {
@@ -104,6 +117,7 @@ const videoSchema = videoId ? {
 		thumbnailUrl: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
 		contentUrl: `https://www.youtube.com/watch?v=${videoId}`,
 		embedUrl: `https://www.youtube.com/embed/${videoId}`,
+		...(videoUploadDate ? { uploadDate: videoUploadDate } : {}),
 	}
 } : {};
 
