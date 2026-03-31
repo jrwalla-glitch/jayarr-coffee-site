@@ -2,6 +2,7 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import LiteYouTube from '../components/LiteYouTube.astro';
 import { SITE_TITLE } from '../consts';
 import { getCollection } from 'astro:content';
 
@@ -16,7 +17,8 @@ const videoPosts: { title: string; videoId: string; slug: string }[] = [];
 
 for (const post of allPosts) {
 	const body = post.body || '';
-	const match = body.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]+)/);
+	const match = body.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]+)/) ||
+		body.match(/LiteYouTube\s+videoId="([a-zA-Z0-9_-]+)"/);
 	if (match) {
 		videoPosts.push({
 			title: post.data.title,
@@ -52,15 +54,7 @@ for (const post of allPosts) {
 				{videoPosts.map((video) => (
 					<div>
 						<div class="aspect-video rounded-sm overflow-hidden bg-charcoal">
-							<iframe
-								class="w-full h-full"
-								src={`https://www.youtube.com/embed/${video.videoId}`}
-								title={video.title}
-								frameborder="0"
-								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-								allowfullscreen
-								loading="lazy"
-							></iframe>
+							<LiteYouTube videoId={video.videoId} title={video.title} />
 						</div>
 						<a href={`/blog/${video.slug}/`} class="block mt-3 group">
 							<h3 class="font-serif text-base font-bold text-charcoal group-hover:text-copper transition-colors leading-snug">
