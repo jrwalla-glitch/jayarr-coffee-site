@@ -1,0 +1,1162 @@
+{
+  "bean_id": "onyx-coffee-lab-tropical-weather-2026-winter",
+  "bean_name": "Tropical Weather",
+  "roaster": "Onyx Coffee Lab",
+  "generated_at": "2026-03-31",
+  "profile": {
+    "bean_id": "onyx-coffee-lab-tropical-weather-2026-winter",
+    "confidence": 0.75,
+    "extraction": {
+      "target_ey_mod": [
+        0.5,
+        1
+      ],
+      "solubility": "low",
+      "density": "high"
+    },
+    "thermal": {
+      "base_temp_c": 94,
+      "temp_modifier_roast": 0,
+      "temp_modifier_processing": -1,
+      "temp_modifier_variety": 0,
+      "effective_temp_c": 93,
+      "temp_ceiling_c": null
+    },
+    "grind": {
+      "modifier_roast_um": -40,
+      "modifier_processing_um": 8,
+      "modifier_altitude_um": 0,
+      "modifier_variety_um": 0,
+      "net_modifier_um": -32,
+      "fines_tendency": "normal",
+      "fines_note": null
+    },
+    "filter": {
+      "paper_preference": "moderate",
+      "metal_tolerance": "moderate"
+    },
+    "flavor": {
+      "acidity": 0.8,
+      "sweetness": 0.5,
+      "body": 0.4,
+      "bitterness": 0.15,
+      "dominant_character": [
+        "caramel",
+        "fruit_forward",
+        "tea_like"
+      ]
+    },
+    "freshness": {
+      "peak_days_post_roast": [
+        7,
+        21
+      ],
+      "degassing_days": 4,
+      "staling_sensitivity": "high"
+    },
+    "category": {
+      "baseline_origin": "Ethiopian, blend washed natural, light roast",
+      "deviations": [
+        {
+          "type": "blend",
+          "summary": "Washed + natural blend from same origin",
+          "brewing_impact": "Wider parameter space, more conservative recipe bands",
+          "narrative_hook": "This blend marries washed clarity with natural fruit intensity."
+        }
+      ]
+    }
+  },
+  "recommendations": {
+    "hario-v60-02": {
+      "brewer_id": "hario-v60-02",
+      "brewer_name": "Hario V60",
+      "match_score": 89,
+      "recipe": {
+        "dose_g": {
+          "min": 18,
+          "max": 20,
+          "start": 19
+        },
+        "water_g": {
+          "min": 279,
+          "max": 311,
+          "start": 295
+        },
+        "temp_c": {
+          "min": 91,
+          "max": 95,
+          "start": 93
+        },
+        "grind_um": {
+          "min": 448,
+          "max": 508,
+          "start": 478
+        },
+        "time_display": "2:30-3:30",
+        "ratio_display": "1:15.0-1:16.0"
+      },
+      "flavor_prediction": {
+        "expect": "mixed berries, sweet tea, raw honey, plum",
+        "brewer_effect": "Balanced extraction highlighting the bean's natural character."
+      },
+      "adjustments": {
+        "sour": {
+          "primary": "Grind finer by ~22μm",
+          "secondary": "Increase temp by 1°C",
+          "explanation": "Underextracted — only acids extracted so far. Finer grind increases surface area for more extraction.",
+          "adjusted_recipe": {
+            "grind_um": {
+              "min": 426,
+              "max": 486,
+              "start": 456
+            },
+            "temp_c": {
+              "min": 90,
+              "max": 98,
+              "start": 94
+            }
+          }
+        },
+        "bitter": {
+          "primary": "Grind coarser by ~22μm",
+          "secondary": "Decrease temp by 1°C",
+          "explanation": "Overextracted — bitter dry distillates dominating. Coarser grind reduces extraction.",
+          "adjusted_recipe": {
+            "grind_um": {
+              "min": 470,
+              "max": 530,
+              "start": 500
+            },
+            "temp_c": {
+              "min": 88,
+              "max": 96,
+              "start": 92
+            }
+          }
+        },
+        "thin": {
+          "primary": "Increase dose by 1g or decrease water by 15g",
+          "secondary": "Try a metal filter for more body",
+          "explanation": "Understrength — TDS too low. More coffee or less water concentrates the brew.",
+          "adjusted_recipe": {
+            "dose_g": {
+              "min": 18,
+              "max": 22,
+              "start": 20
+            }
+          }
+        },
+        "strong": {
+          "primary": "Decrease dose by 1g or increase water by 15g",
+          "secondary": null,
+          "explanation": "Overstrength — TDS too high. Less coffee or more water dilutes the brew.",
+          "adjusted_recipe": {
+            "dose_g": {
+              "min": 16,
+              "max": 20,
+              "start": 18
+            }
+          }
+        },
+        "flat": {
+          "primary": "Grind finer by ~22μm and increase temp by 2°C",
+          "secondary": "Check bean freshness and water mineral content",
+          "explanation": "Either stale beans or underextracted. If water is very soft, mineral content may be too low for proper extraction.",
+          "adjusted_recipe": {
+            "grind_um": {
+              "min": 426,
+              "max": 486,
+              "start": 456
+            },
+            "temp_c": {
+              "min": 91,
+              "max": 99,
+              "start": 95
+            }
+          }
+        }
+      },
+      "narrative": "Ethiopian heirlooms grind differently — harder, more brittle, more fines. Elevated fines actually help extraction evenness with paper filter.",
+      "narrative_sources": [
+        "§12",
+        "§11",
+        "§9",
+        "§1"
+      ],
+      "interaction_rules": [
+        "light_ethiopian"
+      ],
+      "links": []
+    },
+    "chemex-6cup": {
+      "brewer_id": "chemex-6cup",
+      "brewer_name": "Chemex",
+      "match_score": 89,
+      "recipe": {
+        "dose_g": {
+          "min": 27,
+          "max": 29,
+          "start": 28
+        },
+        "water_g": {
+          "min": 418,
+          "max": 450,
+          "start": 434
+        },
+        "temp_c": {
+          "min": 91,
+          "max": 95,
+          "start": 93
+        },
+        "grind_um": {
+          "min": 498,
+          "max": 558,
+          "start": 528
+        },
+        "time_display": "3:30-4:30",
+        "ratio_display": "1:15.0-1:16.0"
+      },
+      "flavor_prediction": {
+        "expect": "mixed berries, sweet tea, raw honey, plum",
+        "brewer_effect": "Thick paper filter maximizes clarity and strips oils for the cleanest cup."
+      },
+      "adjustments": {
+        "sour": {
+          "primary": "Grind finer by ~22μm",
+          "secondary": "Increase temp by 1°C",
+          "explanation": "Underextracted — only acids extracted so far. Finer grind increases surface area for more extraction.",
+          "adjusted_recipe": {
+            "grind_um": {
+              "min": 476,
+              "max": 536,
+              "start": 506
+            },
+            "temp_c": {
+              "min": 90,
+              "max": 98,
+              "start": 94
+            }
+          }
+        },
+        "bitter": {
+          "primary": "Grind coarser by ~22μm",
+          "secondary": "Decrease temp by 1°C",
+          "explanation": "Overextracted — bitter dry distillates dominating. Coarser grind reduces extraction.",
+          "adjusted_recipe": {
+            "grind_um": {
+              "min": 520,
+              "max": 580,
+              "start": 550
+            },
+            "temp_c": {
+              "min": 88,
+              "max": 96,
+              "start": 92
+            }
+          }
+        },
+        "thin": {
+          "primary": "Increase dose by 1g or decrease water by 15g",
+          "secondary": "Try a metal filter for more body",
+          "explanation": "Understrength — TDS too low. More coffee or less water concentrates the brew.",
+          "adjusted_recipe": {
+            "dose_g": {
+              "min": 27,
+              "max": 31,
+              "start": 29
+            }
+          }
+        },
+        "strong": {
+          "primary": "Decrease dose by 1g or increase water by 15g",
+          "secondary": null,
+          "explanation": "Overstrength — TDS too high. Less coffee or more water dilutes the brew.",
+          "adjusted_recipe": {
+            "dose_g": {
+              "min": 25,
+              "max": 29,
+              "start": 27
+            }
+          }
+        },
+        "flat": {
+          "primary": "Grind finer by ~22μm and increase temp by 2°C",
+          "secondary": "Check bean freshness and water mineral content",
+          "explanation": "Either stale beans or underextracted. If water is very soft, mineral content may be too low for proper extraction.",
+          "adjusted_recipe": {
+            "grind_um": {
+              "min": 476,
+              "max": 536,
+              "start": 506
+            },
+            "temp_c": {
+              "min": 91,
+              "max": 99,
+              "start": 95
+            }
+          }
+        }
+      },
+      "narrative": "Ethiopian heirlooms grind differently — harder, more brittle, more fines. Elevated fines actually help extraction evenness with paper filter.",
+      "narrative_sources": [
+        "§12",
+        "§11",
+        "§9",
+        "§1"
+      ],
+      "interaction_rules": [
+        "light_ethiopian"
+      ],
+      "links": []
+    },
+    "kalita-wave-185": {
+      "brewer_id": "kalita-wave-185",
+      "brewer_name": "Kalita Wave",
+      "match_score": 89,
+      "recipe": {
+        "dose_g": {
+          "min": 19,
+          "max": 21,
+          "start": 20
+        },
+        "water_g": {
+          "min": 313,
+          "max": 347,
+          "start": 330
+        },
+        "temp_c": {
+          "min": 91,
+          "max": 95,
+          "start": 93
+        },
+        "grind_um": {
+          "min": 478,
+          "max": 538,
+          "start": 508
+        },
+        "time_display": "3:00-4:00",
+        "ratio_display": "1:16.0-1:17.0"
+      },
+      "flavor_prediction": {
+        "expect": "mixed berries, sweet tea, raw honey, plum",
+        "brewer_effect": "Balanced extraction highlighting the bean's natural character."
+      },
+      "adjustments": {
+        "sour": {
+          "primary": "Grind finer by ~22μm",
+          "secondary": "Increase temp by 1°C",
+          "explanation": "Underextracted — only acids extracted so far. Finer grind increases surface area for more extraction.",
+          "adjusted_recipe": {
+            "grind_um": {
+              "min": 456,
+              "max": 516,
+              "start": 486
+            },
+            "temp_c": {
+              "min": 90,
+              "max": 98,
+              "start": 94
+            }
+          }
+        },
+        "bitter": {
+          "primary": "Grind coarser by ~22μm",
+          "secondary": "Decrease temp by 1°C",
+          "explanation": "Overextracted — bitter dry distillates dominating. Coarser grind reduces extraction.",
+          "adjusted_recipe": {
+            "grind_um": {
+              "min": 500,
+              "max": 560,
+              "start": 530
+            },
+            "temp_c": {
+              "min": 88,
+              "max": 96,
+              "start": 92
+            }
+          }
+        },
+        "thin": {
+          "primary": "Increase dose by 1g or decrease water by 15g",
+          "secondary": "Try a metal filter for more body",
+          "explanation": "Understrength — TDS too low. More coffee or less water concentrates the brew.",
+          "adjusted_recipe": {
+            "dose_g": {
+              "min": 19,
+              "max": 23,
+              "start": 21
+            }
+          }
+        },
+        "strong": {
+          "primary": "Decrease dose by 1g or increase water by 15g",
+          "secondary": null,
+          "explanation": "Overstrength — TDS too high. Less coffee or more water dilutes the brew.",
+          "adjusted_recipe": {
+            "dose_g": {
+              "min": 17,
+              "max": 21,
+              "start": 19
+            }
+          }
+        },
+        "flat": {
+          "primary": "Grind finer by ~22μm and increase temp by 2°C",
+          "secondary": "Check bean freshness and water mineral content",
+          "explanation": "Either stale beans or underextracted. If water is very soft, mineral content may be too low for proper extraction.",
+          "adjusted_recipe": {
+            "grind_um": {
+              "min": 456,
+              "max": 516,
+              "start": 486
+            },
+            "temp_c": {
+              "min": 91,
+              "max": 99,
+              "start": 95
+            }
+          }
+        }
+      },
+      "narrative": "Ethiopian heirlooms grind differently — harder, more brittle, more fines. Elevated fines actually help extraction evenness with paper filter.",
+      "narrative_sources": [
+        "§12",
+        "§11",
+        "§9",
+        "§1"
+      ],
+      "interaction_rules": [
+        "light_ethiopian"
+      ],
+      "links": []
+    },
+    "aeropress": {
+      "brewer_id": "aeropress",
+      "brewer_name": "AeroPress",
+      "match_score": 82,
+      "recipe": {
+        "dose_g": {
+          "min": 13,
+          "max": 15,
+          "start": 14
+        },
+        "water_g": {
+          "min": 162,
+          "max": 188,
+          "start": 175
+        },
+        "temp_c": {
+          "min": 82,
+          "max": 86,
+          "start": 84
+        },
+        "grind_um": {
+          "min": 348,
+          "max": 408,
+          "start": 378
+        },
+        "time_display": "1:00-2:00",
+        "ratio_display": "1:12.0-1:13.0"
+      },
+      "flavor_prediction": {
+        "expect": "mixed berries, sweet tea, raw honey, plum",
+        "brewer_effect": "Balanced extraction highlighting the bean's natural character."
+      },
+      "adjustments": {
+        "sour": {
+          "primary": "Grind finer by ~22μm",
+          "secondary": "Increase temp by 1°C",
+          "explanation": "Underextracted — only acids extracted so far. Finer grind increases surface area for more extraction.",
+          "adjusted_recipe": {
+            "grind_um": {
+              "min": 326,
+              "max": 386,
+              "start": 356
+            },
+            "temp_c": {
+              "min": 81,
+              "max": 89,
+              "start": 85
+            }
+          }
+        },
+        "bitter": {
+          "primary": "Grind coarser by ~22μm",
+          "secondary": "Decrease temp by 1°C",
+          "explanation": "Overextracted — bitter dry distillates dominating. Coarser grind reduces extraction.",
+          "adjusted_recipe": {
+            "grind_um": {
+              "min": 370,
+              "max": 430,
+              "start": 400
+            },
+            "temp_c": {
+              "min": 79,
+              "max": 87,
+              "start": 83
+            }
+          }
+        },
+        "thin": {
+          "primary": "Increase dose by 1g or decrease water by 15g",
+          "secondary": "Try a metal filter for more body",
+          "explanation": "Understrength — TDS too low. More coffee or less water concentrates the brew.",
+          "adjusted_recipe": {
+            "dose_g": {
+              "min": 13,
+              "max": 17,
+              "start": 15
+            }
+          }
+        },
+        "strong": {
+          "primary": "Decrease dose by 1g or increase water by 15g",
+          "secondary": null,
+          "explanation": "Overstrength — TDS too high. Less coffee or more water dilutes the brew.",
+          "adjusted_recipe": {
+            "dose_g": {
+              "min": 11,
+              "max": 15,
+              "start": 13
+            }
+          }
+        },
+        "flat": {
+          "primary": "Grind finer by ~22μm and increase temp by 2°C",
+          "secondary": "Check bean freshness and water mineral content",
+          "explanation": "Either stale beans or underextracted. If water is very soft, mineral content may be too low for proper extraction.",
+          "adjusted_recipe": {
+            "grind_um": {
+              "min": 326,
+              "max": 386,
+              "start": 356
+            },
+            "temp_c": {
+              "min": 82,
+              "max": 90,
+              "start": 86
+            }
+          }
+        }
+      },
+      "narrative": "Ethiopian heirlooms grind differently — harder, more brittle, more fines. Elevated fines actually help extraction evenness with paper filter.",
+      "narrative_sources": [
+        "§12",
+        "§11",
+        "§9",
+        "§1"
+      ],
+      "interaction_rules": [
+        "light_ethiopian"
+      ],
+      "links": []
+    },
+    "french-press": {
+      "brewer_id": "french-press",
+      "brewer_name": "French Press",
+      "match_score": 72,
+      "recipe": {
+        "dose_g": {
+          "min": 25,
+          "max": 27,
+          "start": 26
+        },
+        "water_g": {
+          "min": 362,
+          "max": 392,
+          "start": 377
+        },
+        "temp_c": {
+          "min": 93,
+          "max": 97,
+          "start": 95
+        },
+        "grind_um": {
+          "min": 948,
+          "max": 1008,
+          "start": 978
+        },
+        "time_display": "4:00-8:00",
+        "ratio_display": "1:14.0-1:15.0"
+      },
+      "flavor_prediction": {
+        "expect": "mixed berries, sweet tea, raw honey, plum",
+        "brewer_effect": "Balanced extraction highlighting the bean's natural character."
+      },
+      "adjustments": {
+        "sour": {
+          "primary": "Grind finer by ~22μm",
+          "secondary": "Increase temp by 1°C",
+          "explanation": "Underextracted — only acids extracted so far. Finer grind increases surface area for more extraction.",
+          "adjusted_recipe": {
+            "grind_um": {
+              "min": 926,
+              "max": 986,
+              "start": 956
+            },
+            "temp_c": {
+              "min": 92,
+              "max": 100,
+              "start": 96
+            }
+          }
+        },
+        "bitter": {
+          "primary": "Grind coarser by ~22μm",
+          "secondary": "Decrease temp by 1°C",
+          "explanation": "Overextracted — bitter dry distillates dominating. Coarser grind reduces extraction.",
+          "adjusted_recipe": {
+            "grind_um": {
+              "min": 970,
+              "max": 1030,
+              "start": 1000
+            },
+            "temp_c": {
+              "min": 90,
+              "max": 98,
+              "start": 94
+            }
+          }
+        },
+        "thin": {
+          "primary": "Increase dose by 1g or decrease water by 15g",
+          "secondary": null,
+          "explanation": "Understrength — TDS too low. More coffee or less water concentrates the brew.",
+          "adjusted_recipe": {
+            "dose_g": {
+              "min": 25,
+              "max": 29,
+              "start": 27
+            }
+          }
+        },
+        "strong": {
+          "primary": "Decrease dose by 1g or increase water by 15g",
+          "secondary": null,
+          "explanation": "Overstrength — TDS too high. Less coffee or more water dilutes the brew.",
+          "adjusted_recipe": {
+            "dose_g": {
+              "min": 23,
+              "max": 27,
+              "start": 25
+            }
+          }
+        },
+        "flat": {
+          "primary": "Grind finer by ~22μm and increase temp by 2°C",
+          "secondary": "Check bean freshness and water mineral content",
+          "explanation": "Either stale beans or underextracted. If water is very soft, mineral content may be too low for proper extraction.",
+          "adjusted_recipe": {
+            "grind_um": {
+              "min": 926,
+              "max": 986,
+              "start": 956
+            },
+            "temp_c": {
+              "min": 93,
+              "max": 101,
+              "start": 97
+            }
+          }
+        }
+      },
+      "narrative": "Ethiopian heirlooms grind differently — harder, more brittle, more fines. Elevated fines actually help extraction evenness with paper filter.",
+      "narrative_sources": [
+        "§12",
+        "§11",
+        "§9",
+        "§1"
+      ],
+      "interaction_rules": [
+        "light_ethiopian"
+      ],
+      "links": []
+    },
+    "clever-dripper": {
+      "brewer_id": "clever-dripper",
+      "brewer_name": "Clever Dripper",
+      "match_score": 82,
+      "recipe": {
+        "dose_g": {
+          "min": 17,
+          "max": 19,
+          "start": 18
+        },
+        "water_g": {
+          "min": 263,
+          "max": 295,
+          "start": 279
+        },
+        "temp_c": {
+          "min": 91,
+          "max": 95,
+          "start": 93
+        },
+        "grind_um": {
+          "min": 478,
+          "max": 538,
+          "start": 508
+        },
+        "time_display": "3:00-4:00",
+        "ratio_display": "1:15.0-1:16.0"
+      },
+      "flavor_prediction": {
+        "expect": "mixed berries, sweet tea, raw honey, plum",
+        "brewer_effect": "Balanced extraction highlighting the bean's natural character."
+      },
+      "adjustments": {
+        "sour": {
+          "primary": "Grind finer by ~22μm",
+          "secondary": "Increase temp by 1°C",
+          "explanation": "Underextracted — only acids extracted so far. Finer grind increases surface area for more extraction.",
+          "adjusted_recipe": {
+            "grind_um": {
+              "min": 456,
+              "max": 516,
+              "start": 486
+            },
+            "temp_c": {
+              "min": 90,
+              "max": 98,
+              "start": 94
+            }
+          }
+        },
+        "bitter": {
+          "primary": "Grind coarser by ~22μm",
+          "secondary": "Decrease temp by 1°C",
+          "explanation": "Overextracted — bitter dry distillates dominating. Coarser grind reduces extraction.",
+          "adjusted_recipe": {
+            "grind_um": {
+              "min": 500,
+              "max": 560,
+              "start": 530
+            },
+            "temp_c": {
+              "min": 88,
+              "max": 96,
+              "start": 92
+            }
+          }
+        },
+        "thin": {
+          "primary": "Increase dose by 1g or decrease water by 15g",
+          "secondary": "Try a metal filter for more body",
+          "explanation": "Understrength — TDS too low. More coffee or less water concentrates the brew.",
+          "adjusted_recipe": {
+            "dose_g": {
+              "min": 17,
+              "max": 21,
+              "start": 19
+            }
+          }
+        },
+        "strong": {
+          "primary": "Decrease dose by 1g or increase water by 15g",
+          "secondary": null,
+          "explanation": "Overstrength — TDS too high. Less coffee or more water dilutes the brew.",
+          "adjusted_recipe": {
+            "dose_g": {
+              "min": 15,
+              "max": 19,
+              "start": 17
+            }
+          }
+        },
+        "flat": {
+          "primary": "Grind finer by ~22μm and increase temp by 2°C",
+          "secondary": "Check bean freshness and water mineral content",
+          "explanation": "Either stale beans or underextracted. If water is very soft, mineral content may be too low for proper extraction.",
+          "adjusted_recipe": {
+            "grind_um": {
+              "min": 456,
+              "max": 516,
+              "start": 486
+            },
+            "temp_c": {
+              "min": 91,
+              "max": 99,
+              "start": 95
+            }
+          }
+        }
+      },
+      "narrative": "Ethiopian heirlooms grind differently — harder, more brittle, more fines. Elevated fines actually help extraction evenness with paper filter.",
+      "narrative_sources": [
+        "§12",
+        "§11",
+        "§9",
+        "§1"
+      ],
+      "interaction_rules": [
+        "light_ethiopian"
+      ],
+      "links": []
+    },
+    "espresso-generic": {
+      "brewer_id": "espresso-generic",
+      "brewer_name": "Espresso",
+      "match_score": 80,
+      "recipe": {
+        "dose_g": {
+          "min": 18,
+          "max": 20,
+          "start": 19
+        },
+        "water_g": {
+          "min": 43,
+          "max": 47,
+          "start": 45
+        },
+        "temp_c": {
+          "min": 90,
+          "max": 94,
+          "start": 92
+        },
+        "grind_um": {
+          "min": 198,
+          "max": 258,
+          "start": 228
+        },
+        "time_display": "0:28-0:35",
+        "ratio_display": "1:1.9-1:2.9"
+      },
+      "flavor_prediction": {
+        "expect": "mixed berries, sweet tea, raw honey, plum",
+        "brewer_effect": "Pressure extraction concentrates all compounds — expect intensity across the flavor spectrum."
+      },
+      "adjustments": {
+        "sour": {
+          "primary": "Grind finer by ~10μm",
+          "secondary": "Increase temp by 1°C",
+          "explanation": "Underextracted — only acids extracted so far. Finer grind increases surface area for more extraction.",
+          "adjusted_recipe": {
+            "grind_um": {
+              "min": 203,
+              "max": 233,
+              "start": 218
+            },
+            "temp_c": {
+              "min": 89,
+              "max": 97,
+              "start": 93
+            }
+          }
+        },
+        "bitter": {
+          "primary": "Grind coarser by ~10μm",
+          "secondary": "Decrease temp by 1°C",
+          "explanation": "Overextracted — bitter dry distillates dominating. Coarser grind reduces extraction.",
+          "adjusted_recipe": {
+            "grind_um": {
+              "min": 223,
+              "max": 253,
+              "start": 238
+            },
+            "temp_c": {
+              "min": 87,
+              "max": 95,
+              "start": 91
+            }
+          }
+        },
+        "thin": {
+          "primary": "Increase dose by 1g or decrease water by 15g",
+          "secondary": null,
+          "explanation": "Understrength — TDS too low. More coffee or less water concentrates the brew.",
+          "adjusted_recipe": {
+            "dose_g": {
+              "min": 18,
+              "max": 22,
+              "start": 20
+            }
+          }
+        },
+        "strong": {
+          "primary": "Decrease dose by 1g or increase water by 15g",
+          "secondary": null,
+          "explanation": "Overstrength — TDS too high. Less coffee or more water dilutes the brew.",
+          "adjusted_recipe": {
+            "dose_g": {
+              "min": 16,
+              "max": 20,
+              "start": 18
+            }
+          }
+        },
+        "flat": {
+          "primary": "Grind finer by ~10μm and increase temp by 2°C",
+          "secondary": "Check bean freshness and water mineral content",
+          "explanation": "Either stale beans or underextracted. If water is very soft, mineral content may be too low for proper extraction.",
+          "adjusted_recipe": {
+            "grind_um": {
+              "min": 203,
+              "max": 233,
+              "start": 218
+            },
+            "temp_c": {
+              "min": 90,
+              "max": 98,
+              "start": 94
+            }
+          }
+        }
+      },
+      "narrative": "Ethiopian heirlooms grind differently — harder, more brittle, more fines. Elevated fines actually help extraction evenness with paper filter. Light roast espresso requires patience. Longer ratio and preinfusion to extract through the density. Expect bright, acidic, fruit-forward shots.",
+      "narrative_sources": [
+        "§12",
+        "§11",
+        "§9",
+        "§1"
+      ],
+      "interaction_rules": [
+        "light_ethiopian",
+        "espresso_light"
+      ],
+      "links": []
+    },
+    "moka-pot": {
+      "brewer_id": "moka-pot",
+      "brewer_name": "Moka Pot",
+      "match_score": 74,
+      "recipe": {
+        "dose_g": {
+          "min": 17,
+          "max": 19,
+          "start": 18
+        },
+        "water_g": {
+          "min": 161,
+          "max": 181,
+          "start": 171
+        },
+        "temp_c": {
+          "min": 97,
+          "max": 101,
+          "start": 99
+        },
+        "grind_um": {
+          "min": 298,
+          "max": 358,
+          "start": 328
+        },
+        "time_display": "4:00-5:00",
+        "ratio_display": "1:9.0-1:10.0"
+      },
+      "flavor_prediction": {
+        "expect": "mixed berries, sweet tea, raw honey, plum",
+        "brewer_effect": "Pressure extraction concentrates all compounds — expect intensity across the flavor spectrum."
+      },
+      "adjustments": {
+        "sour": {
+          "primary": "Grind finer by ~22μm",
+          "secondary": "Increase temp by 1°C",
+          "explanation": "Underextracted — only acids extracted so far. Finer grind increases surface area for more extraction.",
+          "adjusted_recipe": {
+            "grind_um": {
+              "min": 276,
+              "max": 336,
+              "start": 306
+            },
+            "temp_c": {
+              "min": 96,
+              "max": 104,
+              "start": 100
+            }
+          }
+        },
+        "bitter": {
+          "primary": "Grind coarser by ~22μm",
+          "secondary": "Decrease temp by 1°C",
+          "explanation": "Overextracted — bitter dry distillates dominating. Coarser grind reduces extraction.",
+          "adjusted_recipe": {
+            "grind_um": {
+              "min": 320,
+              "max": 380,
+              "start": 350
+            },
+            "temp_c": {
+              "min": 94,
+              "max": 102,
+              "start": 98
+            }
+          }
+        },
+        "thin": {
+          "primary": "Increase dose by 1g or decrease water by 15g",
+          "secondary": null,
+          "explanation": "Understrength — TDS too low. More coffee or less water concentrates the brew.",
+          "adjusted_recipe": {
+            "dose_g": {
+              "min": 17,
+              "max": 21,
+              "start": 19
+            }
+          }
+        },
+        "strong": {
+          "primary": "Decrease dose by 1g or increase water by 15g",
+          "secondary": null,
+          "explanation": "Overstrength — TDS too high. Less coffee or more water dilutes the brew.",
+          "adjusted_recipe": {
+            "dose_g": {
+              "min": 15,
+              "max": 19,
+              "start": 17
+            }
+          }
+        },
+        "flat": {
+          "primary": "Grind finer by ~22μm and increase temp by 2°C",
+          "secondary": "Check bean freshness and water mineral content",
+          "explanation": "Either stale beans or underextracted. If water is very soft, mineral content may be too low for proper extraction.",
+          "adjusted_recipe": {
+            "grind_um": {
+              "min": 276,
+              "max": 336,
+              "start": 306
+            },
+            "temp_c": {
+              "min": 97,
+              "max": 105,
+              "start": 101
+            }
+          }
+        }
+      },
+      "narrative": "Ethiopian heirlooms grind differently — harder, more brittle, more fines. Elevated fines actually help extraction evenness with paper filter.",
+      "narrative_sources": [
+        "§12",
+        "§11",
+        "§9",
+        "§1"
+      ],
+      "interaction_rules": [
+        "light_ethiopian"
+      ],
+      "links": []
+    },
+    "cold-brew": {
+      "brewer_id": "cold-brew",
+      "brewer_name": "Cold Brew",
+      "match_score": 26,
+      "recipe": {
+        "dose_g": {
+          "min": 79,
+          "max": 81,
+          "start": 80
+        },
+        "water_g": {
+          "min": 513,
+          "max": 527,
+          "start": 520
+        },
+        "temp_c": {
+          "min": 1,
+          "max": 5,
+          "start": 3
+        },
+        "grind_um": {
+          "min": 848,
+          "max": 908,
+          "start": 878
+        },
+        "time_display": "720:00-1080:00",
+        "ratio_display": "1:6.0-1:7.0"
+      },
+      "flavor_prediction": {
+        "expect": "mixed berries, sweet tea, raw honey, plum",
+        "brewer_effect": "Cold water selectively under-extracts acids and bitter compounds, emphasizing sweetness and smoothness."
+      },
+      "adjustments": {
+        "sour": {
+          "primary": "Grind finer by ~22μm",
+          "secondary": "Increase temp by 1°C",
+          "explanation": "Underextracted — only acids extracted so far. Finer grind increases surface area for more extraction.",
+          "adjusted_recipe": {
+            "grind_um": {
+              "min": 826,
+              "max": 886,
+              "start": 856
+            },
+            "temp_c": {
+              "min": 0,
+              "max": 8,
+              "start": 4
+            }
+          }
+        },
+        "bitter": {
+          "primary": "Grind coarser by ~22μm",
+          "secondary": "Decrease temp by 1°C",
+          "explanation": "Overextracted — bitter dry distillates dominating. Coarser grind reduces extraction.",
+          "adjusted_recipe": {
+            "grind_um": {
+              "min": 870,
+              "max": 930,
+              "start": 900
+            },
+            "temp_c": {
+              "min": -2,
+              "max": 6,
+              "start": 2
+            }
+          }
+        },
+        "thin": {
+          "primary": "Increase dose by 1g or decrease water by 15g",
+          "secondary": null,
+          "explanation": "Understrength — TDS too low. More coffee or less water concentrates the brew.",
+          "adjusted_recipe": {
+            "dose_g": {
+              "min": 79,
+              "max": 83,
+              "start": 81
+            }
+          }
+        },
+        "strong": {
+          "primary": "Decrease dose by 1g or increase water by 15g",
+          "secondary": null,
+          "explanation": "Overstrength — TDS too high. Less coffee or more water dilutes the brew.",
+          "adjusted_recipe": {
+            "dose_g": {
+              "min": 77,
+              "max": 81,
+              "start": 79
+            }
+          }
+        },
+        "flat": {
+          "primary": "Grind finer by ~22μm and increase temp by 2°C",
+          "secondary": "Check bean freshness and water mineral content",
+          "explanation": "Either stale beans or underextracted. If water is very soft, mineral content may be too low for proper extraction.",
+          "adjusted_recipe": {
+            "grind_um": {
+              "min": 826,
+              "max": 886,
+              "start": 856
+            },
+            "temp_c": {
+              "min": 1,
+              "max": 9,
+              "start": 5
+            }
+          }
+        }
+      },
+      "narrative": "Ethiopian heirlooms grind differently — harder, more brittle, more fines. Elevated fines actually help extraction evenness with paper filter. Cold brew can't extract light roast properly. Use flash brew (hot water over ice) to preserve the bright, complex character cold immersion would lose.",
+      "narrative_sources": [
+        "§12",
+        "§11",
+        "§9",
+        "§1"
+      ],
+      "interaction_rules": [
+        "light_ethiopian",
+        "cold_brew_light"
+      ],
+      "links": []
+    }
+  }
+}

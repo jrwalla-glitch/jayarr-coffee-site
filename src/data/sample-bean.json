@@ -1,0 +1,62 @@
+{
+  "id": "onyx-coffee-lab-tropical-weather-2026-winter",
+  "roaster": "Onyx Coffee Lab",
+  "roaster_slug": "onyx-coffee-lab",
+  "name": "Tropical Weather",
+  "url": "https://onyxcoffeelab.com/products/tropical-weather",
+  "origin": "ethiopia",
+  "region": null,
+  "farm": null,
+  "producer": null,
+  "altitude_m": 1900,
+  "altitude_range_m": null,
+  "latitude_band": "equatorial",
+  "variety": [
+    "mixed"
+  ],
+  "processing": "blend_washed_natural",
+  "processing_detail": "Washed, Natural, Raised-Bed Dried",
+  "roast_level": "light",
+  "roast_level_raw": null,
+  "agtron_whole": 79,
+  "agtron_ground": 126.8,
+  "flavor_notes": [
+    "mixed berries",
+    "sweet tea",
+    "raw honey",
+    "plum"
+  ],
+  "cup_score": 88,
+  "trad_mod_scale": 7,
+  "is_blend": true,
+  "blend_components": null,
+  "blend_rotates": false,
+  "price_cents": 2450,
+  "weight_g": 312,
+  "available": true,
+  "extraction_methods": [
+    "both"
+  ],
+  "harvest_year": 2025,
+  "harvest_season": "Rotating Microlots",
+  "certifications": [],
+  "transparency": {
+    "green_cost_per_lb": 5.76,
+    "transportation_per_lb": 0.09,
+    "relationship_price_per_lb": 5.45,
+    "fair_trade_price_per_lb": 1.8,
+    "c_market_price_per_lb": 4.04,
+    "transparency_grade": "B"
+  },
+  "confidence": 0.75,
+  "recommendable": true,
+  "publishable": false,
+  "data_sources": [
+    "https://onyxcoffeelab.com",
+    "product.onyxcontent.com"
+  ],
+  "last_scraped": "2026-03-31",
+  "last_seen": "2026-03-31",
+  "archived": false,
+  "notes": "Caffeine: 17.95 mg/oz"
+}
