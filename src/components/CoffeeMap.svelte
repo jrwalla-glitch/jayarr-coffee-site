@@ -343,6 +343,11 @@
           <h2 class="panel-title">{activeOrigin.name}</h2>
           <p class="panel-description">{activeOrigin.description}</p>
 
+          <!-- Origin Hub Link -->
+          <a href={`/explore/origins/${activeOrigin.id}/`} class="hub-link">
+            Full Regional Profile →
+          </a>
+
           <!-- Articles — prominent, near top -->
           <div class="panel-section">
             <div class="article-links">
@@ -724,7 +729,24 @@
     font-size: 0.9rem;
     line-height: 1.75;
     color: #4A4540;
+    margin-bottom: 1rem;
+  }
+
+  .hub-link {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #C17A3A;
+    text-decoration: none;
     margin-bottom: 1.5rem;
+    padding: 0.4rem 0.75rem;
+    border: 1px solid #C17A3A;
+    border-radius: 2px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .hub-link:hover {
+    background: #C17A3A;
+    color: white;
   }
 
   /* Stats — hairline dividers instead of gray box */

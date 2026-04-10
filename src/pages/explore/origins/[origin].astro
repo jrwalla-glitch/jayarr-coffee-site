@@ -1,0 +1,536 @@
+---
+import BaseHead from '../../../components/BaseHead.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import originHubs from '../../../data/origin-hubs.json';
+
+export function getStaticPaths() {
+  return originHubs.map((hub) => ({
+    params: { origin: hub.origin_slug },
+    props: { hub },
+  }));
+}
+
+const { hub } = Astro.props;
+
+const BREWER_NAMES = {
+  'chemex-6cup': 'Chemex',
+  'hario-v60-02': 'V60',
+  'kalita-wave-185': 'Kalita Wave',
+  'aeropress': 'AeroPress',
+  'clever-dripper': 'Clever Dripper',
+  'espresso-generic': 'Espresso',
+  'moka-pot': 'Moka Pot',
+  'french-press': 'French Press',
+  'cold-brew': 'Cold Brew',
+};
+
+const roastPositions = { light: 1, medium_light: 2, medium: 3, medium_dark: 4, dark: 5 };
+
+// Split narrative into paragraphs
+const paragraphs = (hub.regional_brief || '').split('\n\n').filter(p => p.trim());
+
+// Unique processing methods and roast levels for filters
+const processingMethods = [...new Set(hub.beans.map(b => b.processing))].sort();
+const roastLevels = [...new Set(hub.beans.map(b => b.roast_level))].sort((a,b) => (roastPositions[a]||3) - (roastPositions[b]||3));
+const roasters = [...new Set(hub.beans.map(b => b.roaster))].sort();
+---
+
+<html lang="en">
+  <head>
+    <BaseHead
+      title={`${hub.display_name} Coffee: Origin Profile | JayArr Coffee`}
+      description={`Explore ${hub.bean_count} ${hub.display_name} coffees with personalized brewing recipes. ${hub.quick_stats?.signature_flavors?.join(', ') || 'Discover the flavors of this origin.'}`}
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Breadcrumb Schema -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://jayarr.coffee/" },
+        { "@type": "ListItem", "position": 2, "name": "Explore", "item": "https://jayarr.coffee/explore/" },
+        { "@type": "ListItem", "position": 3, "name": "Origins", "item": "https://jayarr.coffee/explore/origins/" },
+        { "@type": "ListItem", "position": 4, "name": hub.display_name }
+      ]
+    })}></script>
+
+    <!-- WebPage Schema -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": `${hub.display_name} Coffee: Origin Profile`,
+      "description": `Regional coffee profile for ${hub.display_name}. ${hub.bean_count} specialty coffees with personalized brewing recommendations.`,
+      "url": `https://jayarr.coffee${hub.page_route}`,
+      "publisher": { "@type": "Organization", "name": "JayArr Coffee", "url": "https://jayarr.coffee" }
+    })}></script>
+
+    <style>
+      :root {
+        --copper: #C17A3A;
+        --copper-light: #D4944F;
+        --dark: #1A1A1A;
+        --muted: #6B6560;
+        --cream: #FAF8F5;
+        --cream-dark: #F0EDE8;
+        --border: #E5E0D8;
+      }
+      body {
+        font-family: 'Inter', -apple-system, sans-serif;
+        color: var(--dark);
+        background: var(--cream);
+        margin: 0;
+      }
+      .origin-page {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem 4rem;
+      }
+
+      /* Breadcrumbs */
+      .breadcrumbs {
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-bottom: 2.5rem;
+      }
+      .breadcrumbs a {
+        color: var(--muted);
+        text-decoration: none;
+      }
+      .breadcrumbs a:hover {
+        color: var(--copper);
+      }
+      .breadcrumbs span {
+        margin: 0 0.4rem;
+      }
+
+      /* Dossier Header */
+      .dossier-header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+      .classification {
+        font-family: 'Inter', monospace;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        color: var(--copper);
+        margin-bottom: 0.5rem;
+      }
+      .dossier-header h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(3rem, 6vw, 5rem);
+        font-weight: 700;
+        color: var(--dark);
+        margin: 0.25rem 0;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+      }
+      .dossier-subtitle {
+        font-family: 'Playfair Display', serif;
+        font-style: italic;
+        font-size: 1.15rem;
+        color: var(--muted);
+        margin-top: 0.25rem;
+      }
+      .copper-rule {
+        width: 60px;
+        height: 3px;
+        background: var(--copper);
+        margin: 1.5rem auto 0;
+        border: none;
+      }
+
+      /* Two-column layout */
+      .content-grid {
+        display: grid;
+        grid-template-columns: 1fr 340px;
+        gap: 3rem;
+        align-items: start;
+      }
+
+      /* Main content */
+      .main-content section {
+        margin-bottom: 3rem;
+      }
+      .main-content h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--dark);
+        margin: 0 0 0.5rem;
+        line-height: 1.2;
+      }
+      .section-rule {
+        width: 100%;
+        height: 1px;
+        background: var(--copper);
+        opacity: 0.3;
+        border: none;
+        margin: 0.5rem 0 1.5rem;
+      }
+
+      /* Regional brief */
+      .brief p {
+        font-size: 1rem;
+        line-height: 1.8;
+        color: #3A3530;
+        margin-bottom: 1rem;
+        max-width: 65ch;
+      }
+      .brief p:first-child::first-letter {
+        font-family: 'Playfair Display', serif;
+        font-size: 3.5rem;
+        float: left;
+        line-height: 0.8;
+        margin: 0.1em 0.15em 0 0;
+        color: var(--copper);
+        font-weight: 700;
+      }
+
+      /* Brewing note */
+      .brewing-note {
+        font-size: 1rem;
+        line-height: 1.8;
+        color: #3A3530;
+        max-width: 65ch;
+      }
+      .brewing-cta {
+        display: inline-block;
+        margin-top: 1rem;
+        color: var(--copper);
+        font-weight: 600;
+        text-decoration: none;
+        font-size: 0.95rem;
+      }
+      .brewing-cta:hover {
+        text-decoration: underline;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        position: sticky;
+        top: 2rem;
+      }
+
+      /* Quick Stats */
+      .quick-stats {
+        background: var(--cream-dark);
+        border: 1px solid var(--copper);
+        border-radius: 2px;
+        padding: 1.5rem;
+      }
+      .quick-stats h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.25rem;
+        text-align: center;
+        margin: 0 0 1.25rem;
+        color: var(--dark);
+      }
+      .stat-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.6rem 0;
+        border-bottom: 1px dotted var(--border);
+        font-size: 0.9rem;
+      }
+      .stat-row:last-child {
+        border-bottom: none;
+      }
+      .stat-label {
+        font-weight: 600;
+        color: var(--dark);
+      }
+      .stat-value {
+        color: var(--muted);
+        text-align: right;
+        max-width: 55%;
+      }
+
+      /* Bean Grid */
+      .bean-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+      .bean-card {
+        background: white;
+        border: 1px solid var(--border);
+        border-left: 3px solid var(--copper);
+        border-radius: 2px;
+        padding: 1.25rem;
+        transition: box-shadow 0.2s;
+        text-decoration: none;
+        color: inherit;
+        display: block;
+      }
+      .bean-card:hover {
+        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      }
+      .bean-roaster {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+        margin-bottom: 0.25rem;
+      }
+      .bean-name {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 0.6rem;
+        line-height: 1.3;
+      }
+      .flavor-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        margin-bottom: 0.75rem;
+      }
+      .flavor-tag {
+        font-size: 0.75rem;
+        color: var(--muted);
+        border: 1px solid var(--border);
+        padding: 0.15rem 0.5rem;
+        border-radius: 2px;
+      }
+      .roast-indicator {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+      }
+      .roast-dots {
+        display: flex;
+        gap: 3px;
+      }
+      .roast-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--border);
+      }
+      .roast-dot.active {
+        background: var(--copper);
+      }
+      .bean-cta {
+        display: block;
+        text-align: right;
+        font-size: 0.8rem;
+        color: var(--copper);
+        margin-top: 0.75rem;
+        font-weight: 500;
+      }
+
+      /* Blog links */
+      .blog-links a {
+        display: block;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--border);
+        text-decoration: none;
+        color: var(--dark);
+        font-size: 0.95rem;
+        transition: color 0.2s;
+      }
+      .blog-links a:last-child {
+        border-bottom: none;
+      }
+      .blog-links a:hover {
+        color: var(--copper);
+      }
+      .blog-arrow {
+        color: var(--copper);
+        margin-right: 0.5rem;
+      }
+      .blog-context {
+        display: block;
+        font-size: 0.8rem;
+        color: var(--muted);
+        margin-top: 0.15rem;
+        margin-left: 1.25rem;
+      }
+
+      /* Filter bar */
+      .filter-bar {
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+      }
+      .filter-bar select {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8rem;
+        padding: 0.4rem 0.75rem;
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        background: white;
+        color: var(--dark);
+        cursor: pointer;
+      }
+
+      /* Mobile */
+      @media (max-width: 900px) {
+        .content-grid {
+          grid-template-columns: 1fr;
+        }
+        .sidebar {
+          position: static;
+          order: -1;
+        }
+        .bean-grid {
+          grid-template-columns: 1fr;
+        }
+        .dossier-header h1 {
+          font-size: 3rem;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-cream">
+    <Header />
+
+    <main class="origin-page">
+      <!-- Breadcrumbs -->
+      <nav class="breadcrumbs">
+        <a href="/">Home</a> <span>/</span>
+        <a href="/explore/">Explore</a> <span>/</span>
+        <a href="/explore/origins/">Origins</a> <span>/</span>
+        {hub.display_name}
+      </nav>
+
+      <!-- Dossier Header -->
+      <header class="dossier-header">
+        <div class="classification">REGIONAL PROFILE // {hub.classification_code}</div>
+        <h1>{hub.display_name}</h1>
+        <p class="dossier-subtitle">{hub.brief_section_title}</p>
+        <hr class="copper-rule" />
+      </header>
+
+      <!-- Two-column layout -->
+      <div class="content-grid">
+        <!-- Main Content -->
+        <div class="main-content">
+          <!-- Regional Brief -->
+          <section>
+            <h2>Regional Brief</h2>
+            <hr class="section-rule" />
+            <div class="brief">
+              {paragraphs.map((p) => <p>{p}</p>)}
+            </div>
+          </section>
+
+          <!-- Brewing This Origin -->
+          {hub.brewing_note && (
+            <section>
+              <h2>Brewing This Origin</h2>
+              <hr class="section-rule" />
+              <p class="brewing-note">{hub.brewing_note}</p>
+              <a href="/deep-brew/brew-dial-in/" class="brewing-cta">
+                Dial in your specific bean &rarr;
+              </a>
+            </section>
+          )}
+
+          <!-- Available Specimens -->
+          <section>
+            <h2>Available Specimens</h2>
+            <hr class="section-rule" />
+
+            <div class="bean-grid">
+              {hub.beans.map((bean) => (
+                <a href={`/tools/brew-dial-in/${bean.roaster.toLowerCase().replace(/[^a-z0-9]+/g, '-')}/${bean.id}/`} class="bean-card">
+                  <div class="bean-roaster">{bean.roaster}</div>
+                  <div class="bean-name">{bean.name}</div>
+                  <div class="flavor-tags">
+                    {bean.flavor_notes.map((note) => (
+                      <span class="flavor-tag">{note}</span>
+                    ))}
+                  </div>
+                  <div class="roast-indicator">
+                    <span>Roast Level</span>
+                    <div class="roast-dots">
+                      {[1,2,3,4,5].map((i) => (
+                        <span class={`roast-dot ${i <= (roastPositions[bean.roast_level] || 3) ? 'active' : ''}`}></span>
+                      ))}
+                    </div>
+                  </div>
+                  <span class="bean-cta">View &amp; Dial-In &rarr;</span>
+                </a>
+              ))}
+            </div>
+          </section>
+
+          <!-- Blog Deep-Dives -->
+          {hub.blog_references && hub.blog_references.length > 0 && (
+            <section>
+              <h2>Further Reading</h2>
+              <hr class="section-rule" />
+              <div class="blog-links">
+                {hub.blog_references.map((blog) => (
+                  <a href={`/blog/${blog.slug}/`}>
+                    <span class="blog-arrow">&rarr;</span>
+                    {blog.title}
+                    {blog.context && <span class="blog-context">{blog.context}</span>}
+                  </a>
+                ))}
+              </div>
+            </section>
+          )}
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+          <div class="quick-stats">
+            <h3>Quick Stats</h3>
+            {hub.quick_stats?.altitude_range && (
+              <div class="stat-row">
+                <span class="stat-label">Altitude</span>
+                <span class="stat-value">{hub.quick_stats.altitude_range}</span>
+              </div>
+            )}
+            {hub.quick_stats?.annual_production && (
+              <div class="stat-row">
+                <span class="stat-label">Production</span>
+                <span class="stat-value">{hub.quick_stats.annual_production}</span>
+              </div>
+            )}
+            {hub.quick_stats?.harvest_window && (
+              <div class="stat-row">
+                <span class="stat-label">Harvest</span>
+                <span class="stat-value">{hub.quick_stats.harvest_window}</span>
+              </div>
+            )}
+            {hub.quick_stats?.key_varieties && (
+              <div class="stat-row">
+                <span class="stat-label">Varieties</span>
+                <span class="stat-value">{hub.quick_stats.key_varieties.join(', ')}</span>
+              </div>
+            )}
+            {hub.quick_stats?.dominant_processing && (
+              <div class="stat-row">
+                <span class="stat-label">Processing</span>
+                <span class="stat-value">{hub.quick_stats.dominant_processing.join(', ')}</span>
+              </div>
+            )}
+            {hub.quick_stats?.signature_flavors && (
+              <div class="stat-row">
+                <span class="stat-label">Signature Flavors</span>
+                <span class="stat-value">{hub.quick_stats.signature_flavors.join(', ')}</span>
+              </div>
+            )}
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <Footer />
+  </body>
+</html>
