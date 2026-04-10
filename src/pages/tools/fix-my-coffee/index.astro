@@ -31,6 +31,39 @@ import FixMyCoffee from '../../../components/tools/FixMyCoffee.svelte';
 				"url": "https://jayarr.coffee"
 			}
 		})}></script>
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "HowTo",
+			"name": "How to Diagnose and Fix Bad Coffee",
+			"description": "Select the symptom you're tasting \u2014 sour, bitter, weak, muddy, or a combination \u2014 and get science-backed fixes ranked by impact.",
+			"totalTime": "PT2M",
+			"step": [
+						{
+									"@type": "HowToStep",
+									"position": 1,
+									"name": "Identify your symptom",
+									"text": "Taste your coffee and identify the primary problem: Sour/Acidic (underextraction), Bitter/Harsh (overextraction), Weak/Watery (low concentration), Muddy/Heavy (too many dissolved solids), or the compound symptom Sour AND Bitter (uneven extraction)."
+						},
+						{
+									"@type": "HowToStep",
+									"position": 2,
+									"name": "Read the diagnosis",
+									"text": "Each symptom maps to a specific extraction problem. Sour means extraction yield is below 18% \u2014 only fruit acids dissolved. Bitter means extraction exceeded 22% \u2014 dry distillates are overwhelming the cup."
+						},
+						{
+									"@type": "HowToStep",
+									"position": 3,
+									"name": "Apply fixes in order of impact",
+									"text": "Fixes are ranked by effectiveness. For sour coffee: grind finer first (biggest impact), then increase water temperature, then extend brew time. Change one variable at a time and re-taste."
+						},
+						{
+									"@type": "HowToStep",
+									"position": 4,
+									"name": "Iterate until balanced",
+									"text": "A well-extracted cup (18-22% EY) should taste sweet with balanced acidity, no harsh bitterness, and a clean finish. Each variable adjustment shifts extraction by about 0.5 percentage points."
+						}
+			]
+})}></script>
 	</head>
 	<body class="bg-cream">
 		<Header />
@@ -50,6 +83,19 @@ import FixMyCoffee from '../../../components/tools/FixMyCoffee.svelte';
 		<section class="py-12 md:py-16">
 			<div class="max-w-xl mx-auto px-6">
 				<FixMyCoffee client:load />
+			</div>
+		</section>
+
+
+		<section class="py-16 px-6">
+			<div class="prose mx-auto">
+				<h2>The Extraction Science Behind Your Coffee Problems</h2>
+				<p>Coffee extraction follows a predictable chemical sequence. Compounds dissolve in order of molecular size and polarity: fruit acids first, then Maillard reaction products (nutty, caramel, malty flavors), then browning sugars, and finally the heavy, bitter dry distillates. Every cup is a snapshot of how far along this dissolving curve you went. Too little extraction and only the acids have dissolved — the cup tastes sour and thin. Too much and the dry distillates overwhelm everything — the cup tastes bitter, ashy, and harsh.</p>
+				<p>The SCA’s 18-22% extraction yield target reflects decades of sensory research. At this range, trained tasters consistently rate coffee highest for overall flavor quality. But hitting the right average extraction doesn’t guarantee a good cup. This is perhaps the most important concept in coffee science, and the one this diagnostic tool is built around: evenness of extraction matters as much as total extraction.</p>
+				<p>If some particles in your coffee bed are overextracted while others are underextracted, the cup will taste both sour and bitter simultaneously, even if the average extraction yield falls squarely within the ideal range. As Jonathan Gagne puts it, a brew at 20% EY with even extraction can taste better than one at 19% with uneven extraction. This is why the “sour AND bitter” symptom exists — it signals channeling, uneven grinding, or poor water distribution rather than a simple too-much or too-little problem.</p>
+				<p>Strength and extraction are independent axes. Extraction yield (EY%) measures what percentage of the coffee’s dry mass was dissolved and determines flavor balance — the sour-to-bitter spectrum. Total dissolved solids (TDS%) measures the concentration of those compounds in your cup and determines body — the thin-to-heavy spectrum. You can have high extraction at low strength (bitter and watery, like percolator coffee that dripped too long) or low extraction at high strength (sour and intense, like a choked espresso). Fixing your coffee requires identifying which axis is off.</p>
+				<p>The five brewing variables you control — grind size, water temperature, brew time, ratio, and agitation — all affect extraction differently. Grind size has the largest impact because it controls surface area, which directly governs the Noyes-Whitney dissolution equation. Water temperature affects the diffusion coefficient: higher temps extract faster but also pull more bitter compounds. Same extraction yield at different temperatures produces different flavor because temperature-dependent solubility means different compounds extract at different rates. Brew time is straightforward — longer contact means more extraction. Ratio affects both strength and extraction: more water dilutes the cup but also drives extraction higher as each particle contacts fresher water. Agitation (stirring, pouring technique) affects evenness rather than total extraction.</p>
+				<p>The key to effective troubleshooting is changing one variable at a time. Each single variable change shifts extraction yield by roughly 0.5 percentage points. This means stacking multiple small improvements — better tamper fit, sharper burrs, correct water chemistry, proper preinfusion — can add up to 2-2.5 percentage points of total extraction improvement. A barista who optimizes five variables independently gains more than one who tries to fix everything at once.</p>
 			</div>
 		</section>
 

@@ -31,6 +31,39 @@ import GrindGuide from '../../../components/tools/GrindGuide.svelte';
 				"url": "https://jayarr.coffee"
 			}
 		})}></script>
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "HowTo",
+			"name": "How to Choose the Right Grind Size for Your Brew Method",
+			"description": "Use the Grind Size Guide to find the correct micron range and texture reference for any coffee brew method, from Turkish to cold brew.",
+			"totalTime": "PT1M",
+			"step": [
+						{
+									"@type": "HowToStep",
+									"position": 1,
+									"name": "Find your brew method",
+									"text": "Browse the visual guide to locate your brew method \u2014 Turkish, espresso, AeroPress, pour over (V60, Chemex, Kalita Wave), French press, or cold brew."
+						},
+						{
+									"@type": "HowToStep",
+									"position": 2,
+									"name": "Check the micron range",
+									"text": "Each method shows the target particle size range in microns. For example, V60 pour over targets 400-700 microns, while espresso targets 200-400 microns."
+						},
+						{
+									"@type": "HowToStep",
+									"position": 3,
+									"name": "Use the texture reference",
+									"text": "Match the visual texture analog to calibrate your grinder by feel. Espresso resembles powdered sugar, pour over resembles medium sea salt, and French press resembles raw sugar or peppercorns."
+						},
+						{
+									"@type": "HowToStep",
+									"position": 4,
+									"name": "Adjust based on taste",
+									"text": "If your coffee tastes sour or thin, grind finer (smaller micron number). If it tastes bitter or harsh, grind coarser (larger micron number). Change one click at a time."
+						}
+			]
+})}></script>
 	</head>
 	<body class="bg-cream">
 		<Header />
@@ -50,6 +83,19 @@ import GrindGuide from '../../../components/tools/GrindGuide.svelte';
 		<section class="py-12 md:py-16">
 			<div class="max-w-xl mx-auto px-6">
 				<GrindGuide client:load />
+			</div>
+		</section>
+
+
+		<section class="py-16 px-6">
+			<div class="prose mx-auto">
+				<h2>The Physics of Particle Size</h2>
+				<p>Every grinder produces a distribution of particle sizes, not a single uniform size. Understanding this distribution — and why it matters — is the key to understanding why grind size affects your coffee more than almost any other variable.</p>
+				<p>The physics is governed by the Noyes-Whitney equation: extraction rate is proportional to the surface area of the coffee exposed to water. A particle half the diameter has four times the surface area per unit mass. Grind finer, and you expose exponentially more surface to the water, which accelerates extraction. But there’s a complication: no grinder produces perfectly uniform particles. Every grinder creates a spread measured by three key metrics. D50 is the median particle size — your target. D10 is the 10th percentile, representing the finest particles (fines). D90 is the 90th percentile, representing the largest particles (boulders). The span between D10 and D90, relative to D50, measures your grinder’s uniformity.</p>
+				<p>Fines matter disproportionately. A particle 10 times smaller than the median has 1,000 times less volume but enormously more surface area per unit mass. These particles extract much faster and — critically — clog filters. Jonathan Gagne’s research demonstrated that it’s the D10 value, not the average or median, that determines a coffee bed’s hydraulic resistance. This is why two grinders set to produce the same median particle size can produce dramatically different cups: the one generating more fines will flow slower, extract more unevenly, and taste different.</p>
+				<p>Burr type shapes the distribution. Flat burrs, especially specialty designs like SSP, tend toward unimodal distributions with a single peak and fewer outliers. They produce cleaner, clearer cups. Conical burrs characteristically produce bimodal distributions — a main peak plus a secondary fines peak — yielding fuller body but potentially muddier flavor. Neither is objectively better; they’re different tools for different goals.</p>
+				<p>Grind size ranges exist on a continuum, but each brew method has a target window calibrated to its contact time and filter characteristics. Turkish coffee requires powder-fine particles (100-200 microns) because there is no filter and the ultra-fine grind is the point. Espresso targets 200-400 microns because the 25-35 second shot time under 9 bars of pressure needs high resistance to slow the flow. Pour over methods like V60 and Chemex work best at 400-700 microns — fine enough for good extraction during 3-4 minutes of percolation, coarse enough to avoid stalling. French press needs 700-1000+ microns because the metal mesh filter cannot trap fines, and the long 4-8 minute immersion means finer particles would overextract.</p>
+				<p>Burr sharpness degrades over time, and the effect is measurable. As burrs dull, both fines and boulders increase simultaneously. The net result is always decreased flow rate and lower extraction — dull burrs produce a wider, worse distribution. If your coffee has gradually gotten harder to dial in over months of use, burr replacement or resharpening may be the fix. Gagne’s analysis of 300 particle size distributions across 24 grinders showed that burr alignment is also critical: even a few particles trapped under a burr during reseating can tilt it enough to degrade grind quality noticeably.</p>
 			</div>
 		</section>
 

@@ -30,6 +30,39 @@ import CoffeeMap from '../../components/CoffeeMap.svelte';
         "url": "https://jayarr.coffee"
       }
     })}></script>
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "How to Explore Coffee Origins",
+      "description": "Use the interactive world map to discover coffee-producing countries, their flavor profiles, growing regions, harvest seasons, and key varieties.",
+      "totalTime": "PT3M",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Browse the coffee belt",
+          "text": "The interactive map highlights every major coffee-producing country between the Tropic of Cancer and Tropic of Capricorn. Countries with active coffee production are shaded and clickable."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Click a country to explore",
+          "text": "Select any producing country to see its coffee profile: annual production volume, key varieties grown, dominant processing methods, growing altitude ranges, and harvest season months."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Discover flavor profiles by region",
+          "text": "Each origin panel describes the characteristic flavor profile. Ethiopian coffees tend toward citrus, florals, and berry. Brazilian coffees lean nutty and chocolatey. Kenyan coffees are known for intense blackcurrant and bright acidity."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Check harvest season timing",
+          "text": "Harvest months are displayed for each country so you can time your purchases for peak freshness. Coffee is a seasonal crop — beans from the most recent harvest will taste best."
+        }
+      ]
+    })}></script>
   </head>
   <body class="bg-cream">
     <Header />
@@ -38,6 +71,18 @@ import CoffeeMap from '../../components/CoffeeMap.svelte';
       <h1 class="sr-only">Coffee Origin Map</h1>
       <CoffeeMap client:load />
     </main>
+
+    <section class="py-16 px-6">
+      <div class="prose mx-auto">
+        <h2>How Geography Shapes Your Coffee</h2>
+        <p>Coffee grows in a narrow band between the Tropic of Cancer and the Tropic of Capricorn, but within that band, no two countries produce the same cup. The flavor differences between Ethiopian and Brazilian coffee are as dramatic as the differences between Burgundy and Barossa Valley wine, and the reasons are rooted in the same concept: terroir.</p>
+        <p>Altitude is the dominant variable. Higher altitude means cooler temperatures, which slow cherry maturation from 6-8 months at low elevations to 9-11 months at high elevations. This extended development period allows the fruit to accumulate more sugars, organic acids, and volatile precursor compounds. The diurnal temperature differential — the gap between daytime highs and nighttime lows, typically 8-10 degrees Celsius in prime growing regions — means that sugars produced by photosynthesis during the day are conserved overnight because cooler temperatures suppress nighttime respiration. A 2024 study of coffee grown in Pu'er, China, quantified this: of 112 volatile organic compounds analyzed, 11 showed significant altitude dependence. Pyrazines (nutty, roasted notes) decreased with altitude while aldehydes (sweet, caramel, fruity notes) increased.</p>
+        <p>The quality sweet spot sits between 1,400 and 1,900 meters at equatorial latitudes, with diminishing returns above 2,000 meters where temperatures drop too low for optimal plant metabolism. But required altitude varies with latitude: near the equator, you need 1,100-1,900 meters. At the edges of the coffee belt (20-25 degrees latitude), quality coffee can grow at much lower elevations — Brazil's Cerrado region produces specialty coffee below 1,200 meters because its subtropical latitude provides the necessary temperature modulation.</p>
+        <p>Arabica and Robusta are the two commercially important species, but they're not simply "good" and "bad." Arabica evolved in the highland forests of southwestern Ethiopia and produces more complex, acidic, aromatic coffee. It accounts for roughly 60% of world production. Robusta evolved in the lowland forests of central and western Africa, contains nearly twice the caffeine, and produces heavier-bodied, more bitter coffee. It accounts for 40% of production and dominates instant coffee and espresso blends. Arabica is actually a natural hybrid of Robusta and C. eugenioides, originating in what is now southern Sudan — a fact that surprises many in the specialty community.</p>
+        <p>Variety (cultivar) adds another layer. Within Arabica alone, there are over 100 cataloged varieties with distinct genetic profiles. SL-28 and SL-34 from Kenya produce the intense blackcurrant and bright acidity that makes Kenyan coffee celebrated worldwide. Gesha (originally from Ethiopia, made famous in Panama) delivers jasmine, bergamot, and tropical fruit that commands auction prices exceeding $350 per pound. Bourbon and its mutations (Caturra, SL-28, Pacas) consistently produce sweet, complex cups with high quality potential.</p>
+        <p>Climate change is actively redrawing the coffee map. The top five producing countries now average 144 days per year of coffee-harming heat above 30 degrees Celsius. Colombia's farms are migrating upward at a rate of 150 meters per degree of warming. Ethiopia's wild Arabica forests face a projected 50% decline by 2088. Meanwhile, emerging origins are rising: China's Yunnan province saw its specialty coffee ratio surge from 8% to 31.6% between 2021 and 2024, with exports growing 358% year over year. The world's coffee geography is being reshaped in real time.</p>
+      </div>
+    </section>
 
     <!-- Bridge to Tools -->
     <section class="bg-charcoal py-12">

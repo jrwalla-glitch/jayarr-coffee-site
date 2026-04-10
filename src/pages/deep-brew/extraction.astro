@@ -27,6 +27,39 @@ import ExtractionDiagnostic from '../../components/tools/ExtractionDiagnostic.sv
         "url": "https://jayarr.coffee"
       }
     })}></script>
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "How to Diagnose Extraction Problems in Your Coffee",
+      "description": "Describe what you taste and your brew method. Get method-specific fixes mapped to extraction science -- whether your V60, espresso, or French press needs adjustment to grind, temperature, time, or ratio.",
+      "totalTime": "PT3M",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Select your brew method",
+          "text": "Choose from V60, Chemex, espresso, French press, AeroPress, and other methods. The diagnostic adjusts its recommendations based on the physics of each brewing approach."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Describe the flavor balance",
+          "text": "Use the extraction yield slider to indicate where your cup falls: sour and underdeveloped (underextracted), balanced and sweet (ideal), or bitter and harsh (overextracted)."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Describe the body/strength",
+          "text": "Use the TDS slider to indicate whether the cup feels thin and watery (low strength) or heavy and intense (high strength). This is independent of flavor balance."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Review method-specific fixes",
+          "text": "The diagnostic maps your symptom combination to targeted adjustments for your specific brew method. Each fix explains the underlying science -- why grinding finer affects a V60 differently than an espresso."
+        }
+      ]
+    })}></script>
   </Fragment>
   <!-- Hero -->
   <section class="pt-28 pb-8 md:pt-32 md:pb-12">
@@ -51,6 +84,23 @@ import ExtractionDiagnostic from '../../components/tools/ExtractionDiagnostic.sv
   <section class="pb-16 md:pb-24">
     <div class="max-w-4xl mx-auto px-6">
       <ExtractionDiagnostic client:load />
+    </div>
+  </section>
+
+  <!-- Narrative -->
+  <section class="py-16 px-6">
+    <div class="prose mx-auto">
+      <h2>Extraction Yield vs. Strength: The Two Axes of Coffee Quality</h2>
+
+      <p>The extraction diagnostic treats coffee troubleshooting as a two-dimensional problem rather than the one-dimensional approach most guides use. The two axes &mdash; extraction yield (EY%) and strength (TDS%) &mdash; are independent variables that require different fixes, and misdiagnosing which one is off leads to adjustments that make the cup worse.</p>
+
+      <p>Extraction yield measures what percentage of the coffee&rsquo;s dry mass was dissolved into the liquid. It determines the flavor balance along the sour-to-bitter spectrum. The SCA&rsquo;s 18&ndash;22% target reflects the chemistry of sequential dissolution: organic acids dissolve first (they&rsquo;re small, polar molecules), then sugars and Maillard products, then the heavy bitter compounds &mdash; chlorogenic acid lactones and phenylindanes. Below 18%, acid compounds dominate and the cup tastes sour or underdeveloped. Above 22%, bitter compounds accumulate faster than pleasant complexity increases.</p>
+
+      <p>Strength, measured as TDS%, is about concentration, not balance. It determines body &mdash; how thin or heavy the cup feels. You can have a perfectly balanced extraction that&rsquo;s too dilute (right EY, low TDS) or a concentrated cup that&rsquo;s badly extracted (high TDS, wrong EY). This is why the diagnostic uses two separate inputs: one for flavor balance and one for body. Each combination maps to a specific adjustment strategy.</p>
+
+      <p>Brewing method changes the fix significantly. Grinding finer is the most impactful extraction lever for pour over because it increases surface area and slows flow through the coffee bed, giving water more contact time with the grounds. For espresso, the same adjustment has amplified effects because fine particles interact with 9 bars of pump pressure, and the relationship between grind size and puck resistance follows Darcy&rsquo;s law &mdash; flow rate through the coffee bed depends on permeability, which changes dramatically with small particle size adjustments. Grinding one click finer in espresso can add 5&ndash;10 seconds to shot time, while the same change in pour over might add 15&ndash;30 seconds. For French press, grind adjustments affect extraction less than steep time because there&rsquo;s no flow rate to modify &mdash; the coffee sits in a fixed volume of water approaching equilibrium.</p>
+
+      <p>Water temperature offers a complementary adjustment that operates through a different mechanism. Higher temperatures increase the diffusion coefficient of soluble compounds, accelerating extraction. But the same extraction yield achieved at different temperatures can taste different because temperature-dependent solubility means different compounds extract at different rates. A cup at 20% EY brewed at 96 degrees Celsius will have a slightly different flavor balance than one at 20% EY brewed at 90 degrees &mdash; the hotter brew extracts proportionally more of the heavier compounds. This is why the diagnostic accounts for method-specific temperature ranges alongside grind recommendations.</p>
     </div>
   </section>
 

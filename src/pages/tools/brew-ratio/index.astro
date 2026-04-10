@@ -31,6 +31,19 @@ import BrewRatio from '../../../components/tools/BrewRatio.svelte';
 				"url": "https://jayarr.coffee"
 			}
 		})}></script>
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "HowTo",
+			"name": "How to Calculate Your Coffee Brew Ratio",
+			"description": "Use the Brew Ratio Calculator to find the ideal coffee-to-water ratio for any brew method, then adjust to taste.",
+			"totalTime": "PT2M",
+			"step": [
+				{ "@type": "HowToStep", "position": 1, "name": "Select your brew method", "text": "Choose from Pour Over, French Press, AeroPress, Cold Brew, Espresso, or Moka Pot. Each method has a recommended starting ratio based on extraction science and industry standards." },
+				{ "@type": "HowToStep", "position": 2, "name": "Enter your coffee dose or water volume", "text": "Toggle between coffee-to-water and water-to-coffee mode. Enter the amount of coffee you want to use (in grams) or the volume of water you want to brew with." },
+				{ "@type": "HowToStep", "position": 3, "name": "Read the calculated result", "text": "The calculator displays the precise water or coffee amount needed for your chosen ratio. For example, 18g of coffee at a 1:16 ratio requires 288g of water." },
+				{ "@type": "HowToStep", "position": 4, "name": "Fine-tune the ratio to taste", "text": "Adjust the ratio up or down using the controls. A lower ratio (e.g., 1:14) produces a stronger cup. A higher ratio (e.g., 1:17) produces a lighter cup. Brew, taste, and iterate." }
+			]
+		})}></script>
 	</head>
 	<body class="bg-cream">
 		<Header />
@@ -52,6 +65,18 @@ import BrewRatio from '../../../components/tools/BrewRatio.svelte';
 		<section class="py-12 md:py-16">
 			<div class="max-w-xl mx-auto px-6">
 				<BrewRatio client:load />
+			</div>
+		</section>
+
+		<section class="py-16 px-6">
+			<div class="prose mx-auto">
+				<h2>The Science of Coffee Ratios</h2>
+				<p>Every cup of coffee is a ratio problem. The relationship between the mass of ground coffee and the mass of water determines two independent outcomes: how strong the cup tastes (Total Dissolved Solids, or TDS) and how much of the coffee's soluble material actually makes it into the liquid (extraction yield, or EY). These are not the same thing, and confusing them is one of the most common mistakes home brewers make.</p>
+				<p>Roasted coffee is roughly 28–30% soluble by weight. The rest is insoluble cellulose that stays in the spent grounds. But we don't want to dissolve all of it. The Specialty Coffee Association's Brewing Control Chart, originally developed by MIT chemist E.E. Lockhart in the 1950s, established that trained tasters consistently rate coffee highest when extraction yield falls between 18% and 22% of the dry mass. Below 18%, only the fast-extracting fruit acids have dissolved, and the cup tastes sour and underdeveloped. Above 22%, bitter dry distillates accumulate faster than flavor complexity increases.</p>
+				<p>Strength is the other axis. TDS measures the concentration of dissolved coffee solids in your cup. Most well-brewed filter coffee lands between 1.15% and 1.35% TDS. Here's the critical insight that most ratio guides miss: you can have strong, underextracted coffee and weak, overextracted coffee. Diner coffee is the classic example of the latter — too much water passed through old grounds produces a dilute cup that's also bitter and harsh.</p>
+				<p>The brew ratio controls strength directly and extraction yield indirectly. A 1:15 ratio (15 grams of water per gram of coffee) produces a stronger cup than 1:17, but it also means each gram of coffee contacts less water, potentially limiting extraction. This is why different brew methods call for different ratios. Pour over and French press work well at 1:15 to 1:17 because the extended contact time and higher temperatures drive extraction efficiently. Espresso operates at roughly 1:2 because the 9 bars of pressure and extremely fine grind compensate for the tiny water volume. Cold brew concentrates use 1:5 to 1:8 because the 12–24 hour steep time and coarse grind create a different extraction dynamic entirely — low temperature dramatically slows diffusion, so you compensate with time and higher dose.</p>
+				<p>The Noyes-Whitney equation governs the underlying physics: extraction rate depends on the difference between the saturation concentration at the particle surface and the bulk concentration of the surrounding water. As water becomes more concentrated with dissolved coffee, extraction slows. This is why percolation methods like pour over (where fresh water continuously passes through the grounds) achieve higher extraction yields than immersion methods like French press (where the water approaches equilibrium and extraction plateaus).</p>
+				<p>Ratio is your starting point, not your endpoint. If a cup at 1:16 tastes sour, the extraction yield is too low — grinding finer, increasing water temperature, or extending brew time will push more soluble material into the cup. If it tastes bitter and harsh, you've overextracted. The ratio calculator gives you the weight targets; your palate tells you whether to adjust the other variables around it.</p>
 			</div>
 		</section>
 

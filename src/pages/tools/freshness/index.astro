@@ -31,6 +31,33 @@ import FreshnessTracker from '../../../components/tools/FreshnessTracker.svelte'
 				"url": "https://jayarr.coffee"
 			}
 		})}></script>
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "HowTo",
+			"name": "How to Track Your Coffee Bean Freshness",
+			"description": "Enter your roast date and see exactly where your beans are in their freshness lifecycle \u2014 from too-fresh degassing through peak flavor to declining quality.",
+			"totalTime": "PT1M",
+			"step": [
+						{
+									"@type": "HowToStep",
+									"position": 1,
+									"name": "Enter your roast date",
+									"text": "Find the roast date on your coffee bag (most specialty roasters print it). Enter the date into the tracker."
+						},
+						{
+									"@type": "HowToStep",
+									"position": 2,
+									"name": "See your freshness stage",
+									"text": "The tracker shows which of five stages your beans are in: Too Fresh (days 0-3), Opening Up (days 3-7), Peak Window (days 7-21), Declining (days 21-30), or Stale (30+ days)."
+						},
+						{
+									"@type": "HowToStep",
+									"position": 3,
+									"name": "Follow stage-specific advice",
+									"text": "Each stage includes actionable tips. Peak Window beans should be dialed in and enjoyed. Declining beans benefit from finer grinding. If your beans are past peak, consider freezing your next bag at day 7-10."
+						}
+			]
+})}></script>
 	</head>
 	<body class="bg-cream">
 		<Header />
@@ -50,6 +77,19 @@ import FreshnessTracker from '../../../components/tools/FreshnessTracker.svelte'
 		<section class="py-12 md:py-16">
 			<div class="max-w-xl mx-auto px-6">
 				<FreshnessTracker client:load />
+			</div>
+		</section>
+
+
+		<section class="py-16 px-6">
+			<div class="prose mx-auto">
+				<h2>The Three Mechanisms of Coffee Staling</h2>
+				<p>Coffee staling is not a single process but three simultaneous mechanisms, each degrading the cup differently. Understanding all three explains why freshness matters, when to freeze, and why oily beans are a warning sign rather than a quality indicator.</p>
+				<p>The first mechanism is CO2 loss. During roasting, chemical reactions generate enormous amounts of carbon dioxide trapped within the bean’s cellular structure. This CO2 escapes slowly after roasting — rapidly at first, then decelerating. The gas serves two purposes: it contributes to crema formation in espresso, and it acts as a protective blanket that displaces oxygen inside the bean. As CO2 depletes, the bean becomes increasingly vulnerable to oxidation. But too much CO2 is also a problem: beans straight off the roaster (days 0-3) contain so much gas that it disrupts extraction. In espresso, the vigorous outgassing creates back pressure that forces you to grind coarser, which reduces extraction yield. In pour over, excess CO2 produces aggressive, uneven blooms. This is why most specialty roasters rest beans for 48-72 hours before selling.</p>
+				<p>The second mechanism is aroma volatilization. Roasted coffee contains over 800 volatile aromatic compounds that escape at different rates based on their molecular weight and vapor pressure. The lightest, most volatile compounds — floral, fruity, citrus notes — disappear first. The most important single volatile is 2-furfurylthiol, the character-impact compound responsible for the distinctive “roasted coffee” aroma. It has an odor activity value above 2,000 and degrades by 84% within 60 minutes in brewed coffee at serving temperature. Heavier compounds like chocolate, nutty, and caramel notes persist longer. This is why aging coffee doesn’t just become “less good” uniformly — it shifts in character, losing the high notes while retaining the bass.</p>
+				<p>The third mechanism is oil oxidation. Coffee lipids migrate from the interior of the bean to the surface through capillary action. Once on the surface, they’re exposed to oxygen and go rancid. This is why fresh beans have a dry, matte surface while stale beans look glossy and oily. The visual cue is reliable: fresh beans don’t look oily, and oily beans are usually stale. Dark roasts are particularly susceptible because the deeper roast creates more porous, fractured cellular structure that accelerates oil migration.</p>
+				<p>The five enemies of freshness are time, heat, moisture, oxygen, and UV light. Proper storage addresses four of the five: keep beans in an airtight container (oxygen), in a cool place (heat), away from humidity (moisture), and out of direct light (UV). Time is the one you can’t stop — unless you freeze.</p>
+				<p>Freezing works remarkably well. Both Jonathan Gagne and Scott Rao advocate for it, and Rao has found that six-year-old frozen Kenya AA was “really good.” The key is proper sealing: portion into single-dose bags, press out all air, and freeze. Don’t thaw and refreeze. An added benefit: cold beans fracture more uniformly during grinding, potentially improving grind quality. If you’re buying specialty coffee you can’t finish within 2-3 weeks, freezing portions at peak freshness (day 7-10) is the single best preservation strategy available.</p>
 			</div>
 		</section>
 

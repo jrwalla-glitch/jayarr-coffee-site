@@ -1,0 +1,183 @@
+---
+import DeepBrewLayout from '../../layouts/DeepBrewLayout.astro';
+import BrewDialIn from '../../components/tools/BrewDialIn.svelte';
+import sampleRec from '../../data/sample-recommendation.json';
+import sampleBean from '../../data/sample-bean.json';
+---
+
+<DeepBrewLayout
+  title="Brew Dial-In | Deep Brew Mode | JayArr Coffee"
+  description="Science-backed brewing recommendations for your specific beans and brewer. Powered by extraction science from 13 authoritative sources."
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Brew Dial-In",
+      "url": "https://jayarr.coffee/deep-brew/brew-dial-in/",
+      "description": "Science-backed brewing recommendations for your specific beans and brewer. Powered by extraction science from 13 authoritative sources.",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "JayArr Coffee",
+        "url": "https://jayarr.coffee"
+      }
+    })}></script>
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "How to Dial In Coffee with the Brew Dial-In Tool",
+      "description": "Get science-backed brewing recommendations for your specific beans and brewer. Select your coffee, choose a brewer, and receive a personalized recipe with grind size, dose, ratio, water temperature, and brew time.",
+      "totalTime": "PT5M",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Enter your bean details",
+          "text": "Provide information about your coffee: origin, roast level, and processing method. The tool uses these to calculate extraction characteristics and optimal brewing parameters."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Select your brewer",
+          "text": "Choose from 9 brew methods: V60, Chemex, Kalita Wave, AeroPress, Clever Dripper, French Press, Espresso, Moka Pot, or Cold Brew. Each shows a match score indicating how well your bean profile suits that method."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Review your personalized recipe",
+          "text": "The tool generates a complete recipe including grind size, coffee dose, water volume, ratio, water temperature, and total brew time -- all calibrated to your specific bean and brewer combination."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Brew and provide taste feedback",
+          "text": "Follow the recipe and taste the result. Tell the tool what you experienced -- sour, bitter, thin, strong, flat, or perfect. It adjusts the recipe based on extraction science to guide your next brew."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 5,
+          "name": "Save successful recipes",
+          "text": "When you find a recipe that works, save it to your local library. Saved recipes are stored in your browser so you can recall them when you buy the same coffee again."
+        }
+      ]
+    })}></script>
+  </Fragment>
+  <!-- Hero -->
+  <section class="pt-28 pb-8 md:pt-32 md:pb-12">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <a href="/deep-brew/" class="font-db-mono text-xs uppercase tracking-[0.2em] text-db-text-muted/50 hover:text-db-copper transition-colors">
+        &larr; Deep Brew Mode
+      </a>
+      <h1 class="font-db-serif text-3xl md:text-5xl font-bold mt-3 mb-3"
+          style="background: linear-gradient(135deg, var(--color-db-text) 0%, var(--color-db-copper) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        Brew Dial-In
+      </h1>
+      <p class="text-db-text-muted max-w-xl mx-auto leading-relaxed text-sm mb-1">
+        Science-backed brewing recommendations for your specific beans and brewer. Powered by extraction science from 13 authoritative sources.
+      </p>
+      <p class="font-db-mono text-xs text-db-text-muted/40 tracking-wider">
+        BEAN &middot; BREWER &middot; RECIPE
+      </p>
+    </div>
+  </section>
+
+  <!-- Tool -->
+  <section class="pb-16 md:pb-24">
+    <div class="max-w-xl mx-auto px-6">
+      <BrewDialIn
+        client:load
+        recommendationData={sampleRec}
+        beanData={sampleBean}
+      />
+    </div>
+  </section>
+
+  <!-- Narrative -->
+  <section class="py-16 px-6">
+    <div class="prose mx-auto">
+      <h2>The Science Behind Brew Dial-In</h2>
+
+      <p>This tool exists because coffee brewing is a multi-variable optimization problem that most people solve by guessing. You have a bag of beans, a brewer, and a grinder. The bag might tell you the origin, roast level, and processing method. What it won&rsquo;t tell you is the exact grind size, water temperature, dose, ratio, and brew time that will extract the best flavor from those specific beans on your specific equipment. That&rsquo;s what the Brew Dial-In calculates.</p>
+
+      <p>The science behind the recommendations draws from 13 authoritative sources spanning extraction chemistry, water science, grind physics, and roast development. Every recommendation starts with the same fundamental principle: coffee extraction follows a predictable sequence governed by molecular solubility. Organic acids dissolve first (small, polar molecules), followed by sugars and Maillard reaction products (the sweet, caramel, nutty mid-tones), and finally the heavier bitter compounds &mdash; chlorogenic acid lactones and phenylindanes. The 18&ndash;22% extraction yield target represents the window where you&rsquo;ve dissolved enough sugars to balance the acids without pulling significant bitters.</p>
+
+      <p>But &ldquo;18&ndash;22%&rdquo; is a range, not a point, and where within that range a specific coffee tastes best depends on its origin, variety, processing method, and roast level. A light-roasted, washed Ethiopian Yirgacheffe contains more soluble acids and fewer Maillard browning products than a medium-roasted, natural-processed Brazilian. The Ethiopian benefits from higher extraction (pushing toward 21&ndash;22%) to develop sweetness and round out the acidity. The Brazilian may taste best at 19&ndash;20% where its natural chocolate and nut character shines without becoming flat.</p>
+
+      <p>Roast level changes the bean&rsquo;s physical structure in ways that directly affect how you should brew it. Light roasts are dense, with tightly packed cells that resist extraction &mdash; they need finer grinding, hotter water, and longer brew times to reach adequate extraction. Dark roasts are porous and brittle, extracting easily (sometimes too easily) &mdash; they benefit from coarser grinding, slightly cooler water, and shorter contact time to avoid overextraction. The grind size adjustment alone can span 2&ndash;3 full settings on a typical grinder between a light Nordic roast and a dark Italian roast of the same coffee.</p>
+
+      <p>Processing method adds another dimension. Washed coffees have a more intact cellular structure and predictable solubility. Natural (dry-processed) coffees have more degraded cell walls and higher surface sugars from drying inside the fruit, making them extract faster. Honey-processed coffees fall in between. These differences are smaller than roast level effects but real enough to warrant adjustment &mdash; typically 0.5 to 1 grind step.</p>
+
+      <p>The brewer itself constrains the extraction physics. Percolation methods like V60 and Chemex push fresh water continuously through the coffee bed, achieving higher extraction yields (18&ndash;22%) because the coffee always contacts relatively dilute water. Immersion methods like French press steep the coffee in a fixed volume of water that approaches equilibrium, typically capping at 16&ndash;19% extraction. Espresso uses 9 bars of pressure to force water through an extremely fine, compacted bed in 25&ndash;35 seconds &mdash; the physics of Darcy&rsquo;s law, puck compression, and fines migration make it the most complex and sensitive method.</p>
+
+      <p>The match score you see reflects how well your bean profile aligns with each brewer&rsquo;s extraction characteristics. A bright, acidic Ethiopian shines in a V60 where the paper filter&rsquo;s clarity and the percolation method&rsquo;s high extraction complement its delicate aromatics. The same coffee in a French press may taste muddy because the metal mesh passes oils and fines that obscure the floral top notes. A dark-roasted Brazilian, conversely, may be excellent in a French press where the full body and oils contribute richness, but unpleasantly bitter in a V60 that extracts it past its sweet spot.</p>
+
+      <p>The taste feedback loop &mdash; telling the tool whether your brew tasted sour, bitter, thin, or strong &mdash; drives recipe adjustments based on extraction science. Sour means underextracted: the tool will suggest grinding finer (more surface area), raising water temperature (faster diffusion), or extending brew time. Bitter means overextracted: coarser grind, cooler water, shorter contact. Each adjustment targets roughly 0.5 percentage points of extraction yield shift, which is the empirically measured effect of a single variable change.</p>
+    </div>
+  </section>
+
+  <!-- Methodology -->
+  <section class="py-16 bg-db-surface border-t border-db-border">
+    <div class="max-w-3xl mx-auto px-6">
+      <div class="font-db-mono text-xs tracking-[0.2em] uppercase text-db-copper mb-4">Methodology</div>
+      <h2 class="font-db-serif text-xl md:text-2xl font-semibold text-db-text mb-6">Sources &amp; Methodology</h2>
+
+      <div class="space-y-6 text-sm text-db-text-muted leading-relaxed">
+        <div>
+          <h3 class="font-db-serif text-base font-semibold text-db-text mb-1">Multi-Source Extraction Model</h3>
+          <p>
+            Recommendations are generated from a model built on 13 authoritative sources spanning extraction chemistry, water science, grind physics, and sensory evaluation. Each parameter (grind size, water temperature, dose, ratio, brew time) is calibrated to your specific bean profile and brew method using peer-reviewed research and verified practitioner data.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="font-db-serif text-base font-semibold text-db-text mb-1">Bean-Specific Calibration</h3>
+          <p>
+            Origin, roast level, and processing method each shift extraction behavior in measurable ways. The tool adjusts all five brewing parameters simultaneously to account for these interactions &mdash; finer grinding for dense light roasts, coarser for porous dark roasts, with secondary adjustments for natural vs. washed processing.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="font-db-serif text-base font-semibold text-db-text mb-1">Taste Feedback Loop</h3>
+          <p>
+            The adjustment engine maps sensory descriptors (sour, bitter, thin, strong) to specific extraction variables. Each adjustment targets approximately 0.5 percentage points of extraction yield change &mdash; the empirically measured effect of a single variable modification.
+          </p>
+        </div>
+
+        <div class="pt-4 border-t border-db-border">
+          <span class="font-db-mono text-xs text-db-text-muted/40 tracking-wider uppercase">Data Sources</span>
+          <p class="mt-2 text-xs text-db-text-muted/50">
+            SCA Brewing Standards (2019). Rao, S. &ldquo;Everything But Espresso&rdquo; (2010). Gagn&eacute;, J. &ldquo;The Physics of Filter Coffee&rdquo; (2020). Hendon, C. et al. &ldquo;The Role of Dissolved Cations in Coffee Extraction&rdquo; (Journal of Agricultural and Food Chemistry, 2014). Hoos, R. &ldquo;Modulating the Flavor Profile of Coffee&rdquo; (2015). Lockhart, E.E. &ldquo;The Soluble Solids in Beverage Coffee as an Index to Cup Quality&rdquo; (Coffee Brewing Institute, 1957). Barista Hustle. Perger, M. &ldquo;The Brewing Control Chart&rdquo;. Counter Culture Coffee. Perfect Daily Grind. James Hoffmann. Scott Rao.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related -->
+  <section class="py-12">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <span class="font-db-mono text-xs uppercase tracking-widest text-db-copper">Related</span>
+      <div class="flex flex-wrap justify-center gap-3 mt-4">
+        <a href="/deep-brew/calibrator/" class="border border-db-border text-db-text-muted px-5 py-2 text-xs uppercase tracking-widest hover:border-db-copper/50 hover:text-db-text transition-all rounded">
+          Grind-Roast Calibrator
+        </a>
+        <a href="/deep-brew/extraction/" class="border border-db-border text-db-text-muted px-5 py-2 text-xs uppercase tracking-widest hover:border-db-copper/50 hover:text-db-text transition-all rounded">
+          Extraction Diagnostic
+        </a>
+        <a href="/deep-brew/water/" class="border border-db-border text-db-text-muted px-5 py-2 text-xs uppercase tracking-widest hover:border-db-copper/50 hover:text-db-text transition-all rounded">
+          Water Recipe Builder
+        </a>
+        <a href="/deep-brew/" class="border border-db-border text-db-text-muted px-5 py-2 text-xs uppercase tracking-widest hover:border-db-copper/50 hover:text-db-text transition-all rounded">
+          All Deep Brew Tools
+        </a>
+      </div>
+    </div>
+  </section>
+</DeepBrewLayout>

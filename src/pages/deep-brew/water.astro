@@ -27,6 +27,67 @@ import WaterRecipeBuilder from '../../components/tools/WaterRecipeBuilder.svelte
         "url": "https://jayarr.coffee"
       }
     })}></script>
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "How to Build Custom Coffee Water",
+      "description": "Plot your water chemistry against 9 named coffee water recipes, choose a target, and get the exact DIY mineral concentrate instructions to build it from distilled water.",
+      "totalTime": "PT10M",
+      "tool": [
+        {
+          "@type": "HowToTool",
+          "name": "Distilled or reverse-osmosis water"
+        },
+        {
+          "@type": "HowToTool",
+          "name": "Magnesium sulfate (Epsom salt)"
+        },
+        {
+          "@type": "HowToTool",
+          "name": "Sodium bicarbonate (baking soda)"
+        },
+        {
+          "@type": "HowToTool",
+          "name": "Precision scale (0.01g)"
+        },
+        {
+          "@type": "HowToTool",
+          "name": "Two clean 1-liter bottles"
+        }
+      ],
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Test your current water (optional)",
+          "text": "Use a TDS meter (about $10) and an API GH/KH test kit (about $8 from aquarium stores) to measure your tap water's mineral content. Enter the values to see where your water falls on the chart."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Choose a target recipe",
+          "text": "Compare 9 named recipes on the scatter chart: SCA Standard, Rao/Perger, Barista Hustle, Hendon, RPavlis, Third Wave Water variants, and more. Each recipe shows its GH, KH, and flavor profile."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Make the mineral concentrates",
+          "text": "Bottle 1 (Hardness): Dissolve 2.45g Epsom salt in 1L distilled water. Bottle 2 (Alkalinity): Dissolve 1.68g baking soda in 1L distilled water. Each concentrate is calibrated so 1mL per liter = 1 ppm."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Build your water",
+          "text": "For your chosen recipe, measure the specified milliliters of each concentrate into a clean container, then fill to 1 liter with distilled water. For example, Rao/Perger uses 76mL of Bottle 1 and 50mL of Bottle 2."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 5,
+          "name": "Brew and compare",
+          "text": "Brew the same coffee with your custom water and your regular water side by side. The difference is often immediately apparent, especially with light-roasted specialty coffee."
+        }
+      ]
+    })}></script>
   </Fragment>
   <!-- Hero -->
   <section class="pt-28 pb-8 md:pt-32 md:pb-12">
@@ -51,6 +112,25 @@ import WaterRecipeBuilder from '../../components/tools/WaterRecipeBuilder.svelte
   <section class="pb-16 md:pb-24">
     <div class="max-w-3xl mx-auto px-6">
       <WaterRecipeBuilder client:load />
+    </div>
+  </section>
+
+  <!-- Narrative -->
+  <section class="py-16 px-6">
+    <div class="prose mx-auto">
+      <h2>The Chemistry of Coffee Water</h2>
+
+      <p>Filter coffee is 98&ndash;99% water. Espresso is roughly 90% water. Yet most home brewers obsess over bean selection, grind precision, and pour technique while using whatever comes out of their tap. The mineral content of your water determines how much flavor it can extract from coffee and which flavor compounds survive into the cup.</p>
+
+      <p>Two mineral parameters matter: General Hardness (GH) and Carbonate Hardness (KH, also called alkalinity). GH measures the concentration of calcium and magnesium ions &mdash; these are the extraction agents that bond with coffee solubles and pull them into solution. Magnesium is slightly more effective than calcium at binding to desirable flavor acids like citric and malic, as demonstrated by Hendon and Colonna-Dashwood&rsquo;s 2014 research using density functional theory to model mineral-compound binding energies. KH measures bicarbonate concentration, which acts as a pH buffer. Bicarbonates neutralize acids in the brewed coffee. Too much KH and the cup tastes flat and chalky because the bright acids have been buffered away. Too little and the cup is excessively sharp and sour.</p>
+
+      <p>The ratio between GH and KH shapes the overall flavor profile more than either value alone. A high GH-to-KH ratio (3:1 or higher) produces bright, complex, forward-acidity cups that showcase origin character. A low ratio (1.5:1 or less) produces smoother, rounder, more muted cups. The SCA standard targets 68 ppm GH and 40 ppm KH (a 1.7:1 ratio) at 150 ppm total dissolved solids.</p>
+
+      <p>The Water Recipe Builder plots your water against nine named recipes from the specialty coffee community. Each recipe occupies a different region of the GH-KH space and produces a distinctly different cup. Rao/Perger (76 GH, 50 KH) is the widely recommended all-rounder. Barista Hustle #4 (80 GH, 40 KH) is clean and balanced for light-medium filter. The Hendon recipe (100 GH, 31 KH), derived from computational chemistry modeling, pushes toward bright and complex for origin-focused brewing. RPavlis (0 GH, 50 KH) is the simplest possible upgrade &mdash; just potassium bicarbonate in distilled water, one ingredient, completely scale-free by design.</p>
+
+      <p>The two-bottle DIY method makes building custom water straightforward. Bottle 1 adds hardness via magnesium sulfate (Epsom salt): 2.45 grams per liter of distilled water, calibrated so 1 mL per liter of final water equals 1 ppm GH. Bottle 2 adds alkalinity via sodium bicarbonate (baking soda): 1.68 grams per liter, with the same 1 mL = 1 ppm calibration. To build any recipe, you simply measure the specified milliliters of each concentrate into a liter of distilled water. The cost is pennies per gallon.</p>
+
+      <p>One critical distinction the tool accounts for: alkalinity&rsquo;s buffering effect is 7.3 times stronger in a 15:1 pour-over ratio than a 2:1 espresso ratio. This means pour-over water needs low alkalinity (20&ndash;40 ppm KH) to preserve bright acidity, while espresso tolerates up to 150 ppm KH without muting flavor. Using the same water recipe for both methods will produce suboptimal results in at least one of them. For espresso machines specifically, chloride levels must stay below 30 ppm to prevent corrosion of stainless steel and copper boiler components under heat.</p>
     </div>
   </section>
 

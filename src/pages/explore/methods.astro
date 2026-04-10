@@ -30,6 +30,39 @@ import BrewExplorer from '../../components/BrewExplorer.svelte';
         "url": "https://jayarr.coffee"
       }
     })}></script>
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "How to Explore Coffee Brewing Methods",
+      "description": "Navigate the interactive star chart to discover 13 coffee brewing methods organized into three families: percolation (pour over), immersion (French press), and pressure (espresso).",
+      "totalTime": "PT3M",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Choose a constellation",
+          "text": "The star chart organizes brewing methods into three constellations: The Filter (percolation methods like V60, Chemex, and Kalita), The Vessel (immersion methods like French press, cold brew, and Turkish), and The Force (pressure methods like espresso and AeroPress)."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Click a method star",
+          "text": "Select any star to see detailed information about that brewing method: recommended grind size, water temperature, brew time, ratio, filter type, and a description of the extraction physics involved."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Compare related methods",
+          "text": "Follow the constellation lines to see how methods relate to each other. Methods connected by lines share similar extraction physics but differ in specific parameters like filter type, contact time, or pressure."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Find your ideal method",
+          "text": "Use the method details to choose a brewing approach that matches your priorities: clarity and clean flavors (percolation), rich body and oils (immersion), or concentrated intensity (pressure)."
+        }
+      ]
+    })}></script>
   </head>
   <body class="bg-cream">
     <Header />
@@ -38,6 +71,18 @@ import BrewExplorer from '../../components/BrewExplorer.svelte';
       <h1 class="sr-only">The Brewing Constellations</h1>
       <BrewExplorer client:load />
     </main>
+
+    <section class="py-16 px-6">
+      <div class="prose mx-auto">
+        <h2>Percolation, Immersion, and Pressure: Three Families of Brewing</h2>
+        <p>Every coffee brewing method is a variation on the same physical process: dissolving soluble compounds from ground coffee into water. What makes each method distinctive is how it manages three fundamental variables: contact time, filtration, and pressure.</p>
+        <p>Jonathan Gagne divides all brewing into two categories based on water flow. Percolation methods — pour over, drip, and Vietnamese phin — pass fresh water continuously through a bed of coffee. Because the coffee always contacts relatively dilute water (maintaining a high concentration gradient at the particle surface, as described by the Noyes-Whitney equation), percolation achieves higher extraction yields, typically 18-22%. Immersion methods — French press, cupping, siphon, and cold brew — steep coffee in a fixed volume of water. As the water saturates with dissolved coffee compounds, the concentration gradient drops and extraction slows toward equilibrium. Immersion methods typically achieve 16-19% extraction yield. Some methods, like the AeroPress and Clever Dripper, are hybrids: they steep like immersion then drain like percolation, combining the body of immersion with the clarity-enhancing final filtration of percolation.</p>
+        <p>Filtration determines body and clarity. Paper filters trap insoluble oils (including cafestol and kahweol, two diterpenes linked to LDL cholesterol elevation), insoluble protein fragments, and fine particles. The result is a clean, clear cup with less body but a measurable health benefit for daily drinkers. Metal mesh filters in French press and some pour-over drippers pass oils and fines through, producing a heavier, more textured cup with more mouthfeel but less clarity. Cloth filters split the difference. Chemex filters are 20-30% thicker than standard paper, producing the cleanest cup of any common method.</p>
+        <p>Pressure is the third axis. Most brewing methods operate at atmospheric pressure (1 bar). Espresso forces water through finely ground coffee at approximately 9 bars — roughly 130 PSI. This pressure compresses the coffee bed, forces water into the cellular structure of each particle, and extracts compounds that would never dissolve under gravity alone. The result is a fundamentally different beverage: concentrated (8-12% TDS versus 1-1.4% for filter), syrupy in body, topped with crema. Darcy's law governs the flow physics: flow rate through the compressed coffee bed depends on permeability, water column pressure, and bed thickness. The moka pot operates at a lower pressure of about 1.5 bars — enough to push water through a coffee bed but far less than true espresso.</p>
+        <p>Temperature creates a fourth dimension. Most hot brewing targets 91-96 degrees Celsius (195-205 degrees Fahrenheit), where the diffusion coefficient of coffee solubles is high enough for efficient extraction. But slurry temperature in a pour over is typically 5-15 degrees lower than the kettle temperature — heat is lost to the dripper, the air, and the coffee itself. Plastic V60s steal the least heat (counterintuitively outperforming ceramic and glass), which is why Gagne specifically recommends them. Cold brew abandons temperature entirely, compensating with extended time (12-24 hours) and higher dose ratios (1:5 to 1:8). The resulting beverage has fewer bitter compounds and a naturally smoother, sweeter profile.</p>
+        <p>Each constellation in the Brew Explorer represents one of these three families — percolation, immersion, and pressure — with individual methods plotted as stars. The connections between them trace the relationships: methods connected by lines share extraction physics but differ in specific parameters.</p>
+      </div>
+    </section>
 
     <!-- Bridge to Tools -->
     <section class="bg-charcoal py-12">

@@ -31,6 +31,33 @@ import DrinkBuilder from '../../../components/tools/DrinkBuilder.svelte';
 				"url": "https://jayarr.coffee"
 			}
 		})}></script>
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "HowTo",
+			"name": "How to Use the Espresso Drink Builder",
+			"description": "Explore espresso drink recipes visually. See the exact proportions of espresso, milk, foam, and other ingredients that define each classic coffee drink.",
+			"totalTime": "PT1M",
+			"step": [
+						{
+									"@type": "HowToStep",
+									"position": 1,
+									"name": "Browse the drink menu",
+									"text": "Scroll through classic espresso drinks including espresso, americano, macchiato, cortado, flat white, cappuccino, latte, and mocha."
+						},
+						{
+									"@type": "HowToStep",
+									"position": 2,
+									"name": "View the layer breakdown",
+									"text": "Each drink shows a visual cross-section with color-coded layers: espresso (dark brown), steamed milk (cream), foam (light), hot water (tan), and chocolate (dark). Proportions are shown in ounces."
+						},
+						{
+									"@type": "HowToStep",
+									"position": 3,
+									"name": "Compare drinks side by side",
+									"text": "Select different drinks to see how they differ in total volume, espresso ratio, and milk texture. A cortado is 4 oz total while a latte is 10-12 oz \u2014 the espresso is the same, only the milk changes."
+						}
+			]
+})}></script>
 	</head>
 	<body class="bg-cream">
 		<Header />
@@ -50,6 +77,19 @@ import DrinkBuilder from '../../../components/tools/DrinkBuilder.svelte';
 		<section class="py-12 md:py-16">
 			<div class="max-w-xl mx-auto px-6">
 				<DrinkBuilder client:load />
+			</div>
+		</section>
+
+
+		<section class="py-16 px-6">
+			<div class="prose mx-auto">
+				<h2>The Anatomy of Espresso Drinks</h2>
+				<p>Every espresso-based drink is built from the same foundation: a concentrated shot of coffee extracted under roughly 9 bars of pressure in 25-35 seconds. What defines each drink is not the espresso itself but what you add to it, in what proportion, and how you texture the milk.</p>
+				<p>The science of milk in coffee begins with protein. Cow’s milk contains about 3.4% protein split between two types: casein (80%) and whey (20%). Casein proteins form micelles that stabilize fat and create the structural matrix of foam. Whey proteins are heat-sensitive — they denature during steaming and migrate to bubble surfaces, forming flexible films that stabilize microfoam into that glossy, paint-like texture baristas call “wet paint.” This is why temperature matters so much: milk proteins denature above 68 degrees Celsius (154 degrees Fahrenheit). Above this temperature, sweetness drops and a cooked, sulfurous taste develops.</p>
+				<p>The ideal steaming window is 55-65 degrees Celsius (130-149 degrees Fahrenheit). Counterintuitively, properly steamed milk tastes sweeter than cold milk without any added sugar. This isn’t magic — at 65-68 degrees, lactose breaks down into glucose and galactose, which are perceptibly sweeter than the lactose they came from. Fat plays a dual role: solid fat below 40 degrees Celsius actually destabilizes foam by puncturing bubbles, but once fully melted during steaming, liquid fat contributes richness without destroying the foam structure.</p>
+				<p>What separates a cappuccino from a latte from a flat white is foam volume and milk ratio, not fundamentally different techniques. A cappuccino is heavily aerated — roughly one-third espresso, one-third steamed milk, one-third foam (though James Hoffmann notes the “rule of thirds” has no actual historical basis). A latte uses more milk and less foam, creating a creamier, more diluted drink. A flat white is essentially a small latte with minimal aeration — just a thin skin of microfoam on top. A cortado splits the difference by using equal parts espresso and steamed milk with no foam layer, letting the milk soften the espresso without masking it.</p>
+				<p>The americano takes a different path entirely: espresso diluted with hot water. It approximates the strength of drip coffee but retains the body and flavor profile of pressure extraction. Hoffmann’s tip for a cleaner americano: skim off the crema before drinking. Crema — the tawny foam on top of a fresh shot — actually tastes quite bitter and ashy on its own. It indicates freshness but is not a reliable quality indicator. An espresso actually tastes more bitter as an americano because adding water dilutes the oil content that normally coats the tongue, reducing bitterness perception through a different mechanism.</p>
+				<p>Understanding these proportions matters because small changes shift the drink dramatically. Adding one more ounce of milk to a cortado makes it a flat white. Cutting the foam from a cappuccino makes it a latte. The drink builder visualizes these differences so you can see exactly how each recipe is constructed and find the drink that matches your preference for espresso intensity, milk texture, and overall volume. Once you know the proportions, you can replicate any cafe drink at home with nothing more than an espresso machine and a milk pitcher.</p>
 			</div>
 		</section>
 

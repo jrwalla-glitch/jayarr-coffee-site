@@ -31,6 +31,33 @@ import CaffeineCalc from '../../../components/tools/CaffeineCalc.svelte';
 				"url": "https://jayarr.coffee"
 			}
 		})}></script>
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "HowTo",
+			"name": "How to Track Your Daily Caffeine Intake",
+			"description": "Use the Caffeine Calculator to log each cup of coffee and see your running total against the FDA's 400mg daily limit.",
+			"totalTime": "PT1M",
+			"step": [
+						{
+									"@type": "HowToStep",
+									"position": 1,
+									"name": "Choose your drink type",
+									"text": "Select from 10 drink types including pour over, drip, espresso, cold brew, French press, AeroPress, latte, moka pot, and decaf. Each has a science-backed caffeine estimate per serving."
+						},
+						{
+									"@type": "HowToStep",
+									"position": 2,
+									"name": "Add each drink to your daily log",
+									"text": "Tap a drink to add it to your running tally. The calculator tracks cumulative milligrams and shows your percentage against the FDA's 400mg daily recommendation."
+						},
+						{
+									"@type": "HowToStep",
+									"position": 3,
+									"name": "Monitor your intake throughout the day",
+									"text": "The progress bar changes color as you approach the limit \u2014 green under 200mg, amber at 200-300mg, orange at 300-400mg, and red above 400mg. Remove entries if you over-counted."
+						}
+			]
+})}></script>
 	</head>
 	<body class="bg-cream">
 		<Header />
@@ -50,6 +77,19 @@ import CaffeineCalc from '../../../components/tools/CaffeineCalc.svelte';
 		<section class="py-12 md:py-16">
 			<div class="max-w-xl mx-auto px-6">
 				<CaffeineCalc client:load />
+			</div>
+		</section>
+
+
+		<section class="py-16 px-6">
+			<div class="prose mx-auto">
+				<h2>How Caffeine Works in Your Body</h2>
+				<p>Caffeine is a competitive antagonist of adenosine receptors in the brain. Adenosine is a neurotransmitter that accumulates throughout the day and promotes drowsiness. Caffeine molecules are structurally similar enough to bind to those same receptors without activating them, effectively blocking adenosine’s signal. The result is increased release of norepinephrine, dopamine, and acetylcholine — the neurochemical cocktail responsible for caffeine’s alertness, focus, and mood-elevation effects. You feel it within 15 to 60 minutes of consumption.</p>
+				<p>The FDA considers up to 400 mg per day generally safe for healthy adults, but that number masks enormous individual variation. Caffeine’s plasma half-life averages about 5 hours, meaning half the caffeine from your afternoon coffee is still circulating at bedtime. But that average conceals a range of 1.5 to 10 hours, driven largely by a single gene: CYP1A2. This enzyme handles roughly 95% of caffeine metabolism, and a common polymorphism divides people into fast and slow metabolizers. Clearance rates can vary up to 40-fold between individuals. If caffeine keeps you up at night while your partner sleeps fine after an evening espresso, genetics — not willpower — is the explanation.</p>
+				<p>Caffeine content varies dramatically by brew method, and the reasons are rooted in extraction physics. A standard 8-ounce cup of drip coffee contains 95-120 mg, while a single espresso shot holds about 63 mg in just one ounce. Espresso is far more concentrated, but you drink far less of it. Cold brew concentrate can pack 200 mg or more per 12-ounce serving because the extended 12-24 hour steep time extracts caffeine efficiently despite the low temperature. French press tends to run slightly higher than pour over at around 120 mg per cup because the metal mesh allows more dissolved solids through, and the longer steep time (4-8 minutes) gives caffeine more time to dissolve.</p>
+				<p>A common misconception is that dark roasts contain more caffeine than light roasts. Roasting does not create or destroy caffeine — the molecule is remarkably heat-stable. The confusion arises from how you measure: dark roast beans weigh less individually (they’ve lost more moisture), so measuring by weight means more beans per gram and therefore slightly more caffeine. Measuring by scoop or volume reverses this because light roast beans are denser and pack more tightly. The difference either way is small — around 5-10% — and far less significant than brew method, dose, or extraction time.</p>
+				<p>Pregnancy shifts the calculus significantly. The American College of Obstetricians and Gynecologists recommends limiting intake to 200 mg per day. Oral contraceptives also slow caffeine clearance by extending the half-life. Smoking, counterintuitively, accelerates clearance. Even cruciferous vegetables like broccoli induce the CYP1A2 enzyme and speed caffeine metabolism.</p>
+				<p>Decaf is not zero-caf. A typical decaffeinated cup still contains 3-6 mg of caffeine per 6-ounce serving. For most people this is negligible, but for someone with extreme sensitivity or who drinks 5-6 cups of decaf daily, it accumulates to meaningful levels. The Swiss Water Process, which uses green coffee extract and osmosis rather than chemical solvents, is the most common decaffeination method in specialty coffee. It removes approximately 99.9% of caffeine while better preserving flavor compounds than solvent-based methods.</p>
 			</div>
 		</section>
 

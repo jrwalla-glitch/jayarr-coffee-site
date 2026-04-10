@@ -31,6 +31,39 @@ import NespressoPods from '../../../components/tools/NespressoPods.svelte';
 				"url": "https://jayarr.coffee"
 			}
 		})}></script>
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "HowTo",
+			"name": "How to Find the Right Nespresso Pod",
+			"description": "Filter and compare every Nespresso capsule by line (Original or Vertuo), intensity, roast level, and flavor profile to find your ideal pod.",
+			"totalTime": "PT2M",
+			"step": [
+						{
+									"@type": "HowToStep",
+									"position": 1,
+									"name": "Choose your Nespresso system",
+									"text": "Filter by Original Line (traditional espresso-style, 19-bar pressure extraction) or Vertuo Line (centrifugal extraction, multiple cup sizes from espresso to carafe)."
+						},
+						{
+									"@type": "HowToStep",
+									"position": 2,
+									"name": "Set your intensity preference",
+									"text": "Use the intensity filter to narrow results. Lower intensity (1-5) means lighter roast and brighter acidity. Higher intensity (8-13) means darker roast, heavier body, and more bitterness. Intensity does not equal caffeine content."
+						},
+						{
+									"@type": "HowToStep",
+									"position": 3,
+									"name": "Filter by flavor profile",
+									"text": "Choose from flavor categories like fruity, floral, chocolatey, nutty, or spiced. Single-origin pods emphasize geographic character; blends optimize for balance and body."
+						},
+						{
+									"@type": "HowToStep",
+									"position": 4,
+									"name": "Compare and decide",
+									"text": "Review the pod details including origin, roast level, tasting notes, and cup size options. Compare pods side by side to find the best match for your preferences."
+						}
+			]
+})}></script>
 	</head>
 	<body class="bg-cream">
 		<Header />
@@ -52,6 +85,17 @@ import NespressoPods from '../../../components/tools/NespressoPods.svelte';
 		<section class="py-12 md:py-16">
 			<div class="max-w-4xl mx-auto px-6">
 				<NespressoPods client:load />
+			</div>
+		</section>
+
+		<section class="py-16 px-6">
+			<div class="prose mx-auto">
+				<h2>Understanding Nespresso Capsules</h2>
+				<p>Nespresso capsules are engineered to solve the consistency problem in coffee brewing. Every variable that a barista controls manually — dose, grind size, water temperature, extraction time, and pressure — is pre-determined and locked inside a sealed aluminum pod. The result is remarkable repeatability: cup-to-cup variation is effectively zero, which is something even skilled baristas struggle to achieve with traditional equipment.</p>
+				<p>The system operates in two distinct formats. The Original Line uses a 19-bar pump to force water through a small, flat capsule containing approximately 5-6 grams of finely ground coffee. The result approximates espresso — concentrated, with crema, typically 25-40ml per shot. The Vertuo Line uses centrifugal extraction: the capsule spins at up to 7,000 RPM while water is injected, creating a centrifugal force that pushes water through the coffee. Different capsule sizes and barcode-driven brew parameters allow Vertuo machines to produce everything from espresso-sized shots to full 14-ounce carafe pours. The two systems are physically incompatible — Original capsules will not fit Vertuo machines and vice versa.</p>
+				<p>Nespresso’s intensity rating is one of the most misunderstood numbers in coffee. It does not measure caffeine content, quality, or extraction level. It is a composite score reflecting roast darkness, body, and bitterness perception on a 1-13 scale. A pod rated 11 is not “stronger” in caffeine than one rated 5 — it is darker roasted, heavier bodied, and more bitter. Caffeine content is determined primarily by the coffee dose and the Robusta-to-Arabica blend ratio: Robusta contains roughly twice the caffeine of Arabica by weight, so pods blended with Robusta for body and crema will typically deliver more caffeine per serving regardless of their intensity rating.</p>
+				<p>Flavor variation across the Nespresso range comes from three levers: origin selection (single-origin vs. blend), roast level (Nordic light through Italian dark), and processing method. The Master Origin series highlights geographic character — Ethiopian pods tend toward floral and fruity notes driven by the same terroir and varietal genetics that make Ethiopian specialty coffee prized by roasters worldwide. Colombian pods lean toward nutty and balanced profiles. Indonesian pods deliver the earthy, full-bodied character created by the traditional Giling Basah (semi-washed) processing method unique to Sumatra and Sulawesi. The Barista Creations line adds flavoring compounds for dessert-adjacent profiles without requiring syrups.</p>
+				<p>The environmental question deserves direct engagement. Aluminum Nespresso pods are infinitely recyclable in theory, but actual recycling rates depend on consumer participation in Nespresso’s return programs. The company operates collection points and mail-back programs in most markets where the aluminum is recovered and reprocessed and the spent coffee grounds are composted. Whether capsule coffee is more or less wasteful than traditional brewing depends on what you’re comparing: capsules eliminate the common waste of brewing more coffee than you drink, but they add packaging material that doesn’t exist in loose-bean brewing. The sealed capsule does offer one genuine quality advantage — it prevents the oxygen exposure and moisture absorption that degrade whole beans from the moment the bag is opened. A sealed Nespresso pod maintains its aromatic profile for months, while an opened bag of specialty beans begins losing its most volatile compounds within days.</p>
 			</div>
 		</section>
 

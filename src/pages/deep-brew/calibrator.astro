@@ -27,6 +27,45 @@ import GrindCalibrator from '../../components/tools/GrindCalibrator.svelte';
         "url": "https://jayarr.coffee"
       }
     })}></script>
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "How to Calibrate Your Grinder for Any Roast Level",
+      "description": "Select your grinder model, brew method, roast level, and processing method to get a precise grind setting starting point calibrated to your specific hardware.",
+      "totalTime": "PT2M",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Select your grinder",
+          "text": "Choose from 11 supported grinders including Baratza Encore, Comandante C40, 1Zpresso JX-Pro, Niche Zero, Fellow Opus, Eureka Mignon, and more."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Choose your brew method",
+          "text": "Select from 7 brew methods: espresso, AeroPress, V60 pour over, Chemex, Kalita Wave, French press, or cold brew. Each has different particle size requirements."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Set your roast level",
+          "text": "Indicate light, medium-light, medium, medium-dark, or dark roast. The tool adjusts the grind setting because darker roasts are more soluble and need coarser grinding to avoid overextraction."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Apply processing adjustment (optional)",
+          "text": "If known, select washed, honey, or natural processing. Natural coffees extract faster and benefit from slightly coarser settings. This adjustment is additive to the roast level correction."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 5,
+          "name": "Use the recommended setting as your starting point",
+          "text": "Dial your grinder to the recommended setting and brew. If the cup tastes sour, grind 1-2 steps finer. If bitter, grind 1-2 steps coarser. The confidence rating tells you how much to trust the initial recommendation."
+        }
+      ]
+    })}></script>
   </Fragment>
   <!-- Hero -->
   <section class="pt-28 pb-8 md:pt-32 md:pb-12">
@@ -51,6 +90,23 @@ import GrindCalibrator from '../../components/tools/GrindCalibrator.svelte';
   <section class="pb-16 md:pb-24">
     <div class="max-w-4xl mx-auto px-6">
       <GrindCalibrator client:load />
+    </div>
+  </section>
+
+  <!-- Narrative -->
+  <section class="py-16 px-6">
+    <div class="prose mx-auto">
+      <h2>Why Grind Settings Vary Between Grinders and Roasts</h2>
+
+      <p>The calibrator solves a translation problem. When someone says &ldquo;medium grind,&rdquo; that phrase maps to completely different dial positions on different grinders. A Comandante C40 at 25 clicks, a Baratza Encore at setting 15, and a Niche Zero at dial 40 all produce roughly similar particle sizes for a V60 pour over. The number on the dial is arbitrary &mdash; what matters is the particle size distribution it produces, and that&rsquo;s determined by burr geometry, step resolution, alignment, and wear.</p>
+
+      <p>The translation challenge runs deeper than just grinder-to-grinder variation. Each grinder has a fundamentally different step architecture. The Comandante C40 uses a stepped adjustment with each click representing a fixed burr spacing change. The Niche Zero uses a stepless worm-drive mechanism where the dial position maps continuously to burr spacing. The Baratza Encore has stepped rings with macro and micro adjustments. Converting between them requires empirical data &mdash; there is no simple mathematical formula because burr geometry, not just spacing, determines particle size. This tool compiles that empirical data from manufacturer documentation, independent testing databases, retailer guides, and community consensus across thousands of users.</p>
+
+      <p>Roast level compounds the problem because it changes the bean&rsquo;s physical properties. Lighter roasts are denser, with tightly packed cellular structure that resists fracturing. They shatter differently under the same burr forces, producing distinct particle distributions compared to darker roasts. Dark roasts are porous and brittle &mdash; the extended roasting has broken down cellular walls and driven off moisture, making the beans easier to fracture. They shatter more uniformly but extract faster because the soluble compounds are more accessible. A grind setting that&rsquo;s perfect for a medium Colombian will overextract a dark Italian roast and underextract a light Nordic roast. The typical adjustment between light and dark roast is 2&ndash;3 full settings on most grinders.</p>
+
+      <p>Processing method introduces a secondary adjustment. Natural-processed coffees have more degraded cellular structure and higher surface sugars from drying inside the cherry. They extract faster than washed coffees and benefit from slightly coarser grinding. Honey-processed coffees fall between washed and natural. The effect is real but smaller than roast level &mdash; typically half a step to one step on most grinders. Rob Hoos&rsquo;s cultivar-based roasting research confirms this hierarchy: processing determines development time requirements, which in turn affects the bean&rsquo;s final solubility profile.</p>
+
+      <p>The confidence rating on each recommendation reflects the quality of the underlying data. Settings sourced from manufacturer documentation and verified by independent testing databases carry higher confidence than community-consensus estimates. Regardless of confidence level, every setting is a starting point, not an endpoint. Coffee varies by crop year, lot, altitude, and age since roasting. Brew, taste, and adjust by 1&ndash;2 steps: too sour or thin means grind finer, too bitter or heavy means grind coarser. The calibrator eliminates the guesswork of finding your first reasonable setting &mdash; the variable that has the largest single impact on extraction quality.</p>
     </div>
   </section>
 

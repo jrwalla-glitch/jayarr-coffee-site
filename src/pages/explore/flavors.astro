@@ -30,6 +30,39 @@ import FlavorBloom from '../../components/FlavorBloom.svelte';
         "url": "https://jayarr.coffee"
       }
     })}></script>
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "How to Discover Your Coffee Flavor Preferences",
+      "description": "Explore coffee flavors through the interactive Flavor Bloom — navigate six flavor families, 26 sub-categories, and curated coffee recommendations to find beans that match your taste.",
+      "totalTime": "PT3M",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Choose a flavor family",
+          "text": "Click any of the six petals: Fruity (citrus, berry, tropical), Floral (jasmine, rose, tea-like), Sweet (chocolate, caramel, honey), Nutty (almond, hazelnut, peanut), Spiced (baking spice, wine-like, anise), or Earthy (woody, tobacco, herbal)."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Explore sub-categories",
+          "text": "Each flavor family expands into 3-5 sub-categories. Within Fruity, you can explore Berry, Citrus, Stone Fruit, Tropical, or Dried Fruit. Each sub-category represents a distinct chemical profile."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Browse recommended coffees",
+          "text": "Each sub-category includes curated coffee recommendations with specific roaster names, origins, roast levels, tasting notes, and purchase links. Recommendations are verified against multiple independent sources."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Buy and brew to explore",
+          "text": "Purchase a recommended coffee and brew it using the method suggested for that flavor family. Light-roast pour over for Fruity and Floral. Medium-roast immersion for Sweet and Nutty. Compare side by side to train your palate."
+        }
+      ]
+    })}></script>
   </head>
   <body class="bg-cream">
     <Header />
@@ -38,6 +71,18 @@ import FlavorBloom from '../../components/FlavorBloom.svelte';
       <h1 class="sr-only">Flavor Bloom</h1>
       <FlavorBloom client:load />
     </main>
+
+    <section class="py-16 px-6">
+      <div class="prose mx-auto">
+        <h2>The Chemistry Behind Coffee Flavor</h2>
+        <p>The flavor complexity of coffee is staggering by any measure. Roasted coffee contains over 1,000 identified flavor-producing molecules and more than 800 volatile aromatic compounds — more than wine, chocolate, or any other food product routinely subjected to sensory evaluation. The SCA Coffee Taster's Flavor Wheel, developed in partnership with World Coffee Research, organizes this complexity into a navigable taxonomy, and the Flavor Bloom translates that taxonomy into an interactive exploration tool.</p>
+        <p>The six petal categories — Fruity, Floral, Sweet, Nutty, Spiced, and Earthy — aren't arbitrary groupings. They correspond to distinct chemical families produced at different stages of the seed's lifecycle: from the organic acids and volatile esters developed during fruit maturation on the tree, through the Maillard reaction products and caramelization compounds created during roasting, to the phenolic and pyrolytic compounds that emerge at darker roast levels.</p>
+        <p>The extraction order problem is key to understanding why your brewing choices shape which flavors you taste. Coffee compounds dissolve in a predictable sequence based on molecular size and polarity. Fruity acids and floral aromatics are small, highly soluble molecules that extract first. Sweet compounds — caramelization products, melanoidins, and the Strecker aldehydes responsible for chocolate and honey notes — come next, representing the bulk of pleasant flavor (roughly 40-50% of soluble mass). Nutty and spiced notes emerge from the Maillard reaction products in the mid-extraction range. Earthy, woody, and bitter compounds are the last to dissolve — they're large, complex molecules that need more energy to extract.</p>
+        <p>This extraction sequence explains why brew method and grind size directly determine your cup's flavor profile position on the Bloom. A light-roasted Ethiopian brewed as a V60 pour over with precise extraction tends toward the Fruity and Floral petals — the paper filter's clarity and the percolation method's controlled extraction preserve the delicate volatile compounds. The same coffee brewed as a French press pushes toward Sweet and Nutty — the metal mesh passes oils that contribute body and the longer immersion extracts more mid-range compounds. A dark-roasted Sumatran in any method gravitates toward the Earthy and Spiced petals because the extended roasting has converted most of the light volatile compounds into heavier pyrolytic products.</p>
+        <p>Perceived sweetness in coffee deserves special attention because it's not what most people think. Sucrose, which makes up 6-9% of Arabica green coffee by weight, is nearly 100% consumed during roasting. Yet perceived sweetness increases through light and medium roast levels. The mechanism is entirely aroma-mediated: caramelization products like furanones and maltol create an olfactory impression of sweetness, while Maillard products enhance retronasal sweet perception. True sugar sweetness is gone by medium roast — everything you taste as "sweet" in coffee is your brain interpreting aroma compounds as sweet through olfactory-gustatory integration.</p>
+        <p>The coffee recommendations within each sub-category are sourced from roaster descriptions, Coffee Review scores, and independent reviewer confirmations. Origin is not destiny — an Ethiopian coffee can be roasted to taste chocolatey and a Brazilian can be roasted to taste fruity — but certain origins have genetic and terroir-driven predispositions toward specific flavor families. These tendencies are starting points for exploration, not rules.</p>
+      </div>
+    </section>
 
     <!-- Bridge to Tools -->
     <section class="bg-charcoal py-12">
