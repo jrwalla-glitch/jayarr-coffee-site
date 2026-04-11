@@ -446,7 +446,7 @@ const roasters = [...new Set(hub.beans.map(b => b.roaster))].sort();
 
             <div class="bean-grid">
               {hub.beans.map((bean) => (
-                <a href={`/tools/brew-dial-in/${bean.roaster.toLowerCase().replace(/[^a-z0-9]+/g, '-')}/${bean.id}/`} class="bean-card">
+                <a href={`/tools/brew-dial-in/${bean.id}/`} class="bean-card">
                   <div class="bean-roaster">{bean.roaster}</div>
                   <div class="bean-name">{bean.name}</div>
                   <div class="flavor-tags">
