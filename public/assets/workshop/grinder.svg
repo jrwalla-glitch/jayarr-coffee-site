@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="280" height="540" viewBox="0 0 280 540" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <!-- Matte black body — slightly warmer toward center -->
+      <linearGradient id="matte-black" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%"   stop-color="#0A0806"/>
+        <stop offset="15%"  stop-color="#181614"/>
+        <stop offset="40%"  stop-color="#2E2A24"/>
+        <stop offset="55%"  stop-color="#3A352D"/>
+        <stop offset="75%"  stop-color="#231F1A"/>
+        <stop offset="92%"  stop-color="#100E0B"/>
+        <stop offset="100%" stop-color="#050403"/>
+      </linearGradient>
+      <linearGradient id="black-vertical" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="rgba(255,220,170,0.13)"/>
+        <stop offset="35%"  stop-color="rgba(255,220,170,0.03)"/>
+        <stop offset="100%" stop-color="rgba(0,0,0,0.32)"/>
+      </linearGradient>
+      <radialGradient id="warm-rim" cx="18%" cy="18%" r="80%">
+        <stop offset="0%"  stop-color="rgba(255,180,100,0.22)"/>
+        <stop offset="45%" stop-color="rgba(255,180,100,0.05)"/>
+        <stop offset="100%" stop-color="rgba(255,180,100,0)"/>
+      </radialGradient>
+      <!-- Subtle painterly mottling -->
+      <radialGradient id="material-noise" cx="50%" cy="50%" r="50%">
+        <stop offset="0%"  stop-color="rgba(255,240,210,0.04)"/>
+        <stop offset="60%" stop-color="rgba(120,100,75,0.025)"/>
+        <stop offset="100%" stop-color="rgba(60,45,30,0.04)"/>
+      </radialGradient>
+      <!-- Chrome -->
+      <linearGradient id="chrome-panel" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%"   stop-color="#5E5448"/>
+        <stop offset="12%"  stop-color="#A89E90"/>
+        <stop offset="28%"  stop-color="#D5CCBE"/>
+        <stop offset="45%"  stop-color="#EFE6D5"/>
+        <stop offset="55%"  stop-color="#E8DFD0"/>
+        <stop offset="72%"  stop-color="#BDB4A6"/>
+        <stop offset="88%"  stop-color="#7A7264"/>
+        <stop offset="100%" stop-color="#4A423A"/>
+      </linearGradient>
+      <linearGradient id="chrome-vertical" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="rgba(255,245,222,0.34)"/>
+        <stop offset="30%"  stop-color="rgba(255,238,210,0.08)"/>
+        <stop offset="70%"  stop-color="rgba(0,0,0,0.05)"/>
+        <stop offset="100%" stop-color="rgba(0,0,0,0.22)"/>
+      </linearGradient>
+      <linearGradient id="chrome-fork" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#F2EADC"/>
+        <stop offset="20%"  stop-color="#DED4C4"/>
+        <stop offset="50%"  stop-color="#A89E8E"/>
+        <stop offset="80%"  stop-color="#5C5448"/>
+        <stop offset="100%" stop-color="#2A2620"/>
+      </linearGradient>
+      <!-- Clear plastic hopper -->
+      <linearGradient id="plastic-hopper" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%"   stop-color="#F0EAD8" stop-opacity="0.32"/>
+        <stop offset="20%"  stop-color="#E0D8C4" stop-opacity="0.13"/>
+        <stop offset="80%"  stop-color="#B5AA94" stop-opacity="0.16"/>
+        <stop offset="100%" stop-color="#8A7D68" stop-opacity="0.3"/>
+      </linearGradient>
+      <linearGradient id="hopper-rim" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="rgba(200,180,150,0.55)"/>
+        <stop offset="100%" stop-color="rgba(120,100,75,0.3)"/>
+      </linearGradient>
+      <!-- Touch module dark glossy glass -->
+      <linearGradient id="touch-glass" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#28241F"/>
+        <stop offset="35%"  stop-color="#0E0A08"/>
+        <stop offset="70%"  stop-color="#080604"/>
+        <stop offset="100%" stop-color="#0E0A08"/>
+      </linearGradient>
+      <linearGradient id="touch-side-right" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%"   stop-color="#1C1814"/>
+        <stop offset="100%" stop-color="#050403"/>
+      </linearGradient>
+      <linearGradient id="touch-bottom" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#1A1612"/>
+        <stop offset="100%" stop-color="#050403"/>
+      </linearGradient>
+      <!-- LCD -->
+      <linearGradient id="lcd" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#34546C"/>
+        <stop offset="100%" stop-color="#0E1E2C"/>
+      </linearGradient>
+      <!-- Chute interior -->
+      <radialGradient id="chute-dark" cx="50%" cy="0%" r="130%">
+        <stop offset="0%"   stop-color="#060404"/>
+        <stop offset="70%"  stop-color="#181210"/>
+        <stop offset="100%" stop-color="#302420"/>
+      </radialGradient>
+      <radialGradient id="ground-shadow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%"   stop-color="rgba(0,0,0,0.5)"/>
+        <stop offset="55%"  stop-color="rgba(0,0,0,0.22)"/>
+        <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+      </radialGradient>
+      <!-- Cup alcove concave gradient (top-lit interior simulating bowl curvature) -->
+      <linearGradient id="alcove-concave" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="rgba(120,100,80,0.35)"/>
+        <stop offset="20%"  stop-color="rgba(80,65,50,0.18)"/>
+        <stop offset="55%"  stop-color="rgba(20,15,10,0.05)"/>
+        <stop offset="100%" stop-color="rgba(0,0,0,0.4)"/>
+      </linearGradient>
+      <radialGradient id="alcove-bowl" cx="50%" cy="35%" r="60%">
+        <stop offset="0%"   stop-color="rgba(160,135,105,0.18)"/>
+        <stop offset="50%"  stop-color="rgba(80,65,50,0.05)"/>
+        <stop offset="100%" stop-color="rgba(0,0,0,0.25)"/>
+      </radialGradient>
+    </defs>
+
+    <!-- === GROUNDED SHADOW (more anchored) === -->
+    <ellipse cx="140" cy="510" rx="98" ry="9" fill="url(#ground-shadow)"/>
+    <ellipse cx="140" cy="503" rx="68" ry="3" fill="rgba(0,0,0,0.4)"/>
+
+    <!-- === MATTE BLACK BODY (straight vertical sides, no flare) === -->
+    <!-- Body: x=92 to 188 (96 wide), y=200 to 498 — STRAIGHT vertical edges -->
+    <path d="M92 207 Q92 200, 100 200 L180 200 Q188 200, 188 207 L188 498 L92 498 Z"
+          fill="url(#matte-black)"/>
+    <path d="M92 207 Q92 200, 100 200 L180 200 Q188 200, 188 207 L188 498 L92 498 Z"
+          fill="url(#black-vertical)"/>
+    <path d="M92 207 Q92 200, 100 200 L180 200 Q188 200, 188 207 L188 498 L92 498 Z"
+          fill="url(#warm-rim)"/>
+    <!-- Subtle painterly mottle -->
+    <path d="M92 207 Q92 200, 100 200 L180 200 Q188 200, 188 207 L188 498 L92 498 Z"
+          fill="url(#material-noise)" opacity="0.85"/>
+
+    <!-- Left edge warm rim highlight -->
+    <rect x="92" y="207" width="2" height="285" rx="0.5" fill="rgba(220,160,90,0.25)"/>
+    <rect x="92" y="207" width="0.8" height="285" fill="rgba(255,220,170,0.42)"/>
+    <!-- Right edge deep shadow -->
+    <rect x="186" y="207" width="2.5" height="285" rx="0.5" fill="rgba(0,0,0,0.45)"/>
+    <!-- Top rounded edge specular -->
+    <path d="M95 205 Q95 201, 99 201 L181 201 Q185 201, 185 205"
+          stroke="rgba(255,220,170,0.32)" stroke-width="1" fill="none"/>
+
+    <!-- SPECIALITÀ badge on the bottom — lighter bronze for visibility -->
+    <text x="140" y="492" text-anchor="middle" font-family="'Inter',sans-serif" font-size="5" fill="#A89678" letter-spacing="1.6" font-weight="500" opacity="0.95">SPECIALITÀ</text>
+
+    <!-- === CHROME FRONT PLATE — narrower & SHORTER (terminates above fork) === -->
+    <!-- Plate: x=110 to 170 (60 wide on 96-wide body = 62.5%), y=222 to 360 (138 tall — terminates above fork) -->
+    <path d="M113 226 Q113 223, 116 223 L164 223 Q167 223, 167 226 L167 357 Q167 360, 164 360 L116 360 Q113 360, 113 357 Z"
+          fill="url(#chrome-panel)"/>
+    <path d="M113 226 Q113 223, 116 223 L164 223 Q167 223, 167 226 L167 357 Q167 360, 164 360 L116 360 Q113 360, 113 357 Z"
+          fill="url(#chrome-vertical)"/>
+    <!-- Plate left edge specular -->
+    <rect x="114" y="226" width="1.2" height="131" fill="rgba(255,250,232,0.65)"/>
+    <!-- Plate right edge shadow -->
+    <rect x="165.5" y="226" width="1.5" height="131" fill="rgba(0,0,0,0.22)"/>
+    <!-- Plate inner outline -->
+    <path d="M113 226 Q113 223, 116 223 L164 223 Q167 223, 167 226 L167 357 Q167 360, 164 360 L116 360 Q113 360, 113 357 Z"
+          fill="none" stroke="rgba(0,0,0,0.45)" stroke-width="1"/>
+
+    <!-- === EUREKA wordmark === -->
+    <text x="140" y="237" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="8" font-weight="700" fill="#2A2622" letter-spacing="1.7" opacity="0.92">EUREKA</text>
+
+    <!-- === PROTRUDING TOUCH MODULE — strong 3D protrusion === -->
+    <!-- HARD cast shadow directly under the module (key signifier) -->
+    <rect x="120" y="290" width="40" height="9" rx="1.5" fill="rgba(0,0,0,0.55)"/>
+    <!-- Soft secondary shadow extending further -->
+    <ellipse cx="140" cy="298" rx="26" ry="5" fill="rgba(0,0,0,0.32)"/>
+    <ellipse cx="140" cy="296" rx="22" ry="3" fill="rgba(0,0,0,0.28)"/>
+    <!-- Right side wall (deeper, more visible 3D depth) -->
+    <path d="M156 248 L163 252 L163 289 L156 287 Z" fill="url(#touch-side-right)"/>
+    <!-- Right wall edge highlight (catching light on the side) -->
+    <path d="M156 248 L156.5 248.4 L156.5 287 L156 287 Z" fill="rgba(255,250,232,0.18)"/>
+    <!-- Bottom edge wall (deeper) -->
+    <path d="M124 287 L156 287 L163 289 L130 290 Z" fill="url(#touch-bottom)"/>
+    <!-- Module front face (dark glossy glass) -->
+    <rect x="124" y="246" width="32" height="42" rx="1.8" fill="url(#touch-glass)"/>
+    <!-- VERY BRIGHT top edge highlight — the protrusion's lit face (light from above) -->
+    <rect x="124" y="246" width="32" height="2.5" rx="0.6" fill="rgba(255,250,232,0.55)"/>
+    <rect x="125" y="246" width="30" height="1" rx="0.3" fill="rgba(255,255,250,0.7)"/>
+    <!-- Bright top-left CORNER highlight (corner catches light) -->
+    <rect x="124" y="246" width="2.5" height="42" fill="rgba(255,250,232,0.22)"/>
+    <!-- Strong dark bottom-right edge -->
+    <rect x="154" y="248" width="2" height="40" fill="rgba(0,0,0,0.55)"/>
+    <rect x="124" y="285" width="32" height="3" fill="rgba(0,0,0,0.55)"/>
+    <!-- Subtle glossy reflection on top half -->
+    <path d="M125 247 L155 247 L150 263 L125 263 Z" fill="rgba(255,255,255,0.05)"/>
+
+    <!-- LCD display (top half of module) -->
+    <rect x="127" y="252" width="26" height="14" rx="1.2" fill="url(#lcd)"/>
+    <text x="140" y="263" text-anchor="middle" font-family="monospace" font-size="8" fill="#88C8E0" font-weight="bold">7.2s</text>
+    <rect x="128" y="253" width="11" height="5" rx="0.5" fill="rgba(160,210,230,0.08)"/>
+
+    <!-- Touchscreen + button (capacitive icon) -->
+    <g opacity="0.85">
+      <line x1="140" y1="271" x2="140" y2="277" stroke="#9AA4AC" stroke-width="1.3" stroke-linecap="round"/>
+      <line x1="137" y1="274" x2="143" y2="274" stroke="#9AA4AC" stroke-width="1.3" stroke-linecap="round"/>
+    </g>
+    <!-- Touchscreen − button -->
+    <g opacity="0.85">
+      <line x1="137" y1="283" x2="143" y2="283" stroke="#9AA4AC" stroke-width="1.3" stroke-linecap="round"/>
+    </g>
+
+    <!-- === CHUTE (centered, below touch module) === -->
+    <rect x="124" y="307" width="32" height="28" rx="1.8" fill="#0E0A08"/>
+    <rect x="124" y="307" width="32" height="1.5" fill="rgba(0,0,0,0.7)"/>
+    <path d="M128 312 L152 312 L150 330 L130 330 Z" fill="url(#chute-dark)"/>
+    <rect x="124" y="307" width="32" height="1" fill="rgba(255,245,222,0.3)"/>
+    <ellipse cx="140" cy="331" rx="11" ry="1.4" fill="#3D2518" opacity="0.8"/>
+
+    <!-- === PORTAFILTER FORK CRADLE — two forward-projecting prongs === -->
+    <!-- Mounted at bottom of chrome plate, only as wide as the chrome plate (60 wide), with a center gap for portafilter spout -->
+
+    <!-- Cast shadow on chrome plate above fork -->
+    <rect x="115" y="358" width="50" height="3" rx="0.5" fill="rgba(0,0,0,0.35)"/>
+
+    <!-- Fork base mount (sits at bottom of chrome plate, full plate width) -->
+    <rect x="113" y="360" width="54" height="6" rx="1" fill="url(#chrome-fork)"/>
+    <rect x="113" y="360" width="54" height="1.2" fill="rgba(255,250,232,0.6)"/>
+    <rect x="113" y="364.8" width="54" height="1.2" fill="rgba(0,0,0,0.4)"/>
+
+    <!-- LEFT PRONG — projects forward (down + slightly out) -->
+    <path d="M115 366
+             L115 380
+             Q115 386, 121 386
+             L130 386
+             Q132 386, 132 384
+             L132 366 Z" fill="url(#chrome-fork)"/>
+    <!-- Left prong top highlight -->
+    <rect x="115" y="366" width="17" height="1.5" fill="rgba(255,250,232,0.55)"/>
+    <!-- Left prong front face highlight (specular along front edge) -->
+    <rect x="115" y="367" width="1.5" height="18" fill="rgba(255,250,232,0.4)"/>
+    <!-- Left prong inside shadow -->
+    <rect x="130.5" y="367" width="1.5" height="17" fill="rgba(0,0,0,0.4)"/>
+    <!-- Left prong bottom shadow -->
+    <path d="M115 384 L132 384 L132 386 Q132 386, 130 386 L121 386 Q115 386, 115 384 Z" fill="rgba(0,0,0,0.55)"/>
+
+    <!-- RIGHT PRONG — mirror -->
+    <path d="M165 366
+             L165 380
+             Q165 386, 159 386
+             L150 386
+             Q148 386, 148 384
+             L148 366 Z" fill="url(#chrome-fork)"/>
+    <rect x="148" y="366" width="17" height="1.5" fill="rgba(255,250,232,0.55)"/>
+    <rect x="163.5" y="367" width="1.5" height="18" fill="rgba(255,250,232,0.4)"/>
+    <rect x="148" y="367" width="1.5" height="17" fill="rgba(0,0,0,0.4)"/>
+    <path d="M148 384 L165 384 L165 386 Q165 386, 163 386 L154 386 Q148 386, 148 384 Z" fill="rgba(0,0,0,0.55)"/>
+
+    <!-- GAP between prongs (where portafilter spout goes — visible dark slot) -->
+    <rect x="132" y="366" width="16" height="20" fill="#050403"/>
+    <rect x="132" y="366" width="16" height="1.5" fill="rgba(0,0,0,0.7)"/>
+
+    <!-- Subtle drop shadow below prongs onto cup alcove face -->
+    <rect x="113" y="386" width="54" height="6" rx="1" fill="rgba(0,0,0,0.35)"/>
+
+    <!-- === CUP RECESSED ALCOVE — smooth concave bowl with top-lit interior === -->
+    <!-- Outer alcove opening -->
+    <rect x="113" y="395" width="54" height="78" rx="2" fill="#050303"/>
+    <!-- Top opening shadow (deep cast where light doesn't reach the back of the recess) -->
+    <rect x="113" y="395" width="54" height="8" fill="rgba(0,0,0,0.9)"/>
+    <!-- Concave vertical gradient — lit at top of interior, dark at bottom -->
+    <rect x="115" y="403" width="50" height="68" fill="url(#alcove-concave)"/>
+    <!-- Bowl-shaped radial highlight (curvature implied) -->
+    <ellipse cx="140" cy="425" rx="20" ry="30" fill="url(#alcove-bowl)"/>
+    <!-- Right inner shadow (cast from light direction left-to-right) -->
+    <rect x="160" y="403" width="7" height="68" fill="rgba(0,0,0,0.45)"/>
+    <!-- Bottom inner shadow -->
+    <rect x="115" y="465" width="50" height="6" fill="rgba(0,0,0,0.5)"/>
+    <!-- Left inner specular rim (catching light entering the recess) -->
+    <rect x="113" y="395" width="1.5" height="78" fill="rgba(140,115,85,0.35)"/>
+    <!-- Drip tray edge hint at bottom -->
+    <rect x="118" y="468" width="44" height="1.2" fill="rgba(140,120,90,0.45)"/>
+    <rect x="118" y="468" width="44" height="0.4" fill="rgba(255,230,180,0.3)"/>
+
+    <!-- === HOPPER MOUNT COLLAR === -->
+    <rect x="120" y="190" width="40" height="10" rx="1" fill="#0E0A08"/>
+    <rect x="120" y="190" width="40" height="1.5" fill="rgba(120,100,75,0.3)"/>
+    <rect x="120" y="198" width="40" height="1" fill="rgba(0,0,0,0.6)"/>
+
+    <!-- === HOPPER (CUBE TOP + INVERTED PYRAMID FUNNEL — STRONGLY DISTINGUISHED) === -->
+
+    <!-- ========= INVERTED PYRAMID FUNNEL (lower section) ========= -->
+    <!-- Funnel back wall shadow -->
+    <path d="M118 190 L98 145 L182 145 L162 190 Z" fill="rgba(50,40,30,0.13)"/>
+    <!-- Funnel main shape (clear plastic, straight diagonal walls) -->
+    <path d="M120 190 L100 147 L180 147 L160 190 Z"
+          fill="url(#plastic-hopper)"
+          stroke="#8A7F6E" stroke-width="0.8" stroke-opacity="0.55"/>
+    <!-- Funnel left edge specular -->
+    <line x1="120" y1="190" x2="100" y2="147" stroke="rgba(255,250,232,0.45)" stroke-width="1.3"/>
+    <!-- Funnel right edge shadow -->
+    <line x1="160" y1="190" x2="180" y2="147" stroke="rgba(60,45,30,0.32)" stroke-width="1.5"/>
+
+    <!-- ========= HORIZONTAL SEAM BAND (clear visual joint between cube & funnel) ========= -->
+    <!-- Dark band gives the seam depth, not just a line -->
+    <rect x="98" y="143" width="84" height="4" fill="#1A130D" opacity="0.7"/>
+    <!-- Top highlight on seam -->
+    <rect x="98" y="143" width="84" height="0.8" fill="rgba(255,235,195,0.45)"/>
+    <!-- Bottom shadow on seam -->
+    <rect x="98" y="146.5" width="84" height="0.8" fill="rgba(0,0,0,0.6)"/>
+
+    <!-- ========= CUBE (upper section) — sharp corners, vertical sides ========= -->
+    <!-- Cube back shadow -->
+    <rect x="100" y="83" width="80" height="60" fill="rgba(50,40,30,0.1)"/>
+    <!-- Cube main shape — SHARP corners, NO rounded curves -->
+    <rect x="100" y="83" width="80" height="60"
+          fill="url(#plastic-hopper)"
+          stroke="#8A7F6E" stroke-width="0.8" stroke-opacity="0.55"/>
+
+    <!-- Cube top rim (where lid sits) -->
+    <rect x="98" y="80" width="84" height="4" fill="url(#hopper-rim)"/>
+    <!-- Cube top inner shadow -->
+    <rect x="100" y="83" width="80" height="2" fill="rgba(80,65,50,0.2)"/>
+
+    <!-- BEANS — gravity-settled pile, all positions audited to stay inside hopper boundaries.
+         Funnel walls: top y=147 x=100..180, bottom y=190 x=120..160 (linear taper).
+         Cube walls: y=83..143 x=100..180. Each bean's cx ± rx must fit inside the wall at its y. -->
+    <g>
+      <!-- ===== FUNNEL ROWS (working bottom up, narrow to wide) ===== -->
+
+      <!-- Row F1 (y=186, funnel x≈118..162 width 44): 2 beans -->
+      <ellipse cx="135" cy="186" rx="5.5" ry="3.5" fill="#2D1810" transform="rotate(-20 135 186)"/>
+      <ellipse cx="147" cy="186" rx="5.5" ry="3.5" fill="#1F0F08" transform="rotate(15 147 186)"/>
+
+      <!-- Row F2 (y=180, funnel x≈115..165 width 50): 3 beans -->
+      <ellipse cx="128" cy="180" rx="5.8" ry="3.7" fill="#3D2518" transform="rotate(-30 128 180)"/>
+      <ellipse cx="141" cy="180" rx="5.8" ry="3.7" fill="#1F0F08" transform="rotate(20 141 180)"/>
+      <ellipse cx="154" cy="180" rx="5.8" ry="3.7" fill="#4A3020" transform="rotate(-15 154 180)"/>
+
+      <!-- Row F3 (y=174, funnel x≈113..167 width 54): 4 beans -->
+      <ellipse cx="121" cy="174" rx="6" ry="3.8" fill="#2D1810" transform="rotate(40 121 174)"/>
+      <ellipse cx="134" cy="173" rx="6" ry="3.8" fill="#3D2518" transform="rotate(-25 134 173)"/>
+      <path d="M129 172 Q134 174, 139 172" stroke="#1A0E07" stroke-width="0.5" fill="none" transform="rotate(-25 134 173)"/>
+      <ellipse cx="147" cy="174" rx="6" ry="3.8" fill="#4A3020" transform="rotate(15 147 174)"/>
+      <ellipse cx="160" cy="173" rx="6" ry="3.8" fill="#1F0F08" transform="rotate(-40 160 173)"/>
+
+      <!-- Row F4 (y=168, funnel x≈110..170 width 60): 4 beans -->
+      <ellipse cx="119" cy="168" rx="6.3" ry="4" fill="#3D2518" transform="rotate(-50 119 168)"/>
+      <ellipse cx="133" cy="167" rx="6.3" ry="4" fill="#4A3020" transform="rotate(25 133 167)"/>
+      <path d="M128 166 Q133 168, 138 166" stroke="#1A0E07" stroke-width="0.5" fill="none" transform="rotate(25 133 167)"/>
+      <ellipse cx="147" cy="168" rx="6.3" ry="4" fill="#3D2518" transform="rotate(-15 147 168)"/>
+      <ellipse cx="161" cy="167" rx="6.3" ry="4" fill="#1F0F08" transform="rotate(35 161 167)"/>
+
+      <!-- Row F5 (y=160, funnel x≈106..174 width 68): 5 beans -->
+      <ellipse cx="115" cy="160" rx="6.4" ry="4" fill="#2D1810" transform="rotate(-25 115 160)"/>
+      <ellipse cx="128" cy="159" rx="6.4" ry="4" fill="#3D2518" transform="rotate(40 128 159)"/>
+      <path d="M123 158 Q128 160, 133 158" stroke="#1A0E07" stroke-width="0.5" fill="none" transform="rotate(40 128 159)"/>
+      <ellipse cx="141" cy="160" rx="6.4" ry="4" fill="#4A3020" transform="rotate(-15 141 160)"/>
+      <ellipse cx="154" cy="159" rx="6.4" ry="4" fill="#3D2518" transform="rotate(20 154 159)"/>
+      <ellipse cx="167" cy="160" rx="6.4" ry="4" fill="#1F0F08" transform="rotate(-35 167 160)"/>
+
+      <!-- ===== CUBE ROWS (cube x=100..180, beans rx≤7 → cx ∈ [107, 173]) ===== -->
+
+      <!-- Row C1 (y=152): 5 beans, full cube width with safety -->
+      <ellipse cx="113" cy="152" rx="6.8" ry="4.3" fill="#3D2518" transform="rotate(-50 113 152)"/>
+      <path d="M108 151 Q113 153, 118 151" stroke="#1A0E07" stroke-width="0.5" fill="none" transform="rotate(-50 113 152)"/>
+      <ellipse cx="128" cy="151" rx="6.8" ry="4.3" fill="#4A3020" transform="rotate(25 128 151)"/>
+      <ellipse cx="143" cy="152" rx="6.8" ry="4.3" fill="#2D1810" transform="rotate(-15 143 152)"/>
+      <path d="M138 151 Q143 153, 148 151" stroke="#1A0E07" stroke-width="0.5" fill="none" transform="rotate(-15 143 152)"/>
+      <ellipse cx="158" cy="152" rx="6.8" ry="4.3" fill="#3D2518" transform="rotate(50 158 152)"/>
+      <ellipse cx="171" cy="151" rx="6.5" ry="4.1" fill="#1F0F08" transform="rotate(15 171 151)"/>
+
+      <!-- Row C2 (y=144): 5 beans, slight offset -->
+      <ellipse cx="115" cy="144" rx="6.8" ry="4.3" fill="#3D2518" transform="rotate(-30 115 144)"/>
+      <path d="M110 143 Q115 145, 120 143" stroke="#1A0E07" stroke-width="0.5" fill="none" transform="rotate(-30 115 144)"/>
+      <ellipse cx="130" cy="143" rx="6.8" ry="4.3" fill="#4A3020" transform="rotate(20 130 143)"/>
+      <path d="M125 142 Q130 144, 135 142" stroke="#1A0E07" stroke-width="0.5" fill="none" transform="rotate(20 130 143)"/>
+      <ellipse cx="145" cy="144" rx="6.8" ry="4.3" fill="#2D1810" transform="rotate(-40 145 144)"/>
+      <ellipse cx="160" cy="143" rx="6.8" ry="4.3" fill="#3D2518" transform="rotate(35 160 143)"/>
+      <ellipse cx="172" cy="143" rx="6.5" ry="4.1" fill="#4A3020" transform="rotate(-20 172 143)"/>
+
+      <!-- Row C3 (y=136): pile starts tapering at edges -->
+      <ellipse cx="118" cy="136" rx="6.8" ry="4.3" fill="#3D2518" transform="rotate(-20 118 136)"/>
+      <path d="M113 135 Q118 137, 123 135" stroke="#1A0E07" stroke-width="0.5" fill="none" transform="rotate(-20 118 136)"/>
+      <ellipse cx="115" cy="134" rx="2.8" ry="1.1" fill="rgba(200,150,100,0.35)" transform="rotate(-20 115 134)"/>
+      <ellipse cx="132" cy="135" rx="6.8" ry="4.3" fill="#4A3020" transform="rotate(15 132 135)"/>
+      <path d="M127 134 Q132 136, 137 134" stroke="#1A0E07" stroke-width="0.5" fill="none" transform="rotate(15 132 135)"/>
+      <ellipse cx="129" cy="133" rx="2.8" ry="1.1" fill="rgba(210,160,110,0.35)" transform="rotate(15 129 133)"/>
+      <ellipse cx="146" cy="136" rx="6.8" ry="4.3" fill="#3D2518" transform="rotate(-35 146 136)"/>
+      <ellipse cx="160" cy="135" rx="6.8" ry="4.3" fill="#4A3020" transform="rotate(40 160 135)"/>
+
+      <!-- Row C4 (y=128): pile narrowing more (4 beans, inset from edges) -->
+      <ellipse cx="124" cy="128" rx="6.8" ry="4.3" fill="#3D2518" transform="rotate(30 124 128)"/>
+      <path d="M119 127 Q124 129, 129 127" stroke="#1A0E07" stroke-width="0.5" fill="none" transform="rotate(30 124 128)"/>
+      <ellipse cx="138" cy="127" rx="6.8" ry="4.3" fill="#4A3020" transform="rotate(-20 138 127)"/>
+      <path d="M133 126 Q138 128, 143 126" stroke="#1A0E07" stroke-width="0.5" fill="none" transform="rotate(-20 138 127)"/>
+      <ellipse cx="152" cy="128" rx="6.8" ry="4.3" fill="#2D1810" transform="rotate(45 152 128)"/>
+
+      <!-- Row C5 (y=120): peak forming (3 beans) -->
+      <ellipse cx="131" cy="120" rx="6.5" ry="4.1" fill="#3D2518" transform="rotate(-15 131 120)"/>
+      <path d="M126 119 Q131 121, 136 119" stroke="#1A0E07" stroke-width="0.5" fill="none" transform="rotate(-15 131 120)"/>
+      <ellipse cx="128" cy="118" rx="2.5" ry="1" fill="rgba(200,150,100,0.35)" transform="rotate(-15 128 118)"/>
+      <ellipse cx="145" cy="119" rx="6.5" ry="4.1" fill="#4A3020" transform="rotate(20 145 119)"/>
+      <path d="M140 118 Q145 120, 150 118" stroke="#1A0E07" stroke-width="0.5" fill="none" transform="rotate(20 145 119)"/>
+
+      <!-- Row C6 (y=112): peak (1-2 beans, inset) -->
+      <ellipse cx="138" cy="112" rx="6.3" ry="4" fill="#3D2518" transform="rotate(-30 138 112)"/>
+      <path d="M133 111 Q138 113, 143 111" stroke="#1A0E07" stroke-width="0.5" fill="none" transform="rotate(-30 138 112)"/>
+    </g>
+
+    <!-- Cube specular (left edge, full height) -->
+    <line x1="102" y1="84" x2="102" y2="142" stroke="rgba(255,253,240,0.5)" stroke-width="2.5" stroke-linecap="round" opacity="0.9"/>
+    <!-- Cube top corner specular -->
+    <path d="M104 84 L120 84" stroke="rgba(255,255,255,0.6)" stroke-width="1.2"/>
+    <!-- Cube right edge shadow -->
+    <line x1="178" y1="84" x2="178" y2="142" stroke="rgba(60,45,30,0.32)" stroke-width="1.3"/>
+
+    <!-- === HOPPER LID (square corners, narrow to match cube width) === -->
+    <!-- Lid is the same width as the cube (x=100-180) — no overhang flare -->
+    <rect x="100" y="68" width="80" height="13" fill="#141210"/>
+    <rect x="100" y="68" width="80" height="13" fill="none" stroke="#3A352E" stroke-width="0.8"/>
+    <!-- Lid top highlight (straight line, not curve) -->
+    <rect x="102" y="69" width="76" height="1" fill="rgba(255,230,180,0.25)"/>
+    <!-- Lid bottom shadow (sits on cube) -->
+    <rect x="100" y="79" width="80" height="2" fill="rgba(0,0,0,0.5)"/>
+    <!-- Lid knob -->
+    <rect x="128" y="56" width="24" height="14" rx="2.5" fill="#0A0806"/>
+    <rect x="128" y="56" width="24" height="2" rx="1" fill="rgba(255,220,170,0.18)"/>
+    <ellipse cx="140" cy="56" rx="9" ry="3" fill="url(#chrome-fork)"/>
+
+  </svg>

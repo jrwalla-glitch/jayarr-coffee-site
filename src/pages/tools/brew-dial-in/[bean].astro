@@ -127,9 +127,87 @@ const breadcrumbSchema = {
       .narrative { font-size: 1rem; line-height: 1.8; color: #3A3530; margin-bottom: 2.5rem; max-width: 70ch; }
       .narrative::first-letter { font-family: 'Playfair Display', serif; font-size: 3.2rem; float: left; line-height: 0.8; margin: 0.1em 0.12em 0 0; color: var(--copper); font-weight: 700; }
 
-      /* Brewer Sections */
-      .brewer-section { background: white; border: 1px solid var(--border); border-left: 3px solid var(--copper); border-radius: 2px; padding: 1.5rem; margin-bottom: 1rem; }
-      .brewer-section.gated { border-left-color: #2e7d32; background: #fafff8; }
+      /* Brewer Tabs */
+      .brewer-tabs {
+        display: flex;
+        gap: 0;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        border-bottom: 2px solid var(--border);
+        margin-bottom: 1rem;
+        position: sticky;
+        top: 64px;
+        background: var(--cream);
+        z-index: 40;
+        padding-top: 0.5rem;
+      }
+      .brewer-tabs::-webkit-scrollbar { display: none; }
+      .brewer-tab {
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.15rem;
+        padding: 0.6rem 0.9rem;
+        background: none;
+        border: none;
+        border-bottom: 3px solid transparent;
+        cursor: pointer;
+        font-family: 'Inter', -apple-system, sans-serif;
+        transition: border-color 0.2s, color 0.2s;
+        margin-bottom: -2px;
+      }
+      .brewer-tab:hover { border-bottom-color: var(--border); }
+      .brewer-tab.active { border-bottom-color: var(--copper); }
+      .tab-name {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--muted);
+        white-space: nowrap;
+      }
+      .brewer-tab.active .tab-name { color: var(--copper); }
+      .tab-score {
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: var(--muted);
+      }
+      .brewer-tab.active .tab-score { color: var(--copper); }
+      .tab-badge.gated {
+        font-size: 0.6rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #2e7d32;
+      }
+
+      /* Brewer Sections — progressive disclosure */
+      .brewer-section {
+        background: white;
+        border: 1px solid var(--border);
+        border-left: 3px solid var(--copper);
+        border-radius: 2px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        margin-bottom: 0;
+        border-width: 0 0 0 3px;
+        transition: max-height 0.35s ease, opacity 0.25s ease, padding 0.35s ease, margin 0.35s ease, border-width 0.35s ease;
+      }
+      .brewer-section.active {
+        max-height: 2000px;
+        overflow: visible;
+        opacity: 1;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        border-width: 1px 1px 1px 3px;
+      }
+      .brewer-section.gated { border-left-color: #2e7d32; }
+      .brewer-section.gated.active { background: #fafff8; }
       .brewer-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.25rem; }
       .brewer-name { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--dark); }
       .match-score { font-size: 0.85rem; font-weight: 600; color: var(--copper); }
@@ -167,6 +245,8 @@ const breadcrumbSchema = {
         .recipe-bar { gap: 0.5rem; }
         .link-grid { grid-template-columns: 1fr; }
         .bean-header h1 { font-size: 2rem; }
+        .brewer-tab { padding: 0.5rem 0.65rem; }
+        .tab-name { font-size: 0.7rem; }
       }
     </style>
   </head>
@@ -206,14 +286,43 @@ const breadcrumbSchema = {
         </div>
       )}
 
-      <!-- Brewer Sections (all 9, sorted by match score) -->
-      {sortedBrewers.map((brewerId) => {
+      <!-- Brewer Selector Tabs -->
+      <nav class="brewer-tabs" aria-label="Brew method selector">
+        {sortedBrewers.map((brewerId, i) => {
+          const section = bean.brewer_content[brewerId];
+          const score = section.match_score;
+          const isGated = section.gated;
+          return (
+            <button
+              class={`brewer-tab ${i === 0 ? 'active' : ''}`}
+              data-brewer={brewerId}
+              type="button"
+              aria-controls={`section-${brewerId}`}
+              aria-selected={i === 0 ? 'true' : 'false'}
+            >
+              <span class="tab-name">{BREWER_NAMES[brewerId] || brewerId}</span>
+              {isGated ? (
+                <span class="tab-badge gated">Flash</span>
+              ) : score ? (
+                <span class="tab-score">{score}</span>
+              ) : null}
+            </button>
+          );
+        })}
+      </nav>
+
+      <!-- Brewer Sections (all 9 in DOM for SEO, one visible at a time) -->
+      {sortedBrewers.map((brewerId, i) => {
         const section = bean.brewer_content[brewerId];
         const isGated = section.gated;
         const recipe = section.recipe || {};
         const score = section.match_score;
         return (
-          <article class={`brewer-section ${isGated ? 'gated' : ''}`} id={brewerId}>
+          <article
+            class={`brewer-section ${isGated ? 'gated' : ''} ${i === 0 ? 'active' : ''}`}
+            id={`section-${brewerId}`}
+            data-brewer={brewerId}
+          >
             <div class="brewer-header">
               <span class="brewer-name">{BREWER_NAMES[brewerId] || brewerId}</span>
               {isGated ? (
@@ -314,5 +423,57 @@ const breadcrumbSchema = {
     </main>
 
     <Footer />
+
+    <script is:inline>
+      (function() {
+        const tabs = document.querySelectorAll('.brewer-tab');
+        const sections = document.querySelectorAll('.brewer-section[data-brewer]');
+        if (!tabs.length || !sections.length) return;
+
+        // Resolve initial brewer: ?brewer= → localStorage → first tab (top scorer)
+        const params = new URLSearchParams(window.location.search);
+        const paramBrewer = params.get('brewer');
+        const storedBrewer = localStorage.getItem('brew-dial-in-brewer');
+        const defaultBrewer = tabs[0]?.dataset.brewer;
+
+        // Validate that the candidate brewer actually exists on this page
+        const allBrewerIds = new Set(Array.from(tabs).map(t => t.dataset.brewer));
+        let activeBrewer = defaultBrewer;
+        if (paramBrewer && allBrewerIds.has(paramBrewer)) {
+          activeBrewer = paramBrewer;
+        } else if (storedBrewer && allBrewerIds.has(storedBrewer)) {
+          activeBrewer = storedBrewer;
+        }
+
+        function activate(brewerId) {
+          tabs.forEach(tab => {
+            const isActive = tab.dataset.brewer === brewerId;
+            tab.classList.toggle('active', isActive);
+            tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+          });
+          sections.forEach(sec => {
+            sec.classList.toggle('active', sec.dataset.brewer === brewerId);
+          });
+          // Persist to localStorage
+          try { localStorage.setItem('brew-dial-in-brewer', brewerId); } catch {}
+          // Update URL without reload (replace, don't push — no back-button noise)
+          const url = new URL(window.location);
+          url.searchParams.set('brewer', brewerId);
+          history.replaceState(null, '', url);
+        }
+
+        // Set initial state
+        activate(activeBrewer);
+
+        // Tab click handlers
+        tabs.forEach(tab => {
+          tab.addEventListener('click', () => {
+            activate(tab.dataset.brewer);
+            // Scroll tab into view if overflowing
+            tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+          });
+        });
+      })();
+    </script>
   </body>
 </html>

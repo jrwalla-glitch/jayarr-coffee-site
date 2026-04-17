@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="420" viewBox="0 0 360 420">
+  <defs>
+    <linearGradient id="steel" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#A0A0A0"/>
+      <stop offset="15%" stop-color="#C8C8C8"/>
+      <stop offset="30%" stop-color="#D8D8D8"/>
+      <stop offset="50%" stop-color="#C4C4C4"/>
+      <stop offset="70%" stop-color="#D0D0D0"/>
+      <stop offset="85%" stop-color="#B8B8B8"/>
+      <stop offset="100%" stop-color="#9A9A9A"/>
+    </linearGradient>
+    <linearGradient id="steel-dark" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7A7A7A"/>
+      <stop offset="50%" stop-color="#8A8A8A"/>
+      <stop offset="100%" stop-color="#707070"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Shadow -->
+  <ellipse cx="175" cy="405" rx="120" ry="10" fill="rgba(255,255,255,0.04)"/>
+
+  <!-- ======== BLACK BASE / DRIP TRAY ======== -->
+  <rect x="42" y="320" width="260" height="80" rx="4" fill="#1E1E1E"/>
+  <!-- Base front lip -->
+  <rect x="42" y="320" width="260" height="6" rx="2" fill="#333"/>
+  <!-- Drip tray slot -->
+  <rect x="56" y="335" width="230" height="55" rx="3" fill="#2A2A2A"/>
+  <!-- Tray grid (thin horizontal lines) -->
+  <rect x="66" y="342" width="210" height="3" rx="1" fill="#383838"/>
+  <rect x="66" y="350" width="210" height="3" rx="1" fill="#383838"/>
+  <rect x="66" y="358" width="210" height="3" rx="1" fill="#383838"/>
+  <rect x="66" y="366" width="210" height="3" rx="1" fill="#383838"/>
+  <rect x="66" y="374" width="210" height="3" rx="1" fill="#383838"/>
+
+  <!-- ======== MAIN BODY (boxy, wide) ======== -->
+  <rect x="52" y="38" width="240" height="284" rx="4" fill="url(#steel)" stroke="#AAA" stroke-width="0.5"/>
+  <!-- Left edge shadow -->
+  <rect x="52" y="38" width="6" height="284" fill="rgba(0,0,0,0.06)"/>
+  <!-- Right edge -->
+  <rect x="286" y="38" width="6" height="284" fill="rgba(255,255,255,0.04)"/>
+  <!-- Top edge cap -->
+  <rect x="50" y="34" width="244" height="8" rx="3" fill="#B8B8B8" stroke="#AAA" stroke-width="0.3"/>
+
+  <!-- ======== CUP WARMING TRAY ======== -->
+  <rect x="54" y="38" width="236" height="12" rx="2" fill="url(#steel-dark)"/>
+  <!-- Ridges -->
+  <rect x="65" y="40" width="5" height="8" rx="1" fill="rgba(0,0,0,0.06)"/>
+  <rect x="76" y="40" width="5" height="8" rx="1" fill="rgba(0,0,0,0.06)"/>
+  <rect x="87" y="40" width="5" height="8" rx="1" fill="rgba(0,0,0,0.06)"/>
+  <rect x="98" y="40" width="5" height="8" rx="1" fill="rgba(0,0,0,0.06)"/>
+  <rect x="109" y="40" width="5" height="8" rx="1" fill="rgba(0,0,0,0.06)"/>
+  <rect x="120" y="40" width="5" height="8" rx="1" fill="rgba(0,0,0,0.06)"/>
+  <rect x="131" y="40" width="5" height="8" rx="1" fill="rgba(0,0,0,0.06)"/>
+  <rect x="142" y="40" width="5" height="8" rx="1" fill="rgba(0,0,0,0.06)"/>
+  <rect x="153" y="40" width="5" height="8" rx="1" fill="rgba(0,0,0,0.06)"/>
+  <rect x="164" y="40" width="5" height="8" rx="1" fill="rgba(0,0,0,0.06)"/>
+  <rect x="175" y="40" width="5" height="8" rx="1" fill="rgba(0,0,0,0.06)"/>
+  <rect x="186" y="40" width="5" height="8" rx="1" fill="rgba(0,0,0,0.06)"/>
+  <rect x="197" y="40" width="5" height="8" rx="1" fill="rgba(0,0,0,0.06)"/>
+  <rect x="208" y="40" width="5" height="8" rx="1" fill="rgba(0,0,0,0.06)"/>
+  <rect x="219" y="40" width="5" height="8" rx="1" fill="rgba(0,0,0,0.06)"/>
+  <rect x="230" y="40" width="5" height="8" rx="1" fill="rgba(0,0,0,0.06)"/>
+  <rect x="241" y="40" width="5" height="8" rx="1" fill="rgba(0,0,0,0.06)"/>
+  <rect x="252" y="40" width="5" height="8" rx="1" fill="rgba(0,0,0,0.06)"/>
+  <rect x="263" y="40" width="5" height="8" rx="1" fill="rgba(0,0,0,0.06)"/>
+  <rect x="274" y="40" width="5" height="8" rx="1" fill="rgba(0,0,0,0.06)"/>
+
+  <!-- ======== 3 ROCKER SWITCHES (vertical toggle, black — CHUNKY) ======== -->
+  <!-- Switch 1 — Power -->
+  <rect x="103" y="56" width="34" height="52" rx="5" fill="#1A1A1A" stroke="#444" stroke-width="0.8"/>
+  <rect x="106" y="59" width="28" height="22" rx="3" fill="#2E2E2E"/>
+  <rect x="106" y="83" width="28" height="22" rx="3" fill="#222"/>
+  <!-- Power icon -->
+  <circle cx="120" cy="69" r="5" fill="none" stroke="#666" stroke-width="1"/>
+  <line x1="120" y1="64" x2="120" y2="69" stroke="#666" stroke-width="1"/>
+
+  <!-- Switch 2 — Brew -->
+  <rect x="149" y="56" width="34" height="52" rx="5" fill="#1A1A1A" stroke="#444" stroke-width="0.8"/>
+  <rect x="152" y="59" width="28" height="22" rx="3" fill="#2E2E2E"/>
+  <rect x="152" y="83" width="28" height="22" rx="3" fill="#222"/>
+  <!-- Cup icon -->
+  <rect x="162" y="66" width="8" height="7" rx="1.5" fill="none" stroke="#666" stroke-width="1"/>
+  <rect x="159" y="72.5" width="14" height="2" rx="1" fill="#666"/>
+
+  <!-- Switch 3 — Steam -->
+  <rect x="195" y="56" width="34" height="52" rx="5" fill="#1A1A1A" stroke="#444" stroke-width="0.8"/>
+  <rect x="198" y="59" width="28" height="22" rx="3" fill="#2E2E2E"/>
+  <rect x="198" y="83" width="28" height="22" rx="3" fill="#222"/>
+  <!-- Steam icon -->
+  <path d="M210 66 Q207 72 210 78" fill="none" stroke="#666" stroke-width="1"/>
+  <path d="M214 65 Q211 71 214 77" fill="none" stroke="#666" stroke-width="1"/>
+
+  <!-- Red indicator lights -->
+  <rect x="113" y="112" width="8" height="5" rx="1.5" fill="#CC2222" opacity="0.9"/>
+  <rect x="162" y="112" width="8" height="5" rx="1.5" fill="#CC2222" opacity="0.9"/>
+  <rect x="208" y="112" width="8" height="5" rx="1.5" fill="#CC2222" opacity="0.9"/>
+
+  <!-- ======== GAGGIA CLASSIC LOGO ======== -->
+  <text x="170" y="145" text-anchor="middle" font-size="16" font-family="serif" fill="#888" font-weight="700" letter-spacing="3" font-style="italic">GAGGIA</text>
+  <line x1="120" y1="150" x2="222" y2="150" stroke="#888" stroke-width="0.8"/>
+  <text x="170" y="162" text-anchor="middle" font-size="9" font-family="sans-serif" fill="#888" letter-spacing="3">CLASSIC</text>
+
+  <!-- ======== STEAM KNOB (right side, large round black dial) ======== -->
+  <circle cx="295" cy="108" r="18" fill="#222" stroke="#444" stroke-width="1"/>
+  <circle cx="295" cy="108" r="14" fill="#2A2A2A"/>
+  <circle cx="295" cy="108" r="10" fill="#333"/>
+  <!-- Knob grip ridges -->
+  <circle cx="295" cy="108" r="16" fill="none" stroke="#3A3A3A" stroke-width="1" stroke-dasharray="3,3"/>
+  <!-- Knob indicator dot -->
+  <circle cx="295" cy="96" r="2" fill="#555"/>
+
+  <!-- ======== GROUP HEAD AREA ======== -->
+  <!-- Dark recessed area below logo -->
+  <rect x="72" y="176" width="200" height="32" fill="#555" rx="2"/>
+
+  <!-- Chrome group head -->
+  <ellipse cx="160" cy="188" rx="22" ry="6" fill="#999" stroke="#AAA" stroke-width="0.8"/>
+  <!-- Portafilter basket coming toward viewer -->
+  <ellipse cx="160" cy="200" rx="24" ry="22" fill="#333" stroke="#555" stroke-width="1"/>
+  <ellipse cx="160" cy="200" rx="20" ry="18" fill="#2A2A2A"/>
+  <ellipse cx="160" cy="200" rx="15" ry="13" fill="#1E1E1E"/>
+  <ellipse cx="155" cy="195" rx="7" ry="5" fill="rgba(255,255,255,0.05)"/>
+
+  <!-- Chrome spout — visible below portafilter, more prominent -->
+  <!-- Spout body (chrome, wider than PF basket) -->
+  <path d="M145 218 Q148 222 150 230 L170 230 Q172 222 175 218" fill="#999" stroke="#AAA" stroke-width="0.5"/>
+  <!-- Two spout tips -->
+  <rect x="148" y="230" width="7" height="14" rx="3" fill="#888"/>
+  <rect x="161" y="230" width="7" height="14" rx="3" fill="#888"/>
+  <!-- Spout tip openings -->
+  <circle cx="151.5" cy="243" r="2" fill="#666"/>
+  <circle cx="164.5" cy="243" r="2" fill="#666"/>
+
+  <!-- Handle extending LEFT (short, foreshortened) -->
+  <line x1="136" y1="198" x2="98" y2="204" stroke="#2A2A2A" stroke-width="12" stroke-linecap="round"/>
+  <line x1="136" y1="198" x2="98" y2="204" stroke="#333" stroke-width="7" stroke-linecap="round"/>
+  <!-- Handle ring -->
+  <circle cx="94" cy="205" r="7" fill="none" stroke="#2A2A2A" stroke-width="4"/>
+  <circle cx="94" cy="205" r="7" fill="none" stroke="#333" stroke-width="2.5"/>
+
+  <!-- ======== STEAM WAND ======== -->
+  <!-- Wand arm from right side of body, angling down -->
+  <path d="M280 185 L285 200 L290 260 L292 290" stroke="#B0B0B0" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <path d="M280 185 L285 200 L290 260 L292 290" stroke="rgba(255,255,255,0.08)" stroke-width="2" fill="none"/>
+  <!-- Rubber grip on wand -->
+  <rect x="286" y="220" width="10" height="20" rx="3" fill="#2A2A2A"/>
+  <!-- Wand tip -->
+  <ellipse cx="292" cy="293" rx="4" ry="5" fill="#A0A0A0"/>
+
+  <!-- ======== WATER TANK (visible behind right side) ======== -->
+  <rect x="282" y="100" width="22" height="200" rx="4" fill="rgba(40,40,40,0.5)" stroke="rgba(100,100,100,0.2)" stroke-width="0.5"/>
+  <!-- MAX line -->
+  <text x="290" y="160" font-size="4" fill="rgba(255,255,255,0.15)" font-family="sans-serif">MAX</text>
+  <line x1="284" y1="162" x2="302" y2="162" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+
+  <!-- ======== ESPRESSO CUPS (optional, adds life) ======== -->
+  <!-- Left cup -->
+  <path d="M120 310 L122 270 Q122 265 130 264 L148 264 Q156 265 156 270 L158 310 Q158 315 140 316 Q120 315 120 310 Z" fill="rgba(200,200,200,0.08)" stroke="rgba(200,200,200,0.12)" stroke-width="0.5"/>
+  <!-- Right cup -->
+  <path d="M170 310 L172 270 Q172 265 180 264 L198 264 Q206 265 206 270 L208 310 Q208 315 190 316 Q170 315 170 310 Z" fill="rgba(200,200,200,0.08)" stroke="rgba(200,200,200,0.12)" stroke-width="0.5"/>
+  <!-- Coffee in cups -->
+  <ellipse cx="139" cy="275" rx="12" ry="4" fill="rgba(140,100,50,0.15)"/>
+  <ellipse cx="189" cy="275" rx="12" ry="4" fill="rgba(140,100,50,0.15)"/>
+</svg>

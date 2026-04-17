@@ -1,0 +1,411 @@
+---
+import BaseHead from '../../../components/BaseHead.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import ExtractionApparatus from '../../../components/tools/brew-dial-in/ExtractionApparatus.svelte';
+import beanIndex from '../../../data/brew-dial-in-index.json';
+import topBeans from '../../../data/brew-dial-in-top-beans.json';
+---
+
+<html lang="en">
+  <head>
+    <BaseHead
+      title="Brew Dial-In — The Extraction Apparatus | JayArr Coffee"
+      description="Science-backed brewing recipes for 329 specialty coffees. Select your bean and brewer — get personalized grind, temperature, ratio, and timing powered by extraction science."
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Brew Dial-In — The Extraction Apparatus",
+      "url": "https://jayarr.coffee/tools/brew-dial-in/",
+      "description": "Science-backed brewing recipes for 329 specialty coffees. Select your bean, choose a brewer, get a personalized recipe.",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Any",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "publisher": { "@type": "Organization", "name": "JayArr Coffee", "url": "https://jayarr.coffee" }
+    })}></script>
+
+    <style>
+      :root { --copper: #C17A3A; --dark: #1A1A1A; --muted: #6B6560; --cream: #FAF8F5; --cream-dark: #F0EDE8; --border: #E5E0D8; }
+      body { font-family: 'Inter', -apple-system, sans-serif; color: var(--dark); background: var(--cream); margin: 0; }
+
+      .dial-in-page { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+      /* Page header */
+      .page-header { text-align: center; margin-bottom: 2rem; padding-top: 1rem; }
+      .breadcrumbs { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.5rem; }
+      .breadcrumbs a { color: var(--muted); text-decoration: none; }
+      .breadcrumbs a:hover { color: var(--copper); }
+      .breadcrumbs span { margin: 0 0.4rem; }
+      .page-header h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+        font-weight: 700;
+        color: var(--dark);
+        margin: 0 0 0.5rem;
+        line-height: 1.15;
+      }
+      .page-subtitle {
+        font-size: 0.9rem;
+        color: var(--muted);
+        max-width: 50ch;
+        margin: 0 auto;
+        line-height: 1.6;
+      }
+      .bean-count {
+        font-size: 0.7rem;
+        color: var(--copper);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-top: 0.5rem;
+      }
+
+      /* Apparatus section */
+      .apparatus-section { margin-bottom: 3rem; }
+
+      /* Three Ways In — top-of-page orientation */
+      .three-doors {
+        max-width: 900px;
+        margin: 0 auto 2.5rem;
+      }
+      .three-doors-header {
+        text-align: center;
+        margin-bottom: 1.25rem;
+      }
+      .three-doors-eyebrow {
+        font-size: 0.7rem;
+        color: var(--copper);
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        font-weight: 600;
+      }
+      .three-doors-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--dark);
+        margin: 0.35rem 0 0.25rem;
+      }
+      .three-doors-sub {
+        font-size: 0.85rem;
+        color: var(--muted);
+        max-width: 52ch;
+        margin: 0 auto;
+        line-height: 1.55;
+      }
+      .doors {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-top: 1.25rem;
+      }
+      .door {
+        background: #FFFDFA;
+        border: 1px solid var(--border);
+        border-top: 3px solid var(--copper);
+        border-radius: 4px;
+        padding: 1.1rem 1rem;
+        position: relative;
+      }
+      .door-roman {
+        font-family: 'Playfair Display', serif;
+        font-size: 1rem;
+        color: var(--copper);
+        font-weight: 700;
+        letter-spacing: 0.05em;
+      }
+      .door-click {
+        font-size: 0.7rem;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-top: 0.35rem;
+      }
+      .door-click strong { color: var(--dark); font-weight: 600; }
+      .door-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--dark);
+        margin: 0.45rem 0 0.4rem;
+        line-height: 1.25;
+      }
+      .door-desc {
+        font-size: 0.8rem;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+      .doors-footnote {
+        text-align: center;
+        font-size: 0.78rem;
+        color: var(--muted);
+        margin-top: 1rem;
+        font-style: italic;
+      }
+      .doors-footnote strong { color: var(--dark); font-style: normal; font-weight: 600; }
+
+      /* SEO article — dial-in science */
+      .dial-in-article {
+        max-width: 680px;
+        margin: 4rem auto 3rem;
+        padding: 0 0.5rem;
+      }
+      .dial-in-article h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: var(--dark);
+        margin-bottom: 1rem;
+        line-height: 1.25;
+      }
+      .dial-in-article h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--dark);
+        margin: 1.75rem 0 0.6rem;
+      }
+      .dial-in-article p {
+        font-size: 0.92rem;
+        line-height: 1.75;
+        color: #2A2A2A;
+        margin: 0 0 1rem;
+      }
+      .dial-in-article p + p { margin-top: 0; }
+
+      /* Related articles */
+      .related-articles {
+        max-width: 900px;
+        margin: 2.5rem auto 0;
+        padding-top: 2.5rem;
+        border-top: 1px solid var(--border);
+        text-align: center;
+      }
+      .related-eyebrow {
+        font-size: 0.7rem;
+        color: var(--copper);
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        font-weight: 600;
+      }
+      .related-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.25rem;
+        margin: 0.4rem 0 1.25rem;
+      }
+      .related-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.65rem;
+      }
+      .related-links a {
+        display: inline-block;
+        border: 1px solid var(--border);
+        color: var(--dark);
+        padding: 0.5rem 0.95rem;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        text-decoration: none;
+        border-radius: 3px;
+        background: #FFFDFA;
+        transition: border-color 0.2s, color 0.2s;
+      }
+      .related-links a:hover {
+        border-color: var(--copper);
+        color: var(--copper);
+      }
+
+      @media (max-width: 600px) {
+        .doors { grid-template-columns: 1fr; gap: 0.85rem; }
+        .dial-in-page { padding: 1rem 1rem 3rem; }
+        .dial-in-article { margin: 3rem auto 2rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+
+    <main class="dial-in-page">
+      <nav class="breadcrumbs">
+        <a href="/">Home</a><span>/</span>
+        <a href="/tools/">Tools</a><span>/</span>
+        Brew Dial-In
+      </nav>
+
+      <div class="page-header">
+        <h1>Brew Dial-In</h1>
+        <p class="page-subtitle">
+          Select a coffee bean, choose your brewer, and get a science-backed recipe
+          calibrated to that specific combination.
+        </p>
+        <p class="bean-count">329 specialty coffees · 9 brew methods · 2,961 recipes</p>
+      </div>
+
+      <!-- Three Ways In — orient before clicking -->
+      <section class="three-doors" aria-labelledby="three-doors-title">
+        <div class="three-doors-header">
+          <div class="three-doors-eyebrow">How To Use This</div>
+          <h2 id="three-doors-title" class="three-doors-title">Three Ways In</h2>
+          <p class="three-doors-sub">
+            The apparatus below has three clickable regions — each starts a different path.
+            Pick whichever matches what you already know.
+          </p>
+        </div>
+
+        <div class="doors">
+          <div class="door">
+            <div class="door-roman">Door I</div>
+            <div class="door-click">Click the <strong>vessel on the left</strong></div>
+            <div class="door-title">Start with a bean</div>
+            <div class="door-desc">
+              Have a bag of coffee and want to know how to brew it? Search 329 specialty coffees
+              by name, roaster, or origin. We rank the nine methods by match score, then hand back
+              a recipe tuned to that bean.
+            </div>
+          </div>
+
+          <div class="door">
+            <div class="door-roman">Door II</div>
+            <div class="door-click">Click the <strong>brewer in the middle</strong></div>
+            <div class="door-title">Start with a brewer</div>
+            <div class="door-desc">
+              Already own a V60, Chemex, AeroPress, espresso machine, or one of five others?
+              Pick your gear and we'll surface the beans that shine through it — ranked by how
+              well the method suits each coffee's density, roast, and flavor.
+            </div>
+          </div>
+
+          <div class="door">
+            <div class="door-roman">Door III</div>
+            <div class="door-click">Click the <strong>cup on the right</strong></div>
+            <div class="door-title">Start with a flavor</div>
+            <div class="door-desc">
+              Not sure what you want yet? Pick a vibe — Bright &amp; Clean, Rich &amp; Bold,
+              Fruity &amp; Complex, Sweet Without Sugar, or Morning Comfort — and we'll match
+              beans to your mood before you pick a brewer.
+            </div>
+          </div>
+        </div>
+
+        <p class="doors-footnote">
+          All three paths converge on the same result: <strong>bean + brewer selected</strong>
+          &rarr; full recipe with grind size, temperature, ratio, and timing.
+        </p>
+      </section>
+
+      <!-- The Extraction Apparatus -->
+      <div class="apparatus-section">
+        <ExtractionApparatus client:load {beanIndex} {topBeans} />
+      </div>
+
+      <!-- SEO article — dial-in science -->
+      <article class="dial-in-article">
+        <h2>The Science of Dialing In: Why Every Bean Needs Its Own Recipe</h2>
+        <p>
+          Coffee brewing is the controlled dissolution of soluble compounds from ground beans
+          into water. Roasted coffee is roughly 28 to 30 percent soluble by weight; the rest is
+          insoluble cellulose. Pull out too little and the cup tastes sour and thin — the sugars
+          and acids leave the bean before the body does. Pull out too much and the cup turns
+          bitter and dry as the later-extracting compounds flood in. The target window is
+          narrow: 18 to 22 percent extraction yield with total dissolved solids between 1.15
+          and 1.45 percent for filter coffee. Everything else — grind size, water temperature,
+          contact time, ratio — is in service of hitting that window.
+        </p>
+        <p>
+          A single universal recipe cannot reach that window across 329 different coffees.
+          Beans differ in density, moisture content, processing method, roast level, and age,
+          and each variable shifts how water attacks the grounds. High-altitude washed Ethiopian
+          coffees are dense, acidic, and extract slowly — they usually want finer grinds and
+          longer contact time. Naturals from the same country are less dense, carry more
+          residual sugars, and extract more readily — they often want slightly coarser grinds
+          to avoid turning syrupy. Pulped-natural and honey-process coffees sit between the
+          two. Dark roasts, regardless of origin, are more porous and brittle; they give up
+          solubles quickly and overextract easily. The same gram of coffee yields a different
+          cup depending on every one of these axes.
+        </p>
+
+        <h3>Why the brewer matters as much as the bean</h3>
+        <p>
+          Brewers change the geometry of extraction. A Hario V60 uses a 60-degree conical cone
+          with a single large exit hole and thin paper filter, which produces fast, uneven
+          percolation and demands a grind fine enough to slow the flow without clogging it.
+          A Chemex uses a thicker bonded filter that traps fines and oils, yielding a cleaner
+          cup but requiring a coarser grind and longer pour rhythm to compensate for the drag.
+          An AeroPress is a pressurized immersion-percolation hybrid where contact time is
+          almost entirely in your hands. Espresso compresses all of this into a 25 to 35 second
+          window at nine bars of pressure, which changes the math completely — there the dial
+          is on the order of a few microns of grind adjustment. Feed the same bean through
+          each of these and the correct grind, ratio, and time shifts meaningfully.
+        </p>
+
+        <h3>Grind fines are the hidden dial</h3>
+        <p>
+          Jonathan Gagné's analysis of 300 particle-size distributions across 24 grinders found
+          that burr type shapes the distribution in ways that go beyond the median particle
+          size. Flat burrs tend toward unimodal distributions — a single peak with fewer
+          outliers. Conical burrs produce bimodal distributions with a main peak plus a
+          secondary peak of fines. When we dial in, Gagné argues, "we are dialing in the amount
+          of fines more so than we are dialing in the average size of coarse particles." Fines
+          punch above their weight: a particle one-tenth the median diameter has one-thousandth
+          the volume but vastly more surface area per unit mass. They extract fast, clog paper
+          filters, and set the hydraulic resistance of the puck. This is why two grinders set
+          to the same "V60 setting" can produce noticeably different cups. The recipes in this
+          tool assume a reasonably consistent grinder; small clicks in either direction should
+          get you the rest of the way there.
+        </p>
+
+        <h3>Water, temperature, and the evenness problem</h3>
+        <p>
+          Water chemistry is the most-ignored variable. The SCA target is roughly 150 ppm total
+          dissolved solids with balanced calcium-magnesium hardness and enough bicarbonate
+          alkalinity to buffer acidity without muting it. Very soft water (under 75 ppm) makes
+          coffee taste flat and sour; very hard water over-extracts and leaves scale in the
+          machine. Temperature matters in a linear-ish way — higher temperatures accelerate
+          extraction, but only if the beans can tolerate it. Light roasts usually prefer 96 to
+          99°C water; medium roasts are comfortable at 92 to 96°C; dark roasts often taste
+          better at 88 to 92°C because the lower heat holds back the harsh bitter notes the
+          darker roast has already developed. What ties everything together is evenness of
+          extraction: the difference between a good and a great cup often comes down to whether
+          every particle in the bed extracted at the same rate, not whether the average
+          extraction was on target.
+        </p>
+
+        <h3>Why 2,961 recipes beats one</h3>
+        <p>
+          Multiply 329 beans by nine brewers and you get 2,961 possible combinations. Most
+          brewing guides collapse that down to a single recipe per method — "pour-over:
+          1:16 ratio, 94°C, 3:30 total" — which is a fine starting point and a poor ending
+          point. The point of dialing in is that the starting recipe is an educated guess and
+          the final recipe comes from tasting. What this tool does is narrow the educated guess
+          from "any coffee, any brewer" to "this specific bean through this specific brewer"
+          so the first cup is closer to the window than a generic recipe can be. From there,
+          the classic adjustment rules apply: if it tastes sour or thin, grind finer or raise
+          temperature; if it tastes bitter or harsh, grind coarser or lower temperature; if
+          body feels thin, increase dose. Change one variable at a time. The recipe is the
+          starting point, your palate is the endpoint.
+        </p>
+      </article>
+
+      <!-- Related articles -->
+      <aside class="related-articles">
+        <div class="related-eyebrow">Go Deeper</div>
+        <h2 class="related-title">Related Reading</h2>
+        <div class="related-links">
+          <a href="/blog/coffee-extraction-yield-explained/">Extraction Yield</a>
+          <a href="/blog/coffee-strength-vs-extraction/">Strength vs Extraction</a>
+          <a href="/blog/coffee-to-water-ratio-guide/">Brew Ratio Guide</a>
+          <a href="/blog/coffee-grind-size-guide-what-grind-for-every-brew-method/">Grind Size Guide</a>
+          <a href="/blog/ultimate-pour-over-coffee-guide-and-best-v60-technique/">V60 Technique</a>
+          <a href="/blog/how-to-dial-in-espresso/">Dialing In Espresso</a>
+          <a href="/blog/fix-channeling-uneven-extraction/">Channeling Fixes</a>
+          <a href="/blog/coffee-water-recipes-compared/">Water Recipes</a>
+        </div>
+      </aside>
+    </main>
+
+    <Footer />
+  </body>
+</html>

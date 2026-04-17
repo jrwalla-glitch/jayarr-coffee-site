@@ -2,7 +2,7 @@
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-import Toolbox from '../../components/Toolbox.svelte';
+import WorkshopScene from '../../components/WorkshopScene.svelte';
 ---
 
 <!doctype html>
@@ -10,14 +10,14 @@ import Toolbox from '../../components/Toolbox.svelte';
 	<head>
 		<BaseHead
 			title="Coffee Toolkit — JayArr Coffee"
-			description="Practical coffee tools: brew ratio calculator, coffee diagnostic, caffeine tracker, freshness guide, drink builder, and grind size reference."
+			description="The Extraction Apparatus: science-backed recipes for 329 specialty coffees across 9 brew methods. Plus brew ratio, grind guide, freshness tracker, diagnostic tools."
 		/>
 		<script type="application/ld+json" set:html={JSON.stringify({
 			"@context": "https://schema.org",
 			"@type": "WebApplication",
-			"name": "Coffee Toolkit",
+			"name": "Coffee Toolkit — The Extraction Apparatus",
 			"url": "https://jayarr.coffee/tools/",
-			"description": "Practical coffee tools: brew ratio calculator, coffee diagnostic, caffeine tracker, freshness guide, drink builder, and grind size reference.",
+			"description": "Science-backed brewing recipes for 329 specialty coffees across 9 brew methods, plus practical tools for brew ratio, grind size, freshness, diagnostics, caffeine tracking, and drink building.",
 			"applicationCategory": "UtilityApplication",
 			"operatingSystem": "Any",
 			"offers": {
@@ -31,45 +31,25 @@ import Toolbox from '../../components/Toolbox.svelte';
 				"url": "https://jayarr.coffee"
 			}
 		})}></script>
+		<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 	</head>
 	<body class="bg-cream">
 		<Header />
 
-		<!-- Hero -->
-		<section class="bg-charcoal pt-32 pb-16 md:pb-20">
+		<!-- Slim header strip -->
+		<section class="bg-charcoal pt-28 pb-10">
 			<div class="max-w-3xl mx-auto px-6 text-center">
 				<span class="text-xs uppercase tracking-widest text-copper font-medium">Practical Tools</span>
-				<h1 class="font-serif text-4xl md:text-6xl font-bold text-cream mt-2 mb-4">Your Coffee Toolkit</h1>
-				<p class="text-cream/60 max-w-xl mx-auto leading-relaxed">
-					Everything you need to brew better coffee — from dialing in ratios to diagnosing what went wrong.
+				<h1 class="font-serif text-3xl md:text-5xl font-bold text-cream mt-2 mb-3">Your Coffee Toolkit</h1>
+				<p class="text-cream/60 max-w-xl mx-auto text-sm leading-relaxed">
+					The Extraction Apparatus for 329 specialty coffees — plus practical tools for brew ratio, grind, freshness, and diagnostics.
 				</p>
 			</div>
 		</section>
 
-		<!-- Toolbox -->
-		<section class="py-12 md:py-16 overflow-visible">
-			<div class="max-w-4xl mx-auto px-6 overflow-visible">
-				<Toolbox client:load />
-			</div>
-		</section>
-
-		<!-- Bridge to Discovery Tools -->
-		<section class="bg-charcoal py-16">
-			<div class="max-w-3xl mx-auto px-6 text-center">
-				<span class="text-xs uppercase tracking-widest text-copper font-medium">Explore</span>
-				<h2 class="font-serif text-2xl md:text-3xl font-bold text-cream mt-2 mb-3">Looking for something different?</h2>
-				<p class="text-cream/50 text-sm mb-8 max-w-lg mx-auto">
-					Our discovery tools help you explore coffee origins, flavors, and brewing methods.
-				</p>
-				<div class="flex flex-wrap justify-center gap-4">
-					<a href="/explore/origins/" class="border border-cream/20 text-cream/70 px-6 py-2.5 text-sm uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						Origin Map
-					</a>
-					<a href="/explore/" class="border border-cream/20 text-cream/70 px-6 py-2.5 text-sm uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						Flavor Bloom
-					</a>
-				</div>
-			</div>
+		<!-- Workshop scene -->
+		<section class="py-8 md:py-12">
+			<WorkshopScene client:load />
 		</section>
 
 		<Footer />
