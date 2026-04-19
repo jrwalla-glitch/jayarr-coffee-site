@@ -1,0 +1,185 @@
+---
+title: "Turbo Shots: Why Fast Espresso Beats 25-Second Dogma"
+description: "Turbo shots pull in 15-20 seconds at a coarser grind and hit 80% of max extraction with more aroma than traditional pulls. The Smrke 2024 and Hendon 2020 science, and how to dial one in."
+pubDate: "Apr 19 2026"
+updatedDate: "Apr 19 2026"
+heroImage: "../../assets/blog/turbo-shots-fast-espresso-science.jpg"
+category: "Science"
+---
+
+import ArticleSchema from '../../components/ArticleSchema.astro';
+import AnswerBox from '../../components/AnswerBox.astro';
+import FAQ from '../../components/FAQ.astro';
+import ToolCallout from '../../components/ToolCallout.astro';
+import DeepBrewCallout from '../../components/DeepBrewCallout.astro';
+import MethodCards from '../../components/infographics/MethodCards.astro';
+
+<ArticleSchema
+  title="Turbo Shots: Why Fast Espresso Beats 25-Second Dogma"
+  description="Turbo shots pull in 15-20 seconds at a coarser grind and hit 80% of max extraction with more aroma than traditional pulls. The Smrke 2024 and Hendon 2020 science, and how to dial one in."
+  pubDate="Apr 19 2026"
+  updatedDate="Apr 19 2026"
+  heroImage="../../assets/blog/turbo-shots-fast-espresso-science.jpg"
+  category="Science"
+/>
+
+<AnswerBox answer="A turbo shot is 18g in, 36-45g out, pulled in 15-20 seconds at a grind 2-4 clicks coarser than traditional. ETH Zurich's Smrke 2024 paper showed these fast shots hit ~80% of maximum extraction yield while retaining aromatic compounds that longer 25-30s shots actively destroy. Hendon 2020 independently found that coarser, shorter shots reduce bean waste by ~25% with no quality loss. The mechanism: fines control bed permeability, not surface area — and volatile aromatics like 2-furfurylthiol decay rapidly under hot contact time." />
+
+For decades, the gospel of espresso has been 18 grams in, 36 grams out, 25 to 30 seconds. Anything faster was a gusher. Anything finer-and-slower was a stall. The "good shot" lived in a narrow window defined more by cafe folklore than by physics.
+
+Then in 2024, a team at ETH Zurich led by Samo Smrke pulled shots that finished in 10 to 20 seconds — roughly half the "correct" time — and found they delivered more than 80% of the maximum possible extraction efficiency while retaining volatile aromatics that longer shots actively destroy. Combined with Christopher Hendon's 2020 paper in *Matter* that told baristas to dose less and grind coarser to cut waste and improve consistency, a quiet rewrite of the espresso playbook is underway. This is the turbo shot, and once you understand why it works, your dial-in routine will never look the same.
+
+## What a Turbo Shot Actually Is
+
+A turbo shot is espresso pulled at a coarser grind setting, in a shorter time, at a slightly higher ratio than the traditional 1:2 lungo-style pull. Typical parameters: 18 grams in, 36 to 45 grams out, 10 to 20 seconds of total flow, grind set two to four clicks coarser than your traditional setting. The puck still sees 9 bar of pump pressure. The basket, the machine, and the dose don't change. Only the grind and the clock change.
+
+The name is unofficial. Coffee people use it to distinguish the style from lungos (same ratio, longer time) and ristrettos (shorter ratio, short time). Turbo shots are defined by *short contact time with coarse particles*, which sounds like a recipe for weak, sour water. The Smrke 2024 data says otherwise.
+
+## The Smrke 2024 Finding Rewrites the Time Rule
+
+The ETH Zurich team measured extraction yield across a matrix of grind settings, doses, and times using Costa Rican Arabica ground on a Bentwood Vertical 63. They varied grind from 160 to 250 microns in burr spacing, weighed every shot, and used proton transfer reaction mass spectrometry to watch individual aroma compounds evolve in real time. The headline result: shots finishing in under 15 seconds reached about 17 to 18% extraction yield, which is roughly 80% of the maximum yield achievable with the same coffee at 40-plus seconds.
+
+Eighty percent of max, in half the time. That alone rewrites the "longer is better" assumption. But the volatile data is where turbo shots become genuinely exciting. The team identified four distinct behaviors among aroma compounds during extraction. One large group — 18 separate mass-to-charge peaks — *continuously decreased* as extraction progressed. These compounds are being lost to heat and time. A long shot has a worse concentration of them in the cup than a short shot.
+
+In other words: a 30-second shot is throwing aroma overboard to hit a slightly higher yield number on a refractometer. The refractometer can't taste what's missing.
+
+## Why Fines Work As Permeability Modifiers, Not Surface Area
+
+The deeper finding in the Smrke paper — the one that reshapes how you think about grinding for espresso — is that fines are not doing what everyone thought they were doing. The traditional story said fines matter because they're small, so they have huge surface area per gram, so they extract fast and contribute flavor disproportionately. That story is basically wrong.
+
+Smrke tested it directly. The team sieved out fines and added them back to coarser grinds in 1, 2, and 4 gram increments. Partial least squares regression showed that particles up to about 150 microns had positive coefficients on extraction *time* but not distinctive coefficients on flavor compounds. Fines were modulating bed permeability — slowing water flow — and giving the coarser particles more contact time. They were not, by themselves, injecting massive amounts of dissolved solids into the cup.
+
+Gagné had suggested exactly this: "when we dial in espresso, we are dialing in the amount of fines more so than the average size of coarse particles." Smrke's paper confirmed it experimentally. This matters for turbo shots because a coarser grind with *some* fines preserved gives you both fast flow (short contact time) and enough permeability control to avoid channeling.
+
+<MethodCards
+  title="Turbo vs Traditional Espresso Pull"
+  subtitle="Same dose, same basket, same pressure — only grind and time change"
+  methods={[
+    {
+      name: "Traditional Shot",
+      metrics: [
+        { label: "Dose", value: "18 g" },
+        { label: "Yield", value: "36 g (1:2)" },
+        { label: "Time", value: "25-30 s" },
+        { label: "Grind", value: "Baseline" },
+        { label: "Extraction Yield", value: "19-21%", color: "#6B4226" }
+      ],
+      notes: [
+        "Full body and caramelization",
+        "Works for milk drinks and dark roasts",
+        "Predictable by time on the clock",
+        "Tradeoff: long hot contact destroys ~84% of 2-furfurylthiol",
+        "Tradeoff: fine bed raises channel risk and mutes top notes"
+      ]
+    },
+    {
+      name: "Turbo Shot",
+      metrics: [
+        { label: "Dose", value: "18 g" },
+        { label: "Yield", value: "36-45 g (1:2 to 1:2.5)" },
+        { label: "Time", value: "15-20 s" },
+        { label: "Grind", value: "2-4 clicks coarser" },
+        { label: "Extraction Yield", value: "17-18% (~80% max)", color: "#C17A3A" }
+      ],
+      notes: [
+        "Retains more volatile aromatics (Smrke 2024)",
+        "Clarity and high-note intensity on light roasts",
+        "Hendon 2020: ~25% less bean waste at equal quality",
+        "Tradeoff: thinner body, poor fit for milk drinks",
+        "Tradeoff: demands a consistent grinder; can't be dialed by clock alone"
+      ]
+    }
+  ]}
+  footnote="Sources: Smrke, Eiermann, Yeretzian — Scientific Reports (Mar 2024). Hendon et al. — Matter (2020). Fines share controls bed permeability; volatile aromatics like 2-furfurylthiol degrade rapidly under hot contact."
+/>
+
+## The Hendon 2020 Paper That Started the Conversation
+
+Before Smrke's turbo shot data, there was Christopher Hendon's 2020 paper in *Matter*, titled "Systematically Improving Espresso: Insights from Mathematical Modeling and Experiment." Hendon's team, working with mathematical modeler Michael Cameron, ran thousands of shots under controlled conditions and found something ugly: fine-grind espresso was poorly reproducible. Finer grind increased the odds of forming a preferred flow channel — a low-resistance route through the puck that let water bypass most of the bed.
+
+Hendon's recommendation was blunt: grind coarser, dose less, pull shorter. Specifically, they suggested cutting dose from the typical 20 grams to 15 grams, moving the grind one to two steps coarser, and pulling in roughly 10 to 15 seconds. In their test conditions this configuration reduced bean waste by approximately 25% with no loss of extraction quality.
+
+The coffee community reacted with the usual mix of curiosity and refusal. The finding is hard to swallow because it contradicts a deeply held belief that espresso is about pressure and time *through a fine bed*. Hendon's paper said the fine bed itself was the problem — channels form in fine pucks and waste coffee while pretending to extract it. Four years later, Smrke's work has effectively completed the case.
+
+## Why Volatile Aromatics Decay So Fast
+
+There's a second reason turbo shots taste distinctive: they preserve aroma compounds that traditional shots actively destroy. The most important of these is 2-furfurylthiol, the character-impact odorant that most people identify as "the smell of coffee." 2-furfurylthiol has an odor activity value over 2,000 and a detection threshold around 0.01 parts per billion — it is the single most potent coffee aroma compound.
+
+It is also extraordinarily fragile. In brewed coffee held at serving temperature, 2-furfurylthiol loses approximately 84% of its concentration within 60 minutes, primarily through thiol-melanoidin conjugation — the sulfur group binds to Maillard-reaction polymers and gets sequestered. Heat and time are the enemies. Any shot that spends an extra 10 to 15 seconds in a 90-plus degree Celsius bed is paying a 2-furfurylthiol tax.
+
+Turbo shots pay less of that tax. This is not a marginal effect. It is why a fast shot can smell brighter and more distinctly "coffee-like" than a slow shot from the same beans even when the refractometer says the slow shot extracted more.
+
+## How to Pull a Turbo Shot at Home
+
+The recipe is simple, but it demands a few real adjustments.
+
+**Start with your current dial-in.** Assume you're at 18 grams in, 36 grams out, 25 to 30 seconds, traditional grind. This is your baseline.
+
+**Move grind two to four clicks coarser.** Not one. The jump is larger than you think. Smrke's coarsest productive setting was 250 microns burr spacing, roughly the difference between medium-fine and medium grind on most consumer grinders.
+
+**Target 1:2 to 1:2.5 ratio.** Keep the dose at 18 grams, pull 36 to 45 grams out. Do not chase a specific time. Let the grind and ratio determine flow.
+
+**Expect 15 to 20 seconds total extraction.** This includes preinfusion if your machine has it. On a flat pressure profile, first drops around 4 to 6 seconds, finish at 15 to 20.
+
+**Keep your brew temperature near your normal setting or raise it 1 to 2 degrees Celsius.** The shorter contact time gives the puck less thermal residence time, so a small temperature boost compensates without introducing bitterness.
+
+**Do not change dose or basket.** The Hendon 15-gram recommendation is a separate variable; run one experiment at a time. Stick with your normal 18-gram basket for the first turbo shots so you isolate the grind-and-time change.
+
+<ToolCallout tool="grind-guide" context="Turbo shots hinge on moving the grind 2-4 clicks coarser. The grind size guide shows where each brew method lives on the micron scale so you can calibrate the jump." />
+
+## What Turbo Shots Taste Like
+
+Expect clarity. Expect aromatic intensity — floral, fruited, high-toned notes that were previously muddled. Expect a thinner body and less caramelization. Expect less of the heavy, chocolatey, nougat-like character that defines a classic Italian shot.
+
+Turbo shots shine on light-roasted single origins where the green coffee's intrinsic flavors are the point. Ethiopian naturals, washed Kenyans, Panamanian geshas — these are the beans that benefit most. The shorter contact time preserves their fragile fruit esters and floral top notes. In side-by-side tasting, a turbo shot of a good light-roast geisha can deliver jasmine and peach character that simply does not survive a 30-second extraction of the same coffee.
+
+## When Not to Use Turbo Shots
+
+Turbo shots are the wrong tool for several jobs.
+
+**Milk drinks.** Latte and cappuccino formats rely on heavy-bodied shots to push through steamed milk. Thin turbo shots disappear in a six-ounce cappuccino. Use a traditional or slightly ristretto pull for milk.
+
+**Dark roasts.** Dark-roasted beans have already lost most of their high-volatile aromatics before they hit the grinder. The turbo advantage is mostly wasted on them. Dark roasts also benefit from longer extraction to develop caramelization and roast character, which is exactly what turbo shots skip.
+
+**Competition and signature shots.** Barista competitions and signature drinks are judged on profile development, body, balance, and presentation. Judges taste slowly and deliberately. A fast shot optimized for volatile retention is not optimized for the judging window.
+
+**Dialing in by time alone.** If your workflow is "set grind to hit 30 seconds and call it done," you cannot dial in a turbo shot the same way. You need to dial in by *taste and yield*, watching for clarity and aromatic intensity at 15 to 20 seconds rather than chasing a clock target.
+
+## The Honest Caveats
+
+Turbo shots are not magic. Smrke's paper shows clearly that maximum extraction yield still requires longer extractions — shots above 40 seconds hit the ceiling at around 21 to 22% yield, while turbo shots sit at 17 to 18%. If your goal is to extract every possible solid from the bean, turbo is slightly less efficient per gram.
+
+The counterargument, which the aroma data supports, is that extracting more solids past a certain point is not necessarily better flavor — and may be actively worse for aromatic intensity. This is the same argument the new Brewing Control Chart makes for filter coffee: consumer preference is bimodal, not centered on a single sweet spot, and some drinkers clearly prefer the lower-EY, more aromatic style of extraction.
+
+Turbo shots are also more demanding of grinder quality than traditional shots. A cheap grinder that produces wildly variable fines share from shot to shot will produce wildly variable turbo shots. The Smrke team used a high-end Bentwood Vertical 63. A Baratza Encore ESP or an underpowered burr grinder may struggle to deliver consistent turbo pulls.
+
+Finally, turbo shots are not the answer for every coffee or every drinker. They are a new tool in the espresso toolkit. For a light-roast espresso obsessive chasing clarity and aromatic intensity, they are transformative. For a dark-roast milk-drink drinker chasing body and caramelization, they are irrelevant. Both things can be true.
+
+<DeepBrewCallout tool="extraction" context="Turbo shots sit lower on the extraction-yield curve but higher on aromatic retention. The Extraction Diagnostic shows exactly where you are on the curve and what the chemistry says to change." />
+
+The turbo shot is one of the few genuinely new ideas in home espresso in the last decade, and it comes with peer-reviewed science behind it. If you've been pulling 1:2 shots in 28 seconds because that's what the internet told you, spend a week pulling them in 18 seconds at a coarser grind. You may not go back.
+
+For more on why grind size is really about fines distribution rather than average particle size, see our [coffee grind size micron chart](/blog/coffee-grind-size-micron-chart/). For the basic dial-in process this article assumes, see [how to dial in espresso](/blog/how-to-dial-in-espresso/). For the refractometer methodology behind extraction yield claims, see [coffee extraction yield explained](/blog/coffee-extraction-yield-explained/). If channeling is undermining your shots regardless of grind, our guide to [fixing channeling and uneven extraction](/blog/fix-channeling-uneven-extraction/) walks through the distribution and tamp fixes. And if you want to know why coarser isn't always the answer, compare [conical vs flat burr grinders](/blog/conical-vs-flat-burr-grinders/) — burr geometry changes your fines share before you ever touch a click.
+
+<FAQ items={[
+  {
+    question: "Can I pull a turbo shot on a Breville Bambino or entry-level machine?",
+    answer: "Yes. The machine doesn't limit turbo shots — any 9-bar espresso machine can produce them. What limits you is grinder consistency. If your grinder struggles to deliver stable shot-to-shot fines distribution, your turbo shots will swing wildly between sour and balanced. A Baratza Encore ESP is a realistic floor. The Bambino pump and thermoblock are fine."
+  },
+  {
+    question: "Does a turbo shot need preinfusion?",
+    answer: "No, but preinfusion helps. The Hendon and Smrke data don't isolate preinfusion as a variable, so the effect is uncertain. Practically, a short preinfusion (3 to 5 seconds at reduced pressure) helps wet the coarser bed evenly and reduces the risk of a fast channel forming. If your machine has an E61 group, it will preinfuse for free."
+  },
+  {
+    question: "Why is the ratio 1:2.5 instead of the traditional 1:2?",
+    answer: "Coarser grinds extract slightly less per drop of water that passes through, so a marginally longer beverage weight compensates to hit a reasonable dissolved solids concentration. You can pull 1:2 turbo shots if you prefer a more concentrated cup, but 1:2.5 tends to balance better across most light-roast origins."
+  },
+  {
+    question: "Will a turbo shot produce crema?",
+    answer: "Some, but less and thinner than a traditional shot. Crema is stabilized by fines and by CO2 from fresh beans. Turbo shots still have both, but the shorter contact time and coarser bed produce less mechanical foam generation. Expect a light tan crema that dissipates faster than a standard pull."
+  },
+  {
+    question: "Does the grinder burr type matter for turbo shots?",
+    answer: "Yes, more than for traditional shots. SSP ultra-low-fines burrs (ULF) can produce excellent turbo shots because their narrow particle distribution gives predictable flow at coarser settings. Classic conical burrs work fine but may need bigger click adjustments to hit the target flow. Stock Baratza and Eureka flat burrs are in the middle."
+  }
+]} />
