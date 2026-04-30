@@ -1,7 +1,7 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
-export const CATEGORIES = ['Origins', 'Equipment', 'Brewing', 'Science', 'Recipes', 'Drinks'] as const;
+export const CATEGORIES = ['Origins', 'Equipment', 'Brewing', 'Science', 'Recipes', 'Drinks', 'Industry'] as const;
 export type Category = typeof CATEGORIES[number];
 
 export const DB_CATEGORIES = ['Chemistry', 'Physics', 'Roasting', 'Agriculture'] as const;
@@ -19,7 +19,7 @@ const blog = defineCollection({
 			pubDate: z.coerce.date(),
 			updatedDate: z.coerce.date().optional(),
 			heroImage: image().optional(),
-			category: z.enum(['Origins', 'Equipment', 'Brewing', 'Science', 'Recipes', 'Drinks']).optional(),
+			category: z.enum(['Origins', 'Equipment', 'Brewing', 'Science', 'Recipes', 'Drinks', 'Industry']).optional(),
 			videoId: z.string().optional(),
 		}),
 });
