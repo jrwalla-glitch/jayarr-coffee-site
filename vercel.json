@@ -2,22 +2,22 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
     {
-      "source": "/blog/boss-barista-women-in-coffee/:path+",
+      "source": "/blog/boss-barista-women-in-coffee/:path(.+)",
       "destination": "/blog/boss-barista-women-in-coffee/",
       "permanent": true
     },
     {
-      "source": "/blog/is-coffee-a-dead-end-job/:path+",
+      "source": "/blog/is-coffee-a-dead-end-job/:path(.+)",
       "destination": "/blog/is-coffee-a-dead-end-job/",
       "permanent": true
     },
     {
-      "source": "/blog/klaus-thomsen-coffee-collective-copenhagen/:path+",
+      "source": "/blog/klaus-thomsen-coffee-collective-copenhagen/:path(.+)",
       "destination": "/blog/klaus-thomsen-coffee-collective-copenhagen/",
       "permanent": true
     },
     {
-      "source": "/blog/ka-u-hawaii-specialty-coffee-region/:path+",
+      "source": "/blog/ka-u-hawaii-specialty-coffee-region/:path(.+)",
       "destination": "/blog/ka-u-hawaii-specialty-coffee-region/",
       "permanent": true
     }
