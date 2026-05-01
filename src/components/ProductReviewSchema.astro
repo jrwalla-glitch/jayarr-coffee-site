@@ -29,7 +29,13 @@ const schemas = products.map((product) => ({
 	},
 	...(product.description ? { description: product.description } : {}),
 	...(product.image ? { image: product.image } : {}),
-	...(product.price
+	// Only emit `offers` when we also have an `image` — Google's Merchant
+	// Listings validator requires `image` whenever `offers` is present, and
+	// flags every Product as invalid otherwise. For editorial review articles
+	// without per-product photos, we suppress the offers block entirely.
+	// Prices remain visible in body text/ranking tables; the Review schema
+	// (below) is the appropriate rich-result vehicle for editorial reviews.
+	...(product.price && product.image
 		? {
 				offers: {
 					'@type': 'Offer',
