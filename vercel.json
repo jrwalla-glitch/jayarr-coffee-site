@@ -20,6 +20,21 @@
       "source": "/blog/ka-u-hawaii-specialty-coffee-region/:path(.+)",
       "destination": "/blog/ka-u-hawaii-specialty-coffee-region/",
       "permanent": true
+    },
+    {
+      "source": "/blog/porto-specialty-coffee-vila-nova-de-gaia/:path(.+)",
+      "destination": "/blog/porto-specialty-coffee-vila-nova-de-gaia/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/virtual-coffee-festival-2020-history/:path(.+)",
+      "destination": "/blog/virtual-coffee-festival-2020-history/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/coffee-profilers-berlin-friedrichshain-bean-identity/:path(.+)",
+      "destination": "/blog/coffee-profilers-berlin-friedrichshain-bean-identity/",
+      "permanent": true
     }
   ]
 }
