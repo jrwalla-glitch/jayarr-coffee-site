@@ -6,7 +6,7 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import { getCollection } from 'astro:content';
-import heroImage from '../assets/blog/hero-coffee-farm.jpg';
+import heroImage from '../assets/blog/hero-espresso-pour.jpg';
 import LiteYouTube from '../components/LiteYouTube.astro';
 
 const allPosts = (await getCollection('blog')).sort(
@@ -66,7 +66,7 @@ const popularPosts = popularSlugs
 			<div class="absolute inset-0">
 				<Image
 					src={heroImage}
-					alt="Coffee farm at golden hour"
+					alt="Espresso extracting from a naked portafilter into a white cup, golden crema visible"
 					width={1920}
 					height={1080}
 					class="w-full h-full object-cover object-center"
