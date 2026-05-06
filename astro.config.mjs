@@ -12,10 +12,6 @@ export default defineConfig({
   site: 'https://jayarr.coffee',
   integrations: [mdx(), sitemap(), svelte()],
 
-  redirects: {
-    '/blog/coffee-profilers-berlin-friedrichshain-bean-identity': '/blog/coffee-profilers-method',
-  },
-
   vite: {
     plugins: [tailwindcss()],
   },
