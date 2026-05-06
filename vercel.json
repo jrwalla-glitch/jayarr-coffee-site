@@ -27,8 +27,23 @@
       "permanent": true
     },
     {
+      "source": "/blog/coffee-festivals-virtual-pivot-2020/:path(.+)",
+      "destination": "/blog/coffee-festivals-virtual-pivot-2020/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/virtual-coffee-festival-2020-history",
+      "destination": "/blog/coffee-festivals-virtual-pivot-2020/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/virtual-coffee-festival-2020-history/",
+      "destination": "/blog/coffee-festivals-virtual-pivot-2020/",
+      "permanent": true
+    },
+    {
       "source": "/blog/virtual-coffee-festival-2020-history/:path(.+)",
-      "destination": "/blog/virtual-coffee-festival-2020-history/",
+      "destination": "/blog/coffee-festivals-virtual-pivot-2020/",
       "permanent": true
     },
     {
