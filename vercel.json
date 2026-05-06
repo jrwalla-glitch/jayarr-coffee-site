@@ -42,7 +42,12 @@
       "permanent": true
     },
     {
-      "source": "/blog/coffee-profilers-berlin-friedrichshain-bean-identity/:path*",
+      "source": "/blog/coffee-profilers-berlin-friedrichshain-bean-identity/",
+      "destination": "/blog/coffee-profilers-method/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/coffee-profilers-berlin-friedrichshain-bean-identity/:path(.+)",
       "destination": "/blog/coffee-profilers-method/",
       "permanent": true
     }
