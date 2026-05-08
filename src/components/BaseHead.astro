@@ -72,6 +72,10 @@ const breadcrumbSchema = {
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
 
+<!-- Preconnect to third-party origins used during initial render -->
+<link rel="preconnect" href="https://i.ytimg.com" crossorigin />
+<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+
 <!-- Vercel Analytics -->
 <script defer src="/_vercel/insights/script.js"></script>
 
@@ -109,11 +113,17 @@ const breadcrumbSchema = {
 <!-- Pinterest Domain Verification -->
 <meta name="p:domain_verify" content="54b67cdd8d98db76f65f872a6247cda4"/>
 
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-1N7FMBHFWV"></script>
+<!-- Google Analytics — queue calls now, fetch gtag.js after page load so
+     it doesn't compete with the LCP image for bandwidth on slow networks -->
 <script>
 	window.dataLayer = window.dataLayer || [];
 	function gtag(){dataLayer.push(arguments);}
 	gtag('js', new Date());
 	gtag('config', 'G-1N7FMBHFWV');
+	addEventListener('load', () => {
+		const s = document.createElement('script');
+		s.async = true;
+		s.src = 'https://www.googletagmanager.com/gtag/js?id=G-1N7FMBHFWV';
+		document.head.appendChild(s);
+	});
 </script>

@@ -61,14 +61,15 @@ const popularPosts = popularSlugs
 	<body class="bg-cream">
 		<Header />
 
+		<main id="main">
 		<!-- Hero Section -->
 		<section class="relative h-[85vh] md:h-screen min-h-[500px] flex items-center justify-center overflow-hidden">
 			<div class="absolute inset-0">
 				<Image
 					src={heroImage}
 					alt="Espresso extracting from a naked portafilter into a white cup, golden crema visible"
-					width={1920}
-					height={1080}
+					widths={[640, 960, 1440, 1920]}
+					sizes="100vw"
 					class="w-full h-full object-cover object-center"
 					loading="eager"
 					fetchpriority="high"
@@ -129,10 +130,11 @@ const popularPosts = popularSlugs
 								{post.data.heroImage && (
 									<div class="aspect-[16/10] overflow-hidden rounded-sm mb-4">
 										<Image
-											width={720}
-											height={450}
+											widths={[400, 720, 1080]}
+											sizes="(min-width: 1024px) 320px, (min-width: 768px) 360px, 100vw"
 											src={post.data.heroImage}
 											alt={post.data.title}
+											loading="lazy"
 											class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
 										/>
 									</div>
@@ -172,7 +174,7 @@ const popularPosts = popularSlugs
 				<!-- The Coffee Collection -->
 				<div class="mb-16">
 					<h3 class="font-serif text-2xl font-bold text-cream text-center mb-2">The Coffee Collection</h3>
-					<p class="text-cream/40 text-sm text-center mb-8 italic">Three interactive studies in coffee science</p>
+					<p class="text-cream/55 text-sm text-center mb-8 italic">Three interactive studies in coffee science</p>
 					<div class="flex flex-col md:flex-row justify-center gap-6 md:gap-8 items-center">
 						<a href="/explore/origins" class="group block text-center">
 							<div class="w-52 h-32 bg-[#E8E1D4] border border-white/15 rounded-sm overflow-hidden relative mx-auto" style="box-shadow: inset 0 2px 6px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.15);">
@@ -273,7 +275,7 @@ const popularPosts = popularSlugs
 				<!-- Your Coffee Toolkit -->
 				<div>
 					<h3 class="font-serif text-2xl font-bold text-cream text-center mb-2">Your Coffee Toolkit</h3>
-					<p class="text-cream/40 text-sm text-center mb-8 italic">Practical calculators and diagnostics for everyday brewing</p>
+					<p class="text-cream/55 text-sm text-center mb-8 italic">Practical calculators and diagnostics for everyday brewing</p>
 					<div class="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-3xl mx-auto">
 						<a href="/tools/fix-my-coffee/" class="group block p-5 border border-white/10 rounded-sm hover:border-copper/40 transition-all duration-300">
 							<div class="text-copper mb-2">
@@ -394,6 +396,8 @@ const popularPosts = popularSlugs
 				<p class="text-xs text-warm-gray/60 mt-4">No spam. Unsubscribe anytime.</p>
 			</div>
 		</section>
+
+		</main>
 
 		<Footer />
 	</body>

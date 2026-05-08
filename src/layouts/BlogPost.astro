@@ -175,10 +175,12 @@ const breadcrumbSchema = {
 		{heroImage && (
 			<div class="max-w-4xl mx-auto px-6 -mt-1">
 				<Image
-					width={1020}
-					height={510}
+					widths={[400, 640, 1020]}
+					sizes="(min-width: 896px) 720px, 100vw"
 					src={heroImage}
 					alt={title}
+					loading="eager"
+					fetchpriority="high"
 					class="w-full rounded-sm"
 				/>
 			</div>
