@@ -433,9 +433,6 @@ const roasters = [...new Set(hub.beans.map(b => b.roaster))].sort();
               <h2>Brewing This Origin</h2>
               <hr class="section-rule" />
               <p class="brewing-note">{hub.brewing_note}</p>
-              <a href="/deep-brew/brew-dial-in/" class="brewing-cta">
-                Dial in your specific bean &rarr;
-              </a>
             </section>
           )}
 
@@ -446,7 +443,7 @@ const roasters = [...new Set(hub.beans.map(b => b.roaster))].sort();
 
             <div class="bean-grid">
               {hub.beans.map((bean) => (
-                <a href={`/tools/brew-dial-in/${bean.id}/`} class="bean-card">
+                <div class="bean-card">
                   <div class="bean-roaster">{bean.roaster}</div>
                   <div class="bean-name">{bean.name}</div>
                   <div class="flavor-tags">
@@ -462,8 +459,7 @@ const roasters = [...new Set(hub.beans.map(b => b.roaster))].sort();
                       ))}
                     </div>
                   </div>
-                  <span class="bean-cta">View &amp; Dial-In &rarr;</span>
-                </a>
+                </div>
               ))}
             </div>
           </section>

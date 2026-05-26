@@ -36,4 +36,17 @@ const deepbrew = defineCollection({
 	}),
 });
 
-export const collections = { blog, deepbrew };
+const faq = defineCollection({
+	loader: glob({ base: './src/content/faq', pattern: '**/*.{md,mdx}' }),
+	schema: z.object({
+		question: z.string(),
+		shortAnswer: z.string(),
+		pubDate: z.coerce.date(),
+		updatedDate: z.coerce.date().optional(),
+		tool: z.enum(['brew-ratio', 'caffeine', 'fix-my-coffee', 'freshness', 'grind-guide', 'drink-builder', 'espresso-machines', 'nespresso-pods']),
+		pillar: z.string().optional(),
+		cluster: z.enum(['caffeine', 'freshness', 'espresso', 'culture']),
+	}),
+});
+
+export const collections = { blog, deepbrew, faq };

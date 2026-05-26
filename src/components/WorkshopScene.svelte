@@ -2,8 +2,6 @@
   let isMobile = $state(false);
   let hoveredDrawer = $state(null);
   let hoveredProp = $state(null);
-  let isZooming = $state(false);
-
   const drawers = [
     { id: 'fix-my-coffee',  name: 'Fix My Coffee',   desc: 'Diagnose what went wrong with your brew',     href: '/tools/fix-my-coffee/' },
     { id: 'caffeine',       name: 'Caffeine Calc',   desc: 'Track daily caffeine intake by method',       href: '/tools/caffeine/' },
@@ -39,14 +37,6 @@
     return () => mq.removeEventListener('change', handler);
   });
 
-  function handlePosterClick(e) {
-    e.preventDefault();
-    if (isZooming) return;
-    isZooming = true;
-    setTimeout(() => {
-      window.location.href = '/tools/brew-dial-in/';
-    }, 450);
-  }
 </script>
 
 {#if isMobile}
@@ -54,24 +44,7 @@
   <!-- MOBILE STACKED LAYOUT (Option D)                             -->
   <!-- Hero poster → 2×2 prop grid → full-width cabinet             -->
   <!-- =========================================================== -->
-  <div class="mobile-scene" class:is-zooming={isZooming}>
-    <a
-      href="/tools/brew-dial-in/"
-      class="mobile-poster"
-      onclick={handlePosterClick}
-      title="Open the Extraction Apparatus"
-      style="padding-top: 1rem;"
-    >
-      <div class="poster-frame-m">
-        <div class="poster-mat-m">
-          <img src="/assets/brew-dial-in/apparatus-bg.svg" alt="The Extraction Apparatus — 329 specialty coffees, 9 brew methods, 2,961 recipes" class="poster-img-m" />
-        </div>
-      </div>
-      <div class="poster-label-m">The Extraction Apparatus</div>
-      <div class="poster-sub-m">329 beans · 9 brewers · 2,961 recipes</div>
-      <div class="poster-cta-m">Tap to explore &rarr;</div>
-    </a>
-
+  <div class="mobile-scene">
     <div class="mobile-counter">
       <div class="mobile-overline">Other Tools</div>
 
@@ -127,21 +100,9 @@
   <!-- DESKTOP DIORAMA                                               -->
   <!-- Wall + framed apparatus poster + walnut counter + props      -->
   <!-- =========================================================== -->
-  <div class="scene-wrap" class:is-zooming={isZooming}>
+  <div class="scene-wrap">
     <!-- WALL -->
     <div class="wall">
-      <a
-        href="/tools/brew-dial-in/"
-        class="poster-frame"
-        onclick={handlePosterClick}
-        title="Open the Extraction Apparatus"
-      >
-        <div class="poster-mat">
-          <img src="/assets/brew-dial-in/apparatus-bg.svg" alt="The Extraction Apparatus — 329 specialty coffees, 9 brew methods, 2,961 recipes" class="poster-img" />
-        </div>
-        <div class="poster-label">The Extraction Apparatus</div>
-        <div class="poster-sub">329 beans · 9 brewers · 2,961 recipes — click to explore</div>
-      </a>
     </div>
 
     <!-- COUNTER -->
@@ -337,8 +298,6 @@
     border-radius: 6px;
     transition: opacity 0.45s ease;
   }
-  .scene-wrap.is-zooming { overflow: visible; }
-
   /* Wall */
   .wall {
     position: relative;
@@ -349,57 +308,6 @@
       linear-gradient(180deg, #F5EFE3 0%, #F0E8D8 55%, #E8DDC6 100%);
     transition: opacity 0.4s ease;
   }
-  .scene-wrap.is-zooming .wall { opacity: 0.15; }
-
-  .scene-header { position: absolute; top: 0; left: 0; right: 0; text-align: center; padding: 12px; z-index: 10; transition: opacity 0.3s ease; }
-  .scene-header-overline { font-size: 9px; color: #C17A3A; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 600; }
-  .scene-wrap.is-zooming .scene-header { opacity: 0; }
-
-  /* Framed apparatus poster (desktop) */
-  .poster-frame {
-    position: absolute;
-    left: 50%; top: 30px;
-    transform: translateX(-50%);
-    width: 560px; padding: 14px;
-    border-radius: 4px;
-    cursor: zoom-in;
-    text-decoration: none;
-    display: block;
-    z-index: 1;
-    background:
-      repeating-linear-gradient(91deg, transparent, transparent 5px, rgba(0,0,0,0.06) 5px, rgba(0,0,0,0.06) 6px),
-      linear-gradient(180deg, #4E3829 0%, #3D2B1F 35%, #4A3425 65%, #3D2B1F 100%);
-    box-shadow:
-      0 18px 40px rgba(0,0,0,0.22),
-      0 8px 16px rgba(0,0,0,0.16),
-      inset 0 1px 0 rgba(255,255,255,0.12),
-      inset 0 -1px 0 rgba(0,0,0,0.3);
-    transition: transform 0.45s cubic-bezier(0.4, 0.0, 0.2, 1), box-shadow 0.45s ease;
-  }
-  .poster-frame:hover {
-    transform: translateX(-50%) translateY(-4px);
-    box-shadow: 0 28px 50px rgba(0,0,0,0.28), 0 12px 24px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.12);
-  }
-  .scene-wrap.is-zooming .poster-frame {
-    transform: translateX(-50%) scale(1.55);
-    z-index: 100;
-    box-shadow: 0 40px 80px rgba(0,0,0,0.35), 0 20px 40px rgba(0,0,0,0.25);
-  }
-  .poster-mat {
-    background: #FAF4E4;
-    padding: 8px;
-    border-radius: 2px;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.15), inset 0 -1px 1px rgba(0,0,0,0.08);
-  }
-  .poster-img { display: block; width: 100%; height: auto; border-radius: 1px; }
-  .poster-label {
-    text-align: center; margin-top: 10px;
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 13px; font-weight: 700; color: #FAF4E4;
-    letter-spacing: 0.06em;
-  }
-  .poster-sub { text-align: center; margin-top: 3px; font-size: 10px; color: #D4C5A9; font-style: italic; }
-
   /* Counter */
   .counter {
     position: relative;
@@ -410,7 +318,6 @@
       linear-gradient(180deg, #6B5242 0%, #7A6050 4%, #8A7060 12%, #7A6050 50%, #6B5242 100%);
     transition: opacity 0.4s ease;
   }
-  .scene-wrap.is-zooming .counter { opacity: 0.15; }
   .counter::after {
     content: '';
     position: absolute; left: 0; right: 0; bottom: 0;
@@ -478,9 +385,6 @@
     border-radius: 50%;
     transition: opacity 0.3s ease;
   }
-  .scene-wrap.is-zooming .prop,
-  .scene-wrap.is-zooming .bean-scatter { opacity: 0; }
-
   /* Scene hint (desktop only) */
   .scene-hint {
     text-align: center;
@@ -513,46 +417,6 @@
     font-weight: 600;
     padding: 1rem 0 0.75rem;
   }
-
-  /* Mobile poster — full width, centered, natural flow */
-  .mobile-poster {
-    display: block;
-    text-decoration: none;
-    margin: 0 auto 1.5rem;
-    transition: transform 0.45s cubic-bezier(0.4, 0.0, 0.2, 1), opacity 0.4s ease;
-  }
-  .mobile-scene.is-zooming .mobile-poster {
-    transform: scale(1.12);
-    z-index: 100;
-  }
-  .poster-frame-m {
-    padding: 10px;
-    border-radius: 4px;
-    background:
-      repeating-linear-gradient(91deg, transparent, transparent 5px, rgba(0,0,0,0.06) 5px, rgba(0,0,0,0.06) 6px),
-      linear-gradient(180deg, #4E3829 0%, #3D2B1F 35%, #4A3425 65%, #3D2B1F 100%);
-    box-shadow:
-      0 14px 32px rgba(0,0,0,0.22),
-      0 6px 12px rgba(0,0,0,0.14),
-      inset 0 1px 0 rgba(255,255,255,0.12);
-  }
-  .poster-mat-m { background: #FAF4E4; padding: 6px; border-radius: 2px; }
-  .poster-img-m { display: block; width: 100%; height: auto; border-radius: 1px; }
-  .poster-label-m {
-    text-align: center; margin-top: 12px;
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 18px; font-weight: 700; color: #1A1210;
-    letter-spacing: 0.02em;
-  }
-  .poster-sub-m { text-align: center; margin-top: 4px; font-size: 12px; color: #6B6560; }
-  .poster-cta-m {
-    text-align: center; margin-top: 10px;
-    font-size: 11px; color: #C17A3A;
-    text-transform: uppercase; letter-spacing: 0.15em; font-weight: 600;
-  }
-
-  .mobile-scene.is-zooming .prop-grid,
-  .mobile-scene.is-zooming .mobile-cabinet { opacity: 0.15; }
 
   /* Mobile counter region (atmospheric walnut background) */
   .mobile-counter {
