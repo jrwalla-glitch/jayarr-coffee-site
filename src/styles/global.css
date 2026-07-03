@@ -199,3 +199,10 @@ h1, h2, h3, h4, h5, h6 {
   background-color: var(--color-copper);
   color: white;
 }
+
+/* Homepage hero video: static poster fallback for reduced-motion */
+.hero-fallback { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-video { display: none; }
+  .hero-fallback { display: block; }
+}
