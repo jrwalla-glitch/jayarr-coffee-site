@@ -86,7 +86,7 @@
   $effect(() => {
     if (!mounted) return;
     // The example reading isn't the reader's: its numbers stay out of the address, so a reload or a
-    // shared link opens the same labelled example, never unlabelled numbers (Wave D batch 3; as Freshness, 482b1cb).
+    // shared link opens the same labeled example, never unlabeled numbers (Wave D batch 3; as Freshness, 482b1cb).
     const q = mode === 'measured' ? new URLSearchParams(Object.fromEntries(Object.entries({ mode, kind, ...(example ? {} : { dose: doseG, liquid: liquidG, tds: tdsPct }), ...(diluted ? { diluted: '1' } : {}) }).filter(([, v]) => v !== null && v !== undefined && v !== '' && !(typeof v === 'number' && !Number.isFinite(v))).map(([k, v]) => [k, String(v)]))) : new URLSearchParams(touched ? { taste: String(sourBitter), body: String(body) } : {});
     if (mode === 'taste' && espresso) q.set('espresso', '1');
     history.replaceState(history.state, '', `${location.pathname}${q.toString() ? `?${q}` : ''}`);

@@ -48,7 +48,7 @@ export function measuredExtraction(input: MeasuredInput): Result<MeasuredResult>
   const chart = CHARTS[kind === 'espresso' ? 'espresso' : 'filter'];
   const notes: string[] = [];
   if (kind === 'immersion') notes.push('Immersion: this uses all the water you added, because the liquid left in the grounds is as strong as your cup. It reads slightly low.');
-  // Judge the figure as shown (one decimal), so "18.0%" is never labelled under-extracted (Muse r4).
+  // Judge the figure as shown (one decimal), so "18.0%" is never labeled under-extracted (Muse r4).
   const eyShown = Math.round(eyPct * 10) / 10;
   // A cold brew concentrate is judged against the filter chart, so 96 g / 600 g / 2.5% reads as "grind finer
   // or steep longer". The engine's own cold brew range says otherwise; say so, so the moves don't read as

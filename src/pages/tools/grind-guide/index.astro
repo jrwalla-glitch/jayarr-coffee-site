@@ -13,7 +13,7 @@ import GrindGuide from '../../../components/coffee/GrindGuide.svelte';
 import { METHODS, SOURCES } from '../../../lib/coffee/index.ts';
 
 const title = 'Coffee Grind Size Chart: The Right Grind for Every Brewer';
-const description = 'See what each grind should look like, from Turkish and espresso to French press and cold brew, with micrometre ranges, what too fine and too coarse taste like, and why a burr grinder matters.';
+const description = 'See what each grind should look like, from Turkish and espresso to French press and cold brew, with micrometer ranges, what too fine and too coarse taste like, and why a burr grinder matters.';
 const order = ['espresso', 'moka', 'aeropress', 'v60', 'kalita', 'chemex', 'drip-machine', 'cold-brew', 'french-press'];
 const rows = order.map((id) => METHODS.find((m) => m.id === id)!);
 ---
@@ -49,7 +49,7 @@ const rows = order.map((id) => METHODS.find((m) => m.id === id)!);
 						</tbody>
 					</table>
 				</div>
-				<p class="cf-note">A micrometre (µm) is a thousandth of a millimetre. Ranges are typical starting points; every grinder's numbers differ, so use the <a href="/deep-brew/calibrator/">Grind Calibrator</a> for your model, then adjust by taste and brew time.</p>
+				<p class="cf-note">A micrometer (µm) is a thousandth of a millimeter. Ranges are typical starting points; every grinder's numbers differ, so use the <a href="/deep-brew/calibrator/">Grind Calibrator</a> for your model, then adjust by taste and brew time.</p>
 
 				<h2>Why grind size matters so much</h2>
 				<p>Grinding sets how much surface the water can reach and how fast it flows. Finer grounds extract faster and slow the water down; coarser grounds extract slower and let it run. That's why the same beans can taste sour from one grind and bitter from another, and why brew time is the best clue to whether you're too fine or too coarse.</p>

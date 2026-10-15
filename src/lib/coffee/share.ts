@@ -44,6 +44,6 @@ export function decodeBrew(query: string): Result<BrewState> {
   const roast = (q.get('roast') ?? 'medium') as Roast;
   const units = (q.get('units') ?? 'us') as Units;
   const adjust = q.get('adjust') as Adjust | null;
-  if (!STRENGTHS.includes(strength) || !ROASTS.includes(roast) || (units !== 'us' && units !== 'metric') || (adjust !== null && !ADJUSTS.includes(adjust))) return failure('bad-option', 'options', 'An option in the link is not recognised.');
+  if (!STRENGTHS.includes(strength) || !ROASTS.includes(roast) || (units !== 'us' && units !== 'metric') || (adjust !== null && !ADJUSTS.includes(adjust))) return failure('bad-option', 'options', 'An option in the link is not recognized.');
   return success({ method, target, strength, roast, units, ...(ratio !== undefined ? { ratio } : {}), ...(adjust ? { adjust } : {}) });
 }

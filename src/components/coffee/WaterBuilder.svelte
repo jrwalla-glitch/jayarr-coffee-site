@@ -143,7 +143,7 @@
       <div class="row">
         <div class="seg">
           {#each (gallons ? [1, 2, 5] : [1, 2, 4, 10]) as v (v)}<button type="button" aria-pressed={volume === v} onclick={() => (volume = v)}>{v} {gallons ? (v === 1 ? 'gallon' : 'gallons') : 'L'}</button>{/each}
-          <label class="fld vol"><span class="sr">Custom batch, {gallons ? 'gallons' : 'litres'}</span><input type="number" inputmode="decimal" min="0.1" step="0.1" value={volume} oninput={(e) => { const v = Number((e.currentTarget as HTMLInputElement).value); volume = Number.isFinite(v) ? v : NaN; }} /><span class="unit">{gallons ? 'gal' : 'L'}</span></label>
+          <label class="fld vol"><span class="sr">Custom batch, {gallons ? 'gallons' : 'liters'}</span><input type="number" inputmode="decimal" min="0.1" step="0.1" value={volume} oninput={(e) => { const v = Number((e.currentTarget as HTMLInputElement).value); volume = Number.isFinite(v) ? v : NaN; }} /><span class="unit">{gallons ? 'gal' : 'L'}</span></label>
         </div>
         <div class="seg">
           <!-- Switching units converts the batch you were building rather than resetting it. -->

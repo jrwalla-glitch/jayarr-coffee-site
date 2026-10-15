@@ -77,7 +77,7 @@ export function planWater(input: { targetId: string; volumeL: number; base?: { g
   const target = WATER_RECIPES.find((r) => r.id === input.targetId);
   if (!target) return failure('unknown-recipe', 'targetId', 'Choose a recipe.');
   const V = input.volumeL;
-  if (!finite(V) || V < 0.1 || V > 40) return failure('bad-volume', 'volumeL', 'Choose a batch between 0.1 and 40 litres.');
+  if (!finite(V) || V < 0.1 || V > 40) return failure('bad-volume', 'volumeL', 'Choose a batch between 0.1 and 40 liters.');
   const base = input.base ?? { gh: 0, kh: 0 };
   if (!finite(base.gh) || !finite(base.kh) || base.gh < 0 || base.kh < 0 || base.gh > 1000 || base.kh > 1000) return failure('bad-base', 'base', 'Enter GH and KH between 0 and 1000 ppm.');
   const Tg = target.gh, Tk = target.kh, pg = PPM_PER_ML_PER_L.gh, pk = PPM_PER_ML_PER_L.kh;
@@ -100,7 +100,7 @@ export function planWater(input: { targetId: string; volumeL: number; base?: { g
     const what = [base.gh > Tg ? 'harder' : '', base.kh > Tk ? 'more alkaline' : ''].filter(Boolean).join(' and ');
     notes.push(`Your water is ${what} than this recipe, so part of the jug is distilled water.`);
   }
-  if (ghStockMl > 1000 || khStockMl > 1000) notes.push(`This batch uses more than a litre of ${ghStockMl > 1000 && khStockMl > 1000 ? 'each stock' : ghStockMl > 1000 ? 'bottle A' : 'bottle B'}, so make two bottles' worth (or more) before you start.`);
+  if (ghStockMl > 1000 || khStockMl > 1000) notes.push(`This batch uses more than a liter of ${ghStockMl > 1000 && khStockMl > 1000 ? 'each stock' : ghStockMl > 1000 ? 'bottle A' : 'bottle B'}, so make two bottles' worth (or more) before you start.`);
   if (input.espresso) notes.push('For an espresso machine, check the maker\'s water specification (hardness, alkalinity and chloride) first; harder water scales boilers faster. Epsom salt and baking soda add no chloride.');
   // Dry route: as much of your water as the targets allow (no room needed for stock bottles), then
   // salts for what's missing. Weighing below DRY_MIN_G on a 0.01 g scale is too imprecise.
