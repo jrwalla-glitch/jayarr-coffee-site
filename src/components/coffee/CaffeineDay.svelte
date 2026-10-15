@@ -1,14 +1,16 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { METHODS, GUIDANCE, intakeMg, dayCurve, dailyTotal, inBodyAt, encodeDay, decodeDay, dayMinute, newDayAt, bedMinute, flOzToMl, mlToFlOz, buildRecipe,
-    DEFAULT_SETTINGS, dayWindow, dayStartClock, dayView, instantInDay, instantNearest, minutesFromMidnight, bedInstant, clockOf, pruneLog, migrateV1, placeSharedDay, toDiaryMinutes } from '../../lib/coffee/index.ts';
-  import type { Intake, MethodId, LoggedDrink, DiarySettings } from '../../lib/coffee/index.ts';
+    DEFAULT_SETTINGS, dayWindow, dayStartClock, dayView, instantInDay, instantNearest, minutesFromMidnight, bedInstant, clockOf, migrateV1, placeSharedDay, toDiaryMinutes, applyOp, parseStore } from '../../lib/coffee/index.ts';
+  import type { Intake, MethodId, LoggedDrink, DiarySettings, DiaryStore, DiaryOp } from '../../lib/coffee/index.ts';
 
   // Your diary is a log of real moments (see diary.ts): "today" is a view over it, so nothing is
   // thrown away to make a day fit, and daylight-saving nights can't move a drink. A shared link is
   // a separate, temporary day that never touches the log unless you keep it.
   const BREWERS = METHODS.filter((m) => m.id !== 'espresso');
   const SIZES_OZ = [6, 8, 12, 16, 20];
+  // A moka pot makes only a few ounces of coffee, so it gets its own sizes (Muse r3: 12 oz moka slipped in).
+  const MOKA_OZ = [2, 3, 4, 6];
   const ESPRESSO_DRINKS = [
     { label: 'Single espresso', shots: 1 }, { label: 'Double espresso', shots: 2 },
     { label: 'Latte or cappuccino (double)', shots: 2 }, { label: 'Americano (double)', shots: 2 },
@@ -77,7 +79,8 @@
   let atBed = $derived(inBodyAt(curveIntakes, bedAt, halfLifeH));
   let atNow = $derived(nowAt !== null && nowAt >= FROM && nowAt <= TO ? inBodyAt(curveIntakes, nowAt, halfLifeH) : null);
   let peak = $derived(curve.reduce((a, p) => (p.max > a.max ? p : a), { tMin: FROM, min: 0, max: 0 }));
-  let guidance = $derived(settings.pregnant ? GUIDANCE.find((g) => g.id === 'acog-pregnancy')! : GUIDANCE.find((g) => g.id === 'fda-adult-daily')!);
+  // A shared day is someone else's: judged against the healthy-adult reference, never the viewer's own settings (Muse r3).
+  let guidance = $derived(settings.pregnant && mode !== 'shared' ? GUIDANCE.find((g) => g.id === 'acog-pregnancy')! : GUIDANCE.find((g) => g.id === 'fda-adult-daily')!);
   // Colour follows the middle estimate; a range that only reaches the reference at its top is flagged as "could be".
   let overDaily = $derived((total.min + total.max) / 2 > guidance.mg);
   let mightExceed = $derived(!overDaily && total.max > guidance.mg);
@@ -117,60 +120,88 @@
   }
   function add() {
     const base = newIntake(), clock = toClock(addTime);
+    if (!Number.isFinite(clock)) { addError = 'Pick a time.'; return; }
     const check = intakeMg({ ...base, atMin: 0 } as Intake);
     if (!check.ok) { addError = check.errors[0].message; return; }
     addError = '';
     if (mode === 'shared' && shared) shared.intakes = [...shared.intakes, { ...base, atMin: dayMinute(clock, shared.bedMin) } as Intake];
-    else { mode = 'own'; log = [...log, { ...base, id: newId(), at: instantNearest(clock, nowMs) } as LoggedDrink]; }
+    else { mode = 'own'; commit({ type: 'add', drink: { ...base, id: newId(), at: instantNearest(clock, nowMs) } as LoggedDrink }); }
     addTime = hhmm(Math.min(22 * 60, clock + 180));
   }
   function remove(key: string) {
-    if (mode === 'own') log = log.filter((x) => x.id !== key);
+    if (mode === 'own') commit({ type: 'remove', id: key });
     else if (mode === 'shared' && shared) shared.intakes = shared.intakes.filter((_, k) => String(k) !== key);
   }
   function retime(key: string, v: string) {
     const clock = toClock(v);
     if (!Number.isFinite(clock)) return;
-    if (mode === 'own') log = log.map((x) => (x.id === key ? { ...x, at: instantNearest(clock, nowMs) } : x));
+    if (mode === 'own') commit({ type: 'retime', id: key, at: instantNearest(clock, nowMs) });
     else if (mode === 'shared' && shared) shared.intakes = shared.intakes.map((x, k) => (String(k) === key ? { ...x, atMin: dayMinute(clock, shared!.bedMin) } : x));
   }
   function clearDay() {
     if (mode === 'shared' && shared) shared.intakes = [];
-    else { mode = 'own'; log = log.filter((x) => !(x.at >= win.start && x.at < win.end)); }
+    else { mode = 'own'; commit({ type: 'clear', start: win.start, end: win.end }); }
   }
   // Bedtime regroups the view; it never rewrites when a drink was drunk.
   function setBed(b: number) {
     if (mode === 'shared' && shared) { shared.bedMin = b; shared.intakes = shared.intakes.map((x) => ({ ...x, atMin: dayMinute(x.atMin, b) })); }
-    else settings.bedMin = b;
+    else commit({ type: 'settings', patch: { bedMin: b } });
   }
-  function setHalfLife(h: number) { if (mode === 'shared' && shared) shared.halfLifeH = h; else settings.halfLifeH = h; }
+  function setHalfLife(h: number) { if (mode === 'shared' && shared) shared.halfLifeH = h; else commit({ type: 'settings', patch: { halfLifeH: h } }); }
   function togglePregnant(on: boolean) {
     if (mode === 'shared') return;
-    if (on && settings.halfLifeH < 8) { hlBeforePregnancy = settings.halfLifeH; settings.halfLifeH = 8; }
-    if (!on && hlBeforePregnancy !== null) { settings.halfLifeH = hlBeforePregnancy; hlBeforePregnancy = null; }
+    const patch: Partial<DiarySettings> = { pregnant: on };
+    if (on && settings.halfLifeH < 8) { hlBeforePregnancy = settings.halfLifeH; patch.halfLifeH = 8; }
+    if (!on && hlBeforePregnancy !== null) { patch.halfLifeH = hlBeforePregnancy; hlBeforePregnancy = null; }
+    commit({ type: 'settings', patch });
   }
 
-  // Load your diary: the v2 log, or a v1 save migrated drink by drink (never compared to "today" first).
+  // ── Saving: each edit is applied to the latest stored log (diary.ts applyOp) inside a browser
+  // lock, so a second tab can neither overwrite nor resurrect drinks; clock ticks never write
+  // (Astra, Wave A r3). When the browser refuses storage, the page says the diary isn't saved. ──
+  let storageOk = $state(true);
   let hadStore = false;
-  function loadOwn() {
+  function readStore(): { store: DiaryStore | null; ok: boolean; source: 'v2' | 'v1' | null } {
     try {
-      const raw = localStorage.getItem(STORE);
-      if (raw) {
-        const st = JSON.parse(raw);
-        if (st?.v === 2 && Array.isArray(st.drinks)) { log = st.drinks.filter((x: LoggedDrink) => Number.isFinite(x.at) && intakeMg({ ...x, atMin: 0 } as Intake).ok); settings = { ...DEFAULT_SETTINGS, ...st.settings, bedMin: bedMinute(st.settings?.bedMin ?? 1380) }; hadStore = true; return; }
-      }
+      const v2 = parseStore(localStorage.getItem(STORE));
+      if (v2) return { store: v2, ok: true, source: 'v2' };
       const v1 = migrateV1(JSON.parse(localStorage.getItem(STORE_V1) ?? 'null'), newId);
-      if (v1) { log = v1.drinks.filter((x) => intakeMg({ ...x, atMin: 0 } as Intake).ok); settings = v1.settings; hadStore = true; }
-    } catch { /* storage unavailable: keep the example day */ }
+      return { store: v1, ok: true, source: v1 ? 'v1' : null };
+    } catch { return { store: null, ok: false, source: null }; }
+  }
+  function adopt(st: DiaryStore) {
+    log = st.drinks.filter((x) => intakeMg({ ...x, atMin: 0 } as Intake).ok);
+    settings = { ...DEFAULT_SETTINGS, ...st.settings, bedMin: bedMinute(st.settings.bedMin ?? 1380) };
+  }
+  function commit(op: DiaryOp) {
+    const run = () => {
+      const { store, ok } = readStore();
+      const base: DiaryStore = store ?? { v: 2, drinks: $state.snapshot(log) as LoggedDrink[], settings: $state.snapshot(settings) as DiarySettings };
+      const next = applyOp(base, op, Date.now());
+      let wrote = false;
+      if (ok) { try { localStorage.setItem(STORE, JSON.stringify(next)); wrote = true; } catch { /* quota or denial */ } }
+      storageOk = wrote;
+      adopt(next);
+    };
+    const locks = typeof navigator !== 'undefined' ? (navigator as Navigator & { locks?: { request: (name: string, cb: () => void) => Promise<unknown> } }).locks : undefined;
+    if (locks?.request) locks.request(STORE, run).catch(run); else run();
+  }
+  // Load your diary: the v2 log, or a v1 save migrated drink by drink and written once as v2.
+  function loadOwn() {
+    const { store, ok, source } = readStore();
+    storageOk = ok;
+    if (!store) return;
+    adopt(store); hadStore = true;
+    if (source === 'v1') commit({ type: 'settings', patch: {} });
   }
   function backToMine() { shared = null; mode = hadStore || log.length ? 'own' : 'example'; }
   // "Make this my day": the shared drinks replace today's in your log, placed by their clock times.
   function keepShared() {
     if (!shared) return;
-    const next = { ...settings, halfLifeH: shared.halfLifeH, bedMin: shared.bedMin };
-    const w = dayWindow(Date.now(), dayStartClock(next));
-    log = [...log.filter((x) => !(x.at >= w.start && x.at < w.end)), ...placeSharedDay(shared.intakes, w, newId)];
-    settings = next; shared = null; mode = 'own';
+    // Only the drinks come across: your own half-life, bedtime and pregnancy setting stay yours (Muse r3).
+    const w = dayWindow(Date.now(), dayStartClock(settings));
+    commit({ type: 'replaceDay', start: w.start, end: w.end, drinks: placeSharedDay(shared.intakes, w, newId) });
+    shared = null; mode = 'own';
   }
 
   onMount(() => {
@@ -184,13 +215,15 @@
       history.replaceState(history.state, '', location.pathname);
     } else if (hadStore) mode = 'own';
     const timer = setInterval(() => (nowMs = Date.now()), 30000);
+    // Another tab saved: show its log here too.
+    const onStorage = (e: StorageEvent) => {
+      if (e.key !== STORE) return;
+      const { store } = readStore();
+      if (store) { adopt(store); hadStore = true; if (mode === 'example') mode = 'own'; }
+    };
+    window.addEventListener('storage', onStorage);
     mounted = true;
-    return () => clearInterval(timer);
-  });
-  $effect(() => {
-    const snapshot = JSON.stringify({ v: 2, drinks: pruneLog(log, nowMs), settings });
-    if (!mounted || mode !== 'own') return;
-    try { localStorage.setItem(STORE, snapshot); } catch { /* private mode: nothing saved */ }
+    return () => { clearInterval(timer); window.removeEventListener('storage', onStorage); };
   });
 
   let copied = $state(false);
@@ -226,7 +259,7 @@
         <span class="fill hi" style:width="{Math.min(100, (total.max / (guidance.mg * 1.5)) * 100)}%"></span>
         <span class="mark" style:left="{(1 / 1.5) * 100}%"></span>
       </div>
-      <span class="sub">{guidance.who} reference: {guidance.mg} mg a day{settings.pregnant ? ' in pregnancy' : ' for healthy adults'}; a population guide, not a personal limit</span>
+      <span class="sub">{guidance.who} reference: {guidance.mg} mg a day{settings.pregnant && mode !== 'shared' ? ' in pregnancy' : ' for healthy adults'}; a population guide, not a personal limit</span>
     </div>
   </div>
 
@@ -276,6 +309,7 @@
           <div class="actions"><button type="button" class="ghost" onclick={backToMine}>Back to my day</button><button type="button" class="ghost" onclick={keepShared}>Make this my day</button></div>
         </div>
       {/if}
+      {#if !storageOk && mode !== 'shared'}<p class="example" role="status">This browser isn't letting the page save, so this diary lasts only while the tab is open.</p>{/if}
       {#if mode === 'example'}<p class="example">This is an example day. Add a drink to start your own; it stays on this device.</p>{/if}
       {#if sorted.length === 0}<p class="empty">Add your first coffee of the day.</p>{/if}
       <ul>
@@ -315,7 +349,7 @@
       </div>
       {#if addKind === 'brewed'}
         <label class="fld"><span class="lbl">Brewed in</span>
-          <select bind:value={addMethod}>{#each BREWERS as b (b.id)}<option value={b.id}>{b.label}</option>{/each}</select>
+          <select bind:value={addMethod} onchange={() => { const sizes = addMethod === 'moka' ? MOKA_OZ : SIZES_OZ; if (!sizes.includes(addOz)) addOz = addMethod === 'moka' ? 3 : 12; }}>{#each BREWERS as b (b.id)}<option value={b.id}>{b.label}</option>{/each}</select>
         </label>
       {/if}
       {#if addKind === 'custom'}
@@ -327,7 +361,7 @@
         </div>
       {:else}
         <div class="chips" role="group" aria-label="Cup size">
-          {#each SIZES_OZ as oz (oz)}<button type="button" aria-pressed={addOz === oz} onclick={() => (addOz = oz)}>{oz} oz</button>{/each}
+          {#each (addKind === 'brewed' && addMethod === 'moka' ? MOKA_OZ : SIZES_OZ) as oz (oz)}<button type="button" aria-pressed={addOz === oz} onclick={() => (addOz = oz)}>{oz} oz</button>{/each}
         </div>
         {#if addKind === 'brewed' && addMethod === 'moka'}<p class="note">Count the moka coffee itself, before any water or milk goes in; a small pot makes only a few ounces.</p>{/if}
         {#if addKind === 'brewed' && addMethod === 'cold-brew'}<p class="note">The size you drink, with the concentrate diluted one to one.</p>{/if}
@@ -351,13 +385,13 @@
         </label>
         {#if mode !== 'shared'}
           <label class="fld"><span class="lbl">My day starts</span>
-            <select value={settings.dayStartMin === null ? 'auto' : String(settings.dayStartMin)} onchange={(e) => { const v = (e.currentTarget as HTMLSelectElement).value; settings.dayStartMin = v === 'auto' ? null : Number(v); }}>
+            <select value={settings.dayStartMin === null ? 'auto' : String(settings.dayStartMin)} onchange={(e) => { const v = (e.currentTarget as HTMLSelectElement).value; commit({ type: 'settings', patch: { dayStartMin: v === 'auto' ? null : Number(v) } }); }}>
               <option value="auto">{clock12(newDayAt(settings.bedMin))} (4 h after bedtime)</option>
               {#each [3, 4, 5, 6, 7] as h (h)}<option value={String(h * 60)}>{clock12(h * 60)}</option>{/each}
             </select>
           </label>
         {/if}
-        <label class="check"><input type="checkbox" bind:checked={settings.pregnant} onchange={() => togglePregnant(settings.pregnant)} /> Pregnant</label>
+        <label class="check"><input type="checkbox" checked={settings.pregnant} disabled={mode === 'shared'} onchange={(e) => togglePregnant((e.currentTarget as HTMLInputElement).checked)} /> Pregnant</label>
       </div>
       <p class="note">Drinks between midnight and {clock12(startClock)} count as last night's, before bed; from {clock12(startClock)} a new day starts. Earlier drinks still in your body count in the curve but not in today's total. The pregnancy setting stays on this device and never goes into a link.</p>
       <p class="note">{guidance.wording}</p>

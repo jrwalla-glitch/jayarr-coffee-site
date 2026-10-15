@@ -172,3 +172,11 @@ test('immersion caffeine leaves out the liquid the grounds keep (Muse: 12 oz col
   const v60 = intakeMg({ kind: 'brewed', method: 'v60', cupMl: 355, atMin: 600 }).value;
   near(v60.min, (355 / (16 - 2)) * 0.009 * 0.75 * 1000, 1e-6);
 });
+
+test('AeroPress caffeine counts only the water in the chamber (Astra r3: 264 mL read about 6% high)', () => {
+  const near = (a, b, eps) => assert.ok(Math.abs(a - b) <= eps, `${a} vs ${b}`);
+  const r = intakeMg({ kind: 'brewed', method: 'aeropress', cupMl: 264, atMin: 600 }).value;
+  near(r.min, 120.091304, 0.01); near(r.max, 219.722609, 0.01);
+  const small = intakeMg({ kind: 'brewed', method: 'aeropress', cupMl: 216, atMin: 600 }).value;
+  near(small.min, 102.482609, 0.01); near(small.max, 187.505217, 0.01);
+});

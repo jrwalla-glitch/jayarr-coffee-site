@@ -95,3 +95,23 @@ test('a typed time means the nearest real moment (Opus r2: 02:30 entered at 05:4
   assert.equal(instantNearest(30, afternoon), at('2026-10-16T04:30:00Z'), '00:30 tonight');
   assert.equal(instantNearest(480, afternoon), at('2026-10-15T12:00:00Z'), '08:00 this morning');
 }));
+
+import { applyOp, emptyStore, parseStore } from '../diary.ts';
+
+test('Astra r3: an idle or stale tab can neither overwrite nor resurrect drinks', () => {
+  // One shared storage; each "tab" only ever writes edits applied to a fresh read.
+  let storage = JSON.stringify(emptyStore());
+  const now = Date.UTC(2026, 9, 15, 15);
+  const commit = (op) => { storage = JSON.stringify(applyOp(parseStore(storage) ?? emptyStore(), op, now)); };
+  commit({ type: 'add', drink: { id: 'a', kind: 'custom', mg: 100, at: now - 3600e3 } }); // tab A
+  commit({ type: 'add', drink: { id: 'b', kind: 'custom', mg: 60, at: now - 1800e3 } });  // tab B, loaded before A's add
+  assert.deepEqual(parseStore(storage).drinks.map((x) => x.id).sort(), ['a', 'b'], 'A + B both kept (160 mg)');
+  commit({ type: 'remove', id: 'a' });                                                      // tab A removes its drink
+  commit({ type: 'retime', id: 'a', at: now });                                             // stale tab B retimes it
+  assert.deepEqual(parseStore(storage).drinks.map((x) => x.id), ['b'], 'the removed drink stays removed');
+  commit({ type: 'settings', patch: { bedMin: 1500 } });
+  assert.equal(parseStore(storage).settings.bedMin, 1500);
+  assert.deepEqual(parseStore(storage).drinks.map((x) => x.id), ['b'], 'a settings edit leaves drinks alone');
+  assert.equal(parseStore('{"v":2,"drinks":[{"id":"x","at":"oops"}]}').drinks.length, 0, 'malformed entries dropped');
+  assert.equal(parseStore('not json'), null);
+});

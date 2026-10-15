@@ -1,6 +1,6 @@
 export * from './types.ts';
 export { METHODS, EY_BY_METHOD, methodById } from './methods.ts';
-export { buildRecipe, estimateStrength, doseForCup } from './brew.ts';
+export { buildRecipe, estimateStrength, doseForCup, adjustedTempC } from './brew.ts';
 export { SOURCES } from './sources.ts';
 export { gToOz, ozToG, mlToFlOz, flOzToMl, cToF, fToC, approxTablespoons, G_PER_OZ, ML_PER_FL_OZ } from './units.ts';
 export { CAFFEINE, GUIDANCE, estimateBrewedMg, espressoMg, caffeineInBody, caffeineCurve, intakeMg, dayCurve, dailyTotal, inBodyAt, encodeDay, decodeDay, dayMinute, diaryDayKey, newDayAt, bedMinute, DEFAULT_BED_MIN } from './caffeine.ts';
@@ -19,5 +19,5 @@ export { DRINKS, drinkById, refById, knownVolume, compareRefs } from './drinks.t
 export type { Drink, DrinkRef, Layer, LayerKind } from './drinks.ts';
 export { measuredExtraction, CHARTS } from './extraction.ts';
 export type { MeasuredKind, MeasuredInput, MeasuredResult, Chart } from './extraction.ts';
-export { DEFAULT_SETTINGS, KEEP_DAYS, CARRY_HOURS, localInstant, dayStartClock, dayWindow, instantInDay, instantNearest, minutesFromMidnight, bedInstant, clockOf, dayView, pruneLog, migrateV1, placeSharedDay, toDiaryMinutes } from './diary.ts';
-export type { LoggedDrink, DiarySettings, DiaryStore, DayWindow } from './diary.ts';
+export { DEFAULT_SETTINGS, KEEP_DAYS, CARRY_HOURS, localInstant, dayStartClock, dayWindow, instantInDay, instantNearest, minutesFromMidnight, bedInstant, clockOf, dayView, pruneLog, migrateV1, placeSharedDay, toDiaryMinutes, applyOp, emptyStore, parseStore } from './diary.ts';
+export type { LoggedDrink, DiarySettings, DiaryStore, DayWindow, DiaryOp } from './diary.ts';

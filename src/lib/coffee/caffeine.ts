@@ -34,7 +34,7 @@ export type Bean = 'arabica' | 'robusta' | 'blend';
  * the caffeine in the liquid the grounds keep (about 2 g per g, as strong as the cup): the cup gets
  * 1 − retention ÷ ratio of what dissolved. At cold brew's 1:6.25 that is about 68% (Muse, Wave A r2).
  */
-export function estimateBrewedMg(doseG: number, method: MethodId, bean: Bean = 'arabica', ratio?: number): Result<Range> {
+export function estimateBrewedMg(doseG: number, method: MethodId, bean: Bean = 'arabica', ratio?: number, contactWaterG?: number): Result<Range> {
   if (!finite(doseG) || doseG <= 0 || doseG > 300) return failure('bad-dose', 'doseG', 'Enter the coffee you used, in grams.');
   if (method === 'espresso') return failure('use-shots', 'method', 'For espresso, count shots instead.');
   const b = bean === 'blend'
@@ -44,7 +44,10 @@ export function estimateBrewedMg(doseG: number, method: MethodId, bean: Bean = '
     : (method === 'french-press' || method === 'aeropress') ? CAFFEINE.extractionFraction.immersion
     : CAFFEINE.extractionFraction.percolation;
   const m = methodById(method);
-  const served = m && m.family === 'immersion' ? 1 - m.retentionGPerG / (ratio ?? m.ratio.classic) : 1;
+  // Only water that touched the grounds counts: an AeroPress top-up dilutes the cup but never
+  // sat in the grounds, so it can't change the share the grounds hold back (Astra, Wave A r3).
+  const contact = contactWaterG ?? doseG * (ratio ?? m?.ratio.classic ?? 1);
+  const served = m && m.family === 'immersion' ? Math.max(0, (contact - m.retentionGPerG * doseG) / contact) : 1;
   // grams of coffee × caffeine fraction × share dissolved × share that reaches the cup, in milligrams
   return success({ min: doseG * b.min * ex.min * served * 1000, max: doseG * b.max * ex.max * served * 1000 });
 }
@@ -114,7 +117,12 @@ export function intakeMg(i: Intake): Result<Range> {
   if (!m || method === 'espresso') return failure('bad-method', 'method', 'Choose how it was brewed.');
   // The Brew Guide's own arithmetic at the classic ratio, without the brewer's size limit, so the
   // estimate grows smoothly with the cup (a cup bigger than one brewer makes is still that coffee).
-  return estimateBrewedMg(doseForCup(m, i.cupMl, m.ratio.classic), method, i.bean ?? 'arabica', m.ratio.classic);
+  const doseG = doseForCup(m, i.cupMl, m.ratio.classic);
+  // AeroPress: the chamber holds about maxWaterG per press (as in the Brew Guide); beyond one
+  // press's dose, presses scale with the dose so the estimate stays continuous.
+  const water = doseG * m.ratio.classic;
+  const contact = m.id === 'aeropress' && m.capacity.maxWaterG ? Math.min(water, m.capacity.maxWaterG * Math.max(1, doseG / m.capacity.maxDoseG)) : water;
+  return estimateBrewedMg(doseG, method, i.bean ?? 'arabica', m.ratio.classic, contact);
 }
 
 /**

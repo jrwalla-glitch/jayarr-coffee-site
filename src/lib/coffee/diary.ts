@@ -131,3 +131,44 @@ export function toDiaryMinutes(today: { at: number }[], w: DayWindow): number[] 
     return clockOf(x.at) + (nextDate ? 1440 : 0);
   });
 }
+
+// ── Saving: edits, not snapshots ──
+// Each tab applies its own edits to a fresh read of storage, so an idle or stale tab can never
+// overwrite another tab's log or bring back a drink someone removed (Astra, Wave A r3). Clock ticks
+// never write.
+
+export type DiaryOp =
+  | { type: 'add'; drink: LoggedDrink }
+  | { type: 'remove'; id: string }
+  | { type: 'retime'; id: string; at: number }
+  | { type: 'clear'; start: number; end: number }
+  | { type: 'replaceDay'; start: number; end: number; drinks: LoggedDrink[] }
+  | { type: 'settings'; patch: Partial<DiarySettings> };
+
+export function emptyStore(): DiaryStore {
+  return { v: 2, drinks: [], settings: { ...DEFAULT_SETTINGS } };
+}
+
+/** Apply one edit to the latest stored log. Edits to drinks that are gone are no-ops. */
+export function applyOp(store: DiaryStore, op: DiaryOp, now: number): DiaryStore {
+  let drinks = store.drinks, settings = store.settings;
+  switch (op.type) {
+    case 'add': if (!drinks.some((x) => x.id === op.drink.id)) drinks = [...drinks, op.drink]; break;
+    case 'remove': drinks = drinks.filter((x) => x.id !== op.id); break;
+    case 'retime': drinks = drinks.map((x) => (x.id === op.id ? { ...x, at: op.at } : x)); break;
+    case 'clear': drinks = drinks.filter((x) => !(x.at >= op.start && x.at < op.end)); break;
+    case 'replaceDay': drinks = [...drinks.filter((x) => !(x.at >= op.start && x.at < op.end)), ...op.drinks]; break;
+    case 'settings': settings = { ...settings, ...op.patch }; break;
+  }
+  return { ...store, v: 2, drinks: pruneLog(drinks, now), settings };
+}
+
+/** Parse a stored v2 diary, dropping anything malformed. */
+export function parseStore(raw: string | null): DiaryStore | null {
+  if (!raw) return null;
+  try {
+    const st = JSON.parse(raw);
+    if (st?.v !== 2 || !Array.isArray(st.drinks)) return null;
+    return { v: 2, drinks: st.drinks.filter((x: LoggedDrink) => x && typeof x.id === 'string' && Number.isFinite(x.at)), settings: { ...DEFAULT_SETTINGS, ...(st.settings ?? {}) }, ...(st.migratedFromV1 ? { migratedFromV1: true } : {}) };
+  } catch { return null; }
+}
