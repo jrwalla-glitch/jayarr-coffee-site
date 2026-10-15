@@ -118,8 +118,10 @@ test('absurdly small doses are refused, with a usable minimum (Muse: 0.1 g made 
 });
 
 test('small-batch warnings use each brewer\'s own language', () => {
-  const moka = buildRecipe({ method: 'moka', target: { doseG: 4 } });
-  assert.ok(moka.ok); assert.doesNotMatch(moka.warnings.map((w) => w.message).join(' '), /drains/);
+  // Moka has a hard floor at its smallest basket (Muse: 3 g was accepted).
+  assert.equal(buildRecipe({ method: 'moka', target: { doseG: 4 } }).errors[0].code, 'too-small');
+  const fp = buildRecipe({ method: 'french-press', target: { doseG: 8 } });
+  assert.ok(fp.ok); assert.doesNotMatch(fp.warnings.map((w) => w.message).join(' '), /drains/);
 });
 
 test('immersion strength uses the water in contact (Opus: cold brew TDS read about 47% high)', () => {

@@ -101,8 +101,9 @@ export function buildRecipe(input: RecipeInput): Result<Recipe> {
     return failure('over-capacity', field, `That's ${Math.round(waterG)} g of water, more than a typical ${m.label} holds.`, { target: { waterG: m.capacity.maxWaterG } });
   }
   // Far below the brewer's smallest sensible dose there's no recipe worth following.
-  if (doseG < m.capacity.minDoseG / 2) {
-    return failure('too-small', field, `That's only ${doseG < 1 ? doseG.toFixed(1) : Math.round(doseG)} g of coffee, too little for a ${m.label} to brew well. Try at least ${m.capacity.minDoseG} g.`, { target: { doseG: m.capacity.minDoseG } });
+  // Moka baskets have a real minimum (the smallest pots take about 6–7 g), so no half-size there.
+  if (doseG < (m.id === 'moka' ? m.capacity.minDoseG : m.capacity.minDoseG / 2)) {
+    return failure('too-small', field, `That's too little coffee for a ${m.label} to brew well (${doseG < 1 ? 'under 1' : Math.round(doseG)} g). Try at least ${m.capacity.minDoseG} g.`, { target: { doseG: m.capacity.minDoseG } });
   }
   if (doseG < m.capacity.minDoseG) {
     const msg = m.family === 'percolation' ? `Below about ${m.capacity.minDoseG} g the bed is shallow and drains fast; expect to grind a little finer.`
@@ -162,7 +163,7 @@ export function buildRecipe(input: RecipeInput): Result<Recipe> {
     yieldG,
     cupMl,
     ratio,
-    tempC: tempFor(m, roast),
+    tempC: input.tempAdjust === 'hotter' ? m.tempC.max : input.tempAdjust === 'cooler' ? Math.min(m.tempC.min, 90) : tempFor(m, roast),
     timeS: { ...m.timeS },
     steps,
     grind: { microns: grindFor(m, roast), label: m.grindLabel, texture: m.texture },

@@ -67,6 +67,8 @@ export interface RecipeInput {
   /** Explicit water:coffee (espresso yield:dose) ratio; overrides strength. */
   ratio?: number;
   roast?: Roast;
+  /** A one-off temperature change carried from the Coffee Doctor: hotter = top of the range, cooler = about 90 °C or the bottom. */
+  tempAdjust?: 'hotter' | 'cooler';
 }
 
 export interface Step {
