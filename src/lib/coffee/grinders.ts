@@ -92,6 +92,8 @@ export function headline(g: Grinder, s: Setting): string {
     const n = Math.floor(s.min / pt + 1e-9);
     if (s.max <= (n + 1) * pt) {
       const a = Math.round((s.min - n * pt) * 100) / 100, b = Math.round((s.max - n * pt) * 100) / 100;
+      // A range that ends exactly on the next full turn reads as two positions, not "then 2 to 10 numbers more".
+      if (b === pt) return `Start between ${a === 0 ? turns(n) : at(s.min)} and ${turns(n + 1)}`;
       return a === 0 ? `Start at ${turns(n)}, then up to ${fmt(b)} ${u} more` : `Start ${turns(n)} in, then ${fmt(a)} to ${fmt(b)} ${u} more`;
     }
     return `Start between ${at(s.min)} and ${at(s.max)}`;

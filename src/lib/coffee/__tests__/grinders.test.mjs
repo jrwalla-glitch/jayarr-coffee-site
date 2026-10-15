@@ -36,6 +36,12 @@ test('a range inside one turn reads as the full turns, then the span past them',
   assert.equal(say('1zpresso-k-ultra', 'french-press'), 'Start between 9 and 10 numbers on the first turn');
 });
 
+test('a range that ends exactly on the next full turn names both positions, not "then 2 to 10 numbers more"', () => {
+  assert.equal(say('1zpresso-jx-pro', 'french-press'), 'Start between 4 full turns + 2 numbers and 5 full turns');
+  assert.equal(say('1zpresso-q2', 'aeropress'), 'Start between 1 full turn + 2 numbers and 2 full turns');
+  assert.equal(say('kingrinder-k6', 'french-press'), 'Start at 2 full turns');
+});
+
 test('a range across turns names both ends in turns, each with the unit', () => {
   assert.equal(say('1zpresso-jx-pro', 'pour-over'), 'Start between 3 full turns + 2 numbers and 4 full turns + 4 numbers');
 });

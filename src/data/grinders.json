@@ -1706,7 +1706,7 @@
    "stepNote": "Each click (a third of a number) moves the burrs about 25 µm.",
    "applies": "From 1Zpresso’s Q-series chart; which Q2 burr it applies to isn’t established.",
    "rulerNote": null,
-   "zeroNote": "Turn the dial clockwise gently until the handle no longer spins freely; don’t force it tighter. The number at the dot is your starting point, even if it isn’t 0.",
+   "zeroNote": "Turn the dial clockwise to its tightest, as 1Zpresso’s Q manual says. The number at the dot is your starting point, even if it isn’t 0.",
    "cautions": [
     "Don’t wash or soak it.",
     "Don’t take apart the burr ring unit and outer burr, its screws, or the bearings in the hopper."

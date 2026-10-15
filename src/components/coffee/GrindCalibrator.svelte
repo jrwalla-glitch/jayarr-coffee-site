@@ -185,7 +185,7 @@
   // (0 to 5, then 1+0) are marks on the first rotation.
   let textNotes = $derived(!s?.published ? [] : [
     ...(s.published.includes('+') ? ['The source writes a rotation and a mark: “1+4” is one full rotation from zero, then on to mark 4.'] : []),
-    ...(/(^|[^+\d])\d+(\.\d)?(\s|$)/.test(s.published) ? ['A plain number such as 3.5 is a mark on the first rotation: on the source\'s chart, 0 to 5 come before 1+0.'] : []),
+    ...(/(^|[^+\d.])\d+(\.\d+)?(?![\d.+])/.test(s.published) ? ['A plain number such as 3.5 is a mark on the first rotation: on the source\'s chart, 0 to 5 come before 1+0.'] : []),
   ]);
 </script>
 
@@ -279,8 +279,8 @@
         {#if single}<path d="M150 2 L170 2 L160 20 Z" class="index" />{/if}
         <circle cx="160" cy="122" r="48" class="hub" />
         {#if g.perTurn && single}
-          <text x="160" y="114" text-anchor="middle" class="hubk">{full === 0 ? 'first turn' : `${full} turn${full === 1 ? '' : 's'} +`}</text>
-          <text x="160" y="144" text-anchor="middle" class="hubv">{rest}</text>
+          <text x="160" y="114" text-anchor="middle" class="hubk">{full === 0 ? 'first turn' : rest === 0 ? `full turn${full === 1 ? '' : 's'}` : `${full} turn${full === 1 ? '' : 's'} +`}</text>
+          <text x="160" y="144" text-anchor="middle" class="hubv">{full > 0 && rest === 0 ? full : rest}</text>
         {:else if knobArc?.full}
           <text x="160" y="110" text-anchor="middle" class="hubk">{knobArc.turns} turns</text>
           <text x="160" y="140" text-anchor="middle" class="hubv sm">{s.min}–{bandTo}</text>
