@@ -22,7 +22,7 @@ const deepTools = TOOLS.filter((t) => t.deepBrew);
 			hasPart: posts.map((p) => ({ '@type': 'Article', headline: p.data.title, url: `https://jayarr.coffee/deep-brew/research/${p.id}/` })),
 		})}></script>
 	</head>
-	<body class="cf-page">
+	<body class="cf-page db-dark">
 		<Header />
 		<main>
 			<section class="cf-intro">
@@ -60,24 +60,24 @@ const deepTools = TOOLS.filter((t) => t.deepBrew);
 	</body>
 </html>
 
-<style is:global>.cf-page { background: #f3ede3; }</style>
+<style is:global>.cf-page { background: var(--t-paper, #f3ede3); }</style>
 <style>
-	main { color: #2a1d15; font: 400 16px/1.5 'IBM Plex Sans', system-ui, sans-serif; }
+	main { color: var(--t-ink, #2a1d15); font: 400 16px/1.5 'IBM Plex Sans', system-ui, sans-serif; }
 	.cf-intro { max-width: 1180px; margin: 0 auto; padding: 120px 24px 18px; }
-	.cf-back { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; text-decoration: none; }
-	.cf-kicker { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: #8f5d22; margin: 26px 0 0; }
+	.cf-back { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--t-ink-3, #75655a); text-decoration: none; }
+	.cf-kicker { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--t-crema-deep, #8f5d22); margin: 26px 0 0; }
 	h1 { font: 400 clamp(40px, 6vw, 68px)/.98 'Instrument Serif', Georgia, serif; margin: 10px 0 12px; }
-	h1 em { font-style: italic; color: #7a4e30; }
-	.cf-lede { font-size: 17px; color: #5b4a3d; max-width: 62ch; margin: 0; }
-	.cf-lede a { color: #7a4e30; }
+	h1 em { font-style: italic; color: var(--t-coffee, #7a4e30); }
+	.cf-lede { font-size: 17px; color: var(--t-ink-2, #5b4a3d); max-width: 62ch; margin: 0; }
+	.cf-lede a { color: var(--t-coffee, #7a4e30); }
 	.groups, .tools { max-width: 1180px; margin: 0 auto; padding: 16px 24px; }
-	.group, .tools { border-top: 1px solid #d9cdbd; padding-top: 18px; margin-top: 18px; }
+	.group, .tools { border-top: 1px solid var(--t-rule, #d9cdbd); padding-top: 18px; margin-top: 18px; }
 	h2 { font: 400 32px/1.1 'Instrument Serif', Georgia, serif; margin: 0 0 12px; }
 	ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-	li a { display: grid; gap: 4px; padding: 14px 16px; background: #fbf8f3; border: 1px solid #d9cdbd; border-radius: 12px; text-decoration: none; color: inherit; height: 100%; box-sizing: border-box; }
-	li a:hover { border-color: #75655a; }
+	li a { display: grid; gap: 4px; padding: 14px 16px; background: var(--t-card, #fbf8f3); border: 1px solid var(--t-rule, #d9cdbd); border-radius: 12px; text-decoration: none; color: inherit; height: 100%; box-sizing: border-box; }
+	li a:hover { border-color: var(--t-ink-3, #75655a); }
 	.t { font: 400 22px/1.15 'Instrument Serif', Georgia, serif; }
-	.d { font-size: 14px; color: #5b4a3d; }
+	.d { font-size: 14px; color: var(--t-ink-2, #5b4a3d); }
 	.tools { padding-bottom: 72px; }
 	@media (max-width: 760px) { ul { grid-template-columns: 1fr; } .cf-intro { padding: 96px 16px 14px; } .groups, .tools { padding: 12px 16px; } }
 </style>

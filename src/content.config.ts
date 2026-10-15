@@ -33,6 +33,9 @@ const deepbrew = defineCollection({
 		updatedDate: z.coerce.date().optional(),
 		category: z.enum(['Chemistry', 'Physics', 'Roasting', 'Agriculture']),
 		tags: z.array(z.string()).optional(),
+		// The research template leads with these (MERGED_PLAN: finding, limitation, figure, then derivation and references).
+		finding: z.string().optional(),
+		limitation: z.string().optional(),
 	}),
 });
 

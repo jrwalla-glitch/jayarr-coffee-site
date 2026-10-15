@@ -20,16 +20,17 @@ const description = 'Describe how your coffee tastes and feels, see where it lan
 <html lang="en">
 	<head>
 		<BaseHead title={title} description={description} />
+		<link rel="alternate" type="application/rss+xml" title="JayArr Coffee: Deep Brew research" href="/deep-brew/rss.xml" />
 		<script type="application/ld+json" set:html={JSON.stringify({
 			'@context': 'https://schema.org', '@type': 'WebApplication', name: 'Extraction Map', url: 'https://jayarr.coffee/deep-brew/extraction/', description,
 			applicationCategory: 'UtilityApplication', operatingSystem: 'Any', offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, publisher: { '@type': 'Organization', name: 'JayArr Coffee', url: 'https://jayarr.coffee' },
 		})}></script>
 	</head>
-	<body class="cf-page">
+	<body class="cf-page db-dark">
 		<Header />
 		<main>
 			<section class="cf-intro">
-				<a href="/tools/" class="cf-back">← All tools</a>
+				<a href="/deep-brew/" class="cf-back">← Deep Brew</a>
 				<p class="cf-kicker">Deep Brew · Extraction Map</p>
 				<h1>Where does your cup sit <em>between sour and bitter?</em></h1>
 				<p class="cf-lede">Slide to describe the taste and the body, or enter a refractometer reading. Your cup lands on the brewing control chart, the map baristas use to talk about strength and extraction. Then pull a lever and watch it move.</p>
@@ -68,18 +69,18 @@ const description = 'Describe how your coffee tastes and feels, see where it lan
 	</body>
 </html>
 
-<style is:global>.cf-page { background: #f3ede3; }</style>
+<style is:global>.cf-page { background: var(--t-paper, #f3ede3); }</style>
 <style>
-	main { color: #2a1d15; }
+	main { color: var(--t-ink, #2a1d15); }
 	.cf-intro { max-width: 1180px; margin: 0 auto; padding: 120px 24px 22px; }
-	.cf-back { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; text-decoration: none; }
-	.cf-kicker { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: #8f5d22; margin: 26px 0 0; }
+	.cf-back { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--t-ink-3, #75655a); text-decoration: none; }
+	.cf-kicker { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--t-crema-deep, #8f5d22); margin: 26px 0 0; }
 	h1 { font: 400 clamp(40px, 6vw, 68px)/.98 'Instrument Serif', Georgia, serif; letter-spacing: -.01em; margin: 10px 0 12px; }
-	h1 em { font-style: italic; color: #7a4e30; }
-	.cf-lede { font: 400 17px/1.5 'IBM Plex Sans', system-ui, sans-serif; color: #5b4a3d; max-width: 62ch; margin: 0; }
+	h1 em { font-style: italic; color: var(--t-coffee, #7a4e30); }
+	.cf-lede { font: 400 17px/1.5 'IBM Plex Sans', system-ui, sans-serif; color: var(--t-ink-2, #5b4a3d); max-width: 62ch; margin: 0; }
 	.cf-tool { max-width: 1180px; margin: 0 auto; padding: 8px 24px 40px; }
 	.cf-body { max-width: 760px; margin: 0 auto; padding: 24px 24px 72px; font: 400 17px/1.7 'IBM Plex Sans', system-ui, sans-serif; }
 	.cf-body h2 { font: 400 34px/1.1 'Instrument Serif', Georgia, serif; margin: 44px 0 12px; }
-	.cf-sources { font-size: 14.5px; color: #5b4a3d; }
+	.cf-sources { font-size: 14.5px; color: var(--t-ink-2, #5b4a3d); }
 	@media (max-width: 640px) { .cf-intro { padding: 96px 16px 18px; } .cf-tool { padding: 4px 12px 32px; } .cf-body { padding: 16px 16px 56px; } }
 </style>

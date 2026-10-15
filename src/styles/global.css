@@ -66,6 +66,22 @@
   --space-3xl: 6rem;
 }
 
+/* Deep Brew: the dark variant of the one system (DESIGN_DIRECTION.md). Components read these with their
+   light values as fallbacks (var(--t-card, #fbf8f3)), so light pages render exactly as before and any page
+   with .db-dark on <body> turns dark. Every text token clears 4.5:1 on every ground; body ink clears 7:1. */
+.db-dark {
+  --t-paper: #14100D; --t-card: #1D1713; --t-surface: #261E18; --t-surface-2: #2E241D;
+  --t-stage-a: #211A15; --t-stage-b: #171310; --t-tint: #2B2119; --t-tint-2: #241C16;
+  --t-ink: #EFE6DA; --t-ink-2: #C8B9A8; --t-ink-3: #A8988A; --t-ink-4: #8C7D70;
+  --t-rule: #3A2F27; --t-rule-2: #31271F;
+  --t-crema: #C3873A; --t-crema-deep: #E0A45C; --t-water: #7FC3CF; --t-coffee: #C9925F; --t-warn: #F08A6C;
+  --t-on-ink: #14100D; --t-on-accent: #14100D; --t-shadow: rgba(0, 0, 0, .55);
+  --t-ground: #4A3D33; --t-crema-tint: #6B5236; --t-crema-mid: #A07A4C; --t-hover: rgba(255, 255, 255, .05);
+  color-scheme: dark;
+  background: var(--t-paper);
+  color: var(--t-ink);
+}
+
 html {
   scroll-behavior: smooth;
 }

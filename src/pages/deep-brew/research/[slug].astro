@@ -12,9 +12,11 @@ export async function getStaticPaths() {
 type Props = CollectionEntry<'deepbrew'>;
 
 const post = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
+// Reading time from the prose only (imports and component tags don't count).
+const minutes = Math.max(1, Math.round((post.body ?? '').replace(/^import .*$/gm, '').replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length / 230));
 ---
 
-<DeepBrewPost {...post.data} id={post.id}>
+<DeepBrewPost {...post.data} id={post.id} headings={headings} minutes={minutes}>
 	<Content />
 </DeepBrewPost>

@@ -188,16 +188,16 @@
 </div>
 
 <style>
-  .xt { --rule: #d9cdbd; --ink: #2a1d15; --ink-2: #5b4a3d; --ink-3: #75655a; --crema: #c3873a; --crema-deep: #8f5d22;
-    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); background: #fbf8f3; border: 1px solid var(--rule); border-radius: 18px; overflow: hidden;
-    color: var(--ink); font: 16px/1.5 'IBM Plex Sans', system-ui, sans-serif; box-shadow: 0 30px 60px -40px rgba(60, 35, 15, .35); }
-  .stage { padding: 18px; border-right: 1px solid var(--rule); background: radial-gradient(120% 90% at 50% 10%, #fffdf9 0%, #f4ece0 80%); display: flex; flex-direction: column; justify-content: center; }
+  .xt { --rule: var(--t-rule, #d9cdbd); --ink: var(--t-ink, #2a1d15); --ink-2: var(--t-ink-2, #5b4a3d); --ink-3: var(--t-ink-3, #75655a); --crema: var(--t-crema, #c3873a); --crema-deep: var(--t-crema-deep, #8f5d22);
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); background: var(--t-card, #fbf8f3); border: 1px solid var(--rule); border-radius: 18px; overflow: hidden;
+    color: var(--ink); font: 16px/1.5 'IBM Plex Sans', system-ui, sans-serif; box-shadow: 0 30px 60px -40px var(--t-shadow, rgba(60, 35, 15, .35)); }
+  .stage { padding: 18px; border-right: 1px solid var(--rule); background: radial-gradient(120% 90% at 50% 10%, var(--t-stage-a, #fffdf9) 0%, var(--t-tint-2, #f4ece0) 80%); display: flex; flex-direction: column; justify-content: center; }
   .refcap { margin: 6px 4px 0; font: 400 12.5px/1.4 'IBM Plex Mono', monospace; color: var(--ink-3); text-align: center; }
   .panel { padding: 22px 24px 24px; display: flex; flex-direction: column; gap: 18px; min-width: 0; }
   .lbl { font: 500 11px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); display: block; margin-bottom: 8px; }
   .seg { display: flex; flex-wrap: wrap; gap: 6px; }
-  .seg button { appearance: none; border: 1px solid var(--rule); background: #fff; border-radius: 999px; padding: 8px 13px; min-height: 38px; font: 500 13.5px/1 'IBM Plex Sans', sans-serif; color: var(--ink-2); cursor: pointer; }
-  .seg button[aria-pressed='true'] { background: var(--ink); color: #f3ede3; border-color: var(--ink); }
+  .seg button { appearance: none; border: 1px solid var(--rule); background: var(--t-surface, #fff); border-radius: 999px; padding: 8px 13px; min-height: 38px; font: 500 13.5px/1 'IBM Plex Sans', sans-serif; color: var(--ink-2); cursor: pointer; }
+  .seg button[aria-pressed='true'] { background: var(--ink); color: var(--t-on-ink, #f3ede3); border-color: var(--ink); }
   .slider { display: block; }
   input[type='range'] { width: 100%; accent-color: var(--crema-deep); height: 28px; }
   .ends { display: flex; justify-content: space-between; font-size: 13px; color: var(--ink-3); }
@@ -206,28 +206,28 @@
   .zl { font: 400 28px/1.1 'Instrument Serif', Georgia, serif; margin: 0; }
   .zt { margin: 4px 0 0; color: var(--ink-2); }
   .levers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
-  .levers button { appearance: none; border: 1px solid var(--rule); background: #fff; border-radius: 10px; padding: 8px 10px; min-height: 42px; font: 500 13.5px/1.2 'IBM Plex Sans', sans-serif; color: var(--ink-2); cursor: pointer; display: flex; align-items: center; gap: 8px; text-align: left; }
+  .levers button { appearance: none; border: 1px solid var(--rule); background: var(--t-surface, #fff); border-radius: 10px; padding: 8px 10px; min-height: 42px; font: 500 13.5px/1.2 'IBM Plex Sans', sans-serif; color: var(--ink-2); cursor: pointer; display: flex; align-items: center; gap: 8px; text-align: left; }
   .levers svg { width: 22px; height: 22px; flex: none; color: var(--crema-deep); }
-  .levers button.hint { border-color: var(--crema); background: #fff8ec; color: var(--ink); }
+  .levers button.hint { border-color: var(--crema); background: var(--t-tint, #fff8ec); color: var(--ink); }
   .note { font-size: 13px; color: var(--ink-3); margin: 10px 0 0; }
   .actions { display: flex; gap: 8px; flex-wrap: wrap; }
-  .go { background: var(--ink); color: #f3ede3; border-radius: 999px; padding: 13px 20px; font: 600 15px/1 'IBM Plex Sans', sans-serif; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
-  .ghost { border: 1px solid var(--rule); background: #fff; color: var(--ink-2); border-radius: 999px; padding: 11px 15px; font: 500 14px/1 'IBM Plex Sans', sans-serif; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
+  .go { background: var(--ink); color: var(--t-on-ink, #f3ede3); border-radius: 999px; padding: 13px 20px; font: 600 15px/1 'IBM Plex Sans', sans-serif; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
+  .ghost { border: 1px solid var(--rule); background: var(--t-surface, #fff); color: var(--ink-2); border-radius: 999px; padding: 11px 15px; font: 500 14px/1 'IBM Plex Sans', sans-serif; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
   button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--crema-deep); outline-offset: 2px; }
   @media (max-width: 860px) { .xt { grid-template-columns: 1fr; } .stage { border-right: 0; border-bottom: 1px solid var(--rule); padding: 10px 24px; } .panel { padding: 18px 16px 20px; } }
   .tabs { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; }
-  .tabs button { appearance: none; border: 0; background: #fff; padding: 10px 12px; font: 600 14.5px/1.2 'IBM Plex Sans', sans-serif; color: var(--ink-2); cursor: pointer; text-align: left; min-height: 48px; }
+  .tabs button { appearance: none; border: 0; background: var(--t-surface, #fff); padding: 10px 12px; font: 600 14.5px/1.2 'IBM Plex Sans', sans-serif; color: var(--ink-2); cursor: pointer; text-align: left; min-height: 48px; }
   .tabs button + button { border-left: 1px solid var(--rule); }
   .tabs button small { display: block; font: 400 12px 'IBM Plex Mono', monospace; color: var(--ink-3); }
-  .tabs button[aria-pressed='true'] { background: var(--ink); color: #f3ede3; }
-  .tabs button[aria-pressed='true'] small { color: #d9cdbd; }
+  .tabs button[aria-pressed='true'] { background: var(--ink); color: var(--t-on-ink, #f3ede3); }
+  .tabs button[aria-pressed='true'] small { color: var(--t-rule, #d9cdbd); }
   .inputs { display: flex; gap: 10px; flex-wrap: wrap; }
   .fld { display: flex; flex-direction: column; gap: 0; }
-  .fld input { font: 400 17px 'IBM Plex Mono', monospace; width: 112px; padding: 8px 10px; border: 1px solid var(--rule); border-radius: 8px; background: #fff; min-height: 44px; color: var(--ink); }
+  .fld input { font: 400 17px 'IBM Plex Mono', monospace; width: 112px; padding: 8px 10px; border: 1px solid var(--rule); border-radius: 8px; background: var(--t-surface, #fff); min-height: 44px; color: var(--ink); }
   .ey { font: 400 52px/1 'Instrument Serif', Georgia, serif; margin: 0; }
   .ey small { font-size: 26px; margin-left: 2px; }
   .calc { font: 400 12.5px 'IBM Plex Mono', monospace; color: var(--ink-3); margin: 6px 0 0; }
-  .err { color: #9a3b1c; margin: 0; }
+  .err { color: var(--t-warn, #9a3b1c); margin: 0; }
   .note.ex { margin: 0; color: var(--crema-deep); }
   .zonecard.suspect .ey { color: var(--ink-3); font-size: 40px; }
   .check { display: flex; gap: 8px; align-items: center; font-size: 14.5px; }
