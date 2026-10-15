@@ -30,6 +30,9 @@
   // When nothing fits, say what would: the cheapest fit with the same routine and counter, at any budget.
   let nearest = $derived(matches.length ? null : chooseMachines(machines, grinders, { ...needs, budget: Infinity }, 1)[0] ?? null);
   let own = $derived(byId(ownId) ?? machines[0]);
+  // Machines a width ruled out only because their published size is unclear, which would otherwise be shortlisted:
+  // said where the answer is, not in a footnote (gate r2).
+  let hiddenByWidth = $derived(needs.widthCm ? chooseMachines(machines, grinders, { ...needs, widthCm: null }).map((x) => x.machine as M).filter((m) => !m.dims && m.dimsUnclear) : []);
 
   const HEAT: Record<Heating, string> = { thermoblock: 'Thermoblock', 'single-boiler': 'Single boiler', 'heat-exchanger': 'Heat exchanger', 'dual-boiler': 'Dual boiler', none: 'No boiler (lever)' };
   const HEATS: string[] = ['thermoblock', 'single-boiler', 'heat-exchanger', 'dual-boiler'];
@@ -39,9 +42,13 @@
   // The maker's own name for its heater, without the research's parenthetical detail ("ThermoJet", "Thermocoil").
   const shortTerm = (m: M) => {
     const t = (m.heating.makerTerm ?? '').replace(/\s*\(.*$/, '').replace(/®|™/g, '').replace(/\s*(heating )?system$/i, '').trim();
-    return m.heating.system && t && !/^(dual boiler|single boiler|heat exchanger|thermoblock|system with heat exchanger)$/i.test(t) ? t : '';
+    // Only a distinct maker name adds anything ("ThermoJet"); "Dual Boiler Technology" or "stainless steel boiler" just repeats the family.
+    return m.heating.system && t && !/boiler|heat exchanger|thermoblock/i.test(t) ? t : '';
   };
   const money = (v: number) => `$${Math.round(v).toLocaleString('en-US')}`;
+  const lowerFirst = (t: string) => t.charAt(0).toLowerCase() + t.slice(1);
+  // Nespresso's two capsule systems don't interchange, so capsule machines are compared by the capsules they take.
+  const LINE: Record<string, string> = { original: 'Original', vertuo: 'Vertuo' };
   // Bands are "about": rounded to $10 below $600 and $50 above, so they don't look more exact than prices are.
   const r = (v: number) => (v < 600 ? Math.round(v / 10) * 10 : Math.round(v / 50) * 50);
   const band = (b: { low: number; high: number } | null) => (!b ? null : r(b.low) === r(b.high) ? money(r(b.low)) : `${money(r(b.low))}–${money(r(b.high))}`);
@@ -72,13 +79,15 @@
   }
   function rankNote(i: number): string {
     const a = matches[i], top = matches[0];
-    if (i === 0) return matches.length > 1 && a.score === matches[1].score ? 'First: it meets what you asked for the least money among the close matches.' : 'First: the closest match to what you asked.';
+    if (i === 0) return a.misses.length ? `First, though not a full match: ${a.misses[0]}.` : matches.length > 1 && a.score === matches[1].score ? 'First: it meets what you asked for the least money among the close matches.' : 'First: the closest match to what you asked.';
     const d: string[] = [];
     const dp = r(a.band!.low) - r(top.band!.low);
     d.push(dp > 0 ? `${money(dp)} more` : dp < 0 ? `${money(-dp)} less` : 'about the same money');
     const am = a.machine.milk.type, tm = top.machine.milk.type;
     if (am && tm && am !== tm) d.push(`${MILK[am].toLowerCase()} rather than ${MILK[tm].toLowerCase()}`);
     if (!!a.machine.grinder.builtIn !== !!top.machine.grinder.builtIn) d.push(a.machine.grinder.builtIn ? 'grinder built in' : 'separate grinder');
+    const la = (a.machine as M).capsuleLine, lt = (top.machine as M).capsuleLine;
+    if (la && lt && la !== lt) d.push(`takes ${LINE[la]} capsules, not ${LINE[lt]}`);
     if (a.machine.heating.simultaneousBrewSteam && !top.machine.heating.simultaneousBrewSteam) d.push('brews and steams at once');
     // What the difference buys, from the makers' own specs: grind steps, heat-up, tank, portafilter.
     const gs = (m: Machine) => { const n = String(m.grinder.settings ?? '').match(/\d+/); return m.grinder.builtIn && n ? Number(n[0]) : null; };
@@ -88,8 +97,10 @@
     if (ha && (!ht || ha < ht) && ha <= 10) d.push(`ready in about ${ha} seconds, by the maker's figure`);
     if (a.machine.tankL && top.machine.tankL && a.machine.tankL - top.machine.tankL >= 0.5) d.push(`a bigger tank (${a.machine.tankL} L, not ${top.machine.tankL} L)`);
     if (a.machine.portafilterMm && top.machine.portafilterMm && a.machine.portafilterMm !== top.machine.portafilterMm) d.push(`a ${a.machine.portafilterMm} mm portafilter, not ${top.machine.portafilterMm} mm`);
-    if (a.score > top.score) d.push('a weaker fit on what you asked');
-    if (d.length === 1 && dp > 0) d.push('with no difference in the specs we track');
+    // Say what makes it a weaker fit, never just that it is one.
+    if (a.misses.length && !top.misses.length) d.push(`not a full match: ${a.misses[0]}`);
+    else if (a.score > top.score) { const t = a.tradeoffs.find((x) => !top.tradeoffs.includes(x)); if (t) d.push(`a weaker fit: ${lowerFirst(t).replace(/\.$/, '')}`); }
+    if (d.length === 1 && dp > 0) return `Against #1: ${d[0]}, with no difference in the specs we track.`;
     return `Against #1: ${d.join('; ')}.`;
   }
   // Why a machine isn't drawn: Breville's listed sizes conflict with its own guidance (research/BREVILLE_DIMS_CHECK.md),
@@ -108,10 +119,16 @@
     for (const m of ms) if (m.clearanceCm) { const k = `${m.brand}|${m.clearanceCm}`; groups.set(k, [...(groups.get(k) ?? []), m]); }
     return [...groups.values()].map((g) => ` ${g[0].brand} suggests ${len(g[0].clearanceCm!)} ${u} of clearance under cabinets for ${g.length === ms.length ? (ms.length === 1 ? 'it' : ms.length === 2 ? 'both' : `all ${ms.length === 3 ? 'three' : ms.length}`) : `the ${g.map((m) => m.name).join(' and ')}`}.`).join('');
   }
+  // Less than an inch above the machine: it fits, but there may be no room to lift a lid or fill the tank in place.
+  function tightLine(m: M): string | null {
+    if (!needs.heightCm || !m.dims || (m.clearanceCm && m.clearanceCm > m.dims.h)) return null;
+    const gap = needs.heightCm - m.dims.h;
+    return gap < 2.54 ? `Leaves only ${len(gap)} ${u} under your cabinets: check you can lift the lid and fill the tank where it stands.` : null;
+  }
   function fitLines(m: M): string[] {
     const out: string[] = [];
     if (needs.heightCm && m.clearanceCm && (!m.dims || m.clearanceCm > m.dims.h)) out.push(`Fits under your ${heightIn} ${u} cabinets: ${m.brand} suggests ${len(m.clearanceCm)} ${u} of clearance.`);
-    else if (needs.heightCm && m.dims) out.push(`Leaves ${len(needs.heightCm - m.dims.h)} ${u} under your cabinets.`);
+    else if (needs.heightCm && m.dims && !tightLine(m)) out.push(`Leaves ${len(needs.heightCm - m.dims.h)} ${u} under your cabinets.`);
     if (needs.widthCm && m.dims) out.push(`Fits your ${widthIn} ${u} of width, with ${len(needs.widthCm - m.dims.w)} ${u} to spare.`);
     return out;
   }
@@ -324,7 +341,14 @@
       <section class="results" id="chooser-results" aria-live="polite" aria-label="Machines that fit">
         {#if matches.length}
           {@const sized = matches.filter((x) => x.machine.dims)}
-          <p class="kick">{matches.length === 1 ? 'One machine fits' : `${matches.length === 2 ? 'Two' : 'Three'} machines fit`}, best first</p>
+          {@const count = matches.length === 1 ? 'one' : matches.length === 2 ? 'two' : 'three'}
+          <p class="kick">{matches[0].misses.length ? `Nothing meets everything you asked: the ${count} closest, closest first` : `${count.charAt(0).toUpperCase() + count.slice(1)} ${matches.length === 1 ? 'machine fits' : 'machines fit'}, closest first`}</p>
+          {#if hiddenByWidth.length}
+            <div class="widthnote">
+              <p>Left out because you gave a width: the {hiddenByWidth.map((m) => m.name).join(hiddenByWidth.length === 2 ? ' and ' : ', ').replace(/, ([^,]*)$/, ' and $1')}, which would otherwise be among your matches. {hiddenByWidth[0].brand}'s published sizes for {hiddenByWidth.length === 1 ? 'it' : 'them'} conflict with its own guidance, so we can't check {hiddenByWidth.length === 1 ? 'it' : 'them'} against your {widthIn} {u}.</p>
+              <button type="button" class="ghost" onclick={() => (widthIn = null)}>Show them without the width</button>
+            </div>
+          {/if}
           {@const c = counter}
           {#if sized.length}
           <svg viewBox="0 0 {CW} {c.H}" class="counter" role="img" aria-label="Your shortlist on a counter, drawn to one scale: {matches.map((x) => x.machine.dims ? `${x.machine.brand} ${x.machine.name}, ${len(x.machine.dims.w)} ${u} wide and ${len(x.machine.dims.h)} ${u} tall` : `${x.machine.brand} ${x.machine.name}, size unclear`).join('; ')}{needs.heightCm ? `, under cabinets ${heightIn} ${u} high` : ''}{needs.widthCm ? `, in ${widthIn} ${u} of width` : ''}.">
@@ -353,13 +377,8 @@
             {/each}
             <g class="bar"><line x1="12" y1={c.H - 10} x2={12 + c.barPx} y2={c.H - 10} /><line x1="12" y1={c.H - 14} x2="12" y2={c.H - 6} /><line x1={12 + c.barPx} y1={c.H - 14} x2={12 + c.barPx} y2={c.H - 6} /><text x={18 + c.barPx} y={c.H - 6} class="barl">{c.barLabel}</text></g>
           </svg>
-          <p class="cap">{counter.compact ? `Numbered as the cards below: ${matches.map((x, i) => `${i + 1} ${x.machine.name}`).join(', ')}. ` : ''}Drawn to one scale from the makers' published sizes, width × height{needs.widthCm ? ', each in the width you gave' : ''}.{matches.some((x) => !x.machine.dims) ? ` Dashed: ${sizeWhy(matches.filter((x) => !x.machine.dims).map((x) => x.machine as M))} Each is outlined at the clearance its maker suggests, at a nominal width.` : ''}</p>
-          {:else}
-            <!-- nothing with a clear published size: no drawing, and the clearance the makers suggest instead -->
-            <p class="cap nodraw">No drawing to scale: {sizeWhy(matches.map((x) => x.machine as M))}{clearanceText(matches.map((x) => x.machine as M))}</p>
+          <p class="cap">{counter.compact ? `Numbered as the cards below: ${matches.map((x, i) => `${i + 1} ${x.machine.name}`).join(', ')}. ` : ''}Drawn to one scale from the makers' published sizes, width × height{needs.widthCm ? ', each in the width you gave' : ''}.{matches.some((x) => !x.machine.dims) ? ` Dashed: ${lowerFirst(sizeWhy(matches.filter((x) => !x.machine.dims).map((x) => x.machine as M)))} ${matches.filter((x) => !x.machine.dims).length === 1 ? 'It is' : 'Each is'} outlined at the clearance its maker suggests, at a nominal width.` : ''}</p>
           {/if}
-
-          <p class="shared">Prices are what each maker's US site or shop showed on October 15, 2026, or, where a maker doesn't sell direct, its US importer or an authorized dealer; they change. Amazon links go to the exact model; as an Amazon Associate we earn from qualifying purchases.</p>
           <ol class="cards">
             {#each matches as x, i (x.machine.id)}
               {@const m = x.machine as M}
@@ -367,24 +386,29 @@
                 <p class="ck"><span class="rank">{i + 1}</span>{m.category ? CATEGORY_LABEL[m.category] : ''}</p>
                 <h3>{m.brand} {m.name}</h3>
                 <p class="band">About {band(x.band)}{needsGrinder(m) ? ' with a grinder' : ''}</p>
-                {#if needsGrinder(m) && grinderPrices.length}<p class="fine">Machine {money(m.listPrice.usd!)}, plus an espresso grinder from about {money(grinderPrices[0])} to {money(grinderPrices[grinderPrices.length - 1])}.</p>{/if}
+                {#if needsGrinder(m) && grinderPrices.length}<p class="fine">Machine {money(m.listPrice.usd!)}, plus an espresso grinder from about {money(r(grinderPrices[0]))} to {money(r(grinderPrices[grinderPrices.length - 1]))}.</p>{/if}
                 <p class="rankn">{rankNote(i)}</p>
                 <ul class="why">{#each [...x.why, ...fitLines(m)] as w (w)}<li>{w}</li>{/each}</ul>
-                <ul class="trade">{#each tradeoffs(x) as t (t)}<li>{t}</li>{/each}</ul>
+                <ul class="trade">{#each [...tradeoffs(x), ...(tightLine(m) ? [tightLine(m)!] : [])] as t (t)}<li>{t}</li>{/each}</ul>
                 <dl class="mini">
-                  {#if m.category !== 'capsule'}<div><dt>Heats</dt><dd>{heatLabel(m)}{shortTerm(m) ? ` (${shortTerm(m)})` : ''}</dd></div>{/if}
+                  {#if m.capsuleLine}<div><dt>Capsules</dt><dd>Nespresso {LINE[m.capsuleLine]}</dd></div>
+                  {:else if m.heating.system}<div><dt>Heats</dt><dd>{heatLabel(m)}{shortTerm(m) ? ` (${shortTerm(m)})` : ''}</dd></div>{/if}
                   <div><dt>Milk</dt><dd>{m.milk.type ? MILK[m.milk.type] : NE}</dd></div>
-                  <div><dt>Size, W × D × H</dt><dd>{m.dims ? sizeText(m) : m.dimsUnclear ? `Unclear; allow ${len(m.clearanceCm ?? 0)} ${u} high` : NE}</dd></div>
+                  <div><dt>Size, W × D × H</dt><dd>{m.dims ? sizeText(m) : m.dimsUnclear && m.clearanceCm ? `Allow about ${len(m.clearanceCm)} ${u} of height (see below)` : NE}</dd></div>
                 </dl>
                 <div class="acts">
                   {#if m.amazon}<a class="go" href={m.amazon.url} rel="sponsored noopener" target="_blank">See it on Amazon</a>
                   {:else if m.listPrice.url}<a class="go" href={m.listPrice.url} rel="noopener" target="_blank">The maker's page ↗</a>{/if}
+                  {#if m.capsuleLine}<a class="ghost" href={`/tools/nespresso-pods/?line=${m.capsuleLine}`}>See its capsules</a>{/if}
                   <button type="button" class="ghost" onclick={() => openOwn(m.id)}>Dose and care</button>
                   {#if m.heating.system && HEATS.includes(m.heating.system)}<button type="button" class="ghost" onclick={() => { pickHeat(m.heating.system!); document.getElementById('how-it-heats')?.scrollIntoView({ behavior: 'smooth' }); }}>How it brews and steams</button>{/if}
                 </div>
               </li>
             {/each}
           </ol>
+          <!-- after the answer, not before it (gate r2): why there's no drawing, and where the prices come from -->
+          {#if !sized.length}<p class="cap nodraw">No drawing to scale: {sizeWhy(matches.map((x) => x.machine as M))}{clearanceText(matches.map((x) => x.machine as M))}</p>{/if}
+          <p class="shared">Prices are what each maker's US site or shop showed on October 15, 2026, or, where a maker doesn't sell direct, its US importer or an authorized dealer; they change. Amazon links go to the exact model; as an Amazon Associate we earn from qualifying purchases.</p>
         {:else}
           <div class="none">
             <p class="kick">Nothing fits all of that</p>
@@ -461,6 +485,7 @@
     </div>
   {/if}
 
+  {#if !(mode === 'find' && matches.length && matches.every((x) => x.machine.category === 'capsule'))}
   <section class="heat" id="how-it-heats" aria-label="How each heating system brews and steams">
     <p class="kick">How it brews and steams</p>
     <div class="htabs" role="tablist" aria-label="Heating system">
@@ -513,6 +538,7 @@
       </div>
     </div>
   </section>
+  {/if}
 </div>
 
 <style>
@@ -674,4 +700,14 @@
   }
   @media (max-width: 420px) { .modes button { padding: 9px 12px; } }
   @media (prefers-reduced-motion: reduce) { .schem .fbrew { animation: none; } .pipe, .flow, .heater { transition: none; } }
+  .widthnote { margin: 0 0 12px; padding: 12px 14px; border-radius: 14px; border: 1px solid #e9c48f; background: #fff8ec; display: grid; gap: 8px; justify-items: start; }
+  .widthnote p { margin: 0; font-size: 14.5px; color: var(--ink); }
+  .schem[data-phase='steam'] .psteam, .schem[data-phase='both'] .psteam { stroke: #c3873a !important; stroke-width: 5; }
+  .schem[data-phase='steam'] .fsteam, .schem[data-phase='both'] .fsteam { stroke: #c3873a; }
+  /* Phones: the drawings scale down, so their words scale up (gate r2). */
+  @media (max-width: 640px) {
+    .mdim, .slotl, .clear, .barl, .cablbl { font-size: 13px; }
+    .mlbl { font-size: 16px; }
+    .hl { font-size: 13px; } .hlsm, .sl { font-size: 12.5px; } .badgek { font-size: 11.5px; } .badgev { font-size: 22px; }
+  }
 </style>

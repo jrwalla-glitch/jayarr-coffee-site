@@ -39,6 +39,8 @@ export interface Machine {
   dimsUnclear?: string | null;
   /** The countertop clearance the maker suggests, in centimetres, and where it says so. */
   clearanceCm?: number | null; clearanceUrl?: string | null;
+  /** Nespresso's two capsule systems don't interchange: Original or Vertuo. */
+  capsuleLine?: 'original' | 'vertuo' | null;
 }
 export interface GrinderPrice { id: string; name: string; usd: number | null; checked?: string | null; url?: string | null }
 
@@ -92,7 +94,8 @@ const EFFORT_OK: Record<Needs['effort'], Category[]> = {
   'hands-on': ['semi-auto', 'semi-auto-grinder', 'manual-lever'],
 };
 
-export interface Match { machine: Machine; band: { low: number; high: number } | null; score: number; why: string[]; tradeoffs: string[] }
+/** `misses`: where the machine falls short of the routine asked for (effort or milk); empty means a full match. */
+export interface Match { machine: Machine; band: { low: number; high: number } | null; score: number; why: string[]; tradeoffs: string[]; misses: string[] }
 
 /**
  * Two or three matches, best first. Hard limits: current machines that fit the counter and
@@ -110,27 +113,27 @@ export function chooseMachines(machines: Machine[], grinders: GrinderPrice[], n:
     const band = setupBand(m, grinders);
     if (!band || band.low > n.budget) continue;
     let score = 0;
-    const why: string[] = [], tradeoffs: string[] = [];
+    const why: string[] = [], tradeoffs: string[] = [], misses: string[] = [];
     // Effort
     if (EFFORT_OK[n.effort].includes(m.category)) why.push(effortWhy(m, n));
     // Guided, but a plain semi-automatic: close, with a separate grinder to learn too.
-    else if (n.effort === 'guided' && m.category === 'semi-auto') { score += m.milk.type === 'auto-wand' ? 1 : 2; tradeoffs.push('Needs a separate grinder, and you dose and tamp by hand.'); }
-    else { score += 4; tradeoffs.push(effortTrade(m, n)); }
+    else if (n.effort === 'guided' && m.category === 'semi-auto') { score += m.milk.type === 'auto-wand' ? 1 : 2; tradeoffs.push('Needs a separate grinder, and you dose and tamp by hand.'); misses.push('it needs a separate grinder, where you asked to be guided'); }
+    else { score += 4; tradeoffs.push(effortTrade(m, n)); misses.push(n.effort === 'button' ? 'it needs grinding and tamping by hand, where you asked for push-button' : n.effort === 'hands-on' ? 'it does more for you than the hands-on routine you asked for' : 'it is more automatic than you asked for'); }
     // Milk
     if (n.milk !== 'none') {
-      if (m.milk.type === 'none') { score += n.milk === 'most' ? 6 : 3; tradeoffs.push('No milk system: you would need a separate frother.'); }
+      if (m.milk.type === 'none') { score += n.milk === 'most' ? 6 : 3; tradeoffs.push('No milk system: you would need a separate frother.'); misses.push('it has no milk system'); }
       else if (n.effort === 'button' && (m.milk.type === 'manual-wand' || m.milk.type === 'panarello')) { score += 1.5; tradeoffs.push('Milk is steamed by hand, not at the press of a button.'); }
       else why.push(milkWhy(m));
       if (n.milk === 'most' && n.cups >= 3 && m.category !== 'capsule' && m.category !== 'super-auto') {
         // Brewing and steaming at once matters most for a run of milk drinks; a fast switch is next best.
         if (m.heating.simultaneousBrewSteam) { score -= n.cups >= 5 ? 1.5 : 0.5; why.push('Brews and steams at the same time, which keeps a run of milk drinks moving.'); }
-        else if ((m.heating.heatUpSeconds ?? Infinity) <= 10) { score += n.cups >= 5 ? 1 : 0; why.push(`Switches from brewing to steaming quickly (the maker quotes about ${m.heating.heatUpSeconds} seconds to heat).`); if (n.cups >= 5) tradeoffs.push('Brews and steams one after the other: quick to switch, but five milk drinks still queue.'); }
+        else if ((m.heating.heatUpSeconds ?? Infinity) <= 10) { score += n.cups >= 5 ? 1 : 0; why.push(`Switches from brewing to steaming quickly (the maker quotes about ${m.heating.heatUpSeconds} seconds to heat).`); if (n.cups >= 5) tradeoffs.push('Brews and steams one after the other: quick to switch, but four or more milk drinks still queue.'); }
         else { score += 2; tradeoffs.push('Brews and steams one after the other, so several milk drinks take a while.'); }
       }
     } else if (m.milk.type === 'carafe' || m.milk.type === 'auto-wand') { score += 0.5; tradeoffs.push('You would be paying for an automatic milk system you don\'t need.'); }
     // Budget: room to spare is fine; using all of it on the machine alone is not.
     if (band.high > n.budget) { score += 1; tradeoffs.push('The upper end of its grinder range runs past your budget.'); }
-    out.push({ machine: m, band, score, why, tradeoffs });
+    out.push({ machine: m, band, score, why, tradeoffs, misses });
   }
   return out.sort((a, b) => a.score - b.score || (a.band!.low - b.band!.low) || a.machine.name.localeCompare(b.machine.name)).slice(0, k);
 }

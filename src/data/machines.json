@@ -247,6 +247,7 @@
     "descale": "Cleaning and descaling are one combined cycle. Breville gives no fixed interval; the 2 Cup button flashes continuously when it is due.",
     "clean": "Rinse the group head with the 2 Cup fresh-water flush. Cleaning and descaling share a combined cycle."
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 11.9,
     "d": 6.1,
@@ -499,6 +500,7 @@
     "descale": "Breville gives no fixed descaling interval; the 1 CUP+STEAM and 2 CUP buttons flash alternately for 15 seconds when it is due. Descaling uses descaling agent followed by a rinse cycle.",
     "clean": "The flushing cycle is due after 200 extractions since the last cleaning; 1 CUP and 2 CUP flash alternately. Put the cleaning disc in the basket with one cleaning tablet on top."
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 11.9,
     "d": 7.4,
@@ -781,6 +783,7 @@
     "descale": "Breville gives no fixed interval; a solid CLEAN / DESCALE light signals descaling. Use Breville descaling solution for the coffee, steam, and hot-water components.",
     "clean": "A flashing CLEAN / DESCALE light signals the backflush cycle, which is separate from descaling. Put the cleaning disc and one cleaning tablet in the 1 CUP basket; the cycle takes about 5 minutes."
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 15.9,
     "d": 13.1,
@@ -1064,6 +1067,7 @@
     "descale": "Descaling uses descaling sachets or powder for the coffee, steam, and hot-water components. Breville gives no fixed interval.",
     "clean": "A flashing CLEAN / DESCALE light signals the backflush cycle, which is separate from descaling. Put the cleaning disc and one cleaning tablet in the 1 CUP basket; the cycle takes about 5 minutes."
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 16.6,
     "d": 14.4,
@@ -1433,6 +1437,7 @@
     "descale": "Select DESCALE in MENU and use descaling powder.",
     "clean": "The FLUSH cleaning cycle uses a cleaning disc and cleaning tablet. It is separate from descaling."
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 16.1,
     "d": 13.8,
@@ -1793,6 +1798,7 @@
     "descale": "Open Settings > Descale cycle and follow the on-screen steps.",
     "clean": "The screen prompts you to run the backflush cleaning cycle. It is separate from descaling."
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 15.7,
     "d": 12.6,
@@ -2152,6 +2158,7 @@
     "descale": "Use the dESc procedure in the advanced menu, with the descale access point.",
     "clean": "The cleaning cycle cleans the shower screen and backflushes the group head."
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 18,
     "d": 16,
@@ -2515,6 +2522,7 @@
     "descale": "Select DESCALE (dESc) from the menu and use the descale access point.",
     "clean": "The cleaning cycle cleans the shower screen and backflushes the group head."
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 37.9,
     "d": 40.3,
@@ -2681,6 +2689,7 @@
    "clearanceCm": null,
    "clearanceUrl": null,
    "owner": null,
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 9.45,
     "d": 17.32,
@@ -2841,6 +2850,7 @@
     "descale": "Descale about every 200 coffees with De'Longhi descaler.",
     "clean": null
    },
+   "capsuleLine": null,
    "dimsPublished": null
   },
   {
@@ -2991,6 +3001,7 @@
    "clearanceCm": null,
    "clearanceUrl": null,
    "owner": null,
+   "capsuleLine": null,
    "dimsPublished": null
   },
   {
@@ -3147,6 +3158,7 @@
    "clearanceCm": null,
    "clearanceUrl": null,
    "owner": null,
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 238,
     "d": 430,
@@ -3247,6 +3259,7 @@
    "clearanceCm": null,
    "clearanceUrl": null,
    "owner": null,
+   "capsuleLine": null,
    "dimsPublished": null
   },
   {
@@ -3428,6 +3441,7 @@
     "descale": "Descale when the B5 indicator lights. The cycle takes about 30 minutes.",
     "clean": null
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 5.8,
     "d": 12.9,
@@ -3595,6 +3609,7 @@
     "descale": "The machine provides guided descaling and supports AquaClean filters.",
     "clean": null
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 246,
     "h": 371,
@@ -3692,6 +3707,7 @@
    "clearanceCm": null,
    "clearanceUrl": null,
    "owner": null,
+   "capsuleLine": null,
    "dimsPublished": null
   },
   {
@@ -3839,6 +3855,7 @@
     "descale": "Descale every 2 months using only Gaggia descaling product. Never use vinegar or other descaling agents.",
     "clean": "Clean the brew group monthly with Gaggia Coffee Oil Remover tablets and the blind filter."
    },
+   "capsuleLine": null,
    "dimsPublished": null
   },
   {
@@ -3961,6 +3978,7 @@
     "descale": "Descale every 2 months.",
     "clean": null
    },
+   "capsuleLine": null,
    "dimsPublished": null
   },
   {
@@ -4145,6 +4163,7 @@
     "descale": null,
     "clean": "For daily cleaning, use the blind filter disk and espresso-machine detergent. Turn the coffee switch on for 5 seconds and off for 10 seconds; repeat until the water runs clear."
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 235,
     "d": 290,
@@ -4364,6 +4383,7 @@
     "descale": null,
     "clean": "Use the F.01 washing cycle with the blind filter disk and detergent, following the CL1–CL3 screens. Rancilio gives no fixed cleaning interval."
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 250,
     "d": 420,
@@ -4576,6 +4596,7 @@
     "descale": null,
     "clean": null
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 29,
     "d": 58.5,
@@ -4756,6 +4777,7 @@
     "descale": null,
     "clean": null
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 32,
     "d": 38,
@@ -5033,6 +5055,7 @@
     "descale": "Preventive descaling may be needed, and Profitec recommends a water filter cartridge. If the machine is already calcified, only a specialized dealer may descale it because partial disassembly is required.",
     "clean": null
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 210,
     "d": 362,
@@ -5327,6 +5350,7 @@
     "descale": "Use only Profitec original descaler for menu-guided descaling. Have the blind filter and a receptacle holding at least 500 ml ready.",
     "clean": "Automatic brew-group cleaning and a manual cleaning procedure are available."
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 210,
     "d": 362,
@@ -5645,6 +5669,7 @@
     "descale": "Preventive descaling may be needed. If the machine is already calcified, only a specialized dealer may descale it.",
     "clean": "Clean the brew group with the blind filter."
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 228,
     "d": 448,
@@ -5814,6 +5839,7 @@
    "clearanceCm": null,
    "clearanceUrl": null,
    "owner": null,
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 274,
     "d": 439.5,
@@ -6036,6 +6062,7 @@
     "descale": null,
     "clean": null
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 270,
     "d": 448,
@@ -6329,6 +6356,7 @@
     "descale": "Use Coffee Washer monthly above 10 coffees a day, every 2 months at 5–10 coffees a day, or every 3 months at 1–5 coffees a day. Water-treatment filters are optional.",
     "clean": "Backflush weekly with the blind filter, pressing the coffee switch for 10 seconds twice. The machine also has a CLn cleaning mode."
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 270,
     "d": 315,
@@ -6532,6 +6560,7 @@
     "descale": null,
     "clean": null
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "raw": [
      17.5,
@@ -6666,6 +6695,7 @@
     "descale": null,
     "clean": null
    },
+   "capsuleLine": null,
    "dimsPublished": null
   },
   {
@@ -6906,6 +6936,7 @@
     "descale": "When prompted, dissolve 3 JURA descaling tablets in 500 ml water for the approximately 40-minute program. The machine does not prompt for descaling with a CLEARYL Smart+ filter.",
     "clean": "Cleaning is prompted after 180 preparations or 80 switch-on rinses. Insert a JURA cleaning tablet in the filler funnel for the approximately 20-minute program."
    },
+   "capsuleLine": null,
    "dimsPublished": null
   },
   {
@@ -7164,6 +7195,7 @@
     "descale": "Use 3 JURA descaling tablets in the water tank for the descaling program.",
     "clean": "Use JURA cleaning tablets for the cleaning program."
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 27,
     "h": 34.8,
@@ -7432,6 +7464,7 @@
     "descale": "Dissolve 3 JURA descaling tablets in the water tank for the approximately 40-minute program.",
     "clean": "Insert 1 JURA cleaning tablet in the filler funnel for the approximately 20-minute cleaning program."
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 28,
     "h": 35.1,
@@ -7679,6 +7712,7 @@
     "descale": "Use 3 JURA descaling tablets in the water tank for the approximately 45-minute program.",
     "clean": "Put 1 JURA cleaning tablet in the filler funnel for the approximately 20-minute cleaning program."
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 28,
     "h": 34.6,
@@ -7952,6 +7986,7 @@
     "descale": "Use 3 JURA descaling tablets in the water tank for the approximately 40-minute program.",
     "clean": "Insert 1 JURA cleaning tablet in the powder chute for the approximately 20-minute cleaning program."
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 27.1,
     "h": 32.3,
@@ -8200,6 +8235,7 @@
     "descale": "Use 3 JURA descaling tablets in the water tank for the approximately 45-minute program.",
     "clean": "Put 1 JURA cleaning tablet in the powder chute for the approximately 20-minute cleaning program."
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 27.1,
     "h": 32.3,
@@ -8463,6 +8499,7 @@
     "descale": "Dissolve 3 JURA descaling tablets in the water tank for the descaling program.",
     "clean": "Put a JURA cleaning tablet in the filler funnel for the approximately 20-minute cleaning program."
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 28,
     "h": 34.8,
@@ -8725,6 +8762,7 @@
     "descale": "Use 3 JURA descaling tablets in the water tank for the approximately 45-minute program.",
     "clean": "Put a JURA cleaning tablet in the filler funnel for the approximately 20-minute cleaning program."
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 31.8,
     "h": 34.8,
@@ -8988,6 +9026,7 @@
     "descale": "Dissolve 3 JURA descaling tablets in the water tank for the approximately 20-minute program.",
     "clean": "Put a JURA cleaning tablet in the powder chute for the cleaning program."
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 31,
     "h": 36,
@@ -9253,6 +9292,7 @@
     "descale": "Use 3 JURA descaling tablets in the water tank for the descaling program.",
     "clean": "Use 1 JURA cleaning tablet for the cleaning program."
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 32,
     "h": 36.3,
@@ -9511,6 +9551,7 @@
     "descale": "Use 3 JURA descaling tablets in the water tank for the approximately 45-minute program.",
     "clean": "Put 1 JURA cleaning tablet in the filler funnel for the approximately 20-minute cleaning program."
    },
+   "capsuleLine": null,
    "dimsPublished": {
     "w": 32,
     "h": 36.3,
@@ -9654,6 +9695,7 @@
    "clearanceCm": null,
    "clearanceUrl": null,
    "owner": null,
+   "capsuleLine": "vertuo",
    "dimsPublished": {
     "w": 5.5,
     "d": 16.9,
@@ -9775,6 +9817,7 @@
    "clearanceCm": null,
    "clearanceUrl": null,
    "owner": null,
+   "capsuleLine": "vertuo",
    "dimsPublished": {
     "w": 5.6,
     "d": 16.7,
@@ -9938,6 +9981,7 @@
     "descale": "Descaling uses 2 units of Nespresso liquid. Water-hardness settings run from 1–5.",
     "clean": null
    },
+   "capsuleLine": "vertuo",
    "dimsPublished": {
     "w": 8.98,
     "d": 16.41,
@@ -10070,6 +10114,7 @@
    "clearanceCm": null,
    "clearanceUrl": null,
    "owner": null,
+   "capsuleLine": "original",
    "dimsPublished": {
     "w": 6.1,
     "d": 12.8,
@@ -10186,6 +10231,7 @@
    "clearanceCm": null,
    "clearanceUrl": null,
    "owner": null,
+   "capsuleLine": "original",
    "dimsPublished": null
   },
   {
@@ -10302,6 +10348,7 @@
    "clearanceCm": null,
    "clearanceUrl": null,
    "owner": null,
+   "capsuleLine": "original",
    "dimsPublished": {
     "w": 4.65,
     "d": 9.25,
@@ -10429,6 +10476,7 @@
    "clearanceCm": null,
    "clearanceUrl": null,
    "owner": null,
+   "capsuleLine": "original",
    "dimsPublished": null
   }
  ],
