@@ -54,3 +54,8 @@ test('a drink lighter than its coffee is flagged and gets no moves', () => {
   const r = ok(measuredExtraction({ kind: 'percolation', doseG: 20, liquidG: 15, tdsPct: 1.3 }));
   assert.ok(r.notes.some((n) => /Check the weights/.test(n))); assert.deepEqual(r.moves, []);
 });
+
+test('a filter-level reading on an espresso gets no moves (Opus r2: 2.6% EY suggested grinding finer)', () => {
+  const r = ok(measuredExtraction({ kind: 'espresso', doseG: 18, liquidG: 36, tdsPct: 1.3 }));
+  assert.deepEqual(r.moves, []); assert.ok(r.notes.some((n) => /unusually low/.test(n)));
+});

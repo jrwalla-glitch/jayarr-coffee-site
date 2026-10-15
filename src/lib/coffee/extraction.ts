@@ -51,7 +51,8 @@ export function measuredExtraction(input: MeasuredInput): Result<MeasuredResult>
   const e = eyPct < chart.eyIdeal[0] ? 'under' : eyPct > chart.eyIdeal[1] ? 'over' : 'ideal';
   const strengthJudged = !input.diluted;
   const s = !strengthJudged ? 'ideal' : tdsPct < chart.tdsIdeal[0] ? 'weak' : tdsPct > chart.tdsIdeal[1] ? 'strong' : 'ideal';
-  const suspect = kind !== 'espresso' && liquidG < doseG * 2;
+  // Readings that look like an input mix-up (a drink lighter than its coffee, or under 10% EY) get no moves.
+  const suspect = (kind !== 'espresso' && liquidG < doseG * 2) || eyPct < 10;
   return success({ eyPct, dissolvedG, zone: `${e}-${s}` as ZoneId, x, y: strengthJudged ? y : 0.5, chart, notes, strengthJudged, moves: suspect ? [] : measuredMoves(kind, e, s) });
 }
 

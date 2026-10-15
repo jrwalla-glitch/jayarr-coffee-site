@@ -4,8 +4,10 @@
   import { LEVERS, ZONES, placeOnMap, suggestLevers, measuredExtraction, CHARTS } from '../../lib/coffee/index.ts';
   import type { MeasuredKind } from '../../lib/coffee/index.ts';
 
-  let sourBitter = $state(-1);
-  let body = $state(-0.5);
+  // Starts in the middle with no verdict until the reader describes their cup (Muse).
+  let sourBitter = $state(0);
+  let body = $state(0);
+  let touched = $state(false);
   let espresso = $state(false);
   let mounted = $state(false);
   let moved = $state<string | null>(null);
@@ -16,6 +18,7 @@
   let liquidG = $state(300);
   let tdsPct = $state(1.3);
   let diluted = $state(false);
+  let linkProblem = $state(false);
   let measured = $derived(measuredExtraction({ kind, doseG, liquidG, tdsPct, diluted }));
   let mv = $derived(measured.ok ? measured.value : null);
   function setKind(k: MeasuredKind) {
@@ -30,7 +33,7 @@
   const clamp = (v: number) => Math.max(-2, Math.min(2, Math.round(v * 20) / 20));
   function pull(id: string) {
     const l = LEVERS.find((x) => x.id === id)!;
-    sourBitter = clamp(sourBitter + l.dx); body = clamp(body + l.dy);
+    sourBitter = clamp(sourBitter + l.dx); body = clamp(body + l.dy); touched = true;
     moved = espresso && l.espresso ? l.espresso : l.label;
   }
   const word = (v: number, neg: string, pos: string) => (v <= -1.25 ? `very ${neg}` : v <= -0.5 ? neg : v >= 1.25 ? `very ${pos}` : v >= 0.5 ? pos : 'balanced');
@@ -38,8 +41,8 @@
   onMount(() => {
     const q = new URLSearchParams(location.search);
     const a = Number(q.get('taste')), b = Number(q.get('body'));
-    if (q.has('taste') && Number.isFinite(a)) sourBitter = clamp(a);
-    if (q.has('body') && Number.isFinite(b)) body = clamp(b);
+    if (q.has('taste') && Number.isFinite(a)) { sourBitter = clamp(a); touched = true; }
+    if (q.has('body') && Number.isFinite(b)) { body = clamp(b); touched = true; }
     espresso = q.get('espresso') === '1';
     if (q.get('mode') === 'measured') {
       mode = 'measured';
@@ -48,22 +51,24 @@
       if (q.has('dose') && Number.isFinite(d)) doseG = d;
       if (q.has('liquid') && Number.isFinite(l)) liquidG = l;
       if (q.has('tds') && Number.isFinite(t)) tdsPct = t;
+      // A link whose numbers aren't numbers says so instead of quietly showing an example.
+      linkProblem = (['dose', 'liquid', 'tds'] as const).some((k) => q.has(k) && !Number.isFinite(Number(q.get(k))));
       diluted = q.get('diluted') === '1';
     }
     mounted = true;
   });
   $effect(() => {
     if (!mounted) return;
-    const q = mode === 'measured' ? new URLSearchParams({ mode, kind, dose: String(doseG), liquid: String(liquidG), tds: String(tdsPct), ...(diluted ? { diluted: '1' } : {}) }) : new URLSearchParams({ taste: String(sourBitter), body: String(body) });
+    const q = mode === 'measured' ? new URLSearchParams({ mode, kind, dose: String(doseG), liquid: String(liquidG), tds: String(tdsPct), ...(diluted ? { diluted: '1' } : {}) }) : new URLSearchParams(touched ? { taste: String(sourBitter), body: String(body) } : {});
     if (mode === 'taste' && espresso) q.set('espresso', '1');
-    history.replaceState(history.state, '', `${location.pathname}?${q}`);
+    history.replaceState(history.state, '', `${location.pathname}${q.toString() ? `?${q}` : ''}`);
   });
 </script>
 
 <div class="xt">
   <div class="stage">
     {#if mode === 'measured' && mv}
-      <ExtractionMap x={mv.x} y={mv.y} zone={mv.zone} axes={mv.chart} label={`Measured: ${mv.eyPct.toFixed(1)}% extraction at ${tdsPct}% TDS, in the ${ZONES[mv.zone].label.toLowerCase()} zone.`} />
+      <ExtractionMap x={mv.x} y={mv.y} zone={mv.zone} axes={mv.chart} label={mv.strengthJudged ? `Measured: ${mv.eyPct.toFixed(1)}% extraction at ${tdsPct}% TDS, in the ${ZONES[mv.zone].label.toLowerCase()} zone.` : `Measured: ${mv.eyPct.toFixed(1)}% extraction; strength not judged for a diluted drink.`} />
     {:else if mode === 'measured'}
       <ExtractionMap x={0.5} y={0.5} zone="ideal-ideal" empty axes={CHARTS[kind === 'espresso' ? 'espresso' : 'filter']} label="Measured mode: no valid reading yet, so the chart is empty." />
     {:else}
@@ -87,11 +92,12 @@
         <label class="fld"><span class="lbl">TDS, %</span><input type="number" inputmode="decimal" step="0.01" min="0" bind:value={tdsPct} /></label>
       </div>
       <label class="check"><input type="checkbox" bind:checked={diluted} /> I diluted it on purpose (americano, bypass water)</label>
+      {#if linkProblem}<p class="note">Some numbers in that link weren't valid, so the example values are shown instead.</p>{/if}
       {#if mv}
         <div class="zonecard" aria-live="polite">
           <span class="lbl">Extraction yield</span>
           <p class="ey">{mv.eyPct.toFixed(1)}<small>%</small></p>
-          <p class="zt">{mv.dissolvedG.toFixed(2)} g of coffee dissolved from {doseG} g · {ZONES[mv.zone].label}</p>
+          <p class="zt">{mv.dissolvedG.toFixed(2)} g of coffee dissolved from {doseG} g · {mv.strengthJudged ? ZONES[mv.zone].label : `${mv.zone.startsWith('under') ? 'Under-extracted' : mv.zone.startsWith('over') ? 'Over-extracted' : 'Extraction in the usual range'}; strength not judged for a diluted drink`}</p>
           <p class="calc">{kind === 'immersion' ? 'water added' : kind === 'espresso' ? 'shot weight' : 'drink weight'} {liquidG} g × {tdsPct}% ÷ {doseG} g coffee</p>
         </div>
         {#each mv.notes as nt (nt)}<p class="note">{nt}</p>{/each}
@@ -108,19 +114,25 @@
 
     <label class="slider">
       <span class="lbl">How does it taste?</span>
-      <input type="range" min="-2" max="2" step="0.05" bind:value={sourBitter} aria-valuetext={word(sourBitter, 'sour', 'bitter')} />
+      <input type="range" min="-2" max="2" step="0.05" bind:value={sourBitter} oninput={() => (touched = true)} aria-valuetext={word(sourBitter, 'sour', 'bitter')} />
       <span class="ends"><span>Sour</span><span class="now">{word(sourBitter, 'sour', 'bitter')}</span><span>Bitter</span></span>
     </label>
     <label class="slider">
       <span class="lbl">How does it feel?</span>
-      <input type="range" min="-2" max="2" step="0.05" bind:value={body} aria-valuetext={word(body, 'thin', 'heavy')} />
+      <input type="range" min="-2" max="2" step="0.05" bind:value={body} oninput={() => (touched = true)} aria-valuetext={word(body, 'thin', 'heavy')} />
       <span class="ends"><span>Thin, watery</span><span class="now">{word(body, 'thin', 'heavy')}</span><span>Heavy, intense</span></span>
     </label>
 
     <div class="zonecard" aria-live="polite">
+      {#if !touched}
+      <span class="lbl">Your cup</span>
+      <p class="zl">Describe it with the sliders</p>
+      <p class="zt">The dot starts in the middle; move it to match how your coffee tastes and feels.</p>
+      {:else}
       <span class="lbl">By taste, your cup is probably</span>
       <p class="zl">{zone.label}</p>
       <p class="zt">{zone.tastes}{moved ? ` · after “${moved.toLowerCase()}”` : ''}</p>
+      {/if}
     </div>
 
     <div>
