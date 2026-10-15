@@ -238,7 +238,7 @@
    ],
    "axisFlag": false,
    "dimsUnclear": "11.9 × 6.1 × 13.5 in",
-   "clearanceCm": 30.5,
+   "clearanceCm": 30.48,
    "clearanceUrl": "https://www.williams-sonoma.com/netstorage/pdf/breville-comparison-chart.pdf",
    "owner": {
     "dose": "Breville gives 18 g as the ideal dose for the 54 mm portafilter.",
@@ -492,7 +492,7 @@
    ],
    "axisFlag": false,
    "dimsUnclear": "11.9 × 7.4 × 14.3 in",
-   "clearanceCm": 30.5,
+   "clearanceCm": 30.48,
    "clearanceUrl": "https://www.williams-sonoma.com/netstorage/pdf/breville-comparison-chart.pdf",
    "owner": {
     "dose": "Breville gives an 18 g dose for the 54 mm portafilter.",
@@ -776,7 +776,7 @@
    ],
    "axisFlag": false,
    "dimsUnclear": "15.9 × 13.1 × 12.4 in",
-   "clearanceCm": 40.6,
+   "clearanceCm": 40.64,
    "clearanceUrl": "https://www.williams-sonoma.com/netstorage/pdf/breville-comparison-chart.pdf",
    "owner": {
     "dose": null,
@@ -1061,7 +1061,7 @@
    ],
    "axisFlag": false,
    "dimsUnclear": "16.6 × 14.4 × 12.2 in",
-   "clearanceCm": 40.6,
+   "clearanceCm": 40.64,
    "clearanceUrl": "https://www.williams-sonoma.com/netstorage/pdf/breville-comparison-chart.pdf",
    "owner": {
     "dose": null,
@@ -1432,7 +1432,7 @@
    ],
    "axisFlag": false,
    "dimsUnclear": "16.1 × 13.8 × 13.1 in",
-   "clearanceCm": 40.6,
+   "clearanceCm": 40.64,
    "clearanceUrl": "https://www.crateandbarrel.com/assets/VendorBonus/Breville_Espresso_Aug24.pdf",
    "owner": {
     "dose": null,
@@ -1794,7 +1794,7 @@
    ],
    "axisFlag": false,
    "dimsUnclear": "15.7 × 12.6 × 12.4 in",
-   "clearanceCm": 40.6,
+   "clearanceCm": 40.64,
    "clearanceUrl": "https://www.williams-sonoma.com/netstorage/pdf/breville-comparison-chart.pdf",
    "owner": {
     "dose": null,
@@ -2155,7 +2155,7 @@
    ],
    "axisFlag": false,
    "dimsUnclear": "18 × 16 × 14.4 in",
-   "clearanceCm": 45.7,
+   "clearanceCm": 45.72,
    "clearanceUrl": "https://www.crateandbarrel.com/assets/VendorBonus/Breville_Espresso_Aug24.pdf",
    "owner": {
     "dose": "The machine automatically grinds, doses, and tamps 22 g into the 58 mm portafilter.",
@@ -2520,7 +2520,7 @@
    ],
    "axisFlag": false,
    "dimsUnclear": null,
-   "clearanceCm": 40.6,
+   "clearanceCm": 40.64,
    "clearanceUrl": "https://www.crateandbarrel.com/assets/VendorBonus/Breville_Espresso_Aug24.pdf",
    "owner": {
     "dose": "Breville gives 22 g as the ideal dose for the 58 mm portafilter.",
@@ -3292,12 +3292,12 @@
    "replacedBy": null,
    "category": "semi-auto",
    "heating": {
-    "system": null,
+    "system": "thermoblock",
     "makerTerm": null,
-    "simultaneousBy": null,
+    "simultaneousBy": "design",
     "boilers": [],
     "heatUpSeconds": null,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": false
    },
    "tempControl": {
     "type": null,
@@ -10327,8 +10327,8 @@
    "plumbable": null,
    "dims": {
     "w": 11.8,
-    "d": 23.5,
-    "h": 32.4
+    "d": 32.4,
+    "h": 23.46
    },
    "weightKg": 2.48,
    "watts": null,

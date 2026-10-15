@@ -30,7 +30,13 @@
   let needs = $derived<Needs>({ milk, cups, effort, budget, widthCm: toCm(widthIn), heightCm: toCm(heightIn) });
   let matches = $derived(chooseMachines(machines, grinders, needs));
   // When nothing fits, say what would: the cheapest fit with the same routine and counter, at any budget.
-  let nearest = $derived(matches.length ? null : chooseMachines(machines, grinders, { ...needs, budget: Infinity }, 1)[0] ?? null);
+  // When nothing fits the budget, the least you could spend on a machine that fully meets the routine and counter
+  // (WB2 Opus: it used to offer the top-ranked machine, $1,800, when setups from about $350 fit).
+  let nearest = $derived.by(() => {
+    if (matches.length) return null;
+    const all = chooseMachines(machines, grinders, { ...needs, budget: Infinity }, 200);
+    return [...all.filter((x) => !x.misses.length)].sort((a, b) => a.band!.low - b.band!.low)[0] ?? all[0] ?? null;
+  });
   let own = $derived(byId(ownId) ?? machines[0]);
   // Machines a width ruled out only because their published size is unclear, which would otherwise be shortlisted:
   // said where the answer is, not in a footnote (gate r2).
@@ -83,7 +89,7 @@
   }
   function rankNote(i: number): string {
     const a = matches[i], top = matches[0];
-    if (i === 0) return a.misses.length ? `First, though not a full match: ${a.misses[0]}.` : matches.length > 1 && a.score === matches[1].score ? 'First: it meets what you asked for the least money among the close matches.' : 'First: the closest match to what you asked.';
+    if (i === 0) return a.misses.length ? `First, though not a full match: ${a.misses[0]}.` : matches.length > 1 && a.score === matches[1].score ? 'First: it meets what you asked, and makes the most of your budget among the close matches.' : 'First: the closest match to what you asked.';
     const d: string[] = [];
     const dp = r(a.band!.low) - r(top.band!.low);
     d.push(dp > 0 ? `${money(dp)} more` : dp < 0 ? `${money(-dp)} less` : 'about the same money');
@@ -148,7 +154,8 @@
     const mi = q.get('milk'); if (mi === 'none' || mi === 'some' || mi === 'most') milk = mi;
     const c = Number(q.get('cups')); if (c === 1 || c === 3 || c === 5) cups = c;
     const ef = q.get('effort'); if (ef === 'button' || ef === 'guided' || ef === 'hands-on') effort = ef;
-    const b = Number(q.get('budget')); if (Number.isFinite(b) && b >= 100 && b <= 10000) budget = b;
+    // Kept within the slider's range and steps, so the display and the slider always agree (WB2 Opus).
+    const b = Number(q.get('budget')); if (Number.isFinite(b) && b > 0) budget = Math.min(5000, Math.max(150, Math.round(b / 50) * 50));
     if (q.get('units') === 'cm') unitsIn = false;
     const w = Number(q.get('w')); if (w > 0) widthIn = w;
     const h = Number(q.get('h')); if (h > 0) heightIn = h;
@@ -398,6 +405,7 @@
                 <p class="ck"><span class="rank">{i + 1}</span>{m.category ? CATEGORY_LABEL[m.category] : ''}</p>
                 <h3>{m.brand} {m.name}</h3>
                 <p class="band">About {band(x.band)}{needsGrinder(m) ? ' with a grinder' : ''}</p>
+                {#if m.listPrice.seller}<p class="fine">Machine price: the {m.listPrice.kind}.</p>{/if}
                 {#if needsGrinder(m) && grinderPrices.length}<p class="fine">Machine {money(m.listPrice.usd!)}, plus an espresso grinder from about {money(r(grinderPrices[0]))} to {money(r(grinderPrices[grinderPrices.length - 1]))}.</p>{/if}
                 <p class="rankn">{rankNote(i)}</p>
                 <ul class="why">{#each [...x.why, ...fitLines(m)] as w (w)}<li>{w}</li>{/each}</ul>
@@ -427,7 +435,7 @@
           <div class="none">
             <p class="kick">Nothing fits all of that</p>
             {#if nearest}
-              <p>No current machine meets your routine{needs.widthCm || needs.heightCm ? ' and counter' : ''} at {money(budget)}. The closest is the <b>{nearest.machine.brand} {nearest.machine.name}</b>, at about {band(nearest.band)}{needsGrinder(nearest.machine) ? ' with a grinder' : ''}.</p>
+              <p>No current machine meets your routine{needs.widthCm || needs.heightCm ? ' and counter' : ''} at {money(budget)}. {nearest.misses.length ? 'The closest is the' : 'The least you could spend on one that meets it is the'} <b>{nearest.machine.brand} {nearest.machine.name}</b>, at about {band(nearest.band)}{needsGrinder(nearest.machine) ? ' with a grinder' : ''}.</p>
               <button type="button" class="go" onclick={() => (budget = Math.min(5000, Math.ceil(nearest!.band!.low / 50) * 50))}>Set the budget to {money(Math.ceil(nearest.band!.low / 50) * 50)}</button>
               <p class="fine">The budget moves in $50 steps, so this is the first step that covers it.</p>
             {:else}
@@ -501,7 +509,8 @@
     </div>
   {/if}
 
-  {#if !(mode === 'find' && matches.length && matches.every((x) => x.machine.category === 'capsule'))}
+  <!-- No steam explainer where it doesn't apply: an all-capsule shortlist, or an owner's capsule, lever or no-steam machine (WB2 Opus). -->
+  {#if !(mode === 'find' && matches.length && matches.every((x) => x.machine.category === 'capsule')) && !(mode === 'own' && (own.category === 'capsule' || own.category === 'manual-lever' || own.milk.type === 'none' || !own.heating.system))}
   <section class="heat" id="how-it-heats" aria-label="How each heating system brews and steams">
     <p class="kick">How it brews and steams</p>
     <div class="htabs" role="tablist" aria-label="Heating system">
@@ -572,6 +581,8 @@
   .key { font-size: 12.5px; color: var(--ink-3); margin: 0 0 6px; }
   .key .ne { font: 500 11.5px 'IBM Plex Mono', monospace; color: var(--ink-2); }
   .results { grid-area: res; min-width: 0; }
+  /* Jump links land below the fixed site header (WB2 Opus). */
+  #chooser-results, #how-it-heats { scroll-margin-top: 84px; }
   fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
   .chips { display: flex; flex-wrap: wrap; gap: 6px; }
   .chips button, .seg button { appearance: none; border: 1px solid var(--rule); background: #fff; border-radius: 999px; padding: 8px 13px; min-height: 40px; font: 500 13.5px 'IBM Plex Sans', sans-serif; color: var(--ink-2); cursor: pointer; }

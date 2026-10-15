@@ -140,7 +140,10 @@ export function chooseMachines(machines: Machine[], grinders: GrinderPrice[], n:
     if (band.high > n.budget) { score += 1; tradeoffs.push('The upper end of its grinder range runs past your budget.'); }
     out.push({ machine: m, band, score, why, tradeoffs, misses });
   }
-  return out.sort((a, b) => a.score - b.score || (a.band!.low - b.band!.low) || a.machine.name.localeCompare(b.machine.name)).slice(0, k);
+  // Among equally good matches, the one that makes the most of the budget comes first, so a bigger budget never
+  // returns a cheaper, weaker pick (WB2 Opus). An unbounded budget (the "what would fit" search) ranks cheapest first.
+  const spend = Number.isFinite(n.budget) ? -1 : 1;
+  return out.sort((a, b) => a.score - b.score || spend * (a.band!.low - b.band!.low) || a.machine.name.localeCompare(b.machine.name)).slice(0, k);
 }
 
 /** Brews and steams at once? The maker's word where it gives one, else what the heating system is built to do. */
