@@ -25,7 +25,7 @@
    "stepNote": null,
    "applies": "The original Encore (ZCG485), not the Encore ESP.",
    "rulerNote": null,
-   "zeroNote": "Setting 1 = very fine, 40 = very coarse per manual. Micron range 250-1200 µm is maker product-sheet wording (not a per-step value). No step size published.",
+   "zeroNote": "Setting 1 is the finest and 40 the coarsest. Baratza publishes no burr zero or step size.",
    "cautions": [
     "Change the setting only while the grinder is running or empty of beans."
    ],
@@ -142,7 +142,7 @@
    "stepNote": null,
    "applies": "The Encore ESP (ZCG495).",
    "rulerNote": null,
-   "zeroNote": "Dual-range system: espresso micro-steps 1-20 and filter macro-steps 21-40 (manual p.5). Maker product sheet says 'micron accurate' adjustments but publishes no per-step micron value. Calibrated at factory with custom tool.",
+   "zeroNote": "Settings 1 to 20 are fine espresso steps and 21 to 40 wider filter steps. It’s calibrated at the factory; Baratza publishes no step size.",
    "cautions": [
     "Change the setting only while the grinder is running or empty of beans."
    ],
@@ -259,7 +259,7 @@
    "stepNote": null,
    "applies": "The Virtuoso+ (ZCG587).",
    "rulerNote": null,
-   "zeroNote": "Settings go from 40 (very coarse) to 1 (very fine) per manual p.5. No micron value per step published.",
+   "zeroNote": "Setting 1 is the finest and 40 the coarsest. Baratza publishes no burr zero or step size.",
    "cautions": [
     "Change the setting while the grinder is running, or when it is completely empty."
    ],
@@ -376,7 +376,7 @@
    "stepNote": null,
    "applies": "The Smart Grinder Pro BCG820 (US).",
    "rulerNote": null,
-   "zeroNote": "No zero/touch-point convention published. The internal upper-burr setting default is 6 and is the documented baseline for the factory adjustment. Maker says \"We recommend making only one adjustment at a time.\" Breville does not publish a numeric zero for the user dial.",
+   "zeroNote": "Breville publishes no zero for the dial. Inside, the upper burr has its own setting, 6 from the factory; Breville recommends making only one adjustment at a time.",
    "cautions": [
     "For espresso with fresh beans, use a single-wall basket with settings 1 to 30; with a dual-wall basket, start at 30 and go finer if needed.",
     "If the grind-size dial feels tight, turn it with the grinder running."
@@ -614,7 +614,7 @@
    "stepNote": null,
    "applies": "DF64 Gen 2 (Turin).",
    "rulerNote": null,
-   "zeroNote": "Turin maker page gives no zero value. Espresso Outlet (retailer) guide says dial indicators are not set at true zero and to go fine until burrs touch to find zero; this is retailer guidance, not maker.",
+   "zeroNote": "Turin publishes no zero. A retailer’s guide says the dial’s 0 isn’t true zero: to find it, go finer until the burrs just touch.",
    "cautions": [
     "Don't run it at the finest setting or below: the burrs can be damaged (retailer guidance)."
    ],
@@ -683,7 +683,7 @@
     {
      "key": "pour-over",
      "group": "pourover",
-     "label": "Pour-over",
+     "label": "Pour-over (general)",
      "provenance": "documented-secondary",
      "source": "Honest Coffee Guide table (generic pour over, not V60 only)",
      "url": "https://honestcoffeeguide.com/turin-df64-gen-2-grind-settings/",
@@ -809,7 +809,7 @@
     {
      "key": "pour-over",
      "group": "pourover",
-     "label": "Pour-over",
+     "label": "Pour-over (general)",
      "provenance": "documented-secondary",
      "source": "Honest Coffee Guide table",
      "url": "https://honestcoffeeguide.com/eureka-mignon-specialita-grind-settings/",
@@ -871,7 +871,7 @@
    "stepNote": null,
    "applies": "Ode with the stock Gen 2 Brew Burrs (not SSP burrs).",
    "rulerNote": null,
-   "zeroNote": "Factory calibrated. Maker: \"Setting 1 is always 1 click away from the burr touch point\" and \"the burr touch point will drift slightly ... expect the settings to shift slightly coarser\" as burrs season. Calibration uses Phillips screwdriver per Fellow help article; no numeric zero micron published.",
+   "zeroNote": "Fellow says setting 1 is always one click from where the burrs touch. As the burrs season, expect the settings to shift slightly coarser.",
    "cautions": [
     "Ode is made for brewed coffee, not espresso.",
     "Move the dial toward finer with the grinder running; it can bind if turned from 11 to 1 while off."
@@ -942,7 +942,7 @@
    "stepNote": "Each quarter-setting click on the outer ring moves the burrs about 50 µm (so a whole number is about 200 µm). That’s burr movement, not the size of the grounds.",
    "applies": "The Opus 1, not the Opus 2.",
    "rulerNote": null,
-   "zeroNote": "No explicit zero/touch-point definition found in fetched Opus 1 sources. Maker says inner ring \"calibrates as burrs wear down\" and can extend the outer ring to 0 and 12. Calibration procedure: center outer ring at 6, remove load bin, press calibration ring tabs, rotate outer ring to move the inner scale arrow (counterclockwise \"-\" finer, clockwise \"+\" coarser), release, and rotate outer ring to re-engage. (QA) Inner-ring calibration is separate from the 0-12 range extension; the help text does not define a numeric zero micron.",
+   "zeroNote": "Fellow defines no numeric zero for the Opus 1. Its inner adjustment ring recalibrates the dial as the burrs wear.",
    "cautions": [
     "This chart is for the Opus 1; the Opus 2 calibrates differently."
    ],
@@ -1058,7 +1058,7 @@
    "stepNote": null,
    "applies": null,
    "rulerNote": null,
-   "zeroNote": "Manual calibration: screw bean funnel finger tight, align white dot on bezel with the calibrate mark, then unscrew funnel to chosen setting. Calibrated position = burrs touching; not a brew setting.",
+   "zeroNote": "Niche’s calibrate mark is where the burrs touch; it isn’t a brew setting.",
    "cautions": [
     "Never grind at the calibration setting: it damages the burrs.",
     "When going finer after coarse grinding, run the grinder briefly every 10 marks."
@@ -1161,7 +1161,7 @@
    "stepNote": null,
    "applies": "The standard OXO Brew Conical Burr grinder (15 settings), not the model with a scale.",
    "rulerNote": null,
-   "zeroNote": "Setting 1 = fine, 15 = coarse per manual p.7. Micro-settings exist but no micron or per-micro value published. Manual says grind size settings only; no micron range printed.",
+   "zeroNote": "Setting 1 is the finest and 15 the coarsest, with micro-settings between. OXO publishes no burr zero or step size.",
    "cautions": [
     "With beans in the hopper, change the setting while the motor is running so it doesn't jam."
    ],
@@ -1265,7 +1265,7 @@
    "stepNote": null,
    "applies": "The Sculptor 064S (TEG064S), not the 064S II.",
    "rulerNote": null,
-   "zeroNote": "Printed dial includes0; exact burr-touch calibration relationship to printed0 not established in the inspected original-064S manual.",
+   "zeroNote": "The dial is printed from 0, but Timemore’s 064S manual doesn’t say how 0 relates to the burrs touching.",
    "cautions": [],
    "startingPoint": {
     "status": "not-stated",
@@ -1351,8 +1351,8 @@
    "stepMicrons": 8.8,
    "stepNote": "Each click moves the burrs about 8.8 µm (90 clicks per turn).",
    "applies": null,
-   "rulerNote": "1Zpresso’s manual gives about 4.5 turns of travel (405 clicks), but its chart runs to 420. The ruler is drawn for illustration, not as the grinder’s limit.",
-   "zeroNote": "Exact maker wording (manual, Adjusting the grind setting step 1): turn the adjustment dial ring counter-clockwise all the way to the starting point \"where the resistance starts and the crank handle can't spin freely\". Calibration tutorial (J-Max / J-Ultra): starting point should align with #0 on scale mark. Start may vary within +/-10 clicks.",
+   "rulerNote": "1Zpresso’s manual gives about 4.5 turns of travel (405 clicks), but its chart runs to 420, so the ruler’s end is only illustrative.",
+   "zeroNote": "Turn the dial counter-clockwise until resistance starts and the handle can’t spin freely: that’s zero. It should line up with 0 on the scale, but can be up to 10 clicks either way.",
    "cautions": [],
    "startingPoint": {
     "status": "not-stated",
@@ -1463,7 +1463,7 @@
    "stepNote": "Each click (a quarter of a number) moves the burrs about 12.5 µm.",
    "applies": "From 1Zpresso’s archived JX-Pro chart; whether it applies to both the gray-dot and red-dot versions isn’t established.",
    "rulerNote": null,
-   "zeroNote": "Exact maker wording (JX-Pro S manual): \"We define the zero point as where the handle starts to spin with resistance instead of the tightest position.\" Setting the zero to #0 is by removing the dial and turning the knurled thumb nut 1-2 clicks; start may be off by 2 or more clicks.",
+   "zeroNote": "Zero is where the handle starts to spin with resistance, not the tightest position. If the dial doesn’t read 0 there it can be reset; until then your count may be 2 or more clicks out.",
    "cautions": [],
    "startingPoint": {
     "status": "not-stated",
@@ -1574,7 +1574,7 @@
    "stepNote": "Each click (a tenth of a number) moves the burrs about 20 µm.",
    "applies": null,
    "rulerNote": null,
-   "zeroNote": "Exact maker wording (K-Ultra manual, Adjustment Dial Calibration): \"The zero point is defined as the position where the handle begins to spin with resistance, not the absolute tightest position.\" Instructions: find the zero point by turning the dial counter-clockwise until resistance; if the pointer is right of #0 loosen knurled nut, if left tighten it. Offset may be 2+ clicks.",
+   "zeroNote": "Zero is where the handle begins to spin with resistance, not the tightest position: turn the dial counter-clockwise until you feel it. If the pointer isn’t at 0, adjust the knurled nut; it can be 2 or more clicks out.",
    "cautions": [],
    "startingPoint": {
     "status": "not-stated",
@@ -1688,7 +1688,7 @@
    "stepNote": "Each click (a third of a number) moves the burrs about 25 µm.",
    "applies": "From 1Zpresso’s Q-series chart; which Q2 burr it applies to isn’t established.",
    "rulerNote": null,
-   "zeroNote": "Exact maker wording (Q manual): \"Turn the adjustment dial clockwise to the tightest. The number (#) marked at the dot is the starting point/zero point. NOTE: the number (#) might not be 0.\" Calibration tutorial (internal adjustment): \"turn the adjustment dial clockwise until the crank handle stops spinning freely, without any resistance.\"",
+   "zeroNote": "Turn the dial clockwise to the tightest point: the number at the dot is your zero, and it might not be 0.",
    "cautions": [],
    "startingPoint": {
     "status": "not-stated",
@@ -1787,7 +1787,7 @@
    "stepNote": "Each click moves the burrs about 22 µm; 10 clicks make a number and 9 numbers a turn.",
    "applies": "The ZP6 Special only.",
    "rulerNote": null,
-   "zeroNote": "Exact maker wording (K-series manual / calibration tutorial): \"tighten the adjustment dial counterclockwise all the way to #0. Ensure the gap is fully closed,\" then after tightening the nut \"If the red dot still passes #0, loosen the adjustment dial clockwise slightly and repeat.\"",
+   "zeroNote": "Turn the dial counter-clockwise all the way to 0, so the gap is fully closed. If the red dot passes 0, back it off slightly and recalibrate.",
    "cautions": [],
    "startingPoint": {
     "status": "not-stated",
@@ -1850,7 +1850,7 @@
    "stepNote": null,
    "applies": "The C40 MK4 with the standard axle, not the Red Clix upgrade.",
    "rulerNote": null,
-   "zeroNote": "Official FAQ \"Where is Zero?\": hold grinder horizontally; when burrs are open the handle turns and falls to 6 o'clock; while closing, click zero is the first setting where the handle no longer falls (from 9 o'clock). Tightening further = -1, -2. Manual: start with burrs touching/closed (click zero) and count clicks anticlockwise.",
+   "zeroNote": "Hold the grinder level and close the burrs: zero is the first click where the handle no longer drops under its own weight. Count clicks anticlockwise from there.",
    "cautions": [
     "Don't adjust or remove the three screws on the bottom: they're set at the factory.",
     "The burrs can touch at the finest settings; Comandante says that's normal."
@@ -2042,7 +2042,7 @@
    "stepNote": "Each click moves the burrs about 16 µm (60 clicks per turn).",
    "applies": null,
    "rulerNote": null,
-   "zeroNote": "Turn adjustment nut clockwise until it stops at number 0 for the final time; side indicators 1, 2, 3, 4 are fully visible. Do not tighten with force. Maximum adjustment travel not established.",
+   "zeroNote": "Turn the nut clockwise until it stops at 0 for the last time, with the side marks 1 to 4 fully visible. Don’t force it.",
    "cautions": [
     "Don't turn the handle at 0 or below 15 clicks: it can damage the burrs."
    ],
@@ -2149,7 +2149,7 @@
    "stepNote": null,
    "applies": "From Timemore’s Chestnut C family manual, linked from the C2 page.",
    "rulerNote": null,
-   "zeroNote": "Maker manual: rotate clockwise until dial stops; this is START POINT (zero); adjust counter-clockwise by clicks from START POINT. Do not grind at 0-6 clicks (maker caution).",
+   "zeroNote": "Turn the dial clockwise until it stops: that’s zero. Count clicks counter-clockwise from there.",
    "cautions": [
     "Don't grind at the finest 0 to 6 clicks: it dulls the burrs.",
     "Put the lid on before adjusting."
