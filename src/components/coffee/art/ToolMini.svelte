@@ -530,7 +530,7 @@
   .fill-card { fill: var(--crd); }
   .o.fill-card, .d.fill-card { fill: var(--crd); }
   .h.fill-card { fill: var(--crd); }
-  .lbl { font: 500 8px/1 var(--font-mono, 'IBM Plex Mono', ui-monospace, monospace); fill: var(--k); fill-opacity: 0.62; letter-spacing: 0.04em; }
+  .lbl { font: 500 8px/1 var(--font-mono, 'IBM Plex Mono', 'IBM Plex Mono Fallback', ui-monospace, monospace); fill: var(--k); fill-opacity: 0.62; letter-spacing: 0.04em; }
 
   /* gradient stops take their colour from the tokens (a var() in an attribute is not portable) */
   .st-water { stop-color: var(--wat); }
@@ -548,7 +548,7 @@
   .tick { stroke-opacity: 0.6; }
   .btn { fill: none; stroke: var(--crd); stroke-opacity: 0.45; stroke-width: 0.9; }
   .window { fill: #16201f; }
-  .digits { font: 500 8px/1 var(--font-mono, 'IBM Plex Mono', ui-monospace, monospace); fill: #8cc3cb; letter-spacing: 0.02em; }
+  .digits { font: 500 8px/1 var(--font-mono, 'IBM Plex Mono', 'IBM Plex Mono Fallback', ui-monospace, monospace); fill: #8cc3cb; letter-spacing: 0.02em; }
 
   /* grind */
   .grounds { fill: var(--cof); }
@@ -561,7 +561,7 @@
   .dialband { fill: none; stroke: var(--acc); stroke-width: 5.6; stroke-opacity: 0.6; }
   /* Numbers stay upright, like a clock face, while the ring carries them round. */
   .burr { fill: none; stroke: var(--k); stroke-opacity: 0.45; stroke-width: 1; stroke-linecap: round; }
-  .num { font: 500 8px/1 var(--font-mono, 'IBM Plex Mono', ui-monospace, monospace); fill: var(--k); fill-opacity: 0.75; transform-box: fill-box; transform-origin: 50% 50%; transform: rotate(calc(0deg - var(--rest) - var(--a))); }
+  .num { font: 500 8px/1 var(--font-mono, 'IBM Plex Mono', 'IBM Plex Mono Fallback', ui-monospace, monospace); fill: var(--k); fill-opacity: 0.75; transform-box: fill-box; transform-origin: 50% 50%; transform: rotate(calc(0deg - var(--rest) - var(--a))); }
 
   /* water */
   .landmark { fill: var(--crd); stroke: var(--wat); stroke-width: 1.4; }

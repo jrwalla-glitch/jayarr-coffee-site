@@ -87,8 +87,8 @@ const rows = [...ATLAS].sort((a, b) => order.indexOf(a.contact) - order.indexOf(
   .mtab-wrap { overflow-x: auto; border: 1px solid #d9cdbd; border-radius: 12px; background: #fbf8f3; }
   .mtab { width: 100%; border-collapse: collapse; font-size: 14.5px; }
   .mtab th, .mtab td { text-align: left; padding: 9px 12px; border-bottom: 1px solid #e6dccd; white-space: nowrap; }
-  .mtab thead th { font: 500 11px/1 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; }
+  .mtab thead th { font: 500 11px/1 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; }
   .mtab tbody th { font-weight: 600; }
-  .mtab .mono { font-family: 'IBM Plex Mono', monospace; font-size: 13.5px; }
+  .mtab .mono { font-family: 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; font-size: 13.5px; }
   .mtab tr:last-child th, .mtab tr:last-child td { border-bottom: 0; }
 </style>

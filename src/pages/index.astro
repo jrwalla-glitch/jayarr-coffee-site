@@ -171,18 +171,18 @@ const featured = bySlug('coffee-grind-size-guide-what-grind-for-every-brew-metho
   /* The hero shares the page's 1180 px column, and the card's top edge stays put when its door changes. */
   .hero-inner { position: relative; max-width: 1180px; margin: 0 auto; padding: 120px 24px 56px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr); gap: 40px; align-items: start; min-height: 640px; }
   .hero-copy { padding-top: 56px; }
-  .kicker { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .16em; text-transform: uppercase; color: #d9a35e; margin: 0 0 14px; }
-  .hero h1 { font: 400 clamp(42px, 5.6vw, 70px)/1 'Instrument Serif', Georgia, serif; margin: 0 0 16px; letter-spacing: -.01em; color: #fbf6ee; }
+  .kicker { font: 500 12px/1 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .16em; text-transform: uppercase; color: #d9a35e; margin: 0 0 14px; }
+  .hero h1 { font: 400 clamp(42px, 5.6vw, 70px)/1 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; margin: 0 0 16px; letter-spacing: -.01em; color: #fbf6ee; }
   .hero h1 em { color: #e2b47a; }
-  .lede { font: 400 18px/1.55 'IBM Plex Sans', sans-serif; color: rgba(243, 237, 227, .86); max-width: 46ch; margin: 0 0 18px; }
+  .lede { font: 400 18px/1.55 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; color: rgba(243, 237, 227, .86); max-width: 46ch; margin: 0 0 18px; }
   .more { display: flex; gap: 8px 20px; flex-wrap: wrap; margin: 0; }
-  .more a { color: #f3ede3; font: 500 15px 'IBM Plex Sans', sans-serif; text-decoration: underline; text-decoration-color: rgba(217, 163, 94, .7); text-underline-offset: 4px; }
+  .more a { color: #f3ede3; font: 500 15px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; text-decoration: underline; text-decoration-color: rgba(217, 163, 94, .7); text-underline-offset: 4px; }
   .more a:hover { color: #fff; }
   .band { padding: 56px 0; }
   .wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
   .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 40px; align-items: center; }
-  .eyebrow { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: #8f5d22; margin: 0 0 8px; }
-  .band h2 { font: 400 clamp(32px, 4vw, 44px)/1.05 'Instrument Serif', Georgia, serif; margin: 0 0 14px; }
+  .eyebrow { font: 500 12px/1 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .14em; text-transform: uppercase; color: #8f5d22; margin: 0 0 8px; }
+  .band h2 { font: 400 clamp(32px, 4vw, 44px)/1.05 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; margin: 0 0 14px; }
   .band p { font-size: 16.5px; line-height: 1.6; color: #5b4a3d; max-width: 60ch; }
   .cards { list-style: none; margin: 18px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
   .card { display: grid; gap: 6px; text-decoration: none; color: #2a1d15; }
@@ -190,11 +190,11 @@ const featured = bySlug('coffee-grind-size-guide-what-grind-for-every-brew-metho
   .card .art { display: grid; place-items: center; background: radial-gradient(120% 90% at 50% 0%, #fffdf9, #efe5d6); border: 1px solid #e0d4c3; padding: 8px 12px; transition: transform .4s ease, border-color .2s; }
   .card .art :global(svg) { display: block; width: auto; height: 100%; max-width: 100%; }
   .card:hover .art { border-color: #b9a58b; transform: translateY(-2px); }
-  .card .t { font: 400 24px/1.1 'Instrument Serif', Georgia, serif; margin-top: 6px; }
+  .card .t { font: 400 24px/1.1 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; margin-top: 6px; }
   .card .sub { font-size: 14px; line-height: 1.4; color: #75655a; }
   .channel { background: #fbf8f3; border-top: 1px solid #e6dccd; border-bottom: 1px solid #e6dccd; }
   .reviews { list-style: none; padding: 0; margin: 12px 0; display: grid; gap: 8px; }
-  .reviews a { color: #2a1d15; font: 500 16px 'IBM Plex Sans', sans-serif; text-decoration: underline; text-decoration-color: #c9a46e; text-underline-offset: 3px; }
+  .reviews a { color: #2a1d15; font: 500 16px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; text-decoration: underline; text-decoration-color: #c9a46e; text-underline-offset: 3px; }
   .arrow { color: #7a4e30; font-weight: 600; text-underline-offset: 3px; }
   .video :global(.lite-youtube), .video :global(lite-youtube) { border-radius: 12px; overflow: hidden; }
   /* The facade's still comes from this site, not from YouTube, until someone presses play. */
@@ -210,13 +210,13 @@ const featured = bySlug('coffee-grind-size-guide-what-grind-for-every-brew-metho
   .dm { display: block; background: radial-gradient(120% 90% at 50% 0%, #fffdf9, #efe5d6); border-radius: 8px; padding: 2px 8px; margin-bottom: 8px; }
   .dm :global(svg) { display: block; width: 100%; height: auto; max-height: 104px; }
   .deeplinks a:hover { border-color: #e0a85a; }
-  .deeplinks b { font: 400 22px/1.1 'Instrument Serif', Georgia, serif; font-weight: 400; }
+  .deeplinks b { font: 400 22px/1.1 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; font-weight: 400; }
   .deeplinks span { font-size: 14px; color: #c8b9a8; }
   .list { list-style: none; padding: 0; margin: 10px 0 14px; columns: 2; column-gap: 40px; }
   .list li { break-inside: avoid; padding: 9px 0; border-bottom: 1px solid #e6dccd; }
-  .list a { color: #2a1d15; font: 500 16px 'IBM Plex Sans', sans-serif; text-decoration: none; }
+  .list a { color: #2a1d15; font: 500 16px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; text-decoration: none; }
   .list a:hover { text-decoration: underline; text-underline-offset: 3px; }
-  .date { display: block; font: 500 12px 'IBM Plex Mono', monospace; color: #75655a; margin-top: 2px; }
+  .date { display: block; font: 500 12px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; color: #75655a; margin-top: 2px; }
   a:focus-visible { outline: 3px solid #d9a35e; outline-offset: 3px; border-radius: 4px; }
   @media (max-width: 1000px) {
     .hero-inner { grid-template-columns: 1fr; padding: 100px 20px 36px; min-height: 0; gap: 22px; }

@@ -61,12 +61,6 @@ const neighbours = ORIGINS.filter((x) => x.id !== o.id && x.continent === o.cont
   <Fragment slot="intro"><div class="op-answer"><p class="op-lead">{lead}</p>{rest && <p class="op-rest">{rest}</p>}</div></Fragment>
 
   <div class="op">
-    <figure class="op-plate">
-      <div class="gp-frame" style="--mat: #e8e1d4; --matpad: 12px; --matpad-phone: 7px">
-        <OriginPlate origin={o} />
-      </div>
-      <figcaption class="gp-plaque"><b>{o.name}</b><small>A detail from The Coffee Origins</small></figcaption>
-    </figure>
 
     <section class="gp-label op-label" aria-labelledby="op-glance">
       <h2 id="op-glance">At a glance</h2>
@@ -85,6 +79,13 @@ const neighbours = ORIGINS.filter((x) => x.id !== o.id && x.continent === o.cont
       </dl>
       <p class="op-map"><a href={`/explore/origins/?o=${o.id}`}>See {o.name} on the map, and compare it →</a></p>
     </section>
+
+    <figure class="op-plate">
+      <div class="gp-frame" style="--mat: #e8e1d4; --matpad: 12px; --matpad-phone: 7px">
+        <OriginPlate origin={o} />
+      </div>
+      <figcaption class="gp-plaque"><b>{o.name}</b><small>A detail from The Coffee Origins</small></figcaption>
+    </figure>
   </div>
 
   <Fragment slot="body">
@@ -135,31 +136,34 @@ const neighbours = ORIGINS.filter((x) => x.id !== o.id && x.continent === o.cont
 </BenchPage>
 
 <style>
+  /* The label is first in the document (it streams in first); on desktop the plate sits on the left. */
   .op { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+  .op-plate { grid-column: 1; grid-row: 1; }
+  .op-label { grid-column: 2; grid-row: 1; }
   .op-plate { margin: 0; }
-  .op-label h2 { font: 400 30px/1.1 'Instrument Serif', Georgia, serif; margin: 0 0 6px; }
+  .op-label h2 { font: 400 30px/1.1 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; margin: 0 0 6px; }
   .op-pair { display: flex; gap: 10px; align-items: center; justify-content: center; margin: 6px 0 10px; }
-  .op-facts { margin: 0; border-top: 1px solid #d9cdbd; font: 400 15px/1.45 'IBM Plex Sans', sans-serif; }
+  .op-facts { margin: 0; border-top: 1px solid #d9cdbd; font: 400 15px/1.45 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; }
   .op-facts div { display: grid; grid-template-columns: 112px 1fr; gap: 10px; padding: 7px 0; border-bottom: 1px solid #d9cdbd; }
-  .op-facts dt { font: 500 11px 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; padding-top: 2px; }
+  .op-facts dt { font: 500 11px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; padding-top: 2px; }
   .op-facts dd { margin: 0; color: #2a1d15; }
   .op-facts .sub { display: block; font-size: 13.5px; color: #75655a; margin-top: 2px; }
-  .op-map { margin: 12px 0 0; font: 600 15px 'IBM Plex Sans', sans-serif; }
+  .op-map { margin: 12px 0 0; font: 600 15px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; }
   .op-map a { color: #7a4e30; text-underline-offset: 3px; }
   .op-answer { max-width: 60ch; margin: 6px auto 0; text-align: center; }
-  .op-lead { font: 400 25px/1.3 'Instrument Serif', Georgia, serif; color: #2a1d15; margin: 0 0 8px; text-wrap: balance; }
-  .op-rest { font: 400 16.5px/1.55 'IBM Plex Sans', sans-serif; color: #5b4a3d; margin: 0; text-wrap: pretty; }
-  .op-notes { font-family: 'Instrument Serif', Georgia, serif; font-size: 1.15em; }
+  .op-lead { font: 400 25px/1.3 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; color: #2a1d15; margin: 0 0 8px; text-wrap: balance; }
+  .op-rest { font: 400 16.5px/1.55 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; color: #5b4a3d; margin: 0; text-wrap: pretty; }
+  .op-notes { font-family: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; font-size: 1.15em; }
   .op-words { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
   .op-words li { border: 1px solid #d9cdbd; background: #fbf8f3; border-radius: 999px; padding: 5px 12px; margin: 0; }
-  .op-words span { font: 500 12px 'IBM Plex Mono', monospace; color: #75655a; margin-left: 4px; }
+  .op-words span { font: 500 12px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; color: #75655a; margin-left: 4px; }
   .op-lots { margin: 26px 0; }
   .op-lots summary { cursor: pointer; font-weight: 600; }
   .op-tab-wrap { overflow-x: auto; border: 1px solid #d9cdbd; border-radius: 4px; background: #fbf8f3; }
   .op-tab { width: 100%; border-collapse: collapse; font-size: 14px; }
   .op-tab th, .op-tab td { text-align: left; padding: 7px 10px; border-bottom: 1px solid #e6dccd; vertical-align: top; }
-  .op-tab thead th { font: 500 11px/1 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; white-space: nowrap; }
+  .op-tab thead th { font: 500 11px/1 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; white-space: nowrap; }
   .op-tab tbody th { font-weight: 600; }
-  @media (max-width: 900px) { .op { grid-template-columns: 1fr; gap: 22px; } .op-label { order: -1; } }
+  @media (max-width: 900px) { .op { grid-template-columns: 1fr; gap: 22px; } .op-plate, .op-label { grid-column: 1; grid-row: auto; } }
   @media (max-width: 640px) { .op-answer { text-align: left; } .op-lead { font-size: 21px; } .op-rest { font-size: 15.5px; } }
 </style>

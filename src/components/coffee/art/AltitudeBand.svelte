@@ -34,8 +34,8 @@
 
 <style>
   .ab { display: block; overflow: visible; }
-  .t { font: 500 10px 'IBM Plex Sans', system-ui, sans-serif; fill: #75655a; }
-  .ttl { font: 500 9px 'IBM Plex Mono', monospace; letter-spacing: .1em; text-transform: uppercase; }
-  .v { font: 600 12px 'IBM Plex Mono', monospace; fill: #2a1d15; }
-  .ft { font: 500 11px 'IBM Plex Mono', monospace; fill: #5b4a3d; }
+  .t { font: 500 10px 'IBM Plex Sans', 'IBM Plex Sans Fallback', system-ui, sans-serif; fill: #75655a; }
+  .ttl { font: 500 9px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .1em; text-transform: uppercase; }
+  .v { font: 600 12px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; fill: #2a1d15; }
+  .ft { font: 500 11px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; fill: #5b4a3d; }
 </style>

@@ -28,10 +28,12 @@
 
 <style>
   .hn { display: grid; justify-items: center; gap: 4px; }
-  .now { margin: 0; min-height: 1.4em; font: 400 14px 'IBM Plex Sans', sans-serif; color: #5b4a3d; text-align: center; }
+  .now { margin: 0; min-height: 1.4em; font: 400 14px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; color: #5b4a3d; text-align: center; }
   .now b { color: #2a1d15; }
-  .key { list-style: none; margin: 0; padding: 0; display: flex; gap: 4px 12px; flex-wrap: wrap; justify-content: center; font: 400 12.5px 'IBM Plex Sans', sans-serif; color: #5b4a3d; }
+  .key { list-style: none; margin: 0; padding: 0; display: flex; gap: 4px 12px; flex-wrap: wrap; justify-content: center; font: 400 12.5px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; color: #5b4a3d; }
   .key li { display: inline-flex; align-items: center; gap: 5px; }
+  /* The month is only known in the browser: hold room for a two-line answer so nothing moves. */
+  @media (max-width: 640px) { .now { min-height: 2.8em; } }
   .k { width: 14px; height: 8px; border-radius: 2px; display: inline-block; }
   .k.main { background: #b86e2c; }
   .k.second { background: #e2a861; }

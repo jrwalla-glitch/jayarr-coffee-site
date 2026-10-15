@@ -106,10 +106,10 @@
 
 <style>
   .art { display: block; width: 100%; height: auto; }
-  .hub { font: 600 8px 'IBM Plex Mono', monospace; letter-spacing: .16em; fill: #e2b45a; }
-  .edge text { font: 500 7.5px 'IBM Plex Mono', monospace; letter-spacing: .08em; fill: #a9b5c9; }
-  .sname { font: 600 7px 'IBM Plex Sans', sans-serif; fill: #e8dccb; }
-  .lettered { font: italic 400 11.5px 'Instrument Serif', Georgia, serif; fill: #2a2a1f; }
+  .hub { font: 600 8px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .16em; fill: #e2b45a; }
+  .edge text { font: 500 7.5px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .08em; fill: #a9b5c9; }
+  .sname { font: 600 7px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; fill: #e8dccb; }
+  .lettered { font: italic 400 11.5px 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; fill: #2a2a1f; }
   .pulse { transform-box: fill-box; transform-origin: center; }
   :global(.lit) .pulse { animation: pulse 2.2s ease-in-out infinite; }
   @keyframes pulse { 50% { transform: scale(1.6); } }

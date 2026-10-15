@@ -78,16 +78,16 @@
   .plate { display: block; margin-top: 18px; padding: 7px 24px 7px; border-radius: 2px; text-align: center; text-decoration: none;
     background: linear-gradient(180deg, #e3c77f 0%, #c9a24f 18%, #b48a3a 52%, #a07a32 78%, #c39b4c 100%); border: 1px solid #7d6227;
     box-shadow: 0 2px 5px rgba(42, 29, 21, .28), inset 0 1px 0 rgba(255, 246, 214, .7), inset 0 -1px 0 rgba(80, 60, 20, .35); }
-  .plate b { display: block; font: 400 19px/1.25 'Instrument Serif', Georgia, serif; color: #2b1f12; text-shadow: 0 1px 0 rgba(255, 240, 200, .45); }
-  .plate small { display: block; font: 600 11.5px/1.4 'IBM Plex Mono', monospace; letter-spacing: .13em; text-transform: uppercase; color: #2b1f12; text-shadow: 0 1px 0 rgba(255, 240, 200, .4); }
-  .label { margin-top: 14px; max-width: 34ch; text-align: center; font: 400 14.5px/1.5 'IBM Plex Sans', sans-serif; color: #5b4a3d; text-wrap: pretty; }
+  .plate b { display: block; font: 400 19px/1.25 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; color: #2b1f12; text-shadow: 0 1px 0 rgba(255, 240, 200, .45); }
+  .plate small { display: block; font: 600 11.5px/1.4 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .13em; text-transform: uppercase; color: #2b1f12; text-shadow: 0 1px 0 rgba(255, 240, 200, .4); }
+  .label { margin-top: 14px; max-width: 34ch; text-align: center; font: 400 14.5px/1.5 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; color: #5b4a3d; text-wrap: pretty; }
   .key { font-size: 13px; color: #6b5d50; display: flex; gap: 4px 6px; align-items: center; justify-content: center; flex-wrap: wrap; }
   .dot { display: inline-block; border-radius: 50%; border: 1px solid #2a1d15; }
   .dot.on { width: 10px; height: 10px; background: #8a3f12; }
   .dot.off { width: 7px; height: 7px; background: #fbf6ee; margin-left: 8px; }
   .label p { margin: 0 0 6px; }
   .now { font-size: 14px; }
-  .now span { font: 500 11px 'IBM Plex Mono', monospace; letter-spacing: .1em; text-transform: uppercase; color: #8f5d22; }
+  .now span { font: 500 11px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .1em; text-transform: uppercase; color: #8f5d22; }
   .now a, .label a { color: #7a4e30; font-weight: 600; text-underline-offset: 3px; }
 
   @media (max-width: 900px) {

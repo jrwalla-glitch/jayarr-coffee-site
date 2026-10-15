@@ -90,8 +90,8 @@ const sourceList = Object.entries(sources).sort((a, b) => a[1].title.localeCompa
   .otab-wrap { overflow-x: auto; border: 1px solid #d9cdbd; border-radius: 4px; background: #fbf8f3; margin-bottom: 8px; }
   .otab { width: 100%; border-collapse: collapse; font-size: 14.5px; }
   .otab th, .otab td { text-align: left; padding: 8px 12px; border-bottom: 1px solid #e6dccd; }
-  .otab thead th { font: 500 11px/1 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; }
+  .otab thead th { font: 500 11px/1 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; }
   .otab tbody th { font-weight: 600; white-space: nowrap; }
-  .otab .mono { font-family: 'IBM Plex Mono', monospace; font-size: 13px; white-space: nowrap; }
+  .otab .mono { font-family: 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; font-size: 13px; white-space: nowrap; }
   .otab tr:last-child th, .otab tr:last-child td { border-bottom: 0; }
 </style>

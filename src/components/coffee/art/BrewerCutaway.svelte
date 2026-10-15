@@ -681,10 +681,10 @@
   .pa { fill: none; stroke-width: 1.5; stroke-linecap: round; }
   .pa-w { stroke: var(--_water); }
 
-  .co text { font: 400 9.5px/1 'IBM Plex Mono', ui-monospace, monospace; fill: var(--_note); }
+  .co text { font: 400 9.5px/1 'IBM Plex Mono', 'IBM Plex Mono Fallback', ui-monospace, monospace; fill: var(--_note); }
   .lead { fill: none; stroke: var(--_note); stroke-width: .7; }
   .dot { fill: var(--_note); }
-  .todo { font: 400 10px 'IBM Plex Mono', monospace; fill: var(--_note); }
+  .todo { font: 400 10px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; fill: var(--_note); }
 
   .lvl-up, .lvl-dn { transform-box: fill-box; transform-origin: 50% 100%; }
 
@@ -693,7 +693,7 @@
   .mesh { fill: none; stroke: var(--_mesh); stroke-width: 3; stroke-dasharray: 1.3 .9; }
   .force { fill: none; stroke: var(--_ink); stroke-width: 1.8; stroke-linecap: round; }
   .swirl { fill: none; stroke: var(--_card); stroke-width: 1.3; stroke-opacity: .9; stroke-linecap: round; }
-  .note { font: 400 9.5px/1 'IBM Plex Mono', ui-monospace, monospace; fill: var(--_note); }
+  .note { font: 400 9.5px/1 'IBM Plex Mono', 'IBM Plex Mono Fallback', ui-monospace, monospace; fill: var(--_note); }
 
   /* phase pieces: the still frame is the default; animations only while playing */
   .fp-clear { transform-box: fill-box; transform-origin: 50% 0; }

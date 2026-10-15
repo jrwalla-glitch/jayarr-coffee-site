@@ -114,6 +114,14 @@ const neighbours = LAND.filter((c) => c.id !== origin.id && !SKIP_NAME.has(c.id)
   }
   return [];
 });
+// Only the countries that reach the frame are drawn (the rest would be clipped anyway).
+const inFrame = (path: string) => {
+  const ps = polys(path).flat();
+  if (!ps.length) return false;
+  const xs = ps.map((q) => q[0]), ys = ps.map((q) => q[1]);
+  return Math.max(...xs) >= vb[0] && Math.min(...xs) <= vb[0] + vb[2] && Math.max(...ys) >= vb[1] && Math.min(...ys) <= vb[1] + vb[3];
+};
+const drawn = countryPaths.filter((c) => inFrame(c.path));
 // The sea's paper grain at the plate's own scale, so it reads as texture, not blotches.
 const grain = fmt(1 / (1.6 * u));
 ---
@@ -131,7 +139,7 @@ const grain = fmt(1 / (1.6 * u));
   </defs>
   <rect x={fmt(vb[0] - 5)} y={fmt(vb[1] - 5)} width={fmt(vb[2] + 10)} height={fmt(vb[3] + 10)} fill="#cbcfd5" filter="url(#op-grain)" />
   {[TROPIC_CANCER_Y, EQUATOR_Y, TROPIC_CAPRICORN_Y].map((y) => <line x1={fmt(vb[0])} x2={fmt(vb[0] + vb[2])} y1={y} y2={y} stroke="#8b9ba8" stroke-width={fmt(u)} stroke-dasharray={`${fmt(4 * u)} ${fmt(6 * u)}`} opacity=".55" />)}
-  {countryPaths.map((c) => <path d={c.path} fill={c.id === origin.id ? '#cf9558' : '#ebe4d6'} stroke="#a89878" stroke-width={fmt(0.8 * u)} />)}
+  {drawn.map((c) => <path d={c.path} fill={c.id === origin.id ? '#cf9558' : '#ebe4d6'} stroke="#a89878" stroke-width={fmt(0.8 * u)} />)}
   {seas.map((s) => <text x={fmt(s.x)} y={fmt(s.y)} text-anchor="middle" font-size={fmt(12.5 * u)} class="op-sea">{s.name.toUpperCase()}</text>)}
   {neighbours.map((n) => <text x={fmt(n.x)} y={fmt(n.y)} text-anchor="middle" font-size={fmt(11 * u)} class="op-nb">{n.label}</text>)}
   {regions.map((r) => <circle cx={fmt(r.xy[0])} cy={fmt(r.xy[1])} r={fmt(26 * u)} fill="url(#op-area)" />)}
@@ -150,7 +158,7 @@ const grain = fmt(1 / (1.6 * u));
 
 <style>
   .plate-map { display: block; width: 100%; height: auto; aspect-ratio: 1.5; background: #cbcfd5; }
-  .op-rl { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; fill: #2a1d15; paint-order: stroke; stroke: #f3eee4; stroke-linejoin: round; }
-  .op-sea { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; fill: #6f7f8e; letter-spacing: .2em; }
-  .op-nb { font-family: 'IBM Plex Mono', monospace; fill: #8c7d66; letter-spacing: .16em; }
+  .op-rl { font-family: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; font-style: italic; fill: #2a1d15; paint-order: stroke; stroke: #f3eee4; stroke-linejoin: round; }
+  .op-sea { font-family: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; font-style: italic; fill: #6f7f8e; letter-spacing: .2em; }
+  .op-nb { font-family: 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; fill: #8c7d66; letter-spacing: .16em; }
 </style>

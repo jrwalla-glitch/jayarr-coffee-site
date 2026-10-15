@@ -193,18 +193,18 @@
 </div>
 
 <style>
-  .bench { --ink: #2a1d15; --ink-2: #5b4a3d; --ink-3: #75655a; --rule: #d9cdbd; --crema-deep: #8f5d22; color: var(--ink); font: 16px/1.5 'IBM Plex Sans', system-ui, sans-serif; }
-  .lbl { font: 500 11px/1.3 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); }
+  .bench { --ink: #2a1d15; --ink-2: #5b4a3d; --ink-3: #75655a; --rule: #d9cdbd; --crema-deep: #8f5d22; color: var(--ink); font: 16px/1.5 'IBM Plex Sans', 'IBM Plex Sans Fallback', system-ui, sans-serif; }
+  .lbl { font: 500 11px/1.3 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); }
   .quiet { color: var(--ink-3); }
   .small { font-size: 13.5px; }
   .jobs { display: flex; gap: 10px 14px; align-items: center; flex-wrap: wrap; margin: 4px 0 26px; }
   .jobs ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
-  .jobs a { display: inline-block; border: 1px solid var(--rule); background: #fff; border-radius: 999px; padding: 8px 16px; font: 500 15px 'IBM Plex Sans', sans-serif; color: var(--ink); text-decoration: none; }
+  .jobs a { display: inline-block; border: 1px solid var(--rule); background: #fff; border-radius: 999px; padding: 8px 16px; font: 500 15px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; color: var(--ink); text-decoration: none; }
   .jobs a:hover { border-color: var(--ink-3); background: #fffaf2; }
 
   .resume { background: #fbf8f3; border: 1px solid var(--rule); border-radius: 16px; padding: 16px 18px; margin-bottom: 34px; }
   .rhead { display: flex; align-items: baseline; gap: 4px 14px; flex-wrap: wrap; margin-bottom: 12px; }
-  .resume h2 { font: 400 28px/1.1 'Instrument Serif', Georgia, serif; margin: 0; }
+  .resume h2 { font: 400 28px/1.1 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; margin: 0; }
   .resume p { margin: 0; }
   .resume ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
   .resume li { display: flex; }
@@ -212,14 +212,14 @@
   .resume a:hover, .resume a:focus-visible { border-color: var(--ink-3); background: #fffaf2; }
   .ricon { width: 44px; height: 44px; border-radius: 50%; background: #f4ece0; display: grid; place-items: center; }
   .ricon svg { width: 34px; height: 34px; }
-  .resume b { display: block; font: 600 15px 'IBM Plex Sans', sans-serif; }
+  .resume b { display: block; font: 600 15px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; }
   .rd { display: block; font-size: 13.5px; color: var(--ink-2); }
   .rgo { font-size: 18px; color: var(--crema-deep); transition: transform .2s; }
   .resume a:hover .rgo { transform: translateX(3px); }
 
   .group { margin: 0 0 40px; scroll-margin-top: 90px; }
   .ghead { display: flex; align-items: baseline; gap: 4px 18px; flex-wrap: wrap; border-bottom: 1px solid var(--rule); padding-bottom: 8px; margin-bottom: 14px; }
-  .ghead h2 { font: 400 34px/1.05 'Instrument Serif', Georgia, serif; margin: 0; }
+  .ghead h2 { font: 400 34px/1.05 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; margin: 0; }
   .ghead p { margin: 0; color: var(--ink-2); font-size: 15px; }
   .cards { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
   .cards li { display: flex; }
@@ -237,8 +237,8 @@
   .mini { position: relative; display: block; background: radial-gradient(120% 90% at 50% 0%, #fffdf9, #f4ece0); border-radius: 10px; padding: 4px 6px; margin-bottom: 6px; }
   .mini :global(svg) { width: 100%; height: auto; display: block; }
   .feature .mini { flex: 1; display: flex; align-items: center; padding: 10px 18px; }
-  .tag { position: absolute; top: 8px; right: 8px; font: 500 10px 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #efe6da; background: #2a2019; border-radius: 999px; padding: 3px 8px; }
-  .tname { font: 400 25px/1.1 'Instrument Serif', Georgia, serif; }
+  .tag { position: absolute; top: 8px; right: 8px; font: 500 10px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .12em; text-transform: uppercase; color: #efe6da; background: #2a2019; border-radius: 999px; padding: 3px 8px; }
+  .tname { font: 400 25px/1.1 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; }
   .feature .tname { font-size: 34px; }
   .tblurb { color: var(--ink-2); font-size: 15px; }
   .feature .tblurb { font-size: 16px; }
