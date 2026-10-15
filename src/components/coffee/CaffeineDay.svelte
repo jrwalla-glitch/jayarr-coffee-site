@@ -50,6 +50,8 @@
   let addError = $state('');
   // Says where a drink went when it isn't simply "today, so far" (Muse r4: a 2:30 am drink vanished into Earlier).
   let addNote = $state('');
+  // A row's time that can't be used (skipped by the clocks): said, and the box goes back (Astra r5).
+  let rowError = $state('');
 
   const toClock = (hhmm: string) => { const [h, m] = hhmm.split(':').map(Number); return h * 60 + m; };
   const hhmm = (min: number) => { const m = ((Math.round(min) % 1440) + 1440) % 1440; return `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`; };
@@ -147,10 +149,16 @@
     if (mode === 'own') commit({ type: 'remove', id: key });
     else if (mode === 'shared' && shared) shared.intakes = shared.intakes.filter((_, k) => String(k) !== key);
   }
-  function retime(key: string, v: string) {
-    const clock = toClock(v);
-    if (!Number.isFinite(clock)) return;
-    if (mode === 'own') { const at = placeTypedTime(clock, nowMs, win); if (at !== null) { commit({ type: 'retime', id: key, at }); addNote = placedNote(at, clock); } }
+  function retime(key: string, el: HTMLInputElement, was: number) {
+    const clock = toClock(el.value);
+    if (!Number.isFinite(clock)) { el.value = hhmm(was); return; }
+    if (clock === was) return; // nothing changed (the box was put back)
+    rowError = '';
+    if (mode === 'own') {
+      const at = placeTypedTime(clock, nowMs, win);
+      if (at === null) { rowError = `${clock12(clock)} doesn't exist today (the clocks changed), so the drink stays at ${clock12(was)}.`; el.value = hhmm(was); return; }
+      commit({ type: 'retime', id: key, at }); addNote = placedNote(at, clock);
+    }
     else if (mode === 'shared' && shared) shared.intakes = shared.intakes.map((x, k) => (String(k) === key ? { ...x, atMin: dayMinute(clock, shared!.bedMin) } : x));
   }
   function clearDay() {
@@ -245,7 +253,10 @@
     const onStorage = (e: StorageEvent) => {
       if (e.key !== STORE) return;
       const { store } = readStore();
-      if (store) { adopt(store); hadStore = true; if (mode === 'example') mode = 'own'; }
+      if (!store) return;
+      lastSeen = store;
+      const now = Date.now();
+      adopt(pending.reduce((st, o) => applyOp(st, o, now), store)); hadStore = true; if (mode === 'example') mode = 'own';
     };
     window.addEventListener('storage', onStorage);
     mounted = true;
@@ -343,13 +354,14 @@
           {@const i = row.i}
           {@const mg = intakeMg(i)}
           <li>
-            <input type="time" value={hhmm(row.clock)} aria-label={`Time of ${describe(i)}`} disabled={mode === 'example'} onchange={(e) => retime(row.key, (e.currentTarget as HTMLInputElement).value)} />
+            <input type="time" value={hhmm(row.clock)} aria-label={`Time of ${describe(i)}`} disabled={mode === 'example'} onchange={(e) => retime(row.key, e.currentTarget as HTMLInputElement, row.clock)} />
             <span class="what">{describe(i)}</span>
             <span class="mg">{mg.ok ? rangeText(mg.value.min, mg.value.max) : '—'} mg<small class="basis">{i.kind === 'custom' ? 'label' : 'estimate'}</small></span>
             <button type="button" class="x" aria-label={`Remove ${describe(i)}`} onclick={() => remove(row.key)} disabled={mode === 'example'}>×</button>
           </li>
         {/each}
       </ul>
+      {#if rowError}<p class="adderr" role="alert">{rowError}</p>{/if}
       {#if lastNight.length}
         <p class="carried">Earlier, still counted in the curve:</p>
         <ul class="carried-list">
