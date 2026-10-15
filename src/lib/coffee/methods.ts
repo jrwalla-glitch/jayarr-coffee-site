@@ -159,7 +159,9 @@ export const METHODS: Method[] = [
     timeS: { min: 25, max: 30 },
     grindMicrons: { min: 200, max: 300 }, grindLabel: 'Fine', texture: 'powdered sugar',
     retentionGPerG: 0,
-    base: { doseG: 18, waterG: 36, by: "Scott Rao's espresso parameters" },
+    // 18 g → 36 g in 25–30 s at 91–95 °C sits inside Rao's normale ranges (Espresso Extraction ch. 1:
+    // 14–22 g, 1.5–2.0× the dose, 25–40 s, 91–95 °C) but is narrower, so it isn't credited as his recipe.
+    base: { doseG: 18, waterG: 36, by: "a recipe within Scott Rao's published ranges" },
     steps: [
       { kind: 'prep', atS: 0, text: 'Grind, dose into the basket, level it and tamp flat.', cue: 'Level puck, no gaps at the edge.' },
       { kind: 'pull', atS: 0, untilS: 28, toG: 36, text: 'Start the shot and the timer together. Stop at the yield.', cue: 'Aim for 25–30 seconds. Faster: grind finer. Slower: coarser.' },

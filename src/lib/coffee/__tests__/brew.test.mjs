@@ -144,3 +144,14 @@ test('a moka or espresso over capacity is offered a dose, not a cup size', () =>
     assert.equal(r.ok, false); assert.ok('doseG' in r.errors[0].patch.target, method);
   }
 });
+
+test('the espresso recipe is credited as within Rao\'s published ranges, and it is (Espresso Extraction ch. 1)', () => {
+  const r = buildRecipe({ method: 'espresso', target: { doseG: 18 } });
+  assert.equal(r.ok, true);
+  const v = r.value;
+  assert.equal(v.by, "a recipe within Scott Rao's published ranges");
+  assert.ok(v.doseG >= 14 && v.doseG <= 22);
+  assert.ok(v.yieldG / v.doseG >= 1.5 && v.yieldG / v.doseG <= 2.0);
+  assert.ok(v.timeS.min >= 25 && v.timeS.max <= 40);
+  assert.ok(v.tempC >= 91 && v.tempC <= 95);
+});
