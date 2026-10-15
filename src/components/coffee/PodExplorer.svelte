@@ -390,7 +390,7 @@
             {#if selected.best_for}<p class="best"><span class="lbl">Best for</span>{selected.best_for}</p>{/if}
             <figure class="pours">
               {@render ladder(selected, 150, rows, true, true)}
-              <figcaption>What it pours: {selected.ml} ml, beside every {LINES[selected.line].label} cup size. Every drawing on this page uses one scale, with {ML_TOP} ml as the full height.</figcaption>
+              <figcaption>What it pours: {selected.ml} ml, beside the {LINES[selected.line].label} cup sizes listed here{selected.line === 'vertuo' ? ' (carafe capsules aren\'t)' : ''}. Every drawing on this page uses one scale, with {ML_TOP} ml as the full height.</figcaption>
             </figure>
             {#if suggestion}
               <p class="try"><span class="lbl">Try also</span><button type="button" class="trybtn" onclick={() => pick(suggestion!)}>{@render capsule(suggestion.line, suggestion.color_hex, 20)}{suggestion.name}<small>{suggestion.size} · {suggestion.ml} ml</small></button></p>
