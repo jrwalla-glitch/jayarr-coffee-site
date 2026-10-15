@@ -142,7 +142,8 @@ export const METHODS: Method[] = [
       { kind: 'stir', atS: 240, text: 'Stir once more when the spray head stops.', cue: 'Evens out the bed.' },
       { kind: 'serve', atS: 300, text: 'Serve within 30 minutes.', cue: 'Keeping it on a hot plate stews it.' },
     ],
-    capacity: { minDoseG: 15, maxDoseG: 130 },
+    // About a 12-cup reservoir (blind Opus r3); varies by machine (verify, R22).
+    capacity: { minDoseG: 15, maxDoseG: 130, maxWaterG: 1800 },
     filter: 'paper',
     sourceIds: ['rao', 'synthesis'],
     verify: ['drip micron band'],

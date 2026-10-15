@@ -39,7 +39,8 @@
   let m = $derived(METHODS.find((x) => x.id === method)!);
   let byDose = $derived(method === 'espresso' || method === 'moka');
   let isBatch = $derived(method === 'cold-brew' || method === 'drip-machine');
-  let input = $derived<RecipeInput>({ method, target, strength, roast, ...(ratioOverride !== undefined ? { ratio: ratioOverride } : {}), ...(adjust === 'hotter' || adjust === 'cooler' ? { tempAdjust: adjust } : {}) });
+  // Moka's strength is set by the pot: a link's strength or ratio doesn't apply (blind Opus r3).
+  let input = $derived<RecipeInput>({ method, target, strength: method === 'moka' ? 'classic' : strength, roast, ...(ratioOverride !== undefined && method !== 'moka' ? { ratio: ratioOverride } : {}), ...(adjust === 'hotter' || adjust === 'cooler' ? { tempAdjust: adjust } : {}) });
   let result = $derived(buildRecipe(input));
   let recipe = $derived(result.ok ? result.value : null);
   let sim = $derived(recipe ? simulate(recipe) : null);
@@ -118,7 +119,11 @@
   // Only offer sizes this brewer can make at the chosen strength; bigger ones stay reachable through Custom.
   let choices = $derived(allChoices.filter((c) => buildRecipe({ ...input, target: c.t }).ok));
   let tooBig = $derived(allChoices.length > choices.length);
-  const same = (a: Target, b: Target) => JSON.stringify(a) === JSON.stringify(b);
+  // Same target within a link's 0.1 rounding, so a 12 oz cup stored as 354.9 still lights the 12 oz chip.
+  const same = (a: Target, b: Target) => {
+    const ka = Object.keys(a)[0], kb = Object.keys(b)[0];
+    return ka === kb && Math.abs((a as Record<string, number>)[ka] - (b as Record<string, number>)[kb]) < 0.06;
+  };
   // A preset size moves to the other system's default; a custom amount (or a dose or water weight) is kept.
   function switchUnits(u: Units) {
     if (u === units) return;
@@ -127,7 +132,13 @@
     if (wasPreset && !byDose) target = u === 'us' ? DEFAULTS[method] : isBatch ? { cupMl: 1000 } : { cupMl: 350 };
   }
   // Moka has no strength choice (the pot sets it), so it always starts at its own ratio.
-  function pickMethod(id: MethodId) { method = id; target = DEFAULTS[id]; ratioOverride = undefined; customOpen = false; if (id === 'moka') strength = 'classic'; }
+  // A Doctor change belongs to the brewer it was given for, so switching brewer drops it (blind Opus r3).
+  // Metric readers get metric sizes.
+  function pickMethod(id: MethodId) {
+    method = id; ratioOverride = undefined; customOpen = false; adjust = undefined;
+    if (id === 'moka') strength = 'classic';
+    target = units === 'metric' && !(id === 'espresso' || id === 'moka') ? (id === 'cold-brew' || id === 'drip-machine' ? { cupMl: 1000 } : { cupMl: 350 }) : DEFAULTS[id];
+  }
   function nudgeRatio(d: number) {
     const base = ratioOverride ?? m.ratio[strength];
     const step = method === 'espresso' ? 0.25 : 0.5;
@@ -192,7 +203,9 @@
     // With no valid recipe there's nothing to convert: switch the meaning anyway and let the
     // number be re-entered, so the select and the recipe can never disagree (blind Opus r2 blocker).
     if (!recipe) { target = kind === 'dose' ? { doseG: NaN } : kind === 'water' ? { waterG: NaN } : { cupMl: NaN }; return; }
-    target = kind === 'dose' ? { doseG: Math.round(recipe.doseG * 10) / 10 } : kind === 'water' ? { waterG: Math.round(recipe.waterG ?? 0) } : { cupMl: method === 'espresso' ? Math.round(recipe.yieldG ?? 0) : Math.round(recipe.cupMl) };
+    // A tenth of a unit, so switching what the number means doesn't drift the brew (500 g water stays 500 g).
+    const r1 = (n: number) => Math.round(n * 10) / 10;
+    target = kind === 'dose' ? { doseG: r1(recipe.doseG) } : kind === 'water' ? { waterG: r1(recipe.waterG ?? 0) } : { cupMl: method === 'espresso' ? r1(recipe.yieldG ?? 0) : r1(recipe.cupMl) };
   }
   // Every entry reaches the recipe, including blank, zero and negative ones, so the recipe's own
   // validation shows the problem instead of quietly keeping the last good result.
@@ -343,7 +356,7 @@
       </div>
     {:else if recipe}
       {#if adjust}
-        <div class="adjust" role="status"><span class="chip">From the Coffee Doctor</span><span>{adjustText} <span class="adjust-note">Shown on a standard {m.label} recipe: keep your own amounts, change only this.</span></span><button type="button" class="x" aria-label="Dismiss" onclick={() => (adjust = undefined)}>×</button></div>
+        <div class="adjust" role="status"><span class="chip">From the Coffee Doctor</span><span>{adjustText} <span class="adjust-note">Shown on a standard {m.label} recipe{roast !== 'medium' ? ` for a ${roast} roast` : ''}: keep your own amounts, change only this.</span></span><button type="button" class="x" aria-label="Dismiss" onclick={() => (adjust = undefined)}>×</button></div>
       {/if}
       <div class="numbers">
         <div class="coffee"><span class="k">Coffee</span><span class="v">{fmtG(recipe.doseG)}<small>g</small></span><span class="sub">about {r0(approxTablespoons(recipe.doseG, 'whole'))} tbsp beans</span></div>

@@ -200,10 +200,30 @@ test('Astra r3: the Doctor\'s temperature is the one its hand-off applies (AeroP
     for (const answers of allPaths(m.id, sy.id)) {
       const d = ok(diagnose({ method: m.id, symptom: sy.id, answers }));
       if (!d.next.temp) continue;
-      const want = adjustedTempC(methodById(m.id), d.next.temp);
+      const want = adjustedTempC(methodById(m.id), d.next.temp, answers.roast === 'light' || answers.roast === 'dark' ? answers.roast : 'medium');
       const said = text(d).match(/about (\d+) °C/);
       if (said) assert.equal(Number(said[1]), want, `${m.id}/${sy.id}/${JSON.stringify(answers)}`);
     }
   }
-  assert.match(ok(diagnose({ method: 'aeropress', symptom: 'bitter', answers: { time: 'fast', roast: 'dark' } })).changeNow, /about 80 °C/);
+  // Cooler means cooler than this brewer's own recipe for the roast (Opus r3): AeroPress dark is 80 °C, so 77 °C.
+  assert.match(ok(diagnose({ method: 'aeropress', symptom: 'bitter', answers: { time: 'fast', roast: 'dark' } })).changeNow, /about 77 °C/);
+  for (const id of ['v60', 'chemex', 'french-press', 'aeropress', 'drip-machine']) for (const roast of ['light', 'medium', 'dark']) {
+    const m = methodById(id); const base = buildRecipe({ method: id, target: { cupMl: 237 }, roast }).value.tempC;
+    assert.ok(adjustedTempC(m, 'cooler', roast) < base && adjustedTempC(m, 'hotter', roast) > base - (base >= 100 ? 1 : 0), `${id} ${roast}`);
+  }
+});
+
+test('Opus r3: Doctor advice matches the answers given and the link it opens', () => {
+  // Weighing carries no strength change.
+  assert.deepEqual(ok(diagnose({ method: 'v60', symptom: 'weak', answers: { measure: 'scoop', time: 'ok' } })).next, {});
+  // Flat with no roast date and bottled water: never "check the date" or "try bottled water".
+  const flat = ok(diagnose({ method: 'aeropress', symptom: 'flat', answers: { age: 'unsure', water: 'bottled' } }));
+  assert.doesNotMatch(text(flat), /Check the roast date|bottled spring water/);
+  // Ratio examples are the brewer's own.
+  assert.match(ok(diagnose({ method: 'french-press', symptom: 'weak', answers: { measure: 'scale', time: 'ok' } })).changeNow, /1:15 to 1:14/);
+  // Only a drip machine offers "the machine decided".
+  for (const method of ['v60', 'french-press', 'cold-brew']) assert.ok(!nextQuestion({ method, symptom: 'weak', answers: {} }).options.some((o) => o.id === 'machine'));
+  assert.ok(nextQuestion({ method: 'drip-machine', symptom: 'weak', answers: {} }).options.some((o) => o.id === 'machine'));
+  // Cold brew's next step never mentions the hot end.
+  assert.doesNotMatch(ok(diagnose({ method: 'cold-brew', symptom: 'bright', answers: { finish: 'short', roast: 'light' } })).nextExperiment, /hot end/);
 });

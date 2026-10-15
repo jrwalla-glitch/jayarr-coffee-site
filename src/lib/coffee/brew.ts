@@ -31,10 +31,20 @@ function grindFor(m: Method, roast: Roast): Range {
   return { ...m.grindMicrons };
 }
 
-/** The temperature a Doctor hand-off sets: hotter = top of the method's range; cooler = about 90 °C, or the method's own minimum if that's lower (AeroPress). */
-export function adjustedTempC(m: Method, adjust: 'hotter' | 'cooler'): number {
-  return adjust === 'hotter' ? m.tempC.max : Math.min(m.tempC.min, 90);
+/**
+ * The temperature a Doctor hand-off sets, relative to this brewer's own recipe for the roast, so it
+ * always changes something: hotter is 2 °C up (at least the top of the range, never past boiling),
+ * cooler is 3 °C down (blind Opus r3: AeroPress dark and V60 light were already at the target).
+ * Cold brew and moka have no temperature to change.
+ */
+export function adjustedTempC(m: Method, adjust: 'hotter' | 'cooler', roast: Roast = 'medium'): number {
+  const base = tempFor(m, roast);
+  if (m.id === 'cold-brew' || m.id === 'moka') return base;
+  return adjust === 'hotter' ? Math.min(100, Math.max(base + 2, m.tempC.max)) : base - 3;
 }
+
+/** "a V60", "an AeroPress", "an espresso machine". */
+export const withArticle = (label: string) => `${/^[aeiou]/i.test(label) ? 'an' : 'a'} ${label}`;
 
 export function estimateStrength(methodId: Recipe['method'], doseG: number, beverageG: number): StrengthEstimate {
   const ey = EY_BY_METHOD[methodId];
@@ -98,17 +108,17 @@ export function buildRecipe(input: RecipeInput): Result<Recipe> {
     const maxCup = m.id === 'espresso' ? m.capacity.maxDoseG * ratio : m.capacity.maxDoseG * (ratio - r) * (m.id === 'cold-brew' ? 2 : 1);
     const message = m.id === 'aeropress'
       ? `That needs ${Math.round(doseG)} g of coffee; one AeroPress takes about ${m.capacity.maxDoseG} g. Make two presses, or choose a smaller cup.`
-      : `That needs ${Math.round(doseG)} g of coffee, more than a ${m.label} handles well (about ${m.capacity.maxDoseG} g).`;
+      : `That needs ${Math.round(doseG)} g of coffee, more than ${withArticle(m.label)} handles well (about ${m.capacity.maxDoseG} g).`;
     // Dose-set brewers (espresso, moka) get a dose back; the others a cup size.
     return failure('over-capacity', field, message, { target: m.id === 'espresso' || m.id === 'moka' ? { doseG: m.capacity.maxDoseG } : { cupMl: Math.floor(maxCup) } });
   }
   if (m.capacity.maxWaterG && m.id !== 'aeropress' && waterG && waterG > m.capacity.maxWaterG) {
-    return failure('over-capacity', field, `That's ${Math.round(waterG)} g of water, more than a typical ${m.label} holds.`, { target: { waterG: m.capacity.maxWaterG } });
+    return failure('over-capacity', field, `That's ${Math.round(waterG)} g of water, more than a typical ${m.label.toLowerCase()} holds.`, { target: { waterG: m.capacity.maxWaterG } });
   }
   // Far below the brewer's smallest sensible dose there's no recipe worth following.
   // Moka baskets have a real minimum (the smallest pots take about 6–7 g), so no half-size there.
   if (doseG < (m.id === 'moka' ? m.capacity.minDoseG : m.capacity.minDoseG / 2)) {
-    return failure('too-small', field, `That's too little coffee for a ${m.label} to brew well (${doseG < 1 ? 'under 1' : Math.round(doseG)} g). Try at least ${m.capacity.minDoseG} g.`, { target: { doseG: m.capacity.minDoseG } });
+    return failure('too-small', field, `That's too little coffee for ${withArticle(m.label)} to brew well (${doseG < 1 ? 'under 1' : Math.round(doseG)} g). Try at least ${m.capacity.minDoseG} g.`, { target: { doseG: m.capacity.minDoseG } });
   }
   if (doseG < m.capacity.minDoseG) {
     const msg = m.family === 'percolation' ? `Below about ${m.capacity.minDoseG} g the bed is shallow and drains fast; expect to grind a little finer.`
@@ -136,7 +146,8 @@ export function buildRecipe(input: RecipeInput): Result<Recipe> {
       if (s.kind === 'bloom') toG = s.toG * doseScale;
       else if (s.kind === 'pull') toG = yieldG;
       else if (m.id === 'aeropress' && s.kind === 'pour') toG = (waterG ?? 0) - bypassG;
-      else toG = s.toG * waterScale;
+      // The step that pours to the recipe's full water lands on waterG itself, so the step and the Water figure agree.
+      else toG = s.toG === m.base.waterG ? waterG : s.toG * waterScale;
     }
     return { kind: s.kind, atS: s.atS, untilS: s.untilS, toG, text: s.text, cue: s.cue };
   });
@@ -168,7 +179,7 @@ export function buildRecipe(input: RecipeInput): Result<Recipe> {
     yieldG,
     cupMl,
     ratio,
-    tempC: input.tempAdjust ? adjustedTempC(m, input.tempAdjust) : tempFor(m, roast),
+    tempC: input.tempAdjust ? adjustedTempC(m, input.tempAdjust, roast) : tempFor(m, roast),
     timeS: { ...m.timeS },
     steps,
     grind: { microns: grindFor(m, roast), label: m.grindLabel, texture: m.texture },

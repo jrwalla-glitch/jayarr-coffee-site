@@ -48,8 +48,12 @@
   let brewLink = $derived.by(() => {
     if (!dx || !method) return null;
     const q = new URLSearchParams({ method });
-    if (method === 'espresso' || method === 'moka') q.set('dose', method === 'espresso' ? '18' : '15'); else q.set('cup', method === 'cold-brew' || method === 'drip-machine' ? '946' : method === 'aeropress' ? '237' : '355');
+    // Sizes match the Brew Guide's own chips (12 oz is 354.9 ml), so the link lands on a chip, not "Custom".
+    if (method === 'espresso' || method === 'moka') q.set('dose', method === 'espresso' ? '18' : '15'); else q.set('cup', method === 'cold-brew' || method === 'drip-machine' ? '946.4' : method === 'aeropress' ? '236.6' : '354.9');
     if (dx.next.strength) q.set('strength', dx.next.strength);
+    // The roast is the reader's own baseline (a dark roast brews cooler), so it travels; the banner
+    // says the recipe is a standard one for that roast with one change on top.
+    if (answers.roast === 'light' || answers.roast === 'dark') q.set('roast', answers.roast);
     const adj = dx.next.grind ?? dx.next.temp;
     if (adj) q.set('adjust', adj);
     return `/tools/brew-ratio/?${q}`;
@@ -102,7 +106,7 @@
 <div class="dr">
   <div class="stage">
     <ExtractionMap x={pos.x} y={pos.y} {zone} showArrow={step === 'result' && dx?.placement === 'likely'} empty={dx?.placement === 'other'} emptyText="not an extraction problem" uncertain={dx?.placement === 'uncertain'} label={dx?.placement === 'other' ? `Not placed on the extraction map: ${dx.placementNote}` : dx?.placement === 'uncertain' ? `Your cup's position is uncertain: ${dx.placementNote}` : `By taste, your cup probably sits in the ${ZONES[zone].label.toLowerCase()} zone.`} />
-    <p class="mini-axes" aria-hidden="true">sour ← extraction → bitter · weak ↓ strength ↑ strong</p>
+    <p class="mini-axes" aria-hidden="true">Left sour, right bitter · low weak, high strong</p>
     <div class="zone">
       {#if symptom && dx && dx.placement !== 'likely'}
         <span class="lbl">{dx.placement === 'other' ? 'Not an extraction problem' : 'Position uncertain'}</span>
