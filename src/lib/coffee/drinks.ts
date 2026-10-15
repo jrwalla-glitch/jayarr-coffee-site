@@ -141,32 +141,46 @@ export function knownVolume(ref: DrinkRef): { ml: number; complete: boolean } {
 
 /** One honest sentence comparing two references, using only amounts both recipes publish. */
 export function compareRefs(a: DrinkRef, b: DrinkRef, nameA: string, nameB: string): string {
-  const A = nameA.toLowerCase(), B = nameB.toLowerCase();
+  // Two versions of the same drink are told apart by their recipe labels.
+  const same = nameA === nameB;
+  const A = same ? `${nameA.toLowerCase()} (${a.label})` : nameA.toLowerCase(), B = same ? `${nameB.toLowerCase()} (${b.label})` : nameB.toLowerCase();
   const mid = (r?: [number, number]) => (r ? (r[0] + r[1]) / 2 : undefined);
+  // Milk in any form counts as milk, foam included: a macchiato's spoon of foam is milk.
+  const MILKY = ['milk', 'frothed', 'foam'];
+  const milkLayers = (r: DrinkRef) => r.layers.filter((l) => MILKY.includes(l.kind));
   const milkMl = (r: DrinkRef) => {
-    const ls = r.layers.filter((l) => l.kind === 'milk' || l.kind === 'frothed');
+    const ls = milkLayers(r);
     if (ls.length === 0) return 0;
     if (ls.some((l) => !l.ml)) return undefined;
     return ls.reduce((t, l) => t + (mid(l.ml) ?? 0), 0);
   };
   const parts: string[] = [];
-  const shots = (r: DrinkRef) => (/double|2|two/.test(r.shots) ? 2 : /triple|three|3/.test(r.shots) ? 3 : /single|1/.test(r.shots) ? 1 : undefined);
+  // Only a single, definite count is compared: "1 (Tall) or 2 (Grande)" and "usually double" vary.
+  const shots = (r: DrinkRef) => (/\bor\b|usually|not stated|none/.test(r.shots) ? undefined : /double|\b2\b|two/.test(r.shots) ? 2 : /triple|three|\b3\b/.test(r.shots) ? 3 : /single|\b1\b/.test(r.shots) ? 1 : undefined);
   const sa = shots(a), sb = shots(b);
   if (sa && sb && sa !== sb) parts.push(`the ${A} uses ${sa === 1 ? 'a single shot' : sa === 2 ? 'a double' : 'three shots'} and the ${B} ${sb === 1 ? 'a single' : sb === 2 ? 'a double' : 'three shots'}`);
   else if (sa && sb && sa === sb) parts.push(`both use ${sa === 1 ? 'a single shot' : sa === 2 ? 'a double shot' : 'three shots'}`);
   const ma = milkMl(a), mb = milkMl(b);
-  if (ma === 0 && mb !== undefined && mb > 0) parts.push(`only the ${B} has milk`);
-  else if (mb === 0 && ma !== undefined && ma > 0) parts.push(`only the ${A} has milk`);
-  else if (ma !== undefined && mb !== undefined && ma > 0 && mb > 0 && Math.abs(ma - mb) > 5) {
+  if (ma === 0 && milkLayers(b).length) parts.push(`only the ${B} has milk`);
+  else if (mb === 0 && milkLayers(a).length) parts.push(`only the ${A} has milk`);
+  else if (ma !== undefined && mb !== undefined && ma > 0 && mb > 0) {
+    // Recipes measure milk differently (cold before heating, or frothed volume with its foam).
+    const kinds = (r: DrinkRef) => [...new Set(milkLayers(r).map((l) => l.kind))].join();
+    const mixed = kinds(a) !== kinds(b) ? ', measured differently by the two recipes' : '';
     const [big, bigV, smallV] = ma > mb ? [A, ma, mb] : [B, mb, ma];
-    parts.push(`the ${big} carries about ${Math.round(bigV / smallV)}× the milk (${Math.round(smallV)} ml against ${Math.round(bigV)} ml)`);
+    const ratio = bigV / smallV;
+    if (ratio < 1.25) parts.push(`both use about the same amount of milk (about ${Math.round(smallV)} and ${Math.round(bigV)} ml${mixed})`);
+    else parts.push(`the ${big} has about ${ratio < 3 ? ratio.toFixed(1) : Math.round(ratio)}× the milk (${Math.round(smallV)} ml against ${Math.round(bigV)} ml${mixed})`);
   }
   const EXTRA: Record<string, string> = { water: 'hot water', brewed: 'brewed coffee', gelato: 'gelato', chocolate: 'chocolate', cream: 'whipped cream' };
   for (const [r, other, N] of [[a, b, A], [b, a, B]] as const) {
     const own = Object.keys(EXTRA).filter((k) => r.layers.some((l) => l.kind === k) && !other.layers.some((l) => l.kind === k));
     if (own.length) parts.push(`only the ${N} has ${own.map((k) => EXTRA[k]).join(' and ')}`);
   }
-  if (a.foamCm && b.foamCm && a.foamCm[0] !== b.foamCm[0]) parts.push(`its foam is about ${Math.max(a.foamCm[0], b.foamCm[0])} cm against ${Math.min(a.foamCm[0], b.foamCm[0])} cm`);
+  if (a.foamCm && b.foamCm && a.foamCm[0] !== b.foamCm[0]) {
+    const [deep, deepCm, thinCm] = a.foamCm[0] > b.foamCm[0] ? [A, a.foamCm[0], b.foamCm[0]] : [B, b.foamCm[0], a.foamCm[0]];
+    parts.push(`the ${deep} has about ${deepCm} cm of foam against ${thinCm} cm`);
+  }
   const va = knownVolume(a), vb = knownVolume(b);
   if (va.complete && vb.complete && va.ml > 0 && vb.ml > 0 && Math.abs(va.ml - vb.ml) > 10) {
     const [big, r] = va.ml > vb.ml ? [A, va.ml / vb.ml] : [B, vb.ml / va.ml];

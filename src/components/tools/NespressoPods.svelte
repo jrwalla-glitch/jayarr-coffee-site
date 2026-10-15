@@ -58,6 +58,8 @@
   })());
 
   const selectedPod = $derived(pods.find(p => p.id === selectedPodId) || null);
+  // A selection that the filters no longer show is closed, so the panel never describes a hidden pod.
+  $effect(() => { if (selectedPodId && !filtered.some((p) => p.id === selectedPodId)) selectedPodId = null; });
   // "Try also" stays within the same system: an Original suggestion never opens a Vertuo pod.
   const tryAlsoPod = $derived(selectedPod?.try_also ? (pods.find(p => p.name === selectedPod.try_also && p.line === selectedPod.line) ?? null) : null);
 
@@ -67,6 +69,8 @@
 
   function selectTryAlso() {
     if (tryAlsoPod) {
+      // If the current filters hide the suggestion, clear them so the pod can be shown.
+      if (!filtered.some((p) => p.id === tryAlsoPod.id)) clearFilters();
       selectedPodId = tryAlsoPod.id;
     }
   }
@@ -725,7 +729,11 @@
     font-size: 1.2rem;
     color: #B8AD9E;
     cursor: pointer;
-    padding: 0.15rem 0.45rem;
+    padding: 0;
+    min-width: 44px;
+    min-height: 44px;
+    display: grid;
+    place-items: center;
     line-height: 1;
     transition: all 0.2s;
     z-index: 2;

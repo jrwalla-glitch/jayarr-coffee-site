@@ -221,7 +221,7 @@
         <dl>
           <div><dt>Shots</dt><dd>{c.r.shots}</dd></div>
           {#each c.r.layers as l, i (i)}
-            <div><dt>{NAME[l.kind]}</dt><dd>{l.ml ? `${l.ml[0] === l.ml[1] ? l.ml[0] : `${l.ml[0]}–${l.ml[1]}`} ml (${mlToFlOz(l.ml[1]).toFixed(1)} fl oz)` : l.g ? `${l.g[0] === l.g[1] ? l.g[0] : `${l.g[0]}–${l.g[1]}`} g` : 'not published'}{l.basis ? ` — ${l.basis}` : ''}</dd></div>
+            <div><dt>{NAME[l.kind]}</dt><dd>{l.ml ? `${l.ml[0] === l.ml[1] ? l.ml[0] : `${l.ml[0]}–${l.ml[1]}`} ml (${l.ml[0] === l.ml[1] ? mlToFlOz(l.ml[0]).toFixed(1) : `${mlToFlOz(l.ml[0]).toFixed(1)}–${mlToFlOz(l.ml[1]).toFixed(1)}`} fl oz)` : l.g ? `${l.g[0] === l.g[1] ? l.g[0] : `${l.g[0]}–${l.g[1]}`} g` : 'not published'}{l.basis ? ` — ${l.basis}` : ''}</dd></div>
           {/each}
           {#if c.r.foamCm}<div><dt>Foam</dt><dd>about {c.r.foamCm[0]} cm</dd></div>{/if}
           <div><dt>Served in</dt><dd>{c.r.vessel.name}{c.r.vessel.capacityMl ? `, ${c.r.vessel.capacityMl[0] === c.r.vessel.capacityMl[1] ? c.r.vessel.capacityMl[0] : `${c.r.vessel.capacityMl[0]}–${c.r.vessel.capacityMl[1]}`} ml` : ''}</dd></div>

@@ -39,7 +39,7 @@ test('comparisons say something true or admit they can\'t', () => {
   assert.match(s, /6× the size/);
   const c = compareRefs(refById('cortado-sabora'), refById('flat-cimbali'), 'Cortado', 'Flat white');
   assert.match(c, /single shot and the flat white a double/);
-  assert.match(c, /flat white carries about 13× the milk \(10 ml against 128 ml\)/);
+  assert.match(c, /flat white has about 13× the milk \(10 ml against 128 ml, measured differently by the two recipes\)/);
   assert.match(compareRefs(refById('gibraltar-bluebottle'), refById('cortado-sbux'), 'Gibraltar', 'Cortado'), /don't publish enough/);
 });
 
@@ -47,4 +47,23 @@ test('drinks with different extras say what only one of them has', () => {
   const s = compareRefs(refById('affogato-illy'), refById('americano-lavazza'), 'Affogato', 'Americano');
   assert.match(s, /only the affogato has gelato/);
   assert.match(s, /only the americano has hot water/);
+});
+
+test('foam counts as milk, and near-equal amounts are called the same (Muse)', () => {
+  const s1 = compareRefs(refById('macchiato-illy'), refById('cortado-sabora'), 'Macchiato', 'Cortado');
+  assert.doesNotMatch(s1, /only the cortado has milk/);
+  const s2 = compareRefs(refById('flat-cimbali'), refById('latte-illy'), 'Flat white', 'Latte');
+  assert.doesNotMatch(s2, /1×/); assert.match(s2, /about the same amount of milk/); assert.match(s2, /measured differently/);
+  assert.match(compareRefs(refById('espresso-inei'), refById('latte-illy'), 'Espresso', 'Latte'), /only the latte has milk/);
+});
+
+test('variable shot counts are not compared, and same-name drinks are told apart (Opus: "the latte uses a double and the latte a single")', () => {
+  const sbux = DRINKS.find((d) => d.id === 'latte').refs.find((r) => /Tall/.test(r.shots));
+  const illy = refById('latte-illy');
+  const s = compareRefs(sbux, illy, 'Latte', 'Latte');
+  assert.doesNotMatch(s, /uses a double/); assert.doesNotMatch(s, /the latte .* and the latte /);
+  // Two cortados with amounts on both sides name each by its recipe.
+  const cortados = DRINKS.find((d) => d.id === 'cortado').refs;
+  const c = compareRefs(cortados[0], cortados[1], 'Cortado', 'Cortado');
+  assert.match(c, /cortado \(/); assert.doesNotMatch(c, /the cortado [^(]/);
 });
