@@ -32,7 +32,7 @@ const description = 'Describe how your coffee tastes and feels, see where it lan
 				<a href="/tools/" class="cf-back">← All tools</a>
 				<p class="cf-kicker">Deep Brew · Extraction Map</p>
 				<h1>Where does your cup sit <em>between sour and bitter?</em></h1>
-				<p class="cf-lede">Slide to describe the taste and the body. Your cup lands on the brewing control chart, the map baristas use to talk about strength and extraction. Then pull a lever and watch it move.</p>
+				<p class="cf-lede">Slide to describe the taste and the body, or enter a refractometer reading. Your cup lands on the brewing control chart, the map baristas use to talk about strength and extraction. Then pull a lever and watch it move.</p>
 			</section>
 			<section class="cf-tool" aria-label="Extraction Map"><ExtractionTool client:load /></section>
 
@@ -52,7 +52,10 @@ const description = 'Describe how your coffee tastes and feels, see where it lan
 				<ul>
 					{METHODS.map((m) => <li>{m.label}: about {EY_BY_METHOD[m.id].min}–{EY_BY_METHOD[m.id].max}%</li>)}
 				</ul>
-				<p>A refractometer is the only way to actually measure TDS and calculate extraction at home. Without one, taste is a good guide, and this map is a way to reason about it, not a reading.</p>
+				<h2>How to calculate extraction yield</h2>
+				<p>With a refractometer reading, extraction is simple arithmetic: <strong>extraction yield (%) = drink weight × TDS (%) ÷ coffee dose</strong>. An 18 g espresso dose that gives a 36 g shot at 10% TDS has extracted 3.6 g of coffee, which is 20%. A 20 g pour-over that gives 300 g of coffee at 1.3% TDS has extracted 3.9 g, or 19.5%.</p>
+				<p>For immersion brews (French press, AeroPress, cold brew), use all the water you added instead of the drink weight, because the liquid left in the grounds is as strong as your cup. That simple version reads slightly low. If you dilute a brew afterwards, take the weight and the reading at the same point: the dissolved coffee doesn't change when you add water.</p>
+				<p>A refractometer is the only way to measure TDS at home. Without one, taste is a good guide, and the map is a way to reason about it: a hypothesis, not a reading.</p>
 
 				<h2>Sources</h2>
 				<ul class="cf-sources">

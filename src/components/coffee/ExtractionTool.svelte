@@ -1,13 +1,26 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import ExtractionMap from './ExtractionMap.svelte';
-  import { LEVERS, ZONES, placeOnMap, suggestLevers } from '../../lib/coffee/index.ts';
+  import { LEVERS, ZONES, placeOnMap, suggestLevers, measuredExtraction } from '../../lib/coffee/index.ts';
+  import type { MeasuredKind } from '../../lib/coffee/index.ts';
 
   let sourBitter = $state(-1);
   let body = $state(-0.5);
   let espresso = $state(false);
   let mounted = $state(false);
   let moved = $state<string | null>(null);
+  // Measured mode: a refractometer reading turns the guess into arithmetic.
+  let mode = $state<'taste' | 'measured'>('taste');
+  let kind = $state<MeasuredKind>('percolation');
+  let doseG = $state(20);
+  let liquidG = $state(300);
+  let tdsPct = $state(1.3);
+  let measured = $derived(measuredExtraction({ kind, doseG, liquidG, tdsPct }));
+  let mv = $derived(measured.ok ? measured.value : null);
+  function setKind(k: MeasuredKind) {
+    kind = k;
+    if (k === 'espresso') { doseG = 18; liquidG = 36; tdsPct = 10; } else if (k === 'immersion') { doseG = 30; liquidG = 500; tdsPct = 1.25; } else { doseG = 20; liquidG = 300; tdsPct = 1.3; }
+  }
 
   let place = $derived(placeOnMap({ sourBitter, body }));
   let zone = $derived(ZONES[place.zone]);
@@ -27,21 +40,62 @@
     if (q.has('taste') && Number.isFinite(a)) sourBitter = clamp(a);
     if (q.has('body') && Number.isFinite(b)) body = clamp(b);
     espresso = q.get('espresso') === '1';
+    if (q.get('mode') === 'measured') {
+      mode = 'measured';
+      const k = q.get('kind'); if (k === 'percolation' || k === 'immersion' || k === 'espresso') kind = k;
+      const d = Number(q.get('dose')), l = Number(q.get('liquid')), t = Number(q.get('tds'));
+      if (q.has('dose') && Number.isFinite(d)) doseG = d;
+      if (q.has('liquid') && Number.isFinite(l)) liquidG = l;
+      if (q.has('tds') && Number.isFinite(t)) tdsPct = t;
+    }
     mounted = true;
   });
   $effect(() => {
     if (!mounted) return;
-    const q = new URLSearchParams({ taste: String(sourBitter), body: String(body) });
-    if (espresso) q.set('espresso', '1');
+    const q = mode === 'measured' ? new URLSearchParams({ mode, kind, dose: String(doseG), liquid: String(liquidG), tds: String(tdsPct) }) : new URLSearchParams({ taste: String(sourBitter), body: String(body) });
+    if (mode === 'taste' && espresso) q.set('espresso', '1');
     history.replaceState(history.state, '', `${location.pathname}?${q}`);
   });
 </script>
 
 <div class="xt">
   <div class="stage">
-    <ExtractionMap x={place.x} y={place.y} zone={place.zone} label={`Your cup sits in the ${zone.label.toLowerCase()} zone.`} />
+    {#if mode === 'measured' && mv}
+      <ExtractionMap x={mv.x} y={mv.y} zone={mv.zone} axes={mv.chart} label={`Measured: ${mv.eyPct.toFixed(1)}% extraction at ${tdsPct}% TDS, in the ${ZONES[mv.zone].label.toLowerCase()} zone.`} />
+    {:else}
+      <ExtractionMap x={place.x} y={place.y} zone={place.zone} label={`By taste, your cup probably sits in the ${zone.label.toLowerCase()} zone.`} />
+    {/if}
   </div>
   <div class="panel">
+    <div class="tabs" role="group" aria-label="How to place your cup">
+      <button type="button" aria-pressed={mode === 'taste'} onclick={() => (mode = 'taste')}>By taste <small>a hypothesis</small></button>
+      <button type="button" aria-pressed={mode === 'measured'} onclick={() => (mode = 'measured')}>Measured <small>refractometer</small></button>
+    </div>
+    {#if mode === 'measured'}
+      <div class="seg" role="group" aria-label="How it was brewed">
+        <button type="button" aria-pressed={kind === 'percolation'} onclick={() => setKind('percolation')}>Pour-over or drip</button>
+        <button type="button" aria-pressed={kind === 'immersion'} onclick={() => setKind('immersion')}>Immersion</button>
+        <button type="button" aria-pressed={kind === 'espresso'} onclick={() => setKind('espresso')}>Espresso</button>
+      </div>
+      <div class="inputs">
+        <label class="fld"><span class="lbl">Coffee, g</span><input type="number" inputmode="decimal" step="0.1" min="1" bind:value={doseG} /></label>
+        <label class="fld"><span class="lbl">{kind === 'immersion' ? 'Water added, g' : kind === 'espresso' ? 'Shot weight, g' : 'Drink weight, g'}</span><input type="number" inputmode="decimal" step="0.1" min="1" bind:value={liquidG} /></label>
+        <label class="fld"><span class="lbl">TDS, %</span><input type="number" inputmode="decimal" step="0.01" min="0" bind:value={tdsPct} /></label>
+      </div>
+      {#if mv}
+        <div class="zonecard" aria-live="polite">
+          <span class="lbl">Extraction yield</span>
+          <p class="ey">{mv.eyPct.toFixed(1)}<small>%</small></p>
+          <p class="zt">{mv.dissolvedG.toFixed(2)} g of coffee dissolved from {doseG} g · {ZONES[mv.zone].label}</p>
+          <p class="calc">{kind === 'immersion' ? 'water added' : kind === 'espresso' ? 'shot weight' : 'drink weight'} {liquidG} g × {tdsPct}% ÷ {doseG} g coffee</p>
+        </div>
+        {#each mv.notes as nt (nt)}<p class="note">{nt}</p>{/each}
+        {#if mv.zone !== 'ideal-ideal'}<p class="note">Possible next moves: {ZONES[mv.zone].moves.join('; ').toLowerCase()}. Change one at a time and measure again.</p>{/if}
+        <p class="note">Diluted it (an americano, cold brew, bypass water)? Take the weight and the reading at the same point: the concentrate with its own reading, or the whole diluted drink with its reading. The dissolved coffee is the same either way.</p>
+      {:else if !measured.ok}
+        <p class="err" role="alert">{measured.errors[0].message}</p>
+      {/if}
+    {:else}
     <div class="seg" role="group" aria-label="Brew type">
       <button type="button" aria-pressed={!espresso} onclick={() => (espresso = false)}>Filter, press or pour-over</button>
       <button type="button" aria-pressed={espresso} onclick={() => (espresso = true)}>Espresso</button>
@@ -59,7 +113,7 @@
     </label>
 
     <div class="zonecard" aria-live="polite">
-      <span class="lbl">Your cup</span>
+      <span class="lbl">By taste, your cup is probably</span>
       <p class="zl">{zone.label}</p>
       <p class="zt">{zone.tastes}{moved ? ` · after “${moved.toLowerCase()}”` : ''}</p>
     </div>
@@ -74,8 +128,9 @@
           </button>
         {/each}
       </div>
-      <p class="note">Highlighted levers point toward the sweet spot. Grind, water temperature and contact time mostly move extraction; the coffee-to-water ratio mostly moves strength. Illustrative: taste places the cup on this map, it doesn't measure it.</p>
+      <p class="note">Highlighted levers are possible directions toward the sweet spot, not measured results. Grind, water temperature and contact time mostly move extraction; the coffee-to-water ratio mostly moves strength. Taste places the cup here as a hypothesis; a refractometer reading (Measured) gives the number.</p>
     </div>
+    {/if}
     <div class="actions">
       <a class="go" href="/tools/fix-my-coffee/">Get a diagnosis</a>
       <a class="ghost" href="/tools/brew-ratio/">Open the Brew Guide</a>
@@ -110,4 +165,17 @@
   .ghost { border: 1px solid var(--rule); background: #fff; color: var(--ink-2); border-radius: 999px; padding: 11px 15px; font: 500 14px/1 'IBM Plex Sans', sans-serif; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
   button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--crema-deep); outline-offset: 2px; }
   @media (max-width: 860px) { .xt { grid-template-columns: 1fr; } .stage { border-right: 0; border-bottom: 1px solid var(--rule); padding: 10px 24px; } .panel { padding: 18px 16px 20px; } }
+  .tabs { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; }
+  .tabs button { appearance: none; border: 0; background: #fff; padding: 10px 12px; font: 600 14.5px/1.2 'IBM Plex Sans', sans-serif; color: var(--ink-2); cursor: pointer; text-align: left; min-height: 48px; }
+  .tabs button + button { border-left: 1px solid var(--rule); }
+  .tabs button small { display: block; font: 400 12px 'IBM Plex Mono', monospace; color: var(--ink-3); }
+  .tabs button[aria-pressed='true'] { background: var(--ink); color: #f3ede3; }
+  .tabs button[aria-pressed='true'] small { color: #d9cdbd; }
+  .inputs { display: flex; gap: 10px; flex-wrap: wrap; }
+  .fld { display: flex; flex-direction: column; gap: 0; }
+  .fld input { font: 400 17px 'IBM Plex Mono', monospace; width: 112px; padding: 8px 10px; border: 1px solid var(--rule); border-radius: 8px; background: #fff; min-height: 44px; color: var(--ink); }
+  .ey { font: 400 52px/1 'Instrument Serif', Georgia, serif; margin: 0; }
+  .ey small { font-size: 26px; margin-left: 2px; }
+  .calc { font: 400 12.5px 'IBM Plex Mono', monospace; color: var(--ink-3); margin: 6px 0 0; }
+  .err { color: #9a3b1c; margin: 0; }
 </style>

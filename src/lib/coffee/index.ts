@@ -17,3 +17,5 @@ export { WATER_RECIPES, planWater, nearestRecipe, MG_EPSOM_PER_PPM_GH, MG_BICARB
 export type { WaterRecipe, WaterPlan } from './water.ts';
 export { DRINKS, drinkById, refById, knownVolume, compareRefs } from './drinks.ts';
 export type { Drink, DrinkRef, Layer, LayerKind } from './drinks.ts';
+export { measuredExtraction, CHARTS } from './extraction.ts';
+export type { MeasuredKind, MeasuredInput, MeasuredResult, Chart } from './extraction.ts';

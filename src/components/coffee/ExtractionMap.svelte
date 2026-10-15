@@ -11,8 +11,11 @@
     showArrow?: boolean;
     label?: string;
     compact?: boolean;
+    /** Measured mode: numeric axes. Each ideal band is the middle third of its axis. */
+    axes?: { ey: [number, number]; tds: [number, number]; eyIdeal: [number, number]; tdsIdeal: [number, number] };
   }
-  let { x, y, zone, showArrow = true, label = '', compact = false }: Props = $props();
+  let { x, y, zone, showArrow = true, label = '', compact = false, axes }: Props = $props();
+  const n = (v: number) => (Number.isInteger(v) ? String(v) : v.toFixed(2).replace(/0$/, ''));
 
   const L = 64, R = 384, T = 18, B = 338;
   const W = R - L, H = B - T;
@@ -53,13 +56,24 @@
   {/each}
 
   <!-- axes -->
-  <text x={L} y={B + 22} class="ax">sour</text>
-  <text x={cx} y={B + 22} text-anchor="middle" class="ax">extraction</text>
-  <text x={R} y={B + 22} text-anchor="end" class="ax">bitter</text>
-  {#if !compact}<text x={cx} y={B + 42} text-anchor="middle" class="ax2">under-extracted ← → over-extracted</text>{/if}
-  <text transform="translate({L - 16} {B}) rotate(-90)" class="ax">weak</text>
-  <text transform="translate({L - 16} {cy}) rotate(-90)" text-anchor="middle" class="ax">strength</text>
-  <text transform="translate({L - 16} {T}) rotate(-90)" text-anchor="end" class="ax">strong</text>
+  {#if axes}
+    {#each [axes.ey[0], axes.eyIdeal[0], axes.eyIdeal[1], axes.ey[1]] as v, i (i)}
+      <text x={L + (W / 3) * i} y={B + 20} text-anchor={i === 0 ? 'start' : i === 3 ? 'end' : 'middle'} class="num">{n(v)}%</text>
+    {/each}
+    <text x={cx} y={B + 40} text-anchor="middle" class="ax">extraction yield</text>
+    {#each [axes.tds[0], axes.tdsIdeal[0], axes.tdsIdeal[1], axes.tds[1]] as v, i (i)}
+      <text x={L - 8} y={B - (H / 3) * i + (i === 0 ? 0 : i === 3 ? 10 : 4)} text-anchor="end" class="num">{n(v)}</text>
+    {/each}
+    <text transform="translate({L - 48} {cy}) rotate(-90)" text-anchor="middle" class="ax">strength, % TDS</text>
+  {:else}
+    <text x={L} y={B + 22} class="ax">sour</text>
+    <text x={cx} y={B + 22} text-anchor="middle" class="ax">extraction</text>
+    <text x={R} y={B + 22} text-anchor="end" class="ax">bitter</text>
+    {#if !compact}<text x={cx} y={B + 42} text-anchor="middle" class="ax2">under-extracted ← → over-extracted</text>{/if}
+    <text transform="translate({L - 16} {B}) rotate(-90)" class="ax">weak</text>
+    <text transform="translate({L - 16} {cy}) rotate(-90)" text-anchor="middle" class="ax">strength</text>
+    <text transform="translate({L - 16} {T}) rotate(-90)" text-anchor="end" class="ax">strong</text>
+  {/if}
 
   {#if showArrow && arrow && !inSweet}
     <line x1={px} y1={py} x2={arrow.x2} y2={arrow.y2} stroke="#8f5d22" stroke-width="2.2" marker-end="url(#em-head)" class="arrow" />
@@ -76,6 +90,7 @@
   .sweet { font: 400 15px 'Instrument Serif', Georgia, serif; fill: #8f5d22; letter-spacing: .02em; }
   .ax { font: 500 11px 'IBM Plex Mono', monospace; letter-spacing: .1em; text-transform: uppercase; fill: #5b4a3d; }
   .ax2 { font: 400 11px 'IBM Plex Mono', monospace; fill: #75655a; }
+  .num { font: 500 12px 'IBM Plex Mono', monospace; fill: #2a1d15; }
   .dot { transition: transform .6s cubic-bezier(.2, .7, .2, 1); }
   .arrow { stroke-dasharray: 6 4; }
   @media (prefers-reduced-motion: reduce) { .dot { transition: none; } }
