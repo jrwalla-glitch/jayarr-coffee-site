@@ -47,4 +47,7 @@ test('espresso: the scale is the yield, reached at the end of the pull', () => {
 test('cold brew ends with the concentrate in the jar, ready to dilute', () => {
   const r = ok(buildRecipe({ method: 'cold-brew', target: { cupMl: 1000 } })), sim = simulate(r);
   within(sim.at(sim.durationS).cupG, r.dilution.waterG, 0.5, 'concentrate');
+  // The timer stops at the press the steps describe (12 h), not at the 18 h upper bound.
+  const press = r.steps.find((s) => s.kind === 'press');
+  assert.ok(sim.durationS <= press.atS + 60, String(sim.durationS));
 });

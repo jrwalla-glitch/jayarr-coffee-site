@@ -98,7 +98,8 @@ export function simulate(recipe: Recipe): Simulation {
   const bypassG = bypass && bypass.toG !== undefined ? bypass.toG - cp : 0;
   const clamp = (x: number) => Math.max(0, Math.min(1, x));
   return {
-    durationS: Math.max(durationS, re, bypass ? bypass.atS + 10 : 0),
+    // Ends when the recipe's own steps end (cold brew: the 12-hour press), not at the longest steep the method allows.
+    durationS: Math.max(last.untilS ?? last.atS, re, bypass ? bypass.atS + 10 : 0),
     at: (tS) => {
       const { g, pouring } = pouredAt(chamberSteps, tS);
       const f = clamp((tS - rs) / Math.max(1, re - rs));

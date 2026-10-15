@@ -80,6 +80,8 @@
 
   // ── formatting ──
   const r0 = (n: number) => Math.round(n);
+  // Coffee to a tenth of a gram (what a brewing scale reads), without a trailing .0.
+  const fmtG = (g: number) => { const v = Math.round(g * 10) / 10; return g >= 100 ? String(Math.round(g)) : Number.isInteger(v) ? String(v) : v.toFixed(1); };
   function clock(s: number) {
     if (s >= 3600) return `${Math.floor(s / 3600)} h ${String(Math.floor((s % 3600) / 60)).padStart(2, '0')}`;
     return `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
@@ -92,7 +94,11 @@
   let activeIndex = $derived(mode === 'brew' ? frame.stepIndex : -1);
   let nowStep = $derived(recipe && mode === 'brew' ? recipe.steps[activeIndex] : null);
   let nextStep = $derived(recipe && mode === 'brew' ? recipe.steps.slice(activeIndex + 1).find((s) => s.kind !== 'prep') : null);
-  let cueNow = $derived(!recipe ? '' : done ? 'Done. Enjoy it.' : nowStep ? (nowStep.toG !== undefined && nowStep.kind !== 'prep' ? `${nowStep.text} Pour to ${r0(nowStep.toG)} g.` : nowStep.text) : '');
+  // Cold brew finishes as concentrate: the served drink is made later, so the cue says so instead of "Done".
+  let doneText = $derived(!recipe ? '' : method === 'cold-brew' && recipe.dilution
+    ? `Concentrate ready: about ${r0(frame.cupG)} g. It isn't the drink yet: to serve, mix it one to one with about ${r0(recipe.dilution.waterG)} g of cold water or milk, over ice.`
+    : method === 'espresso' ? `Done: ${r0(frame.cupG)} g of espresso in the cup.` : 'Done. Enjoy it.');
+  let cueNow = $derived(!recipe ? '' : done ? doneText : nowStep ? (nowStep.toG !== undefined && nowStep.kind !== 'prep' ? `${nowStep.text} Pour to ${r0(nowStep.toG)} g.` : nowStep.text) : '');
   let cueNext = $derived(!recipe || done ? '' : nextStep ? `Next at ${clock(nextStep.atS)}: ${nextStep.text.split('.')[0].toLowerCase()}.` : '');
 
   // ── target choices ──
@@ -102,7 +108,7 @@
     return (units === 'us' ? CUPS_US : CUPS_METRIC).map((v) => ({ label: units === 'us' ? `${v} oz` : `${v} ml`, t: { cupMl: units === 'us' ? flOzToMl(v) : v } as Target }));
   });
   const same = (a: Target, b: Target) => JSON.stringify(a) === JSON.stringify(b);
-  function pickMethod(id: MethodId) { method = id; target = DEFAULTS[id]; ratioOverride = undefined; }
+  function pickMethod(id: MethodId) { method = id; target = DEFAULTS[id]; ratioOverride = undefined; customOpen = false; }
   function nudgeRatio(d: number) {
     const base = ratioOverride ?? m.ratio[strength];
     const step = method === 'espresso' ? 0.25 : 0.5;
@@ -115,10 +121,16 @@
 
   // ── URL state ──
   onMount(() => {
+    let store: { saved?: { name: string; q: string }[]; last?: string } = {};
+    try { store = JSON.parse(localStorage.getItem(SAVE_KEY) ?? '{}') ?? {}; } catch { /* storage unavailable */ }
+    if (Array.isArray(store.saved)) saved = store.saved.filter((x) => typeof x?.q === 'string' && decodeBrew(x.q).ok).slice(0, 8);
     const d = decodeBrew(location.search);
     if (d.ok) {
       method = d.value.method; target = d.value.target; strength = d.value.strength ?? 'classic';
       roast = d.value.roast ?? 'medium'; units = d.value.units; ratioOverride = d.value.ratio; adjust = d.value.adjust;
+    } else if (!location.search && store.last && decodeBrew(store.last).ok) {
+      // No link: pick up where you left off on this device.
+      loadSaved(store.last);
     } else if (navigator.language && !/^en-US/i.test(navigator.language) && !location.search) {
       units = 'metric'; if ('cupMl' in target) target = { cupMl: 350 };
     }
@@ -129,7 +141,52 @@
     if (!mounted) return;
     const q = encodeBrew({ ...input, units, ...(adjust ? { adjust } : {}) });
     history.replaceState(history.state, '', `${location.pathname}?${q}`);
+    untrack(persist);
   });
+
+  // ── custom amounts, including the reverse (start from the coffee or water you have) ──
+  type CustomKind = 'cup' | 'dose' | 'water';
+  let customOpen = $state(false);
+  let customKinds = $derived<{ id: CustomKind; label: string }[]>(
+    method === 'espresso' ? [{ id: 'dose', label: 'g coffee in the basket' }, { id: 'cup', label: 'g espresso out' }]
+    : method === 'moka' ? [{ id: 'dose', label: 'g coffee, basket level' }]
+    : [{ id: 'cup', label: units === 'us' ? (method === 'cold-brew' ? 'fl oz to serve' : 'fl oz in the cup') : (method === 'cold-brew' ? 'ml to serve' : 'ml in the cup') }, { id: 'dose', label: 'g of coffee I have' }, { id: 'water', label: units === 'us' ? 'fl oz of water' : 'ml of water' }]);
+  let customKind = $derived<CustomKind>('doseG' in target ? 'dose' : 'waterG' in target ? 'water' : 'cup');
+  let customVal = $derived.by(() => {
+    const t = target as Record<string, number>;
+    const v = 'doseG' in t ? t.doseG : 'waterG' in t ? (units === 'us' ? mlToFlOz(t.waterG) : t.waterG) : method === 'espresso' ? t.cupMl : units === 'us' ? mlToFlOz(t.cupMl) : t.cupMl;
+    return Math.round(v * 10) / 10;
+  });
+  function openCustom() { customOpen = !customOpen; }
+  // Switching what the number means keeps the same brew: start from the current recipe's own amount.
+  function changeKind(kind: CustomKind) {
+    if (!recipe) return;
+    target = kind === 'dose' ? { doseG: Math.round(recipe.doseG * 10) / 10 } : kind === 'water' ? { waterG: Math.round(recipe.waterG ?? 0) } : { cupMl: method === 'espresso' ? Math.round(recipe.yieldG ?? 0) : Math.round(recipe.cupMl) };
+  }
+  function setCustom(v: number, kind: CustomKind) {
+    if (!Number.isFinite(v) || v <= 0) return;
+    const ml = (x: number) => (units === 'us' && method !== 'espresso' ? flOzToMl(x) : x);
+    target = kind === 'dose' ? { doseG: v } : kind === 'water' ? { waterG: ml(v) } : { cupMl: ml(v) };
+  }
+
+  // ── saved recipes, on this device only ──
+  const SAVE_KEY = 'jayarr-brew-guide-v1';
+  let saved = $state<{ name: string; q: string }[]>([]);
+  let savedNow = $derived(saved.some((x) => x.q === encodeBrew({ ...input, units })));
+  function persist() { try { localStorage.setItem(SAVE_KEY, JSON.stringify({ saved, last: encodeBrew({ ...input, units }) })); } catch { /* storage unavailable */ } }
+  function saveRecipe() {
+    if (!recipe) return;
+    const amount = method === 'espresso' ? `${fmtG(recipe.doseG)} g in, ${r0(recipe.yieldG ?? 0)} g out` : byDose || 'doseG' in target ? `${fmtG(recipe.doseG)} g coffee` : cupText;
+    saved = [{ name: `${m.label} · ${amount} · 1:${recipe.ratio}`, q: encodeBrew({ ...input, units }) }, ...saved].slice(0, 8);
+    persist();
+  }
+  function removeSaved(k: number) { saved = saved.filter((_, i) => i !== k); persist(); }
+  function loadSaved(q: string) {
+    const d = decodeBrew(q);
+    if (!d.ok) return;
+    method = d.value.method; target = d.value.target; strength = d.value.strength ?? 'classic';
+    roast = d.value.roast ?? 'medium'; units = d.value.units; ratioOverride = d.value.ratio; customOpen = false;
+  }
 
   let copied = $state(false);
   async function share() {
@@ -158,7 +215,7 @@
     </div>
     {#if recipe}
       <p class="quick" aria-hidden="true">
-        <span class="qc">{recipe.doseG < 20 ? recipe.doseG.toFixed(1) : r0(recipe.doseG)} g coffee</span>
+        <span class="qc">{fmtG(recipe.doseG)} g coffee</span>
         {#if method === 'espresso'}<span class="qw">{r0(recipe.yieldG ?? 0)} g out</span>{:else}<span class="qw">{r0(recipe.waterG ?? 0)} g water</span>{/if}
         <span>{method === 'cold-brew' ? 'cold water' : tempMain}</span>
       </p>
@@ -190,12 +247,22 @@
 
     <div class="row">
       <fieldset class="field grow">
-        <legend class="lbl">{byDose ? 'Coffee in the basket' : isBatch ? 'How much to make' : 'Your cup'}</legend>
+        <legend class="lbl">{method === 'moka' ? 'What your basket holds, level' : byDose ? 'Coffee in the basket' : isBatch ? 'How much to make' : 'Your cup'}</legend>
         <div class="chips">
           {#each choices as c (c.label)}
-            <button type="button" aria-pressed={same(c.t, target)} onclick={() => (target = c.t)}>{c.label}</button>
+            <button type="button" aria-pressed={!customOpen && same(c.t, target)} onclick={() => { customOpen = false; target = c.t; }}>{c.label}</button>
           {/each}
+          <button type="button" aria-pressed={customOpen || !choices.some((c) => same(c.t, target))} aria-expanded={customOpen} onclick={openCustom}>Custom</button>
         </div>
+        {#if customOpen}
+          <div class="custom">
+            <label class="cfld"><span class="sr">Amount</span><input type="number" inputmode="decimal" min="0" step="0.1" value={customVal} oninput={(e) => setCustom(Number((e.currentTarget as HTMLInputElement).value), customKind)} /></label>
+            <select aria-label="What the amount is" value={customKind} onchange={(e) => changeKind((e.currentTarget as HTMLSelectElement).value as CustomKind)}>
+              {#each customKinds as k (k.id)}<option value={k.id}>{k.label}</option>{/each}
+            </select>
+          </div>
+          {#if method === 'moka'}<p class="hint">A moka pot's basket and valve set the dose and the water. Fill the basket level once, weigh it, and enter that.</p>{/if}
+        {/if}
       </fieldset>
       <fieldset class="field">
         <legend class="lbl">Units</legend>
@@ -237,13 +304,17 @@
         <div class="adjust" role="status"><span class="chip">From the Coffee Doctor</span><span>{ADJUST_TEXT[adjust]}</span><button type="button" class="x" aria-label="Dismiss" onclick={() => (adjust = undefined)}>×</button></div>
       {/if}
       <div class="numbers">
-        <div class="coffee"><span class="k">Coffee</span><span class="v">{recipe.doseG < 20 ? recipe.doseG.toFixed(1) : r0(recipe.doseG)}<small>g</small></span><span class="sub">about {r0(approxTablespoons(recipe.doseG, 'whole'))} tbsp beans</span></div>
+        <div class="coffee"><span class="k">Coffee</span><span class="v">{fmtG(recipe.doseG)}<small>g</small></span><span class="sub">about {r0(approxTablespoons(recipe.doseG, 'whole'))} tbsp beans</span></div>
         {#if method === 'espresso'}
           <div class="water"><span class="k">Yield</span><span class="v">{r0(recipe.yieldG ?? 0)}<small>g</small></span><span class="sub">liquid in the cup</span></div>
         {:else}
-          <div class="water"><span class="k">Water</span><span class="v">{r0(recipe.waterG ?? 0)}<small>g</small></span><span class="sub">{units === 'us' ? `${mlToFlOz(recipe.waterG ?? 0).toFixed(1)} fl oz` : `${r0(recipe.waterG ?? 0)} ml`}</span></div>
+          <div class="water"><span class="k">Water</span><span class="v">{r0(recipe.waterG ?? 0)}<small>g</small></span><span class="sub">{method === 'moka' ? 'or fill the base to just below the valve' : units === 'us' ? `${mlToFlOz(recipe.waterG ?? 0).toFixed(1)} fl oz` : `${r0(recipe.waterG ?? 0)} ml`}</span></div>
         {/if}
-        <div><span class="k">{method === 'cold-brew' ? 'Serves' : 'In the cup'}</span><span class="v">{units === 'us' ? r0(mlToFlOz(recipe.cupMl)) : r0(recipe.cupMl)}<small>{units === 'us' ? 'fl oz' : 'ml'}</small></span><span class="sub">{method === 'cold-brew' ? 'after diluting 1:1' : method === 'espresso' ? 'about one gram per ml' : 'grounds keep ~2 g per g'}</span></div>
+        {#if method === 'espresso'}
+          <div><span class="k">Shot time</span><span class="v">25–30<small>s</small></span><span class="sub">stop at {r0(recipe.yieldG ?? 0)} g by weight; crema makes the volume vary</span></div>
+        {:else}
+          <div><span class="k">{method === 'cold-brew' ? 'Serves' : 'In the cup'}</span><span class="v">{units === 'us' ? r0(mlToFlOz(recipe.cupMl)) : r0(recipe.cupMl)}<small>{units === 'us' ? 'fl oz' : 'ml'}</small></span><span class="sub">{method === 'cold-brew' ? `${r0(recipe.cupMl / 2)} g concentrate + the same of water or milk` : 'grounds keep ~2 g per g'}</span></div>
+        {/if}
         <div><span class="k">Water temp</span><span class="v">{method === 'cold-brew' ? 'Cold' : tempMain}</span><span class="sub">{method === 'cold-brew' || method === 'drip-machine' ? tempNote : `${tempSub} · ${tempNote}`}</span></div>
       </div>
 
@@ -280,8 +351,17 @@
         <button type="button" class="ghost" onclick={() => play(method === 'cold-brew' ? 3600 : 8)}>{method === 'cold-brew' ? 'Watch the steep' : 'Watch it fast'}</button>
         {#if mode === 'brew'}<button type="button" class="ghost" onclick={reset}>Reset</button>{/if}
         <button type="button" class="ghost" onclick={share}>{copied ? 'Link copied' : 'Share'}</button>
+        <button type="button" class="ghost" onclick={saveRecipe} disabled={savedNow}>{savedNow ? 'Saved' : 'Save'}</button>
         <button type="button" class="ghost" onclick={() => window.print()}>Print</button>
       </div>
+      {#if saved.length}
+        <div class="saved" role="group" aria-label="Your saved recipes, on this device">
+          <span class="lbl">Saved on this device</span>
+          {#each saved as sv, k (sv.q)}
+            <span class="sv"><button type="button" class="load" onclick={() => loadSaved(sv.q)}>{sv.name}</button><button type="button" class="x" aria-label={`Delete ${sv.name}`} onclick={() => removeSaved(k)}>×</button></span>
+          {/each}
+        </div>
+      {/if}
       <p class="source">Steps from {recipe.by}, scaled to your {byDose ? 'dose' : 'cup'}. The drawing shows the target pace; real drawdown depends on your grind and filter.</p>
     {/if}
   </div>
@@ -340,6 +420,16 @@
   .numbers .water .v { color: var(--water); }
   .numbers .sub { font-size: 12px; color: var(--ink-3); margin-top: 3px; line-height: 1.3; }
 
+  .custom { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+  .custom input { font: 400 16px 'IBM Plex Mono', monospace; width: 96px; padding: 8px 10px; border: 1px solid var(--rule, #d9cdbd); border-radius: 8px; background: #fff; min-height: 40px; }
+  .custom select { font: 400 15px 'IBM Plex Sans', sans-serif; padding: 8px 10px; border: 1px solid var(--rule, #d9cdbd); border-radius: 8px; background: #fff; min-height: 40px; color: inherit; }
+  .hint { font-size: 13.5px; color: #75655a; margin: 6px 0 0; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .saved { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 10px; }
+  .saved .lbl { width: 100%; }
+  .sv { display: inline-flex; align-items: center; border: 1px solid var(--rule, #d9cdbd); border-radius: 999px; background: #fff; }
+  .sv .load { appearance: none; border: 0; background: none; padding: 7px 4px 7px 12px; font: 500 13px 'IBM Plex Sans', sans-serif; color: #5b4a3d; cursor: pointer; }
+  .sv .x { appearance: none; border: 0; background: none; padding: 7px 10px 7px 4px; font-size: 16px; color: #75655a; cursor: pointer; min-width: 30px; }
   .ratio { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .rv { font: 400 22px/1 var(--cf-mono); min-width: 5.5ch; text-align: center; }
   .nudge { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--rule); background: #fff; font: 500 18px/1 var(--cf-mono); cursor: pointer; color: var(--ink); }
