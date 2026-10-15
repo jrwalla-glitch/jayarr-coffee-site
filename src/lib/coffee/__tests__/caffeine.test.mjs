@@ -130,8 +130,9 @@ test('day state round-trips through the link; junk fails', () => {
   // Everything but the half-life round-trips; links never carry it (it can hint at pregnancy).
   assert.deepEqual(d.value, { ...s, halfLifeH: 5 });
   assert.doesNotMatch(encodeDay(s), /hl=/);
-  assert.equal(decodeDay('d=esp.1@600&hl=8').value.halfLifeH, 8, 'older links with hl still open');
-  for (const q of ['', 'd=', 'd=v60.355', 'd=esp.9@600', 'd=v60.355@600&hl=99', 'd=nope.355@600']) assert.equal(decodeDay(q).ok, false, q);
+  // Older links with hl still open, at the typical half-life: a link never carries a health detail (Muse r4).
+  assert.equal(decodeDay('d=esp.1@600&hl=8').value.halfLifeH, 5, 'older links with hl open at the typical half-life');
+  for (const q of ['', 'd=', 'd=v60.355', 'd=esp.9@600', 'd=nope.355@600']) assert.equal(decodeDay(q).ok, false, q);
 });
 
 test('a known label amount counts exactly, not as a range', () => {

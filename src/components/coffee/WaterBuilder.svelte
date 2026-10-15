@@ -18,7 +18,8 @@
   let p = $derived(plan.ok ? plan.value : null);
   let share = $derived(p ? p.baseL / p.finalL : 0);
   const unitName = (v: number) => (gallons ? (v === 1 ? 'gallon' : 'gallons') : 'L');
-  const vol = (litres: number) => (gallons ? (litres < 3.785 ? `${Math.round(litres * 33.814)} fl oz` : `${fmt1(litres / 3.785)} gal`) : litres < 1 ? `${Math.round(litres * 1000)} mL` : `${fmt1(litres)} L`);
+  const fmt2 = (n: number) => (n < 10 ? String(Math.round(n * 100) / 100) : fmt1(n));
+  const vol = (litres: number) => (gallons ? (litres < 3.785 ? `${Math.round(litres * 33.814)} fl oz` : `${fmt2(litres / 3.785)} gal`) : litres < 1 ? `${Math.round(litres * 1000)} mL` : `${fmt2(litres)} L`);
   // Under a gallon, US jugs are marked in ounces.
   const line = $derived(gallons && volume < 1 ? `${Math.round(volume * 128)} fl oz line` : `${volume} ${unitName(volume)} line`);
   // Stocks first, then your water, then distilled to the line; when no distilled is needed, fill with your own water instead.
@@ -38,6 +39,8 @@
   const shortName = (n: string) => n.replace(' (GH/KH only)', '').replace('Third Wave Water', 'Third Wave');
   // Hand-placed labels where recipes crowd together on the KH 40 row.
   const LBL: Record<string, { dx: number; dy: number; a: string }> = { sca: { dx: -11, dy: 4, a: 'end' }, bh4: { dx: 8, dy: -8, a: 'start' }, 'tww-classic': { dx: 0, dy: 20, a: 'middle' } };
+  /** The marked jug size closest to an amount (by ratio), or the amount itself when it's not a number. */
+  const nearest = (v: number, sizes: number[]) => (Number.isFinite(v) && v > 0 ? sizes.reduce((a, b) => (Math.abs(Math.log(b / v)) < Math.abs(Math.log(a / v)) ? b : a)) : v);
   const fmt1 = (n: number) => (n < 10 ? n.toFixed(1) : Math.round(n).toString());
 
   // ── map: GH across, KH up ──
@@ -56,14 +59,18 @@
     else if (q.has('gh') || q.has('kh')) linkProblem = true;
     espresso = q.get('espresso') === '1';
     if (q.get('units') === 'metric') { gallons = false; volume = 4; }
+    // The batch travels with the link, so the recipient sees the amounts the sender built (Muse r4).
+    const v = Number(q.get('vol')); if (q.has('vol') && Number.isFinite(v) && v > 0) volume = v;
     mounted = true;
   });
   $effect(() => {
     if (!mounted) return;
     const q = new URLSearchParams({ target: targetId });
-    if (base === 'tested') { q.set('gh', String(gh)); q.set('kh', String(kh)); }
+    // Only numbers go into the link: a cleared box wrote gh=null (Opus r4).
+    if (base === 'tested' && Number.isFinite(gh) && Number.isFinite(kh)) { q.set('gh', String(gh)); q.set('kh', String(kh)); }
     if (espresso) q.set('espresso', '1');
     if (!gallons) q.set('units', 'metric');
+    if (Number.isFinite(volume) && volume > 0) q.set('vol', String(volume));
     history.replaceState(history.state, '', `${location.pathname}?${q}`);
   });
 </script>
@@ -111,7 +118,7 @@
           <label class="fld"><span>GH (ppm)</span><input type="number" min="0" max="1000" bind:value={gh} /></label>
           <label class="fld"><span>KH (ppm)</span><input type="number" min="0" max="1000" bind:value={kh} /></label>
         </div>
-        <p class="note">{#if Number.isFinite(gh) && Number.isFinite(kh) && gh >= 0 && kh >= 0}Closest named water: {nearestRecipe(gh, kh).name}. {/if}Aquarium test kits read GH and KH in degrees (dGH, dKH); multiply by 17.9 for ppm.</p>
+        <p class="note">{#if Number.isFinite(gh) && Number.isFinite(kh) && gh >= 0 && kh >= 0}Closest named water: {nearestRecipe(gh, kh).name}.{' '}{/if}Aquarium test kits read GH and KH in degrees (dGH, dKH); multiply by 17.9 for ppm.</p>
       {:else if base === 'unknown'}
         <p class="note">Your water utility publishes an annual water quality report with hardness and alkalinity; an aquarium GH/KH test kit costs a few dollars. Until then, start from distilled water: the recipe below works anywhere.</p>
       {/if}
@@ -138,8 +145,8 @@
         </div>
         <div class="seg">
           <!-- Switching units converts the batch you were building rather than resetting it. -->
-          <button type="button" aria-pressed={gallons} onclick={() => { if (!gallons) { volume = Math.round((volume / 3.785) * 100) / 100; gallons = true; } }}>US</button>
-          <button type="button" aria-pressed={!gallons} onclick={() => { if (gallons) { volume = Math.round(volume * 3.785 * 10) / 10; gallons = false; } }}>Metric</button>
+          <button type="button" aria-pressed={gallons} onclick={() => { if (!gallons) { volume = nearest(volume / 3.785, [0.25, 0.5, 1, 2, 3, 5, 10]); gallons = true; } }}>US</button>
+          <button type="button" aria-pressed={!gallons} onclick={() => { if (gallons) { volume = nearest(volume * 3.785, [0.5, 1, 2, 4, 5, 10, 20, 40]); gallons = false; } }}>Metric</button>
         </div>
       </div>
     </fieldset>
@@ -147,13 +154,14 @@
     {#if p}
       <div class="result" aria-live="polite">
         <p class="kick">Your recipe: {p.target.name}</p>
-        <p class="once"><b>Once:</b> make two stock bottles (they keep for months, capped, out of the sun). Bottle A: <span class="mono a">{CONCENTRATE_G_PER_L.gh} g</span> Epsom salt in distilled water, made up to 1 L. Bottle B: <span class="mono b">{CONCENTRATE_G_PER_L.kh} g</span> baking soda, made up to 1 L.</p>
+        {#if p.ghStockMl > 0 || p.khStockMl > 0}<p class="once"><b>Once:</b> make {p.ghStockMl > 0 && p.khStockMl > 0 ? 'two stock bottles' : 'a stock bottle'} (they keep for months, capped, out of the sun). {#if p.ghStockMl > 0} Bottle A: <span class="mono a">{CONCENTRATE_G_PER_L.gh} g</span> Epsom salt in distilled water, made up to 1 L.{/if}{#if p.khStockMl > 0} Bottle B: <span class="mono b">{CONCENTRATE_G_PER_L.kh} g</span> baking soda, made up to 1 L.{/if}</p>{/if}
         <ol class="steps">
           {#each steps as st, k (st.key)}<li class:fill={st.fill}><span class="n">{st.fill ? '✓' : k + 1}</span><span>{@html st.html}</span></li>{/each}
         </ol>
         {#if base === 'tested' && p.khStockMl === 0 && p.ghStockMl > 0}<p class="note">No bottle B needed: your water already brings enough alkalinity.</p>{/if}
+        {#if base === 'tested' && p.ghStockMl === 0 && p.khStockMl > 0}<p class="note">No bottle A needed: your water already brings enough hardness.</p>{/if}
         {#if p.dry.epsomG === 0 && p.dry.bicarbG === 0}
-          <p class="direct">Your water already matches this recipe, so no salts are needed.</p>
+          <p class="direct">{p.baseL < p.finalL * 0.995 ? 'No salts needed: your own water, diluted as above, matches this recipe.' : 'Your water already matches this recipe, so no salts are needed.'}</p>
         {:else if p.dry.weighable}
           <p class="direct"><b>Or skip the bottles:</b> weigh {#if p.dry.epsomG > 0}<span class="mono">{p.dry.epsomG.toFixed(2)} g</span> Epsom salt{/if}{#if p.dry.epsomG > 0 && p.dry.bicarbG > 0}{' '}and{' '}{/if}{#if p.dry.bicarbG > 0}<span class="mono">{p.dry.bicarbG.toFixed(2)} g</span> baking soda{/if} into the empty jug, then {#if p.dry.baseL > 0 && p.dry.distilledL < p.finalL * 0.005}fill with your own water to the {line}{:else if p.dry.baseL > 0}add <span class="mono">{vol(p.dry.baseL)}</span> of your own water and fill with distilled water to the {line}{:else}fill with distilled water to the {line}{/if} (needs a 0.01 g scale).</p>
         {:else}
@@ -161,7 +169,7 @@
         {/if}
         <p class="out">Result: GH {Math.round(p.gh)} · KH {Math.round(p.kh)} ppm as CaCO₃. {p.target.bestFor}.</p>
         {#each p.notes as n (n)}<p class="note">{n}</p>{/each}
-        <p class="note">Use plain Epsom salt (magnesium sulfate heptahydrate, unscented, food or USP grade) and ordinary baking soda (sodium bicarbonate). Two salts match a recipe's hardness and alkalinity, not every mineral in a branded product.</p>
+        <p class="note">Use plain Epsom salt (magnesium sulfate heptahydrate, unscented, food or USP grade) and ordinary baking soda (sodium bicarbonate). Two salts match a recipe's hardness and alkalinity, not every mineral in a branded product. All the hardness they add is magnesium, from the Epsom salt, so the numbers match a recipe's GH, not its calcium{targetId === 'sca' ? ': the SCA\'s 68 is a calcium-hardness figure' : ''}.</p>
       </div>
     {:else if !plan.ok}
       <p class="err">{plan.errors[0].code === 'bad-volume' && gallons ? 'Choose a batch between about 0.03 and 10.5 gallons.' : plan.errors[0].message}</p>

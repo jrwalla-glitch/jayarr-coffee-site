@@ -48,6 +48,8 @@
   let addEsp = $state('Double espresso');
   let addTime = $state('09:00');
   let addError = $state('');
+  // Says where a drink went when it isn't simply "today, so far" (Muse r4: a 2:30 am drink vanished into Earlier).
+  let addNote = $state('');
 
   const toClock = (hhmm: string) => { const [h, m] = hhmm.split(':').map(Number); return h * 60 + m; };
   const hhmm = (min: number) => { const m = ((Math.round(min) % 1440) + 1440) % 1440; return `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`; };
@@ -126,14 +128,20 @@
     if (!Number.isFinite(clock)) { addError = 'Pick a time.'; return; }
     const check = intakeMg({ ...base, atMin: 0 } as Intake);
     if (!check.ok) { addError = check.errors[0].message; return; }
-    addError = '';
+    addError = ''; addNote = '';
     if (mode === 'shared' && shared) shared.intakes = [...shared.intakes, { ...base, atMin: dayMinute(clock, shared.bedMin) } as Intake];
     else {
       const at = placeTypedTime(clock, nowMs, win);
       if (at === null) { addError = 'That time doesn\'t exist today (the clocks changed); pick another.'; return; }
       mode = 'own'; commit({ type: 'add', drink: { ...base, id: newId(), at } as LoggedDrink });
+      addNote = placedNote(at, clock);
     }
     addTime = hhmm(Math.min(22 * 60, clock + 180));
+  }
+  function placedNote(at: number, clock: number): string {
+    if (at < win.start) return `${clock12(clock)} is before your day started (${clock12(startClock)}), so it's logged as last night's: it's under "Earlier" and counts in the curve, not today's total.`;
+    if (at > nowMs + 60_000) return `${clock12(clock)} is later today: it counts in today's total now, and in the curve from then.`;
+    return '';
   }
   function remove(key: string) {
     if (mode === 'own') commit({ type: 'remove', id: key });
@@ -142,7 +150,7 @@
   function retime(key: string, v: string) {
     const clock = toClock(v);
     if (!Number.isFinite(clock)) return;
-    if (mode === 'own') { const at = placeTypedTime(clock, nowMs, win); if (at !== null) commit({ type: 'retime', id: key, at }); }
+    if (mode === 'own') { const at = placeTypedTime(clock, nowMs, win); if (at !== null) { commit({ type: 'retime', id: key, at }); addNote = placedNote(at, clock); } }
     else if (mode === 'shared' && shared) shared.intakes = shared.intakes.map((x, k) => (String(k) === key ? { ...x, atMin: dayMinute(clock, shared!.bedMin) } : x));
   }
   function clearDay() {
@@ -260,24 +268,24 @@
 <div class="cd">
   <div class="readouts">
     <div class="ro bed">
-      <span class="lbl">{mode === 'shared' ? 'Left at their bedtime' : 'Left at bedtime'} · {clock12(bedMin)}</span>
+      <span class="lbl">{mode === 'shared' ? 'Left at their bedtime' : mode === 'example' ? 'Example: left at bedtime' : 'Left at bedtime'} · {clock12(bedMin)}</span>
       <span class="val">{rangeText(atBed.min, atBed.max)}<small>mg</small></span>
       <span class="sub">{bedCompare}</span>
     </div>
     <div class="ro">
-      <span class="lbl">In you now</span>
+      <span class="lbl">{mode === 'example' ? 'Example: in you now' : 'In you now'}</span>
       <span class="val small">{atNow ? rangeText(atNow.min, atNow.max) : '—'}<small>mg</small></span>
       <span class="sub">{atNow ? `at ${clock12(clockOf(nowMs))}` : mode === 'shared' ? 'not shown for a shared day' : `outside ${labelAt(FROM)} – ${labelAt(TO)}`}</span>
     </div>
     <div class="ro total" class:over={overDaily} class:might={mightExceed}>
-      <span class="lbl">{mode === 'shared' ? 'Their total' : 'Today’s total'}</span>
+      <span class="lbl">{mode === 'shared' ? 'Their total' : mode === 'example' ? 'Example total' : 'Today’s total'}</span>
       <span class="val small">{rangeText(total.min, total.max)}<small>mg</small></span>
       <div class="meter" aria-hidden="true">
         <span class="fill lo" style:width="{Math.min(100, (total.min / (guidance.mg * 1.5)) * 100)}%"></span>
         <span class="fill hi" style:width="{Math.min(100, (total.max / (guidance.mg * 1.5)) * 100)}%"></span>
         <span class="mark" style:left="{(1 / 1.5) * 100}%"></span>
       </div>
-      <span class="sub">{guidance.who} reference: {guidance.mg} mg a day{settings.pregnant && mode !== 'shared' ? ' in pregnancy' : ' for healthy adults'}; a population guide, not a personal limit</span>
+      <span class="sub">{settings.pregnant && mode !== 'shared' ? `ACOG advises under ${guidance.mg} mg a day in pregnancy; talk to your clinician about your own case` : `${guidance.who} reference: ${guidance.mg} mg a day for healthy adults; a population guide, not a personal limit`}</span>
     </div>
   </div>
 
@@ -387,7 +395,7 @@
       <div class="row">
         <label class="fld"><span class="lbl">At</span><input type="time" bind:value={addTime} /></label>
         <button type="button" class="go" onclick={add}>Add</button>
-        {#if addError}<p class="adderr" role="alert">{addError}</p>{/if}
+        {#if addError}<p class="adderr" role="alert">{addError}</p>{:else if addNote}<p class="addnote" role="status">{addNote}</p>{/if}
       </div>
 
       <h3 class="settings">You</h3>
@@ -404,7 +412,7 @@
         {#if mode !== 'shared'}
           <label class="fld"><span class="lbl">My day starts</span>
             <select value={settings.dayStartMin === null ? 'auto' : String(settings.dayStartMin)} onchange={(e) => { const v = (e.currentTarget as HTMLSelectElement).value; commit({ type: 'settings', patch: { dayStartMin: v === 'auto' ? null : Number(v) } }); }}>
-              <option value="auto">{clock12(newDayAt(settings.bedMin))} (4 h after bedtime)</option>
+              <option value="auto">{clock12(newDayAt(settings.bedMin))} (4 h after going to bed)</option>
               {#each [3, 4, 5, 6, 7] as h (h)}<option value={String(h * 60)}>{clock12(h * 60)}</option>{/each}
             </select>
           </label>
@@ -441,6 +449,7 @@
   .total.over .val { color: #9a3b1c; }
   .total.might .val { color: #8f5d22; }
   .adderr { color: #9a3b1c; font-size: 14px; margin: 6px 0 0; width: 100%; }
+  .addnote { color: #5b4a3d; font-size: 14px; margin: 6px 0 0; width: 100%; }
 
   .chart { margin: 0; padding: 14px 16px 8px; }
   .chart svg { width: 100%; height: auto; display: block; }

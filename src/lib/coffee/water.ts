@@ -72,7 +72,10 @@ export function planWater(input: { targetId: string; volumeL: number; base?: { g
   // Share s of the final volume taken from your water: no overshoot, and room left for the stocks.
   // stock mL per final L: (T - s·b)/p ; volume constraint: s + Σ(T - s·b)/(1000 p) ≤ 1
   const noOvershoot = Math.min(base.gh > 0 ? Tg / base.gh : 1, base.kh > 0 ? Tk / base.kh : 1, 1);
-  const room = (1 - Tg / (1000 * pg) - Tk / (1000 * pk)) / (1 - base.gh / (1000 * pg) - base.kh / (1000 * pk));
+  // Water about as mineral-rich as the stocks takes no room from them, so the volume limit doesn't bind
+  // (a sign check: without it, GH+KH near 1000 ppm made the share negative and your water vanished; Muse r4).
+  const denom = 1 - base.gh / (1000 * pg) - base.kh / (1000 * pk);
+  const room = denom > 0 ? (1 - Tg / (1000 * pg) - Tk / (1000 * pk)) / denom : Number.POSITIVE_INFINITY;
   const s = input.base ? Math.max(0, Math.min(noOvershoot, room)) : 0;
   const ghStockMl = Math.max(0, (Tg - s * base.gh) / pg) * V;
   const khStockMl = Math.max(0, (Tk - s * base.kh) / pk) * V;

@@ -37,6 +37,9 @@ export type Bean = 'arabica' | 'robusta' | 'blend';
 export function estimateBrewedMg(doseG: number, method: MethodId, bean: Bean = 'arabica', ratio?: number, contactWaterG?: number): Result<Range> {
   if (!finite(doseG) || doseG <= 0 || doseG > 300) return failure('bad-dose', 'doseG', 'Enter the coffee you used, in grams.');
   if (method === 'espresso') return failure('use-shots', 'method', 'For espresso, count shots instead.');
+  if (!methodById(method)) return failure('bad-method', 'method', 'Choose how it was brewed.');
+  if (bean !== 'arabica' && bean !== 'robusta' && bean !== 'blend') return failure('bad-bean', 'bean', 'Choose arabica, robusta or a blend.');
+  if (contactWaterG !== undefined && (!finite(contactWaterG) || contactWaterG <= 0)) return failure('bad-water', 'contactWaterG', 'Enter the water that touched the coffee.');
   const b = bean === 'blend'
     ? { min: CAFFEINE.beanFraction.arabica.min, max: CAFFEINE.beanFraction.robusta.max }
     : CAFFEINE.beanFraction[bean];
@@ -62,11 +65,12 @@ const KA_PER_H = 5;
 
 /** Milligrams of caffeine in the body at `atMin`, from intakes at given minutes. */
 export function caffeineInBody(intakes: { atMin: number; mg: number }[], atMin: number, halfLifeH: number = CAFFEINE.halfLifeH.typical): number {
-  const ke = Math.LN2 / halfLifeH;
+  // A half-life outside 1–15 h (a corrupted setting) falls back to typical rather than growing or going NaN (Muse r4).
+  const ke = Math.LN2 / (finite(halfLifeH) && halfLifeH >= 1 && halfLifeH <= 15 ? halfLifeH : CAFFEINE.halfLifeH.typical);
   let total = 0;
   for (const { atMin: t0, mg } of intakes) {
     const t = (atMin - t0) / 60;
-    if (t <= 0 || !finite(mg) || mg <= 0) continue;
+    if (!finite(t) || t <= 0 || !finite(mg) || mg <= 0) continue;
     total += mg * (KA_PER_H / (KA_PER_H - ke)) * (Math.exp(-ke * t) - Math.exp(-KA_PER_H * t));
   }
   return total;
@@ -183,7 +187,8 @@ export function inBodyAt(intakes: Intake[], atMin: number, halfLifeH: number = C
 }
 
 // Share: ?d=v60.355@480,esp.2@630,decaf.237@1200&hl=5&bed=1380
-// Health details never go into a link: no pregnancy field and no half-life. Old links' preg= is ignored; an old hl= is still read.
+// Health details never go into a link: no pregnancy field and no half-life. Old links' preg= and hl=
+// are both ignored, so an old link can't hint at a pregnancy through its half-life (Muse r4).
 export function encodeDay(state: { intakes: Intake[]; halfLifeH: number; bedMin: number }): string {
   const q = new URLSearchParams();
   q.set('d', state.intakes.map((i) => i.kind === 'espresso' ? `esp.${i.shots}@${Math.round(i.atMin)}`
@@ -221,7 +226,5 @@ export function decodeDay(query: string): Result<{ intakes: Intake[]; halfLifeH:
     else intakes.push({ kind: 'brewed', method: kind as MethodId, cupMl: Number(n), atMin, ...(bean ? { bean: bean as Bean } : {}) });
   }
   for (const i of intakes) { const r = intakeMg(i); if (!r.ok) return failure('bad-drink', 'd', r.errors[0].message); }
-  const hl = Number(q.get('hl') ?? CAFFEINE.halfLifeH.typical), bed = bedForLink;
-  if (!finite(hl) || hl < 1 || hl > 15 || !finite(bed) || bed < 0 || bed > 2880) return failure('bad-option', 'hl', 'An option in the link is not valid.');
-  return success({ intakes, halfLifeH: hl, bedMin: bed });
+  return success({ intakes, halfLifeH: CAFFEINE.halfLifeH.typical, bedMin: bedForLink });
 }

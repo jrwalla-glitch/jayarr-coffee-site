@@ -4,12 +4,12 @@ import { freshness, freshnessStages } from '../index.ts';
 
 const ok = (r) => { assert.equal(r.ok, true, JSON.stringify(r)); return r.value; };
 
-test('stages tile the timeline with no gaps; peak is 7–21 days', () => {
+test('stages tile the timeline with no gaps; peak is days 7–21 inclusive', () => {
   for (const use of ['filter', 'espresso']) {
     const st = freshnessStages(use);
     for (let i = 1; i < st.length; i++) assert.equal(st[i].from, st[i - 1].to);
     const peak = st.find((s) => s.id === 'peak');
-    assert.equal(peak.from, 7); assert.equal(peak.to, 21);
+    assert.equal(peak.from, 7); assert.equal(peak.to, 22);
   }
 });
 
@@ -78,4 +78,13 @@ test('the freezer pauses the clock for about a year, not forever (Muse: 3 years 
 test('no zero-width stages (espresso has no "opening up" stage)', () => {
   for (const use of ['filter', 'espresso']) assert.ok(freshnessStages(use).every((st) => st.to > st.from));
   assert.ok(!freshnessStages('espresso').some((st) => st.id === 'opening'));
+});
+
+test('Muse r4: the window dates shown sit inside their stages; ten calendar years is the limit', () => {
+  const on = (today) => ok(freshness({ roastDate: '2026-10-01', today, use: 'filter', storage: 'opened' }));
+  const r = on('2026-10-15');
+  assert.equal(on(r.peakTo).stage.id, 'peak', 'the last "usually best" day is still peak');
+  assert.equal(on(r.useBy).stage.id, 'good', 'the "best used by" day is still good');
+  assert.equal(ok(freshness({ roastDate: '2016-10-16', today: '2026-10-15', use: 'filter', storage: 'opened' })).daysSinceRoast, 3651);
+  assert.equal(freshness({ roastDate: '2016-10-14', today: '2026-10-15', use: 'filter', storage: 'opened' }).ok, false);
 });

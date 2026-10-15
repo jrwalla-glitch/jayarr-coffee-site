@@ -48,7 +48,7 @@ const allSources = [...new Map(DRINKS.flatMap((d) => d.refs.map((r) => [r.source
 							<dt>{d.name}</dt>
 							<dd>
 								<p>{d.definition}</p>
-								<p class="ref">{d.refs[0].label}: {shotsText(d.refs[0].shots)}; {d.refs[0].layers.map(fmtLayer).join(', ')}; {d.refs[0].vessel.name.toLowerCase()}{d.refs[0].vessel.capacityMl ? ` (${d.refs[0].vessel.capacityMl[1]} ml)` : ''}. {d.refs.length > 1 ? `Also: ${d.refs.slice(1).map((r) => r.label).join(', ')}.` : ''}</p>
+								<p class="ref">{d.refs[0].label}: {shotsText(d.refs[0].shots)}; {d.refs[0].layers.map(fmtLayer).join(', ')}; {d.refs[0].vessel.name.toLowerCase()}{d.refs[0].vessel.capacityMl ? ` (${d.refs[0].vessel.capacityMl[0] === d.refs[0].vessel.capacityMl[1] ? d.refs[0].vessel.capacityMl[1] : `${d.refs[0].vessel.capacityMl[0]}–${d.refs[0].vessel.capacityMl[1]}`} ml)` : ''}. {d.refs.length > 1 ? `Also: ${d.refs.slice(1).map((r) => r.label).join(', ')}.` : ''}</p>
 							</dd>
 						</div>
 					))}

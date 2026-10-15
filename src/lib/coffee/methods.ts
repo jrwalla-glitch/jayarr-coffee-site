@@ -92,7 +92,8 @@ export const METHODS: Method[] = [
     ratio: { lighter: 16, classic: 14, stronger: 12 },
     tempC: { default: 85, min: 80, max: 96 },
     timeS: { min: 50, max: 90 },
-    grindMicrons: { min: 350, max: 500 }, grindLabel: 'Fine', texture: 'fine sand',
+    // Names run in micron order: coarser than the moka pot's band, so not "Fine" (Opus r4, Muse r4; names still R13).
+    grindMicrons: { min: 350, max: 500 }, grindLabel: 'Medium-fine', texture: 'fine sand',
     retentionGPerG: 2,
     base: { doseG: 11.5, waterG: 138, by: "Jessica Easto's standard AeroPress" },
     steps: [
@@ -109,10 +110,12 @@ export const METHODS: Method[] = [
   },
   {
     id: 'cold-brew', label: 'Cold brew', family: 'immersion',
-    ratio: { lighter: 7, classic: 6.25, stronger: 6 },
+    // Stronger is a real step (1:5.5, about 14% more coffee), inside the usual 1:4–1:8 concentrate range (synthesis §17; Opus r4).
+    ratio: { lighter: 7, classic: 6.25, stronger: 5.5 },
     tempC: { default: 20, min: 4, max: 24 },
     timeS: { min: 12 * 3600, max: 18 * 3600 },
-    grindMicrons: { min: 800, max: 1100 }, grindLabel: 'Medium-coarse', texture: 'coarse sand',
+    // Between Chemex (medium, coarse sand) and the French press (extra coarse, sea salt), so a feel-word reader doesn't grind it like a Chemex.
+    grindMicrons: { min: 800, max: 1100 }, grindLabel: 'Coarse', texture: 'kosher salt',
     retentionGPerG: 2,
     base: { doseG: 96, waterG: 600, by: "Jessica Easto's French-press cold brew" },
     steps: [

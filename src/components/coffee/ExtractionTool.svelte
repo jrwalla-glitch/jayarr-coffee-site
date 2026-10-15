@@ -19,11 +19,24 @@
   let tdsPct = $state(1.3);
   let diluted = $state(false);
   let linkProblem = $state(false);
+  // The opening numbers are an example until the reader enters their own (Muse r4).
+  let example = $state(true);
   let measured = $derived(measuredExtraction({ kind, doseG, liquidG, tdsPct, diluted }));
   let mv = $derived(measured.ok ? measured.value : null);
+  type Entry = { doseG: number; liquidG: number; tdsPct: number; example: boolean };
+  const PRESETS: Record<MeasuredKind, Entry> = {
+    percolation: { doseG: 20, liquidG: 300, tdsPct: 1.3, example: true },
+    immersion: { doseG: 30, liquidG: 500, tdsPct: 1.25, example: true },
+    espresso: { doseG: 18, liquidG: 36, tdsPct: 10, example: true },
+  };
+  // Each brew kind keeps its own numbers, so a misclick on another kind doesn't lose a real reading.
+  const entries: Partial<Record<MeasuredKind, Entry>> = {};
   function setKind(k: MeasuredKind) {
+    if (k === kind) return;
+    entries[kind] = { doseG, liquidG, tdsPct, example };
     kind = k;
-    if (k === 'espresso') { doseG = 18; liquidG = 36; tdsPct = 10; } else if (k === 'immersion') { doseG = 30; liquidG = 500; tdsPct = 1.25; } else { doseG = 20; liquidG = 300; tdsPct = 1.3; }
+    const e = entries[k] ?? PRESETS[k];
+    doseG = e.doseG; liquidG = e.liquidG; tdsPct = e.tdsPct; example = e.example;
   }
 
   let place = $derived(placeOnMap({ sourBitter, body }));
@@ -35,6 +48,14 @@
     const l = LEVERS.find((x) => x.id === id)!;
     sourBitter = clamp(sourBitter + l.dx); body = clamp(body + l.dy); touched = true;
     moved = espresso && l.espresso ? l.espresso : l.label;
+  }
+  // Measured readings are compared with reference ranges, not graded: a point outside the box isn't a fault (Astra R9).
+  function verdict(z: string, strengthJudged: boolean): string {
+    const [e, s] = z.split('-');
+    const E = e === 'under' ? 'Below the reference extraction' : e === 'over' ? 'Above the reference extraction' : 'Within the reference extraction';
+    if (!strengthJudged) return `${E}; strength not judged for a diluted drink`;
+    if (e === 'ideal' && s === 'ideal') return 'Within both reference ranges';
+    return `${E}; ${s === 'weak' ? 'below reference strength' : s === 'strong' ? 'above reference strength' : 'within reference strength'}`;
   }
   const word = (v: number, neg: string, pos: string) => (v <= -1.25 ? `very ${neg}` : v <= -0.5 ? neg : v >= 1.25 ? `very ${pos}` : v >= 0.5 ? pos : 'balanced');
 
@@ -51,6 +72,7 @@
       if (q.has('dose') && Number.isFinite(d)) doseG = d;
       if (q.has('liquid') && Number.isFinite(l)) liquidG = l;
       if (q.has('tds') && Number.isFinite(t)) tdsPct = t;
+      if ((['dose', 'liquid', 'tds'] as const).some((k) => q.has(k) && Number.isFinite(Number(q.get(k))))) example = false;
       // A link whose numbers aren't numbers says so instead of quietly showing an example.
       linkProblem = (['dose', 'liquid', 'tds'] as const).some((k) => q.has(k) && !Number.isFinite(Number(q.get(k))));
       diluted = q.get('diluted') === '1';
@@ -68,11 +90,14 @@
 <div class="xt">
   <div class="stage">
     {#if mode === 'measured' && mv && !mv.placeable}
-      <ExtractionMap x={0.5} y={0.5} zone="ideal-ideal" empty emptyText="check the weights to place your cup" axes={mv.chart} label="Measured mode: the weights look mixed up, so the cup isn't placed." />
+      <ExtractionMap x={0.5} y={0.5} zone="ideal-ideal" empty emptyText="check the readings to place your cup" axes={mv.chart} label="Measured mode: the readings look mixed up, so the cup isn't placed." />
     {:else if mode === 'measured' && mv}
-      <ExtractionMap x={mv.x} y={mv.y} zone={mv.zone} axes={mv.chart} plain={!mv.strengthJudged} label={mv.strengthJudged ? `Measured: ${mv.eyPct.toFixed(1)}% extraction at ${tdsPct}% TDS, in the ${ZONES[mv.zone].label.toLowerCase()} zone.` : `Measured: ${mv.eyPct.toFixed(1)}% extraction; strength not judged for a diluted drink.`} />
+      <ExtractionMap x={mv.x} y={mv.y} zone={mv.zone} axes={mv.chart} plain={!mv.strengthJudged} extractionOnly={!mv.strengthJudged} label={`Measured: ${mv.eyPct.toFixed(1)}% extraction${mv.strengthJudged ? ` at ${tdsPct}% TDS` : ''}. ${verdict(mv.zone, mv.strengthJudged)}.`} />
     {:else if mode === 'measured'}
       <ExtractionMap x={0.5} y={0.5} zone="ideal-ideal" empty axes={CHARTS[kind === 'espresso' ? 'espresso' : 'filter']} label="Measured mode: no valid reading yet, so the chart is empty." />
+    {/if}
+    {#if mode === 'measured'}
+      <p class="refcap">{kind === 'espresso' ? 'Reference: 18–22% extraction; 8–12% TDS is a rule of thumb (espresso has no SCA chart). A reference, not a rating of your coffee.' : 'SCA 2019 reference range: 18–22% extraction · 1.15–1.45% TDS. A brewing reference, not a rating of your coffee.'}</p>
     {:else}
       <ExtractionMap x={place.x} y={place.y} zone={place.zone} empty={!touched} emptyText="move the sliders to place your cup" label={touched ? `By taste, your cup probably sits in the ${zone.label.toLowerCase()} zone.` : 'Extraction map: move the sliders to describe your cup and place it here.'} />
     {/if}
@@ -89,21 +114,22 @@
         <button type="button" aria-pressed={kind === 'espresso'} onclick={() => setKind('espresso')}>Espresso</button>
       </div>
       <div class="inputs">
-        <label class="fld"><span class="lbl">Coffee, g</span><input type="number" inputmode="decimal" step="0.1" min="1" bind:value={doseG} /></label>
-        <label class="fld"><span class="lbl">{kind === 'immersion' ? 'Water added, g' : kind === 'espresso' && !diluted ? 'Shot weight, g' : 'Drink weight, g'}</span><input type="number" inputmode="decimal" step="0.1" min="1" bind:value={liquidG} /></label>
-        <label class="fld"><span class="lbl">TDS, %</span><input type="number" inputmode="decimal" step="0.01" min="0" bind:value={tdsPct} /></label>
+        <label class="fld"><span class="lbl">Coffee, g</span><input type="number" inputmode="decimal" step="0.1" min="1" bind:value={doseG} oninput={() => (example = false)} /></label>
+        <label class="fld"><span class="lbl">{kind === 'immersion' ? 'Water added, g' : kind === 'espresso' && !diluted ? 'Shot weight, g' : 'Drink weight, g'}</span><input type="number" inputmode="decimal" step="0.1" min="1" bind:value={liquidG} oninput={() => (example = false)} /></label>
+        <label class="fld"><span class="lbl">TDS, %</span><input type="number" inputmode="decimal" step="0.01" min="0" bind:value={tdsPct} oninput={() => (example = false)} /></label>
       </div>
       <label class="check"><input type="checkbox" bind:checked={diluted} /> I diluted it on purpose (americano, bypass water)</label>
       {#if linkProblem}<p class="note">Some numbers in that link weren't valid, so the example values are shown instead.</p>{/if}
+      {#if example}<p class="note ex">Example reading: enter your own dose, weight and TDS to place your cup.</p>{/if}
       {#if mv}
-        <div class="zonecard" aria-live="polite">
-          <span class="lbl">Extraction yield</span>
+        <div class="zonecard" class:suspect={!mv.placeable} aria-live="polite">
+          <span class="lbl">{example ? 'Example: extraction yield' : mv.placeable ? 'Extraction yield' : 'Extraction yield, if the numbers are right'}</span>
           <p class="ey">{mv.eyPct.toFixed(1)}<small>%</small></p>
-          <p class="zt">{mv.dissolvedG.toFixed(2)} g of coffee dissolved from {doseG} g · {mv.strengthJudged ? ZONES[mv.zone].label : `${mv.zone.startsWith('under') ? 'Under-extracted' : mv.zone.startsWith('over') ? 'Over-extracted' : 'Extraction in the usual range'}; strength not judged for a diluted drink`}</p>
+          <p class="zt">{mv.dissolvedG.toFixed(2)} g of coffee dissolved from {doseG} g · {!mv.placeable ? 'not judged: these numbers look mixed up (see below)' : verdict(mv.zone, mv.strengthJudged)}</p>
           <p class="calc">{kind === 'immersion' ? 'water added' : kind === 'espresso' && !diluted ? 'shot weight' : 'drink weight'} {liquidG} g × {tdsPct}% ÷ {doseG} g coffee</p>
         </div>
         {#each mv.notes as nt (nt)}<p class="note">{nt}</p>{/each}
-        {#if mv.moves.length}<p class="note">Possible next moves: {mv.moves.join('; ')}. Change one at a time and measure again.</p>{/if}
+        {#if mv.moves.length}<p class="note">If the cup tastes off to you, possible next moves: {mv.moves.join('; ')}. Change one at a time and measure again.</p>{/if}
         <p class="note">{kind === 'immersion' ? 'Diluting an immersion brew (cold brew concentrate, for example)? Take the reading before you dilute, with the water you brewed with: the grounds hold back some of the dissolved coffee, so a diluted reading reads low.' : 'Diluted it (an americano, bypass water)? Take the weight and the reading at the same point: the shot or brew with its own reading, or the whole diluted drink with its reading. The dissolved coffee is the same either way.'}</p>
       {:else if !measured.ok}
         <p class="err" role="alert">{measured.errors[0].message}</p>
@@ -161,7 +187,8 @@
   .xt { --rule: #d9cdbd; --ink: #2a1d15; --ink-2: #5b4a3d; --ink-3: #75655a; --crema: #c3873a; --crema-deep: #8f5d22;
     display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); background: #fbf8f3; border: 1px solid var(--rule); border-radius: 18px; overflow: hidden;
     color: var(--ink); font: 16px/1.5 'IBM Plex Sans', system-ui, sans-serif; box-shadow: 0 30px 60px -40px rgba(60, 35, 15, .35); }
-  .stage { padding: 18px; border-right: 1px solid var(--rule); background: radial-gradient(120% 90% at 50% 10%, #fffdf9 0%, #f4ece0 80%); display: flex; align-items: center; }
+  .stage { padding: 18px; border-right: 1px solid var(--rule); background: radial-gradient(120% 90% at 50% 10%, #fffdf9 0%, #f4ece0 80%); display: flex; flex-direction: column; justify-content: center; }
+  .refcap { margin: 6px 4px 0; font: 400 12.5px/1.4 'IBM Plex Mono', monospace; color: var(--ink-3); text-align: center; }
   .panel { padding: 22px 24px 24px; display: flex; flex-direction: column; gap: 18px; min-width: 0; }
   .lbl { font: 500 11px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); display: block; margin-bottom: 8px; }
   .seg { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -197,6 +224,8 @@
   .ey small { font-size: 26px; margin-left: 2px; }
   .calc { font: 400 12.5px 'IBM Plex Mono', monospace; color: var(--ink-3); margin: 6px 0 0; }
   .err { color: #9a3b1c; margin: 0; }
+  .note.ex { margin: 0; color: var(--crema-deep); }
+  .zonecard.suspect .ey { color: var(--ink-3); font-size: 40px; }
   .check { display: flex; gap: 8px; align-items: center; font-size: 14.5px; }
   .check input { width: 18px; height: 18px; }
 </style>

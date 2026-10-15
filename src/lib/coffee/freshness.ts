@@ -12,15 +12,19 @@ export type StageId = 'resting' | 'opening' | 'peak' | 'good' | 'fading' | 'stal
 
 export interface Stage { id: StageId; label: string; short: string; from: number; to: number; advice: string }
 
-/** Day boundaries since roasting. Espresso rests a few days longer (verify). */
+/**
+ * Day boundaries since roasting, as [from, to): peak covers days 7–21 inclusive and "still good" runs
+ * to day 30, so the window dates shown (last peak day, best-used-by day) are inside their stages (Muse r4).
+ * Espresso rests a few days longer (verify).
+ */
 export function stages(use: FreshUse): Stage[] {
   const restEnd = use === 'espresso' ? 7 : 4;
   const all: Stage[] = [
     { id: 'resting', short: 'Resting', label: 'Probably still resting', from: 0, to: restEnd, advice: 'Likely too fresh: trapped CO₂ can make it brew unevenly. Another few days usually helps.' },
     { id: 'opening', short: 'Opening up', label: 'Opening up', from: restEnd, to: 7, advice: 'Ready to brew; most coffees keep getting sweeter for a few more days.' },
-    { id: 'peak', short: 'Usually best', label: 'Likely at its best', from: 7, to: 21, advice: 'Most coffees taste their best around now. Brew it.' },
-    { id: 'good', short: 'Still good', label: 'Probably still good', from: 21, to: 30, advice: 'Typically past its best but still good. Finish it soon, or freeze what you won\'t use.' },
-    { id: 'fading', short: 'Fading', label: 'Likely fading', from: 30, to: 60, advice: 'Aroma usually fades by now. Taste it: if it\'s dull, brew a little finer or hotter, and buy fresher next time.' },
+    { id: 'peak', short: 'Usually best', label: 'Likely at its best', from: 7, to: 22, advice: 'Most coffees taste their best around now. Brew it.' },
+    { id: 'good', short: 'Still good', label: 'Probably still good', from: 22, to: 31, advice: 'Typically past its best but still good. Finish it soon, or freeze what you won\'t use.' },
+    { id: 'fading', short: 'Fading', label: 'Likely fading', from: 31, to: 60, advice: 'Aroma usually fades by now. Taste it: if it\'s dull, brew a little finer or hotter, and buy fresher next time.' },
     { id: 'stale', short: 'Stale', label: 'Likely stale', from: 60, to: Number.POSITIVE_INFINITY, advice: 'Probably flat by now. Taste it: if it\'s dull or papery, it\'s still fine for cold brew or baking.' },
   ];
   // Espresso rests until day 7, so its "opening up" stage has no width: leave it out.
@@ -51,7 +55,12 @@ export interface FreshnessResult {
   notes: string[];
   /** Why these are typical windows, not a forecast for this particular bag. */
   uncertainty: string;
+  /** More than a year in the freezer: the pause stops there and the clock runs again. */
+  freezerCapped: boolean;
 }
+
+/** A real calendar date in yyyy-mm-dd form (2026-02-31 is not). */
+export const isRealDate = (s: string) => Number.isFinite(parse(s));
 
 const DAY = 86400000;
 /** The freezer pauses staling for up to about a year (Gagné, Rao via synthesis §13), not forever. */
@@ -73,8 +82,9 @@ export function freshness(input: FreshnessInput): Result<FreshnessResult> {
   if (!finite(today)) return failure('bad-date', 'today', 'Today\'s date is missing.');
   if (roast > today) return failure('future', 'roastDate', 'That roast date is in the future. Check the bag: some show a best-by date instead.');
   const days = Math.round((today - roast) / DAY);
-  if (days > 3650) return failure('too-old', 'roastDate', 'That is more than ten years ago.');
-  let frozenDays = 0;
+  // Ten calendar years, not 3,650 days, so leap days can't refuse a date two days early (Muse r4).
+  if (`${Number(input.roastDate.slice(0, 4)) + 10}${input.roastDate.slice(4)}` < input.today) return failure('too-old', 'roastDate', 'That is more than ten years ago.');
+  let frozenDays = 0, freezerCapped = false;
   const notes: string[] = [];
   if (input.storage === 'frozen') {
     const f = parse(input.frozenOn ?? '');
@@ -84,6 +94,7 @@ export function freshness(input: FreshnessInput): Result<FreshnessResult> {
     const inFreezer = Math.round((out - f) / DAY);
     // Freezing preserves beans for up to about a year (synthesis §13); beyond that the clock runs again.
     frozenDays = Math.min(inFreezer, FREEZER_PAUSE_MAX_DAYS);
+    freezerCapped = inFreezer > FREEZER_PAUSE_MAX_DAYS;
     if (inFreezer > FREEZER_PAUSE_MAX_DAYS) notes.push('After about a year even frozen beans lose quality, so time beyond a year in the freezer counts again.');
     notes.push(input.thawedOn ? 'The clock runs again from the day they came out. Don\'t refreeze them.' : 'Days in a sealed freezer bag barely count. Take out only what you need and don\'t refreeze it.');
   }
@@ -95,6 +106,7 @@ export function freshness(input: FreshnessInput): Result<FreshnessResult> {
   return success({
     daysSinceRoast: days, effectiveDays: eff, stage, stages: st, notes,
     uncertainty: 'These are typical windows, not a forecast for your bag: roast level, the bag (one-way valve, nitrogen flush) and storage can move them by days to weeks. Your taste is the final check.',
+    freezerCapped,
     peakFrom: iso(roast + 7 * DAY + shift), peakTo: iso(roast + 21 * DAY + shift), useBy: iso(roast + 30 * DAY + shift),
   });
 }

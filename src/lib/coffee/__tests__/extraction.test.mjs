@@ -65,3 +65,25 @@ test('a drink lighter than twice its coffee is not placed on the map (Muse r3)',
   assert.equal(ok(measuredExtraction({ kind: 'percolation', doseG: 20, liquidG: 300, tdsPct: 1.3 })).placeable, true);
   assert.equal(ok(measuredExtraction({ kind: 'espresso', doseG: 18, liquidG: 36, tdsPct: 10 })).placeable, true);
 });
+
+test('Muse r4: readings the tool distrusts are never placed; the zone matches the figure shown', () => {
+  const ok = (r) => { assert.equal(r.ok, true, JSON.stringify(r)); return r.value; };
+  // A filter-strength reading entered as espresso (2.6%) and a drink lighter than its coffee: not placed, no moves.
+  for (const input of [{ kind: 'espresso', doseG: 18, liquidG: 36, tdsPct: 1.3 }, { kind: 'percolation', doseG: 20, liquidG: 15, tdsPct: 1.3 }, { kind: 'percolation', doseG: 10, liquidG: 200, tdsPct: 1.4 }]) {
+    const r = ok(measuredExtraction(input));
+    assert.equal(r.placeable, false, JSON.stringify(input)); assert.deepEqual(r.moves, []);
+  }
+  // 17.955% shows as 18.0% and is judged as 18.0%.
+  assert.equal(ok(measuredExtraction({ kind: 'percolation', doseG: 20, liquidG: 300, tdsPct: 1.197 })).zone.split('-')[0], 'ideal');
+  // A shot weight with a diluted drink's reading: the note names the point mix-up, not the sample.
+  const mix = ok(measuredExtraction({ kind: 'espresso', doseG: 18, liquidG: 36, tdsPct: 1.8, diluted: true }));
+  assert.match(mix.notes.join(' '), /different points/); assert.doesNotMatch(mix.notes.join(' '), /well-mixed sample/);
+});
+
+test('Opus r4: an americano entered as a shot asks about dilution instead of advising a bigger dose', () => {
+  const ok = (r) => { assert.equal(r.ok, true, JSON.stringify(r)); return r.value; };
+  const r = ok(measuredExtraction({ kind: 'espresso', doseG: 18, liquidG: 236, tdsPct: 1.5 }));
+  assert.equal(r.placeable, false); assert.deepEqual(r.moves, []); assert.match(r.notes.join(' '), /diluted/);
+  assert.equal(ok(measuredExtraction({ kind: 'espresso', doseG: 18, liquidG: 236, tdsPct: 1.5, diluted: true })).placeable, true);
+  assert.equal(ok(measuredExtraction({ kind: 'espresso', doseG: 18, liquidG: 54, tdsPct: 7 })).placeable, true, 'a 1:3 shot is fine');
+});

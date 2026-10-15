@@ -20,8 +20,10 @@
     uncertain?: boolean;
     /** Strength isn't judged (a diluted drink): no zone or sweet-spot emphasis. */
     plain?: boolean;
+    /** Only the extraction is known (a diluted drink): a line at that extraction, not a dot at a strength it doesn't have. */
+    extractionOnly?: boolean;
   }
-  let { x, y, zone, showArrow = true, label = '', compact = false, axes, empty = false, emptyText = 'enter a valid reading to place your cup', uncertain = false, plain = false }: Props = $props();
+  let { x, y, zone, showArrow = true, label = '', compact = false, axes, empty = false, emptyText = 'enter a valid reading to place your cup', uncertain = false, plain = false, extractionOnly = false }: Props = $props();
   const n = (v: number) => (Number.isInteger(v) ? String(v) : v.toFixed(2).replace(/0$/, ''));
 
   const L = 64, R = 384, T = 18, B = 338;
@@ -53,7 +55,7 @@
     <line x1={L} x2={R} y1={T + (H / 3) * i} y2={T + (H / 3) * i} stroke="#2a1d15" stroke-opacity=".12" />
   {/each}
   <rect x={L + W / 3} y={T + H / 3} width={W / 3} height={H / 3} rx="6" fill="#fffdf8" fill-opacity=".7" stroke="#c3873a" stroke-width={inSweet && !empty && !plain ? 2.5 : 1.5} />
-  <text x={cx} y={cy + 4} text-anchor="middle" class="sweet">sweet spot</text>
+  <text x={cx} y={cy + 4} text-anchor="middle" class="sweet">{axes ? 'reference range' : 'sweet spot'}</text>
   {#each rows as r, ri (r)}
     {#each cols as c, ci (c)}
       {#if `${c}-${r}` === zone && !inSweet && !empty && !plain}
@@ -84,6 +86,10 @@
 
   {#if empty}
     <text x={cx} y={T + 26} text-anchor="middle" class="ax2">{emptyText}</text>
+  {:else if extractionOnly}
+    <line x1={px} x2={px} y1={T + 4} y2={B - 4} stroke="#2a1d15" stroke-width="2.5" stroke-dasharray="6 5" />
+    <path d="M{px} {B - 2} l-7 10 h14 z" fill="#2a1d15" />
+    <text x={px < cx ? px + 8 : px - 8} y={T + 22} text-anchor={px < cx ? 'start' : 'end'} class="ax2">diluted: strength not judged</text>
   {:else}
   {#if showArrow && arrow && !inSweet}
     <line x1={px} y1={py} x2={arrow.x2} y2={arrow.y2} stroke="#8f5d22" stroke-width="2.2" marker-end="url(#em-head)" class="arrow" />

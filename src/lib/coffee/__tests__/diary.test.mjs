@@ -134,3 +134,11 @@ test('Astra r4: a day start inside the spring-forward gap is the first real minu
   });
   inTZ('America/New_York', () => assert.equal(boundaryInstant(2026, 9, 15, 180), at('2026-10-15T07:00:00Z'), 'an ordinary day is unchanged'));
 });
+
+test('Opus r4: a time the clocks skipped is refused, never moved an hour later', () => {
+  if (new Date(2027, 2, 14, 2, 30).getHours() !== 3) return; // only meaningful where 14 Mar 2027 springs forward (US zones)
+  const now = new Date(2027, 2, 14, 10, 0).getTime();
+  const w = dayWindow(now, dayStartClock({ bedMin: 1380, dayStartMin: null }));
+  assert.equal(placeTypedTime(150, now, w), null);
+  assert.equal(new Date(placeTypedTime(8 * 60, now, w)).getHours(), 8);
+});

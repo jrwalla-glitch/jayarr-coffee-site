@@ -5,10 +5,11 @@ import { failure, finite, success } from './units.ts';
 // Brew Guide state ↔ URL query. Readable keys so shared links explain themselves:
 //   ?method=v60&cup=355&strength=classic&roast=medium&units=us
 export type Units = 'us' | 'metric';
-export type Adjust = 'finer' | 'coarser' | 'hotter' | 'cooler';
+/** `ratio`: the Doctor's change is the strength itself (already in the link), named so the Brew Guide can say so. */
+export type Adjust = 'finer' | 'coarser' | 'hotter' | 'cooler' | 'ratio';
 /** `adjust` carries a change from the Coffee Doctor into the next brew. */
 export interface BrewState extends RecipeInput { units: Units; adjust?: Adjust }
-const ADJUSTS: Adjust[] = ['finer', 'coarser', 'hotter', 'cooler'];
+const ADJUSTS: Adjust[] = ['finer', 'coarser', 'hotter', 'cooler', 'ratio'];
 
 const STRENGTHS: Strength[] = ['lighter', 'classic', 'stronger'];
 const ROASTS: Roast[] = ['light', 'medium', 'dark'];

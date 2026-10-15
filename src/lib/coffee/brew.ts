@@ -16,8 +16,12 @@ function ratioBounds(m: Method): Range {
   return RATIO_BOUNDS[m.family];
 }
 
-/** Light roasts toward the hot end of the method's range, dark toward the cool end. */
+/**
+ * Light roasts toward the hot end of the method's range, dark toward the cool end. A moka pot's
+ * water is just boiled and cold brew steeps at room temperature whatever the roast (Muse r4).
+ */
 function tempFor(m: Method, roast: Roast): number {
+  if (m.id === 'moka' || m.id === 'cold-brew') return m.tempC.default;
   if (roast === 'light') return m.tempC.max;
   if (roast === 'dark') return m.tempC.min;
   return m.tempC.default;
@@ -45,6 +49,9 @@ export function adjustedTempC(m: Method, adjust: 'hotter' | 'cooler', roast: Roa
 
 /** "a V60", "an AeroPress", "an espresso machine". */
 export const withArticle = (label: string) => `${/^[aeiou]/i.test(label) ? 'an' : 'a'} ${label}`;
+
+/** Grams in a message: to 0.1 g under 100 g, as the recipe shows them, so "32.3 g … about 32 g" never reads "32 g … about 32 g". */
+const gramsText = (g: number) => (g < 100 ? String(Math.round(g * 10) / 10) : Math.round(g).toLocaleString('en-US'));
 
 export function estimateStrength(methodId: Recipe['method'], doseG: number, beverageG: number): StrengthEstimate {
   const ey = EY_BY_METHOD[methodId];
@@ -107,18 +114,18 @@ export function buildRecipe(input: RecipeInput): Result<Recipe> {
   if (doseG > m.capacity.maxDoseG) {
     const maxCup = m.id === 'espresso' ? m.capacity.maxDoseG * ratio : m.capacity.maxDoseG * (ratio - r) * (m.id === 'cold-brew' ? 2 : 1);
     const message = m.id === 'aeropress'
-      ? `That needs ${Math.round(doseG)} g of coffee; one AeroPress takes about ${m.capacity.maxDoseG} g. Make two presses, or choose a smaller cup.`
-      : `That needs ${Math.round(doseG)} g of coffee, more than ${withArticle(m.label)} handles well (about ${m.capacity.maxDoseG} g).`;
+      ? `That needs ${gramsText(doseG)} g of coffee; one AeroPress takes about ${m.capacity.maxDoseG} g. Make two presses, or choose a smaller cup.`
+      : `That needs ${gramsText(doseG)} g of coffee, more than ${withArticle(m.label)} handles well (about ${m.capacity.maxDoseG} g).`;
     // Dose-set brewers (espresso, moka) get a dose back; the others a cup size.
     return failure('over-capacity', field, message, { target: m.id === 'espresso' || m.id === 'moka' ? { doseG: m.capacity.maxDoseG } : { cupMl: Math.floor(maxCup) } });
   }
   if (m.capacity.maxWaterG && m.id !== 'aeropress' && waterG && waterG > m.capacity.maxWaterG) {
-    return failure('over-capacity', field, `That's ${Math.round(waterG)} g of water, more than a typical ${m.label.toLowerCase()} holds.`, { target: { waterG: m.capacity.maxWaterG } });
+    return failure('over-capacity', field, `That's ${gramsText(waterG)} g of water, more than a typical ${m.label.toLowerCase()} holds.`, { target: { waterG: m.capacity.maxWaterG } });
   }
   // Far below the brewer's smallest sensible dose there's no recipe worth following.
   // Moka baskets have a real minimum (the smallest pots take about 6–7 g), so no half-size there.
   if (doseG < (m.id === 'moka' ? m.capacity.minDoseG : m.capacity.minDoseG / 2)) {
-    return failure('too-small', field, `That's too little coffee for ${withArticle(m.label)} to brew well (${doseG < 1 ? 'under 1' : Math.round(doseG)} g). Try at least ${m.capacity.minDoseG} g.`, { target: { doseG: m.capacity.minDoseG } });
+    return failure('too-small', field, `That's too little coffee for ${withArticle(m.label)} to brew well (${doseG < 1 ? 'under 1' : gramsText(doseG)} g). Try at least ${m.capacity.minDoseG} g.`, { target: { doseG: m.capacity.minDoseG } });
   }
   if (doseG < m.capacity.minDoseG) {
     const msg = m.family === 'percolation' ? `Below about ${m.capacity.minDoseG} g the bed is shallow and drains fast; expect to grind a little finer.`

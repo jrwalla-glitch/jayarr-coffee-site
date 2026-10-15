@@ -10,14 +10,14 @@ import NespressoPods from '../../../components/tools/NespressoPods.svelte';
 	<head>
 		<BaseHead
 			title="Nespresso Pod Explorer — JayArr Coffee"
-			description="Explore every Nespresso capsule — filter by line, intensity, roast, and flavor. Filter by system, intensity, roast and flavour, and open any pod for its details."
+			description="Explore Nespresso Original and Vertuo capsules: filter by system, intensity, roast and category, and open any pod for its details."
 		/>
 		<script type="application/ld+json" set:html={JSON.stringify({
 			"@context": "https://schema.org",
 			"@type": "WebApplication",
 			"name": "Nespresso Pod Explorer",
 			"url": "https://jayarr.coffee/tools/nespresso-pods/",
-			"description": "Explore every Nespresso capsule — filter by line, intensity, roast, and flavor. Filter by system, intensity, roast and flavour, and open any pod for its details.",
+			"description": "Explore Nespresso Original and Vertuo capsules: filter by system, intensity, roast and category, and open any pod for its details.",
 			"applicationCategory": "UtilityApplication",
 			"operatingSystem": "Any",
 			"offers": {
@@ -35,7 +35,7 @@ import NespressoPods from '../../../components/tools/NespressoPods.svelte';
 			"@context": "https://schema.org",
 			"@type": "HowTo",
 			"name": "How to Find the Right Nespresso Pod",
-			"description": "Filter and compare every Nespresso capsule by line (Original or Vertuo), intensity, roast level, and flavor profile to find your ideal pod.",
+			"description": "Filter and compare Nespresso Original and Vertuo capsules by line, intensity, roast level and category to find your next pod.",
 			"totalTime": "PT2M",
 			"step": [
 						{
@@ -53,14 +53,14 @@ import NespressoPods from '../../../components/tools/NespressoPods.svelte';
 						{
 									"@type": "HowToStep",
 									"position": 3,
-									"name": "Filter by flavor profile",
-									"text": "Choose from flavor categories like fruity, floral, chocolatey, nutty, or spiced. Single-origin pods emphasize geographic character; blends optimize for balance and body."
+									"name": "Narrow by category and roast",
+									"text": "Pick a category, a roast level, decaf or flavoured pods, or search by name. Each pod lists its aroma notes."
 						},
 						{
 									"@type": "HowToStep",
 									"position": 4,
 									"name": "Compare and decide",
-									"text": "Review the pod details including origin, roast level, tasting notes, and cup size options. Open pods one at a time to find the best match for your preferences."
+									"text": "Open a pod to see its roast, aroma notes, category and cup size, with a similar pod from the same system where there is one."
 						}
 			]
 })}></script>
@@ -76,7 +76,7 @@ import NespressoPods from '../../../components/tools/NespressoPods.svelte';
 				</a>
 				<h1 class="font-serif text-3xl md:text-5xl font-bold text-cream mt-3 mb-3">Nespresso Pod Explorer</h1>
 				<p class="text-cream/60 max-w-lg mx-auto leading-relaxed text-sm">
-					Every Nespresso capsule in one place. Filter, open any pod for its details, and find your next favorite.
+					Nespresso Original and Vertuo capsules in one place. Filter, open any pod for its details, and find your next favorite.
 				</p>
 			</div>
 		</section>

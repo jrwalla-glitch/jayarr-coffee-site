@@ -33,7 +33,9 @@
   let mounted = $state(false);
   let adjust = $state<Adjust | undefined>(undefined);
   // The Doctor's change is applied to the recipe itself, so the banner and the numbers agree.
-  let adjustText = $derived(!adjust || !recipe ? '' : adjust === 'finer' ? 'Grind one step finer than last time.' : adjust === 'coarser' ? 'Grind one step coarser than last time.'
+  // A moka pot's or cold brew's water temperature isn't adjustable, so a temperature change claims nothing there.
+  let adjustText = $derived(!adjust || !recipe || ((adjust === 'hotter' || adjust === 'cooler') && (method === 'moka' || method === 'cold-brew')) || (adjust === 'ratio' && strength === 'classic') ? '' : adjust === 'finer' ? 'Grind one step finer than last time.' : adjust === 'coarser' ? 'Grind one step coarser than last time.'
+    : adjust === 'ratio' ? (method === 'espresso' ? `${strength === 'lighter' ? 'A longer shot' : 'A shorter shot'} this time: 1:${recipe.ratio}, shown below.` : `${strength === 'stronger' ? 'More' : 'Less'} coffee for the same water this time: 1:${recipe.ratio}, shown below.`)
     : `${adjust === 'hotter' ? 'Hotter water this time' : 'Cooler water this time'}: about ${units === 'us' ? `${r0(cToF(recipe.tempC))}°F` : `${r0(recipe.tempC)}°C`}, shown below.`);
 
   let m = $derived(METHODS.find((x) => x.id === method)!);
@@ -97,6 +99,8 @@
     if (method === 'drip-machine') return 'Set by the machine';
     if (method === 'espresso') return 'Set on the machine';
     const base = recipe.tempC >= 95 ? 'Just off the boil' : recipe.tempC >= 90 ? 'Off the boil, rested about 30 seconds' : 'Off the boil, cooled for a minute or two';
+    // A Doctor temperature change outranks the roast's usual note, so the two never point opposite ways (Opus r4).
+    if (adjust === 'hotter' || adjust === 'cooler') return `${base}; ${adjust} this time, from the Coffee Doctor`;
     return roast === 'light' ? `${base}; hotter suits light roasts` : roast === 'dark' ? `${base}; cooler suits dark roasts` : base;
   });
 
@@ -155,6 +159,7 @@
     const base = ratioOverride ?? m.ratio[strength];
     const step = method === 'espresso' ? 0.25 : 0.5;
     ratioOverride = Math.round((base + d * step) / step) * step;
+    if (adjust === 'ratio') adjust = undefined; // the reader's own ratio now, not the Doctor's
   }
   function applyPatch(patch: Record<string, unknown>) {
     if (patch.target) target = patch.target as Target;
@@ -229,8 +234,10 @@
   // ── saved recipes, on this device only ──
   const SAVE_KEY = 'jayarr-brew-guide-v1';
   let saved = $state<{ name: string; q: string }[]>([]);
-  // The full state, Doctor adjustment included, so Save and resume keep it (Astra r3).
-  let fullState = $derived({ ...input, units, ...(adjust ? { adjust } : {}) });
+  // The full state, so Save and resume keep a Doctor temperature change, which sets the number shown (Astra r3).
+  // A grind or ratio note is a one-off for the next brew: kept, it would say "one step finer than last time"
+  // on every visit (Opus r4). The strength itself is part of the recipe and stays.
+  let fullState = $derived({ ...input, units, ...(adjust === 'hotter' || adjust === 'cooler' ? { adjust } : {}) });
   let savedNow = $derived(saved.some((x) => x.q === encodeBrew(fullState)));
   function persist() { try { localStorage.setItem(SAVE_KEY, JSON.stringify({ saved, last: encodeBrew(fullState) })); } catch { /* storage unavailable */ } }
   function saveRecipe() {
@@ -315,7 +322,7 @@
           {/each}
           <button type="button" aria-pressed={customOpen || !choices.some((c) => same(c.t, target))} aria-expanded={customOpen} onclick={openCustom}>Custom</button>
         </div>
-        {#if tooBig}<p class="hint">{method === 'aeropress' ? 'Bigger cups need two presses (or try Custom).' : `Bigger amounts are more than one ${m.label} handles well at this strength: brew twice, or try Custom.`}</p>{/if}
+        {#if tooBig}<p class="hint">{method === 'aeropress' ? 'Bigger cups need two presses (or try Custom).' : method === 'drip-machine' ? 'Bigger batches are more than a typical drip machine holds: brew twice, or try Custom.' : `Bigger amounts are more than one ${/^(Cold|Moka)/.test(m.label) ? m.label.toLowerCase() : m.label} handles well at this strength: brew twice, or try Custom.`}</p>{/if}
         {#if customOpen}
           <div class="custom">
             <label class="cfld"><span class="sr">Amount</span><input type="number" inputmode="decimal" min="0" step="0.1" value={customVal} oninput={(e) => { const raw = (e.currentTarget as HTMLInputElement).value.trim(); setCustom(raw === '' ? NaN : Number(raw), customKind); }} /></label>
@@ -344,7 +351,7 @@
         <legend class="lbl">Strength</legend>
         <div class="seg">
           {#each (['lighter', 'classic', 'stronger'] as Strength[]) as s (s)}
-            <button type="button" aria-pressed={ratioOverride === undefined && strength === s} onclick={() => { strength = s; ratioOverride = undefined; }}>{method === 'espresso' ? ESPRESSO_LABEL[s] : STRENGTH_LABEL[s]}</button>
+            <button type="button" aria-pressed={ratioOverride === undefined && strength === s} onclick={() => { strength = s; ratioOverride = undefined; if (adjust === 'ratio') adjust = undefined; }}>{method === 'espresso' ? ESPRESSO_LABEL[s] : STRENGTH_LABEL[s]}</button>
           {/each}
         </div>
       </fieldset>
@@ -367,7 +374,7 @@
         {/each}
       </div>
     {:else if recipe}
-      {#if adjust}
+      {#if adjustText}
         <div class="adjust" role="status"><span class="chip">From the Coffee Doctor</span><span>{adjustText} <span class="adjust-note">Shown on a standard {m.label} recipe{roast !== 'medium' ? ` for a ${roast} roast` : ''}: keep your own amounts, change only this.</span></span><button type="button" class="x" aria-label="Dismiss" onclick={() => (adjust = undefined)}>×</button></div>
       {/if}
       <div class="numbers">
@@ -390,8 +397,10 @@
         {#if method !== 'moka'}<button type="button" class="nudge" aria-label="Stronger: less water per gram" onclick={() => nudgeRatio(-1)}>−</button>{/if}
         <span class="rv">1 : {Number.isInteger(recipe.ratio) ? recipe.ratio : String(Math.round(recipe.ratio * 100) / 100)}</span>
         {#if method !== 'moka'}<button type="button" class="nudge" aria-label="Lighter: more water per gram" onclick={() => nudgeRatio(1)}>+</button>{/if}
-        <span class="tds">≈ {recipe.strength.tdsPct.min.toFixed(method === 'espresso' ? 0 : 2)}–{recipe.strength.tdsPct.max.toFixed(method === 'espresso' ? 0 : 2)}% strength (TDS), illustrative</span>
+        <span class="tds">≈ {recipe.strength.tdsPct.min.toFixed(method === 'espresso' ? 0 : 2)}–{recipe.strength.tdsPct.max.toFixed(method === 'espresso' ? 0 : 2)}% strength (TDS){method === 'cold-brew' ? ' once diluted' : ''}, illustrative</span>
       </div>
+      <!-- Above the SCA 2019 reference (1.15–1.45%) isn't a fault: strength and extraction are different things (Astra R9). -->
+      {#if method !== 'espresso' && method !== 'moka' && recipe.strength.tdsPct.max > 1.45}<p class="hint">Estimated, assuming {r0(recipe.strength.eyPct.min)}–{r0(recipe.strength.eyPct.max)}% extraction: a fuller-strength starting recipe. It can sit above reference ranges without being over-extracted; if it tastes too strong, add a little water to the cup.</p>{/if}
 
       <p class="grind"><span class="chip">Grind</span><span><b>{recipe.grind.label}</b>, like {recipe.grind.texture} · about {r0(recipe.grind.microns.min)}–{r0(recipe.grind.microns.max)} µm</span></p>
 

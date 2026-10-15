@@ -150,13 +150,15 @@ export function compareRefs(a: DrinkRef, b: DrinkRef, nameA: string, nameB: stri
   const milkLayers = (r: DrinkRef) => r.layers.filter((l) => MILKY.includes(l.kind));
   // Milk amount and its unit: some recipes publish grams, some millilitres (blind Opus r3: grams
   // were read as "not published"). Amounts are compared only in the same unit.
-  const milkAmt = (r: DrinkRef): { v: number; unit: 'ml' | 'g' } | 0 | undefined => {
+  const milkAmt = (r: DrinkRef): { v: number; lo: number; hi: number; unit: 'ml' | 'g' } | 0 | undefined => {
     const ls = milkLayers(r);
     if (ls.length === 0) return 0;
-    if (ls.every((l) => l.ml)) return { v: ls.reduce((t, l) => t + (mid(l.ml) ?? 0), 0), unit: 'ml' };
-    if (ls.every((l) => l.g)) return { v: ls.reduce((t, l) => t + (mid(l.g) ?? 0), 0), unit: 'g' };
+    const sum = (k: 'ml' | 'g') => ({ v: ls.reduce((t, l) => t + (mid(l[k]) ?? 0), 0), lo: ls.reduce((t, l) => t + (l[k]?.[0] ?? 0), 0), hi: ls.reduce((t, l) => t + (l[k]?.[1] ?? 0), 0), unit: k });
+    if (ls.every((l) => l.ml)) return sum('ml');
+    if (ls.every((l) => l.g)) return sum('g');
     return undefined;
   };
+  const rng = (m: { lo: number; hi: number }) => (Math.round(m.lo) === Math.round(m.hi) ? `${Math.round(m.lo)}` : `${Math.round(m.lo)}–${Math.round(m.hi)}`);
   const parts: string[] = [];
   // Only a single, definite count is compared: "1 (Tall) or 2 (Grande)" and "usually double" vary.
   const shots = (r: DrinkRef) => (/\bor\b|usually|not stated|none/.test(r.shots) ? undefined : /double|\b2\b|two/.test(r.shots) ? 2 : /triple|three|\b3\b/.test(r.shots) ? 3 : /single|\b1\b/.test(r.shots) ? 1 : undefined);
@@ -175,7 +177,12 @@ export function compareRefs(a: DrinkRef, b: DrinkRef, nameA: string, nameB: stri
     const mixed = kinds(a) !== kinds(b) ? ', measured differently by the two recipes' : '';
     const [big, bigV, smallV] = ma.v > mb.v ? [A, ma.v, mb.v] : [B, mb.v, ma.v];
     const ratio = bigV / smallV, u = ma.unit;
-    if (ratio < 1.25) parts.push(`both use about the same amount of milk (about ${Math.round(smallV)} and ${Math.round(bigV)} ${u}${mixed})`);
+    const [bm, sm] = ma.v > mb.v ? [ma, mb] : [mb, ma];
+    const loR = bm.lo / Math.max(1e-9, sm.hi), hiR = bm.hi / Math.max(1e-9, sm.lo);
+    const xf = (r: number) => (r < 3 ? r.toFixed(1) : String(Math.round(r)));
+    // A wide published range (a cortado's 5–40 g) can't support one multiplier: give the span (Opus r4).
+    if (hiR / loR > 2 && ratio >= 1.25) parts.push(loR >= 1.25 ? `the ${big} has more milk, about ${xf(loR)}–${xf(hiR)}× as much (${rng(bm)} ${u} against ${rng(sm)} ${u}${mixed})` : `the milk amounts overlap (${rng(bm)} ${u} and ${rng(sm)} ${u}${mixed})`);
+    else if (ratio < 1.25) parts.push(`both use about the same amount of milk (about ${Math.round(smallV)} and ${Math.round(bigV)} ${u}${mixed})`);
     else parts.push(`the ${big} has about ${ratio < 3 ? ratio.toFixed(1) : Math.round(ratio)}× the milk (${Math.round(bigV)} ${u} against ${Math.round(smallV)} ${u}${mixed})`);
   }
   // Water or brewed coffee in both: compare the published amounts (americano vs long black).

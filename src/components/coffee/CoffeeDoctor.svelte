@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import ExtractionMap from './ExtractionMap.svelte';
-  import { METHODS, SYMPTOMS, ZONES, nextQuestion, questionsFor, diagnose, methodById } from '../../lib/coffee/index.ts';
+  import { METHODS, SYMPTOMS, ZONES, nextQuestion, questionsFor, diagnose, methodById, brewLinkFor } from '../../lib/coffee/index.ts';
   import type { MethodId, SymptomId, ZoneId, QuestionId } from '../../lib/coffee/index.ts';
 
   // Taste "waveforms": shape is the taste, weight is the intensity (kept from the original tool).
@@ -45,19 +45,9 @@
   let pos = $derived(ZONE_XY(zone));
   let answeredCount = $derived(qs.filter((q) => answers[q.id] !== undefined).length);
   let step = $derived(!method ? 'method' : !symptom ? 'symptom' : current ? 'questions' : 'result');
-  let brewLink = $derived.by(() => {
-    if (!dx || !method) return null;
-    const q = new URLSearchParams({ method });
-    // Sizes match the Brew Guide's own chips (12 oz is 354.9 ml), so the link lands on a chip, not "Custom".
-    if (method === 'espresso' || method === 'moka') q.set('dose', method === 'espresso' ? '18' : '15'); else q.set('cup', method === 'cold-brew' || method === 'drip-machine' ? '946.4' : method === 'aeropress' ? '236.6' : '354.9');
-    if (dx.next.strength) q.set('strength', dx.next.strength);
-    // The roast is the reader's own baseline (a dark roast brews cooler), so it travels; the banner
-    // says the recipe is a standard one for that roast with one change on top.
-    if (answers.roast === 'light' || answers.roast === 'dark') q.set('roast', answers.roast);
-    const adj = dx.next.grind ?? dx.next.temp;
-    if (adj) q.set('adjust', adj);
-    return `/tools/brew-ratio/?${q}`;
-  });
+  // The roast is the reader's own baseline (a dark roast brews cooler), so it travels; the banner
+  // says the recipe is a standard one for that roast with one change on top.
+  let brewLink = $derived(dx && method ? brewLinkFor(method, dx, answers.roast) : null);
 
   function pickMethod(id: MethodId) { method = id; if (symptom && !SYMPTOMS.find((s) => s.id === symptom && (id === 'espresso' ? s.espresso : s.filter))) symptom = null; answers = {}; }
   function pickSymptom(id: SymptomId) { symptom = id; answers = {}; }
@@ -106,7 +96,7 @@
 <div class="dr">
   <div class="stage">
     <ExtractionMap x={pos.x} y={pos.y} {zone} showArrow={step === 'result' && dx?.placement === 'likely'} empty={dx?.placement === 'other'} emptyText="not an extraction problem" uncertain={dx?.placement === 'uncertain'} label={dx?.placement === 'other' ? `Not placed on the extraction map: ${dx.placementNote}` : dx?.placement === 'uncertain' ? `Your cup's position is uncertain: ${dx.placementNote}` : `By taste, your cup probably sits in the ${ZONES[zone].label.toLowerCase()} zone.`} />
-    <p class="mini-axes" aria-hidden="true">Left sour, right bitter · low weak, high strong</p>
+    <p class="mini-axes" aria-hidden="true">Left under-extracted (sour), right over-extracted (bitter) · low weak, high strong</p>
     <div class="zone">
       {#if symptom && dx && dx.placement !== 'likely'}
         <span class="lbl">{dx.placement === 'other' ? 'Not an extraction problem' : 'Position uncertain'}</span>
@@ -192,7 +182,7 @@
   h3.cause { font-size: 36px; }
   .crumbs { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font: 500 12px/1 'IBM Plex Mono', monospace; color: var(--ink-3); letter-spacing: .06em; text-transform: uppercase; }
   .crumbs .count { margin-left: auto; color: var(--crema-deep); }
-  .back { appearance: none; border: 1px solid var(--rule); background: #fff; border-radius: 999px; padding: 7px 12px; font: 500 13px/1 'IBM Plex Sans', sans-serif; color: var(--ink-2); cursor: pointer; min-height: 34px; text-transform: none; letter-spacing: 0; }
+  .back { appearance: none; border: 1px solid var(--rule); background: #fff; border-radius: 999px; padding: 7px 12px; font: 500 13px/1 'IBM Plex Sans', sans-serif; color: var(--ink-2); cursor: pointer; min-height: 44px; text-transform: none; letter-spacing: 0; }
   .grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
   .opt { appearance: none; border: 1px solid var(--rule); background: #fff; border-radius: 12px; padding: 12px 12px; min-height: 48px; font: 500 15px/1.2 'IBM Plex Sans', sans-serif; color: var(--ink); cursor: pointer; text-align: left; }
   .opt:hover, .card:hover { border-color: var(--ink-3); }

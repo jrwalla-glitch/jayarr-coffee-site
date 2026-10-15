@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { freshness } from '../../lib/coffee/index.ts';
+  import { freshness, isRealDate } from '../../lib/coffee/index.ts';
   import type { FreshUse, Storage, StageId } from '../../lib/coffee/index.ts';
 
   const isoLocal = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -10,6 +10,10 @@
   let roastDate = $state(daysAgo(10));
   let dateInvalid = $state(false);
   let linkProblem = $state(false);
+  // The link's own impossible date, named in the note, since a date box can't show it (Muse r4).
+  let badLinkDate = $state('');
+  // First visit: the bag shown is an example until the reader enters theirs (Opus r4).
+  let example = $state(false);
   let use = $state<FreshUse>('filter');
   let storage = $state<Storage>('opened');
   let frozenOn = $state(daysAgo(3));
@@ -42,14 +46,18 @@
 
   // Your last bag stays on this device, so a plain reload brings it back (Muse r3); a link wins.
   const SAVE_KEY = 'jayarr-freshness-v1';
+  // Opened from someone's link: it doesn't replace your own saved bag until you change something (Muse r4).
+  let skipSave = false;
   onMount(() => {
     let q = new URLSearchParams(location.search);
-    if (!location.search) { try { const last = localStorage.getItem(SAVE_KEY); if (last) q = new URLSearchParams(last); } catch { /* storage unavailable */ } }
-    const rd = q.get('roast'); if (rd && /^\d{4}-\d{2}-\d{2}$/.test(rd)) roastDate = rd; else if (rd !== null) linkProblem = true;
+    const fromLink = !!location.search;
+    if (!fromLink) { try { const last = localStorage.getItem(SAVE_KEY); if (last) q = new URLSearchParams(last); else example = true; } catch { example = true; } }
+    const rd = q.get('roast'); if (rd && isRealDate(rd)) roastDate = rd; else if (rd !== null && fromLink) { linkProblem = true; badLinkDate = /^\d{4}-\d{2}-\d{2}$/.test(rd) ? rd : ''; }
     if (q.get('use') === 'espresso') use = 'espresso';
     const s = q.get('storage'); if (s === 'sealed-bag' || s === 'opened' || s === 'frozen') storage = s;
-    const f = q.get('frozen'); if (f && /^\d{4}-\d{2}-\d{2}$/.test(f)) frozenOn = f;
-    const th = q.get('thawed'); if (th && /^\d{4}-\d{2}-\d{2}$/.test(th)) { thawed = true; thawedOn = th; }
+    const f = q.get('frozen'); if (f && isRealDate(f)) frozenOn = f;
+    const th = q.get('thawed'); if (th && isRealDate(th)) { thawed = true; thawedOn = th; }
+    skipSave = fromLink;
     mounted = true;
     // "Today" moves on in an open tab, so a bag roasted today can be picked after midnight (Opus r3).
     const tick = setInterval(() => { const t = isoLocal(new Date()); if (t !== today) today = t; }, 60000);
@@ -63,14 +71,16 @@
     if (storage === 'frozen') q.set('frozen', frozenOn);
     if (storage === 'frozen' && thawed) q.set('thawed', thawedOn);
     history.replaceState(history.state, '', `${location.pathname}?${q}`);
-    try { localStorage.setItem(SAVE_KEY, q.toString()); } catch { /* storage unavailable */ }
+    if (skipSave) { skipSave = false; return; }
+    // Only a bag that makes sense is kept, so a half-typed date can't come back as "that link's date" (Opus r4).
+    if (result.ok) try { localStorage.setItem(SAVE_KEY, q.toString()); } catch { /* storage unavailable */ }
   });
 </script>
 
 <div class="fr">
   <div class="top">
     <div class="inputs">
-      <label class="fld"><span class="lbl">Roasted on</span><input type="date" bind:value={roastDate} max={today} oninput={(e) => (dateInvalid = (e.currentTarget as HTMLInputElement).validity.badInput)} /></label>
+      <label class="fld"><span class="lbl">Roasted on</span><input type="date" bind:value={roastDate} max={today} oninput={(e) => { dateInvalid = (e.currentTarget as HTMLInputElement).validity.badInput; example = false; linkProblem = false; }} /></label>
       <div class="fld"><span class="lbl">Brewing</span>
         <div class="seg" role="group" aria-label="Brewing">
           <button type="button" aria-pressed={use === 'filter'} onclick={() => (use = 'filter')}>Filter</button>
@@ -94,9 +104,10 @@
     </div>
     <div class="read" aria-live="polite">
       {#if r}
-        <span class="lbl">Day {r.daysSinceRoast}{r.effectiveDays !== r.daysSinceRoast ? ` (${r.effectiveDays} counting)` : ''}</span>
+        <span class="lbl">{example ? 'Example bag · ' : ''}Day {r.daysSinceRoast}{r.effectiveDays !== r.daysSinceRoast ? ` (${r.effectiveDays} counting)` : ''}</span>
         <span class="stage">{r.stage.label}</span>
-        <span class="sub">{r.peakTo < today ? `Its usual best window has passed (${fmt(r.peakFrom)} – ${fmt(r.peakTo)})` : `Usually best ${fmt(r.peakFrom)} – ${fmt(r.peakTo)} · best used by about ${fmt(r.useBy)}`}</span>
+        <span class="sub">{r.peakTo < today ? `Its usual best window has passed (${fmt(r.peakFrom)} – ${fmt(r.peakTo)})` : `${storage === 'frozen' && !thawed ? 'If taken out today: usually' : 'Usually'} best ${fmt(r.peakFrom)} – ${fmt(r.peakTo)} · best used by about ${fmt(r.useBy)}`}</span>
+        {#if example}<span class="sub ex">Enter the roast date from your bag.</span>{/if}
       {:else if dateInvalid}
         <span class="err">Enter a complete, real date: check the day, month and year on the bag.</span>
       {:else if !result.ok}
@@ -142,9 +153,9 @@
 
   {#if r}
     <div class="advice">
-      {#if linkProblem}<p class="note">That link's roast date wasn't a date, so here's an example bag.</p>{/if}
-      <p class="what">{storage === 'frozen' && !thawed ? `While they're in the freezer the clock is paused at day ${r.effectiveDays}. Take out only what you'll use; from then, the usual stages apply.` : r.stage.advice}</p>
-      {#each r.notes as n (n)}<p class="note">{n}</p>{/each}
+      {#if linkProblem}<p class="note">{badLinkDate ? `That link's roast date, ${badLinkDate}, doesn't exist, so here's an example bag.` : 'That link\'s roast date wasn\'t a date, so here\'s an example bag.'}</p>{/if}
+      <p class="what">{storage === 'frozen' && !thawed ? (r.freezerCapped ? `The freezer pauses the clock for about a year; past that it runs again, so these beans are at day ${r.effectiveDays}. Take out only what you'll use.` : `While they're in the freezer the clock is paused at day ${r.effectiveDays}. Take out only what you'll use; from then, the usual stages apply.`) : r.stage.advice}</p>
+      {#each r.notes.filter((n) => !(r.freezerCapped && storage === 'frozen' && !thawed && n.startsWith('After about a year'))) as n (n)}<p class="note">{n}</p>{/each}
       <p class="note">{r.uncertainty}</p>
       {#if r.stage.id === 'fading' || r.stage.id === 'stale'}<p class="note">Tasting flat? The <a href="/tools/fix-my-coffee/?method=v60&symptom=flat">Coffee Doctor</a> can tell freshness from water problems.</p>{/if}
     </div>
@@ -161,6 +172,7 @@
   .fld { display: flex; flex-direction: column; gap: 8px; }
   .stage { font: 400 52px/1 'Instrument Serif', Georgia, serif; }
   .sub { font: 400 14px 'IBM Plex Mono', monospace; color: var(--ink-2); }
+  .sub.ex { color: #8f5d22; }
   .err { color: #9a3b1c; }
   input[type='date'] { font: 400 15px 'IBM Plex Mono', monospace; padding: 8px 10px; border: 1px solid var(--rule); border-radius: 8px; background: #fff; color: var(--ink); min-height: 42px; }
   .seg { display: flex; flex-wrap: wrap; gap: 4px; }

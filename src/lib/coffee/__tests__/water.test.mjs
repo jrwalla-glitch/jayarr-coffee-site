@@ -85,3 +85,10 @@ test('dry salts too small to weigh are flagged, with the batch that would make t
   assert.equal(d1.dry.weighable, false); near(d1.dry.minBatchL, 2.98, 0.01);
   assert.equal(ok(planWater({ targetId: 'sca', volumeL: 3 })).dry.weighable, true);
 });
+
+test('Muse r4: very hard source water is still used, continuously, never silently dropped', () => {
+  const at = (gh, kh) => { const r = planWater({ targetId: 'sca', volumeL: 1, base: { gh, kh } }); assert.equal(r.ok, true); return r.value; };
+  const a = at(500, 497), b = at(500, 498), c = at(500, 600);
+  assert.ok(Math.abs(a.baseL - b.baseL) < 0.002, `${a.baseL} vs ${b.baseL}`);
+  for (const v of [a, b, c]) { assert.ok(v.baseL > 0); assert.ok(Math.abs(v.gh - 68) < 1e-6 && Math.abs(v.kh - 40) < 1e-6); assert.ok(Math.abs(v.baseL + v.distilledL + (v.ghStockMl + v.khStockMl) / 1000 - 1) < 1e-9); }
+});

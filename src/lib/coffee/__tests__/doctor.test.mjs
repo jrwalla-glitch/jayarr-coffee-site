@@ -227,3 +227,68 @@ test('Opus r3: Doctor advice matches the answers given and the link it opens', (
   // Cold brew's next step never mentions the hot end.
   assert.doesNotMatch(ok(diagnose({ method: 'cold-brew', symptom: 'bright', answers: { finish: 'short', roast: 'light' } })).nextExperiment, /hot end/);
 });
+
+test('Muse r4: every Doctor link opens a recipe that builds (a stronger 8 oz AeroPress needs two presses)', async () => {
+  const { brewLinkFor } = await import('../index.ts');
+  for (const m of METHODS) for (const sy of SYMPTOMS) {
+    const applies = m.id === 'espresso' ? sy.espresso : sy.filter; if (!applies) continue;
+    for (const answers of allPaths(m.id, sy.id)) {
+      const d = ok(diagnose({ method: m.id, symptom: sy.id, answers }));
+      const q = new URL(brewLinkFor(m.id, d, answers.roast), 'https://x').searchParams;
+      const target = q.has('dose') ? { doseG: Number(q.get('dose')) } : q.has('water') ? { waterG: Number(q.get('water')) } : { cupMl: Number(q.get('cup')) };
+      // "Same water, more coffee" holds the water; a machine-set dose sends no strength change (Opus r4).
+      if (d.change === 'dose' && d.next.strength && !q.has('dose')) assert.ok(q.has('water'), `${m.id}/${sy.id} holds the water`);
+      if (answers.measure === 'machine') assert.equal(q.get('strength'), null);
+      const r = buildRecipe({ method: m.id, target, strength: q.get('strength') ?? 'classic', roast: q.get('roast') ?? 'medium' });
+      assert.equal(r.ok, true, `${m.id}/${sy.id}/${JSON.stringify(answers)} → ${q}`);
+    }
+  }
+  const ap = ok(diagnose({ method: 'aeropress', symptom: 'weak', answers: { measure: 'scale', time: 'ok' } }));
+  const apq = new URL(brewLinkFor('aeropress', ap), 'https://x').searchParams;
+  assert.equal(apq.get('strength'), 'stronger');
+  assert.ok(Number(apq.get('water')) < 276, 'the 8 oz recipe would need two presses, so the next size down');
+});
+
+test('Muse r4: every question asked can change the answer', () => {
+  for (const m of METHODS) for (const sy of SYMPTOMS) {
+    const applies = m.id === 'espresso' ? sy.espresso : sy.filter; if (!applies) continue;
+    const qs = questionsFor({ method: m.id, symptom: sy.id, answers: {} });
+    const paths = [...allPaths(m.id, sy.id)];
+    for (const q of qs) {
+      const live = paths.some((p) => q.options.some((o) => JSON.stringify(ok(diagnose({ method: m.id, symptom: sy.id, answers: { ...p, [q.id]: o.id } }))) !== JSON.stringify(ok(diagnose({ method: m.id, symptom: sy.id, answers: p })))));
+      assert.ok(live, `${m.id}/${sy.id} asks "${q.id}" but no answer changes the diagnosis`);
+    }
+  }
+});
+
+test('Muse r4: "Not sure" of the shot time exists, and a bitter shot of unknown time changes nothing until timed', () => {
+  assert.ok(questionsFor({ method: 'espresso', symptom: 'sour', answers: {} })[0].options.some((o) => o.id === 'unsure'));
+  const bitter = ok(diagnose({ method: 'espresso', symptom: 'bitter', answers: { shot: 'unsure', roast: 'medium' } }));
+  assert.equal(bitter.change, undefined); assert.deepEqual(bitter.next, {}); assert.match(bitter.changeNow, /time it/);
+  assert.equal(bitter.placement, 'uncertain');
+  const sour = ok(diagnose({ method: 'espresso', symptom: 'sour', answers: { shot: 'unsure', roast: 'medium' } }));
+  assert.equal(sour.change, 'grind'); assert.equal(sour.placement, 'uncertain'); assert.match(sour.changeNow, /time the next shot/);
+  // Unknown time never yields a confident placement, for any brewer or symptom.
+  for (const m of METHODS) for (const sy of SYMPTOMS) {
+    const applies = m.id === 'espresso' ? sy.espresso : sy.filter; if (!applies) continue;
+    for (const answers of allPaths(m.id, sy.id)) {
+      if ((answers.shot ?? answers.time) !== 'unsure' || answers.measure === 'scoop' || answers.measure === 'machine') continue;
+      const d = ok(diagnose({ method: m.id, symptom: sy.id, answers }));
+      if (['sour', 'bitter', 'weak', 'strong'].includes(sy.id)) assert.notEqual(d.placement, 'likely', `${m.id}/${sy.id}/${JSON.stringify(answers)}`);
+      assert.ok(!d.hold.includes('steep time'), `${m.id}/${sy.id}: the unknown steep isn't "kept the same"`);
+    }
+  }
+});
+
+test('Muse r4: an unknown roast keeps a bitter cup at a normal time uncertain; blade-ground espresso changes the grinder', () => {
+  for (const [method, answers] of [['espresso', { shot: 'ok', roast: 'unsure' }], ['v60', { time: 'ok', roast: 'unsure' }], ['french-press', { time: 'ok', roast: 'unsure' }]]) {
+    assert.equal(ok(diagnose({ method, symptom: 'bitter', answers })).placement, 'uncertain', method);
+  }
+  for (const grinder of ['blade', 'pre']) {
+    const d = ok(diagnose({ method: 'espresso', symptom: 'harsh-mixed', answers: { shot: 'ok', grinder } }));
+    assert.equal(d.change, 'grind'); assert.ok(!d.hold.includes('grind'));
+  }
+  assert.doesNotMatch(ok(diagnose({ method: 'espresso', symptom: 'harsh-mixed', answers: { shot: 'ok', grinder: 'burr' } })).changeNow, /over- or under-filled/);
+  const clog = ok(diagnose({ method: 'v60', symptom: 'harsh-mixed', answers: { grinder: 'burr', time: 'slow' } }));
+  assert.equal(clog.next.grind, 'coarser');
+});

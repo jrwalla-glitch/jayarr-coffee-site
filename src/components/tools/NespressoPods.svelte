@@ -62,7 +62,7 @@
   // A selection that the filters no longer show is closed, so the panel never describes a hidden pod.
   $effect(() => { if (selectedPodId && !filtered.some((p) => p.id === selectedPodId)) selectedPodId = null; });
   // "Try also" stays within the same system: an Original suggestion never opens a Vertuo pod.
-  const tryAlsoPod = $derived(selectedPod?.try_also ? (pods.find(p => p.name === selectedPod.try_also && p.line === selectedPod.line) ?? null) : null);
+  const tryAlsoPod = $derived(selectedPod?.try_also ? (pods.find(p => p.name === selectedPod.try_also && p.line === selectedPod.line && !p.discontinued) ?? null) : null);
 
   function selectPod(id) {
     selectedPodId = selectedPodId === id ? null : id;

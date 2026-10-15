@@ -77,6 +77,9 @@ export function instantInDay(clockMin: number, w: DayWindow): number | null {
   // Around a daylight-saving gap there may be no such time, and then there's no answer to guess.
   for (const k of [0, 1]) {
     const t = localInstant(w.y, w.m, w.d + k, clockMin);
+    // A time skipped when the clocks went forward doesn't exist that night: the Date constructor
+    // would quietly move 02:30 to 03:30 (Opus r4), so it's not an answer.
+    if (clockOf(t) !== clockMin) continue;
     if (t >= w.start && t < w.end) return t;
   }
   return null;
@@ -94,6 +97,8 @@ export function placeTypedTime(clockMin: number, now: number, w: DayWindow): num
   if (inDay - now <= 12 * 3600e3) return inDay;
   const d = new Date(inDay);
   const earlier = localInstant(d.getFullYear(), d.getMonth(), d.getDate() - 1, clockMin);
+  // "Earlier today" at a time the clocks skipped: there was no such moment, so ask for another.
+  if (clockOf(earlier) !== clockMin) return now - earlier >= -3600e3 && now - earlier <= 13 * 3600e3 ? null : inDay;
   return now - earlier >= 0 && now - earlier <= 12 * 3600e3 ? earlier : inDay;
 }
 
@@ -194,11 +199,23 @@ export function applyOp(store: DiaryStore, op: DiaryOp, now: number): DiaryStore
 }
 
 /** Parse a stored v2 diary, dropping anything malformed. */
+/** Stored settings, each checked: a hand-edited or corrupted value falls back to the default (Muse r4). */
+function parseSettings(raw: unknown): DiarySettings {
+  const r = (raw && typeof raw === 'object' ? raw : {}) as Record<string, unknown>;
+  const num = (v: unknown, lo: number, hi: number) => typeof v === 'number' && Number.isFinite(v) && v >= lo && v <= hi;
+  return {
+    halfLifeH: num(r.halfLifeH, 1, 15) ? (r.halfLifeH as number) : DEFAULT_SETTINGS.halfLifeH,
+    bedMin: num(r.bedMin, 0, 2880) ? (r.bedMin as number) : DEFAULT_SETTINGS.bedMin,
+    dayStartMin: num(r.dayStartMin, 0, 1439) ? (r.dayStartMin as number) : null,
+    pregnant: r.pregnant === true,
+  };
+}
+
 export function parseStore(raw: string | null): DiaryStore | null {
   if (!raw) return null;
   try {
     const st = JSON.parse(raw);
     if (st?.v !== 2 || !Array.isArray(st.drinks)) return null;
-    return { v: 2, drinks: st.drinks.filter((x: LoggedDrink) => x && typeof x.id === 'string' && Number.isFinite(x.at)), settings: { ...DEFAULT_SETTINGS, ...(st.settings ?? {}) }, ...(st.migratedFromV1 ? { migratedFromV1: true } : {}) };
+    return { v: 2, drinks: st.drinks.filter((x: LoggedDrink) => x && typeof x.id === 'string' && Number.isFinite(x.at)), settings: parseSettings(st.settings), ...(st.migratedFromV1 ? { migratedFromV1: true } : {}) };
   } catch { return null; }
 }

@@ -20,7 +20,11 @@ export interface MeasuredInput {
   diluted?: boolean;
 }
 export interface Chart { ey: [number, number]; tds: [number, number]; eyIdeal: [number, number]; tdsIdeal: [number, number] }
-export interface MeasuredResult { eyPct: number; dissolvedG: number; zone: ZoneId; x: number; y: number; chart: Chart; notes: string[]; strengthJudged: boolean; moves: string[]; /** False when the weights look like an input mix-up: the map shouldn't place it. */ placeable: boolean }
+export interface MeasuredResult {
+  eyPct: number; dissolvedG: number; zone: ZoneId; x: number; y: number; chart: Chart; notes: string[]; strengthJudged: boolean; moves: string[];
+  /** False when the reading looks like an input mix-up: the map doesn't place it and no zone verdict is given (Muse r4). */
+  placeable: boolean;
+}
 
 export const CHARTS: Record<'filter' | 'espresso', Chart> = {
   filter: { ey: [14, 26], tds: [0.85, 1.75], eyIdeal: [18, 22], tdsIdeal: [1.15, 1.45] },
@@ -43,17 +47,25 @@ export function measuredExtraction(input: MeasuredInput): Result<MeasuredResult>
   const notes: string[] = [];
   if (kind === 'immersion') notes.push('Immersion: this uses all the water you added, because the liquid left in the grounds is as strong as your cup. It reads slightly low.');
   if (kind === 'espresso') notes.push('Espresso has no SCA chart; the strength band here (8–12% TDS) is a common rule of thumb.');
-  if (eyPct < 10) notes.push('Under 10% is unusually low: check the reading was taken on a cooled, well-mixed sample.');
+  // With the diluted box ticked, a very low result most likely mixes a shot weight with a diluted-drink reading (Muse r4).
+  if (eyPct < 10) notes.push(input.diluted ? 'Under 10% is unusually low. With a diluted drink, the likeliest mix-up is the weight and the reading coming from different points: use the shot\'s weight with the shot\'s reading, or the whole drink\'s weight with its reading.' : 'Under 10% is unusually low: check the reading was taken on a cooled, well-mixed sample.');
+  if (eyPct > 26) notes.push('Above about 26% is rarely reached in a cup: check the dose, the weight and the reading.');
+  // An americano entered as a shot: espresso rarely runs past about 1:4 (Opus r4).
+  const longShot = kind === 'espresso' && !input.diluted && liquidG > doseG * 5;
+  if (longShot) notes.push(`That's a lot of liquid for a shot: ${liquidG} g is more than five times ${doseG} g of coffee. If you added water (an americano), tick "diluted" and use the reading from the same drink.`);
   if (kind !== 'espresso' && liquidG < doseG * 2) notes.push(`Check the weights: ${kind === 'immersion' ? 'the water added' : 'a filter drink'} usually weighs many times the coffee, and ${liquidG} g is less than twice ${doseG} g.`);
   if (input.diluted) notes.push('Diluted on purpose, so only extraction is judged here; the strength axis is for undiluted coffee.');
   const third = (v: number, [lo, hi]: [number, number]) => { const t = (v - lo) / (hi - lo); return Math.max(0, Math.min(1, t)); };
   const x = third(eyPct, chart.ey), y = third(tdsPct, chart.tds);
-  const e = eyPct < chart.eyIdeal[0] ? 'under' : eyPct > chart.eyIdeal[1] ? 'over' : 'ideal';
+  // Judge the figure as shown (one decimal), so "18.0%" is never labelled under-extracted (Muse r4).
+  const eyShown = Math.round(eyPct * 10) / 10;
+  const e = eyShown < chart.eyIdeal[0] ? 'under' : eyShown > chart.eyIdeal[1] ? 'over' : 'ideal';
   const strengthJudged = !input.diluted;
   const s = !strengthJudged ? 'ideal' : tdsPct < chart.tdsIdeal[0] ? 'weak' : tdsPct > chart.tdsIdeal[1] ? 'strong' : 'ideal';
-  // Readings that look like an input mix-up (a drink lighter than its coffee, or under 10% EY) get no moves.
-  const suspect = (kind !== 'espresso' && liquidG < doseG * 2) || eyPct < 10;
-  return success({ eyPct, dissolvedG, zone: `${e}-${s}` as ZoneId, x, y: strengthJudged ? y : 0.5, chart, notes, strengthJudged, moves: suspect ? [] : measuredMoves(kind, e, s), placeable: !(kind !== 'espresso' && liquidG < doseG * 2) });
+  // Readings that look like an input mix-up (a drink lighter than its coffee, under 10% or over 26% EY)
+  // get no moves, no zone verdict and no place on the map: the tool doesn't trust them, so it doesn't plot them.
+  const suspect = (kind !== 'espresso' && liquidG < doseG * 2) || longShot || eyPct < 10 || eyPct > 26;
+  return success({ eyPct, dissolvedG, zone: `${e}-${s}` as ZoneId, x, y: strengthJudged ? y : 0.5, chart, notes, strengthJudged, moves: suspect ? [] : measuredMoves(kind, e, s), placeable: !suspect });
 }
 
 /** Next moves for a measured cup, in the brewer's own terms (immersion has no bed to even out). */

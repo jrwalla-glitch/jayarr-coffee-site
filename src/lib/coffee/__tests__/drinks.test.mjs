@@ -74,7 +74,9 @@ test('an unpublished milk amount is named, not skipped (Muse: latte vs macchiato
 
 test('Opus r3: grams compare with grams, the bigger figure first, and water is compared', () => {
   const g = compareRefs(refById('cortado-ineffable'), refById('latte-ineffable'), 'Cortado', 'Latte');
-  assert.doesNotMatch(g, /don't both publish/); assert.match(g, /\d+ g against \d+ g/);
+  assert.doesNotMatch(g, /don't both publish/); assert.match(g, /\d+ g against \d+(–\d+)? g/);
+  // The cortado's 5–40 g can't support one multiplier (Opus r4): the span is given instead.
+  assert.match(g, /about \d+(\.\d)?–\d+× as much/);
   const w = compareRefs(refById('americano-lavazza'), refById('longblack-lavazza'), 'Americano', 'Long black');
   assert.doesNotMatch(w, /don't publish enough/); assert.match(w, /hot water/);
 });

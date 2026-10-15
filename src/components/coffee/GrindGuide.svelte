@@ -18,11 +18,13 @@
   const mmss = (sec: number) => (sec >= 3600 ? `${Math.round(sec / 3600)} h` : `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`);
   function tooText(id: string): { fine: string; coarse: string } {
     const x = methodById(id as MethodId);
-    if (id === 'turkish') return { fine: 'The grounds clump and cake in the grinder, and the coffee is hard to stir in.', coarse: 'Grounds may not stay suspended, and the cup can taste thin.' };
+    // Turkish is already the finest setting, so "too fine" is the grinder's limit, not a brewing mistake (Muse r4).
+    if (id === 'turkish') return { fine: 'There is no useful finer setting: if the grinder clogs or the powder cakes, that is its limit.', coarse: 'The cup can taste thin, and the grounds feel gritty instead of silky.' };
     if (!x) return { fine: '', coarse: '' };
     const t = x.timeS;
     if (id === 'espresso') return { fine: `The shot usually runs longer than about ${t.max} s at the same dose and yield, and can taste bitter or harsh.`, coarse: `The shot usually runs faster than about ${t.min} s, and can taste sour or thin.` };
-    if (id === 'moka') return { fine: 'It can flow slowly or sputter, taste harsh, or clog the filter plate.', coarse: 'Coffee may rush out early and taste weak or sour.' };
+    // Sputtering is the normal end of every moka brew, so it isn't a sign of a fine grind (Muse r4).
+    if (id === 'moka') return { fine: 'It can flow slowly or stall, taste harsh, or clog the filter plate.', coarse: 'Coffee may rush out early and taste weak or sour.' };
     // A drip machine's pump sets its run time, so the visible signs are the basket and the taste.
     if (id === 'drip-machine') return { fine: 'The basket can flood or overflow, and the coffee can taste bitter.', coarse: 'Water runs straight through, and the coffee can taste weak or sour.' };
     if (x.family === 'percolation') return { fine: `It usually drains slower than this recipe's ${mmss(t.max)}, and can taste bitter or dry.`, coarse: `It usually drains faster than ${mmss(t.min)}, and can taste sour or thin.` };
@@ -72,7 +74,6 @@
     const max = Math.max(...h, 1);
     return h.map((c) => c / max);
   });
-  let finesShare = $derived(drawn.sizes.filter((u) => u < 100).length / Math.max(1, drawn.sizes.length));
 
   onMount(() => {
     const q = new URLSearchParams(location.search);
@@ -108,7 +109,7 @@
       <text x={96 + 500 * PX_PER_UM} y="240" text-anchor="middle" class="sb">1 mm</text>
     </svg>
     <p class="cap">Drawn to the 1 mm scale bar. An illustration of a typical spread, not a photo or a measurement.</p>
-    <figure class="spread" aria-label={`Illustrative spread of particle sizes${grinder === 'blade' ? ' from a blade grinder' : ''}: about ${Math.round(finesShare * 100)}% of the drawn particles are fines under 100 micrometres.`}>
+    <figure class="spread" aria-label={`Illustrative spread of particle sizes${grinder === 'blade' ? ' from a blade grinder: many more fines under 100 micrometres, and some large chunks' : ': most particles near the range, with a small share of fines under 100 micrometres'}.`}>
       <div class="bars" aria-hidden="true">
         {#each hist as hgt, i (i)}<span class="bar" class:fine={i === 0} class:band={i * BIN + BIN > m.grindMicrons.min && i * BIN < m.grindMicrons.max} style:height="{Math.max(2, hgt * 100)}%"></span>{/each}
       </div>

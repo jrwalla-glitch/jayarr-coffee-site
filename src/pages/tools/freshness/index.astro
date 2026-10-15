@@ -44,7 +44,7 @@ const filter = freshnessStages('filter');
 					<table>
 						<thead><tr><th scope="col">Days since roast</th><th scope="col">Stage</th><th scope="col">What to do</th></tr></thead>
 						<tbody>
-							{filter.map((s) => <tr><td>{s.to === Infinity ? `${s.from}+` : `${s.from}–${s.to}`}</td><th scope="row">{s.label}</th><td>{s.advice}</td></tr>)}
+							{filter.map((s) => <tr><td>{s.to === Infinity ? `${s.from}+` : `${s.from}–${s.to - 1}`}</td><th scope="row">{s.label}</th><td>{s.advice}</td></tr>)}
 						</tbody>
 					</table>
 				</div>

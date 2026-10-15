@@ -38,13 +38,14 @@ const description = 'Describe how your coffee tastes and feels, see where it lan
 
 			<article class="cf-body">
 				<h2>Two different dials: strength and extraction</h2>
-				<p><strong>Extraction</strong> is how much of the coffee's soluble material ended up in the water, as a share of the dry grounds. Too little and the cup is sour and hollow; too much and it turns bitter and drying. The Specialty Coffee Association's chart, after E. E. Lockhart's work in the 1950s, puts the sweet spot at about 18–22%.</p>
-				<p><strong>Strength</strong> is how concentrated the cup is, measured as total dissolved solids (TDS). The same chart puts most people's preference for filter coffee around 1.15–1.45%. Strength is set mostly by the ratio of coffee to water.</p>
+				<p><strong>Extraction</strong> is how much of the coffee's soluble material ended up in the water, as a share of the dry grounds. Too little and the cup tends to taste sour and hollow; too much and it tends to turn bitter and drying. The brewing control chart grew out of E. E. Lockhart's work in the 1950s.</p>
+				<p><strong>Strength</strong> is the concentration of dissolved coffee in the drink, measured as total dissolved solids (TDS), and it is set mostly by the ratio of coffee to water. This map uses the SCA's March 2019 chart as its reference: 1.15–1.45% TDS and 18–22% extraction. Earlier Golden Cup guidance used 1.15–1.35% TDS. These ranges help compare brews; your preferred strength can fall outside them.</p>
+				<p>Later UC Davis research found that different groups of coffee drinkers preferred different brewing conditions. Taste your cup before deciding what to change: a higher strength does not, by itself, mean over-extraction.</p>
 				<p>Because they're separate, a cup can be strong and sour, or weak and bitter. That's why the map has two axes and nine zones.</p>
 
 				<h2>The nine zones</h2>
 				<ul>
-					{Object.values(ZONES).map((z) => <li><strong>{z.label}</strong> tastes {z.tastes.toLowerCase()}. Move: {z.moves.join('; ').toLowerCase()}.</li>)}
+					{Object.values(ZONES).map((z) => <li><strong>{z.label}</strong> tends to taste {z.tastes.toLowerCase()}. Move: {z.moves.join('; ').toLowerCase()}.</li>)}
 				</ul>
 
 				<h2>Typical extraction by brew method</h2>
@@ -59,7 +60,7 @@ const description = 'Describe how your coffee tastes and feels, see where it lan
 
 				<h2>Sources</h2>
 				<ul class="cf-sources">
-					{['sca-chart', 'gagne', 'rao', 'easto', 'synthesis'].map((id) => SOURCES[id]).map((s) => <li>{s.author}, <cite>{s.title}</cite>{s.year ? ` (${s.year})` : ''}{s.where ? `: ${s.where}` : ''}.</li>)}
+					{['sca-chart', 'sca-golden-cup', 'cotter-2021', 'gagne', 'rao', 'easto', 'synthesis'].map((id) => SOURCES[id]).map((s) => <li>{s.author}, {s.url ? <a href={s.url} rel="noopener"><cite>{s.title}</cite></a> : <cite>{s.title}</cite>}{s.year ? ` (${s.year})` : ''}{s.where ? `: ${s.where}` : ''}.</li>)}
 				</ul>
 			</article>
 		</main>
