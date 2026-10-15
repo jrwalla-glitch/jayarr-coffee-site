@@ -60,3 +60,10 @@ test('on the real data: recommendations are current, priced and fully described,
   const narrow = chooseMachines(data.machines, data.grinders, { milk: 'some', cups: 1, budget: 700, effort: 'hands-on', widthCm: 20 });
   assert.ok(narrow.some((x) => x.machine.id === 'breville-bambino-bes450'));
 });
+
+test('milk in most drinks never gets a machine without a milk system', async () => {
+  const { readFileSync } = await import('node:fs');
+  const data = JSON.parse(readFileSync(new URL('../../../data/machines.json', import.meta.url), 'utf8'));
+  for (const budget of [200, 500, 1500, 5000]) for (const effort of ['button', 'guided', 'hands-on'])
+    for (const x of chooseMachines(data.machines, data.grinders, { milk: 'most', cups: 3, budget, effort })) assert.notEqual(x.machine.milk.type, 'none', x.machine.id);
+});

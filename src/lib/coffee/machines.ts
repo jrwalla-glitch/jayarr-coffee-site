@@ -92,8 +92,10 @@ export function chooseMachines(machines: Machine[], grinders: GrinderPrice[], n:
   for (const m of machines) {
     if (m.status !== 'current' || !m.category) continue;
     if (fitsCounter(m, n) !== true) continue;
-    // A milk routine can't be matched to a machine whose milk system the research couldn't establish.
+    // A milk routine can't be matched to a machine whose milk system the research couldn't establish,
+    // and milk in most drinks rules out a machine with no milk system at all.
     if (n.milk !== 'none' && m.milk.type == null) continue;
+    if (n.milk === 'most' && m.milk.type === 'none') continue;
     const band = setupBand(m, grinders);
     if (!band || band.low > n.budget) continue;
     let score = 0;
