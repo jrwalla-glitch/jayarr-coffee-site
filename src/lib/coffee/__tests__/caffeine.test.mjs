@@ -83,9 +83,15 @@ test('a cup bigger than one brewer makes still gets an estimate', () => {
 });
 
 test('day state round-trips through the link; junk fails', () => {
-  const s = { intakes: [{ kind: 'brewed', method: 'v60', cupMl: 355, atMin: 420 }, { kind: 'espresso', shots: 2, atMin: 630 }, { kind: 'decaf', cupMl: 237, atMin: 1200 }, { kind: 'brewed', method: 'drip-machine', cupMl: 296, bean: 'robusta', atMin: 900 }], halfLifeH: 8, bedMin: 1350, pregnant: true };
+  const s = { intakes: [{ kind: 'brewed', method: 'v60', cupMl: 355, atMin: 420 }, { kind: 'espresso', shots: 2, atMin: 630 }, { kind: 'decaf', cupMl: 237, atMin: 1200 }, { kind: 'brewed', method: 'drip-machine', cupMl: 296, bean: 'robusta', atMin: 900 }, { kind: 'custom', mg: 200, atMin: 960 }], halfLifeH: 8, bedMin: 1350, pregnant: true };
   const d = decodeDay(encodeDay(s));
   assert.equal(d.ok, true, JSON.stringify(d));
   assert.deepEqual(d.value, s);
   for (const q of ['', 'd=', 'd=v60.355', 'd=esp.9@600', 'd=v60.355@600&hl=99', 'd=nope.355@600']) assert.equal(decodeDay(q).ok, false, q);
+});
+
+test('a known label amount counts exactly, not as a range', () => {
+  const r = intakeMg({ kind: 'custom', mg: 155, atMin: 600 }).value;
+  assert.equal(r.min, 155); assert.equal(r.max, 155);
+  assert.equal(intakeMg({ kind: 'custom', mg: -1, atMin: 600 }).ok, false);
 });

@@ -75,7 +75,7 @@ export const GUIDANCE = [
 
 // ── A day of drinks (Caffeine Calculator) ──
 
-export type IntakeKind = 'brewed' | 'espresso' | 'decaf';
+export type IntakeKind = 'brewed' | 'espresso' | 'decaf' | 'custom';
 export interface Intake {
   kind: IntakeKind;
   /** Minutes after midnight (may exceed 1440 for after-midnight drinks). */
@@ -84,10 +84,16 @@ export interface Intake {
   cupMl?: number;
   shots?: number;
   bean?: Bean;
+  /** custom: an amount the reader knows (a can's label, a chain's published figure). */
+  mg?: number;
 }
 
 export function intakeMg(i: Intake): Result<Range> {
   if (!finite(i.atMin)) return failure('bad-time', 'atMin', 'Pick a time.');
+  if (i.kind === 'custom') {
+    if (!finite(i.mg) || i.mg < 0 || i.mg > 1000) return failure('bad-mg', 'mg', 'Enter the caffeine from the label, 0–1000 mg.');
+    return success({ min: i.mg, max: i.mg });
+  }
   if (i.kind === 'espresso') {
     if (!finite(i.shots) || i.shots < 1 || i.shots > 6) return failure('bad-shots', 'shots', 'Count 1 to 6 shots.');
     return success(espressoMg(i.shots));
@@ -129,6 +135,7 @@ export function inBodyAt(intakes: Intake[], atMin: number, halfLifeH: number = C
 export function encodeDay(state: { intakes: Intake[]; halfLifeH: number; bedMin: number; pregnant?: boolean }): string {
   const q = new URLSearchParams();
   q.set('d', state.intakes.map((i) => i.kind === 'espresso' ? `esp.${i.shots}@${Math.round(i.atMin)}`
+    : i.kind === 'custom' ? `mg.${Math.round(i.mg ?? 0)}@${Math.round(i.atMin)}`
     : i.kind === 'decaf' ? `decaf.${Math.round(i.cupMl ?? 0)}@${Math.round(i.atMin)}`
     : `${i.method}.${Math.round(i.cupMl ?? 0)}${i.bean && i.bean !== 'arabica' ? '.' + i.bean : ''}@${Math.round(i.atMin)}`).join(','));
   if (state.halfLifeH !== CAFFEINE.halfLifeH.typical) q.set('hl', String(state.halfLifeH));
@@ -148,6 +155,7 @@ export function decodeDay(query: string): Result<{ intakes: Intake[]; halfLifeH:
     const [, kind, n, bean, at] = m;
     const atMin = Number(at);
     if (kind === 'esp') intakes.push({ kind: 'espresso', shots: Number(n), atMin });
+    else if (kind === 'mg') intakes.push({ kind: 'custom', mg: Number(n), atMin });
     else if (kind === 'decaf') intakes.push({ kind: 'decaf', cupMl: Number(n), atMin });
     else intakes.push({ kind: 'brewed', method: kind as MethodId, cupMl: Number(n), atMin, ...(bean ? { bean: bean as Bean } : {}) });
   }

@@ -26,9 +26,13 @@
   let pregnant = $state(false);
   let nowMin = $state<number | null>(null);
   let mounted = $state(false);
+  let example = $state(true);
+  const STORE = 'jayarr-caffeine-day-v1';
+  const todayKey = () => { const d = new Date(); return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`; };
 
   // add-drink form
-  let addKind = $state<'brewed' | 'espresso' | 'decaf'>('brewed');
+  let addKind = $state<'brewed' | 'espresso' | 'decaf' | 'custom'>('brewed');
+  let addMg = $state(150);
   let addMethod = $state<MethodId>('drip-machine');
   let addOz = $state(12);
   let addShots = $state(2);
@@ -73,16 +77,19 @@
 
   function describe(i: Intake) {
     if (i.kind === 'espresso') return i.shots === 1 ? 'Single espresso' : `${i.shots} espresso shots`;
+    if (i.kind === 'custom') return 'Drink with a known amount';
     const oz = r0(mlToFlOz(i.cupMl ?? 0));
     if (i.kind === 'decaf') return `${oz} oz decaf`;
     return `${oz} oz ${METHODS.find((m) => m.id === i.method)?.label.toLowerCase() ?? 'coffee'}`;
   }
   function add() {
     const atMin = toMin(addTime);
-    const i: Intake = addKind === 'espresso' ? { kind: 'espresso', shots: addShots, atMin }
+    const i: Intake = addKind === 'custom' ? { kind: 'custom', mg: addMg, atMin }
+      : addKind === 'espresso' ? { kind: 'espresso', shots: addShots, atMin }
       : addKind === 'decaf' ? { kind: 'decaf', cupMl: flOzToMl(addOz), atMin }
       : { kind: 'brewed', method: addMethod, cupMl: flOzToMl(addOz), atMin };
     if (!intakeMg(i).ok) return;
+    if (example) { intakes = []; example = false; }
     intakes = [...intakes, i];
     addTime = hhmm(Math.min(22 * 60, atMin + 180));
   }
@@ -90,20 +97,38 @@
   function retime(idx: number, v: string) { const t = toMin(v); if (Number.isFinite(t)) intakes = intakes.map((x, k) => (k === idx ? { ...x, atMin: t } : x)); }
 
   onMount(() => {
+    // A shared link loads once and is then cleared from the address bar; your own diary lives on this device only.
     const d = decodeDay(location.search);
-    if (d.ok) { intakes = d.value.intakes; halfLifeH = d.value.halfLifeH; bedMin = d.value.bedMin; pregnant = d.value.pregnant; }
+    if (d.ok) {
+      intakes = d.value.intakes; halfLifeH = d.value.halfLifeH; bedMin = d.value.bedMin; example = false;
+      history.replaceState(history.state, '', location.pathname);
+    } else {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORE) ?? 'null');
+        if (saved) {
+          halfLifeH = saved.halfLifeH ?? 5; bedMin = saved.bedMin ?? 1380; pregnant = !!saved.pregnant;
+          if (saved.day === todayKey() && Array.isArray(saved.intakes)) { intakes = saved.intakes.filter((x: Intake) => intakeMg(x).ok); example = false; }
+          else { intakes = []; example = false; }
+        }
+      } catch { /* storage unavailable: keep the example day */ }
+    }
     const n = new Date(); const m = n.getHours() * 60 + n.getMinutes(); nowMin = m < 360 ? m + 1440 : m;
     const timer = setInterval(() => { const d2 = new Date(); const m2 = d2.getHours() * 60 + d2.getMinutes(); nowMin = m2 < 360 ? m2 + 1440 : m2; }, 60000);
     mounted = true;
     return () => clearInterval(timer);
   });
   $effect(() => {
-    if (!mounted) return;
-    const q = sorted.length ? encodeDay({ intakes: sorted, halfLifeH, bedMin, pregnant }) : '';
-    history.replaceState(history.state, '', q ? `${location.pathname}?${q}` : location.pathname);
+    const snapshot = JSON.stringify({ day: todayKey(), intakes, halfLifeH, bedMin, pregnant });
+    if (!mounted || example) return;
+    try { localStorage.setItem(STORE, snapshot); } catch { /* private mode: nothing saved */ }
   });
   let copied = $state(false);
-  async function share() { try { await navigator.clipboard.writeText(location.href); copied = true; setTimeout(() => (copied = false), 2200); } catch { prompt('Copy this link:', location.href); } }
+  // Builds a link only when asked. It never includes the pregnancy setting.
+  async function share() {
+    const url = `${location.origin}${location.pathname}?${encodeDay({ intakes: sorted, halfLifeH, bedMin })}`;
+    try { await navigator.clipboard.writeText(url); copied = true; setTimeout(() => (copied = false), 2200); } catch { prompt('Copy this link:', url); }
+  }
+  function clearDay() { intakes = []; example = false; }
 
   let summary = $derived(sorted.length
     ? `Caffeine in your body across the day. Peak about ${rangeText(peak.min, peak.max)} mg near ${clock12(peak.tMin)}; about ${rangeText(atBed.min, atBed.max)} mg left at ${clock12(bedMin)}.`
@@ -174,6 +199,7 @@
   <div class="cols">
     <section class="list" aria-label="Your drinks today">
       <h3>Your drinks today</h3>
+      {#if example}<p class="example">This is an example day. Add a drink to start your own; it stays on this device.</p>{/if}
       {#if sorted.length === 0}<p class="empty">Add your first coffee of the day.</p>{/if}
       <ul>
         {#each rows as row (row.idx)}
@@ -189,7 +215,7 @@
       </ul>
       <div class="actions">
         <button type="button" class="ghost" onclick={share}>{copied ? 'Link copied' : 'Share this day'}</button>
-        {#if sorted.length}<button type="button" class="ghost" onclick={() => (intakes = [])}>Clear</button>{/if}
+        {#if sorted.length}<button type="button" class="ghost" onclick={clearDay}>Clear</button>{/if}
       </div>
     </section>
 
@@ -199,13 +225,17 @@
         <button type="button" aria-pressed={addKind === 'brewed'} onclick={() => (addKind = 'brewed')}>Brewed</button>
         <button type="button" aria-pressed={addKind === 'espresso'} onclick={() => (addKind = 'espresso')}>Espresso drinks</button>
         <button type="button" aria-pressed={addKind === 'decaf'} onclick={() => (addKind = 'decaf')}>Decaf</button>
+        <button type="button" aria-pressed={addKind === 'custom'} onclick={() => (addKind = 'custom')}>I know the mg</button>
       </div>
       {#if addKind === 'brewed'}
         <label class="fld"><span class="lbl">Brewed in</span>
           <select bind:value={addMethod}>{#each BREWERS as b (b.id)}<option value={b.id}>{b.label}</option>{/each}</select>
         </label>
       {/if}
-      {#if addKind === 'espresso'}
+      {#if addKind === 'custom'}
+        <label class="fld"><span class="lbl">Caffeine on the label (mg)</span><input type="number" min="0" max="1000" bind:value={addMg} /></label>
+        <p class="note">For a canned drink or a chain's published figure. It counts exactly, not as an estimate.</p>
+      {:else if addKind === 'espresso'}
         <div class="chips" role="group" aria-label="Espresso drink">
           {#each ESPRESSO_DRINKS as d (d.label)}<button type="button" aria-pressed={addEsp === d.label} onclick={() => { addEsp = d.label; addShots = d.shots; }}>{d.label}</button>{/each}
         </div>
@@ -281,6 +311,8 @@
   input[type='time'], select { font: 400 14px var(--cf-mono); padding: 7px 8px; border: 1px solid var(--rule); border-radius: 8px; background: #fff; color: var(--ink); min-height: 38px; }
   .x { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--rule); background: #fff; font-size: 18px; cursor: pointer; color: var(--ink-2); }
   .empty { color: var(--ink-3); }
+  .example { margin: -4px 0 10px; font-size: 13.5px; color: var(--crema-deep); background: #fff8ec; border-radius: 8px; padding: 7px 10px; }
+  input[type='number'] { font: 400 15px var(--cf-mono); padding: 7px 8px; border: 1px solid var(--rule); border-radius: 8px; background: #fff; min-height: 38px; width: 140px; }
   .seg, .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
   .seg button, .chips button { appearance: none; border: 1px solid var(--rule); background: #fff; border-radius: 999px; padding: 7px 12px; min-height: 36px; font: 500 13px/1.1 var(--cf-sans); color: var(--ink-2); cursor: pointer; }
   .seg button[aria-pressed='true'], .chips button[aria-pressed='true'] { background: var(--ink); color: #f3ede3; border-color: var(--ink); }
