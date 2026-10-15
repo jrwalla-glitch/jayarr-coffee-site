@@ -58,13 +58,17 @@ export function instantInDay(clockMin: number, w: DayWindow): number {
 }
 
 /**
- * A clock time typed in, as the nearest real moment to now (yesterday, today or tomorrow at that
- * time). At 05:45, "02:30" means a few hours ago; at 3 pm, "00:30" means tonight (blind Opus r2).
+ * A clock time typed in for the day you're looking at. It lands inside that diary day, so at 9 pm
+ * "08:30" is this morning (blind Opus r3: the nearest-moment rule sent it to tomorrow). The one
+ * exception: if that lands more than 12 hours ahead and the same time earlier today was within the
+ * last 12 hours, it means earlier (at 05:45, "02:30" is three hours ago, not tonight; Opus r2).
  */
-export function instantNearest(clockMin: number, now: number): number {
-  const n = new Date(now);
-  const cands = [-1, 0, 1].map((k) => localInstant(n.getFullYear(), n.getMonth(), n.getDate() + k, clockMin));
-  return cands.reduce((best, t) => (Math.abs(t - now) < Math.abs(best - now) ? t : best));
+export function placeTypedTime(clockMin: number, now: number, w: DayWindow): number {
+  const inDay = instantInDay(clockMin, w);
+  if (inDay - now <= 12 * 3600e3) return inDay;
+  const d = new Date(inDay);
+  const earlier = localInstant(d.getFullYear(), d.getMonth(), d.getDate() - 1, clockMin);
+  return now - earlier >= 0 && now - earlier <= 12 * 3600e3 ? earlier : inDay;
 }
 
 /** Real elapsed minutes from the diary date's midnight, so a 23- or 25-hour day stays exact. */

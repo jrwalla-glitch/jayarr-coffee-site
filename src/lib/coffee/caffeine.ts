@@ -90,6 +90,8 @@ export const GUIDANCE = [
 export type IntakeKind = 'brewed' | 'espresso' | 'decaf' | 'custom';
 export interface Intake {
   kind: IntakeKind;
+  /** The drink's name as the reader chose it ("Latte or cappuccino (double)"), shown in the list. */
+  label?: string;
   /** Minutes after midnight (may exceed 1440 for after-midnight drinks). */
   atMin: number;
   method?: MethodId;

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { dayWindow, instantInDay, instantNearest, minutesFromMidnight, dayView, migrateV1, placeSharedDay, toDiaryMinutes, bedInstant, pruneLog, dayStartClock, clockOf } from '../diary.ts';
+import { dayWindow, instantInDay, placeTypedTime, minutesFromMidnight, dayView, migrateV1, placeSharedDay, toDiaryMinutes, bedInstant, pruneLog, dayStartClock, clockOf } from '../diary.ts';
 import { inBodyAt } from '../caffeine.ts';
 
 // Run a block in a time zone, then restore it.
@@ -88,12 +88,17 @@ test('the log keeps a week and never drops recent or future drinks', () => {
   assert.deepEqual(pruneLog(log, now).map((x) => x.id), ['week', 'soon']);
 });
 
-test('a typed time means the nearest real moment (Opus r2: 02:30 entered at 05:45 jumped to tonight)', () => inTZ('America/New_York', () => {
-  const now = at('2026-10-15T09:45:00Z'); // 05:45 EDT
-  assert.equal(instantNearest(150, now), at('2026-10-15T06:30:00Z'), '02:30 this morning');
-  const afternoon = at('2026-10-15T19:00:00Z'); // 3 pm
-  assert.equal(instantNearest(30, afternoon), at('2026-10-16T04:30:00Z'), '00:30 tonight');
-  assert.equal(instantNearest(480, afternoon), at('2026-10-15T12:00:00Z'), '08:00 this morning');
+test('typed times land in the day you\'re viewing, with one "earlier today" exception (Opus r2 and r3)', () => inTZ('America/New_York', () => {
+  const at9pm = at('2026-10-16T01:00:00Z'); // Oct 15, 21:00 EDT
+  const w = dayWindow(at9pm, 180);
+  assert.equal(placeTypedTime(510, at9pm, w), at('2026-10-15T12:30:00Z'), '08:30 typed at 9 pm is this morning');
+  assert.equal(placeTypedTime(405, at9pm, w), at('2026-10-15T10:45:00Z'), '06:45 too');
+  assert.equal(placeTypedTime(30, at9pm, w), at('2026-10-16T04:30:00Z'), '00:30 is tonight');
+  const at0545 = at('2026-10-15T09:45:00Z');
+  assert.equal(placeTypedTime(150, at0545, dayWindow(at0545, 180)), at('2026-10-15T06:30:00Z'), '02:30 typed at 05:45 is three hours ago');
+  const at3pm = at('2026-10-15T19:00:00Z');
+  assert.equal(placeTypedTime(30, at3pm, dayWindow(at3pm, 180)), at('2026-10-16T04:30:00Z'), '00:30 typed at 3 pm is tonight');
+  assert.equal(placeTypedTime(480, at3pm, dayWindow(at3pm, 180)), at('2026-10-15T12:00:00Z'), '08:00 typed at 3 pm is this morning');
 }));
 
 import { applyOp, emptyStore, parseStore } from '../diary.ts';

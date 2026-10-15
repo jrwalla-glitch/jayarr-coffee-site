@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { METHODS, GUIDANCE, intakeMg, dayCurve, dailyTotal, inBodyAt, encodeDay, decodeDay, dayMinute, newDayAt, bedMinute, flOzToMl, mlToFlOz, buildRecipe,
-    DEFAULT_SETTINGS, dayWindow, dayStartClock, dayView, instantInDay, instantNearest, minutesFromMidnight, bedInstant, clockOf, migrateV1, placeSharedDay, toDiaryMinutes, applyOp, parseStore } from '../../lib/coffee/index.ts';
+    DEFAULT_SETTINGS, dayWindow, dayStartClock, dayView, instantInDay, placeTypedTime, minutesFromMidnight, bedInstant, clockOf, migrateV1, placeSharedDay, toDiaryMinutes, applyOp, parseStore } from '../../lib/coffee/index.ts';
   import type { Intake, MethodId, LoggedDrink, DiarySettings, DiaryStore, DiaryOp } from '../../lib/coffee/index.ts';
 
   // Your diary is a log of real moments (see diary.ts): "today" is a view over it, so nothing is
@@ -36,6 +36,8 @@
   let nowMs = $state(Date.now());
   let mounted = $state(false);
   let hlBeforePregnancy = $state<number | null>(null);
+  // A second tap confirms a change that removes your drinks (blind Opus r3: no confirm before).
+  let confirmAction = $state<'keep' | 'clear' | null>(null);
 
   // add-drink form
   let addKind = $state<'brewed' | 'espresso' | 'decaf' | 'custom'>('brewed');
@@ -70,7 +72,8 @@
   let lastNight = $derived(mode === 'own' ? log.filter((x) => x.at < win.start && x.at >= win.start - 12 * 3600e3).sort((a, b) => a.at - b.at) : []);
   let bedAt = $derived(mode === 'own' ? minutesFromMidnight(win, bedInstant(win, bedMin)) : bedMin);
   let nowAt = $derived(mode === 'own' ? minutesFromMidnight(win, nowMs) : mode === 'example' ? dayMinute(clockOf(nowMs), bedMin) : null);
-  let FROM = $derived(Math.min(6 * 60, ...sorted.map((i) => Math.floor((i.atMin - 30) / 60) * 60)));
+  // From 6 am, or earlier when the day starts earlier or a drink comes first (Opus r3: 03:10 showed nothing).
+  let FROM = $derived(Math.min(6 * 60, Math.floor((mode === 'own' ? minutesFromMidnight(win, win.start) : startClock) / 60) * 60, ...sorted.map((i) => Math.floor((i.atMin - 30) / 60) * 60)));
   let TO = $derived(Math.max(26 * 60, Math.ceil((Math.max(bedAt, ...sorted.map((i) => i.atMin)) + 60) / 60) * 60));
   // Axis labels from real instants on your own day, so a 23- or 25-hour day is labelled correctly.
   const labelAt = (t: number) => (mode === 'own' ? clock12(clockOf(win.midnight + t * 60000)) : clock12(t));
@@ -107,7 +110,7 @@
   // A cup bigger than one brewer makes is counted, and said to be more than one brew's worth.
   function oversize(i: Intake) { if (i.kind !== 'brewed' || !i.method || !i.cupMl) return false; const r = buildRecipe({ method: i.method, target: { cupMl: i.cupMl } }); return !r.ok && r.errors[0].code === 'over-capacity'; }
   function describe(i: Intake) {
-    if (i.kind === 'espresso') return i.shots === 1 ? 'Single espresso' : `${i.shots} espresso shots`;
+    if (i.kind === 'espresso') return i.label ?? (i.shots === 1 ? 'Single espresso' : `${i.shots} espresso shots`);
     if (i.kind === 'custom') return 'Drink with a known amount';
     const oz = r0(mlToFlOz(i.cupMl ?? 0));
     if (i.kind === 'decaf') return `${oz} oz decaf`;
@@ -115,7 +118,7 @@
     return `${oz} oz ${m?.label.toLowerCase() ?? 'coffee'}${oversize(i) ? ` (more than one ${m?.label.toLowerCase() ?? 'brewer'} makes)` : ''}`;
   }
   function newIntake(): Omit<Intake, 'atMin'> {
-    return addKind === 'custom' ? { kind: 'custom', mg: addMg } : addKind === 'espresso' ? { kind: 'espresso', shots: addShots }
+    return addKind === 'custom' ? { kind: 'custom', mg: addMg } : addKind === 'espresso' ? { kind: 'espresso', shots: addShots, label: addEsp }
       : addKind === 'decaf' ? { kind: 'decaf', cupMl: flOzToMl(addOz) } : { kind: 'brewed', method: addMethod, cupMl: flOzToMl(addOz) };
   }
   function add() {
@@ -125,7 +128,7 @@
     if (!check.ok) { addError = check.errors[0].message; return; }
     addError = '';
     if (mode === 'shared' && shared) shared.intakes = [...shared.intakes, { ...base, atMin: dayMinute(clock, shared.bedMin) } as Intake];
-    else { mode = 'own'; commit({ type: 'add', drink: { ...base, id: newId(), at: instantNearest(clock, nowMs) } as LoggedDrink }); }
+    else { mode = 'own'; commit({ type: 'add', drink: { ...base, id: newId(), at: placeTypedTime(clock, nowMs, win) } as LoggedDrink }); }
     addTime = hhmm(Math.min(22 * 60, clock + 180));
   }
   function remove(key: string) {
@@ -135,7 +138,7 @@
   function retime(key: string, v: string) {
     const clock = toClock(v);
     if (!Number.isFinite(clock)) return;
-    if (mode === 'own') commit({ type: 'retime', id: key, at: instantNearest(clock, nowMs) });
+    if (mode === 'own') commit({ type: 'retime', id: key, at: placeTypedTime(clock, nowMs, win) });
     else if (mode === 'shared' && shared) shared.intakes = shared.intakes.map((x, k) => (String(k) === key ? { ...x, atMin: dayMinute(clock, shared!.bedMin) } : x));
   }
   function clearDay() {
@@ -198,6 +201,7 @@
   // "Make this my day": the shared drinks replace today's in your log, placed by their clock times.
   function keepShared() {
     if (!shared) return;
+    confirmAction = null;
     // Only the drinks come across: your own half-life, bedtime and pregnancy setting stay yours (Muse r3).
     const w = dayWindow(Date.now(), dayStartClock(settings));
     commit({ type: 'replaceDay', start: w.start, end: w.end, drinks: placeSharedDay(shared.intakes, w, newId) });
@@ -306,7 +310,7 @@
       {#if mode === 'shared'}
         <div class="shared" role="status">
           <p>You're looking at a shared day. Your own diary on this device hasn't changed.</p>
-          <div class="actions"><button type="button" class="ghost" onclick={backToMine}>Back to my day</button><button type="button" class="ghost" onclick={keepShared}>Make this my day</button></div>
+          <div class="actions"><button type="button" class="ghost" onclick={backToMine}>Back to my day</button><button type="button" class="ghost" onclick={() => (ownView.today.length && !confirmAction ? (confirmAction = 'keep') : keepShared())}>{confirmAction === 'keep' ? `Replace my ${ownView.today.length} drink${ownView.today.length === 1 ? '' : 's'} today?` : 'Make this my day'}</button></div>
         </div>
       {/if}
       {#if !storageOk && mode !== 'shared'}<p class="example" role="status">This browser isn't letting the page save, so this diary lasts only while the tab is open.</p>{/if}
@@ -335,7 +339,7 @@
       {/if}
       <div class="actions">
         <button type="button" class="ghost" onclick={share}>{copied ? 'Link copied' : 'Share this day'}</button>
-        {#if sorted.length}<button type="button" class="ghost" onclick={clearDay}>Clear</button>{/if}
+        {#if sorted.length}<button type="button" class="ghost" onclick={() => (mode === 'own' && confirmAction !== 'clear' ? (confirmAction = 'clear') : (clearDay(), (confirmAction = null)))}>{confirmAction === 'clear' ? `Remove all ${sorted.length} today?` : 'Clear'}</button>{/if}
       </div>
     </section>
 
@@ -374,7 +378,7 @@
 
       <h3 class="settings">You</h3>
       <div class="seg" role="group" aria-label="How fast you clear caffeine">
-        {#each HALF_LIVES as hl (hl.h)}<button type="button" aria-pressed={halfLifeH === hl.h} onclick={() => setHalfLife(hl.h)}>{hl.label} ({hl.h} h)</button>{/each}
+        {#each HALF_LIVES as hl (hl.h)}<button type="button" aria-pressed={halfLifeH === hl.h} onclick={() => setHalfLife(hl.h)}>{hl.label} ({hl.h} h)</button>{/each}{#if !HALF_LIVES.some((hl) => hl.h === halfLifeH)}<button type="button" aria-pressed="true">{halfLifeH} h (from the link)</button>{/if}
       </div>
       <p class="note">{HALF_LIVES.find((h) => h.h === halfLifeH)?.note}</p>
       <div class="row">
