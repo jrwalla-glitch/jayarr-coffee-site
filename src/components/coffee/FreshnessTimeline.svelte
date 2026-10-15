@@ -9,9 +9,11 @@
   let use = $state<FreshUse>('filter');
   let storage = $state<Storage>('opened');
   let frozenOn = $state(isoLocal(new Date(Date.now() - 3 * 86400000)));
+  let thawed = $state(false);
+  let thawedOn = $state(isoLocal(new Date()));
   let mounted = $state(false);
 
-  let result = $derived(freshness({ roastDate, today, use, storage, ...(storage === 'frozen' ? { frozenOn } : {}) }));
+  let result = $derived(freshness({ roastDate, today, use, storage, ...(storage === 'frozen' ? { frozenOn, ...(thawed ? { thawedOn } : {}) } : {}) }));
   let r = $derived(result.ok ? result.value : null);
 
   // ── timeline ──
@@ -39,6 +41,7 @@
     if (q.get('use') === 'espresso') use = 'espresso';
     const s = q.get('storage'); if (s === 'sealed-bag' || s === 'opened' || s === 'frozen') storage = s;
     const f = q.get('frozen'); if (f && /^\d{4}-\d{2}-\d{2}$/.test(f)) frozenOn = f;
+    const th = q.get('thawed'); if (th && /^\d{4}-\d{2}-\d{2}$/.test(th)) { thawed = true; thawedOn = th; }
     mounted = true;
   });
   $effect(() => {
@@ -47,6 +50,7 @@
     if (use !== 'filter') q.set('use', use);
     if (storage !== 'opened') q.set('storage', storage);
     if (storage === 'frozen') q.set('frozen', frozenOn);
+    if (storage === 'frozen' && thawed) q.set('thawed', thawedOn);
     history.replaceState(history.state, '', `${location.pathname}?${q}`);
   });
 </script>
@@ -68,13 +72,19 @@
           <button type="button" aria-pressed={storage === 'frozen'} onclick={() => (storage = 'frozen')}>Frozen</button>
         </div>
       </div>
-      {#if storage === 'frozen'}<label class="fld"><span class="lbl">Frozen on</span><input type="date" bind:value={frozenOn} min={roastDate} max={today} /></label>{/if}
+      {#if storage === 'frozen'}
+        <label class="fld"><span class="lbl">Frozen on</span><input type="date" bind:value={frozenOn} min={roastDate} max={today} /></label>
+        <div class="fld"><span class="lbl">Out of the freezer?</span>
+          <label class="check"><input type="checkbox" bind:checked={thawed} /> Taken out</label>
+          {#if thawed}<input type="date" aria-label="Taken out on" bind:value={thawedOn} min={frozenOn} max={today} />{/if}
+        </div>
+      {/if}
     </div>
     <div class="read" aria-live="polite">
       {#if r}
         <span class="lbl">Day {r.daysSinceRoast}{r.effectiveDays !== r.daysSinceRoast ? ` (${r.effectiveDays} counting)` : ''}</span>
         <span class="stage">{r.stage.label}</span>
-        <span class="sub">Best {fmt(r.peakFrom)} – {fmt(r.peakTo)} · use by about {fmt(r.useBy)}</span>
+        <span class="sub">Usually best {fmt(r.peakFrom)} – {fmt(r.peakTo)} · use by about {fmt(r.useBy)}</span>
       {:else if !result.ok}
         <span class="err">{result.errors[0].message}</span>
       {/if}
@@ -86,7 +96,7 @@
       {#if r}
         {#each r.stages as s (s.id)}
           <rect x={x(s.from)} y={TOP} width={x(Math.min(s.to, DAYS)) - x(s.from)} height={BASE - TOP} fill={FILL[s.id]} />
-          {#if s.from < DAYS && x(Math.min(s.to, DAYS)) - x(s.from) > 64}<text x={(x(s.from) + x(Math.min(s.to, DAYS))) / 2} y={BASE + 22} text-anchor="middle" class="band" class:on={s.id === r.stage.id}>{s.label}</text>{/if}
+          {#if s.from < DAYS && x(Math.min(s.to, DAYS)) - x(s.from) > 64}<text x={(x(s.from) + x(Math.min(s.to, DAYS))) / 2} y={BASE + 22} text-anchor="middle" class="band" class:on={s.id === r.stage.id}>{s.short}</text>{/if}
         {/each}
       {/if}
       <path d={CO2_PATH} fill="none" stroke="#3f8796" stroke-width="2" stroke-dasharray="5 4" />
@@ -120,6 +130,7 @@
     <div class="advice">
       <p class="what">{r.stage.advice}</p>
       {#each r.notes as n (n)}<p class="note">{n}</p>{/each}
+      <p class="note">{r.uncertainty}</p>
       {#if r.stage.id === 'fading' || r.stage.id === 'stale'}<p class="note">Tasting flat? The <a href="/tools/fix-my-coffee/?method=v60&symptom=flat">Coffee Doctor</a> can tell freshness from water problems.</p>{/if}
     </div>
   {/if}
@@ -159,4 +170,6 @@
   button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid var(--crema-deep); outline-offset: 2px; }
   @media (max-width: 760px) { .top { grid-template-columns: 1fr; } .read { border-left: 0; border-top: 1px solid var(--rule); } .stage { font-size: 42px; } .band { font-size: 11px; } }
   @media (prefers-reduced-motion: reduce) { .here { transition: none; } .puff { animation: none; opacity: .8; } }
+  .check { display: flex; gap: 8px; align-items: center; font-size: 14.5px; min-height: 38px; }
+  .check input { width: 18px; height: 18px; }
 </style>

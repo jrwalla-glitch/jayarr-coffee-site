@@ -35,3 +35,34 @@ test('future, missing and impossible dates fail cleanly', () => {
   assert.equal(freshness({ roastDate: '', today: '2026-10-15', use: 'filter', storage: 'opened' }).ok, false);
   assert.equal(freshness({ roastDate: '2026-10-01', today: '2026-10-15', use: 'filter', storage: 'frozen', frozenOn: '2026-09-01' }).ok, false);
 });
+
+test('impossible calendar dates are rejected, not rolled over (Astra: 2026-02-31 was day 1)', () => {
+  const feb31 = freshness({ roastDate: '2026-02-31', today: '2026-03-04', use: 'filter', storage: 'opened' });
+  assert.equal(feb31.ok, false); assert.equal(feb31.errors[0].code, 'impossible-date');
+  assert.equal(freshness({ roastDate: '2026-02-29', today: '2026-03-04', use: 'filter', storage: 'opened' }).ok, false, '2026 is not a leap year');
+  assert.equal(freshness({ roastDate: '2026-13-01', today: '2026-10-15', use: 'filter', storage: 'opened' }).ok, false);
+  assert.equal(freshness({ roastDate: '2026-04-31', today: '2026-10-15', use: 'filter', storage: 'opened' }).ok, false);
+  assert.equal(freshness({ roastDate: '2026-10-01', today: '2026-10-32', use: 'filter', storage: 'opened' }).ok, false);
+});
+
+test('leap days count, and daylight-saving changes neither add nor lose a day', () => {
+  assert.equal(ok(freshness({ roastDate: '2028-02-28', today: '2028-03-01', use: 'filter', storage: 'opened' })).daysSinceRoast, 2);
+  assert.equal(ok(freshness({ roastDate: '2028-02-29', today: '2028-03-07', use: 'filter', storage: 'opened' })).daysSinceRoast, 7);
+  assert.equal(ok(freshness({ roastDate: '2026-03-07', today: '2026-03-09', use: 'filter', storage: 'opened' })).daysSinceRoast, 2);
+  assert.equal(ok(freshness({ roastDate: '2026-10-31', today: '2026-11-02', use: 'filter', storage: 'opened' })).daysSinceRoast, 2);
+  assert.equal(ok(freshness({ roastDate: '2026-03-28', today: '2026-03-30', use: 'filter', storage: 'opened' })).daysSinceRoast, 2, 'EU change');
+});
+
+test('thawed beans: the clock runs again from the day they came out', () => {
+  const r = ok(freshness({ roastDate: '2026-06-01', today: '2026-10-15', use: 'filter', storage: 'frozen', frozenOn: '2026-06-10', thawedOn: '2026-10-05' }));
+  assert.equal(r.effectiveDays, 9 + 10);
+  assert.equal(freshness({ roastDate: '2026-06-01', today: '2026-10-15', use: 'filter', storage: 'frozen', frozenOn: '2026-06-10', thawedOn: '2026-06-01' }).ok, false);
+});
+
+test('verdicts are hedged and every result says the windows are typical', () => {
+  for (const use of ['filter', 'espresso']) for (const st of freshnessStages(use)) {
+    assert.doesNotMatch(`${st.label} ${st.advice}`, /^Peak$|The best window|by now\. Fine/);
+  }
+  const r = ok(freshness({ roastDate: '2026-10-01', today: '2026-10-15', use: 'filter', storage: 'sealed-bag' }));
+  assert.match(r.uncertainty, /typical windows, not a forecast/);
+});

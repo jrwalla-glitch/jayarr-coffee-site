@@ -10,18 +10,18 @@ export type FreshUse = 'filter' | 'espresso';
 export type Storage = 'sealed-bag' | 'opened' | 'frozen';
 export type StageId = 'resting' | 'opening' | 'peak' | 'good' | 'fading' | 'stale';
 
-export interface Stage { id: StageId; label: string; from: number; to: number; advice: string }
+export interface Stage { id: StageId; label: string; short: string; from: number; to: number; advice: string }
 
 /** Day boundaries since roasting. Espresso rests a few days longer (verify). */
 export function stages(use: FreshUse): Stage[] {
   const restEnd = use === 'espresso' ? 7 : 4;
   return [
-    { id: 'resting', label: 'Resting', from: 0, to: restEnd, advice: 'Too fresh: trapped CO₂ makes it brew unevenly. Give it a few more days.' },
-    { id: 'opening', label: 'Opening up', from: restEnd, to: 7, advice: 'Ready to brew; it will keep getting sweeter for a few days.' },
-    { id: 'peak', label: 'Peak', from: 7, to: 21, advice: 'The best window. Brew it.' },
-    { id: 'good', label: 'Still good', from: 21, to: 30, advice: 'Past the peak but good. Finish it this week, or freeze what you won\'t use.' },
-    { id: 'fading', label: 'Fading', from: 30, to: 60, advice: 'Aroma is fading. Brew a little finer or hotter, and buy fresher next time.' },
-    { id: 'stale', label: 'Stale', from: 60, to: Number.POSITIVE_INFINITY, advice: 'Flat and papery by now. Fine for cold brew or baking; not for a good cup.' },
+    { id: 'resting', short: 'Resting', label: 'Probably still resting', from: 0, to: restEnd, advice: 'Likely too fresh: trapped CO₂ can make it brew unevenly. Another few days usually helps.' },
+    { id: 'opening', short: 'Opening up', label: 'Opening up', from: restEnd, to: 7, advice: 'Ready to brew; most coffees keep getting sweeter for a few more days.' },
+    { id: 'peak', short: 'Usually best', label: 'Likely at its best', from: 7, to: 21, advice: 'Most coffees taste their best around now. Brew it.' },
+    { id: 'good', short: 'Still good', label: 'Probably still good', from: 21, to: 30, advice: 'Typically past its best but still good. Finish it soon, or freeze what you won\'t use.' },
+    { id: 'fading', short: 'Fading', label: 'Likely fading', from: 30, to: 60, advice: 'Aroma usually fades by now. Taste it: if it\'s dull, brew a little finer or hotter, and buy fresher next time.' },
+    { id: 'stale', short: 'Stale', label: 'Likely stale', from: 60, to: Number.POSITIVE_INFINITY, advice: 'Probably flat by now. Taste it: if it\'s dull or papery, it\'s still fine for cold brew or baking.' },
   ];
 }
 
@@ -33,6 +33,8 @@ export interface FreshnessInput {
   storage: Storage;
   /** For frozen beans: the day they went into the freezer. Days frozen don't count. */
   frozenOn?: string;
+  /** For frozen beans that have come out: the clock runs again from this day. */
+  thawedOn?: string;
 }
 
 export interface FreshnessResult {
@@ -45,15 +47,25 @@ export interface FreshnessResult {
   useBy: string;
   stages: Stage[];
   notes: string[];
+  /** Why these are typical windows, not a forecast for this particular bag. */
+  uncertainty: string;
 }
 
 const DAY = 86400000;
-const parse = (s: string) => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s ?? ''); if (!m) return NaN; return Date.UTC(+m[1], +m[2] - 1, +m[3]); };
+// Calendar days in UTC, so daylight-saving changes never add or lose a day. Impossible dates
+// (Feb 31) are rejected rather than rolled into the next month.
+const parse = (s: string) => {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s ?? '');
+  if (!m) return NaN;
+  const t = Date.UTC(+m[1], +m[2] - 1, +m[3]);
+  const d = new Date(t);
+  return d.getUTCFullYear() === +m[1] && d.getUTCMonth() === +m[2] - 1 && d.getUTCDate() === +m[3] ? t : NaN;
+};
 const iso = (t: number) => new Date(t).toISOString().slice(0, 10);
 
 export function freshness(input: FreshnessInput): Result<FreshnessResult> {
   const roast = parse(input.roastDate), today = parse(input.today);
-  if (!finite(roast)) return failure('bad-date', 'roastDate', 'Enter the roast date from the bag.');
+  if (!finite(roast)) return /^\d{4}-\d{2}-\d{2}$/.test(input.roastDate ?? '') ? failure('impossible-date', 'roastDate', 'That date doesn\'t exist: check the day and month on the bag.') : failure('bad-date', 'roastDate', 'Enter the roast date from the bag.');
   if (!finite(today)) return failure('bad-date', 'today', 'Today\'s date is missing.');
   if (roast > today) return failure('future', 'roastDate', 'That roast date is in the future. Check the bag: some show a best-by date instead.');
   const days = Math.round((today - roast) / DAY);
@@ -63,16 +75,19 @@ export function freshness(input: FreshnessInput): Result<FreshnessResult> {
   if (input.storage === 'frozen') {
     const f = parse(input.frozenOn ?? '');
     if (!finite(f) || f < roast || f > today) return failure('bad-date', 'frozenOn', 'Enter the day the beans went into the freezer (on or after the roast date).');
-    frozenDays = Math.round((today - f) / DAY);
-    notes.push('Days in a sealed freezer bag barely count. Take out only what you need and don\'t refreeze it.');
+    const out = input.thawedOn ? parse(input.thawedOn) : today;
+    if (!finite(out) || out < f || out > today) return failure('bad-date', 'thawedOn', 'Enter the day they came out of the freezer (on or after the day they went in).');
+    frozenDays = Math.round((out - f) / DAY);
+    notes.push(input.thawedOn ? 'The clock runs again from the day they came out. Don\'t refreeze them.' : 'Days in a sealed freezer bag barely count. Take out only what you need and don\'t refreeze it.');
   }
-  if (input.storage === 'opened') notes.push('Once opened, squeeze the air out and reseal; keep it cool, dark and dry. Never in the fridge.');
+  if (input.storage === 'opened') notes.push('Opened bags go stale faster than sealed ones. Squeeze the air out and reseal; keep it cool, dark and dry, and out of the fridge.');
   const st = stages(input.use);
   const eff = days - frozenDays;
   const stage = st.find((s) => eff >= s.from && eff < s.to) ?? st[st.length - 1];
   const shift = frozenDays * DAY;
   return success({
     daysSinceRoast: days, effectiveDays: eff, stage, stages: st, notes,
+    uncertainty: 'These are typical windows, not a forecast for your bag: roast level, the bag (one-way valve, nitrogen flush) and storage can move them by days to weeks. Your taste is the final check.',
     peakFrom: iso(roast + 7 * DAY + shift), peakTo: iso(roast + 21 * DAY + shift), useBy: iso(roast + 30 * DAY + shift),
   });
 }
