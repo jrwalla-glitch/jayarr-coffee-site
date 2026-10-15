@@ -54,6 +54,17 @@ test('guidance lines are in the agencies\' own terms', () => {
   assert.ok(CAFFEINE.VERIFY.length > 0);
 });
 
+test('R5: the FDA and ACOG lines quote the current pages word for word, not the old or paraphrased text', () => {
+  const fda = GUIDANCE.find((g) => g.id === 'fda-adult-daily'), acog = GUIDANCE.find((g) => g.id === 'acog-pregnancy');
+  // FDA "Spilling the Beans", content current as of 8/28/2024.
+  assert.ok(fda.wording.includes('“For most adults, the FDA has cited 400 milligrams a day — that\'s about two to three 12-fluid-ounce cups of coffee — as an amount not generally associated with negative effects.”'), fda.wording);
+  assert.ok(!/healthy adults|dangerous/.test(fda.wording), 'not the older FDA text');
+  // ACOG Committee Opinion 462, abstract.
+  assert.ok(acog.wording.includes('“Moderate caffeine consumption (less than 200 mg per day) does not appear to be a major contributing factor in miscarriage or preterm birth.'), acog.wording);
+  assert.ok(!/advises|keep caffeine under/.test(acog.wording), 'not paraphrased as advice');
+  assert.equal(acog.mg, 200);
+});
+
 import { intakeMg, dayCurve, dailyTotal, inBodyAt, encodeDay, decodeDay, dayMinute, diaryDayKey, newDayAt, bedMinute } from '../index.ts';
 
 test('a day: totals add up, bedtime level is below the peak, ranges stay ordered', () => {

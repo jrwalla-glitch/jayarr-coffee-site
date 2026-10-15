@@ -302,7 +302,7 @@
         <span class="fill hi" style:width="{Math.min(100, (total.max / (guidance.mg * 1.5)) * 100)}%"></span>
         <span class="mark" style:left="{(1 / 1.5) * 100}%"></span>
       </div>
-      <span class="sub">{settings.pregnant && mode !== 'shared' ? `ACOG advises under ${guidance.mg} mg a day in pregnancy; talk to your clinician about your own case` : `${guidance.who} reference: ${guidance.mg} mg a day for healthy adults; a population guide, not a personal limit`}</span>
+      <span class="sub">{settings.pregnant && mode !== 'shared' ? `ACOG: “moderate caffeine consumption (less than ${guidance.mg} mg per day)”; ask your clinician about your own case` : `${guidance.who} reference: ${guidance.mg} mg a day for most adults; a population guide, not a personal limit`}</span>
     </div>
   </div>
 

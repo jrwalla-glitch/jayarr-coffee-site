@@ -82,11 +82,15 @@ export function caffeineCurve(intakes: { atMin: number; mg: number }[], fromMin:
   return out;
 }
 
-/** Agency guidance, in the agencies' own terms. Wording to be checked against the primary pages. */
+/**
+ * Agency guidance, quoted in the agencies' own words (R5). A population guide, never a personal limit.
+ * FDA: "Spilling the Beans: How Much Caffeine is Too Much?", content current as of 8/28/2024 (its
+ * footnote mark after "milligrams" left out). ACOG: Committee Opinion 462 (2010, reaffirmed), abstract.
+ */
 export const GUIDANCE = [
-  { id: 'fda-adult-daily', mg: 400, per: 'day', who: 'FDA', wording: 'For healthy adults, the FDA has cited 400 mg a day as an amount not generally associated with dangerous, negative effects.' },
+  { id: 'fda-adult-daily', mg: 400, per: 'day', who: 'FDA', wording: 'The FDA says, “For most adults, the FDA has cited 400 milligrams a day — that\'s about two to three 12-fluid-ounce cups of coffee — as an amount not generally associated with negative effects.”' },
   { id: 'efsa-single-dose', mg: 200, per: 'dose', who: 'EFSA', wording: 'EFSA found single doses of up to 200 mg raise no safety concerns for healthy adults.' },
-  { id: 'acog-pregnancy', mg: 200, per: 'day', who: 'ACOG', wording: 'ACOG advises pregnant people to keep caffeine under 200 mg a day.' },
+  { id: 'acog-pregnancy', mg: 200, per: 'day', who: 'ACOG', wording: 'ACOG (Committee Opinion 462) says, “Moderate caffeine consumption (less than 200 mg per day) does not appear to be a major contributing factor in miscarriage or preterm birth. The relationship of caffeine to growth restriction remains undetermined.”' },
 ] as const;
 
 // ── A day of drinks (Caffeine Calculator) ──
