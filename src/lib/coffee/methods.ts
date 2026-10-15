@@ -137,7 +137,7 @@ export const METHODS: Method[] = [
     base: { doseG: 106, waterG: 1893, by: "Scott Rao's batch-brew ratio (3.75 oz to 64 oz)" },
     steps: [
       { kind: 'prep', atS: 0, text: 'Rinse the filter, add the coffee, level the bed. Put the water in the tank.', cue: '' },
-      { kind: 'pour', atS: 0, text: 'Start the brewer.', cue: '' },
+      { kind: 'pour', atS: 0, untilS: 240, toG: 1893, text: 'Start the brewer. It showers the water over about four minutes.', cue: '' },
       { kind: 'stir', atS: 10, text: 'Stir the slurry gently 5–10 seconds after the water starts.', cue: 'Every ground wet.' },
       { kind: 'stir', atS: 240, text: 'Stir once more when the spray head stops.', cue: 'Evens out the bed.' },
       { kind: 'serve', atS: 300, text: 'Serve within 30 minutes.', cue: 'Keeping it on a hot plate stews it.' },

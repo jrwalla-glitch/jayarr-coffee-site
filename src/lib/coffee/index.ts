@@ -4,3 +4,5 @@ export { buildRecipe, estimateStrength } from './brew.ts';
 export { SOURCES } from './sources.ts';
 export { gToOz, ozToG, mlToFlOz, flOzToMl, cToF, fToC, approxTablespoons, G_PER_OZ, ML_PER_FL_OZ } from './units.ts';
 export { CAFFEINE, GUIDANCE, estimateBrewedMg, espressoMg, caffeineInBody, caffeineCurve } from './caffeine.ts';
+export { simulate } from './simulate.ts';
+export type { Frame, Simulation } from './simulate.ts';
