@@ -32,6 +32,15 @@ test('R1: the 63 mg shot is sourced to USDA FoodData Central 171891, not Newcast
   assert.equal(Math.round(212 * 29.6 / 100), CAFFEINE.espressoShotMg.typical);
 });
 
+test('R4: half-life settings are 3, 5 and 8 h, sourced to primary figures; no unsourced 1.5–10 h range', () => {
+  assert.deepEqual(CAFFEINE.halfLifeH, { typical: 5, faster: 3, slower: 8 });
+  assert.equal(CAFFEINE.halfLifeH.min, undefined); assert.equal(CAFFEINE.halfLifeH.max, undefined);
+  for (const id of ['iom-2001', 'knutti-1981', 'knutti-1982', 'gardiner-2025']) { assert.ok(CAFFEINE.sourceIds.includes(id), id); assert.ok(SOURCES[id], id); }
+  // Typical sits inside Gardiner 2025's "typically 3–6 hours"; Knutti 1982's late-pregnancy rise, 3 h → 10.5 h, is 3.5 times.
+  assert.ok(CAFFEINE.halfLifeH.typical >= 3 && CAFFEINE.halfLifeH.typical <= 6);
+  assert.equal(10.5 / 3, 3.5);
+});
+
 test('body curve: rises to a peak near 45 minutes, then halves every half-life', () => {
   const intakes = [{ atMin: 0, mg: 100 }];
   const curve = caffeineCurve(intakes, 0, 600, 5);

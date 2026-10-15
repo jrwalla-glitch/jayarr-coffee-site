@@ -25,8 +25,14 @@ export const CAFFEINE = {
     'cold-brew': { min: 0.6, max: 0.9 },
   },
   decafPer6Oz: { min: 3, max: 6 },
-  halfLifeH: { typical: 5, min: 1.5, max: 10 },
-  sourceIds: ['synthesis', 'usda-fdc-espresso'],
+  /**
+   * The calculator's three half-life settings (R4). Primary averages: 2.5–4.5 h in adult men (IOM 2001),
+   * 3.4 h, range 2–5 (Knutti 1981), "typically 3–6 hours" (Gardiner 2025). Typical 5 h is the middle
+   * setting, at the slow end of those, so bedtime figures lean high. The old "1.5–10 h" range had no
+   * primary source and is gone. Late pregnancy: 3 h rising to 10.5 h, about 3½ times (Knutti 1982).
+   */
+  halfLifeH: { typical: 5, faster: 3, slower: 8 },
+  sourceIds: ['synthesis', 'usda-fdc-espresso', 'iom-2001', 'knutti-1981', 'knutti-1982', 'gardiner-2025'],
   VERIFY: ['beanFraction (arabica/robusta, roasted basis)', 'extractionFraction by method', 'absorption rate used by the curve'],
 } as const;
 

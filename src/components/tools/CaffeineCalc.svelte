@@ -119,12 +119,12 @@
     <span class="section-label">Good to know</span>
     <div class="notes-grid">
       <div class="note-card">
-        <h4 class="note-title">Half-life: ~5 hours</h4>
-        <p class="note-text">Caffeine's half-life averages 5 hours but ranges 1.5–10 hours depending on genetics. A 3pm coffee means ~half is still active at 8pm.</p>
+        <h4 class="note-title">Half-life: a few hours</h4>
+        <p class="note-text">Studies put the average half-life at 2.5–4.5 hours in adult men (IOM, 2001) and 3.4 hours, range 2–5 (Knutti, 1981); a 2025 sleep trial says “typically 3–6 hours.” At 5 hours, a middle setting, about half of a 3 pm coffee is still in you at 8 pm.</p>
       </div>
       <div class="note-card">
         <h4 class="note-title">Pregnancy</h4>
-        <p class="note-text">ACOG says, “Moderate caffeine consumption (less than 200 mg per day) does not appear to be a major contributing factor in miscarriage or preterm birth.” Ask your clinician about your own case. Caffeine crosses the placenta and its half-life extends up to 3x in the third trimester. <a href="/blog/how-is-coffee-decaffeinated/" class="note-link">Decaf options &rarr;</a></p>
+        <p class="note-text">ACOG says, “Moderate caffeine consumption (less than 200 mg per day) does not appear to be a major contributing factor in miscarriage or preterm birth.” Ask your clinician about your own case. In one study the half-life rose from 3 hours to 10.5 hours in the last four weeks of pregnancy, about 3½ times as long (Knutti, 1982). <a href="/blog/how-is-coffee-decaffeinated/" class="note-link">Decaf options &rarr;</a></p>
       </div>
       <div class="note-card">
         <h4 class="note-title">Fast vs slow metabolizers</h4>

@@ -49,7 +49,7 @@ const efsa = GUIDANCE.find((g) => g.id === 'efsa-single-dose')!;
 				<a href="/tools/" class="cf-back">← All tools</a>
 				<p class="cf-kicker">Caffeine Calculator</p>
 				<h1>How much caffeine is <em>still in you at bedtime?</em></h1>
-				<p class="cf-lede">Add what you drink and when. You see today's total, and a curve of how much caffeine is in your body hour by hour, falling by half roughly every five hours.</p>
+				<p class="cf-lede">Add what you drink and when. You see today's total, and a curve of how much caffeine is in your body hour by hour, falling by half every few hours (every five at the typical setting).</p>
 			</section>
 			<section class="cf-tool" aria-label="Caffeine Calculator"><CaffeineDay client:load /></section>
 
@@ -74,7 +74,8 @@ const efsa = GUIDANCE.find((g) => g.id === 'efsa-single-dose')!;
 				<p>Per sip, yes; per drink, usually not. A single shot holds about {CAFFEINE.espressoShotMg.typical} mg in about an ounce (the USDA lists espresso at 212 mg per 100 g, which is 62.8 mg per fluid ounce, calculated), so it is far more concentrated, but an 8 oz cup of drip coffee carries more in total. A latte or cappuccino made with a double shot lands near {Math.round(double.min)}–{Math.round(double.max)} mg, close to a cup of drip.</p>
 
 				<h2>How long caffeine stays in your body</h2>
-				<p>The body clears caffeine at a steady proportional rate: on average, half of it is gone after about five hours, but that half-life ranges from about 1.5 to 10 hours between people. Smoking speeds it up; pregnancy and oral contraceptives slow it down, and late in pregnancy it can take up to three times longer. A 200 mg coffee at 3 pm can leave around 100 mg in you at 8 pm and around 50 mg near 1 am, which is why an afternoon coffee can still matter at bedtime.</p>
+				<p>The body clears caffeine at a steady proportional rate, measured as a half-life: the time it takes to clear half of it. Studies put the average at about 2.5 to 4.5 hours in adult men (Institute of Medicine, 2001) and 3.4 hours, with a range of 2 to 5, in men and non-pregnant women (Knutti, 1981); the authors of a 2025 sleep trial say "typically 3–6 hours." The calculator's typical setting, 5 hours, is the middle of its three settings (3, 5 and 8 hours) and sits at the slow end of those averages, so its bedtime figures lean high.</p>
+				<p>Smoking speeds clearance up. Oral contraceptives can double the half-life, and pregnancy slows it a lot: in one study it rose from 3 hours to 10.5 hours in the last four weeks of pregnancy, about 3½ times as long (Knutti, 1982). At the typical setting, a 200 mg coffee at 3 pm leaves around 100 mg in you at 8 pm and around 50 mg near 1 am, which is why an afternoon coffee can still matter at bedtime.</p>
 				<p>The calculator draws that curve for your day. It also allows for about 45 minutes for caffeine to be absorbed, so each drink rises before it falls. It is an illustration of the average pattern, not a measurement of your body.</p>
 
 				<h2>How much is too much?</h2>
@@ -97,7 +98,8 @@ const efsa = GUIDANCE.find((g) => g.id === 'efsa-single-dose')!;
 				<ul class="cf-sources">
 					<li>{SOURCES['usda-fdc-espresso'].author}, <cite>{SOURCES['usda-fdc-espresso'].title}</cite> ({SOURCES['usda-fdc-espresso'].year}): {SOURCES['usda-fdc-espresso'].where}.</li>
 					<li>U.S. Food and Drug Administration, <cite>Spilling the Beans: How Much Caffeine is Too Much?</cite>, consumer update, content current as of August 28, 2024; European Food Safety Authority, scientific opinion on the safety of caffeine (2015); American College of Obstetricians and Gynecologists, <cite>Committee Opinion No. 462: Moderate Caffeine Consumption During Pregnancy</cite> (2010, reaffirmed).</li>
-					<li>{SOURCES.synthesis.author}, <cite>{SOURCES.synthesis.title}</cite>: §15 caffeine metabolism and half-life, §17 caffeine by brew method.</li>
+					{['iom-2001', 'knutti-1981', 'knutti-1982', 'gardiner-2025'].map((id) => SOURCES[id]).map((s) => <li>{s.author}, <cite>{s.title}</cite> ({s.year}): {s.where}.</li>)}
+					<li>{SOURCES.synthesis.author}, <cite>{SOURCES.synthesis.title}</cite>: §15 caffeine absorption, §17 caffeine by brew method.</li>
 				</ul>
 			</article>
 		</main>
