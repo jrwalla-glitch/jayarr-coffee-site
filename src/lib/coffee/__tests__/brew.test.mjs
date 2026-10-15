@@ -108,3 +108,37 @@ test('roast moves temperature within the method range and grind within its band'
 test('recipes are deterministic', () => {
   assert.deepEqual(buildRecipe({ method: 'chemex', target: { cupMl: 500 } }), buildRecipe({ method: 'chemex', target: { cupMl: 500 } }));
 });
+
+test('absurdly small doses are refused, with a usable minimum (Muse: 0.1 g made a 1.4 ml recipe)', () => {
+  for (const method of ['v60', 'french-press', 'espresso', 'moka', 'aeropress']) {
+    const r = buildRecipe({ method, target: { doseG: 0.1 } });
+    assert.equal(r.ok, false, method); assert.equal(r.errors[0].code, 'too-small');
+    assert.equal(buildRecipe({ method, target: r.errors[0].patch.target }).ok, true, `${method} patch builds`);
+  }
+});
+
+test('small-batch warnings use each brewer\'s own language', () => {
+  const moka = buildRecipe({ method: 'moka', target: { doseG: 4 } });
+  assert.ok(moka.ok); assert.doesNotMatch(moka.warnings.map((w) => w.message).join(' '), /drains/);
+});
+
+test('immersion strength uses the water in contact (Opus: cold brew TDS read about 47% high)', () => {
+  const near = (a, b, eps) => assert.ok(Math.abs(a - b) <= eps, `${a} vs ${b}`);
+  // French press: TDS = EY × dose ÷ water added.
+  const fp = buildRecipe({ method: 'french-press', target: { cupMl: 473 } }).value;
+  near(fp.strength.tdsPct.min, (fp.strength.eyPct.min * fp.doseG) / fp.waterG, 1e-9);
+  // Cold brew served 1:1: the concentrate's strength, halved.
+  const cb = buildRecipe({ method: 'cold-brew', target: { cupMl: 946 } }).value;
+  const conc = (cb.strength.eyPct.min * cb.doseG) / cb.waterG;
+  near(cb.strength.tdsPct.min, conc / 2, 1e-9);
+  // Percolation is unchanged: EY × dose ÷ drink.
+  const v = buildRecipe({ method: 'v60', target: { cupMl: 355 } }).value;
+  near(v.strength.tdsPct.min, (v.strength.eyPct.min * v.doseG) / v.cupMl, 1e-9);
+});
+
+test('a moka or espresso over capacity is offered a dose, not a cup size', () => {
+  for (const method of ['moka', 'espresso']) {
+    const r = buildRecipe({ method, target: { doseG: 60 } });
+    assert.equal(r.ok, false); assert.ok('doseG' in r.errors[0].patch.target, method);
+  }
+});

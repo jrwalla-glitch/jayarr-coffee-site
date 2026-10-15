@@ -27,3 +27,10 @@ test('junk links fail cleanly', () => {
     assert.equal(decodeBrew(q).ok, false, q);
   }
 });
+
+test('decimal amounts survive the link (Astra: 350.5 mL saved as 351, 320.5 g water as 321)', () => {
+  for (const target of [{ cupMl: 350.5 }, { waterG: 320.5 }, { doseG: 18.5 }]) {
+    const d = decodeBrew(encodeBrew({ method: 'v60', target, strength: 'classic', roast: 'medium', units: 'metric' }));
+    assert.deepEqual(d.value.target, target);
+  }
+});

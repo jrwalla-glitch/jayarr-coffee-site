@@ -94,13 +94,22 @@ export function buildRecipe(input: RecipeInput): Result<Recipe> {
     const message = m.id === 'aeropress'
       ? `That needs ${Math.round(doseG)} g of coffee; one AeroPress takes about ${m.capacity.maxDoseG} g. Make two presses, or choose a smaller cup.`
       : `That needs ${Math.round(doseG)} g of coffee, more than a ${m.label} handles well (about ${m.capacity.maxDoseG} g).`;
-    return failure('over-capacity', field, message, { target: { cupMl: Math.floor(maxCup) } });
+    // Dose-set brewers (espresso, moka) get a dose back; the others a cup size.
+    return failure('over-capacity', field, message, { target: m.id === 'espresso' || m.id === 'moka' ? { doseG: m.capacity.maxDoseG } : { cupMl: Math.floor(maxCup) } });
   }
   if (m.capacity.maxWaterG && m.id !== 'aeropress' && waterG && waterG > m.capacity.maxWaterG) {
     return failure('over-capacity', field, `That's ${Math.round(waterG)} g of water, more than a typical ${m.label} holds.`, { target: { waterG: m.capacity.maxWaterG } });
   }
+  // Far below the brewer's smallest sensible dose there's no recipe worth following.
+  if (doseG < m.capacity.minDoseG / 2) {
+    return failure('too-small', field, `That's only ${doseG < 1 ? doseG.toFixed(1) : Math.round(doseG)} g of coffee, too little for a ${m.label} to brew well. Try at least ${m.capacity.minDoseG} g.`, { target: { doseG: m.capacity.minDoseG } });
+  }
   if (doseG < m.capacity.minDoseG) {
-    warnings.push({ code: 'small-batch', message: `Below about ${m.capacity.minDoseG} g the bed is shallow and drains fast; expect to grind a little finer.` });
+    const msg = m.family === 'percolation' ? `Below about ${m.capacity.minDoseG} g the bed is shallow and drains fast; expect to grind a little finer.`
+      : m.id === 'espresso' ? `Below about ${m.capacity.minDoseG} g most baskets are too deep for the puck; use a smaller basket if you have one.`
+      : m.id === 'moka' ? `Below about ${m.capacity.minDoseG} g the basket is mostly empty; a smaller pot suits a dose this size.`
+      : `Below about ${m.capacity.minDoseG} g the batch is small for this brewer and cools quickly; a smaller brewer suits it better.`;
+    warnings.push({ code: 'small-batch', message: msg });
   }
 
   // AeroPress: the chamber holds about 230 g; the rest is hot water added after pressing.
@@ -134,7 +143,18 @@ export function buildRecipe(input: RecipeInput): Result<Recipe> {
     if (d) d.text = `Mix the concentrate one to one: add about ${Math.round(dilution.waterG)} g of cold water or milk, and serve over ice.`;
   }
 
-  const beverageG = m.id === 'espresso' ? (yieldG as number) : m.id === 'cold-brew' ? (dilution as { servedMl: number }).servedMl : cupMl;
+  // Illustrative strength needs the liquid the dissolved coffee is spread through. Percolation and
+  // espresso: the drink. Immersion: all the water in contact, since the liquid left in the grounds is
+  // as strong as the cup; then any water added afterwards (AeroPress top-up, cold brew dilution)
+  // dilutes what comes out. Expressed as an equivalent beverage weight for estimateStrength.
+  let beverageG: number;
+  if (m.id === 'espresso') beverageG = yieldG as number;
+  else if (m.family === 'immersion' && waterG) {
+    const contact = waterG - bypassG;
+    const out = contact - r * doseG;
+    const served = m.id === 'cold-brew' ? (dilution as { servedMl: number }).servedMl : out + bypassG;
+    beverageG = (contact * served) / out;
+  } else beverageG = cupMl;
   const recipe: Recipe = {
     method: m.id,
     doseG,

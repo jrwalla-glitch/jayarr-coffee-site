@@ -17,9 +17,11 @@ export function encodeBrew(state: BrewState): string {
   const q = new URLSearchParams();
   q.set('method', state.method);
   const t = state.target as Record<string, number>;
-  if ('cupMl' in t) q.set('cup', String(Math.round(t.cupMl)));
-  else if ('doseG' in t) q.set('dose', String(Math.round(t.doseG * 10) / 10));
-  else if ('waterG' in t) q.set('water', String(Math.round(t.waterG)));
+  // Keep a tenth of a unit: rounding to whole millilitres lost entries like 350.5 mL.
+  const r1 = (n: number) => String(Math.round(n * 10) / 10);
+  if ('cupMl' in t) q.set('cup', r1(t.cupMl));
+  else if ('doseG' in t) q.set('dose', r1(t.doseG));
+  else if ('waterG' in t) q.set('water', r1(t.waterG));
   if (finite(state.ratio)) q.set('ratio', String(state.ratio));
   else if (state.strength && state.strength !== 'classic') q.set('strength', state.strength);
   if (state.roast && state.roast !== 'medium') q.set('roast', state.roast);

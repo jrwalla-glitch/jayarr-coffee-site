@@ -89,7 +89,15 @@
   let cupText = $derived(recipe ? (units === 'us' ? `${r0(mlToFlOz(recipe.cupMl))} fl oz` : `${r0(recipe.cupMl)} ml`) : '');
   let tempMain = $derived(recipe ? (units === 'us' ? `${r0(cToF(recipe.tempC))}°F` : `${r0(recipe.tempC)}°C`) : '');
   let tempSub = $derived(recipe ? (units === 'us' ? `${r0(recipe.tempC)}°C` : `${r0(cToF(recipe.tempC))}°F`) : '');
-  let tempNote = $derived(method === 'cold-brew' ? 'Cold or room-temperature water' : method === 'moka' ? 'Just boiled, into the base' : method === 'drip-machine' ? 'Set by the machine' : roast === 'light' ? 'Hot end for light roasts' : roast === 'dark' ? 'Cooler for dark roasts' : 'Just off the boil');
+  // The note describes the temperature shown, then any roast adjustment.
+  let tempNote = $derived.by(() => {
+    if (!recipe) return '';
+    if (method === 'cold-brew') return 'Cold or room-temperature water';
+    if (method === 'moka') return 'Just boiled, into the base';
+    if (method === 'drip-machine') return 'Set by the machine';
+    const base = recipe.tempC >= 95 ? 'Just off the boil' : recipe.tempC >= 90 ? 'Off the boil, rested about 30 seconds' : 'Off the boil, cooled for a minute or two';
+    return roast === 'light' ? `${base}; hotter suits light roasts` : roast === 'dark' ? `${base}; cooler suits dark roasts` : base;
+  });
 
   let activeIndex = $derived(mode === 'brew' ? frame.stepIndex : -1);
   let nowStep = $derived(recipe && mode === 'brew' ? recipe.steps[activeIndex] : null);
@@ -102,12 +110,22 @@
   let cueNext = $derived(!recipe || done ? '' : nextStep ? `Next at ${clock(nextStep.atS)}: ${nextStep.text.split('.')[0].toLowerCase()}.` : '');
 
   // ── target choices ──
-  let choices = $derived.by(() => {
+  let allChoices = $derived.by(() => {
     if (byDose) return (method === 'espresso' ? ESPRESSO_DOSES : MOKA_DOSES).map((g) => ({ label: `${g} g`, t: { doseG: g } as Target }));
     if (isBatch) return (units === 'us' ? BATCH_US : BATCH_METRIC).map((v) => ({ label: units === 'us' ? `${v} oz` : `${v / 1000} L`, t: { cupMl: units === 'us' ? flOzToMl(v) : v } as Target }));
     return (units === 'us' ? CUPS_US : CUPS_METRIC).map((v) => ({ label: units === 'us' ? `${v} oz` : `${v} ml`, t: { cupMl: units === 'us' ? flOzToMl(v) : v } as Target }));
   });
+  // Only offer sizes this brewer can make at the chosen strength; bigger ones stay reachable through Custom.
+  let choices = $derived(allChoices.filter((c) => buildRecipe({ ...input, target: c.t }).ok));
+  let tooBig = $derived(allChoices.length > choices.length);
   const same = (a: Target, b: Target) => JSON.stringify(a) === JSON.stringify(b);
+  // A preset size moves to the other system's default; a custom amount (or a dose or water weight) is kept.
+  function switchUnits(u: Units) {
+    if (u === units) return;
+    const wasPreset = !customOpen && 'cupMl' in target && allChoices.some((c) => same(c.t, target));
+    units = u;
+    if (wasPreset && !byDose) target = u === 'us' ? DEFAULTS[method] : isBatch ? { cupMl: 1000 } : { cupMl: 350 };
+  }
   function pickMethod(id: MethodId) { method = id; target = DEFAULTS[id]; ratioOverride = undefined; customOpen = false; }
   function nudgeRatio(d: number) {
     const base = ratioOverride ?? m.ratio[strength];
@@ -128,7 +146,10 @@
     if (d.ok) {
       method = d.value.method; target = d.value.target; strength = d.value.strength ?? 'classic';
       roast = d.value.roast ?? 'medium'; units = d.value.units; ratioOverride = d.value.ratio; adjust = d.value.adjust;
-    } else if (!location.search && store.last && decodeBrew(store.last).ok) {
+    } else if (/[?&](method|cup|dose|water|ratio)=/.test(location.search)) {
+      // A brew link that doesn't decode: say so instead of quietly showing something else.
+      linkProblem = true;
+    } else if (store.last && decodeBrew(store.last).ok) {
       // No link: pick up where you left off on this device.
       loadSaved(store.last);
     } else if (navigator.language && !/^en-US/i.test(navigator.language) && !location.search) {
@@ -139,6 +160,8 @@
   });
   $effect(() => {
     if (!mounted) return;
+    // An invalid amount never stays behind as an old, valid-looking link or saved brew.
+    if (!result.ok) { history.replaceState(history.state, '', `${location.pathname}?method=${method}`); return; }
     const q = encodeBrew({ ...input, units, ...(adjust ? { adjust } : {}) });
     history.replaceState(history.state, '', `${location.pathname}?${q}`);
     untrack(persist);
@@ -150,11 +173,11 @@
   let customKinds = $derived<{ id: CustomKind; label: string }[]>(
     method === 'espresso' ? [{ id: 'dose', label: 'g coffee in the basket' }, { id: 'cup', label: 'g espresso out' }]
     : method === 'moka' ? [{ id: 'dose', label: 'g coffee, basket level' }]
-    : [{ id: 'cup', label: units === 'us' ? (method === 'cold-brew' ? 'fl oz to serve' : 'fl oz in the cup') : (method === 'cold-brew' ? 'ml to serve' : 'ml in the cup') }, { id: 'dose', label: 'g of coffee I have' }, { id: 'water', label: units === 'us' ? 'fl oz of water' : 'ml of water' }]);
+    : [{ id: 'cup', label: units === 'us' ? (method === 'cold-brew' ? 'fl oz to serve' : 'fl oz in the cup') : (method === 'cold-brew' ? 'ml to serve' : 'ml in the cup') }, { id: 'dose', label: 'g of coffee I have' }, { id: 'water', label: 'g of water (on a scale)' }]);
   let customKind = $derived<CustomKind>('doseG' in target ? 'dose' : 'waterG' in target ? 'water' : 'cup');
   let customVal = $derived.by(() => {
     const t = target as Record<string, number>;
-    const v = 'doseG' in t ? t.doseG : 'waterG' in t ? (units === 'us' ? mlToFlOz(t.waterG) : t.waterG) : method === 'espresso' ? t.cupMl : units === 'us' ? mlToFlOz(t.cupMl) : t.cupMl;
+    const v = 'doseG' in t ? t.doseG : 'waterG' in t ? t.waterG : method === 'espresso' ? t.cupMl : units === 'us' ? mlToFlOz(t.cupMl) : t.cupMl;
     return Math.round(v * 10) / 10;
   });
   function openCustom() { customOpen = !customOpen; }
@@ -163,10 +186,11 @@
     if (!recipe) return;
     target = kind === 'dose' ? { doseG: Math.round(recipe.doseG * 10) / 10 } : kind === 'water' ? { waterG: Math.round(recipe.waterG ?? 0) } : { cupMl: method === 'espresso' ? Math.round(recipe.yieldG ?? 0) : Math.round(recipe.cupMl) };
   }
+  // Every entry reaches the recipe, including blank, zero and negative ones, so the recipe's own
+  // validation shows the problem instead of quietly keeping the last good result.
   function setCustom(v: number, kind: CustomKind) {
-    if (!Number.isFinite(v) || v <= 0) return;
     const ml = (x: number) => (units === 'us' && method !== 'espresso' ? flOzToMl(x) : x);
-    target = kind === 'dose' ? { doseG: v } : kind === 'water' ? { waterG: ml(v) } : { cupMl: ml(v) };
+    target = kind === 'dose' ? { doseG: v } : kind === 'water' ? { waterG: v } : { cupMl: ml(v) };
   }
 
   // ── saved recipes, on this device only ──
@@ -188,6 +212,7 @@
     roast = d.value.roast ?? 'medium'; units = d.value.units; ratioOverride = d.value.ratio; customOpen = false;
   }
 
+  let linkProblem = $state(false);
   let copied = $state(false);
   async function share() {
     try { await navigator.clipboard.writeText(location.href); copied = true; setTimeout(() => (copied = false), 2200); }
@@ -234,6 +259,7 @@
   </div>
 
   <div class="panel">
+    {#if linkProblem}<p class="warn" role="status">That link didn't hold a recipe this guide can make, so here's a standard one. <button type="button" class="x" aria-label="Dismiss" onclick={() => (linkProblem = false)}>×</button></p>{/if}
     <fieldset class="field">
       <legend class="lbl">Brewer</legend>
       <div class="methods">
@@ -254,9 +280,10 @@
           {/each}
           <button type="button" aria-pressed={customOpen || !choices.some((c) => same(c.t, target))} aria-expanded={customOpen} onclick={openCustom}>Custom</button>
         </div>
+        {#if tooBig}<p class="hint">{method === 'aeropress' ? 'Bigger cups need two presses (or try Custom).' : `Bigger amounts are more than one ${m.label} handles well at this strength: brew twice, or try Custom.`}</p>{/if}
         {#if customOpen}
           <div class="custom">
-            <label class="cfld"><span class="sr">Amount</span><input type="number" inputmode="decimal" min="0" step="0.1" value={customVal} oninput={(e) => setCustom(Number((e.currentTarget as HTMLInputElement).value), customKind)} /></label>
+            <label class="cfld"><span class="sr">Amount</span><input type="number" inputmode="decimal" min="0" step="0.1" value={customVal} oninput={(e) => { const raw = (e.currentTarget as HTMLInputElement).value.trim(); setCustom(raw === '' ? NaN : Number(raw), customKind); }} /></label>
             <select aria-label="What the amount is" value={customKind} onchange={(e) => changeKind((e.currentTarget as HTMLSelectElement).value as CustomKind)}>
               {#each customKinds as k (k.id)}<option value={k.id}>{k.label}</option>{/each}
             </select>
@@ -267,13 +294,17 @@
       <fieldset class="field">
         <legend class="lbl">Units</legend>
         <div class="seg">
-          <button type="button" aria-pressed={units === 'us'} onclick={() => { units = 'us'; if (!byDose) target = DEFAULTS[method]; }}>US</button>
-          <button type="button" aria-pressed={units === 'metric'} onclick={() => { units = 'metric'; if (!byDose) target = isBatch ? { cupMl: 1000 } : { cupMl: 350 }; }}>Metric</button>
+          <button type="button" aria-pressed={units === 'us'} onclick={() => switchUnits('us')}>US</button>
+          <button type="button" aria-pressed={units === 'metric'} onclick={() => switchUnits('metric')}>Metric</button>
         </div>
       </fieldset>
     </div>
 
     <div class="row">
+      {#if method === 'moka'}
+        <!-- A moka pot's basket and valve fix the dose and water, so there's no strength to choose. -->
+        <p class="hint mokahint">The pot sets a moka's strength. For a milder cup, add hot water to it.</p>
+      {:else}
       <fieldset class="field">
         <legend class="lbl">Strength</legend>
         <div class="seg">
@@ -282,6 +313,7 @@
           {/each}
         </div>
       </fieldset>
+      {/if}
       <fieldset class="field">
         <legend class="lbl">Roast</legend>
         <div class="seg">
@@ -296,7 +328,7 @@
       <div class="problem" role="alert">
         {#each result.errors as e (e.code)}
           <p>{e.message}</p>
-          {#if e.patch}<button type="button" class="ghost" onclick={() => applyPatch(e.patch!)}>Use the largest that fits</button>{/if}
+          {#if e.patch}<button type="button" class="ghost" onclick={() => applyPatch(e.patch!)}>{typeof e.patch.ratio === 'number' ? `Use 1:${e.patch.ratio}` : 'Use the largest that fits'}</button>{/if}
         {/each}
       </div>
     {:else if recipe}
@@ -308,7 +340,7 @@
         {#if method === 'espresso'}
           <div class="water"><span class="k">Yield</span><span class="v">{r0(recipe.yieldG ?? 0)}<small>g</small></span><span class="sub">liquid in the cup</span></div>
         {:else}
-          <div class="water"><span class="k">Water</span><span class="v">{r0(recipe.waterG ?? 0)}<small>g</small></span><span class="sub">{method === 'moka' ? 'or fill the base to just below the valve' : units === 'us' ? `${mlToFlOz(recipe.waterG ?? 0).toFixed(1)} fl oz` : `${r0(recipe.waterG ?? 0)} ml`}</span></div>
+          {#if method === 'moka'}<div class="water"><span class="k">Water</span><span class="v">To the valve</span><span class="sub">just below it, about {r0(recipe.waterG ?? 0)} g; the pot sets the amount</span></div>{:else}<div class="water"><span class="k">Water</span><span class="v">{r0(recipe.waterG ?? 0)}<small>g</small></span><span class="sub">{units === 'us' ? `${mlToFlOz(recipe.waterG ?? 0).toFixed(1)} fl oz` : `${r0(recipe.waterG ?? 0)} ml`}</span></div>{/if}
         {/if}
         {#if method === 'espresso'}
           <div><span class="k">Shot time</span><span class="v">25–30<small>s</small></span><span class="sub">stop at {r0(recipe.yieldG ?? 0)} g by weight; crema makes the volume vary</span></div>
@@ -320,9 +352,9 @@
 
       <div class="ratio">
         <span class="lbl">Ratio</span>
-        <button type="button" class="nudge" aria-label="Stronger: less water per gram" onclick={() => nudgeRatio(-1)}>−</button>
-        <span class="rv">1 : {recipe.ratio % 1 ? recipe.ratio.toFixed(method === 'espresso' ? 2 : 1).replace(/0$/, '') : recipe.ratio}</span>
-        <button type="button" class="nudge" aria-label="Lighter: more water per gram" onclick={() => nudgeRatio(1)}>+</button>
+        {#if method !== 'moka'}<button type="button" class="nudge" aria-label="Stronger: less water per gram" onclick={() => nudgeRatio(-1)}>−</button>{/if}
+        <span class="rv">1 : {Number.isInteger(recipe.ratio) ? recipe.ratio : String(Math.round(recipe.ratio * 100) / 100)}</span>
+        {#if method !== 'moka'}<button type="button" class="nudge" aria-label="Lighter: more water per gram" onclick={() => nudgeRatio(1)}>+</button>{/if}
         <span class="tds">≈ {recipe.strength.tdsPct.min.toFixed(method === 'espresso' ? 0 : 2)}–{recipe.strength.tdsPct.max.toFixed(method === 'espresso' ? 0 : 2)}% strength (TDS), illustrative</span>
       </div>
 
@@ -424,6 +456,7 @@
   .custom input { font: 400 16px 'IBM Plex Mono', monospace; width: 96px; padding: 8px 10px; border: 1px solid var(--rule, #d9cdbd); border-radius: 8px; background: #fff; min-height: 40px; }
   .custom select { font: 400 15px 'IBM Plex Sans', sans-serif; padding: 8px 10px; border: 1px solid var(--rule, #d9cdbd); border-radius: 8px; background: #fff; min-height: 40px; color: inherit; }
   .hint { font-size: 13.5px; color: #75655a; margin: 6px 0 0; }
+  .mokahint { align-self: flex-end; max-width: 32ch; }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .saved { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 10px; }
   .saved .lbl { width: 100%; }
