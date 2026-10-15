@@ -1,182 +1,85 @@
 ---
-import DeepBrewLayout from '../../layouts/DeepBrewLayout.astro';
-import GrindCalibrator from '../../components/tools/GrindCalibrator.svelte';
+import '@fontsource/instrument-serif/400.css';
+import '@fontsource/instrument-serif/400-italic.css';
+import '@fontsource/ibm-plex-sans/400.css';
+import '@fontsource/ibm-plex-sans/500.css';
+import '@fontsource/ibm-plex-sans/600.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import GrindCalibrator from '../../components/coffee/GrindCalibrator.svelte';
+import grinderData from '../../data/grinders.json';
+
+const title = 'Grind Calibrator: Your Grinder’s Own Setting for Every Brew Method';
+const description = 'Pick your grinder and brew method and see the starting setting its maker publishes, on your grinder’s own dial: Baratza, Fellow, Comandante, 1Zpresso, Niche, Breville and more, each with its source.';
+const grinders = grinderData.grinders;
+const secondary = grinders.filter((g) => g.settings.some((s) => s.provenance !== 'maker')).map((g) => g.short);
 ---
 
-<DeepBrewLayout
-  title="Grind-Roast Calibrator | Deep Brew Mode | JayArr Coffee"
-  description="Select your grinder, brew method, and roast level. Get a precise grind setting starting point calibrated to your specific hardware. 11 grinders, 7 brew methods, roast and processing adjustments."
->
-  <Fragment slot="head">
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "Grind-Roast Calibrator",
-      "url": "https://jayarr.coffee/deep-brew/calibrator/",
-      "description": "Select your grinder, brew method, and roast level. Get a precise grind setting starting point calibrated to your specific hardware. 11 grinders, 7 brew methods, roast and processing adjustments.",
-      "applicationCategory": "UtilityApplication",
-      "operatingSystem": "Any",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "JayArr Coffee",
-        "url": "https://jayarr.coffee"
-      }
-    })}></script>
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "HowTo",
-      "name": "How to Calibrate Your Grinder for Any Roast Level",
-      "description": "Select your grinder model, brew method, roast level, and processing method to get a precise grind setting starting point calibrated to your specific hardware.",
-      "totalTime": "PT2M",
-      "step": [
-        {
-          "@type": "HowToStep",
-          "position": 1,
-          "name": "Select your grinder",
-          "text": "Choose from 11 supported grinders including Baratza Encore, Comandante C40, 1Zpresso JX-Pro, Niche Zero, Fellow Opus, Eureka Mignon, and more."
-        },
-        {
-          "@type": "HowToStep",
-          "position": 2,
-          "name": "Choose your brew method",
-          "text": "Select from 7 brew methods: espresso, AeroPress, V60 pour over, Chemex, Kalita Wave, French press, or cold brew. Each has different particle size requirements."
-        },
-        {
-          "@type": "HowToStep",
-          "position": 3,
-          "name": "Set your roast level",
-          "text": "Indicate light, medium-light, medium, medium-dark, or dark roast. The tool adjusts the grind setting because darker roasts are more soluble and need coarser grinding to avoid overextraction."
-        },
-        {
-          "@type": "HowToStep",
-          "position": 4,
-          "name": "Apply processing adjustment (optional)",
-          "text": "If known, select washed, honey, or natural processing. Natural coffees extract faster and benefit from slightly coarser settings. This adjustment is additive to the roast level correction."
-        },
-        {
-          "@type": "HowToStep",
-          "position": 5,
-          "name": "Use the recommended setting as your starting point",
-          "text": "Dial your grinder to the recommended setting and brew. If the cup tastes sour, grind 1-2 steps finer. If bitter, grind 1-2 steps coarser. The confidence rating tells you how much to trust the initial recommendation."
-        }
-      ]
-    })}></script>
-  </Fragment>
-  <!-- Hero -->
-  <section class="pt-28 pb-8 md:pt-32 md:pb-12">
-    <div class="max-w-3xl mx-auto px-6 text-center">
-      <a href="/deep-brew/" class="font-db-mono text-xs uppercase tracking-[0.2em] text-db-text-muted/50 hover:text-db-copper transition-colors">
-        &larr; Deep Brew Mode
-      </a>
-      <h1 class="font-db-serif text-3xl md:text-5xl font-bold mt-3 mb-3"
-          style="background: linear-gradient(135deg, var(--color-db-text) 0%, var(--color-db-copper) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-        Grind-Roast Calibrator
-      </h1>
-      <p class="text-db-text-muted max-w-xl mx-auto leading-relaxed text-sm mb-1">
-        Select your grinder, brew method, and roast level. Get a precise starting point &mdash; calibrated to your specific hardware.
-      </p>
-      <p class="font-db-mono text-xs text-db-text-muted/40 tracking-wider">
-        GRIND &middot; ROAST &middot; BREW
-      </p>
-    </div>
-  </section>
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} />
+		<script type="application/ld+json" set:html={JSON.stringify({
+			'@context': 'https://schema.org', '@type': 'WebApplication', name: 'Grind Calibrator', url: 'https://jayarr.coffee/deep-brew/calibrator/', description,
+			applicationCategory: 'UtilityApplication', operatingSystem: 'Any', offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, publisher: { '@type': 'Organization', name: 'JayArr Coffee', url: 'https://jayarr.coffee' },
+		})}></script>
+	</head>
+	<body class="cf-page">
+		<Header />
+		<main>
+			<section class="cf-intro">
+				<a href="/deep-brew/" class="cf-back">← Deep Brew</a>
+				<p class="cf-kicker">Deep Brew · Grind Calibrator</p>
+				<h1>Your grinder's own <em>starting setting</em></h1>
+				<p class="cf-lede">Choose your grinder and how you brew. Its dial turns to the setting its maker publishes for that method, in the maker's own numbers, with the chart it came from. For the two grinders with no maker chart we could find, it uses a documented secondary source and says so.</p>
+			</section>
+			<section class="cf-tool" aria-label="Grind Calibrator"><GrindCalibrator client:load /></section>
 
-  <!-- Tool -->
-  <section class="pb-16 md:pb-24">
-    <div class="max-w-4xl mx-auto px-6">
-      <GrindCalibrator client:load />
-    </div>
-  </section>
+			<article class="cf-body">
+				<h2>Why every grinder needs its own number</h2>
+				<p>A grind setting is a position on one grinder's dial, not a size. "15" on a Baratza Encore, 15 clicks on a Comandante and 15 on a 1Zpresso JX-Pro are three different things, because each grinder's burrs, steps and zero point differ. So the calibrator never converts one grinder's number into another's. It shows what each maker publishes for its own grinder, in that grinder's unit.</p>
+				<p>Some makers print one setting per method; others print a range. Where there's only a range, the tool shows the band on the dial and doesn't invent a single number inside it.</p>
 
-  <!-- Narrative -->
-  <section class="py-16 px-6">
-    <div class="prose mx-auto">
-      <h2>Why Grind Settings Vary Between Grinders and Roasts</h2>
+				<h2>A starting point, then taste</h2>
+				<p>Makers present these as starting points, and the coffee decides the rest: the beans, the roast, how fresh they are and your recipe all move the right setting. Brew at the starting setting, taste, then move in small steps. Sour or thin usually means go finer; bitter or harsh usually means go coarser. The <a href="/tools/fix-my-coffee/">Coffee Doctor</a> helps you tell which, and the <a href="/tools/grind-guide/">Grind Guide</a> shows what the grounds should look like.</p>
 
-      <p>The calibrator solves a translation problem. When someone says &ldquo;medium grind,&rdquo; that phrase maps to completely different dial positions on different grinders. A Comandante C40 at 25 clicks, a Baratza Encore at setting 15, and a Niche Zero at dial 40 all produce roughly similar particle sizes for a V60 pour over. The number on the dial is arbitrary &mdash; what matters is the particle size distribution it produces, and that&rsquo;s determined by burr geometry, step resolution, alignment, and wear.</p>
+				<h2>Where zero is</h2>
+				<p>Hand grinders count clicks or numbers from a zero point, and makers define zero differently: some count from where the handle starts to turn with resistance, others from where the burrs just touch. The calibrator shows each maker's own definition under "Where is zero". If your count starts somewhere else, the published settings will be off by that difference. A few makers also say how far one click moves the burrs (12.5 µm on a JX-Pro, for example). That is the burr movement, not the size of the grounds.</p>
 
-      <p>The translation challenge runs deeper than just grinder-to-grinder variation. Each grinder has a fundamentally different step architecture. The Comandante C40 uses a stepped adjustment with each click representing a fixed burr spacing change. The Niche Zero uses a stepless worm-drive mechanism where the dial position maps continuously to burr spacing. The Baratza Encore has stepped rings with macro and micro adjustments. Converting between them requires empirical data &mdash; there is no simple mathematical formula because burr geometry, not just spacing, determines particle size. This tool compiles that empirical data from manufacturer documentation, independent testing databases, retailer guides, and community consensus across thousands of users.</p>
+				<h2>The grinders</h2>
+				<p>{grinders.length} grinders, from the makers' own charts and manuals, checked on {grinderData.checked}. {secondary.length ? `For the ${secondary.join(' and ')}, no maker chart could be found, so the settings come from a documented secondary source and are labelled that way.` : ''} {grinderData.excluded.length ? `Not included yet: ${grinderData.excluded.map((e) => e.name).join(', ')}, because no maker chart for that exact model could be verified.` : ''}</p>
+				<ul class="cf-cols">
+					{grinders.map((g) => <li><a href={`/deep-brew/calibrator/?grinder=${g.id}`}>{g.short}</a></li>)}
+				</ul>
 
-      <p>Roast level compounds the problem because it changes the bean&rsquo;s physical properties. Lighter roasts are denser, with tightly packed cellular structure that resists fracturing. They shatter differently under the same burr forces, producing distinct particle distributions compared to darker roasts. Dark roasts are porous and brittle &mdash; the extended roasting has broken down cellular walls and driven off moisture, making the beans easier to fracture. They shatter more uniformly but extract faster because the soluble compounds are more accessible. A grind setting that&rsquo;s perfect for a medium Colombian will overextract a dark Italian roast and underextract a light Nordic roast. The typical adjustment between light and dark roast is 2&ndash;3 full settings on most grinders.</p>
+				<h2>Sources</h2>
+				<ul class="cf-sources">
+					<li>Each grinder maker's own grind chart, manual or published recipe, linked beside every setting in the tool, checked {grinderData.checked}.</li>
+					<li>Documented secondary sources, only where no maker chart exists, labelled in the tool.</li>
+				</ul>
+			</article>
+		</main>
+		<Footer />
+	</body>
+</html>
 
-      <p>Processing method introduces a secondary adjustment. Natural-processed coffees have more degraded cellular structure and higher surface sugars from drying inside the cherry. They extract faster than washed coffees and benefit from slightly coarser grinding. Honey-processed coffees fall between washed and natural. The effect is real but smaller than roast level &mdash; typically half a step to one step on most grinders. Rob Hoos&rsquo;s cultivar-based roasting research confirms this hierarchy: processing determines development time requirements, which in turn affects the bean&rsquo;s final solubility profile.</p>
-
-      <p>The confidence rating on each recommendation reflects the quality of the underlying data. Settings sourced from manufacturer documentation and verified by independent testing databases carry higher confidence than community-consensus estimates. Regardless of confidence level, every setting is a starting point, not an endpoint. Coffee varies by crop year, lot, altitude, and age since roasting. Brew, taste, and adjust by 1&ndash;2 steps: too sour or thin means grind finer, too bitter or heavy means grind coarser. The calibrator eliminates the guesswork of finding your first reasonable setting &mdash; the variable that has the largest single impact on extraction quality.</p>
-    </div>
-  </section>
-
-  <!-- Methodology -->
-  <section class="py-16 bg-db-surface border-t border-db-border">
-    <div class="max-w-3xl mx-auto px-6">
-      <div class="font-db-mono text-xs tracking-[0.2em] uppercase text-db-copper mb-4">Methodology</div>
-      <h2 class="font-db-serif text-xl md:text-2xl font-semibold text-db-text mb-6">How This Works</h2>
-
-      <div class="space-y-6 text-sm text-db-text-muted leading-relaxed">
-        <div>
-          <h3 class="font-db-serif text-base font-semibold text-db-text mb-1">Grind Size Is the Biggest Variable</h3>
-          <p>
-            Of all the variables in coffee brewing &mdash; water temperature, dose, ratio, pour technique &mdash; grind size has the largest impact on extraction yield. It determines surface area, which directly controls how much of the coffee&rsquo;s soluble material dissolves into your cup. Getting grind size right for your specific grinder is the single most impactful improvement most home brewers can make.
-          </p>
-        </div>
-
-        <div>
-          <h3 class="font-db-serif text-base font-semibold text-db-text mb-1">Why Settings Vary Between Grinders</h3>
-          <p>
-            A &ldquo;medium grind&rdquo; means different things on different grinders. A Comandante C40 at 25 clicks, a Baratza Encore at setting 15, and a Niche Zero at dial 40 all produce roughly similar particle sizes for V60. The mapping from particle size to dial/click number depends on burr geometry, step resolution, and calibration. This tool translates your target brew method into your grinder&rsquo;s native language.
-          </p>
-        </div>
-
-        <div>
-          <h3 class="font-db-serif text-base font-semibold text-db-text mb-1">Roast Level Changes Everything</h3>
-          <p>
-            Roasting transforms the bean&rsquo;s physical structure. Light roasts are dense with tightly packed cells &mdash; they resist extraction and need a finer grind to compensate. Dark roasts are porous and brittle &mdash; they extract easily (sometimes too easily) and benefit from a coarser grind. The adjustment follows bean solubility: as roast level increases, so does the ease of extraction, requiring progressively coarser grinding to maintain balance.
-          </p>
-        </div>
-
-        <div>
-          <h3 class="font-db-serif text-base font-semibold text-db-text mb-1">Processing: A Secondary Factor</h3>
-          <p>
-            Coffee processing method (washed, honey, natural) also affects solubility, but the effect is smaller than roast level. Natural-processed coffees have more degraded cellular structure and higher surface sugars, making them extract faster. Honey process falls between washed and natural. These adjustments are additive to roast level and should be treated as suggestions &mdash; the evidence base is directional rather than precisely quantified.
-          </p>
-        </div>
-
-        <div>
-          <h3 class="font-db-serif text-base font-semibold text-db-text mb-1">Starting Point, Not Endpoint</h3>
-          <p>
-            Every setting in this tool is a calibrated starting point &mdash; not a final answer. Coffee varies by origin, altitude, age, and individual palate preference. Use the recommended setting as your first brew, then adjust by 1&ndash;2 steps based on taste: too sour or thin means grind finer; too bitter or heavy means grind coarser. The confidence rating tells you how much to trust each number.
-          </p>
-        </div>
-
-        <div class="pt-4 border-t border-db-border">
-          <span class="font-db-mono text-xs text-db-text-muted/40 tracking-wider uppercase">Data Sources</span>
-          <p class="mt-2 text-xs text-db-text-muted/50">
-            Grinder settings compiled from manufacturer documentation (Baratza, Fellow, Niche, 1Zpresso, Eureka, Kinu, Timemore), retailer guides (Clive Coffee, Prima Coffee, Basic Barista), independent review databases (Honest Coffee Guide, Coffee Chronicler, Complete Home Barista), and community consensus (Reddit r/coffee, Home-Barista.com, CoffeeForums UK). Roast adjustments based on cross-referenced guidance from Complete Home Barista, QIKA Coffee, Spiller &amp; Tait, Perfect Daily Grind, and Counter Culture Coffee. Processing adjustments derived from directional guidance in KEA Coffee and Clive Coffee resources.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Related -->
-  <section class="py-12">
-    <div class="max-w-3xl mx-auto px-6 text-center">
-      <span class="font-db-mono text-xs uppercase tracking-widest text-db-copper">Related</span>
-      <div class="flex flex-wrap justify-center gap-3 mt-4">
-        <a href="/deep-brew/extraction/" class="border border-db-border text-db-text-muted px-5 py-2 text-xs uppercase tracking-widest hover:border-db-copper/50 hover:text-db-text transition-all rounded">
-          Extraction Diagnostic
-        </a>
-        <a href="/deep-brew/water/" class="border border-db-border text-db-text-muted px-5 py-2 text-xs uppercase tracking-widest hover:border-db-copper/50 hover:text-db-text transition-all rounded">
-          Water Recipe Builder
-        </a>
-        <a href="/deep-brew/" class="border border-db-border text-db-text-muted px-5 py-2 text-xs uppercase tracking-widest hover:border-db-copper/50 hover:text-db-text transition-all rounded">
-          All Deep Brew Tools
-        </a>
-      </div>
-    </div>
-  </section>
-</DeepBrewLayout>
+<style is:global>.cf-page { background: #f3ede3; }</style>
+<style>
+	main { color: #2a1d15; }
+	.cf-intro { max-width: 1180px; margin: 0 auto; padding: 120px 24px 22px; }
+	.cf-back { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; text-decoration: none; }
+	.cf-kicker { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: #8f5d22; margin: 26px 0 0; }
+	h1 { font: 400 clamp(40px, 6vw, 68px)/.98 'Instrument Serif', Georgia, serif; letter-spacing: -.01em; margin: 10px 0 12px; }
+	h1 em { font-style: italic; color: #7a4e30; }
+	.cf-lede { font: 400 17px/1.5 'IBM Plex Sans', system-ui, sans-serif; color: #5b4a3d; max-width: 62ch; margin: 0; }
+	.cf-tool { max-width: 1180px; margin: 0 auto; padding: 8px 24px 40px; }
+	.cf-body { max-width: 760px; margin: 0 auto; padding: 24px 24px 72px; font: 400 17px/1.7 'IBM Plex Sans', system-ui, sans-serif; }
+	.cf-body h2 { font: 400 34px/1.1 'Instrument Serif', Georgia, serif; margin: 44px 0 12px; }
+	.cf-body a { color: #7a4e30; text-underline-offset: 3px; }
+	.cf-cols { columns: 2; column-gap: 24px; padding-left: 18px; }
+	.cf-sources { font-size: 14.5px; color: #5b4a3d; }
+	@media (max-width: 640px) { .cf-intro { padding: 96px 16px 18px; } .cf-tool { padding: 4px 12px 32px; } .cf-body { padding: 16px 16px 56px; } .cf-cols { columns: 1; } }
+</style>

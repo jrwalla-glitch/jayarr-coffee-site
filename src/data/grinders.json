@@ -1,0 +1,2216 @@
+{
+ "checked": "2026-10-15",
+ "source": "Grinder makers’ own charts and manuals, gathered and checked by Astra on 2026-10-15 (makeover-2026-10/research/grind-calibrator-maker-settings.md)",
+ "grinders": [
+  {
+   "id": "baratza-encore",
+   "name": "Baratza Encore (ZCG485, original non-ESP)",
+   "short": "Baratza Encore",
+   "maker": "Baratza (Breville)",
+   "type": "electric",
+   "kind": "dial",
+   "unit": "setting",
+   "unitDetail": "grind setting number (1-40), dial on hopper",
+   "scale": [
+    1,
+    40
+   ],
+   "step": 1,
+   "stepless": false,
+   "perTurn": null,
+   "sub": null,
+   "avoid": null,
+   "categories": null,
+   "stepMicrons": null,
+   "stepNote": null,
+   "applies": "The original Encore (ZCG485), not the Encore ESP.",
+   "rulerNote": null,
+   "zeroNote": "Setting 1 = very fine, 40 = very coarse per manual. Micron range 250-1200 µm is maker product-sheet wording (not a per-step value). No step size published.",
+   "cautions": [
+    "Change the setting only while the grinder is running or empty of beans."
+   ],
+   "startingPoint": {
+    "status": "yes",
+    "note": "Baratza calls these suggested starting points, to adjust coarser or finer for your recipe, roast, coffee and taste.",
+    "url": "https://assets.breville.com/ZCG485/manual-encore-en-v4-3-120122.pdf"
+   },
+   "chart": {
+    "title": "Encore Operations Manual v4.3 (December 2022)",
+    "url": "https://assets.breville.com/ZCG485/manual-encore-en-v4-3-120122.pdf"
+   },
+   "status": "maker method guidance with model-specific qualifications",
+   "amazon": {
+    "asin": "B007F183LK",
+    "url": "https://www.amazon.com/dp/B007F183LK"
+   },
+   "settings": [
+    {
+     "key": "espresso",
+     "group": "espresso",
+     "label": "Espresso",
+     "provenance": "maker",
+     "source": "Encore Operations Manual v4.3 p.6 chart",
+     "url": "https://assets.breville.com/ZCG485/manual-encore-en-v4-3-120122.pdf",
+     "checked": "2026-10-15",
+     "min": 8,
+     "max": 8,
+     "start": 8
+    },
+    {
+     "key": "aeropress",
+     "group": "aeropress",
+     "label": "AeroPress",
+     "provenance": "maker",
+     "source": "Encore Operations Manual v4.3 p.6 chart",
+     "url": "https://assets.breville.com/ZCG485/manual-encore-en-v4-3-120122.pdf",
+     "checked": "2026-10-15",
+     "min": 12,
+     "max": 12,
+     "start": 12
+    },
+    {
+     "key": "pour-over-v60",
+     "group": "pourover",
+     "label": "Pour-over (V60)",
+     "provenance": "maker",
+     "source": "Encore Operations Manual v4.3 p.6 chart",
+     "url": "https://assets.breville.com/ZCG485/manual-encore-en-v4-3-120122.pdf",
+     "checked": "2026-10-15",
+     "min": 15,
+     "max": 15,
+     "start": 15
+    },
+    {
+     "key": "drip-machine",
+     "group": "drip",
+     "label": "Drip machine",
+     "provenance": "maker",
+     "source": "Encore Operations Manual v4.3 p.6 chart",
+     "url": "https://assets.breville.com/ZCG485/manual-encore-en-v4-3-120122.pdf",
+     "checked": "2026-10-15",
+     "makerLabel": "Automatic Brewer",
+     "min": 18,
+     "max": 18,
+     "start": 18
+    },
+    {
+     "key": "chemex",
+     "group": "chemex",
+     "label": "Chemex",
+     "provenance": "maker",
+     "source": "Encore Operations Manual v4.3 p.6 chart",
+     "url": "https://assets.breville.com/ZCG485/manual-encore-en-v4-3-120122.pdf",
+     "checked": "2026-10-15",
+     "min": 20,
+     "max": 20,
+     "start": 20
+    },
+    {
+     "key": "french-press",
+     "group": "french-press",
+     "label": "French press",
+     "provenance": "maker",
+     "source": "Encore Operations Manual v4.3 p.6 chart",
+     "url": "https://assets.breville.com/ZCG485/manual-encore-en-v4-3-120122.pdf",
+     "checked": "2026-10-15",
+     "min": 28,
+     "max": 28,
+     "start": 28
+    }
+   ]
+  },
+  {
+   "id": "baratza-encore-esp",
+   "name": "Baratza Encore ESP (ZCG495)",
+   "short": "Baratza Encore ESP",
+   "maker": "Baratza (Breville)",
+   "type": "electric",
+   "kind": "dial",
+   "unit": "setting",
+   "unitDetail": "grind setting number (1-40), dial on hopper",
+   "scale": [
+    1,
+    40
+   ],
+   "step": 1,
+   "stepless": false,
+   "perTurn": null,
+   "sub": null,
+   "avoid": null,
+   "categories": null,
+   "stepMicrons": null,
+   "stepNote": null,
+   "applies": "The Encore ESP (ZCG495).",
+   "rulerNote": null,
+   "zeroNote": "Dual-range system: espresso micro-steps 1-20 and filter macro-steps 21-40 (manual p.5). Maker product sheet says 'micron accurate' adjustments but publishes no per-step micron value. Calibrated at factory with custom tool.",
+   "cautions": [
+    "Change the setting only while the grinder is running or empty of beans."
+   ],
+   "startingPoint": {
+    "status": "yes",
+    "note": "Baratza calls these suggested starting points; grind coarser or finer to suit your recipe and taste.",
+    "url": "https://breville-production-aem-assets.s3.us-west-2.amazonaws.com/ZCG495/Encore+ESP+Documents/manual-encoreesp-v1-0-en-010923.pdf"
+   },
+   "chart": {
+    "title": "Encore ESP Operations Manual v1.0 (January 2023, file dated 010923)",
+    "url": "https://breville-production-aem-assets.s3.us-west-2.amazonaws.com/ZCG495/Encore+ESP+Documents/manual-encoreesp-v1-0-en-010923.pdf"
+   },
+   "status": "maker method guidance with model-specific qualifications",
+   "amazon": {
+    "asin": "B0BW272XCV",
+    "url": "https://www.amazon.com/dp/B0BW272XCV"
+   },
+   "settings": [
+    {
+     "key": "espresso",
+     "group": "espresso",
+     "label": "Espresso",
+     "provenance": "maker",
+     "source": "Encore ESP Operations Manual v1.0 p.5",
+     "url": "https://breville-production-aem-assets.s3.us-west-2.amazonaws.com/ZCG495/Encore+ESP+Documents/manual-encoreesp-v1-0-en-010923.pdf",
+     "checked": "2026-10-15",
+     "min": 15,
+     "max": 15,
+     "start": 15
+    },
+    {
+     "key": "aeropress",
+     "group": "aeropress",
+     "label": "AeroPress",
+     "provenance": "maker",
+     "source": "Encore ESP Operations Manual v1.0 p.5",
+     "url": "https://breville-production-aem-assets.s3.us-west-2.amazonaws.com/ZCG495/Encore+ESP+Documents/manual-encoreesp-v1-0-en-010923.pdf",
+     "checked": "2026-10-15",
+     "min": 22,
+     "max": 22,
+     "start": 22
+    },
+    {
+     "key": "pour-over-v60",
+     "group": "pourover",
+     "label": "Pour-over (V60)",
+     "provenance": "maker",
+     "source": "Encore ESP Operations Manual v1.0 p.5",
+     "url": "https://breville-production-aem-assets.s3.us-west-2.amazonaws.com/ZCG495/Encore+ESP+Documents/manual-encoreesp-v1-0-en-010923.pdf",
+     "checked": "2026-10-15",
+     "min": 25,
+     "max": 25,
+     "start": 25
+    },
+    {
+     "key": "drip-machine",
+     "group": "drip",
+     "label": "Drip machine",
+     "provenance": "maker",
+     "source": "Encore ESP Operations Manual v1.0 p.5",
+     "url": "https://breville-production-aem-assets.s3.us-west-2.amazonaws.com/ZCG495/Encore+ESP+Documents/manual-encoreesp-v1-0-en-010923.pdf",
+     "checked": "2026-10-15",
+     "makerLabel": "Automatic Brewer",
+     "min": 28,
+     "max": 28,
+     "start": 28
+    },
+    {
+     "key": "chemex",
+     "group": "chemex",
+     "label": "Chemex",
+     "provenance": "maker",
+     "source": "Encore ESP Operations Manual v1.0 p.5",
+     "url": "https://breville-production-aem-assets.s3.us-west-2.amazonaws.com/ZCG495/Encore+ESP+Documents/manual-encoreesp-v1-0-en-010923.pdf",
+     "checked": "2026-10-15",
+     "min": 30,
+     "max": 30,
+     "start": 30
+    },
+    {
+     "key": "french-press",
+     "group": "french-press",
+     "label": "French press",
+     "provenance": "maker",
+     "source": "Encore ESP Operations Manual v1.0 p.5",
+     "url": "https://breville-production-aem-assets.s3.us-west-2.amazonaws.com/ZCG495/Encore+ESP+Documents/manual-encoreesp-v1-0-en-010923.pdf",
+     "checked": "2026-10-15",
+     "min": 32,
+     "max": 32,
+     "start": 32
+    }
+   ]
+  },
+  {
+   "id": "baratza-virtuoso-plus",
+   "name": "Baratza Virtuoso+ (ZCG587)",
+   "short": "Baratza Virtuoso+",
+   "maker": "Baratza (Breville)",
+   "type": "electric",
+   "kind": "dial",
+   "unit": "setting",
+   "unitDetail": "grind setting number (1-40), dial on hopper; timer-based dose is separate",
+   "scale": [
+    1,
+    40
+   ],
+   "step": 1,
+   "stepless": false,
+   "perTurn": null,
+   "sub": null,
+   "avoid": null,
+   "categories": null,
+   "stepMicrons": null,
+   "stepNote": null,
+   "applies": "The Virtuoso+ (ZCG587).",
+   "rulerNote": null,
+   "zeroNote": "Settings go from 40 (very coarse) to 1 (very fine) per manual p.5. No micron value per step published.",
+   "cautions": [
+    "Change the setting while the grinder is running, or when it is completely empty."
+   ],
+   "startingPoint": {
+    "status": "yes",
+    "note": "Baratza calls these suggested starting points, to adjust coarser or finer for your recipe, roast, coffee and taste.",
+    "url": "https://breville-production-aem-assets.s3.us-west-2.amazonaws.com/ZCG587/Virtuoso%2B+Documents/manual-virtuosoplus-en-v1-6.pdf"
+   },
+   "chart": {
+    "title": "Virtuoso+ Operations Manual v1.6 (January 2023)",
+    "url": "https://breville-production-aem-assets.s3.us-west-2.amazonaws.com/ZCG587/Virtuoso%2B+Documents/manual-virtuosoplus-en-v1-6.pdf"
+   },
+   "status": "maker method guidance with model-specific qualifications",
+   "amazon": {
+    "asin": "B07QMY8GLX",
+    "url": "https://www.amazon.com/dp/B07QMY8GLX"
+   },
+   "settings": [
+    {
+     "key": "espresso",
+     "group": "espresso",
+     "label": "Espresso",
+     "provenance": "maker",
+     "source": "Virtuoso+ Operations Manual v1.6 p.6 chart",
+     "url": "https://breville-production-aem-assets.s3.us-west-2.amazonaws.com/ZCG587/Virtuoso%2B+Documents/manual-virtuosoplus-en-v1-6.pdf",
+     "checked": "2026-10-15",
+     "min": 8,
+     "max": 8,
+     "start": 8
+    },
+    {
+     "key": "aeropress",
+     "group": "aeropress",
+     "label": "AeroPress",
+     "provenance": "maker",
+     "source": "Virtuoso+ Operations Manual v1.6 p.6 chart",
+     "url": "https://breville-production-aem-assets.s3.us-west-2.amazonaws.com/ZCG587/Virtuoso%2B+Documents/manual-virtuosoplus-en-v1-6.pdf",
+     "checked": "2026-10-15",
+     "min": 12,
+     "max": 12,
+     "start": 12
+    },
+    {
+     "key": "pour-over-v60",
+     "group": "pourover",
+     "label": "Pour-over (V60)",
+     "provenance": "maker",
+     "source": "Virtuoso+ Operations Manual v1.6 p.6 chart",
+     "url": "https://breville-production-aem-assets.s3.us-west-2.amazonaws.com/ZCG587/Virtuoso%2B+Documents/manual-virtuosoplus-en-v1-6.pdf",
+     "checked": "2026-10-15",
+     "min": 15,
+     "max": 15,
+     "start": 15
+    },
+    {
+     "key": "drip-machine",
+     "group": "drip",
+     "label": "Drip machine",
+     "provenance": "maker",
+     "source": "Virtuoso+ Operations Manual v1.6 p.6 chart",
+     "url": "https://breville-production-aem-assets.s3.us-west-2.amazonaws.com/ZCG587/Virtuoso%2B+Documents/manual-virtuosoplus-en-v1-6.pdf",
+     "checked": "2026-10-15",
+     "makerLabel": "Automatic Brewer",
+     "min": 18,
+     "max": 18,
+     "start": 18
+    },
+    {
+     "key": "chemex",
+     "group": "chemex",
+     "label": "Chemex",
+     "provenance": "maker",
+     "source": "Virtuoso+ Operations Manual v1.6 p.6 chart",
+     "url": "https://breville-production-aem-assets.s3.us-west-2.amazonaws.com/ZCG587/Virtuoso%2B+Documents/manual-virtuosoplus-en-v1-6.pdf",
+     "checked": "2026-10-15",
+     "min": 20,
+     "max": 20,
+     "start": 20
+    },
+    {
+     "key": "french-press",
+     "group": "french-press",
+     "label": "French press",
+     "provenance": "maker",
+     "source": "Virtuoso+ Operations Manual v1.6 p.6 chart",
+     "url": "https://breville-production-aem-assets.s3.us-west-2.amazonaws.com/ZCG587/Virtuoso%2B+Documents/manual-virtuosoplus-en-v1-6.pdf",
+     "checked": "2026-10-15",
+     "min": 28,
+     "max": 28,
+     "start": 28
+    }
+   ]
+  },
+  {
+   "id": "breville-smart-grinder-pro-bcg820",
+   "name": "Breville Smart Grinder Pro (BCG820, US)",
+   "short": "Breville Smart Grinder Pro",
+   "maker": "Breville USA",
+   "type": "electric",
+   "kind": "dial",
+   "unit": "setting",
+   "unitDetail": "User grind-size dial 1 (fine) to 60 (coarse), shown on LCD as \"grind setting\" (60 custom settings). Separate internal upper-burr adjustment: move top burr \"1 number, coarser or finer\"; default setting 6.",
+   "scale": [
+    1,
+    60
+   ],
+   "step": 1,
+   "stepless": false,
+   "perTurn": null,
+   "sub": null,
+   "avoid": null,
+   "categories": null,
+   "stepMicrons": null,
+   "stepNote": null,
+   "applies": "The Smart Grinder Pro BCG820 (US).",
+   "rulerNote": null,
+   "zeroNote": "No zero/touch-point convention published. The internal upper-burr setting default is 6 and is the documented baseline for the factory adjustment. Maker says \"We recommend making only one adjustment at a time.\" Breville does not publish a numeric zero for the user dial.",
+   "cautions": [
+    "For espresso with fresh beans, use a single-wall basket with settings 1 to 30; with a dual-wall basket, start at 30 and go finer if needed.",
+    "If the grind-size dial feels tight, turn it with the grinder running."
+   ],
+   "startingPoint": {
+    "status": "yes",
+    "note": "Breville gives these as starting points and suggests adjusting from there; for espresso it names setting 12.",
+    "url": "https://assets.breville.com/BCG820/BCG820_USCM_IB_L26_LR.pdf"
+   },
+   "chart": {
+    "title": "maker US manual (March 2026 edition, text extractable and rendered)",
+    "url": "https://assets.breville.com/BCG820/BCG820_USCM_IB_L26_LR.pdf"
+   },
+   "status": "maker method guidance with model-specific qualifications",
+   "amazon": {
+    "asin": "B00OXGXW8O",
+    "url": "https://www.amazon.com/dp/B00OXGXW8O"
+   },
+   "settings": [
+    {
+     "key": "espresso",
+     "group": "espresso",
+     "label": "Espresso",
+     "provenance": "maker",
+     "source": "Breville Smart Grinder Pro US manual BCG820_USCM_IB_L26_LR.pdf, p.10 Coffee Chart and STEP 3",
+     "url": "https://assets.breville.com/BCG820/BCG820_USCM_IB_L26_LR.pdf",
+     "checked": "2026-10-15",
+     "min": 1,
+     "max": 30,
+     "start": 12
+    },
+    {
+     "key": "moka-pot",
+     "group": "moka",
+     "label": "Moka pot",
+     "provenance": "maker",
+     "source": "L26 manual p.10 Coffee Chart, \"USE SETTING FOR\" column under ESPRESSO",
+     "url": "https://assets.breville.com/BCG820/BCG820_USCM_IB_L26_LR.pdf",
+     "checked": "2026-10-15",
+     "min": 1,
+     "max": 30,
+     "start": null
+    },
+    {
+     "key": "drip-machine-gold-tone",
+     "group": "drip",
+     "label": "Drip machine (gold-tone filter)",
+     "provenance": "maker",
+     "source": "L26 manual p.10 Coffee Chart, DRIP FILTER/PERCOLATOR MEDIUM column",
+     "url": "https://assets.breville.com/BCG820/BCG820_USCM_IB_L26_LR.pdf",
+     "checked": "2026-10-15",
+     "min": 31,
+     "max": 45,
+     "start": null
+    },
+    {
+     "key": "drip-machine-paper",
+     "group": "drip",
+     "label": "Drip machine (paper filter)",
+     "provenance": "maker",
+     "source": "L26 manual p.10 Coffee Chart, MEDIUM COARSE column",
+     "url": "https://assets.breville.com/BCG820/BCG820_USCM_IB_L26_LR.pdf",
+     "checked": "2026-10-15",
+     "min": 46,
+     "max": 54,
+     "start": null
+    },
+    {
+     "key": "french-press",
+     "group": "french-press",
+     "label": "French press",
+     "provenance": "maker",
+     "source": "L26 manual p.16 Coffee Making Tips, FRENCH PRESS step 2; p.10 FRENCH PRESS column",
+     "url": "https://assets.breville.com/BCG820/BCG820_USCM_IB_L26_LR.pdf",
+     "checked": "2026-10-15",
+     "min": 55,
+     "max": 60,
+     "start": 58
+    },
+    {
+     "key": "espresso-steam-boiler",
+     "group": "espresso",
+     "label": "Espresso (steam-pressure maker)",
+     "provenance": "maker",
+     "source": "L26 manual p.10 Coffee Chart, MEDIUM COARSE column",
+     "url": "https://assets.breville.com/BCG820/BCG820_USCM_IB_L26_LR.pdf",
+     "checked": "2026-10-15",
+     "min": 46,
+     "max": 54,
+     "start": null
+    }
+   ]
+  },
+  {
+   "id": "capresso-infinity-560",
+   "name": "Capresso Infinity Conical Burr Grinder, model 560 (SKU 560.04, stainless/brushed silver finish)",
+   "short": "Capresso Infinity 560",
+   "maker": "Capresso (JURA Inc. distributor name in manual warranty)",
+   "type": "electric",
+   "kind": "named",
+   "unit": "category",
+   "unitDetail": "16 grind settings, subdivided into 4 settings each for EXTRA FINE, FINE, MEDIUM, COARSE (category + position; no numeric label printed)",
+   "scale": null,
+   "step": null,
+   "stepless": false,
+   "perTurn": null,
+   "sub": null,
+   "avoid": null,
+   "categories": [
+    "EXTRA FINE",
+    "FINE",
+    "MEDIUM",
+    "COARSE"
+   ],
+   "stepMicrons": null,
+   "stepNote": null,
+   "applies": "The Infinity model 560.",
+   "rulerNote": null,
+   "zeroNote": "No burr-gap zero is published. The 0 on the timer is the grind-timer position, not a fineness zero. The bean container dot points to a fineness setting; between the insertion marking and the coarsest setting the grinder will not grind.",
+   "cautions": [
+    "Dark, oily beans: Capresso says to grind one or two steps coarser than for medium or light beans.",
+    "After the finest settings, check the coffee passes through and clean the grinding chamber."
+   ],
+   "startingPoint": {
+    "status": "not-stated",
+    "note": "Capresso's manual gives named steps for each method, not numbers.",
+    "url": "https://www.capresso.com/media/wysiwyg/capresso_565-560_infinity-grinder_IB.pdf"
+   },
+   "chart": {
+    "title": "maker manual (text extractable PDF) + maker product page",
+    "url": "https://www.capresso.com/media/wysiwyg/capresso_565-560_infinity-grinder_IB.pdf"
+   },
+   "status": "maker named categories only, no numeric click mapping",
+   "amazon": {
+    "asin": "B001QTVXCS",
+    "url": "https://www.amazon.com/dp/B001QTVXCS"
+   },
+   "settings": [
+    {
+     "key": "espresso-pump",
+     "group": "espresso",
+     "label": "Espresso (pump machine)",
+     "provenance": "maker",
+     "source": "Capresso manual section 5",
+     "url": "https://www.capresso.com/media/wysiwyg/capresso_565-560_infinity-grinder_IB.pdf",
+     "checked": "2026-10-15",
+     "headline": "Start at FINE (EXTRA FINE for some pump machines)",
+     "categories": [
+      "FINE",
+      "EXTRA FINE"
+     ]
+    },
+    {
+     "key": "espresso-steam-boiler",
+     "group": "espresso",
+     "label": "Espresso (steam-pressure maker)",
+     "provenance": "maker",
+     "source": "Capresso manual section 5",
+     "url": "https://www.capresso.com/media/wysiwyg/capresso_565-560_infinity-grinder_IB.pdf",
+     "checked": "2026-10-15",
+     "categories": [
+      "MEDIUM"
+     ]
+    },
+    {
+     "key": "moka-pot",
+     "group": "moka",
+     "label": "Moka pot",
+     "provenance": "maker",
+     "source": "Capresso manual section 5",
+     "url": "https://www.capresso.com/media/wysiwyg/capresso_565-560_infinity-grinder_IB.pdf",
+     "checked": "2026-10-15",
+     "categories": [
+      "FINE"
+     ]
+    },
+    {
+     "key": "drip-machine",
+     "group": "drip",
+     "label": "Drip machine",
+     "provenance": "maker",
+     "source": "Capresso manual section 5",
+     "url": "https://www.capresso.com/media/wysiwyg/capresso_565-560_infinity-grinder_IB.pdf",
+     "checked": "2026-10-15",
+     "categories": [
+      "MEDIUM"
+     ]
+    },
+    {
+     "key": "pour-over",
+     "group": "pourover",
+     "label": "Pour-over",
+     "provenance": "maker",
+     "source": "Capresso manual section 5",
+     "url": "https://www.capresso.com/media/wysiwyg/capresso_565-560_infinity-grinder_IB.pdf",
+     "checked": "2026-10-15",
+     "categories": [
+      "FINE"
+     ]
+    },
+    {
+     "key": "french-press",
+     "group": "french-press",
+     "label": "French press",
+     "provenance": "maker",
+     "source": "Capresso manual section 5",
+     "url": "https://www.capresso.com/media/wysiwyg/capresso_565-560_infinity-grinder_IB.pdf",
+     "checked": "2026-10-15",
+     "categories": [
+      "COARSE"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "df64-gen2",
+   "name": "DF64 Gen 2 (Turin)",
+   "short": "DF64 Gen 2",
+   "maker": "Turin Grinders brand (turingrinders.com); manufacturer per Honest Coffee Guide is Ningbo Frigga Electric Appliance Co., Ltd. (secondary, unverified against a maker document)",
+   "type": "electric",
+   "kind": "dial",
+   "unit": "mark",
+   "unitDetail": "stepless collar; no published unit, no dial numbers on the Turin page",
+   "scale": [
+    0,
+    90
+   ],
+   "step": null,
+   "stepless": true,
+   "perTurn": null,
+   "sub": null,
+   "avoid": null,
+   "categories": null,
+   "stepMicrons": null,
+   "stepNote": null,
+   "applies": "DF64 Gen 2 (Turin).",
+   "rulerNote": null,
+   "zeroNote": "Turin maker page gives no zero value. Espresso Outlet (retailer) guide says dial indicators are not set at true zero and to go fine until burrs touch to find zero; this is retailer guidance, not maker.",
+   "cautions": [
+    "Don't run it at the finest setting or below: the burrs can be damaged (retailer guidance)."
+   ],
+   "startingPoint": {
+    "status": "not-stated",
+    "note": "No maker chart was found in our research; the maker suggests recording the setting that works for each coffee rather than expecting one number to suit every grinder.",
+    "url": "https://www.turingrinders.com/products/turin-df64-gen-2-single-dose-coffee-grinder-1"
+   },
+   "chart": {
+    "title": "Turin DF64 Gen 2.7 Single-Dose Coffee Grinder",
+    "url": "https://www.turingrinders.com/products/turin-df64-gen-2-single-dose-coffee-grinder-1"
+   },
+   "status": "documented-secondary settings, calibration limits unresolved",
+   "amazon": null,
+   "settings": [
+    {
+     "key": "espresso",
+     "group": "espresso",
+     "label": "Espresso",
+     "provenance": "documented-secondary",
+     "source": "Honest Coffee Guide Turin DF64 (Gen 2) table, fully fetched 2026-10-15",
+     "url": "https://honestcoffeeguide.com/turin-df64-gen-2-grind-settings/",
+     "checked": "2026-10-15",
+     "headline": "The source lists 0 to 20 on its dial",
+     "note": "These are the secondary source’s dial numbers. It doesn’t say where its 0 is, so don’t read 0 as burr contact: find your grinder’s own zero first, and never grind at the finest point.",
+     "min": 0,
+     "max": 20,
+     "start": null
+    },
+    {
+     "key": "pour-over-v60",
+     "group": "pourover",
+     "label": "Pour-over (V60)",
+     "provenance": "documented-secondary",
+     "source": "Honest Coffee Guide table",
+     "url": "https://honestcoffeeguide.com/turin-df64-gen-2-grind-settings/",
+     "checked": "2026-10-15",
+     "min": 23,
+     "max": 53,
+     "start": null
+    },
+    {
+     "key": "aeropress",
+     "group": "aeropress",
+     "label": "AeroPress",
+     "provenance": "documented-secondary",
+     "source": "Honest Coffee Guide table",
+     "url": "https://honestcoffeeguide.com/turin-df64-gen-2-grind-settings/",
+     "checked": "2026-10-15",
+     "min": 15,
+     "max": 80,
+     "start": null
+    },
+    {
+     "key": "moka-pot",
+     "group": "moka",
+     "label": "Moka pot",
+     "provenance": "documented-secondary",
+     "source": "Honest Coffee Guide table",
+     "url": "https://honestcoffeeguide.com/turin-df64-gen-2-grind-settings/",
+     "checked": "2026-10-15",
+     "min": 19,
+     "max": 49,
+     "start": null
+    },
+    {
+     "key": "pour-over",
+     "group": "pourover",
+     "label": "Pour-over",
+     "provenance": "documented-secondary",
+     "source": "Honest Coffee Guide table (generic pour over, not V60 only)",
+     "url": "https://honestcoffeeguide.com/turin-df64-gen-2-grind-settings/",
+     "checked": "2026-10-15",
+     "min": 24,
+     "max": 77,
+     "start": null
+    },
+    {
+     "key": "drip-machine",
+     "group": "drip",
+     "label": "Drip machine",
+     "provenance": "documented-secondary",
+     "source": "Honest Coffee Guide table (\"Filter Coffee Machine\")",
+     "url": "https://honestcoffeeguide.com/turin-df64-gen-2-grind-settings/",
+     "checked": "2026-10-15",
+     "min": 13,
+     "max": 74,
+     "start": null
+    },
+    {
+     "key": "french-press",
+     "group": "french-press",
+     "label": "French press",
+     "provenance": "documented-secondary",
+     "source": "Honest Coffee Guide table",
+     "url": "https://honestcoffeeguide.com/turin-df64-gen-2-grind-settings/",
+     "checked": "2026-10-15",
+     "min": 53,
+     "max": 90,
+     "start": null
+    },
+    {
+     "key": "cold-brew",
+     "group": "cold-brew",
+     "label": "Cold brew",
+     "provenance": "documented-secondary",
+     "source": "Honest Coffee Guide table",
+     "url": "https://honestcoffeeguide.com/turin-df64-gen-2-grind-settings/",
+     "checked": "2026-10-15",
+     "min": 65,
+     "max": 90,
+     "start": null
+    }
+   ]
+  },
+  {
+   "id": "eureka-mignon-specialita",
+   "name": "Eureka Mignon Specialità",
+   "short": "Eureka Mignon Specialità",
+   "maker": "Eureka (Conti Valerio / Eureka 1920, Sesto Fiorentino, Italy)",
+   "type": "electric",
+   "kind": "text",
+   "unit": "as published",
+   "unitDetail": "stepless micrometric knob; numbered reference marks; no microns per click published",
+   "scale": null,
+   "step": null,
+   "stepless": false,
+   "perTurn": null,
+   "sub": null,
+   "avoid": null,
+   "categories": null,
+   "stepMicrons": null,
+   "stepNote": null,
+   "applies": null,
+   "rulerNote": null,
+   "zeroNote": "No zero convention in Eureka manual. Eureka page describes lower-burr repositioning and maintenance without losing setting.",
+   "cautions": [
+    "Turn the knob only while the motor is running; the manual warns the grinder could stop otherwise."
+   ],
+   "startingPoint": {
+    "status": "not-established",
+    "note": "Eureka's manual gives no starting settings; these come from a documented secondary source.",
+    "url": "https://www.eureka.co.it/public/files/catalogo/20/Mignon%20-%20User%20Manual.pdf"
+   },
+   "chart": {
+    "title": "Eureka \"Mignon - User Manual\" (eureka.co.it/public/files/catalogo/20/Mignon - User Manual.pdf)",
+    "url": "https://www.eureka.co.it/public/files/catalogo/20/Mignon%20-%20User%20Manual.pdf"
+   },
+   "status": "documented-secondary settings, rotation notation/calibration limits unresolved",
+   "amazon": null,
+   "settings": [
+    {
+     "key": "espresso",
+     "group": "espresso",
+     "label": "Espresso",
+     "provenance": "documented-secondary",
+     "source": "Honest Coffee Guide Eureka Mignon Specialità table, fully fetched 2026-10-15",
+     "url": "https://honestcoffeeguide.com/eureka-mignon-specialita-grind-settings/",
+     "checked": "2026-10-15",
+     "published": "0 to 3.5"
+    },
+    {
+     "key": "pour-over-v60",
+     "group": "pourover",
+     "label": "Pour-over (V60)",
+     "provenance": "documented-secondary",
+     "source": "Honest Coffee Guide table",
+     "url": "https://honestcoffeeguide.com/eureka-mignon-specialita-grind-settings/",
+     "checked": "2026-10-15",
+     "published": "4.5 to 1+4"
+    },
+    {
+     "key": "aeropress",
+     "group": "aeropress",
+     "label": "AeroPress",
+     "provenance": "documented-secondary",
+     "source": "Honest Coffee Guide table",
+     "url": "https://honestcoffeeguide.com/eureka-mignon-specialita-grind-settings/",
+     "checked": "2026-10-15",
+     "published": "2.5 to 2+3"
+    },
+    {
+     "key": "moka-pot",
+     "group": "moka",
+     "label": "Moka pot",
+     "provenance": "documented-secondary",
+     "source": "Honest Coffee Guide table",
+     "url": "https://honestcoffeeguide.com/eureka-mignon-specialita-grind-settings/",
+     "checked": "2026-10-15",
+     "published": "3.5 to 1+3"
+    },
+    {
+     "key": "pour-over",
+     "group": "pourover",
+     "label": "Pour-over",
+     "provenance": "documented-secondary",
+     "source": "Honest Coffee Guide table",
+     "url": "https://honestcoffeeguide.com/eureka-mignon-specialita-grind-settings/",
+     "checked": "2026-10-15",
+     "published": "4.5 to 2+2.5"
+    },
+    {
+     "key": "drip-machine",
+     "group": "drip",
+     "label": "Drip machine",
+     "provenance": "documented-secondary",
+     "source": "Honest Coffee Guide table",
+     "url": "https://honestcoffeeguide.com/eureka-mignon-specialita-grind-settings/",
+     "checked": "2026-10-15",
+     "published": "2.5 to 2+2"
+    },
+    {
+     "key": "french-press",
+     "group": "french-press",
+     "label": "French press",
+     "provenance": "documented-secondary",
+     "source": "Honest Coffee Guide table",
+     "url": "https://honestcoffeeguide.com/eureka-mignon-specialita-grind-settings/",
+     "checked": "2026-10-15",
+     "published": "1+4 to 3+4"
+    },
+    {
+     "key": "cold-brew",
+     "group": "cold-brew",
+     "label": "Cold brew",
+     "provenance": "documented-secondary",
+     "source": "Honest Coffee Guide table",
+     "url": "https://honestcoffeeguide.com/eureka-mignon-specialita-grind-settings/",
+     "checked": "2026-10-15",
+     "published": "2+0.5 to 4+0"
+    }
+   ]
+  },
+  {
+   "id": "fellow-ode-gen2",
+   "name": "Fellow Ode Brew Grinder Gen 2",
+   "short": "Fellow Ode Gen 2",
+   "maker": "Fellow Industries Inc.",
+   "type": "electric",
+   "kind": "dial",
+   "unit": "setting",
+   "unitDetail": "numbered outer dial 1 (fine) to 11 (coarse); \"11 settings with 31 total steps\" (maker product page)",
+   "scale": [
+    1,
+    11
+   ],
+   "step": 1,
+   "stepless": false,
+   "perTurn": null,
+   "sub": null,
+   "avoid": null,
+   "categories": null,
+   "stepMicrons": null,
+   "stepNote": null,
+   "applies": "Ode with the stock Gen 2 Brew Burrs (not SSP burrs).",
+   "rulerNote": null,
+   "zeroNote": "Factory calibrated. Maker: \"Setting 1 is always 1 click away from the burr touch point\" and \"the burr touch point will drift slightly ... expect the settings to shift slightly coarser\" as burrs season. Calibration uses Phillips screwdriver per Fellow help article; no numeric zero micron published.",
+   "cautions": [
+    "Ode is made for brewed coffee, not espresso.",
+    "Move the dial toward finer with the grinder running; it can bind if turned from 11 to 1 while off."
+   ],
+   "startingPoint": {
+    "status": "yes",
+    "note": "Fellow gives these as the starting settings in its own recipes.",
+    "url": "https://fellowproducts.com/pages/how-to-pour-over"
+   },
+   "chart": {
+    "title": "maker product page and Safety Manual",
+    "url": "https://fellowproducts.com/products/ode-brew-grinder-gen-2"
+   },
+   "status": "partial: exact maker recipe starts only; ambiguous arc ranges omitted",
+   "amazon": {
+    "asin": "B0BLRMCM9Y",
+    "url": "https://www.amazon.com/dp/B0BLRMCM9Y"
+   },
+   "settings": [
+    {
+     "key": "pour-over",
+     "group": "pourover",
+     "label": "Pour-over",
+     "provenance": "maker",
+     "source": "Fellow how-to brew guide, Measure and grind coffee",
+     "url": "https://fellowproducts.com/pages/how-to-pour-over",
+     "checked": "2026-10-15",
+     "note": "This is the start in Fellow’s own pour-over recipe (22 g of coffee to 350 g of water, flat-bottom brewer), not a general chart.",
+     "min": 5,
+     "max": 5,
+     "start": 5
+    },
+    {
+     "key": "cold-brew",
+     "group": "cold-brew",
+     "label": "Cold brew",
+     "provenance": "maker",
+     "source": "Fellow how-to brew guide, Measure and grind coffee",
+     "url": "https://fellowproducts.com/pages/how-to-cold-brew",
+     "checked": "2026-10-15",
+     "note": "This is the start in Fellow’s cold-brew recipe (70 g of coffee to 700 g of water, 16 hours); Fellow says not to go finer than 7.",
+     "min": 10,
+     "max": 10,
+     "start": 10
+    }
+   ]
+  },
+  {
+   "id": "fellow-opus-1",
+   "name": "Fellow Opus Conical Burr Grinder (Opus 1; 40 mm burrs, 41 settings)",
+   "short": "Fellow Opus",
+   "maker": "Fellow Industries Inc.",
+   "type": "electric",
+   "kind": "dial",
+   "unit": "setting",
+   "unitDetail": "Outer grind ring 1 (fine) to 11 (coarse), 4 minor increments (0.25) per number = 41 outer settings; plus a removable inner calibration/micro ring under the load bin (6 notches each direction)",
+   "scale": [
+    1,
+    11
+   ],
+   "step": 0.25,
+   "stepless": false,
+   "perTurn": null,
+   "sub": null,
+   "avoid": null,
+   "categories": null,
+   "stepMicrons": 50,
+   "stepNote": "Each quarter-setting click on the outer ring moves the burrs about 50 µm (so a whole number is about 200 µm). That’s burr movement, not the size of the grounds.",
+   "applies": "The Opus 1, not the Opus 2.",
+   "rulerNote": null,
+   "zeroNote": "No explicit zero/touch-point definition found in fetched Opus 1 sources. Maker says inner ring \"calibrates as burrs wear down\" and can extend the outer ring to 0 and 12. Calibration procedure: center outer ring at 6, remove load bin, press calibration ring tabs, rotate outer ring to move the inner scale arrow (counterclockwise \"-\" finer, clockwise \"+\" coarser), release, and rotate outer ring to re-engage. (QA) Inner-ring calibration is separate from the 0-12 range extension; the help text does not define a numeric zero micron.",
+   "cautions": [
+    "This chart is for the Opus 1; the Opus 2 calibrates differently."
+   ],
+   "startingPoint": {
+    "status": "yes",
+    "note": "Fellow calls its grind recommendations suggested starting places.",
+    "url": "https://help.fellowproducts.com/hc/en-us/articles/22857010246939-Adjusting-Opus-1-Grinder-Settings-for-Espresso"
+   },
+   "chart": {
+    "title": "maker help articles, Get To Know You guide, Gear Guide",
+    "url": "https://help.fellowproducts.com/hc/en-us/articles/12697812844315-What-does-the-Opus-1-inner-adjustment-ring-do-and-how-do-I-use-it"
+   },
+   "status": "maker method guidance with model-specific qualifications",
+   "amazon": {
+    "asin": "B0BV92JN6Y",
+    "url": "https://www.amazon.com/dp/B0BV92JN6Y"
+   },
+   "settings": [
+    {
+     "key": "espresso",
+     "group": "espresso",
+     "label": "Espresso",
+     "provenance": "maker",
+     "source": "Opus GTKYG PDF p.5 GRIND SETTINGS chart (vector graphic, 300dpi render)",
+     "url": "https://cdn.shopify.com/s/files/1/0057/6235/1219/files/Opus_GTKYG_789-00025_B.pdf?v=1676342072",
+     "checked": "2026-10-15",
+     "min": 1,
+     "max": 2,
+     "start": null
+    },
+    {
+     "key": "aeropress",
+     "group": "aeropress",
+     "label": "AeroPress",
+     "provenance": "maker",
+     "source": "Opus GTKYG PDF p.5 GRIND SETTINGS chart (vector graphic, 300dpi render)",
+     "url": "https://cdn.shopify.com/s/files/1/0057/6235/1219/files/Opus_GTKYG_789-00025_B.pdf?v=1676342072",
+     "checked": "2026-10-15",
+     "min": 2,
+     "max": 5,
+     "start": null
+    },
+    {
+     "key": "pour-over",
+     "group": "pourover",
+     "label": "Pour-over",
+     "provenance": "maker",
+     "source": "Opus GTKYG PDF p.5 GRIND SETTINGS chart (vector graphic, 300dpi render)",
+     "url": "https://cdn.shopify.com/s/files/1/0057/6235/1219/files/Opus_GTKYG_789-00025_B.pdf?v=1676342072",
+     "checked": "2026-10-15",
+     "min": 5,
+     "max": 9,
+     "start": null
+    },
+    {
+     "key": "drip-machine",
+     "group": "drip",
+     "label": "Drip machine",
+     "provenance": "maker",
+     "source": "Opus GTKYG PDF p.5 GRIND SETTINGS chart (vector graphic, 300dpi render)",
+     "url": "https://cdn.shopify.com/s/files/1/0057/6235/1219/files/Opus_GTKYG_789-00025_B.pdf?v=1676342072",
+     "checked": "2026-10-15",
+     "min": 7,
+     "max": 9,
+     "start": null
+    },
+    {
+     "key": "french-press",
+     "group": "french-press",
+     "label": "French press",
+     "provenance": "maker",
+     "source": "Opus GTKYG PDF p.5 GRIND SETTINGS chart (vector graphic, 300dpi render)",
+     "url": "https://cdn.shopify.com/s/files/1/0057/6235/1219/files/Opus_GTKYG_789-00025_B.pdf?v=1676342072",
+     "checked": "2026-10-15",
+     "min": 8,
+     "max": 10,
+     "start": null
+    },
+    {
+     "key": "cold-brew",
+     "group": "cold-brew",
+     "label": "Cold brew",
+     "provenance": "maker",
+     "source": "Opus GTKYG PDF p.5 GRIND SETTINGS chart (vector graphic, 300dpi render)",
+     "url": "https://cdn.shopify.com/s/files/1/0057/6235/1219/files/Opus_GTKYG_789-00025_B.pdf?v=1676342072",
+     "checked": "2026-10-15",
+     "min": 10,
+     "max": 11,
+     "start": null
+    }
+   ]
+  },
+  {
+   "id": "niche-zero",
+   "name": "Niche Zero",
+   "short": "Niche Zero",
+   "maker": "Niche Coffee Ltd (nichecoffee.co.uk)",
+   "type": "electric",
+   "kind": "dial",
+   "unit": "mark",
+   "unitDetail": "Infinite stepless dial; numbered reference marks",
+   "scale": [
+    0,
+    50
+   ],
+   "step": null,
+   "stepless": true,
+   "perTurn": null,
+   "sub": null,
+   "avoid": null,
+   "categories": null,
+   "stepMicrons": null,
+   "stepNote": null,
+   "applies": null,
+   "rulerNote": null,
+   "zeroNote": "Manual calibration: screw bean funnel finger tight, align white dot on bezel with the calibrate mark, then unscrew funnel to chosen setting. Calibrated position = burrs touching; not a brew setting.",
+   "cautions": [
+    "Never grind at the calibration setting: it damages the burrs.",
+    "When going finer after coarse grinding, run the grinder briefly every 10 marks."
+   ],
+   "startingPoint": {
+    "status": "yes",
+    "note": "Niche calls its guide a solid foundation and recommends fine-tuning to your taste.",
+    "url": "https://www.nichecoffee.co.uk/blogs/exploring-coffee/the-ultimate-grind-size-guide-for-niche-grinders"
+   },
+   "chart": {
+    "title": "Niche Zero User Manual (IFU)",
+    "url": "https://cdn.shopify.com/s/files/1/0081/2076/2450/files/Niche_Zero_IFU.pdf?v=1617928737"
+   },
+   "status": "maker method guidance with model-specific qualifications",
+   "amazon": null,
+   "settings": [
+    {
+     "key": "espresso",
+     "group": "espresso",
+     "label": "Espresso",
+     "provenance": "maker",
+     "source": "Niche Coffee blog \"The ultimate grind size guide for Niche grinders\" (table + text: \"between 5-20 on a Niche Zero\")",
+     "url": "https://www.nichecoffee.co.uk/blogs/exploring-coffee/the-ultimate-grind-size-guide-for-niche-grinders",
+     "checked": "2026-10-15",
+     "min": 5,
+     "max": 20,
+     "start": null
+    },
+    {
+     "key": "moka-pot",
+     "group": "moka",
+     "label": "Moka pot",
+     "provenance": "maker",
+     "source": "same Niche blog table: Moka Pot \"Medium-Fine (20-30)\"",
+     "url": "https://www.nichecoffee.co.uk/blogs/exploring-coffee/the-ultimate-grind-size-guide-for-niche-grinders",
+     "checked": "2026-10-15",
+     "min": 20,
+     "max": 30,
+     "start": null
+    },
+    {
+     "key": "aeropress",
+     "group": "aeropress",
+     "label": "AeroPress",
+     "provenance": "maker",
+     "source": "same Niche blog table: AeroPress \"Medium (30-35)\"",
+     "url": "https://www.nichecoffee.co.uk/blogs/exploring-coffee/the-ultimate-grind-size-guide-for-niche-grinders",
+     "checked": "2026-10-15",
+     "min": 30,
+     "max": 35,
+     "start": null
+    },
+    {
+     "key": "pour-over-v60",
+     "group": "pourover",
+     "label": "Pour-over (V60)",
+     "provenance": "maker",
+     "source": "same Niche blog table: V60 \"Medium-Coarse (35-45)\"",
+     "url": "https://www.nichecoffee.co.uk/blogs/exploring-coffee/the-ultimate-grind-size-guide-for-niche-grinders",
+     "checked": "2026-10-15",
+     "min": 35,
+     "max": 45,
+     "start": null
+    },
+    {
+     "key": "french-press",
+     "group": "french-press",
+     "label": "French press",
+     "provenance": "maker",
+     "source": "same Niche blog table: French Press \"Coarse (45+)\" (open-ended)",
+     "url": "https://www.nichecoffee.co.uk/blogs/exploring-coffee/the-ultimate-grind-size-guide-for-niche-grinders",
+     "checked": "2026-10-15",
+     "min": 45,
+     "max": null,
+     "start": null,
+     "openTop": true
+    }
+   ]
+  },
+  {
+   "id": "oxo-brew-conical-burr",
+   "name": "OXO Brew Conical Burr Coffee Grinder (standard non-scale, 15 grind settings plus micro-settings)",
+   "short": "OXO Brew Conical Burr",
+   "maker": "OXO",
+   "type": "electric",
+   "kind": "dial",
+   "unit": "setting",
+   "unitDetail": "15 grind size setting numbers (1 = fine, 15 = coarse) plus micro-settings; grinding time dial 0-30 s",
+   "scale": [
+    1,
+    15
+   ],
+   "step": 1,
+   "stepless": false,
+   "perTurn": null,
+   "sub": null,
+   "avoid": null,
+   "categories": null,
+   "stepMicrons": null,
+   "stepNote": null,
+   "applies": "The standard OXO Brew Conical Burr grinder (15 settings), not the model with a scale.",
+   "rulerNote": null,
+   "zeroNote": "Setting 1 = fine, 15 = coarse per manual p.7. Micro-settings exist but no micron or per-micro value published. Manual says grind size settings only; no micron range printed.",
+   "cautions": [
+    "With beans in the hopper, change the setting while the motor is running so it doesn't jam."
+   ],
+   "startingPoint": {
+    "status": "not-stated",
+    "note": "OXO's manual gives a range of settings for each method.",
+    "url": "https://www.oxo.com/media/wysiwyg/PDF_Files/BL_On_8717000_Booklet_Temp.pdf"
+   },
+   "chart": {
+    "title": "OXO Conical Burr Coffee Grinder Instructions for Use (file BL_On_8717000_Booklet_Temp.pdf)",
+    "url": "https://www.oxo.com/media/wysiwyg/PDF_Files/BL_On_8717000_Booklet_Temp.pdf"
+   },
+   "status": "maker method guidance with model-specific qualifications",
+   "amazon": {
+    "asin": "B07CSKGLMM",
+    "url": "https://www.amazon.com/dp/B07CSKGLMM"
+   },
+   "settings": [
+    {
+     "key": "espresso",
+     "group": "espresso",
+     "label": "Espresso",
+     "provenance": "maker",
+     "source": "OXO manual p.7 GRIND SIZE SETTING RECOMMENDATIONS",
+     "url": "https://www.oxo.com/media/wysiwyg/PDF_Files/BL_On_8717000_Booklet_Temp.pdf",
+     "checked": "2026-10-15",
+     "min": 1,
+     "max": 5,
+     "start": null
+    },
+    {
+     "key": "pour-over",
+     "group": "pourover",
+     "label": "Pour-over",
+     "provenance": "maker",
+     "source": "OXO manual p.7 GRIND SIZE SETTING RECOMMENDATIONS",
+     "url": "https://www.oxo.com/media/wysiwyg/PDF_Files/BL_On_8717000_Booklet_Temp.pdf",
+     "checked": "2026-10-15",
+     "min": 6,
+     "max": 10,
+     "start": null
+    },
+    {
+     "key": "drip-machine",
+     "group": "drip",
+     "label": "Drip machine",
+     "provenance": "maker",
+     "source": "OXO manual p.7 GRIND SIZE SETTING RECOMMENDATIONS",
+     "url": "https://www.oxo.com/media/wysiwyg/PDF_Files/BL_On_8717000_Booklet_Temp.pdf",
+     "checked": "2026-10-15",
+     "min": 6,
+     "max": 10,
+     "start": null
+    },
+    {
+     "key": "french-press",
+     "group": "french-press",
+     "label": "French press",
+     "provenance": "maker",
+     "source": "OXO manual p.7 GRIND SIZE SETTING RECOMMENDATIONS",
+     "url": "https://www.oxo.com/media/wysiwyg/PDF_Files/BL_On_8717000_Booklet_Temp.pdf",
+     "checked": "2026-10-15",
+     "min": 11,
+     "max": 15,
+     "start": null
+    },
+    {
+     "key": "cold-brew",
+     "group": "cold-brew",
+     "label": "Cold brew",
+     "provenance": "maker",
+     "source": "OXO manual p.7 GRIND SIZE SETTING RECOMMENDATIONS",
+     "url": "https://www.oxo.com/media/wysiwyg/PDF_Files/BL_On_8717000_Booklet_Temp.pdf",
+     "checked": "2026-10-15",
+     "min": 11,
+     "max": 15,
+     "start": null
+    }
+   ]
+  },
+  {
+   "id": "timemore-sculptor-064s",
+   "name": "Timemore Sculptor 064S (TEG064S; not 064S II)",
+   "short": "Timemore Sculptor 064S",
+   "maker": "TIMEMORE (Xiamen TIMEMORE Technology)",
+   "type": "electric",
+   "kind": "dial",
+   "unit": "setting",
+   "unitDetail": "Stepless numbered dial; manual method labels say \"Clicks\", despite maker FAQ saying no clicks are felt",
+   "scale": [
+    0,
+    16
+   ],
+   "step": null,
+   "stepless": true,
+   "perTurn": null,
+   "sub": null,
+   "avoid": null,
+   "categories": null,
+   "stepMicrons": null,
+   "stepNote": null,
+   "applies": "The Sculptor 064S (TEG064S), not the 064S II.",
+   "rulerNote": null,
+   "zeroNote": "Printed dial includes0; exact burr-touch calibration relationship to printed0 not established in the inspected original-064S manual.",
+   "cautions": [],
+   "startingPoint": {
+    "status": "not-stated",
+    "note": "Timemore's manual gives a range of settings for each method.",
+    "url": "https://cdn.shopify.com/s/files/1/0642/9153/7138/files/064-064S_20230630_ZQ.pdf"
+   },
+   "chart": {
+    "title": "Sculptor 064/064S Electric Grinder user manual; Sculptor related FAQ",
+    "url": "https://cdn.shopify.com/s/files/1/0642/9153/7138/files/064-064S_20230630_ZQ.pdf"
+   },
+   "status": "maker method guidance with model-specific qualifications",
+   "amazon": null,
+   "settings": [
+    {
+     "key": "espresso",
+     "group": "espresso",
+     "label": "Espresso",
+     "provenance": "maker",
+     "source": "TIMEMORE Sculptor 064/064S user manual p.6 Coarseness Setting dial diagram, label \"Espresso 1-4 Clicks\"",
+     "url": "https://cdn.shopify.com/s/files/1/0642/9153/7138/files/064-064S_20230630_ZQ.pdf",
+     "checked": "2026-10-15",
+     "min": 1,
+     "max": 4,
+     "start": null
+    },
+    {
+     "key": "moka-pot",
+     "group": "moka",
+     "label": "Moka pot",
+     "provenance": "maker",
+     "source": "same, label \"Moka 3-5 Clicks\"",
+     "url": "https://cdn.shopify.com/s/files/1/0642/9153/7138/files/064-064S_20230630_ZQ.pdf",
+     "checked": "2026-10-15",
+     "min": 3,
+     "max": 5,
+     "start": null
+    },
+    {
+     "key": "pour-over",
+     "group": "pourover",
+     "label": "Pour-over",
+     "provenance": "maker",
+     "source": "same, label \"Pour over 8-13 Clicks\"",
+     "url": "https://cdn.shopify.com/s/files/1/0642/9153/7138/files/064-064S_20230630_ZQ.pdf",
+     "checked": "2026-10-15",
+     "min": 8,
+     "max": 13,
+     "start": null
+    },
+    {
+     "key": "french-press",
+     "group": "french-press",
+     "label": "French press",
+     "provenance": "maker",
+     "source": "same, label \"French Press 13-16 Clicks\"",
+     "url": "https://cdn.shopify.com/s/files/1/0642/9153/7138/files/064-064S_20230630_ZQ.pdf",
+     "checked": "2026-10-15",
+     "min": 13,
+     "max": 16,
+     "start": null
+    }
+   ]
+  },
+  {
+   "id": "1zpresso-j-max",
+   "name": "1Zpresso J-Max",
+   "short": "1Zpresso J-Max",
+   "maker": "1Zpresso",
+   "type": "hand",
+   "kind": "turns",
+   "unit": "clicks",
+   "unitDetail": "clicks (90 per rotation; 0.0088 mm per click)",
+   "scale": [
+    0,
+    450
+   ],
+   "step": null,
+   "stepless": false,
+   "perTurn": 90,
+   "sub": null,
+   "avoid": null,
+   "categories": null,
+   "stepMicrons": 8.8,
+   "stepNote": "Each click moves the burrs about 8.8 µm (90 clicks per turn).",
+   "applies": null,
+   "rulerNote": "1Zpresso’s manual gives about 4.5 turns of travel (405 clicks), but its chart runs to 420. The ruler is drawn for illustration, not as the grinder’s limit.",
+   "zeroNote": "Exact maker wording (manual, Adjusting the grind setting step 1): turn the adjustment dial ring counter-clockwise all the way to the starting point \"where the resistance starts and the crank handle can't spin freely\". Calibration tutorial (J-Max / J-Ultra): starting point should align with #0 on scale mark. Start may vary within +/-10 clicks.",
+   "cautions": [],
+   "startingPoint": {
+    "status": "not-stated",
+    "note": "1Zpresso's chart prints a band for each method, not a single setting.",
+    "url": "https://1zpresso.coffee/grind-setting/"
+   },
+   "chart": {
+    "title": "maker-manual",
+    "url": "https://1zpresso.coffee/jp/manual-jmax-en"
+   },
+   "status": "maker method guidance with model-specific qualifications",
+   "amazon": null,
+   "settings": [
+    {
+     "key": "espresso",
+     "group": "espresso",
+     "label": "Espresso",
+     "provenance": "maker",
+     "source": "J-Max Spanish-localized grind-setting reference chart (only J-Max chart inspected; labels are numeric)",
+     "url": "https://1zpresso.coffee/wp-content/uploads/2022/12/jmax-Grind-Setting-Reference-es-20221222.jpg",
+     "checked": "2026-10-15",
+     "min": 90,
+     "max": 150,
+     "start": null
+    },
+    {
+     "key": "aeropress",
+     "group": "aeropress",
+     "label": "AeroPress",
+     "provenance": "maker",
+     "source": "J-Max chart grouped band \"Aeropress/Moka-Pot/Drip Coffee Maker\"",
+     "url": "https://1zpresso.coffee/wp-content/uploads/2022/12/jmax-Grind-Setting-Reference-es-20221222.jpg",
+     "checked": "2026-10-15",
+     "min": 180,
+     "max": 240,
+     "start": null
+    },
+    {
+     "key": "moka-pot",
+     "group": "moka",
+     "label": "Moka pot",
+     "provenance": "maker",
+     "source": "J-Max chart grouped band",
+     "url": "https://1zpresso.coffee/wp-content/uploads/2022/12/jmax-Grind-Setting-Reference-es-20221222.jpg",
+     "checked": "2026-10-15",
+     "min": 180,
+     "max": 240,
+     "start": null
+    },
+    {
+     "key": "drip-machine",
+     "group": "drip",
+     "label": "Drip machine",
+     "provenance": "maker",
+     "source": "J-Max chart grouped band",
+     "url": "https://1zpresso.coffee/wp-content/uploads/2022/12/jmax-Grind-Setting-Reference-es-20221222.jpg",
+     "checked": "2026-10-15",
+     "min": 180,
+     "max": 240,
+     "start": null
+    },
+    {
+     "key": "pour-over",
+     "group": "pourover",
+     "label": "Pour-over",
+     "provenance": "maker",
+     "source": "J-Max chart band \"Sifon/ Pour Over (vertido)\"",
+     "url": "https://1zpresso.coffee/wp-content/uploads/2022/12/jmax-Grind-Setting-Reference-es-20221222.jpg",
+     "checked": "2026-10-15",
+     "min": 240,
+     "max": 300,
+     "start": null
+    },
+    {
+     "key": "french-press",
+     "group": "french-press",
+     "label": "French press",
+     "provenance": "maker",
+     "source": "J-Max chart red band \"Prensa francesa\"",
+     "url": "https://1zpresso.coffee/wp-content/uploads/2022/12/jmax-Grind-Setting-Reference-es-20221222.jpg",
+     "checked": "2026-10-15",
+     "min": 360,
+     "max": 420,
+     "start": null
+    }
+   ]
+  },
+  {
+   "id": "1zpresso-jx-pro",
+   "name": "1Zpresso JX-Pro",
+   "short": "1Zpresso JX-Pro",
+   "maker": "1Zpresso",
+   "type": "hand",
+   "kind": "turns",
+   "unit": "numbers",
+   "unitDetail": "numbers (10 per rotation; 4 clicks per number; 0.0125 mm per click)",
+   "scale": [
+    0,
+    50
+   ],
+   "step": null,
+   "stepless": false,
+   "perTurn": 10,
+   "sub": "4 clicks per number",
+   "avoid": null,
+   "categories": null,
+   "stepMicrons": 12.5,
+   "stepNote": "Each click (a quarter of a number) moves the burrs about 12.5 µm.",
+   "applies": "From 1Zpresso’s archived JX-Pro chart; whether it applies to both the gray-dot and red-dot versions isn’t established.",
+   "rulerNote": null,
+   "zeroNote": "Exact maker wording (JX-Pro S manual): \"We define the zero point as where the handle starts to spin with resistance instead of the tightest position.\" Setting the zero to #0 is by removing the dial and turning the knurled thumb nut 1-2 clicks; start may be off by 2 or more clicks.",
+   "cautions": [],
+   "startingPoint": {
+    "status": "not-stated",
+    "note": "1Zpresso's chart prints a band for each method, not a single setting.",
+    "url": "https://1zpresso.coffee/grind-setting/"
+   },
+   "chart": {
+    "title": "maker-manual",
+    "url": "https://1zpresso.coffee/manual-jxpro-en/"
+   },
+   "status": "maker chart; hardware revision applicability unresolved",
+   "amazon": null,
+   "settings": [
+    {
+     "key": "espresso",
+     "group": "espresso",
+     "label": "Espresso",
+     "provenance": "maker",
+     "source": "JX-Pro Grind Setting Reference (English, 2020-09-09)",
+     "url": "https://1zpresso.coffee/wp-content/uploads/2020/09/JX-Pro-Grind-Setting-Reference-20200909.jpg",
+     "checked": "2026-10-15",
+     "min": 12,
+     "max": 16,
+     "start": null
+    },
+    {
+     "key": "aeropress",
+     "group": "aeropress",
+     "label": "AeroPress",
+     "provenance": "maker",
+     "source": "JX-Pro chart grouped yellow band \"AeroPress/Moka-Pot/Drip Coffee Maker\"",
+     "url": "https://1zpresso.coffee/wp-content/uploads/2020/09/JX-Pro-Grind-Setting-Reference-20200909.jpg",
+     "checked": "2026-10-15",
+     "min": 24,
+     "max": 30,
+     "start": null
+    },
+    {
+     "key": "moka-pot",
+     "group": "moka",
+     "label": "Moka pot",
+     "provenance": "maker",
+     "source": "JX-Pro chart grouped band",
+     "url": "https://1zpresso.coffee/wp-content/uploads/2020/09/JX-Pro-Grind-Setting-Reference-20200909.jpg",
+     "checked": "2026-10-15",
+     "min": 24,
+     "max": 30,
+     "start": null
+    },
+    {
+     "key": "drip-machine",
+     "group": "drip",
+     "label": "Drip machine",
+     "provenance": "maker",
+     "source": "JX-Pro chart grouped band",
+     "url": "https://1zpresso.coffee/wp-content/uploads/2020/09/JX-Pro-Grind-Setting-Reference-20200909.jpg",
+     "checked": "2026-10-15",
+     "min": 24,
+     "max": 30,
+     "start": null
+    },
+    {
+     "key": "pour-over",
+     "group": "pourover",
+     "label": "Pour-over",
+     "provenance": "maker",
+     "source": "JX-Pro chart blue band \"Siphon/Pour Over\"",
+     "url": "https://1zpresso.coffee/wp-content/uploads/2020/09/JX-Pro-Grind-Setting-Reference-20200909.jpg",
+     "checked": "2026-10-15",
+     "min": 32,
+     "max": 44,
+     "start": null
+    },
+    {
+     "key": "french-press",
+     "group": "french-press",
+     "label": "French press",
+     "provenance": "maker",
+     "source": "JX-Pro chart red band \"French Press\"",
+     "url": "https://1zpresso.coffee/wp-content/uploads/2020/09/JX-Pro-Grind-Setting-Reference-20200909.jpg",
+     "checked": "2026-10-15",
+     "min": 42,
+     "max": 50,
+     "start": null
+    }
+   ]
+  },
+  {
+   "id": "1zpresso-k-ultra",
+   "name": "1Zpresso K-Ultra",
+   "short": "1Zpresso K-Ultra",
+   "maker": "1Zpresso",
+   "type": "hand",
+   "kind": "turns",
+   "unit": "numbers",
+   "unitDetail": "numbers (10 per rotation; 10 clicks per number; 100 clicks per rotation; 0.02 mm per click)",
+   "scale": [
+    0,
+    10
+   ],
+   "step": null,
+   "stepless": false,
+   "perTurn": 10,
+   "sub": "10 clicks per number",
+   "avoid": null,
+   "categories": null,
+   "stepMicrons": 20,
+   "stepNote": "Each click (a tenth of a number) moves the burrs about 20 µm.",
+   "applies": null,
+   "rulerNote": null,
+   "zeroNote": "Exact maker wording (K-Ultra manual, Adjustment Dial Calibration): \"The zero point is defined as the position where the handle begins to spin with resistance, not the absolute tightest position.\" Instructions: find the zero point by turning the dial counter-clockwise until resistance; if the pointer is right of #0 loosen knurled nut, if left tighten it. Offset may be 2+ clicks.",
+   "cautions": [],
+   "startingPoint": {
+    "status": "not-stated",
+    "note": "1Zpresso's chart prints a band for each method, not a single setting.",
+    "url": "https://1zpresso.coffee/grind-setting/"
+   },
+   "chart": {
+    "title": "maker-manual",
+    "url": "https://1zpresso.coffee/manual-kultra-en/"
+   },
+   "status": "maker method guidance with model-specific qualifications",
+   "amazon": {
+    "asin": "B0CC4LXF1Z",
+    "url": "https://www.amazon.com/dp/B0CC4LXF1Z"
+   },
+   "settings": [
+    {
+     "key": "espresso",
+     "group": "espresso",
+     "label": "Espresso",
+     "provenance": "maker",
+     "source": "K-Ultra Japanese chart (2023-02-21), green band \"Espresso\"",
+     "url": "https://1zpresso.coffee/wp-content/uploads/2023/02/K-Ultra-%E7%B2%92%E5%BA%A6%E3%81%AE%E7%9B%AE%E5%AE%89-20230221.jpg",
+     "checked": "2026-10-15",
+     "min": 3,
+     "max": 4.5,
+     "start": null
+    },
+    {
+     "key": "aeropress",
+     "group": "aeropress",
+     "label": "AeroPress",
+     "provenance": "maker",
+     "source": "K-Ultra Japanese chart yellow band (Japanese legend; English gloss not printed)",
+     "url": "https://1zpresso.coffee/wp-content/uploads/2023/02/K-Ultra-%E7%B2%92%E5%BA%A6%E3%81%AE%E7%9B%AE%E5%AE%89-20230221.jpg",
+     "checked": "2026-10-15",
+     "min": 5,
+     "max": 7,
+     "start": null
+    },
+    {
+     "key": "moka-pot",
+     "group": "moka",
+     "label": "Moka pot",
+     "provenance": "maker",
+     "source": "K-Ultra Japanese chart grouped yellow band",
+     "url": "https://1zpresso.coffee/wp-content/uploads/2023/02/K-Ultra-%E7%B2%92%E5%BA%A6%E3%81%AE%E7%9B%AE%E5%AE%89-20230221.jpg",
+     "checked": "2026-10-15",
+     "min": 5,
+     "max": 7,
+     "start": null
+    },
+    {
+     "key": "drip-machine",
+     "group": "drip",
+     "label": "Drip machine",
+     "provenance": "maker",
+     "source": "K-Ultra Japanese chart grouped yellow band",
+     "url": "https://1zpresso.coffee/wp-content/uploads/2023/02/K-Ultra-%E7%B2%92%E5%BA%A6%E3%81%AE%E7%9B%AE%E5%AE%89-20230221.jpg",
+     "checked": "2026-10-15",
+     "min": 5,
+     "max": 7,
+     "start": null
+    },
+    {
+     "key": "pour-over",
+     "group": "pourover",
+     "label": "Pour-over",
+     "provenance": "maker",
+     "source": "K-Ultra Japanese chart blue band \"Drip / Siphon\"",
+     "url": "https://1zpresso.coffee/wp-content/uploads/2023/02/K-Ultra-%E7%B2%92%E5%BA%A6%E3%81%AE%E7%9B%AE%E5%AE%89-20230221.jpg",
+     "checked": "2026-10-15",
+     "min": 8,
+     "max": 9,
+     "start": null
+    },
+    {
+     "key": "french-press",
+     "group": "french-press",
+     "label": "French press",
+     "provenance": "maker",
+     "source": "K-Ultra Japanese chart red band \"French Press\"",
+     "url": "https://1zpresso.coffee/wp-content/uploads/2023/02/K-Ultra-%E7%B2%92%E5%BA%A6%E3%81%AE%E7%9B%AE%E5%AE%89-20230221.jpg",
+     "checked": "2026-10-15",
+     "min": 9,
+     "max": 10,
+     "start": null
+    }
+   ]
+  },
+  {
+   "id": "1zpresso-q2",
+   "name": "1Zpresso Q2 (maker Q-series chart; burr variant unresolved)",
+   "short": "1Zpresso Q2",
+   "maker": "1Zpresso",
+   "type": "hand",
+   "kind": "turns",
+   "unit": "numbers",
+   "unitDetail": "numbers (10 per rotation; 3 clicks per number; 30 clicks per rotation; 0.025 mm per click; 0.75 mm per rotation)",
+   "scale": [
+    0,
+    40
+   ],
+   "step": null,
+   "stepless": false,
+   "perTurn": 10,
+   "sub": "3 clicks per number",
+   "avoid": null,
+   "categories": null,
+   "stepMicrons": 25,
+   "stepNote": "Each click (a third of a number) moves the burrs about 25 µm.",
+   "applies": "From 1Zpresso’s Q-series chart; which Q2 burr it applies to isn’t established.",
+   "rulerNote": null,
+   "zeroNote": "Exact maker wording (Q manual): \"Turn the adjustment dial clockwise to the tightest. The number (#) marked at the dot is the starting point/zero point. NOTE: the number (#) might not be 0.\" Calibration tutorial (internal adjustment): \"turn the adjustment dial clockwise until the crank handle stops spinning freely, without any resistance.\"",
+   "cautions": [],
+   "startingPoint": {
+    "status": "not-stated",
+    "note": "1Zpresso's chart prints a band for each method, not a single setting.",
+    "url": "https://1zpresso.coffee/grind-setting/"
+   },
+   "chart": {
+    "title": "maker-manual",
+    "url": "https://1zpresso.coffee/manual-q-en/"
+   },
+   "status": "maker family chart; exact Q2 burr variant applicability unresolved",
+   "amazon": null,
+   "settings": [
+    {
+     "key": "aeropress",
+     "group": "aeropress",
+     "label": "AeroPress",
+     "provenance": "maker",
+     "source": "Q Grind Setting Reference (English, 2026-04-23), yellow band \"AeroPress/Moka-Pot/Drip Coffee Maker\"",
+     "url": "https://1zpresso.coffee/wp-content/uploads/2026/04/grind-setting_q_en_20260423.jpg",
+     "checked": "2026-10-15",
+     "min": 12,
+     "max": 20,
+     "start": null
+    },
+    {
+     "key": "moka-pot",
+     "group": "moka",
+     "label": "Moka pot",
+     "provenance": "maker",
+     "source": "Q chart grouped band",
+     "url": "https://1zpresso.coffee/wp-content/uploads/2026/04/grind-setting_q_en_20260423.jpg",
+     "checked": "2026-10-15",
+     "min": 12,
+     "max": 20,
+     "start": null
+    },
+    {
+     "key": "drip-machine",
+     "group": "drip",
+     "label": "Drip machine",
+     "provenance": "maker",
+     "source": "Q chart grouped band",
+     "url": "https://1zpresso.coffee/wp-content/uploads/2026/04/grind-setting_q_en_20260423.jpg",
+     "checked": "2026-10-15",
+     "min": 12,
+     "max": 20,
+     "start": null
+    },
+    {
+     "key": "pour-over",
+     "group": "pourover",
+     "label": "Pour-over",
+     "provenance": "maker",
+     "source": "Q chart cyan band \"Siphon/Pour Over\"",
+     "url": "https://1zpresso.coffee/wp-content/uploads/2026/04/grind-setting_q_en_20260423.jpg",
+     "checked": "2026-10-15",
+     "min": 18,
+     "max": 32,
+     "start": null
+    },
+    {
+     "key": "french-press",
+     "group": "french-press",
+     "label": "French press",
+     "provenance": "maker",
+     "source": "Q chart pink band \"French Press\"",
+     "url": "https://1zpresso.coffee/wp-content/uploads/2026/04/grind-setting_q_en_20260423.jpg",
+     "checked": "2026-10-15",
+     "min": 26,
+     "max": 38,
+     "start": null
+    }
+   ]
+  },
+  {
+   "id": "1zpresso-zp6",
+   "name": "1Zpresso ZP6 Special (scope of this entry)",
+   "short": "1Zpresso ZP6 Special",
+   "maker": "1Zpresso",
+   "type": "hand",
+   "kind": "turns",
+   "unit": "numbers",
+   "unitDetail": "points (printed 0-10 chart scale); manual text: 90 clicks per rotation, 0.022 mm (22 microns) per click",
+   "scale": [
+    0,
+    10
+   ],
+   "step": null,
+   "stepless": false,
+   "perTurn": 9,
+   "sub": "10 clicks per number",
+   "avoid": null,
+   "categories": null,
+   "stepMicrons": 22,
+   "stepNote": "Each click moves the burrs about 22 µm; 10 clicks make a number and 9 numbers a turn.",
+   "applies": "The ZP6 Special only.",
+   "rulerNote": null,
+   "zeroNote": "Exact maker wording (K-series manual / calibration tutorial): \"tighten the adjustment dial counterclockwise all the way to #0. Ensure the gap is fully closed,\" then after tightening the nut \"If the red dot still passes #0, loosen the adjustment dial clockwise slightly and repeat.\"",
+   "cautions": [],
+   "startingPoint": {
+    "status": "not-stated",
+    "note": "1Zpresso's chart prints a band for each method, not a single setting.",
+    "url": "https://1zpresso.coffee/grind-setting/"
+   },
+   "chart": {
+    "title": "maker-manual",
+    "url": "https://1zpresso.coffee/manual-k-en"
+   },
+   "status": "maker chart for ZP6 Special only; original ZP6 blocked",
+   "amazon": null,
+   "settings": [
+    {
+     "key": "pour-over",
+     "group": "pourover",
+     "label": "Pour-over",
+     "provenance": "maker",
+     "source": "ZP6 Special Grind Setting Reference (English, 2022-10-31), light-blue band \"Siphon/Pour Over\"",
+     "url": "https://1zpresso.coffee/wp-content/uploads/2022/10/ZP6-special-Grind-Setting-Reference-20221031.jpg",
+     "checked": "2026-10-15",
+     "min": 4,
+     "max": 5,
+     "start": null
+    },
+    {
+     "key": "french-press",
+     "group": "french-press",
+     "label": "French press",
+     "provenance": "maker",
+     "source": "ZP6 Special chart red band \"French Press\"",
+     "url": "https://1zpresso.coffee/wp-content/uploads/2022/10/ZP6-special-Grind-Setting-Reference-20221031.jpg",
+     "checked": "2026-10-15",
+     "min": 5,
+     "max": 6,
+     "start": null
+    }
+   ]
+  },
+  {
+   "id": "comandante-c40-mk4-standard",
+   "name": "Comandante C40 MK4 Nitro Blade (standard axle)",
+   "short": "Comandante C40 MK4",
+   "maker": "Comandante",
+   "type": "hand",
+   "kind": "turns",
+   "unit": "clicks",
+   "unitDetail": "clicks from click zero (standard axle)",
+   "scale": [
+    0,
+    80
+   ],
+   "step": null,
+   "stepless": false,
+   "perTurn": null,
+   "sub": null,
+   "avoid": null,
+   "categories": null,
+   "stepMicrons": null,
+   "stepNote": null,
+   "applies": "The C40 MK4 with the standard axle, not the Red Clix upgrade.",
+   "rulerNote": null,
+   "zeroNote": "Official FAQ \"Where is Zero?\": hold grinder horizontally; when burrs are open the handle turns and falls to 6 o'clock; while closing, click zero is the first setting where the handle no longer falls (from 9 o'clock). Tightening further = -1, -2. Manual: start with burrs touching/closed (click zero) and count clicks anticlockwise.",
+   "cautions": [
+    "Don't adjust or remove the three screws on the bottom: they're set at the factory.",
+    "The burrs can touch at the finest settings; Comandante says that's normal."
+   ],
+   "startingPoint": {
+    "status": "yes",
+    "note": "Comandante calls these good starting points and says to trust your taste buds.",
+    "url": "https://comandantegrinder.com/pages/faq"
+   },
+   "chart": {
+    "title": "maker manual + maker FAQ",
+    "url": "https://cdn.shopify.com/s/files/1/0875/2057/5818/files/C40-Manual-E-01-23-web.pdf?v=1744881570"
+   },
+   "status": "maker method guidance with model-specific qualifications",
+   "amazon": null,
+   "settings": [
+    {
+     "key": "espresso",
+     "group": "espresso",
+     "label": "Espresso",
+     "provenance": "maker",
+     "source": "Comandante FAQ",
+     "url": "https://comandantegrinder.com/pages/faq",
+     "checked": "2026-10-15",
+     "min": 7,
+     "max": 13,
+     "start": null
+    },
+    {
+     "key": "moka-pot",
+     "group": "moka",
+     "label": "Moka pot",
+     "provenance": "maker",
+     "source": "Comandante FAQ",
+     "url": "https://comandantegrinder.com/pages/faq",
+     "checked": "2026-10-15",
+     "min": 14,
+     "max": 20,
+     "start": null
+    },
+    {
+     "key": "pour-over",
+     "group": "pourover",
+     "label": "Pour-over",
+     "provenance": "maker",
+     "source": "Comandante FAQ",
+     "url": "https://comandantegrinder.com/pages/faq",
+     "checked": "2026-10-15",
+     "min": 18,
+     "max": 35,
+     "start": null
+    },
+    {
+     "key": "french-press",
+     "group": "french-press",
+     "label": "French press",
+     "provenance": "maker",
+     "source": "Comandante FAQ",
+     "url": "https://comandantegrinder.com/pages/faq",
+     "checked": "2026-10-15",
+     "min": 25,
+     "max": 35,
+     "start": null
+    }
+   ]
+  },
+  {
+   "id": "hario-skerton-pro-mmcs-2b",
+   "name": "Hario Skerton Pro Ceramic Coffee Mill (MMCS-2B)",
+   "short": "Hario Skerton Pro",
+   "maker": "Hario",
+   "type": "hand",
+   "kind": "named",
+   "unit": "category",
+   "unitDetail": "none published (manual uses four coarseness categories and a dot table; no clicks or notches printed)",
+   "scale": null,
+   "step": null,
+   "stepless": false,
+   "perTurn": null,
+   "sub": null,
+   "avoid": null,
+   "categories": [
+    "Fine",
+    "Medium-Fine",
+    "Medium",
+    "Coarse"
+   ],
+   "stepMicrons": null,
+   "stepNote": null,
+   "applies": "The Skerton Pro, model MMCS-2B.",
+   "rulerNote": null,
+   "zeroNote": "No zero convention printed. Manual says to hold the center of the handle firmly and turn the grind adjustment nut: Rotate clockwise for finer grounds, counterclockwise for coarser grounds.",
+   "cautions": [
+    "Turn the handle clockwise only.",
+    "Don't tighten the adjustment nut too far: the ceramic burrs can grind against each other.",
+    "Fit the adjustment nut the right way round: the side with eight dimples faces the burr."
+   ],
+   "startingPoint": {
+    "status": "not-stated",
+    "note": "Hario's manual gives coarseness steps, not clicks.",
+    "url": "https://global.hario.com/product/MMCS-2B.pdf"
+   },
+   "chart": {
+    "title": "maker manual (image-only PDF, rendered) + maker product page",
+    "url": "https://global.hario.com/product/MMCS-2B.pdf"
+   },
+   "status": "maker named categories only, no click mapping",
+   "amazon": {
+    "asin": "B01MXJI90S",
+    "url": "https://www.amazon.com/dp/B01MXJI90S"
+   },
+   "settings": [
+    {
+     "key": "paper-filter",
+     "group": "pourover",
+     "label": "Paper filter",
+     "provenance": "maker",
+     "source": "Hario MMCS-2B manual \"Choosing the Correct Coarseness\"",
+     "url": "https://global.hario.com/product/MMCS-2B.pdf",
+     "checked": "2026-10-15",
+     "categories": [
+      "Medium-Fine",
+      "Medium"
+     ]
+    },
+    {
+     "key": "paperless-filter",
+     "group": "pourover",
+     "label": "Paperless filter",
+     "provenance": "maker",
+     "source": "Hario MMCS-2B manual",
+     "url": "https://global.hario.com/product/MMCS-2B.pdf",
+     "checked": "2026-10-15",
+     "categories": [
+      "Medium"
+     ]
+    },
+    {
+     "key": "drip-machine",
+     "group": "drip",
+     "label": "Drip machine",
+     "provenance": "maker",
+     "source": "Hario MMCS-2B manual",
+     "url": "https://global.hario.com/product/MMCS-2B.pdf",
+     "checked": "2026-10-15",
+     "categories": [
+      "Medium-Fine",
+      "Medium"
+     ]
+    },
+    {
+     "key": "french-press",
+     "group": "french-press",
+     "label": "French press",
+     "provenance": "maker",
+     "source": "Hario MMCS-2B manual",
+     "url": "https://global.hario.com/product/MMCS-2B.pdf",
+     "checked": "2026-10-15",
+     "categories": [
+      "Medium",
+      "Coarse"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "kingrinder-k6",
+   "name": "KINGrinder K6",
+   "short": "KINGrinder K6",
+   "maker": "KINGrinder",
+   "type": "hand",
+   "kind": "turns",
+   "unit": "clicks",
+   "unitDetail": "External click-adjustment ring; 60 clicks per full rotation",
+   "scale": [
+    0,
+    180
+   ],
+   "step": null,
+   "stepless": false,
+   "perTurn": 60,
+   "sub": null,
+   "avoid": [
+    0,
+    15
+   ],
+   "categories": null,
+   "stepMicrons": 16,
+   "stepNote": "Each click moves the burrs about 16 µm (60 clicks per turn).",
+   "applies": null,
+   "rulerNote": null,
+   "zeroNote": "Turn adjustment nut clockwise until it stops at number 0 for the final time; side indicators 1, 2, 3, 4 are fully visible. Do not tighten with force. Maximum adjustment travel not established.",
+   "cautions": [
+    "Don't turn the handle at 0 or below 15 clicks: it can damage the burrs."
+   ],
+   "startingPoint": {
+    "status": "yes",
+    "note": "KINGrinder gives these for reference, to adjust to your taste.",
+    "url": "https://uploads.strikinglycdn.com/files/ee29f87e-528d-40eb-9e1d-3ac54583a9dd/KINGrinder+K6-EN.pdf"
+   },
+   "chart": {
+    "title": "KINGrinder K6 English manual",
+    "url": "https://uploads.strikinglycdn.com/files/ee29f87e-528d-40eb-9e1d-3ac54583a9dd/KINGrinder+K6-EN.pdf"
+   },
+   "status": "maker method guidance with model-specific qualifications",
+   "amazon": {
+    "asin": "B0GKFDZ725",
+    "url": "https://www.amazon.com/dp/B0GKFDZ725"
+   },
+   "settings": [
+    {
+     "key": "espresso",
+     "group": "espresso",
+     "label": "Espresso",
+     "provenance": "maker",
+     "source": "KINGrinder K6 English manual",
+     "url": "https://uploads.strikinglycdn.com/files/ee29f87e-528d-40eb-9e1d-3ac54583a9dd/KINGrinder+K6-EN.pdf",
+     "checked": "2026-10-15",
+     "min": 40,
+     "max": 40,
+     "start": 40
+    },
+    {
+     "key": "moka-pot",
+     "group": "moka",
+     "label": "Moka pot",
+     "provenance": "maker",
+     "source": "KINGrinder K6 English manual",
+     "url": "https://uploads.strikinglycdn.com/files/ee29f87e-528d-40eb-9e1d-3ac54583a9dd/KINGrinder+K6-EN.pdf",
+     "checked": "2026-10-15",
+     "min": 65,
+     "max": 65,
+     "start": 65
+    },
+    {
+     "key": "aeropress",
+     "group": "aeropress",
+     "label": "AeroPress",
+     "provenance": "maker",
+     "source": "KINGrinder K6 English manual",
+     "url": "https://uploads.strikinglycdn.com/files/ee29f87e-528d-40eb-9e1d-3ac54583a9dd/KINGrinder+K6-EN.pdf",
+     "checked": "2026-10-15",
+     "min": 65,
+     "max": 65,
+     "start": 65
+    },
+    {
+     "key": "pour-over",
+     "group": "pourover",
+     "label": "Pour-over",
+     "provenance": "maker",
+     "source": "KINGrinder K6 English manual",
+     "url": "https://uploads.strikinglycdn.com/files/ee29f87e-528d-40eb-9e1d-3ac54583a9dd/KINGrinder+K6-EN.pdf",
+     "checked": "2026-10-15",
+     "min": 100,
+     "max": 100,
+     "start": 100
+    },
+    {
+     "key": "french-press",
+     "group": "french-press",
+     "label": "French press",
+     "provenance": "maker",
+     "source": "KINGrinder K6 English manual",
+     "url": "https://uploads.strikinglycdn.com/files/ee29f87e-528d-40eb-9e1d-3ac54583a9dd/KINGrinder+K6-EN.pdf",
+     "checked": "2026-10-15",
+     "min": 120,
+     "max": 120,
+     "start": 120
+    }
+   ]
+  },
+  {
+   "id": "timemore-chestnut-c2",
+   "name": "Timemore Chestnut C2",
+   "short": "Timemore Chestnut C2",
+   "maker": "TIMEMORE",
+   "type": "hand",
+   "kind": "turns",
+   "unit": "clicks",
+   "unitDetail": "clicks (maker manual term), from START POINT",
+   "scale": [
+    0,
+    30
+   ],
+   "step": null,
+   "stepless": false,
+   "perTurn": null,
+   "sub": null,
+   "avoid": [
+    0,
+    6
+   ],
+   "categories": null,
+   "stepMicrons": null,
+   "stepNote": null,
+   "applies": "From Timemore’s Chestnut C family manual, linked from the C2 page.",
+   "rulerNote": null,
+   "zeroNote": "Maker manual: rotate clockwise until dial stops; this is START POINT (zero); adjust counter-clockwise by clicks from START POINT. Do not grind at 0-6 clicks (maker caution).",
+   "cautions": [
+    "Don't grind at the finest 0 to 6 clicks: it dulls the burrs.",
+    "Put the lid on before adjusting."
+   ],
+   "startingPoint": {
+    "status": "yes",
+    "note": "Timemore gives its chart as a reference only.",
+    "url": "https://www.timemore.cn/wp-content/uploads/2020/03/%E6%B3%B0%E6%91%A9%E6%A0%97%E5%AD%90C%E7%A3%A8%E8%B1%86%E6%9C%BA%E8%AF%B4%E6%98%8E%E4%B9%A6-%E4%B8%AD%E8%8B%B1%E6%96%87.pdf"
+   },
+   "chart": {
+    "title": "Timemore Chestnut C grinder manual (中英文)",
+    "url": "https://www.timemore.cn/wp-content/uploads/2020/03/%E6%B3%B0%E6%91%A9%E6%A0%97%E5%AD%90C%E7%A3%A8%E8%B1%86%E6%9C%BA%E8%AF%B4%E6%98%8E%E4%B9%A6-%E4%B8%AD%E8%8B%B1%E6%96%87.pdf"
+   },
+   "status": "maker family manual with qualified C2 linkage and contradictory boundary warning",
+   "amazon": null,
+   "settings": [
+    {
+     "key": "espresso",
+     "group": "espresso",
+     "label": "Espresso",
+     "provenance": "maker",
+     "source": "Timemore Chestnut C manual (Chinese/English, 2020) p.5 Adjust table; table label 意式咖啡 / espresso 6-12 counted from START POINT",
+     "url": "https://www.timemore.cn/wp-content/uploads/2020/03/%E6%B3%B0%E6%91%A9%E6%A0%97%E5%AD%90C%E7%A3%A8%E8%B1%86%E6%9C%BA%E8%AF%B4%E6%98%8E%E4%B9%A6-%E4%B8%AD%E8%8B%B1%E6%96%87.pdf",
+     "checked": "2026-10-15",
+     "headline": "Start above 6, up to 12 clicks from zero",
+     "note": "Timemore’s chart prints 6 to 12 clicks, but its own manual says not to grind at 0 to 6.",
+     "min": 6,
+     "max": 12,
+     "start": null
+    },
+    {
+     "key": "pour-over",
+     "group": "pourover",
+     "label": "Pour-over",
+     "provenance": "maker",
+     "source": "same page; label 手冲咖啡 (hand-brew/pour over) 15-24 from START POINT",
+     "url": "https://www.timemore.cn/wp-content/uploads/2020/03/%E6%B3%B0%E6%91%A9%E6%A0%97%E5%AD%90C%E7%A3%A8%E8%B1%86%E6%9C%BA%E8%AF%B4%E6%98%8E%E4%B9%A6-%E4%B8%AD%E8%8B%B1%E6%96%87.pdf",
+     "checked": "2026-10-15",
+     "min": 15,
+     "max": 24,
+     "start": null
+    },
+    {
+     "key": "french-press",
+     "group": "french-press",
+     "label": "French press",
+     "provenance": "maker",
+     "source": "same page; label 法压壶 (French press) 24 from START POINT",
+     "url": "https://www.timemore.cn/wp-content/uploads/2020/03/%E6%B3%B0%E6%91%A9%E6%A0%97%E5%AD%90C%E7%A3%A8%E8%B1%86%E6%9C%BA%E8%AF%B4%E6%98%8E%E4%B9%A6-%E4%B8%AD%E8%8B%B1%E6%96%87.pdf",
+     "checked": "2026-10-15",
+     "min": 24,
+     "max": 24,
+     "start": null
+    }
+   ]
+  }
+ ],
+ "excluded": [
+  {
+   "name": "Timemore Chestnut C3 (standard, not ESP/ESP Pro/Pro)",
+   "reason": "blocked: no exact-model maker method chart verified"
+  }
+ ]
+}
