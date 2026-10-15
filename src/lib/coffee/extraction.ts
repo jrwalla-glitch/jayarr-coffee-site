@@ -1,6 +1,7 @@
 import type { Result } from './types.ts';
 import { failure, finite, success } from './units.ts';
 import type { ZoneId } from './doctor.ts';
+import { EY_BY_METHOD } from './methods.ts';
 
 // Measured extraction: with a refractometer reading, extraction yield is arithmetic, not a guess.
 //   EY % = liquid weight × TDS % ÷ dose
@@ -47,6 +48,13 @@ export function measuredExtraction(input: MeasuredInput): Result<MeasuredResult>
   const chart = CHARTS[kind === 'espresso' ? 'espresso' : 'filter'];
   const notes: string[] = [];
   if (kind === 'immersion') notes.push('Immersion: this uses all the water you added, because the liquid left in the grounds is as strong as your cup. It reads slightly low.');
+  // Judge the figure as shown (one decimal), so "18.0%" is never labelled under-extracted (Muse r4).
+  const eyShown = Math.round(eyPct * 10) / 10;
+  // A cold brew concentrate is judged against the filter chart, so 96 g / 600 g / 2.5% reads as "grind finer
+  // or steep longer". The engine's own cold brew range says otherwise; say so, so the moves don't read as
+  // instructions for it (Wave D batch 4).
+  const coldBrew = EY_BY_METHOD['cold-brew'];
+  if (kind === 'immersion' && liquidG >= doseG * 2 && eyShown >= coldBrew.min && eyShown <= coldBrew.max) notes.push(`If this is cold brew, ${coldBrew.min}–${coldBrew.max}% extraction is typical for it.`);
   if (kind === 'espresso') notes.push('Espresso has no SCA chart; the strength band here (8–12% TDS) is a common rule of thumb. Scott Rao writes that most professionals seem to prefer 10–13% (Espresso Extraction, ch. 13).');
   // With the diluted box ticked, a very low result most likely mixes a shot weight with a diluted-drink reading (Muse r4).
   if (eyPct < 10) notes.push(input.diluted ? 'Under 10% is unusually low. With a diluted drink, the likeliest mix-up is the weight and the reading coming from different points: use the shot\'s weight with the shot\'s reading, or the whole drink\'s weight with its reading.' : 'Under 10% is unusually low: check the reading was taken on a cooled, well-mixed sample.');
@@ -58,8 +66,6 @@ export function measuredExtraction(input: MeasuredInput): Result<MeasuredResult>
   if (input.diluted) notes.push('Diluted on purpose, so only extraction is judged here; the strength axis is for undiluted coffee.');
   const third = (v: number, [lo, hi]: [number, number]) => { const t = (v - lo) / (hi - lo); return Math.max(0, Math.min(1, t)); };
   const x = third(eyPct, chart.ey), y = third(tdsPct, chart.tds);
-  // Judge the figure as shown (one decimal), so "18.0%" is never labelled under-extracted (Muse r4).
-  const eyShown = Math.round(eyPct * 10) / 10;
   const e = eyShown < chart.eyIdeal[0] ? 'under' : eyShown > chart.eyIdeal[1] ? 'over' : 'ideal';
   const strengthJudged = !input.diluted;
   const s = !strengthJudged ? 'ideal' : tdsPct < chart.tdsIdeal[0] ? 'weak' : tdsPct > chart.tdsIdeal[1] ? 'strong' : 'ideal';

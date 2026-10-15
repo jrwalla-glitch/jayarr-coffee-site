@@ -94,3 +94,15 @@ test('Opus r4: an americano entered as a shot asks about dilution instead of adv
   assert.equal(ok(measuredExtraction({ kind: 'espresso', doseG: 18, liquidG: 236, tdsPct: 1.5, diluted: true })).placeable, true);
   assert.equal(ok(measuredExtraction({ kind: 'espresso', doseG: 18, liquidG: 54, tdsPct: 7 })).placeable, true, 'a 1:3 shot is fine');
 });
+
+test('an immersion reading in the cold brew range says so, so filter-chart moves don\'t read as cold brew instructions (Wave D batch 4)', () => {
+  const NOTE = 'If this is cold brew, 15–20% extraction is typical for it.';
+  const cb = ok(measuredExtraction({ kind: 'immersion', doseG: 96, liquidG: 600, tdsPct: 2.5 }));
+  near(cb.eyPct, 15.625);
+  assert.ok(cb.notes.includes(NOTE), cb.notes.join(' | '));
+  assert.ok(cb.moves.includes('grind finer or steep longer'), 'the chart\'s moves are still offered, as possible moves');
+  assert.ok(ok(measuredExtraction({ kind: 'immersion', doseG: 100, liquidG: 500, tdsPct: 4 })).notes.includes(NOTE), 'exactly 20.0% is in range');
+  assert.ok(!ok(measuredExtraction({ kind: 'percolation', doseG: 96, liquidG: 600, tdsPct: 2.5 })).notes.includes(NOTE), 'not for pour-over');
+  assert.ok(!ok(measuredExtraction({ kind: 'immersion', doseG: 30, liquidG: 500, tdsPct: 1.25 })).notes.includes(NOTE), 'not above the range (20.8%)');
+  assert.ok(!ok(measuredExtraction({ kind: 'immersion', doseG: 100, liquidG: 600, tdsPct: 2.3 })).notes.includes(NOTE), 'not below it (13.8%)');
+});
