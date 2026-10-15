@@ -15,7 +15,7 @@ export interface Stage { id: StageId; label: string; short: string; from: number
 /** Day boundaries since roasting. Espresso rests a few days longer (verify). */
 export function stages(use: FreshUse): Stage[] {
   const restEnd = use === 'espresso' ? 7 : 4;
-  return [
+  const all: Stage[] = [
     { id: 'resting', short: 'Resting', label: 'Probably still resting', from: 0, to: restEnd, advice: 'Likely too fresh: trapped CO₂ can make it brew unevenly. Another few days usually helps.' },
     { id: 'opening', short: 'Opening up', label: 'Opening up', from: restEnd, to: 7, advice: 'Ready to brew; most coffees keep getting sweeter for a few more days.' },
     { id: 'peak', short: 'Usually best', label: 'Likely at its best', from: 7, to: 21, advice: 'Most coffees taste their best around now. Brew it.' },
@@ -23,6 +23,8 @@ export function stages(use: FreshUse): Stage[] {
     { id: 'fading', short: 'Fading', label: 'Likely fading', from: 30, to: 60, advice: 'Aroma usually fades by now. Taste it: if it\'s dull, brew a little finer or hotter, and buy fresher next time.' },
     { id: 'stale', short: 'Stale', label: 'Likely stale', from: 60, to: Number.POSITIVE_INFINITY, advice: 'Probably flat by now. Taste it: if it\'s dull or papery, it\'s still fine for cold brew or baking.' },
   ];
+  // Espresso rests until day 7, so its "opening up" stage has no width: leave it out.
+  return all.filter((st) => st.to > st.from);
 }
 
 export interface FreshnessInput {
@@ -52,6 +54,8 @@ export interface FreshnessResult {
 }
 
 const DAY = 86400000;
+/** The freezer pauses staling for up to about a year (Gagné, Rao via synthesis §13), not forever. */
+export const FREEZER_PAUSE_MAX_DAYS = 365;
 // Calendar days in UTC, so daylight-saving changes never add or lose a day. Impossible dates
 // (Feb 31) are rejected rather than rolled into the next month.
 const parse = (s: string) => {
@@ -77,7 +81,10 @@ export function freshness(input: FreshnessInput): Result<FreshnessResult> {
     if (!finite(f) || f < roast || f > today) return failure('bad-date', 'frozenOn', 'Enter the day the beans went into the freezer (on or after the roast date).');
     const out = input.thawedOn ? parse(input.thawedOn) : today;
     if (!finite(out) || out < f || out > today) return failure('bad-date', 'thawedOn', 'Enter the day they came out of the freezer (on or after the day they went in).');
-    frozenDays = Math.round((out - f) / DAY);
+    const inFreezer = Math.round((out - f) / DAY);
+    // Freezing preserves beans for up to about a year (synthesis §13); beyond that the clock runs again.
+    frozenDays = Math.min(inFreezer, FREEZER_PAUSE_MAX_DAYS);
+    if (inFreezer > FREEZER_PAUSE_MAX_DAYS) notes.push('After about a year even frozen beans lose quality, so time beyond a year in the freezer counts again.');
     notes.push(input.thawedOn ? 'The clock runs again from the day they came out. Don\'t refreeze them.' : 'Days in a sealed freezer bag barely count. Take out only what you need and don\'t refreeze it.');
   }
   if (input.storage === 'opened') notes.push('Opened bags go stale faster than sealed ones. Squeeze the air out and reseal; keep it cool, dark and dry, and out of the fridge.');

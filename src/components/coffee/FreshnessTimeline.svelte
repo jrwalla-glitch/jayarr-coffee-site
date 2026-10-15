@@ -5,10 +5,13 @@
 
   const isoLocal = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   let today = $state(isoLocal(new Date()));
-  let roastDate = $state(isoLocal(new Date(Date.now() - 10 * 86400000)));
+  // Calendar days back, not 24-hour blocks, so a daylight-saving night can't shift the default.
+  const daysAgo = (n: number) => { const d = new Date(); return isoLocal(new Date(d.getFullYear(), d.getMonth(), d.getDate() - n)); };
+  let roastDate = $state(daysAgo(10));
+  let dateInvalid = $state(false);
   let use = $state<FreshUse>('filter');
   let storage = $state<Storage>('opened');
-  let frozenOn = $state(isoLocal(new Date(Date.now() - 3 * 86400000)));
+  let frozenOn = $state(daysAgo(3));
   let thawed = $state(false);
   let thawedOn = $state(isoLocal(new Date()));
   let mounted = $state(false);
@@ -58,7 +61,7 @@
 <div class="fr">
   <div class="top">
     <div class="inputs">
-      <label class="fld"><span class="lbl">Roasted on</span><input type="date" bind:value={roastDate} max={today} /></label>
+      <label class="fld"><span class="lbl">Roasted on</span><input type="date" bind:value={roastDate} max={today} oninput={(e) => (dateInvalid = (e.currentTarget as HTMLInputElement).validity.badInput)} /></label>
       <div class="fld"><span class="lbl">Brewing</span>
         <div class="seg" role="group" aria-label="Brewing">
           <button type="button" aria-pressed={use === 'filter'} onclick={() => (use = 'filter')}>Filter</button>
@@ -84,7 +87,9 @@
       {#if r}
         <span class="lbl">Day {r.daysSinceRoast}{r.effectiveDays !== r.daysSinceRoast ? ` (${r.effectiveDays} counting)` : ''}</span>
         <span class="stage">{r.stage.label}</span>
-        <span class="sub">Usually best {fmt(r.peakFrom)} – {fmt(r.peakTo)} · use by about {fmt(r.useBy)}</span>
+        <span class="sub">Usually best {fmt(r.peakFrom)} – {fmt(r.peakTo)} · best used by about {fmt(r.useBy)}</span>
+      {:else if dateInvalid}
+        <span class="err">That date doesn't exist: check the day and month on the bag.</span>
       {:else if !result.ok}
         <span class="err">{result.errors[0].message}</span>
       {/if}

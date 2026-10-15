@@ -18,13 +18,13 @@
   const mmss = (sec: number) => (sec >= 3600 ? `${Math.round(sec / 3600)} h` : `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`);
   function tooText(id: string): { fine: string; coarse: string } {
     const x = methodById(id as MethodId);
-    if (id === 'turkish') return { fine: 'This is already the finest common grind; it should feel like flour.', coarse: 'Grounds may not stay suspended, and the cup can taste thin.' };
+    if (id === 'turkish') return { fine: 'The grounds clump and cake in the grinder, and the coffee is hard to stir in.', coarse: 'Grounds may not stay suspended, and the cup can taste thin.' };
     if (!x) return { fine: '', coarse: '' };
     const t = x.timeS;
     if (id === 'espresso') return { fine: `The shot usually runs longer than about ${t.max} s at the same dose and yield, and can taste bitter or harsh.`, coarse: `The shot usually runs faster than about ${t.min} s, and can taste sour or thin.` };
     if (id === 'moka') return { fine: 'It can flow slowly or sputter, taste harsh, or clog the filter plate.', coarse: 'Coffee may rush out early and taste weak or sour.' };
     if (x.family === 'percolation') return { fine: `It usually drains slower than this recipe's ${mmss(t.max)}, and can taste bitter or dry.`, coarse: `It usually drains faster than ${mmss(t.min)}, and can taste sour or thin.` };
-    return { fine: id === 'aeropress' ? 'Pressing gets hard, and the cup can taste bitter.' : 'The cup can turn silty or muddy, harder to press or filter, and sometimes bitter.', coarse: `At the usual ${mmss(t.min)} steep the cup can taste weak or sour.` };
+    return { fine: id === 'aeropress' ? 'Pressing gets hard, and the cup can taste bitter.' : 'The cup can turn silty or muddy, harder to press or filter, and sometimes bitter.', coarse: id === 'aeropress' ? 'Water runs through before you press, and the cup can taste weak or sour.' : `At the usual ${mmss(t.min)} steep the cup can taste weak or sour.` };
   }
 
   let method = $state<string>('v60');
@@ -108,8 +108,8 @@
       <div class="bars" aria-hidden="true">
         {#each hist as hgt, i (i)}<span class="bar" class:fine={i === 0} class:band={i * BIN + BIN > m.grindMicrons.min && i * BIN < m.grindMicrons.max} style:height="{Math.max(2, hgt * 100)}%"></span>{/each}
       </div>
-      <div class="axis" aria-hidden="true"><span>0 µm</span><span>750</span><span>1500+</span></div>
-      <figcaption>Every grinder makes a spread of sizes, not one size. The range above is where most of the coffee should sit; the dark bar is the fines, which extract fastest. Blade grinders make far more fines and boulders. Illustrative, by count.</figcaption>
+      <div class="axis" aria-hidden="true"><span>0 µm</span><span>800</span><span>1600+</span></div>
+      <figcaption>Every grinder makes a spread of sizes, not one size. The range above is where most of the coffee should sit; the dark bar is the fines, which extract fastest. Blade grinders make far more fines and boulders. An illustrative shape, not a measured distribution.</figcaption>
     </figure>
   </div>
 
@@ -162,7 +162,7 @@
     color: var(--ink); font: 16px/1.5 'IBM Plex Sans', system-ui, sans-serif; box-shadow: 0 30px 60px -40px rgba(60, 35, 15, .35); }
   .loupe-wrap { padding: 22px; border-right: 1px solid var(--rule); background: radial-gradient(120% 90% at 50% 10%, #fffdf9 0%, #f4ece0 80%); display: flex; flex-direction: column; align-items: center; }
   .loupe { width: 100%; max-width: 340px; height: auto; }
-  .sb { font: 500 11px 'IBM Plex Mono', monospace; fill: #2a1d15; }
+  .sb { font: 500 14px 'IBM Plex Mono', monospace; fill: #2a1d15; }
   .cap { font-size: 12.5px; color: var(--ink-3); margin: 6px 0 0; }
   .panel { padding: 22px 24px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
   .chips, .seg { display: flex; flex-wrap: wrap; gap: 6px; }

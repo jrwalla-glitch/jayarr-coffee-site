@@ -66,3 +66,16 @@ test('verdicts are hedged and every result says the windows are typical', () => 
   const r = ok(freshness({ roastDate: '2026-10-01', today: '2026-10-15', use: 'filter', storage: 'sealed-bag' }));
   assert.match(r.uncertainty, /typical windows, not a forecast/);
 });
+
+test('the freezer pauses the clock for about a year, not forever (Muse: 3 years frozen read "at its best")', () => {
+  const r = ok(freshness({ roastDate: '2023-01-01', today: '2026-10-15', use: 'filter', storage: 'frozen', frozenOn: '2023-01-08' }));
+  assert.notEqual(r.stage.id, 'peak'); assert.equal(r.stage.id, 'stale');
+  assert.ok(r.notes.some((n) => /year/.test(n)));
+  const six = ok(freshness({ roastDate: '2026-04-01', today: '2026-10-15', use: 'filter', storage: 'frozen', frozenOn: '2026-04-08' }));
+  assert.equal(six.stage.id, 'peak');
+});
+
+test('no zero-width stages (espresso has no "opening up" stage)', () => {
+  for (const use of ['filter', 'espresso']) assert.ok(freshnessStages(use).every((st) => st.to > st.from));
+  assert.ok(!freshnessStages('espresso').some((st) => st.id === 'opening'));
+});
