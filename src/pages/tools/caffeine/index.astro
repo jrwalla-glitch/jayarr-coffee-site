@@ -1,119 +1,129 @@
 ---
+import '@fontsource/instrument-serif/400.css';
+import '@fontsource/instrument-serif/400-italic.css';
+import '@fontsource/ibm-plex-sans/400.css';
+import '@fontsource/ibm-plex-sans/500.css';
+import '@fontsource/ibm-plex-sans/600.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
 import BaseHead from '../../../components/BaseHead.astro';
 import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
-import CaffeineCalc from '../../../components/tools/CaffeineCalc.svelte';
+import CaffeineDay from '../../../components/coffee/CaffeineDay.svelte';
+import { METHODS, CAFFEINE, GUIDANCE, SOURCES, buildRecipe, estimateBrewedMg, espressoMg, flOzToMl } from '../../../lib/coffee/index.ts';
+
+const title = 'Caffeine Calculator: How Much Is Still in You at Bedtime';
+const description = 'Add the coffees you drink and see your caffeine total for the day and how much is still in your body at bedtime, with caffeine by brew method, espresso shot and cup size.';
+
+// Caffeine in an 8 oz cup by method, at the Brew Guide's classic ratio (arabica).
+const eightOz = flOzToMl(8);
+const rows = METHODS.filter((m) => !['espresso', 'moka', 'cold-brew'].includes(m.id)).map((m) => {
+	const r = buildRecipe({ method: m.id, target: { cupMl: eightOz } });
+	const dose = r.ok ? r.value.doseG : eightOz / 14;
+	const mg = estimateBrewedMg(dose, m.id);
+	return { label: m.label, dose, mg: mg.ok ? mg.value : null };
+});
+const cold = (() => { const r = buildRecipe({ method: 'cold-brew', target: { cupMl: flOzToMl(16) } }); const mg = r.ok ? estimateBrewedMg(r.value.doseG, 'cold-brew') : null; return mg && mg.ok ? mg.value : null; })();
+const single = espressoMg(1), double = espressoMg(2);
+const fmt = (r: { min: number; max: number } | null) => (r ? `${Math.round(r.min / 5) * 5}–${Math.round(r.max / 5) * 5} mg` : '—');
+const fda = GUIDANCE.find((g) => g.id === 'fda-adult-daily')!;
+const acog = GUIDANCE.find((g) => g.id === 'acog-pregnancy')!;
+const efsa = GUIDANCE.find((g) => g.id === 'efsa-single-dose')!;
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead
-			title="Caffeine Calculator — JayArr Coffee"
-			description="Track your daily caffeine intake by brew method. See how close you are to the FDA's 400mg limit — with science-backed data for every coffee type."
-		/>
+		<BaseHead title={title} description={description} />
 		<script type="application/ld+json" set:html={JSON.stringify({
-			"@context": "https://schema.org",
-			"@type": "WebApplication",
-			"name": "Caffeine Calculator",
-			"url": "https://jayarr.coffee/tools/caffeine/",
-			"description": "Track your daily caffeine intake by brew method. See how close you are to the FDA's 400mg limit — with science-backed data for every coffee type.",
-			"applicationCategory": "HealthApplication",
-			"operatingSystem": "Any",
-			"offers": {
-				"@type": "Offer",
-				"price": "0",
-				"priceCurrency": "USD"
-			},
-			"publisher": {
-				"@type": "Organization",
-				"name": "JayArr Coffee",
-				"url": "https://jayarr.coffee"
-			}
+			'@context': 'https://schema.org', '@type': 'WebApplication', name: 'Caffeine Calculator',
+			url: 'https://jayarr.coffee/tools/caffeine/', description, applicationCategory: 'HealthApplication', operatingSystem: 'Any',
+			offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+			publisher: { '@type': 'Organization', name: 'JayArr Coffee', url: 'https://jayarr.coffee' },
 		})}></script>
-		<script type="application/ld+json" set:html={JSON.stringify({
-			"@context": "https://schema.org",
-			"@type": "HowTo",
-			"name": "How to Track Your Daily Caffeine Intake",
-			"description": "Use the Caffeine Calculator to log each cup of coffee and see your running total against the FDA's 400mg daily limit.",
-			"totalTime": "PT1M",
-			"step": [
-						{
-									"@type": "HowToStep",
-									"position": 1,
-									"name": "Choose your drink type",
-									"text": "Select from 10 drink types including pour over, drip, espresso, cold brew, French press, AeroPress, latte, moka pot, and decaf. Each has a science-backed caffeine estimate per serving."
-						},
-						{
-									"@type": "HowToStep",
-									"position": 2,
-									"name": "Add each drink to your daily log",
-									"text": "Tap a drink to add it to your running tally. The calculator tracks cumulative milligrams and shows your percentage against the FDA's 400mg daily recommendation."
-						},
-						{
-									"@type": "HowToStep",
-									"position": 3,
-									"name": "Monitor your intake throughout the day",
-									"text": "The progress bar changes color as you approach the limit \u2014 green under 200mg, amber at 200-300mg, orange at 300-400mg, and red above 400mg. Remove entries if you over-counted."
-						}
-			]
-})}></script>
 	</head>
-	<body class="bg-cream">
+	<body class="cf-page">
 		<Header />
+		<main>
+			<section class="cf-intro">
+				<a href="/tools/" class="cf-back">← All tools</a>
+				<p class="cf-kicker">Caffeine Calculator</p>
+				<h1>How much caffeine is <em>still in you at bedtime?</em></h1>
+				<p class="cf-lede">Add what you drink and when. You see today's total, and a curve of how much caffeine is in your body hour by hour, falling by half roughly every five hours.</p>
+			</section>
+			<section class="cf-tool" aria-label="Caffeine Calculator"><CaffeineDay client:load /></section>
 
-		<section class="bg-charcoal pt-32 pb-12 md:pb-16">
-			<div class="max-w-3xl mx-auto px-6 text-center">
-				<a href="/tools/" class="text-xs uppercase tracking-widest text-cream/40 hover:text-copper transition-colors">
-					&larr; All Tools
-				</a>
-				<h1 class="font-serif text-3xl md:text-5xl font-bold text-cream mt-3 mb-3">Caffeine Calculator</h1>
-				<p class="text-cream/60 max-w-lg mx-auto leading-relaxed text-sm">
-					Track your daily caffeine intake. Add each cup and see where you stand against the FDA's 400 mg limit.
-				</p>
-			</div>
-		</section>
-
-		<section class="py-12 md:py-16">
-			<div class="max-w-xl mx-auto px-6">
-				<CaffeineCalc client:load />
-			</div>
-		</section>
-
-
-		<section class="py-16 px-6">
-			<div class="prose mx-auto">
-				<h2>How Caffeine Works in Your Body</h2>
-				<p>Caffeine is a competitive antagonist of adenosine receptors in the brain. Adenosine is a neurotransmitter that accumulates throughout the day and promotes drowsiness. Caffeine molecules are structurally similar enough to bind to those same receptors without activating them, effectively blocking adenosine’s signal. The result is increased release of norepinephrine, dopamine, and acetylcholine — the neurochemical cocktail responsible for caffeine’s alertness, focus, and mood-elevation effects. You feel it within 15 to 60 minutes of consumption.</p>
-				<p>The FDA considers up to 400 mg per day generally safe for healthy adults, but that number masks enormous individual variation. Caffeine’s plasma half-life averages about 5 hours, meaning half the caffeine from your afternoon coffee is still circulating at bedtime. But that average conceals a range of 1.5 to 10 hours, driven largely by a single gene: CYP1A2. This enzyme handles roughly 95% of caffeine metabolism, and a common polymorphism divides people into fast and slow metabolizers. Clearance rates can vary up to 40-fold between individuals. If caffeine keeps you up at night while your partner sleeps fine after an evening espresso, genetics — not willpower — is the explanation.</p>
-				<p>Caffeine content varies dramatically by brew method, and the reasons are rooted in extraction physics. A standard 8-ounce cup of drip coffee contains 95-120 mg, while a single espresso shot holds about 63 mg in just one ounce. Espresso is far more concentrated, but you drink far less of it. Cold brew concentrate can pack 200 mg or more per 12-ounce serving because the extended 12-24 hour steep time extracts caffeine efficiently despite the low temperature. French press tends to run slightly higher than pour over at around 120 mg per cup because the metal mesh allows more dissolved solids through, and the longer steep time (4-8 minutes) gives caffeine more time to dissolve.</p>
-				<p>A common misconception is that dark roasts contain more caffeine than light roasts. Roasting does not create or destroy caffeine — the molecule is remarkably heat-stable. The confusion arises from how you measure: dark roast beans weigh less individually (they’ve lost more moisture), so measuring by weight means more beans per gram and therefore slightly more caffeine. Measuring by scoop or volume reverses this because light roast beans are denser and pack more tightly. The difference either way is small — around 5-10% — and far less significant than brew method, dose, or extraction time.</p>
-				<p>Pregnancy shifts the calculus significantly. The American College of Obstetricians and Gynecologists recommends limiting intake to 200 mg per day. Oral contraceptives also slow caffeine clearance by extending the half-life. Smoking, counterintuitively, accelerates clearance. Even cruciferous vegetables like broccoli induce the CYP1A2 enzyme and speed caffeine metabolism.</p>
-				<p>Decaf is not zero-caf. A typical decaffeinated cup still contains 3-6 mg of caffeine per 6-ounce serving. For most people this is negligible, but for someone with extreme sensitivity or who drinks 5-6 cups of decaf daily, it accumulates to meaningful levels. The Swiss Water Process, which uses green coffee extract and osmosis rather than chemical solvents, is the most common decaffeination method in specialty coffee. It removes approximately 99.9% of caffeine while better preserving flavor compounds than solvent-based methods.</p>
-			</div>
-		</section>
-
-		<section class="bg-charcoal py-12">
-			<div class="max-w-3xl mx-auto px-6 text-center">
-				<span class="text-xs uppercase tracking-widest text-copper font-medium">Learn More</span>
-				<h2 class="font-serif text-xl md:text-2xl font-bold text-cream mt-2 mb-6">Related Articles</h2>
-				<div class="flex flex-wrap justify-center gap-4">
-					<a href="/blog/how-is-coffee-decaffeinated/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						Decaf Explained
-					</a>
-					<a href="/blog/finding-the-best-low-acid-coffee/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						Low Acid Coffee
-					</a>
-					<a href="/blog/whats-different-about-ristretto-or-lungo-espresso-shots/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						Espresso Shots
-					</a>
-					<a href="/blog/caffeine-in-coffee-guide/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						Caffeine in Coffee Guide
-					</a>
+			<article class="cf-body">
+				<h2>How much caffeine is in a cup of coffee?</h2>
+				<p>It depends mostly on how much coffee went into the cup. A typical 8 oz cup brewed at a 1:16 ratio uses about 15–17 g of coffee, and arabica beans are roughly 1% caffeine by weight, most of which ends up in the cup. That puts most home-brewed 8 oz cups at about 100–200 mg. Robusta beans carry roughly twice the caffeine.</p>
+				<div class="cf-table-wrap">
+					<table>
+						<thead><tr><th scope="col">Drink</th><th scope="col">Serving</th><th scope="col">Caffeine (estimate)</th></tr></thead>
+						<tbody>
+							{rows.map((r) => <tr><th scope="row">{r.label}</th><td>8 oz, {Math.round(r.dose)} g coffee</td><td>{fmt(r.mg)}</td></tr>)}
+							<tr><th scope="row">Cold brew</th><td>16 oz, diluted 1:1</td><td>{fmt(cold)}</td></tr>
+							<tr><th scope="row">Espresso</th><td>single shot (about 1 oz)</td><td>{fmt(single)}</td></tr>
+							<tr><th scope="row">Double espresso, latte or cappuccino</th><td>two shots</td><td>{fmt(double)}</td></tr>
+							<tr><th scope="row">Decaf</th><td>6 oz</td><td>{CAFFEINE.decafPer6Oz.min}–{CAFFEINE.decafPer6Oz.max} mg</td></tr>
+						</tbody>
+					</table>
 				</div>
-			</div>
-		</section>
+				<p class="cf-note">Estimates for arabica at the Brew Guide's classic ratios; a stronger ratio or robusta beans push them up. Café cups are often larger and stronger.</p>
 
+				<h2>Does espresso have more caffeine than drip coffee?</h2>
+				<p>Per sip, yes; per drink, usually not. A single shot holds about {CAFFEINE.espressoShotMg.typical} mg in about an ounce, so it is far more concentrated, but an 8 oz cup of drip coffee carries more in total. A latte or cappuccino made with a double shot lands near {Math.round(double.min)}–{Math.round(double.max)} mg, close to a cup of drip.</p>
+
+				<h2>How long caffeine stays in your body</h2>
+				<p>The body clears caffeine at a steady proportional rate: on average, half of it is gone after about five hours, but that half-life ranges from about 1.5 to 10 hours between people. Smoking speeds it up; pregnancy and oral contraceptives slow it down, and late in pregnancy it can take up to three times longer. A 200 mg coffee at 3 pm can leave around 100 mg in you at 8 pm and around 50 mg near 1 am, which is why an afternoon coffee can still matter at bedtime.</p>
+				<p>The calculator draws that curve for your day. It also allows for about 45 minutes for caffeine to be absorbed, so each drink rises before it falls. It is an illustration of the average pattern, not a measurement of your body.</p>
+
+				<h2>How much is too much?</h2>
+				<ul>
+					<li><strong>Healthy adults:</strong> {fda.wording}</li>
+					<li><strong>In one go:</strong> {efsa.wording}</li>
+					<li><strong>Pregnancy:</strong> {acog.wording}</li>
+				</ul>
+				<p>These are general figures. Sensitivity varies a lot, and some medicines and conditions change it; ask a doctor about your own case.</p>
+
+				<h2>Related guides</h2>
+				<ul>
+					<li><a href="/blog/caffeine-in-coffee-guide/">Caffeine in coffee: a complete guide</a></li>
+					<li><a href="/blog/how-is-coffee-decaffeinated/">How coffee is decaffeinated</a></li>
+					<li><a href="/blog/whats-different-about-ristretto-or-lungo-espresso-shots/">Ristretto and lungo shots</a></li>
+					<li><a href="/tools/brew-ratio/">Brew Guide: coffee, water and timing for any brewer</a></li>
+				</ul>
+
+				<h2>Sources</h2>
+				<ul class="cf-sources">
+					<li>{SOURCES['newcastle-2018'].author}, <cite>{SOURCES['newcastle-2018'].title}</cite> ({SOURCES['newcastle-2018'].year}).</li>
+					<li>U.S. Food and Drug Administration, consumer guidance on caffeine; European Food Safety Authority, scientific opinion on the safety of caffeine (2015); American College of Obstetricians and Gynecologists, guidance on caffeine in pregnancy.</li>
+					<li>{SOURCES.synthesis.author}, <cite>{SOURCES.synthesis.title}</cite>: §15 caffeine metabolism and half-life, §17 caffeine by brew method.</li>
+				</ul>
+			</article>
+		</main>
 		<Footer />
 	</body>
 </html>
+
+<style is:global>.cf-page { background: #f3ede3; }</style>
+<style>
+	main { color: #2a1d15; }
+	.cf-intro { max-width: 1180px; margin: 0 auto; padding: 120px 24px 22px; }
+	.cf-back { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; text-decoration: none; }
+	.cf-kicker { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: #8f5d22; margin: 26px 0 0; }
+	h1 { font: 400 clamp(40px, 6vw, 68px)/.98 'Instrument Serif', Georgia, serif; letter-spacing: -.01em; margin: 10px 0 12px; }
+	h1 em { font-style: italic; color: #7a4e30; }
+	.cf-lede { font: 400 17px/1.5 'IBM Plex Sans', system-ui, sans-serif; color: #5b4a3d; max-width: 60ch; margin: 0; }
+	.cf-tool { max-width: 1180px; margin: 0 auto; padding: 8px 24px 40px; }
+	.cf-body { max-width: 760px; margin: 0 auto; padding: 24px 24px 72px; font: 400 17px/1.7 'IBM Plex Sans', system-ui, sans-serif; }
+	.cf-body h2 { font: 400 34px/1.1 'Instrument Serif', Georgia, serif; margin: 44px 0 12px; }
+	.cf-body a { color: #7a4e30; text-underline-offset: 3px; }
+	.cf-table-wrap { overflow-x: auto; border: 1px solid #d9cdbd; border-radius: 12px; background: #fbf8f3; }
+	table { width: 100%; border-collapse: collapse; font-size: 15px; }
+	th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid #e6dccd; }
+	thead th { font: 500 11px/1 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; }
+	td { font-family: 'IBM Plex Mono', monospace; font-size: 14px; }
+	tr:last-child th, tr:last-child td { border-bottom: 0; }
+	.cf-note, .cf-sources { font-size: 14.5px; color: #5b4a3d; }
+	@media (max-width: 640px) { .cf-intro { padding: 96px 16px 18px; } .cf-tool { padding: 4px 12px 32px; } .cf-body { padding: 16px 16px 56px; } }
+</style>

@@ -241,6 +241,7 @@
 
 <style>
   .rig { width: 100%; height: auto; display: block; max-height: 480px; }
+  @media (max-width: 880px) { .rig { max-height: 290px; } }
   .kettle { opacity: 0; transition: opacity .35s ease; }
   .kettle.on { opacity: 1; }
   .stream { stroke-dasharray: 4 3; animation: flow .5s linear infinite; }

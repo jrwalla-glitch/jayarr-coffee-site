@@ -152,6 +152,11 @@
       <div class="ro time"><span class="lbl">Timer</span><span class="val">{clock(frame.tS)}</span></div>
     </div>
     {#if recipe}
+      <p class="quick" aria-hidden="true">
+        <span class="qc">{recipe.doseG < 20 ? recipe.doseG.toFixed(1) : r0(recipe.doseG)} g coffee</span>
+        {#if method === 'espresso'}<span class="qw">{r0(recipe.yieldG ?? 0)} g out</span>{:else}<span class="qw">{r0(recipe.waterG ?? 0)} g water</span>{/if}
+        <span>{method === 'cold-brew' ? 'cold water' : tempMain}</span>
+      </p>
       <BrewStage {method} {frame} doseG={recipe.doseG} waterG={recipe.waterG ?? recipe.yieldG ?? 0} cupMl={recipe.cupMl} {steep}
         label={`${m.label} drawing: ${r0(frame.scaleG)} grams on the scale, ${r0(frame.cupG)} grams in the cup at ${clock(frame.tS)}.`} />
     {/if}
@@ -292,6 +297,7 @@
   .val { font: 400 48px/1 var(--cf-mono); letter-spacing: -.03em; font-variant-numeric: tabular-nums; margin-top: 6px; }
   .val small { font-size: 17px; color: var(--ink-3); margin-left: 3px; letter-spacing: 0; }
   .water .val { color: var(--water); }
+  .quick { display: none; }
   .cue { margin: 0 18px; display: flex; gap: 14px; align-items: center; background: rgba(255, 255, 255, .75); border: 1px solid var(--rule); border-radius: 12px; padding: 12px 16px; min-height: 64px; }
   .cue p { margin: 0; }
   .cue .now { font: 400 21px/1.2 var(--cf-display); }
@@ -358,6 +364,9 @@
     .cf { grid-template-columns: 1fr; }
     .stage { border-right: 0; border-bottom: 1px solid var(--rule); }
     .val { font-size: 38px; }
+    .quick { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 22px 0; font: 500 15px/1.2 var(--cf-mono); }
+    .quick .qc { color: var(--coffee); }
+    .quick .qw { color: var(--water); }
     .numbers { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .numbers > div:nth-child(3) { border-left: 0; padding-left: 0; border-top: 1px solid var(--rule); }
     .numbers > div:nth-child(4) { border-top: 1px solid var(--rule); }
