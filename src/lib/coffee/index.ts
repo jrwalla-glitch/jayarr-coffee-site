@@ -6,3 +6,5 @@ export { gToOz, ozToG, mlToFlOz, flOzToMl, cToF, fToC, approxTablespoons, G_PER_
 export { CAFFEINE, GUIDANCE, estimateBrewedMg, espressoMg, caffeineInBody, caffeineCurve } from './caffeine.ts';
 export { simulate } from './simulate.ts';
 export type { Frame, Simulation } from './simulate.ts';
+export { encodeBrew, decodeBrew } from './share.ts';
+export type { BrewState, Units } from './share.ts';
