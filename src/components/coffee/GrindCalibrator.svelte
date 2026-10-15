@@ -94,8 +94,11 @@
     };
     const gap = Math.abs(((a1 - a0) % 360 + 360) % 360);
     const labels = gap < 30 || gap > 330 ? [label(a0, `from ${s.min} · to ${bandTo}`)] : [label(a0, `from ${s.min}`), label(a1, `to ${bandTo}`)];
-    // A range of a turn or more can't be one arc: mark where it starts and ends, and give its span in turns.
-    if (span >= g.perTurn) return { full: true, d: '', ends, labels, turns: Math.round((span / g.perTurn) * 10) / 10 };
+    // A range of a turn or more: a thin full ring for each whole turn, and a thick arc for the part beyond it.
+    if (span >= g.perTurn) {
+      const extra = ((span % g.perTurn) / g.perTurn) * 360;
+      return { full: true, d: extra > 0.5 ? arc(a0, a0 + extra, 102, 160, 122) : '', ends, labels, turns: Math.round((span / g.perTurn) * 10) / 10 };
+    }
     return { full: false, d: arc(a0, a1, 102, 160, 122), ends, labels, turns: 0 };
   });
   // The ruler shows whole turns to just past the coarsest published setting, or a round number without turn data.
@@ -108,7 +111,7 @@
   });
   const rx = (v: number) => 20 + (v / rulerMax) * 280;
   let rulerTicks = $derived.by(() => {
-    const st = [1, 2, 5, 10, 20, 25, 50, 100].find((x) => rulerMax / x <= 10) ?? 100;
+    const st = [1, 2, 5, 10, 20, 25, 50, 100].find((x) => rulerMax / x <= 6) ?? 100;
     return Array.from({ length: Math.floor(rulerMax / st) + 1 }, (_, i) => i * st);
   });
   let turnMarks = $derived(g.perTurn ? Array.from({ length: Math.floor(rulerMax / g.perTurn) }, (_, i) => (i + 1) * g.perTurn!) : []);
@@ -116,7 +119,7 @@
   let knobCap = $derived(
     !g.perTurn ? `Count ${g.unit} from zero on the ruler.`
     : single ? `The knob is turned to ${rest} within the turn; the ruler counts all ${target} ${g.unit} from zero.`
-    : knobArc?.full ? `The knob shows one turn of ${g.perTurn} ${g.unit}. This range is longer than a turn: from the first mark, all the way round and on to the second.`
+    : knobArc?.full ? `The knob shows one turn of ${g.perTurn} ${g.unit}. This range runs ${knobArc.turns} turns: the thin ring is one full turn from the first mark, and the thick arc carries on to the second.`
     : `The knob shows one turn of ${g.perTurn} ${g.unit}; the arc is where the range falls in it.`
   );
 
@@ -225,7 +228,7 @@
       <p class="cap">Lower numbers grind finer. {single ? 'The dial is turned so the setting sits under the mark.' : `The band is the range the ${who} prints.`}</p>
     {:else if s && g.kind === 'turns' && s.min != null}
       {#if g.perTurn}
-      <svg viewBox="-34 -14 388 262" class="knob" role="img" aria-label="{g.short} adjustment knob, one turn of {g.perTurn} {g.unit}: {headline(g, s)}{single ? ', with the knob turned to that position within the turn' : knobArc?.full ? `, with marks where the range starts and ends; it spans ${knobArc.turns} turns` : ', with the range shaded on the knob’s one-turn scale'}.">
+      <svg viewBox="-34 -14 388 262" class="knob" role="img" aria-label="{g.short} adjustment knob, one turn of {g.perTurn} {g.unit}: {headline(g, s)}{single ? ', with the knob turned to that position within the turn' : knobArc?.full ? `, with a full turn and the extra arc marked; it spans ${knobArc.turns} turns` : ', with the range shaded on the knob’s one-turn scale'}.">
         <circle cx="160" cy="122" r="108" class="bezel" />
         <g class="ring" style:transform="rotate({knobTurn}deg)" style:transform-origin="160px 122px">
           <circle cx="160" cy="122" r="96" class="ringface" />
@@ -238,7 +241,8 @@
               {#if major}{@const [tx, ty] = pt(a, 68, 160, 122)}<text x={tx} y={ty + 4} text-anchor="middle" class="num up" class:underl={i === 6 || i === 9} style:transform="rotate({-knobTurn}deg)">{i}</text>{/if}
             {/each}
         </g>
-        {#if knobArc && !knobArc.full}<path d={knobArc.d} class="karc" />{/if}
+        {#if knobArc?.full}<circle cx="160" cy="122" r="102" class="kring" />{/if}
+        {#if knobArc?.d}<path d={knobArc.d} class="karc" />{/if}
         {#if knobArc}
           {#each knobArc.ends as [x0, y0, x1, y1], i (i)}<line x1={x0} y1={y0} x2={x1} y2={y1} class="kend" class:bold={knobArc.full} />{/each}
           {#each knobArc.labels as l, i (i)}<text x={l.x} y={l.y} text-anchor={l.anchor} class="endv">{l.text}</text>{/each}
@@ -249,9 +253,9 @@
           <text x="160" y="114" text-anchor="middle" class="hubk">{full === 0 ? 'first turn' : `${full} turn${full === 1 ? '' : 's'} +`}</text>
           <text x="160" y="144" text-anchor="middle" class="hubv">{rest}</text>
         {:else if knobArc?.full}
-          <text x="160" y="110" text-anchor="middle" class="hubk">spans</text>
-          <text x="160" y="140" text-anchor="middle" class="hubv sm">{knobArc.turns}</text>
-          <text x="160" y="156" text-anchor="middle" class="hubu">turns</text>
+          <text x="160" y="110" text-anchor="middle" class="hubk">{knobArc.turns} turns</text>
+          <text x="160" y="140" text-anchor="middle" class="hubv sm">{s.min}–{bandTo}</text>
+          <text x="160" y="156" text-anchor="middle" class="hubu">{g.unit}</text>
         {:else}
           <text x="160" y="110" text-anchor="middle" class="hubk">one turn</text>
           <text x="160" y="140" text-anchor="middle" class="hubv sm">{g.perTurn}</text>
@@ -259,7 +263,7 @@
         {/if}
       </svg>
       {/if}
-      <svg viewBox="0 0 320 120" class="ruler" class:solo={!g.perTurn} role="img" aria-label="On a ruler from 0 to {rulerMax} {g.unit}{turnMarks.length ? ', with each full turn marked' : ''}: {headline(g, s)}.">
+      <svg viewBox="0 0 320 128" class="ruler" class:solo={!g.perTurn} role="img" aria-label="On a ruler from 0 to {rulerMax} {g.unit}{turnMarks.length ? ', with each full turn marked' : ''}: {headline(g, s)}.">
         {#if turnMarks.length}<text x="20" y="12" class="turnlbl">turns</text>{/if}
         {#each turnMarks as v (v)}
           <line x1={rx(v)} y1="18" x2={rx(v)} y2="74" class="turnline" /><text x={rx(v)} y="12" text-anchor={v === rulerMax ? 'end' : 'middle'} class="turnlbl">{v / g.perTurn!}</text>
@@ -281,9 +285,9 @@
         {/if}
         {#if single}<circle cx={rx(target ?? 0)} cy="54" r="7" class="startdot" /><text x={rx(target ?? 0)} y="35" text-anchor="middle" class="endv">{target}</text>{/if}
         {#each rulerTicks as v (v)}<line x1={rx(v)} y1="70" x2={rx(v)} y2="76" class="tick dark" /><text x={rx(v)} y="90" text-anchor="middle" class="num small">{v}</text>{/each}
-        <text x="20" y="113" class="fine">← finer</text>
-        <text x="160" y="113" text-anchor="middle" class="fine">{g.unit} from zero</text>
-        <text x="300" y="113" text-anchor="end" class="fine">coarser →</text>
+        <text x="20" y="106" class="fine">← finer</text>
+        <text x="300" y="106" text-anchor="end" class="fine">coarser →</text>
+        <text x="160" y="124" text-anchor="middle" class="fine">{g.unit} from zero</text>
       </svg>
       {@render legend(s.max !== s.min, s.start != null || s.max === s.min, !!g.avoid, true)}
       <p class="cap">{knobCap}{g.rulerNote ? ` ${g.rulerNote}` : ''}</p>
@@ -387,7 +391,7 @@
   .dial, .knob { width: 100%; max-width: 340px; height: auto; }
   .ruler { width: 100%; max-width: 420px; height: auto; margin-top: 12px; }
   .ruler.solo { max-width: 520px; margin-top: 36px; }
-  .strip { width: 100%; max-width: 440px; height: auto; margin-top: 18px; }
+  .strip { width: 100%; max-width: 520px; height: auto; margin-top: 18px; }
   .bezel { fill: #2a1d15; }
   .ringface { fill: #3a2a20; }
   .ring { transform-origin: 160px 160px; transition: transform .8s cubic-bezier(.2, .7, .2, 1); }
@@ -403,6 +407,7 @@
   .band.short { stroke-linecap: butt; }
   .karc { fill: none; stroke: #c3873a; stroke-width: 8; }
   .kend { stroke: #f3d7a8; stroke-width: 2.5; }
+  .kring { fill: none; stroke: #c3873a; stroke-width: 3; opacity: .75; }
   .kend.bold { stroke: #c3873a; stroke-width: 5; stroke-linecap: round; }
   .startdot { fill: #fbf8f3; stroke: #c3873a; stroke-width: 4; }
   .index { fill: #c3873a; }
@@ -469,7 +474,7 @@
   .chips { display: flex; flex-wrap: wrap; gap: 6px; }
   .chips button { appearance: none; border: 1px solid var(--rule); background: #fff; border-radius: 999px; padding: 8px 13px; min-height: 40px; font: 500 13.5px 'IBM Plex Sans', sans-serif; color: var(--ink-2); cursor: pointer; }
   .chips button[aria-pressed='true'] { background: var(--ink); color: #f3ede3; border-color: var(--ink); }
-  .chips button:disabled { opacity: .6; cursor: not-allowed; text-decoration: line-through; text-decoration-color: rgba(117, 101, 90, .5); }
+  .chips button:disabled { opacity: .72; color: var(--ink-3); cursor: not-allowed; text-decoration: line-through; text-decoration-color: rgba(117, 101, 90, .5); }
   .why { margin: 8px 0 0; font-size: 12.5px; color: var(--ink-3); }
   .answer > :first-child { border-top: 1px solid var(--rule); padding-top: 14px; }
   .kick { font: 500 11.5px/1.3 'IBM Plex Mono', monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--crema-deep); margin: 0; }
@@ -520,6 +525,7 @@
     .fine, .turnlbl { font-size: 12px; }
     .endv { font-size: 13.5px; }
     .hubk { font-size: 12.5px; }
+    .knob .num { font-size: 15px; }
     .legend { font-size: 13px; }
     .pub { font-size: 40px; }
   }
