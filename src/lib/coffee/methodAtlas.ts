@@ -265,7 +265,7 @@ export function differenceSentence(a: AtlasMethod, b: AtlasMethod): string {
   }
   if (d.includes('filter')) {
     const [clear, full] = FILTER[a.filter].order <= FILTER[b.filter].order ? [a, b] : [b, a];
-    parts.push(full.filter === 'none' ? `only ${clear.the} is filtered` : `${clear.the} gets the clearer cup (${FILTER_PHRASE[clear.filter]} against ${FILTER_PHRASE[full.filter]})`);
+    parts.push(full.filter === 'none' ? `only ${clear.the} is filtered` : `${clear.the}'s ${FILTER_PHRASE[clear.filter]} gives the clearer cup`);
   } else if (d.includes('time')) {
     const [fast, slow] = a.timeS[1] <= b.timeS[1] ? [a, b] : [b, a];
     parts.push(`${fast.the} takes ${timeText(fast)}, ${slow.the} ${timeText(slow)}`);

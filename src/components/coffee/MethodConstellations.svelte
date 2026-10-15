@@ -11,7 +11,7 @@
   // property at a time (how water meets the coffee, what filters it, what pushes the water, how
   // long it takes), so you can see that these are separate axes, not one family tree. A star
   // opens a cutaway of the brewer with its water path; two stars compare side by side.
-  const W = 1000, H = 600, TOP = 184, BOT = 528, PAD = 16;
+  const W = 1000, H = 556, TOP = 180, BOT = 486, PAD = 16;
   const ARRANGE: { id: Axis; label: string }[] = [
     { id: 'contact', label: 'Contact' }, { id: 'filter', label: 'Filter' }, { id: 'force', label: 'Force' }, { id: 'time', label: 'Time' },
   ];
@@ -67,10 +67,11 @@
       const sorted = [...ATLAS].sort((p, q) => mid(p) - mid(q));
       const w = portrait ? 600 : W, rowH = portrait ? 46 : 36, top = portrait ? 60 : 56;
       const h = top + sorted.length * rowH + 64;
-      const x0 = portrait ? 232 : 220, x1 = w - 40;
+      const x0 = portrait ? 200 : 210, x1 = w - 40;
       sorted.forEach((m, i) => {
         const x = x0 + timePosition(mid(m)) * (x1 - x0), y = top + i * rowH + rowH / 2;
-        pos[m.id] = { x, y, lx: (portrait ? 20 : 30) - x, ly: 6, anchor: 'start' };
+        const start = x0 + timePosition(m.timeS[0]) * (x1 - x0);
+        pos[m.id] = { x, y, lx: Math.min(start, x) - 16 - x, ly: 6, anchor: 'end' };
       });
       return { w, h, pos, hubs, chains: [sorted.map((m) => m.id)], x0, x1 };
     }
@@ -86,7 +87,12 @@
           const y = n === 1 ? (TOP + BOT) / 2 + 10 : TOP + 16 + (j * (BOT - TOP - 26)) / (n - 1);
           const swing = n === 1 ? 0 : (beside ? 0.22 : 0.17) * colW * Math.sin(j * 1.9 + i + 0.6);
           const x = cx + swing;
-          pos[id] = beside ? { x, y, lx: swing >= 0 ? 24 : -24, ly: 7, anchor: swing >= 0 ? 'start' : 'end' } : { x, y, lx: 0, ly: 40, anchor: 'middle' };
+          // A label stays inside its own column: if it would cross into the next one, it goes on
+          // the other side of its star (or whichever side has more room).
+          const lw = atlasById(id)!.label.length * 10.4, lo = cx - colW / 2 + 4, hi = cx + colW / 2 - 4;
+          const fitsR = x + 24 + lw < Math.min(hi, W - 8), fitsL = x - 24 - lw > Math.max(lo, 8);
+          const right = swing >= 0 ? (fitsR || !fitsL) && (fitsR || hi - x > x - lo) : !fitsL && (fitsR || hi - x > x - lo);
+          pos[id] = beside ? { x, y, lx: right ? 24 : -24, ly: 7, anchor: right ? 'start' : 'end' } : { x, y, lx: 0, ly: 40, anchor: 'middle' };
         });
       });
       return { w: W, h: H, pos, hubs, chains: gs.map((g) => g.ids) };
@@ -102,8 +108,9 @@
       const rows = two ? [g.ids.slice(0, Math.ceil(n0 / 2)), g.ids.slice(Math.ceil(n0 / 2))] : [g.ids];
       rows.forEach((ids, ri) => ids.forEach((id, j) => {
         const n = ids.length;
-        const x = n === 1 ? 330 : 140 + (j * (w - 190)) / (n - 1) + (ri ? 30 : 0);
-        const up = n > 2 && j % 2 === 1;
+        const jj = ri ? n - 1 - j : j;
+        const x = n === 1 ? 330 : 140 + (jj * (w - 190)) / (n - 1) + (ri ? 30 : 0);
+        const up = two ? ri === 0 : n > 2 && j % 2 === 1;
         const yrow = yc + ri * extra;
         // Keep every name inside the frame: a label that would run off the right edge ends there instead.
         const half = (atlasById(id)!.label.length * 11.6) / 2;
@@ -117,6 +124,12 @@
   }
   let portrait = $state(false);
   let L = $derived(layout(by, portrait));
+  // Name boxes in this layout, so field stars keep out of them.
+  let nameBoxes = $derived(ATLAS.map((m) => {
+    const p = L.pos[m.id], w = m.label.length * (portrait ? 12.5 : 10.6) + 14, x = p.x + p.lx;
+    return { x: p.anchor === 'end' ? x - w : p.anchor === 'middle' ? x - w / 2 : x - 7, y: p.y + p.ly - 22, w, h: 30 };
+  }));
+  const clear = (x: number, y: number) => !nameBoxes.some((b) => x > b.x && x < b.x + b.w && y > b.y && y < b.y + b.h);
   let groups = $derived(groupsFor(by));
 
   // The night sky, fixed so it's the same on every load: field stars that twinkle, a few bright ones.
@@ -169,7 +182,9 @@
     history.replaceState(history.state, '', q.toString() ? `${location.pathname}?${q}` : location.pathname);
   });
 
-  const axisValue = (m: AtlasMethod, axis: Axis) => axis === 'contact' ? CONTACT[m.contact].label : axis === 'filter' ? FILTER[m.filter].label : axis === 'force' ? FORCE[m.force].label : timeText(m) + (m.timeNote ? ` (${m.timeNote})` : '');
+  const axisValue = (m: AtlasMethod, axis: Axis) => axis === 'contact' ? CONTACT[m.contact].label : axis === 'filter' ? FILTER[m.filter].label : axis === 'force' ? FORCE[m.force].label : timeText(m) + (m.timeNote ? '*' : '');
+  // Ranges and units stay on one line.
+  const keep = (s: string) => s.replace(/–/g, '\u2060–\u2060').replace(/ \(/g, '\u00a0(');
   const dots = (n: number) => '●'.repeat(n) + '○'.repeat(3 - n);
 </script>
 
@@ -187,7 +202,7 @@
     <circle class="halo" r={lit ? r * 5 : r * 3.2} fill="#E8C36A" opacity={lit ? 0.13 : 0.06} />
     <circle class="halo" r={lit ? r * 2.6 : r * 1.7} fill="#E8C36A" opacity={lit ? 0.28 : 0.14} />
     {#if pushed(m)}
-      <path d="M{-r * 2.6} 0 H{r * 2.6} M0 {-r * 2.6} V{r * 2.6}" stroke="#F0D070" stroke-width="1" opacity=".75" />
+      <path d="M{-r * 3.1} 0 H{r * 3.1} M0 {-r * 3.1} V{r * 3.1}" stroke="#F0D070" stroke-width="1.5" opacity=".9" />
     {/if}
     <circle class="core" r={lit ? r * 1.25 : r} fill={lit ? '#F5D78E' : '#E8C36A'} filter="url(#mc-star-glow)" />
     {#if sel}<circle r={r * 1.25 + 9} fill="none" stroke="#F5D78E" stroke-width="1.6" class="ring" />{/if}
@@ -207,13 +222,12 @@
         {/each}
       </div>
     </div>
+    <em class="ghost-cap">{GHOST[by]}</em>
     <div class="seg small" role="group" aria-label="View">
       <button type="button" aria-pressed={view === 'sky'} onclick={() => (view = 'sky')}>Sky</button>
       <button type="button" aria-pressed={view === 'list'} onclick={() => (view = 'list')}>List</button>
     </div>
   </div>
-
-  <p class="axiscap"><span class="lbl">Arranged by {by === 'force' ? 'force' : by}</span> <em>{GHOST[by]}</em><span class="leg"><span class="lstar big"></span><span class="lstar"></span> bigger star: more body <span class="lray">✳</span> rays: the water is pushed</span></p>
   <div class="body">
     <div class="stagecol">
       {#if view === 'sky'}
@@ -225,6 +239,7 @@
               <radialGradient id="mc-horizon" cx=".5" cy="1.08" r=".6"><stop offset="0" stop-color="#D4A44C" stop-opacity=".18" /><stop offset=".3" stop-color="#A07838" stop-opacity=".08" /><stop offset=".6" stop-color="#5A4020" stop-opacity=".03" /><stop offset="1" stop-color="#0B1525" stop-opacity="0" /></radialGradient>
               <radialGradient id="mc-vignette" cx=".5" cy=".5" r=".62"><stop offset=".65" stop-color="#000" stop-opacity="0" /><stop offset="1" stop-color="#000" stop-opacity=".26" /></radialGradient>
               <filter id="mc-hub-glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="4" result="b" /><feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
+              <marker id="mc-arrow" viewBox="0 0 8 8" refX="4" refY="6" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1 L4 7 L7 1" fill="none" stroke="#8898B0" stroke-width="1.2" /></marker>
               <filter id="mc-star-glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="2.5" result="b" /><feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
             </defs>
             <!-- The frame: a slate mat, a copper rule, the chart's own border -->
@@ -242,10 +257,10 @@
               {#each Array.from({ length: Math.floor(L.w / 100) + 1 }, (_, i) => i * 100) as x (x)}<line x1={x} y1="0" x2={x} y2="5" /><line x1={x} y1={L.h - 5} x2={x} y2={L.h} />{/each}
               {#each Array.from({ length: Math.floor(L.h / 100) + 1 }, (_, i) => i * 100) as y (y)}<line x1="0" y1={y} x2="5" y2={y} /><line x1={L.w - 5} y1={y} x2={L.w} y2={y} />{/each}
             </g>
-            {#each field as f, i (i)}<circle pointer-events="none" class="twinkle" cx={f.x * L.w} cy={f.y * L.h} r={f.r} fill="#C8D0E0" opacity={f.o} style="animation-delay: {f.delay}s; animation-duration: {f.dur}s" />{/each}
-            {#each feature as f, i (i)}<circle pointer-events="none" cx={f.x * L.w} cy={f.y * L.h} r={f.r * 2} fill="#D0D8E8" opacity={f.o * 0.15} /><circle cx={f.x * L.w} cy={f.y * L.h} r={f.r} fill="#D8E0F0" opacity={f.o} />{/each}
+            {#each field.filter((f) => clear(f.x * L.w, f.y * L.h)) as f, i (i)}<circle pointer-events="none" class="twinkle" cx={f.x * L.w} cy={f.y * L.h} r={f.r} fill="#C8D0E0" opacity={f.o} style="animation-delay: {f.delay}s; animation-duration: {f.dur}s" />{/each}
+            {#each feature.filter((f) => clear(f.x * L.w, f.y * L.h)) as f, i (i)}<circle pointer-events="none" cx={f.x * L.w} cy={f.y * L.h} r={f.r * 2} fill="#D0D8E8" opacity={f.o * 0.15} /><circle cx={f.x * L.w} cy={f.y * L.h} r={f.r} fill="#D8E0F0" opacity={f.o} />{/each}
             <!-- Compass rose -->
-            {#if !portrait}
+            {#if !portrait && by !== 'time'}
               <g transform="translate({L.w - 48} 46) scale(1.5)" opacity=".4">
                 <circle r="12" fill="none" stroke="#C17A3A" stroke-width=".4" /><circle r="11" fill="none" stroke="#D4A44C" stroke-width=".2" />
                 <polygon points="0,-10 -1.5,-3 0,-4 1.5,-3" fill="#D4A44C" /><polygon points="0,10 -1.5,3 0,4 1.5,3" fill="#6B7A90" /><polygon points="10,0 3,-1.5 4,0 3,1.5" fill="#6B7A90" /><polygon points="-10,0 -3,-1.5 -4,0 -3,1.5" fill="#6B7A90" />
@@ -258,14 +273,22 @@
                 <line x1={sx(t.s)} x2={sx(t.s)} y1="34" y2={L.h - 52} stroke="#8898B0" stroke-opacity=".22" stroke-dasharray="2 5" />
                 <text x={sx(t.s)} y={L.h - 32} text-anchor="middle" class="tick">{t.label}</text>
               {/each}
-              <text x={L.x0} y="30" class="timecap">Fastest at the top</text>
-              <text x={L.x1} y="30" text-anchor="end" class="timecap">contact time (log scale) →</text>
-              {#each ATLAS as m (m.id)}
-                <line x1={portrait ? 20 + m.label.length * 12 : 30 + m.label.length * 10.5} x2={L.pos[m.id].x - 10} y1={L.pos[m.id].y} y2={L.pos[m.id].y} stroke="#8898B0" stroke-opacity=".28" stroke-dasharray="1.5 5" pointer-events="none" />
-              {/each}
+              <text x="20" y="30" class="timecap">Fastest at the top</text>
+              <text x={L.x1} y="30" text-anchor="end" class="timecap">contact time, log scale →</text>
               {#each ATLAS as m (m.id)}
                 <line class="range" x1={sx(m.timeS[0])} x2={sx(Math.max(m.timeS[1], m.timeS[0] * 1.08))} y1={L.pos[m.id].y} y2={L.pos[m.id].y} />
               {/each}
+            {/if}
+            {#if by !== 'time'}
+              {#if portrait}
+                <text x={L.w - 12} y="22" text-anchor="end" class="edge">in each group: quicker → slower</text>
+              {:else}
+                <g class="edge" pointer-events="none">
+                  <text x={L.w - 14} y={TOP + 4} text-anchor="end">quicker</text>
+                  <line x1={L.w - 22} x2={L.w - 22} y1={TOP + 16} y2={BOT - 18} stroke="#8898B0" stroke-opacity=".45" marker-end="url(#mc-arrow)" />
+                  <text x={L.w - 14} y={BOT + 8} text-anchor="end">slower</text>
+                </g>
+              {/if}
             {/if}
             {#key by}
               <g class="chains" pointer-events="none">
@@ -292,7 +315,9 @@
         </div>
         </div>
         <p class="gp-plaque"><b>The Brewing Constellations</b><small>An interactive star chart</small></p>
-        <div class="key">
+        <div class="key gp-label">
+          <p class="kstate">Thirteen brewers, sorted by one property at a time: {GHOST[by]}.</p>
+          <p class="ksym"><span class="lstar big"></span><span class="lstar"></span> A bigger star: more body in the cup <span class="lray" aria-hidden="true">✳</span> Rays: the water is pushed</p>
           {#each groups as g (g.key)}
             <p><b>{g.label}</b> {g.line}</p>
           {/each}
@@ -342,15 +367,16 @@
           <ul class="axes">
             {#each ARRANGE as x (x.id)}<li><span class="lbl">{x.label}</span>{axisValue(A, x.id)}</li>{/each}
           </ul>
+          {#if A.timeNote}<p class="quiet small fn">* {A.timeNote.replace(/^\w/, (c) => c.toUpperCase())}.</p>{/if}
           <div class="cut">{#key A.id}<BrewerCutaway method={A.id} playing={!reduced} />{/key}</div>
           <p class="desc">{describe(A)}</p>
           <dl class="nums">
-            <div><dt>Ratio</dt><dd>{ratioText(A)}</dd></div>
+            <div><dt>Ratio</dt><dd>{keep(ratioText(A))}</dd></div>
             <div><dt>Grind</dt><dd>{A.grind}</dd></div>
-            <div><dt>Water</dt><dd>{A.temp.replace(/–/g, '\u2060–\u2060').replace(' (', '\u00a0(')}</dd></div>
-            <div><dt>Hands-on</dt><dd><span class="att" aria-hidden="true">{dots(A.attention)}</span> {['', 'Low', 'Some', 'High'][A.attention]} <small>(our judgment)</small></dd></div>
+            <div><dt>Water</dt><dd>{#each A.temp.split(' (') as part, i (i)}{#if i}<small class="alt">({keep(part)}</small>{:else}{keep(part)}{/if}{/each}</dd></div>
+            <div><dt>Hands-on</dt><dd><span class="att" aria-hidden="true">{dots(A.attention)}</span> {['', 'Low', 'Some', 'High'][A.attention]}</dd></div>
           </dl>
-          <p class="quiet small">Numbers from {A.recipeBy}.</p>
+          <p class="quiet small">Numbers from {A.recipeBy}. Hands-on is our judgment.</p>
           <div class="actions">
             {#if brewGuideHref(A)}
               <a class="primary" href={brewGuideHref(A)}>Brew it in the Brew Guide →</a>
@@ -395,11 +421,11 @@
               {#each ARRANGE as x (x.id)}
                 <tr class:differs={d.includes(x.id)}><th scope="row">{x.label}{#if d.includes(x.id)}<span class="sr"> (differs)</span>{/if}</th><td>{axisValue(A, x.id)}</td><td>{axisValue(B, x.id)}</td></tr>
               {/each}
-              <tr><th scope="row">Ratio</th><td>{ratioText(A)}</td><td>{ratioText(B)}</td></tr>
+              <tr><th scope="row">Ratio</th><td>{keep(ratioText(A))}</td><td>{keep(ratioText(B))}</td></tr>
               <tr><th scope="row">Grind</th><td>{A.grind}</td><td>{B.grind}</td></tr>
             </tbody>
           </table>
-          <p class="quiet small">Highlighted rows are the axes that differ. Contact time is a typical range for each recipe.</p>
+          <p class="quiet small">Highlighted rows are the axes that differ. Contact time is a typical range for each recipe.{#each [A, B].filter((m) => m.timeNote) as m (m.id)}{' '}* {m.label}: {m.timeNote}.{/each}</p>
           <div class="actions">
             {#each [A, B] as m (m.id)}
               {#if brewGuideHref(m)}<a class="ghost" href={brewGuideHref(m)}>Brew the {m.label} →</a>{:else}<a class="ghost" href="/blog/{m.guide.slug}/">{m.label} guide →</a>{/if}
@@ -440,7 +466,7 @@
   .hubsub { font: italic 400 17px 'Instrument Serif', Georgia, serif; fill: #8898B0; letter-spacing: .02em; }
   .skycap { font: italic 400 19px 'Instrument Serif', Georgia, serif; fill: #4A5A70; opacity: .55; letter-spacing: .28em; }
   .compass { font: 400 6px 'Instrument Serif', Georgia, serif; fill: #D4A44C; }
-  .tick { font: 500 14px 'IBM Plex Mono', monospace; fill: #8898B0; }
+  .tick { font: 500 15px 'IBM Plex Mono', monospace; fill: #A9B5C9; }
   .range { stroke: #D4A44C; stroke-opacity: .5; stroke-width: 3; stroke-linecap: round; }
   .twinkle { animation: twinkle ease-in-out infinite; }
   @keyframes twinkle { 0%, 100% { opacity: 1; } 50% { opacity: .2; } }
@@ -452,17 +478,20 @@
   .star:hover .slab, .star:focus-visible .slab { fill: #F5F0E8; }
   .star:focus-visible .core { stroke: #F5D78E; stroke-width: 2; }
   .star:focus-visible .slab { text-decoration: underline; }
-  .slab { font: 600 18px 'IBM Plex Sans', sans-serif; letter-spacing: .02em; fill: #C0C8D8; transition: fill .2s; }
+  /* A sky-colored halo behind each name breaks the constellation line where it passes. */
+  .slab { font: 600 18px 'IBM Plex Sans', sans-serif; letter-spacing: .02em; fill: #C0C8D8; transition: fill .2s; paint-order: stroke; stroke: #12203A; stroke-width: 6px; stroke-linejoin: round; }
+  .edge, .edge text { font: italic 400 16px 'Instrument Serif', Georgia, serif; fill: #8d9bb3; }
   .slab.on { fill: #F5F0E8; }
   .pick .slab { fill: #F0D070; }
   .ring { animation: pulse 2.4s ease-in-out infinite; }
   @keyframes pulse { 50% { opacity: .35; } }
-  .key { margin: 16px 2px 0; display: grid; gap: 4px; }
-  .axiscap { margin: 0 0 10px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; font-size: 14px; color: var(--ink-2); }
-  .axiscap .lbl { display: inline; margin: 0; color: var(--crema-deep); }
-  .axiscap em { font: italic 400 20px 'Instrument Serif', Georgia, serif; color: var(--ink); }
-  .axiscap .leg { margin-left: auto; font-size: 13px; color: var(--ink-3); }
-  .timecap { font: italic 400 17px 'Instrument Serif', Georgia, serif; fill: #b9aa98; }
+  .key { margin: 14px auto 0; display: grid; gap: 5px; max-width: 640px; }
+  .key .kstate { font: 400 19px/1.3 'Instrument Serif', Georgia, serif; color: var(--ink); }
+  .key .ksym { color: var(--ink-3); font-size: 13.5px; border-bottom: 1px solid var(--rule); padding-bottom: 6px; margin-bottom: 2px !important; }
+  .ghost-cap { font: italic 400 20px 'Instrument Serif', Georgia, serif; color: var(--ink); margin-right: auto; }
+  .fn { margin: -4px 0 8px; }
+  .alt { display: block; font: 400 12.5px 'IBM Plex Mono', monospace; color: var(--ink-3); }
+  .timecap { font: italic 400 18px 'Instrument Serif', Georgia, serif; fill: #C9BBA8; }
   .qlbl { margin-top: 16px !important; }
   .key p { margin: 0; font-size: 14px; color: var(--ink-2); }
   .key b { font: 500 11px 'IBM Plex Mono', monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--crema-deep); margin-right: 6px; }
@@ -500,7 +529,7 @@
   .axes li + li { border-left: 1px solid var(--rule); padding-left: 10px; }
   .axes .lbl { margin-bottom: 2px; }
   .cut { max-width: 300px; margin: 0 auto; }
-  @media (max-width: 640px) { .cut { max-width: 230px; } .axiscap .leg { margin-left: 0; } }
+  @media (max-width: 640px) { .cut { max-width: 230px; } }
   .cut :global(svg) { width: 100%; height: auto; display: block; }
   .desc { font: 400 21px/1.3 'Instrument Serif', Georgia, serif; margin: 6px 0 10px; }
   .nums { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; margin: 0 0 6px; border-top: 1px solid var(--rule); }
@@ -525,7 +554,7 @@
   .pair figure :global(svg) { width: 100%; height: auto; display: block; }
   .pair figcaption { text-align: center; font: 600 14px 'IBM Plex Sans', sans-serif; padding-bottom: 4px; }
   .ctab { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 14.5px; }
-  .ctab th, .ctab td { text-align: left; padding: 7px 8px; border-bottom: 1px solid #e6dccd; vertical-align: top; }
+  .ctab th, .ctab td { text-align: left; padding: 7px 8px; border-bottom: 1px solid #e6dccd; vertical-align: top; text-wrap: pretty; }
   .ctab thead th { font: 600 14px 'IBM Plex Sans', sans-serif; }
   .ctab tbody th { font: 500 11px 'IBM Plex Mono', monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); width: 24%; }
   .ctab tr.differs td { background: #fbe9cc; font-weight: 600; }
@@ -546,6 +575,10 @@
     .topbar { gap: 8px; }
     .arr { width: 100%; }
     .seg button { padding: 8px 12px; font-size: 13.5px; }
+    .ghost-cap { flex: 1; font-size: 18px; }
+    .topbar > .seg.small { margin-left: auto; }
+    .ghost-cap { margin-right: 0; }
+    .cut :global(svg) { overflow: visible; }
     .axes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .axes li:nth-child(3) { border-left: 0; padding-left: 0; }
     .axes li:nth-child(n + 3) { border-top: 1px solid var(--rule); }

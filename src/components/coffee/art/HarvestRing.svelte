@@ -63,6 +63,6 @@
 <style>
   .hring { overflow: visible; transition: opacity .3s; }
   .hring.faint { opacity: .42; }
-  .ml { font: 500 9.5px 'IBM Plex Mono', monospace; fill: #75655a; }
-  .ml.on { fill: #2a1d15; font-weight: 600; }
+  .ml { font: 500 10px 'IBM Plex Sans', system-ui, sans-serif; fill: #75655a; }
+  .ml.on { fill: #2a1d15; font-weight: 700; }
 </style>

@@ -22,6 +22,8 @@
   let { roasterWords, sources }: Props = $props();
 
   const FULL = [30, 42, 920, 272];
+  // The open card's size on the map (desktop), so labels can keep clear of it.
+  const TAG_W = 330, TAG_H = 210;
   const PHONE: Record<Continent, number[]> = { americas: [36, 78, 410, 283], africa: [520, 112, 196, 135], 'asia-pacific': [676, 98, 296, 204] };
   const COFFEE = new Set(ORIGINS.map((o) => o.id));
 
@@ -124,31 +126,35 @@
     const radius = (id: string) => (ring.has(id) ? 15 : chosen(id) ? 8 : 6);
     // Every marker in view is an obstacle; labels try four spots around their point.
     const boxes: Box[] = pts.filter(inView).map((p) => { const r = radius(p.o.id) + 2; return { x: p.sx - r, y: p.sy - r, w: r * 2, h: r * 2 }; });
+    // The open card on the map is taken space too.
+    if (sel && !vs && !narrow) boxes.push({ x: mapW - 16 - TAG_W - 8, y: 0, w: TAG_W + 24, h: TAG_H + 24 });
+    const within = (b: Box) => b.x > 4 && b.y > 2 && b.x + b.w < mapW - 4 && b.y + b.h < H - 2;
     const tryPlace = (sx: number, sy: number, text: string, fs: number, r: number, force = false): Spot | null => {
       const w = text.length * fs * 0.47, h = fs + 2;
-      const spots: (Spot & { b: Box })[] = [
-        { dx: 0, dy: -r - 4, anchor: 'middle', b: { x: sx - w / 2, y: sy - r - 4 - fs, w, h } },
-        { dx: r + 5, dy: fs * 0.35, anchor: 'start', b: { x: sx + r + 5, y: sy - fs * 0.65, w, h } },
-        { dx: 0, dy: r + fs + 2, anchor: 'middle', b: { x: sx - w / 2, y: sy + r + 2, w, h } },
-        { dx: -r - 5, dy: fs * 0.35, anchor: 'end', b: { x: sx - r - 5 - w, y: sy - fs * 0.65, w, h } },
-      ];
-      const ok = spots.find((c) => !boxes.some((b) => hit(b, c.b)));
-      const pick = ok ?? (force ? spots[0] : null);
+      const spots: (Spot & { b: Box })[] = [];
+      for (const g of [0, 9]) spots.push(
+        { dx: 0, dy: -r - 4 - g, anchor: 'middle', b: { x: sx - w / 2, y: sy - r - 4 - g - fs, w, h } },
+        { dx: r + 5 + g, dy: fs * 0.35, anchor: 'start', b: { x: sx + r + 5 + g, y: sy - fs * 0.65, w, h } },
+        { dx: 0, dy: r + fs + 2 + g, anchor: 'middle', b: { x: sx - w / 2, y: sy + r + 2 + g, w, h } },
+        { dx: -r - 5 - g, dy: fs * 0.35, anchor: 'end', b: { x: sx - r - 5 - g - w, y: sy - fs * 0.65, w, h } },
+        { dx: r + 3 + g, dy: -r - 2 - g, anchor: 'start', b: { x: sx + r + 3 + g, y: sy - r - 2 - g - fs, w, h } },
+        { dx: -r - 3 - g, dy: r + fs + g, anchor: 'end', b: { x: sx - r - 3 - g - w, y: sy + r + g, w, h } },
+      );
+      const ok = spots.find((c) => within(c.b) && !boxes.some((b) => hit(b, c.b)));
+      const pick = ok ?? (force ? spots.find((c) => within(c.b)) ?? spots[0] : null);
       if (pick) boxes.push(pick.b);
       return pick ? { dx: pick.dx, dy: pick.dy, anchor: pick.anchor } : null;
     };
     const label = new Map<string, Spot>(), regionLabel = new Map<string, Spot>();
+    // Region marks first, so the country's own name never lands on one.
+    const regs = pts.filter((q) => chosen(q.o.id)).flatMap((p) => p.o.regions.filter((r) => r.lat !== null && r.lon !== null).map((r) => {
+      const [rx, ry] = project(r.lat!, r.lon!);
+      const sx = (rx - v[0]) / u, sy = (ry - v[1]) / u;
+      boxes.push({ x: sx - 7, y: sy - 7, w: 14, h: 14 });
+      return { key: `${p.o.id}|${r.name}`, name: r.name, sx, sy };
+    }));
     for (const p of pts.filter((q) => chosen(q.o.id))) { const sp = tryPlace(p.sx, p.sy, p.o.name, 17, radius(p.o.id), true); if (sp) label.set(p.o.id, sp); }
-    for (const p of pts.filter((q) => chosen(q.o.id))) {
-      for (const r of p.o.regions) {
-        if (r.lat === null || r.lon === null) continue;
-        const [rx, ry] = project(r.lat, r.lon);
-        const sx = (rx - v[0]) / u, sy = (ry - v[1]) / u;
-        boxes.push({ x: sx - 6, y: sy - 6, w: 12, h: 12 });
-        const sp = tryPlace(sx, sy, r.name, 13, 5);
-        if (sp) regionLabel.set(`${p.o.id}|${r.name}`, sp);
-      }
-    }
+    for (const r of regs) { const sp = tryPlace(r.sx, r.sy, r.name, 13, 5); if (sp) regionLabel.set(r.key, sp); }
     if (hover && !chosen(hover)) { const p = pts.find((q) => q.o.id === hover); if (p) { const sp = tryPlace(p.sx, p.sy, p.o.name, 14, radius(p.o.id), true); if (sp) label.set(hover, sp); } }
     if (zoomed) {
       const order = pts.filter((p) => !label.has(p.o.id) && inView(p)).sort((a, b) => Number(live(b.o)) - Number(live(a.o)));
@@ -182,14 +188,14 @@
 {#snippet profile(o: Origin, compact: boolean)}
   <div class="pfacts" class:compact>
     <div class="pair">
-      <HarvestRing harvest={o.harvest} month={month} labels size={compact ? 118 : 150} label="{o.name} harvest: {harvestText(o)}" />
-      <AltitudeBand arabica={o.altitudeM} robusta={o.robustaAltitudeM} name={o.name} height={compact ? 128 : 160} />
+      <HarvestRing harvest={o.harvest} month={month} labels size={compact ? 140 : 150} label="{o.name} harvest: {harvestText(o)}" />
+      <AltitudeBand arabica={o.altitudeM} robusta={o.robustaAltitudeM} name={o.name} height={compact ? 150 : 166} />
     </div>
     {#if !compact}
       <ul class="rkey" aria-label="Ring key"><li><span class="k main"></span>Main harvest</li>{#if o.harvest.second}<li><span class="k second"></span>Second crop</li>{/if}<li><span class="k edge"></span>Uncertain edge</li><li>The hand points to {MONTHS_LONG[month - 1]}</li></ul>
     {/if}
     <dl class="facts">
-      <div><dt>Harvest</dt><dd>{harvestText(o)}{#if o.harvest.scope && !compact}<span class="sub">{scopeText(o.harvest.scope)}</span>{/if}{#if o.harvest.variesBy && !compact}<span class="sub">{o.harvest.variesBy}</span>{/if}</dd></div>
+      <div><dt>Harvest</dt><dd>{harvestText(o)}{#if o.harvest.scope && !compact && !/^This is /.test(o.harvest.variesBy ?? '')}<span class="sub">{scopeText(o.harvest.scope)}</span>{/if}{#if o.harvest.variesBy && !compact}<span class="sub">{o.harvest.variesBy.replace(/^This is (\w+);\s*/, "This calendar is $1's; ")}</span>{/if}</dd></div>
       <div><dt>Altitude</dt><dd>{o.altitudeM ? bandText(o.altitudeM) : 'Not established'}{#if o.robustaAltitudeM}<span class="sub">Robusta {bandText(o.robustaAltitudeM)}</span>{/if}{#if o.altitudeM?.scope && !compact}<span class="sub">{altScope(o.altitudeM.scope)}</span>{/if}</dd></div>
       {#if !compact}
         <div><dt>Production</dt><dd>{productionText(o) ?? 'No current official figure'}{#if o.production?.arabicaShare != null && o.production.arabicaShare < 0.95}<span class="sub">{o.production.arabicaShare < 0.03 ? 'All counted as robusta' : `About ${Math.round(o.production.arabicaShare * 100)}% arabica, the rest robusta`}</span>{/if}{#if o.production}<span class="sub">{src(o.production.source)?.title ?? 'USDA FAS'}</span>{/if}</dd></div>
@@ -212,7 +218,7 @@
     </div>
     {#if narrow && !sel}
       <div class="seg regions" role="group" aria-label="Map region">
-        {#each CONTINENTS as c (c.id)}<button type="button" aria-pressed={region === c.id} onclick={() => (region = c.id)}>{c.label} <span class="cnt">{harvesting.filter((o) => o.continent === c.id).length}</span></button>{/each}
+        {#each CONTINENTS as c (c.id)}<button type="button" aria-pressed={region === c.id} onclick={() => (region = c.id)}><span>{c.label}</span> <span class="cnt">{harvesting.filter((o) => o.continent === c.id).length} now</span></button>{/each}
       </div>
     {/if}
   </div>
@@ -293,7 +299,12 @@
                 <circle cx={mx} cy={my} r={13 * upp} fill="#c3873a" opacity=".35" />
                 <circle cx={mx} cy={my} r={7.5 * upp} fill="#6b3a12" stroke="#fbf6ee" stroke-width={2 * upp} />
               {:else}
-                <circle cx={mx} cy={my} r={6 * upp} fill={st === 'off' ? '#fbf6ee' : st === 'edge' ? '#e8c9a0' : '#9a5420'} stroke="#2a1d15" stroke-width={1.3 * upp} />
+                {#if st === 'edge'}
+                  <circle cx={mx} cy={my} r={6 * upp} fill="#fbf6ee" stroke="#2a1d15" stroke-width={1.3 * upp} />
+                  <path d="M{mx} {my - 6 * upp} A {6 * upp} {6 * upp} 0 0 0 {mx} {my + 6 * upp} Z" fill="#9a5420" />
+                {:else}
+                  <circle cx={mx} cy={my} r={(st === 'off' ? 4.4 : 6) * upp} fill={st === 'off' ? '#fbf6ee' : '#9a5420'} stroke="#2a1d15" stroke-width={(st === 'off' ? 1.1 : 1.3) * upp} />
+                {/if}
               {/if}
               <circle cx={mx} cy={my} r={16 * upp} fill="transparent" />
               {#if marks.label.has(o.id)}
@@ -323,9 +334,9 @@
         <div class="mapkey" aria-hidden="true">
           <span class="kt">Key</span>
           <span><span class="dot on"></span> Harvesting in {MONTHS_LONG[month - 1]}</span>
-          <span><span class="dot edge"></span> Uncertain edge</span>
-          <span><span class="dot"></span> Not harvesting</span>
-          <span class="kring">{#if zoom > 2}<span class="ringk"></span> Ring: its 12-month harvest calendar, January at the top{:else}Pick an origin to zoom in and see its year as a ring{/if}</span>
+          <span><span class="dot edge"></span> Maybe (uncertain edge)</span>
+          <span><span class="dot off"></span> Not harvesting</span>
+          <span class="kring">{#if zoom > 2}<span class="ringk"></span> {narrow ? 'Ring: 12 months, Jan at top' : 'Ring: its 12-month harvest calendar, January at the top'}{:else}Pick an origin to zoom in and see its year as a ring{/if}</span>
         </div>
       </div>
       <p class="gp-plaque"><b>The Coffee Origins</b><small>An interactive world map</small></p>
@@ -398,12 +409,12 @@
           <p class="lbl">From cherry to bag</p>
           <ol>
             <li><b>Picked</b> {harvestText(sel)}</li>
-            <li><b>Processed</b> {sel.processing[0]?.toLowerCase() ?? 'at the mill'}</li>
-            <li><b>Dried and rested</b></li>
+            <li><b>Processed</b> {sel.processing.length ? sel.processing.slice(0, 2).join(' or ').toLowerCase() : 'at the mill'}</li>
+            <li><b>Dried and rested</b> on patios or raised beds</li>
             <li><b>Shipped</b> {arrival ? `arrives ${arrival.arrival}` : 'months later'}</li>
             <li><b>Roasted</b> and bagged</li>
           </ol>
-          {#if arrival}<p class="small quiet">Café Imports lists {sel.name}'s harvest as {arrival.harvest} and typical arrival as {arrival.arrival}.</p>{/if}
+          {#if arrival}<p class="small quiet jnote">Café Imports lists {sel.name}'s harvest as {arrival.harvest} and typical arrival as {arrival.arrival}.</p>{/if}
         </div>
         <div class="actions">
           {#if sel.page}<a class="primary" href={sel.page}>The {sel.name} profile →</a>{/if}
@@ -431,8 +442,11 @@
             </section>
           {/each}
         </div>
-        <p class="small quiet">Both altitude bands share one scale, from sea level to 2,600 m.</p>
-        <button type="button" class="linkish" onclick={() => { const t = selId; selId = vsId; vsId = t; }}>Swap</button>
+        <div class="cmpfoot">
+          <ul class="rkey" aria-label="Ring key"><li><span class="k main"></span>Main harvest</li><li><span class="k second"></span>Second crop</li><li><span class="k edge"></span>Uncertain edge</li><li>The hand points to {MONTHS_LONG[month - 1]}</li></ul>
+          <p class="small quiet">Both altitude bands are drawn on the same scale.</p>
+          <button type="button" class="linkish" onclick={() => { const t = selId; selId = vsId; vsId = t; }}>Swap the two</button>
+        </div>
       {/if}
     </div>
   </div>
@@ -481,10 +495,10 @@
   .olab.on { font-weight: 400; fill: #6b3a12; }
   .rlab { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; fill: #2a1d15; paint-order: stroke; stroke: #f3eee4; stroke-linejoin: round; }
   .region { pointer-events: none; }
-  .mapkey { display: flex; flex-wrap: wrap; gap: 4px 20px; align-items: center; padding: 10px 4px 0; font-size: 13px; color: var(--ink-2); }
+  .mapkey { display: flex; flex-wrap: wrap; gap: 4px 20px; align-items: center; padding: 10px 8px 2px; font-size: 13px; color: var(--ink-2); }
   .mapkey > span { display: inline-flex; align-items: center; gap: 7px; }
   .mapkey .kt { font: 400 15px 'Instrument Serif', Georgia, serif; color: #8f5d22; text-transform: uppercase; letter-spacing: .08em; }
-  .tag { position: absolute; top: 30px; right: 30px; width: 330px; background: rgba(251, 248, 243, .97); border: 1px solid #c17a3a; border-radius: 3px; box-shadow: 0 14px 30px -18px rgba(42, 29, 21, .6); padding: 12px 14px 12px; animation: tagin .45s cubic-bezier(.2, .7, .2, 1) both; }
+  .tag { position: absolute; top: 30px; right: 30px; width: 330px; background: #fbf8f3; border: 1px solid #c17a3a; border-radius: 3px; box-shadow: 0 14px 30px -18px rgba(42, 29, 21, .6); padding: 12px 14px 12px; animation: tagin .45s cubic-bezier(.2, .7, .2, 1) both; }
   @keyframes tagin { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
   .tag .x { width: 32px; height: 32px; top: 8px; right: 8px; font-size: 17px; }
   .tname { font: 400 30px/1 'Instrument Serif', Georgia, serif; margin: 0 0 6px; }
@@ -496,7 +510,8 @@
   .tmore { display: inline-block; margin-top: 8px; font: 600 14px 'IBM Plex Sans', sans-serif; color: var(--crema-deep); }
   .dot { width: 10px; height: 10px; border-radius: 50%; border: 1px solid #2a1d15; background: #fbf6ee; display: inline-block; }
   .dot.on { background: #9a5420; }
-  .dot.edge { background: #e8c9a0; }
+  .dot.edge { background: linear-gradient(90deg, #9a5420 50%, #fbf6ee 50%); }
+  .dot.off { width: 8px; height: 8px; }
   .ringk { width: 12px; height: 12px; border-radius: 50%; border: 3px solid #b86e2c; border-right-color: #d9cdbd; border-bottom-color: #d9cdbd; display: inline-block; }
 
   .panel { min-width: 0; position: relative; scroll-margin-top: 84px; }
@@ -540,6 +555,7 @@
   .journey li::before { content: ''; position: absolute; left: 0; right: 0; top: 7px; height: 2px; background: #d9b98f; }
   .journey li::after { content: ''; position: absolute; left: 0; top: 2px; width: 10px; height: 10px; border-radius: 50%; background: #9a5420; border: 2px solid #fbf8f3; }
   .journey b { display: block; color: var(--ink); font-size: 13px; }
+  .jnote { margin-top: 10px; }
   .actions { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin: 14px 0; }
   .primary { display: inline-block; background: var(--ink); color: #f3ede3; border-radius: 999px; padding: 10px 18px; font: 600 15px 'IBM Plex Sans', sans-serif; text-decoration: none; }
   .linkish { appearance: none; border: 0; background: none; padding: 2px 0; font: inherit; font-size: 15px; color: var(--crema-deep); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
@@ -547,16 +563,20 @@
   .pickvs select:focus-visible { outline: 3px solid rgba(143, 93, 34, .55); outline-offset: 2px; }
   .cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .cmp h3 { font: 400 24px 'Instrument Serif', Georgia, serif; margin: 0; text-align: center; }
+  .cmpfoot { text-align: center; margin-top: 12px; border-top: 1px solid var(--rule); padding-top: 10px; }
+  .cmpfoot p { margin: 4px 0; }
 
   @media (max-width: 1060px) { .tag { width: 290px; } }
   @media (max-width: 900px) { .cols { grid-template-columns: 1fr; gap: 10px; } .olist { max-height: none; } }
   @media (max-width: 720px) {
     .map { aspect-ratio: 1.45; }
-    .months button { padding: 7px 4px; min-width: 0; flex: 1; font-size: 12px; }
-    .months { width: 100%; }
+    .months { width: 100%; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); border-radius: 14px; }
+    .months button { padding: 7px 4px; min-width: 0; min-height: 40px; font-size: 13px; }
+    .months button:nth-child(7) { border-left: 0; }
+    .months button:nth-child(n + 7) { border-top: 1px solid #ece3d6; }
     .monthpick { width: 100%; }
     .regions { width: 100%; }
-    .regions button { flex: 1; }
+    .regions button { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 6px; line-height: 1.2; }
     .panel h2 { font-size: 32px; }
     .journey ol { grid-template-columns: 1fr; }
     .journey li { padding: 0 0 6px 20px; }

@@ -549,7 +549,7 @@
     <path class="o" fill="none" d="M74 180 L110 180 L107 203 Q106 208 101 208 L83 208 Q78 208 77 203 Z" />
     <path class="o" fill="none" d="M109 184 C 122 184, 122 199, 107 199" />
     {#if !compact}
-      {@render co('9 bar pump', 124, 77, 'start', 150, 69, 150, 45)}
+      {@render co('9 bar pump', 178, 7, 'end', 158, 9, 152, 22)}
       {@render co('tamped\npuck', 122, 97, 'start', 120, 100, 104, 99)}
       {@render co('crema', 4, 190, 'start', 34, 187, 80, 190)}
     {/if}

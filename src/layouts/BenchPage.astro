@@ -81,7 +81,7 @@ const { title, description, kicker, lede, back, schema = [], breadcrumbs = true,
   /* ── The gallery (Explore): the wall, the frames, the brass plaques, the wall labels ── */
   .bp-gallery { background: #f2ebe0; }
   .bp-gallery main { background: radial-gradient(1200px 520px at 50% 330px, rgba(255, 248, 232, .85), rgba(255, 248, 232, 0) 70%); }
-  .bp-gallery .bp-intro { text-align: center; }
+  .bp-gallery .bp-intro { text-align: center; padding-top: 100px; }
   .bp-gallery .bp-intro .bp-lede { margin: 0 auto; font-style: italic; color: #6b5d50; }
   .bp-gallery .bp-intro .bp-back { display: inline-block; }
   /* A real frame: a dark moulding with a gilt lip, then the mat, then the picture. */
@@ -104,12 +104,13 @@ const { title, description, kicker, lede, back, schema = [], breadcrumbs = true,
   .gp-label { background: #fbf8f3; border: 1px solid #dccfbd; border-radius: 3px; box-shadow: 0 12px 30px -24px rgba(42, 29, 21, .5); padding: 18px 20px; }
   @media (max-width: 640px) {
     .gp-frame { padding: var(--matpad-phone, 8px); border-width: 7px; }
+    .gp-frame::after { inset: calc(var(--matpad-phone, 8px) - 3px); }
     .gp-plaque { padding: 6px 16px 5px; }
     .gp-plaque b { font-size: 17px; }
     .gp-label { padding: 14px 14px; }
   }
   @media (max-width: 640px) {
-    .bp-intro { padding: 92px 16px 16px; }
+    .bp-intro, .bp-gallery .bp-intro { padding: 92px 16px 16px; }
     .bp-tool { padding: 4px 16px 32px; }
     .bp-body { padding: 16px 16px 56px; }
   }
