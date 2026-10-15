@@ -2,9 +2,10 @@ import type { Result } from './types.ts';
 import { failure, finite, success } from './units.ts';
 
 // Freshness windows (synthesis §13): rest at least 3–4 days after roasting (too much CO2),
-// peak 7–21 days post-roast (all sources), use within about a month (Hoffmann), freezing
-// preserves beans for up to a year (Gagné, Rao), never refrigerate. The "fading" and
-// "stale" boundaries after a month are editorial and labelled as such in the UI.
+// peak 7–21 days post-roast (all sources), use within about a month (Hoffmann), never refrigerate.
+// Freezing slows the loss rather than stopping it: Marin 2008's frozen samples still lost volatiles
+// over a year. The tool treats up to about a year frozen as paused (Gagné, Rao), a simplification.
+// The "fading" and "stale" boundaries after a month are editorial and labelled as such in the UI.
 
 export type FreshUse = 'filter' | 'espresso';
 export type Storage = 'sealed-bag' | 'opened' | 'frozen';
@@ -63,7 +64,7 @@ export interface FreshnessResult {
 export const isRealDate = (s: string) => Number.isFinite(parse(s));
 
 const DAY = 86400000;
-/** The freezer pauses staling for up to about a year (Gagné, Rao via synthesis §13), not forever. */
+/** Frozen days count as paused for up to about a year (Gagné, Rao via synthesis §13), not forever. A simplification: freezing slows staling a great deal but doesn't stop it (Marin 2008). */
 export const FREEZER_PAUSE_MAX_DAYS = 365;
 // Calendar days in UTC, so daylight-saving changes never add or lose a day. Impossible dates
 // (Feb 31) are rejected rather than rolled into the next month.
@@ -92,7 +93,7 @@ export function freshness(input: FreshnessInput): Result<FreshnessResult> {
     const out = input.thawedOn ? parse(input.thawedOn) : today;
     if (!finite(out) || out < f || out > today) return failure('bad-date', 'thawedOn', 'Enter the day they came out of the freezer (on or after the day they went in).');
     const inFreezer = Math.round((out - f) / DAY);
-    // Freezing preserves beans for up to about a year (synthesis §13); beyond that the clock runs again.
+    // Freezing slows staling rather than stopping it (Marin 2008); up to about a year frozen is treated as paused (synthesis §13), and beyond that the clock runs again.
     frozenDays = Math.min(inFreezer, FREEZER_PAUSE_MAX_DAYS);
     freezerCapped = inFreezer > FREEZER_PAUSE_MAX_DAYS;
     if (inFreezer > FREEZER_PAUSE_MAX_DAYS) notes.push('After about a year even frozen beans lose quality, so time beyond a year in the freezer counts again.');
