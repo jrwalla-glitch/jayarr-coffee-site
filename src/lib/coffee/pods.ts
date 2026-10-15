@@ -21,6 +21,10 @@ export interface RawPod {
   /** Other cups the capsule is made to brew, when Nespresso lists more than one. */
   servings?: { cup_size: string; ml: number }[];
   source_url?: string; checked?: string;
+  /** What the source link is, when it isn't the capsule's own Nespresso page (a retirement notice). */
+  source_label?: string;
+  /** Nespresso adds caffeine to this blend (Arpeggio Extra): never suggested as a like-for-like swap. */
+  caffeine_boosted?: boolean;
   /** Earlier names, so saved links keep working after a rename. */
   aliases?: string[];
 }
@@ -112,10 +116,34 @@ export function wall(pods: Pod[], rows: SizeRow[]): Placed[] {
   return out.sort((a, b) => a.row - b.row || a.col - b.col || a.index - b.index);
 }
 
+/** The capsule of this system with this name or one of its earlier names: renames keep links,
+ * suggestions and saved flights pointing at the same capsule. */
+export function byName(pods: Pod[], line: Line, name: string): Pod | null {
+  const n = name.trim().toLowerCase();
+  return pods.find((p) => p.line === line && p.name.toLowerCase() === n)
+    ?? pods.find((p) => p.line === line && (p.aliases ?? []).some((a) => a.toLowerCase() === n)) ?? null;
+}
+/** A stored or linked identity ("vertuo:Chiaro"), resolved through renames. */
+export function podFromId(pods: Pod[], id: string): Pod | null {
+  const m = /^(original|vertuo):(.+)$/.exec(id);
+  return m ? byName(pods, m[1] as Line, m[2]) : null;
+}
+/** Saved flight ids, resolved through renames, deduplicated and capped at three. */
+export function cleanFlight(pods: Pod[], ids: unknown): string[] {
+  if (!Array.isArray(ids)) return [];
+  const out: string[] = [];
+  for (const x of ids) {
+    const p = typeof x === 'string' ? podFromId(pods, x) : null;
+    if (p && !out.includes(p.id)) out.push(p.id);
+  }
+  return out.slice(0, 3);
+}
+
 /** "Try also": the suggested pod in the same system, if it's in the catalogue and still made. */
 export function tryAlso(pods: Pod[], pod: Pod): Pod | null {
   if (!pod.try_also) return null;
-  return pods.find((p) => p.line === pod.line && p.name === pod.try_also && onSale(p)) ?? null;
+  const p = byName(pods, pod.line, pod.try_also);
+  return p && p.id !== pod.id && onSale(p) ? p : null;
 }
 
 /**
@@ -125,15 +153,17 @@ export function tryAlso(pods: Pod[], pod: Pod): Pod | null {
  */
 export function similar(pods: Pod[], pod: Pod): Pod | null {
   const fam = new Set(aromaFamilies(pod));
-  const pool = pods.filter((p) => p.id !== pod.id && p.line === pod.line && p.size === pod.size && p.ml === pod.ml && onSale(p) && !!p.flavored === !!pod.flavored);
+  // Like for like: decaf stays decaf, and a caffeine-enriched capsule is never offered as a near twin.
+  const pool = pods.filter((p) => p.id !== pod.id && p.line === pod.line && p.size === pod.size && p.ml === pod.ml && onSale(p)
+    && !!p.flavored === !!pod.flavored && !!p.decaf === !!pod.decaf && !!p.caffeine_boosted === !!pod.caffeine_boosted);
   const score = (p: Pod) => Math.abs((p.intensity ?? 0) - (pod.intensity ?? 0)) + (aromaFamilies(p).some((f) => fam.has(f)) ? 0 : 1.5);
   return pool.sort((a, b) => score(a) - score(b) || a.name.localeCompare(b.name))[0] ?? null;
 }
 
-/** A pod from a link: by slug, else by "line:name". */
+/** A pod from a link: by slug (current or earlier name), else by "line:name" through renames. */
 export function podFromParam(pods: Pod[], v: string | null): Pod | null {
   if (!v) return null;
-  return pods.find((p) => p.slug === v || p.id === v || p.oldSlugs.includes(v)) ?? null;
+  return pods.find((p) => p.slug === v || p.oldSlugs.includes(v)) ?? podFromId(pods, v);
 }
 
 /** Amazon search for this exact system and pod (a search, not a verified listing; the button says so). */

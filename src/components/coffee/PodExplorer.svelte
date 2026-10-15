@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte';
   import podData from '../../data/nespressoPods.json';
-  import { catalog, sizeRows, filterPods, wall, tryAlso, similar, podFromParam, buySearch, blendText, onSale, sizeName, STATUS_NOTE, LINES, ROASTS, AROMA_FAMILIES } from '../../lib/coffee/pods.ts';
+  import { catalog, sizeRows, filterPods, wall, tryAlso, similar, podFromParam, cleanFlight, buySearch, blendText, onSale, sizeName, STATUS_NOTE, LINES, ROASTS, AROMA_FAMILIES } from '../../lib/coffee/pods.ts';
   import type { Line, Pod, Roast, RawPod, SizeRow } from '../../lib/coffee/pods.ts';
 
   // The capsule wall: pick your machine, then every capsule it takes, by cup size and intensity.
@@ -25,6 +25,11 @@
   let includeUnlisted = $state(false);
   let view = $state<'wall' | 'list'>('wall');
   let flight = $state<string[]>([]);
+  // Said when the flight is full, instead of silently dropping a capsule you chose.
+  let flightFull = $state<string | null>(null);
+  // The capsule that opened the details, so focus can go back to it on close.
+  let opener: HTMLElement | null = null;
+  let headEl = $state<HTMLElement | null>(null);
   let mounted = $state(false);
   let panelEl = $state<HTMLElement | null>(null);
   // Filters start open on wide screens and folded on phones, so the wall is the first thing you see there.
@@ -53,13 +58,33 @@
     try { localStorage.setItem('jayarr-pods-machine', l); } catch { /* storage unavailable */ }
   }
   async function pick(p: Pod) {
+    const active = document.activeElement;
+    if (active instanceof HTMLElement && !panelEl?.contains(active)) opener = active;
     selectedId = selectedId === p.id ? null : p.id;
-    // On a phone the panel sits below the wall: bring the answer into view.
-    if (selectedId && matchMedia('(max-width: 900px)').matches) { await tick(); panelEl?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }); }
+    flightFull = null;
+    // On a phone the panel sits below the wall: bring the answer into view, and keyboard focus with it.
+    if (selectedId && matchMedia('(max-width: 900px)').matches) {
+      await tick();
+      panelEl?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+      headEl?.focus({ preventScroll: true });
+    }
+  }
+  async function closeDetail() {
+    selectedId = null;
+    await tick();
+    if (opener?.isConnected) opener.focus();
+    opener = null;
   }
   function clearFilters() { query = ''; roast = 'all'; family = 'all'; category = 'all'; decaf = false; flavored = 'any'; }
   function toggleFlight(p: Pod) {
-    flight = flight.includes(p.id) ? flight.filter((x) => x !== p.id) : [...flight.filter((id) => pods.find((x) => x.id === id)?.line === p.line), p.id].slice(-3);
+    if (flight.includes(p.id)) flight = flight.filter((x) => x !== p.id);
+    else {
+      const same = flight.filter((id) => pods.find((x) => x.id === id)?.line === p.line);
+      // Three is the most a flight holds: ask for a removal rather than dropping one silently.
+      if (same.length >= 3) { flightFull = p.name; return; }
+      flight = [...same, p.id];
+    }
+    flightFull = null;
     try { localStorage.setItem('jayarr-pods-flight', JSON.stringify(flight)); } catch { /* storage unavailable */ }
   }
 
@@ -68,7 +93,7 @@
     const fromLink = podFromParam(pods, q.get('pod'));
     const l = q.get('line');
     let saved: string | null = null;
-    try { saved = localStorage.getItem('jayarr-pods-machine'); const f = JSON.parse(localStorage.getItem('jayarr-pods-flight') ?? '[]'); if (Array.isArray(f)) flight = f.filter((x) => typeof x === 'string').slice(0, 3); } catch { /* storage unavailable */ }
+    try { saved = localStorage.getItem('jayarr-pods-machine'); flight = cleanFlight(pods, JSON.parse(localStorage.getItem('jayarr-pods-flight') ?? '[]')); } catch { /* storage unavailable */ }
     // A pod in a link decides the system; otherwise the link's line, otherwise your machine from last time.
     if (fromLink) { line = fromLink.line; selectedId = fromLink.id; if (!onSale(fromLink)) includeUnlisted = true; }
     else if (l === 'original' || l === 'vertuo') line = l;
@@ -85,7 +110,7 @@
     if (selected) q.set('pod', selected.slug);
     history.replaceState(history.state, '', q.toString() ? `${location.pathname}?${q}` : location.pathname);
   });
-  function onKey(e: KeyboardEvent) { if (e.key === 'Escape' && selectedId) selectedId = null; }
+  function onKey(e: KeyboardEvent) { if (e.key === 'Escape' && selectedId) closeDetail(); }
 
   const label = (p: Pod) => `${p.name}: ${p.size}, ${p.ml} ml, ${p.intensity ? `intensity ${p.intensity}` : 'no intensity rating'}${STATUS_NOTE[p.status] ? `, ${STATUS_NOTE[p.status].toLowerCase()}` : ''}${flight.includes(p.id) ? ', in your tasting flight' : ''}`;
   // Other cups Nespresso says the capsule makes, besides the one it sits under on the wall.
@@ -304,16 +329,16 @@
       <aside class="panel" bind:this={panelEl} aria-label="Capsule details">
         {#if selected}
           <div class="detail">
-            <button type="button" class="x" aria-label="Close {selected.name}" onclick={() => (selectedId = null)}>×</button>
+            <button type="button" class="x" aria-label="Close {selected.name}" onclick={closeDetail}>×</button>
             <div class="dhead">
               <div class="bigcap">{@render bigCapsule(selected.line, selected.color_hex, 'detail', 84)}</div>
               <div>
                 <p class="kick">{LINES[selected.line].label} · {selected.size} · {selected.ml} ml</p>
-                <h3>{selected.name}</h3>
+                <h3 tabindex="-1" bind:this={headEl}>{selected.name}</h3>
                 {#if selected.category !== selected.size || selected.decaf || selected.flavored}<p class="cat">{[selected.category !== selected.size ? selected.category : '', selected.decaf ? 'Decaf' : '', selected.flavored ? 'Flavoured' : ''].filter(Boolean).join(' · ')}</p>{/if}
               </div>
             </div>
-            {#if selected.status === 'retired'}<p class="gone-note">Nespresso has discontinued this capsule, so it may be hard to find.</p>
+            {#if selected.status === 'retired'}<p class="gone-note">Nespresso has discontinued this capsule, so it may be hard to find. Its tasting notes are from our earlier catalogue and weren't rechecked.</p>
             {:else if selected.status === 'unlisted'}<p class="gone-note">Not in Nespresso's current US range when we checked ({selected.checked ?? 'October 2026'}). It may be gone, or between seasons.</p>
             {:else if selected.status !== 'current'}<p class="tag-note">{STATUS_NOTE[selected.status]}: on sale for now, while Nespresso has it.</p>{/if}
             {#if selected.note}<p class="tag-note">{selected.note}</p>{/if}
@@ -351,7 +376,7 @@
               <button type="button" class="pill" aria-pressed={flight.includes(selected.id)} onclick={() => toggleFlight(selected!)}>{flight.includes(selected.id) ? 'In your flight ✓' : 'Add to a tasting flight'}</button>
             </div>
             {#if onSale(selected)}<p class="disc">The button opens an Amazon search for this {LINES[selected.line].label} capsule; as an Amazon Associate we earn from qualifying purchases.</p>{/if}
-            {#if selected.source_url}<p class="disc"><a class="src" href={selected.source_url} rel="noopener" target="_blank">Nespresso's page for this capsule ↗</a>{selected.checked ? `, checked ${selected.checked}` : ''}</p>{/if}
+            {#if selected.source_url}<p class="disc"><a class="src" href={selected.source_url} rel="noopener" target="_blank">{selected.source_label ?? "Nespresso's page for this capsule"} ↗</a>{selected.checked ? `, checked ${selected.checked}` : ''}</p>{/if}
           </div>
         {:else}
           <div class="howto">
@@ -364,6 +389,7 @@
 
         <div class="flight">
           <span class="lbl">Tasting flight{flightPods.length ? ` · ${flightPods.length} of 3, mildest first` : ''}</span>
+          {#if flightFull}<p class="full" role="status">Your flight holds three. Remove one to add {flightFull}.</p>{/if}
           {#if flightPods.length}
             <ol class="cmp" style:--k={flightPods.length}>
               {#each flightPods as p (p.id)}
@@ -513,6 +539,9 @@
   .detail h3 { font: 400 38px/1.02 'Instrument Serif', Georgia, serif; margin: 4px 0 2px; }
   .cat { margin: 0; color: var(--ink-3); font-size: 14px; }
   .tag-note { margin: 10px 0 0; font-size: 13.5px; color: var(--ink-2); }
+  .full { margin: 6px 0 4px; padding: 7px 10px; border-radius: 8px; background: #fff3e0; border: 1px solid #e9c48f; font-size: 13.5px; color: var(--ink); }
+  h3[tabindex='-1']:focus { outline: none; }
+  h3[tabindex='-1']:focus-visible { outline: 2px solid var(--crema-deep); outline-offset: 2px; }
   .src { color: var(--crema-deep); text-underline-offset: 3px; }
   .gone-note { margin: 10px 0 0; padding: 8px 10px; border-radius: 8px; background: #f6efe5; color: var(--ink-2); font-size: 14px; }
   .meters { display: grid; gap: 10px; margin-top: 14px; }
