@@ -5,7 +5,7 @@
 
 export type Category = 'manual-lever' | 'semi-auto' | 'semi-auto-grinder' | 'super-auto' | 'capsule';
 /** Heating families; the maker's own term (ThermoJet, Thermocoil) travels in `makerTerm`. */
-export type Heating = 'thermoblock' | 'single-boiler' | 'heat-exchanger' | 'dual-boiler' | 'none';
+export type Heating = 'thermoblock' | 'single-boiler' | 'heat-exchanger' | 'dual-boiler' | 'dual-thermoblock' | 'none';
 export type Milk = 'none' | 'manual-wand' | 'panarello' | 'auto-wand' | 'carafe';
 
 export interface Machine {
@@ -14,7 +14,8 @@ export interface Machine {
   status: 'current' | 'discontinued' | 'replaced' | 'unconfirmed'; replacedBy?: string | null;
   /** null where the research couldn't establish it; such machines are browsable, never recommended. */
   category: Category | null;
-  heating: { system: Heating; makerTerm?: string | null; boilers?: { role: string; liters: number | null }[]; heatUpSeconds?: number | null; simultaneousBrewSteam?: boolean | null };
+  /** simultaneousBy: 'maker' when the maker says so; 'design' for heat exchangers, dual boilers and twin thermoblocks. */
+  heating: { system: Heating; makerTerm?: string | null; boilers?: { role: string; liters: number | null }[]; heatUpSeconds?: number | null; simultaneousBrewSteam?: boolean | null; simultaneousBy?: 'maker' | 'design' | null };
   tempControl?: { type: string; range?: string | null } | null;
   pumpBar?: number | null; preInfusion?: boolean | string | null; gauge?: boolean | null;
   portafilterMm?: number | null; baskets?: string[]; doseG?: number | string | null;
@@ -108,7 +109,8 @@ export function chooseMachines(machines: Machine[], grinders: GrinderPrice[], n:
     if (fitsCounter(m, n) !== true) continue;
     // A milk routine can't be matched to a machine whose milk system the research couldn't establish,
     // and milk in most drinks rules out a machine with no milk system at all.
-    if (n.milk !== 'none' && m.milk.type == null) continue;
+    // The page promises a known milk system for every suggestion, milk or not (WB2 Astra M8).
+    if (m.milk.type == null) continue;
     if (n.milk === 'most' && m.milk.type === 'none') continue;
     const band = setupBand(m, grinders);
     if (!band || band.low > n.budget) continue;
@@ -125,8 +127,11 @@ export function chooseMachines(machines: Machine[], grinders: GrinderPrice[], n:
       else if (n.effort === 'button' && (m.milk.type === 'manual-wand' || m.milk.type === 'panarello')) { score += 1.5; tradeoffs.push('Milk is steamed by hand, not at the press of a button.'); }
       else why.push(milkWhy(m));
       if (n.milk === 'most' && n.cups >= 3 && m.category !== 'capsule' && m.category !== 'super-auto') {
+        const sim = simultaneous(m);
         // Brewing and steaming at once matters most for a run of milk drinks; a fast switch is next best.
-        if (m.heating.simultaneousBrewSteam) { score -= n.cups >= 5 ? 1.5 : 0.5; why.push('Brews and steams at the same time, which keeps a run of milk drinks moving.'); }
+        if (sim) { score -= n.cups >= 5 ? 1.5 : 0.5; why.push(m.heating.simultaneousBy === 'design' ? 'Brews and steams at the same time, as its heating system is built to, which keeps a run of milk drinks moving.' : 'Brews and steams at the same time, which keeps a run of milk drinks moving.'); }
+        // Unknown is not "no" (WB2 Astra M2): say it isn't published, with a small penalty, and never claim one after the other.
+        else if (sim == null && (m.heating.heatUpSeconds ?? Infinity) > 10) { score += 1; tradeoffs.push('Whether it brews and steams at the same time isn\'t published.'); }
         else if ((m.heating.heatUpSeconds ?? Infinity) <= 10) { score += n.cups >= 5 ? 1 : 0; why.push(`Switches from brewing to steaming quickly (the maker quotes about ${m.heating.heatUpSeconds} seconds to heat).`); if (n.cups >= 5) tradeoffs.push('Brews and steams one after the other: quick to switch, but four or more milk drinks still queue.'); }
         else { score += 2; tradeoffs.push('Brews and steams one after the other, so several milk drinks take a while.'); }
       }
@@ -136,6 +141,14 @@ export function chooseMachines(machines: Machine[], grinders: GrinderPrice[], n:
     out.push({ machine: m, band, score, why, tradeoffs, misses });
   }
   return out.sort((a, b) => a.score - b.score || (a.band!.low - b.band!.low) || a.machine.name.localeCompare(b.machine.name)).slice(0, k);
+}
+
+/** Brews and steams at once? The maker's word where it gives one, else what the heating system is built to do. */
+export function simultaneous(m: Machine): boolean | null {
+  if (m.heating.simultaneousBrewSteam != null) return m.heating.simultaneousBrewSteam;
+  if (m.heating.system === 'heat-exchanger' || m.heating.system === 'dual-boiler' || m.heating.system === 'dual-thermoblock') return true;
+  if (m.heating.system === 'thermoblock' || m.heating.system === 'single-boiler') return false;
+  return null;
 }
 
 function effortWhy(m: Machine, n: Needs): string {

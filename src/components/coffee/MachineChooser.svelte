@@ -22,6 +22,8 @@
   let heightIn = $state<number | null>(null);
   let ownId = $state<string>('breville-bambino-bes450');
   let mounted = $state(false);
+  // An owner link naming a machine this guide doesn't include: said, not silently replaced by another machine's care.
+  let badOwnLink = $state(false);
   let narrow = $state(false);
 
   const toCm = (v: number | null) => (v == null || !Number.isFinite(v) || v <= 0 ? null : unitsIn ? v * 2.54 : v);
@@ -34,7 +36,7 @@
   // said where the answer is, not in a footnote (gate r2).
   let hiddenByWidth = $derived(needs.widthCm ? chooseMachines(machines, grinders, { ...needs, widthCm: null }).map((x) => x.machine as M).filter((m) => !m.dims && m.dimsUnclear) : []);
 
-  const HEAT: Record<Heating, string> = { thermoblock: 'Thermoblock', 'single-boiler': 'Single boiler', 'heat-exchanger': 'Heat exchanger', 'dual-boiler': 'Dual boiler', none: 'No boiler (lever)' };
+  const HEAT: Record<Heating, string> = { thermoblock: 'Thermoblock', 'single-boiler': 'Single boiler', 'heat-exchanger': 'Heat exchanger', 'dual-boiler': 'Dual boiler', 'dual-thermoblock': 'Twin thermoblocks', none: 'No boiler (lever)' };
   const HEATS: string[] = ['thermoblock', 'single-boiler', 'heat-exchanger', 'dual-boiler'];
   const MILK: Record<string, string> = { none: 'No milk system', 'manual-wand': 'Manual steam wand', panarello: 'Frothing wand', 'auto-wand': 'Automatic steam wand', carafe: 'Automatic milk system' };
   const NE = 'not established';
@@ -46,6 +48,8 @@
     return m.heating.system && t && !/boiler|heat exchanger|thermoblock/i.test(t) ? t : '';
   };
   const money = (v: number) => `$${Math.round(v).toLocaleString('en-US')}`;
+  // Converting a measurement never makes the space bigger than the reader gave: round down, to 0.01 in or 0.1 cm (WB2 M1).
+  const toUnit = (v: number | null, factor: number, steps: number) => (v ? Math.floor(v * factor * steps + 1e-9) / steps : null);
   const lowerFirst = (t: string) => t.charAt(0).toLowerCase() + t.slice(1);
   // Nespresso's two capsule systems don't interchange, so capsule machines are compared by the capsules they take.
   const LINE: Record<string, string> = { original: 'Original', vertuo: 'Vertuo' };
@@ -85,7 +89,9 @@
     d.push(dp > 0 ? `${money(dp)} more` : dp < 0 ? `${money(-dp)} less` : 'about the same money');
     const am = a.machine.milk.type, tm = top.machine.milk.type;
     if (am && tm && am !== tm) d.push(`${MILK[am].toLowerCase()} rather than ${MILK[tm].toLowerCase()}`);
-    if (!!a.machine.grinder.builtIn !== !!top.machine.grinder.builtIn) d.push(a.machine.grinder.builtIn ? 'grinder built in' : 'separate grinder');
+    if (needsGrinder(a.machine) !== needsGrinder(top.machine)) d.push(needsGrinder(a.machine) ? 'needs a separate grinder' : 'no separate grinder needed');
+    const sa = a.machine.heating.system, st = top.machine.heating.system;
+    if (sa && st && sa !== st && sa !== 'none' && a.machine.category !== 'capsule' && top.machine.category !== 'capsule') d.push(`${HEAT[sa].toLowerCase()} rather than ${HEAT[st].toLowerCase()}`);
     const la = (a.machine as M).capsuleLine, lt = (top.machine as M).capsuleLine;
     if (la && lt && la !== lt) d.push(`takes ${LINE[la]} capsules, not ${LINE[lt]}`);
     if (a.machine.heating.simultaneousBrewSteam && !top.machine.heating.simultaneousBrewSteam) d.push('brews and steams at once');
@@ -94,13 +100,15 @@
     const ga = gs(a.machine), gt = gs(top.machine);
     if (ga && gt && ga !== gt) d.push(`${ga} grind settings, not ${gt}`);
     const ha = a.machine.heating.heatUpSeconds, ht = top.machine.heating.heatUpSeconds;
-    if (ha && (!ht || ha < ht) && ha <= 10) d.push(`ready in about ${ha} seconds, by the maker's figure`);
+    if (ha && ht && Math.abs(ha - ht) >= 5) d.push(`heats in about ${ha} seconds, not ${ht}, by the makers' figures`);
+    else if (ha && !ht && ha <= 10) d.push(`ready in about ${ha} seconds, by the maker's figure`);
     if (a.machine.tankL && top.machine.tankL && a.machine.tankL - top.machine.tankL >= 0.5) d.push(`a bigger tank (${a.machine.tankL} L, not ${top.machine.tankL} L)`);
     if (a.machine.portafilterMm && top.machine.portafilterMm && a.machine.portafilterMm !== top.machine.portafilterMm) d.push(`a ${a.machine.portafilterMm} mm portafilter, not ${top.machine.portafilterMm} mm`);
     // Say what makes it a weaker fit, never just that it is one.
     if (a.misses.length && !top.misses.length) d.push(`not a full match: ${a.misses[0]}`);
     else if (a.score > top.score) { const t = a.tradeoffs.find((x) => !top.tradeoffs.includes(x)); if (t) d.push(`a weaker fit: ${lowerFirst(t).replace(/\.$/, '')}`); }
-    if (d.length === 1 && dp > 0) return `Against #1: ${d[0]}, with no difference in the specs we track.`;
+    // Nothing else separates them for this routine: say they score the same, never that their specs are the same (WB2 M5).
+    if (d.length === 1) return `Against #1: ${d[0]}; it scores the same for what you asked.`;
     return `Against #1: ${d.join('; ')}.`;
   }
   // Why a machine isn't drawn: Breville's listed sizes conflict with its own guidance (research/BREVILLE_DIMS_CHECK.md),
@@ -144,7 +152,7 @@
     if (q.get('units') === 'cm') unitsIn = false;
     const w = Number(q.get('w')); if (w > 0) widthIn = w;
     const h = Number(q.get('h')); if (h > 0) heightIn = h;
-    const m = q.get('m'); if (byId(m)) ownId = m!;
+    const m = q.get('m'); if (byId(m)) ownId = m!; else if (m) badOwnLink = true;
     const mq = matchMedia('(max-width: 640px)'); narrow = mq.matches; mq.addEventListener('change', (e) => (narrow = e.matches));
     mounted = true;
   });
@@ -244,9 +252,11 @@
   // The explainer follows what's on screen: your machine in "I own one", the top match in "Find".
   let followed = '';
   $effect(() => {
-    const m = mode === 'own' ? own : mode === 'find' ? matches.find((x) => x.machine.heating.system && HEATS.includes(x.machine.heating.system))?.machine : null;
+    const m = mode === 'own' ? own : mode === 'find' ? matches.find((x) => x.machine.heating.system && (HEATS.includes(x.machine.heating.system) || x.machine.heating.system === 'dual-thermoblock'))?.machine : null;
     const key = m ? `${mode}:${m.id}` : '';
-    if (m?.heating.system && HEATS.includes(m.heating.system) && key !== followed) { followed = key; stop(); heatTab = m.heating.system; step = 0; }
+    // Twin thermoblocks work like a dual boiler: one heater for brewing, one for steam (WB2 Astra M3).
+    const tab = m?.heating.system === 'dual-thermoblock' ? 'dual-boiler' : m?.heating.system;
+    if (tab && HEATS.includes(tab) && key !== followed) { followed = key; stop(); heatTab = tab; step = 0; }
   });
 </script>
 
@@ -331,9 +341,9 @@
         </fieldset>
         <fieldset><legend class="lbl">Your counter <span class="opt">(optional)</span></legend>
           <div class="space">
-            <label><span>Width you have</span><span class="inp"><input type="number" inputmode="decimal" min="1" step="0.5" bind:value={widthIn} placeholder="any" /><i>{u}</i></span></label>
-            <label><span>Height under cabinets</span><span class="inp"><input type="number" inputmode="decimal" min="1" step="0.5" bind:value={heightIn} placeholder="any" /><i>{u}</i></span></label>
-            <div class="seg" role="group" aria-label="Units"><button type="button" aria-pressed={unitsIn} onclick={() => { if (!unitsIn) { widthIn = widthIn ? Math.round((widthIn / 2.54) * 2) / 2 : null; heightIn = heightIn ? Math.round((heightIn / 2.54) * 2) / 2 : null; unitsIn = true; } }}>in</button><button type="button" aria-pressed={!unitsIn} onclick={() => { if (unitsIn) { widthIn = widthIn ? Math.round(widthIn * 2.54) : null; heightIn = heightIn ? Math.round(heightIn * 2.54) : null; unitsIn = false; } }}>cm</button></div>
+            <label><span>Width you have</span><span class="inp"><input type="number" inputmode="decimal" min="1" step="any" bind:value={widthIn} placeholder="any" /><i>{u}</i></span></label>
+            <label><span>Height under cabinets</span><span class="inp"><input type="number" inputmode="decimal" min="1" step="any" bind:value={heightIn} placeholder="any" /><i>{u}</i></span></label>
+            <div class="seg" role="group" aria-label="Units"><button type="button" aria-pressed={unitsIn} onclick={() => { if (!unitsIn) { widthIn = toUnit(widthIn, 1 / 2.54, 100); heightIn = toUnit(heightIn, 1 / 2.54, 100); unitsIn = true; } }}>in</button><button type="button" aria-pressed={!unitsIn} onclick={() => { if (unitsIn) { widthIn = toUnit(widthIn, 2.54, 10); heightIn = toUnit(heightIn, 2.54, 10); unitsIn = false; } }}>cm</button></div>
           </div>
         </fieldset>
       </form>
@@ -402,7 +412,7 @@
                 </dl>
                 <div class="acts">
                   {#if m.amazon}<a class="go" href={m.amazon.url} rel="sponsored noopener" target="_blank">See it on Amazon</a>
-                  {:else if m.listPrice.url}<a class="go" href={m.listPrice.url} rel="noopener" target="_blank">The maker's page ↗</a>{/if}
+                  {:else if m.listPrice.url}<a class="go" href={m.listPrice.url} rel="noopener" target="_blank">{m.listPrice.seller ? `${m.listPrice.seller} ↗` : 'The maker\'s page ↗'}</a>{/if}
                   {#if m.capsuleLine}<a class="ghost" href={`/tools/nespresso-pods/?line=${m.capsuleLine}`}>See its capsules</a>{/if}
                   <button type="button" class="ghost" onclick={() => openOwn(m.id)}>Dose and care</button>
                   {#if m.heating.system && HEATS.includes(m.heating.system)}<button type="button" class="ghost" onclick={() => { pickHeat(m.heating.system!); document.getElementById('how-it-heats')?.scrollIntoView({ behavior: 'smooth' }); }}>How it brews and steams</button>{/if}
@@ -430,8 +440,9 @@
     </div>
   {:else if mode === 'own'}
     <div class="own">
+      {#if badOwnLink}<p class="widthnote" role="status">That link named a machine this guide doesn't include. Pick yours below; the care notes that follow are for the machine shown.</p>{/if}
       <label class="pickm"><span class="lbl">Your machine</span>
-        <select bind:value={ownId}>
+        <select bind:value={ownId} onchange={() => (badOwnLink = false)}>
           {#each brands as b (b)}<optgroup label={b}>{#each machines.filter((m) => m.brand === b) as m (m.id)}<option value={m.id}>{m.brand} {m.name}{m.variant ? `, ${m.variant}` : ''}{m.code ? ` · ${m.code}` : ''}</option>{/each}</optgroup>{/each}
         </select>
       </label>

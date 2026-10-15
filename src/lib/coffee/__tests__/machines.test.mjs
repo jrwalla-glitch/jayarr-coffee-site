@@ -73,6 +73,23 @@ test('on the real data: recommendations are current, priced and fully described,
   assert.ok(tall.some((x) => x.machine.id === 'breville-barista-express-bes870'));
 });
 
+test('brewing and steaming at once: the maker, else the heating system; unknown is never scored as no (WB2 M2)', async () => {
+  const { simultaneous } = await import('../machines.ts');
+  assert.equal(simultaneous(m({ id: 'hx', heating: { system: 'heat-exchanger' } })), true);
+  assert.equal(simultaneous(m({ id: 'tb', heating: { system: 'thermoblock' } })), false);
+  assert.equal(simultaneous(m({ id: 'q', heating: { system: null } })), null);
+  const r = chooseMachines([m({ id: 'hx', heating: { system: 'heat-exchanger' }, listPrice: { usd: 1000 } }), m({ id: 'q', heating: { system: null }, listPrice: { usd: 500 } })], grinders, { milk: 'most', cups: 5, budget: 3000, effort: 'hands-on' });
+  assert.equal(r[0].machine.id, 'hx');
+  assert.ok(!r.find((x) => x.machine.id === 'q').tradeoffs.some((t) => /one after the other/.test(t)));
+});
+
+test('every suggestion has a known milk system, milk or not (WB2 M8)', async () => {
+  const { readFileSync } = await import('node:fs');
+  const data = JSON.parse(readFileSync(new URL('../../../data/machines.json', import.meta.url), 'utf8'));
+  for (const milk of ['none', 'some', 'most']) for (const budget of [300, 1200, 2500]) for (const effort of ['button', 'guided', 'hands-on'])
+    for (const x of chooseMachines(data.machines, data.grinders, { milk, cups: 1, budget, effort })) assert.ok(x.machine.milk.type, x.machine.id);
+});
+
 test('milk in most drinks never gets a machine without a milk system', async () => {
   const { readFileSync } = await import('node:fs');
   const data = JSON.parse(readFileSync(new URL('../../../data/machines.json', import.meta.url), 'utf8'));

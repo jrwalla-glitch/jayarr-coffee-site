@@ -18,9 +18,10 @@
    "heating": {
     "system": "thermoblock",
     "makerTerm": "ThermoJet® heating system",
+    "simultaneousBy": "design",
     "boilers": [],
     "heatUpSeconds": 3,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": false
    },
    "tempControl": {
     "type": "PID",
@@ -271,9 +272,10 @@
    "heating": {
     "system": "thermoblock",
     "makerTerm": "ThermoJet® heating system",
+    "simultaneousBy": "design",
     "boilers": [],
     "heatUpSeconds": 3,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": false
    },
    "tempControl": {
     "type": "PID",
@@ -524,9 +526,10 @@
    "heating": {
     "system": "thermoblock",
     "makerTerm": "Thermocoil heating system (integrated stainless steel water coil)",
+    "simultaneousBy": "design",
     "boilers": [],
     "heatUpSeconds": null,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": false
    },
    "tempControl": {
     "type": "PID",
@@ -807,9 +810,10 @@
    "heating": {
     "system": "thermoblock",
     "makerTerm": "Thermocoil system (integrated stainless steel water path)",
+    "simultaneousBy": "design",
     "boilers": [],
     "heatUpSeconds": null,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": false
    },
    "tempControl": {
     "type": "PID",
@@ -1091,9 +1095,10 @@
    "heating": {
     "system": "thermoblock",
     "makerTerm": "ThermoJet® heating system",
+    "simultaneousBy": "design",
     "boilers": [],
     "heatUpSeconds": 3,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": false
    },
    "tempControl": {
     "type": "PID (maker spec table) with user-adjustable shot temperature",
@@ -1462,9 +1467,10 @@
    "heating": {
     "system": "thermoblock",
     "makerTerm": "ThermoJet® heating system",
+    "simultaneousBy": "design",
     "boilers": [],
     "heatUpSeconds": 3,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": false
    },
    "tempControl": {
     "type": "PID (maker spec); no user-adjustable brew/shot temperature found in inspected manual",
@@ -1823,6 +1829,7 @@
    "heating": {
     "system": "dual-boiler",
     "makerTerm": "Dual Boiler heating system (stainless steel boilers, heated group head)",
+    "simultaneousBy": "maker",
     "boilers": [
      {
       "role": null,
@@ -2183,6 +2190,7 @@
    "heating": {
     "system": "dual-boiler",
     "makerTerm": "Dual Boiler heating system (dedicated espresso boiler and steam boiler)",
+    "simultaneousBy": "maker",
     "boilers": [
      {
       "role": null,
@@ -2547,6 +2555,7 @@
    "heating": {
     "system": null,
     "makerTerm": null,
+    "simultaneousBy": null,
     "boilers": [],
     "heatUpSeconds": null,
     "simultaneousBrewSteam": null
@@ -2713,9 +2722,10 @@
    "heating": {
     "system": "single-boiler",
     "makerTerm": "stainless steel boiler (product page marketing)",
+    "simultaneousBy": "design",
     "boilers": [],
     "heatUpSeconds": null,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": false
    },
    "tempControl": {
     "type": null,
@@ -2869,6 +2879,7 @@
    "heating": {
     "system": null,
     "makerTerm": null,
+    "simultaneousBy": null,
     "boilers": [],
     "heatUpSeconds": null,
     "simultaneousBrewSteam": null
@@ -3020,6 +3031,7 @@
    "heating": {
     "system": null,
     "makerTerm": null,
+    "simultaneousBy": null,
     "boilers": [],
     "heatUpSeconds": null,
     "simultaneousBrewSteam": null
@@ -3182,9 +3194,10 @@
    "heating": {
     "system": "thermoblock",
     "makerTerm": "thermoblock",
+    "simultaneousBy": "design",
     "boilers": [],
     "heatUpSeconds": null,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": false
    },
    "tempControl": {
     "type": null,
@@ -3196,8 +3209,8 @@
    "baskets": [],
    "doseG": null,
    "milk": {
-    "type": null,
-    "makerTerm": null
+    "type": "panarello",
+    "makerTerm": "adjustable manual milk frother"
    },
    "grinder": {
     "builtIn": null,
@@ -3281,6 +3294,7 @@
    "heating": {
     "system": null,
     "makerTerm": null,
+    "simultaneousBy": null,
     "boilers": [],
     "heatUpSeconds": null,
     "simultaneousBrewSteam": null
@@ -3465,6 +3479,7 @@
    "heating": {
     "system": null,
     "makerTerm": null,
+    "simultaneousBy": null,
     "boilers": [],
     "heatUpSeconds": null,
     "simultaneousBrewSteam": null
@@ -3633,9 +3648,10 @@
    "heating": {
     "system": "single-boiler",
     "makerTerm": "single boiler",
+    "simultaneousBy": "design",
     "boilers": [],
     "heatUpSeconds": null,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": false
    },
    "tempControl": {
     "type": null,
@@ -3727,9 +3743,10 @@
    "heating": {
     "system": "single-boiler",
     "makerTerm": "single boiler",
+    "simultaneousBy": "design",
     "boilers": [],
     "heatUpSeconds": null,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": false
    },
    "tempControl": {
     "type": null,
@@ -3745,8 +3762,8 @@
    ],
    "doseG": null,
    "milk": {
-    "type": "panarello",
-    "makerTerm": "Hot water/steam wand with rubber tip; classic milk frother (manual)"
+    "type": "manual-wand",
+    "makerTerm": "manual steam wand"
    },
    "grinder": {
     "builtIn": null,
@@ -3755,7 +3772,11 @@
    },
    "tankL": null,
    "plumbable": null,
-   "dims": null,
+   "dims": {
+    "w": 20.3,
+    "d": 24.1,
+    "h": 36.1
+   },
    "weightKg": null,
    "watts": null,
    "recipe": null,
@@ -3875,9 +3896,10 @@
    "heating": {
     "system": "single-boiler",
     "makerTerm": "single boiler",
+    "simultaneousBy": "design",
     "boilers": [],
     "heatUpSeconds": null,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": false
    },
    "tempControl": {
     "type": null,
@@ -3997,6 +4019,7 @@
    "heating": {
     "system": "single-boiler",
     "makerTerm": null,
+    "simultaneousBy": "design",
     "boilers": [
      {
       "role": "Coffee Boiler",
@@ -4004,7 +4027,7 @@
      }
     ],
     "heatUpSeconds": null,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": false
    },
    "tempControl": {
     "type": "thermostat",
@@ -4187,6 +4210,7 @@
    "heating": {
     "system": "dual-boiler",
     "makerTerm": "Dual Boiler Technology",
+    "simultaneousBy": "maker",
     "boilers": [
      {
       "role": "Steam boiler",
@@ -4409,6 +4433,7 @@
    "heating": {
     "system": "dual-boiler",
     "makerTerm": "DUAL BOILER",
+    "simultaneousBy": "maker",
     "boilers": [
      {
       "role": "Steam boiler (AISI316L)",
@@ -4621,6 +4646,7 @@
    "heating": {
     "system": "dual-boiler",
     "makerTerm": "dual boiler",
+    "simultaneousBy": "design",
     "boilers": [
      {
       "role": "Brass coffee boiler",
@@ -4632,7 +4658,7 @@
      }
     ],
     "heatUpSeconds": null,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": true
    },
    "tempControl": {
     "type": "LCC electronic control (OLED); temperature units C/F",
@@ -4806,6 +4832,7 @@
    "heating": {
     "system": "single-boiler",
     "makerTerm": "Single boiler espresso machine with ring brew group",
+    "simultaneousBy": "design",
     "boilers": [
      {
       "role": null,
@@ -4813,7 +4840,7 @@
      }
     ],
     "heatUpSeconds": 510,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": false
    },
    "tempControl": {
     "type": "PID-controlled temperature (brew and steam)",
@@ -5084,6 +5111,7 @@
    "heating": {
     "system": "single-boiler",
     "makerTerm": "Single boiler espresso machine with ring brew group",
+    "simultaneousBy": "design",
     "boilers": [
      {
       "role": null,
@@ -5091,7 +5119,7 @@
      }
     ],
     "heatUpSeconds": 420,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": false
    },
    "tempControl": {
     "type": "PID-controlled temperature; brew and steam set via menu",
@@ -5375,6 +5403,7 @@
    "heating": {
     "system": "heat-exchanger",
     "makerTerm": "Heat exchanger system",
+    "simultaneousBy": "design",
     "boilers": [
      {
       "role": null,
@@ -5382,7 +5411,7 @@
      }
     ],
     "heatUpSeconds": 1500,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": true
    },
    "tempControl": {
     "type": "Three PID-controlled boiler temperature presets via multifunction switch",
@@ -5693,6 +5722,7 @@
    "heating": {
     "system": "heat-exchanger",
     "makerTerm": "Heat exchanger Boiler System",
+    "simultaneousBy": "design",
     "boilers": [
      {
       "role": null,
@@ -5700,7 +5730,7 @@
      }
     ],
     "heatUpSeconds": null,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": true
    },
    "tempControl": {
     "type": null,
@@ -5863,6 +5893,7 @@
    "heating": {
     "system": "heat-exchanger",
     "makerTerm": "System with heat exchanger",
+    "simultaneousBy": "design",
     "boilers": [
      {
       "role": null,
@@ -5870,7 +5901,7 @@
      }
     ],
     "heatUpSeconds": null,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": true
    },
    "tempControl": {
     "type": "Temperature Control Adjustment (TCA) per maker page; no temperature range published on maker page",
@@ -6084,11 +6115,12 @@
    "replacedBy": null,
    "category": "semi-auto",
    "heating": {
-    "system": "thermoblock",
+    "system": "dual-thermoblock",
     "makerTerm": "Independent thermoblocks (2); insulated thermoblock",
+    "simultaneousBy": "design",
     "boilers": [],
     "heatUpSeconds": null,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": true
    },
    "tempControl": {
     "type": "PID temperature control via display",
@@ -6381,6 +6413,7 @@
    "heating": {
     "system": "none",
     "makerTerm": "Integrated Preheat Controller / Preheat Control System",
+    "simultaneousBy": null,
     "boilers": [],
     "heatUpSeconds": null,
     "simultaneousBrewSteam": null
@@ -6588,6 +6621,7 @@
    "heating": {
     "system": "none",
     "makerTerm": "Preheat Controller / Preheat System",
+    "simultaneousBy": null,
     "boilers": [],
     "heatUpSeconds": null,
     "simultaneousBrewSteam": null
@@ -6716,9 +6750,10 @@
    "heating": {
     "system": "thermoblock",
     "makerTerm": "Thermoblock heating system",
+    "simultaneousBy": "design",
     "boilers": [],
     "heatUpSeconds": null,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": false
    },
    "tempControl": {
     "type": "Individually programmable brewing temperature (3 levels); hot water temperature (3 levels); coffee strength 10 levels",
@@ -6956,9 +6991,10 @@
    "heating": {
     "system": "thermoblock",
     "makerTerm": "Thermoblock heating system",
+    "simultaneousBy": "design",
     "boilers": [],
     "heatUpSeconds": null,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": false
    },
    "tempControl": {
     "type": "Individually programmable brewing temperature (listed; level count not captured in extraction); hot water 3 levels; coffee strength 10 levels",
@@ -7223,9 +7259,10 @@
    "heating": {
     "system": "thermoblock",
     "makerTerm": "Thermoblock heating system",
+    "simultaneousBy": "design",
     "boilers": [],
     "heatUpSeconds": null,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": false
    },
    "tempControl": {
     "type": "Individually programmable coffee strength 10 levels; brewing temperature 3 levels (per spec tab); hot-water temperature 3 levels",
@@ -7490,9 +7527,10 @@
    "heating": {
     "system": "thermoblock",
     "makerTerm": "Thermoblock heating system",
+    "simultaneousBy": "design",
     "boilers": [],
     "heatUpSeconds": null,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": false
    },
    "tempControl": {
     "type": "Coffee strength 3 levels (symbol display); no brewing-temperature or hot-water-temperature level counts on spec tab",
@@ -7738,9 +7776,10 @@
    "heating": {
     "system": "thermoblock",
     "makerTerm": "Thermoblock heating system",
+    "simultaneousBy": "design",
     "boilers": [],
     "heatUpSeconds": null,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": false
    },
    "tempControl": {
     "type": "Coffee strength 10 levels; brewing temperature 3 levels; hot-water temperature 3 levels (spec tab)",
@@ -8012,9 +8051,10 @@
    "heating": {
     "system": "thermoblock",
     "makerTerm": "Thermoblock heating system",
+    "simultaneousBy": "design",
     "boilers": [],
     "heatUpSeconds": null,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": false
    },
    "tempControl": {
     "type": "Coffee strength 3 levels (symbol display); spec tab: no brewing-temp level count",
@@ -8261,9 +8301,10 @@
    "heating": {
     "system": "thermoblock",
     "makerTerm": "Thermoblock heating system",
+    "simultaneousBy": "design",
     "boilers": [],
     "heatUpSeconds": null,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": false
    },
    "tempControl": {
     "type": "Coffee strength 10 levels; brewing temperature 3 levels; hot-water temperature 3 levels; consistency of grind 7 levels",
@@ -8524,9 +8565,10 @@
    "heating": {
     "system": "thermoblock",
     "makerTerm": "Thermoblock heating system",
+    "simultaneousBy": "design",
     "boilers": [],
     "heatUpSeconds": null,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": false
    },
    "tempControl": {
     "type": "Coffee strength 10 levels; brewing temperature 3 levels; hot-water temperature 3 levels",
@@ -8788,9 +8830,10 @@
    "heating": {
     "system": "thermoblock",
     "makerTerm": "Thermoblock heating system",
+    "simultaneousBy": "design",
     "boilers": [],
     "heatUpSeconds": null,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": false
    },
    "tempControl": {
     "type": "Coffee strength 8 levels (per extraction); brewing temperature 3 levels; hot-water temperature 3 levels",
@@ -9054,9 +9097,10 @@
    "heating": {
     "system": "thermoblock",
     "makerTerm": "Thermoblock heating system",
+    "simultaneousBy": "design",
     "boilers": [],
     "heatUpSeconds": null,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": false
    },
    "tempControl": {
     "type": "Coffee strength 10 levels; brewing temperature 3 levels; hot-water temperature 3 levels; milk/milk-foam temperature individually programmable",
@@ -9320,9 +9364,10 @@
    "heating": {
     "system": "thermoblock",
     "makerTerm": "Thermoblock heating system",
+    "simultaneousBy": "design",
     "boilers": [],
     "heatUpSeconds": null,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": false
    },
    "tempControl": {
     "type": "Coffee strength 10 levels; brewing temperature not captured on spec tab; hot-water temperature 3 levels",
@@ -9577,6 +9622,7 @@
    "heating": {
     "system": null,
     "makerTerm": "Centrifusion",
+    "simultaneousBy": null,
     "boilers": [],
     "heatUpSeconds": 15.0,
     "simultaneousBrewSteam": null
@@ -9719,6 +9765,7 @@
    "heating": {
     "system": null,
     "makerTerm": "Centrifusion",
+    "simultaneousBy": null,
     "boilers": [],
     "heatUpSeconds": 40,
     "simultaneousBrewSteam": null
@@ -9841,6 +9888,7 @@
    "heating": {
     "system": null,
     "makerTerm": "Centrifusion",
+    "simultaneousBy": null,
     "boilers": [],
     "heatUpSeconds": 30.0,
     "simultaneousBrewSteam": null
@@ -9880,8 +9928,8 @@
     "manualScope": "BVE850 USCM manual"
    },
    "listPrice": {
-    "usd": 524.99,
-    "kind": "price seen on the maker’s US site",
+    "usd": 699.95,
+    "kind": "list price",
     "url": "https://www.breville.com/en-us/product/bve850",
     "checked": "2026-10-15"
    },
@@ -10006,6 +10054,7 @@
    "heating": {
     "system": null,
     "makerTerm": null,
+    "simultaneousBy": null,
     "boilers": [],
     "heatUpSeconds": null,
     "simultaneousBrewSteam": null
@@ -10138,6 +10187,7 @@
    "heating": {
     "system": null,
     "makerTerm": null,
+    "simultaneousBy": null,
     "boilers": [],
     "heatUpSeconds": 25,
     "simultaneousBrewSteam": null
@@ -10250,6 +10300,7 @@
    "heating": {
     "system": null,
     "makerTerm": "high-pressure pump",
+    "simultaneousBy": null,
     "boilers": [],
     "heatUpSeconds": 25,
     "simultaneousBrewSteam": null
@@ -10372,9 +10423,10 @@
    "heating": {
     "system": "thermoblock",
     "makerTerm": "Thermoblock",
+    "simultaneousBy": "design",
     "boilers": [],
     "heatUpSeconds": 25,
-    "simultaneousBrewSteam": null
+    "simultaneousBrewSteam": false
    },
    "tempControl": {
     "type": null,
