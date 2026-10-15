@@ -359,7 +359,7 @@
             <p class="cap nodraw">No drawing to scale: {sizeWhy(matches.map((x) => x.machine as M))}{clearanceText(matches.map((x) => x.machine as M))}</p>
           {/if}
 
-          <p class="shared">Prices are what each maker's US site or shop showed on October 15, 2026, and they change. Amazon links go to the exact model; as an Amazon Associate we earn from qualifying purchases.</p>
+          <p class="shared">Prices are what each maker's US site or shop showed on October 15, 2026, or, where a maker doesn't sell direct, its US importer or an authorized dealer; they change. Amazon links go to the exact model; as an Amazon Associate we earn from qualifying purchases.</p>
           <ol class="cards">
             {#each matches as x, i (x.machine.id)}
               {@const m = x.machine as M}
@@ -451,7 +451,7 @@
                   <td class:ne={!m.heating.system}>{m.category === 'capsule' ? 'n/a' : m.heating.system ? heatLabel(m) : 'n/e'}</td>
                   <td class:ne={!m.milk.type}>{m.milk.type ? MILK[m.milk.type] : 'n/e'}</td>
                   <td class:ne={!m.dims}>{m.dims ? sizeText(m) : m.dimsUnclear ? 'unclear' : 'n/e'}</td>
-                  <td class:ne={!m.listPrice.usd}>{m.listPrice.usd ? money(m.listPrice.usd) : 'n/e'}</td>
+                  <td class:ne={!m.listPrice.usd}>{m.listPrice.usd ? money(m.listPrice.usd) : 'n/e'}{#if m.listPrice.seller}<small>{m.listPrice.seller}</small>{/if}</td>
                 </tr>
               {/each}
             </tbody>

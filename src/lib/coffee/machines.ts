@@ -27,7 +27,8 @@ export interface Machine {
   recipe?: { doseG?: number | string | null; yield?: string | null; seconds?: string | number | null; tempC?: number | null } | null;
   care?: { descale?: string | null; backflush?: string | null; manualUrl?: string | null } | null;
   /** The dated price seen on the maker's US site or shop, and what kind it was; only for budget bands. */
-  listPrice: { usd: number | null; kind?: string | null; url?: string | null; checked?: string | null };
+  /** `seller` is named where the price came from the maker's US importer or an authorized dealer (DECISIONS #18). */
+  listPrice: { usd: number | null; kind?: string | null; url?: string | null; checked?: string | null; seller?: string | null };
   amazon?: { asin: string | null; url: string | null; title?: string | null; checked?: string | null } | null;
   sources?: { field: string; url: string; checked: string }[];
   notes?: string | null;

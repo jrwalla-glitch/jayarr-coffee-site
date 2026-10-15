@@ -2731,7 +2731,11 @@
    },
    "tankL": null,
    "plumbable": null,
-   "dims": null,
+   "dims": {
+    "w": 20.5,
+    "d": 34.3,
+    "h": 28.5
+   },
    "weightKg": null,
    "watts": 1100,
    "recipe": null,
@@ -2879,7 +2883,11 @@
    },
    "tankL": null,
    "plumbable": null,
-   "dims": null,
+   "dims": {
+    "w": 26.0,
+    "d": 44.5,
+    "h": 38.4
+   },
    "weightKg": null,
    "watts": 1250,
    "recipe": null,
@@ -3156,12 +3164,12 @@
    "models": [
     "EC685M"
    ],
-   "status": "unconfirmed",
+   "status": "current",
    "replacedBy": null,
    "category": "semi-auto",
    "heating": {
-    "system": null,
-    "makerTerm": null,
+    "system": "thermoblock",
+    "makerTerm": "thermoblock",
     "boilers": [],
     "heatUpSeconds": null,
     "simultaneousBrewSteam": null
@@ -3186,7 +3194,11 @@
    },
    "tankL": null,
    "plumbable": null,
-   "dims": null,
+   "dims": {
+    "w": 15.0,
+    "d": 33.0,
+    "h": 30.5
+   },
    "weightKg": null,
    "watts": null,
    "recipe": null,
@@ -3600,12 +3612,12 @@
    "models": [
     "Classic Pro (Amazon title RI9380/47 Classic Pro)"
    ],
-   "status": "unconfirmed",
+   "status": "replaced",
    "replacedBy": null,
-   "category": null,
+   "category": "semi-auto",
    "heating": {
-    "system": null,
-    "makerTerm": null,
+    "system": "single-boiler",
+    "makerTerm": "single boiler",
     "boilers": [],
     "heatUpSeconds": null,
     "simultaneousBrewSteam": null
@@ -3620,8 +3632,8 @@
    "baskets": [],
    "doseG": null,
    "milk": {
-    "type": null,
-    "makerTerm": null
+    "type": "manual-wand",
+    "makerTerm": "manual steam wand"
    },
    "grinder": {
     "builtIn": null,
@@ -3697,8 +3709,8 @@
    "replacedBy": null,
    "category": "semi-auto",
    "heating": {
-    "system": null,
-    "makerTerm": null,
+    "system": "single-boiler",
+    "makerTerm": "single boiler",
     "boilers": [],
     "heatUpSeconds": null,
     "simultaneousBrewSteam": null
@@ -3737,10 +3749,11 @@
     "manualUrl": "https://www.gaggia.com/app/uploads/2023/10/6420-010-43466-MANUAL-GAG.-CLASSIC-E24-USA-Rev-00-6.pdf"
    },
    "listPrice": {
-    "usd": null,
-    "kind": null,
-    "url": "https://www.gaggia.com/manual-machines/new-classic-e24/",
-    "checked": "2026-10-15"
+    "usd": 549,
+    "kind": "list price from Gaggia North America (Importika Inc.), the US importer",
+    "url": "https://www.gaggia-na.com/products/gaggia-classic-pro",
+    "checked": "2026-10-15",
+    "seller": "Gaggia North America (Importika Inc.)"
    },
    "amazon": {
     "asin": "B07RQ3NL76",
@@ -3839,12 +3852,12 @@
     "Classic Evo Pro (Amazon RI9380/48 Polar White)",
     "Manual title CLASSIC EVO PRO (USA Rev 00)"
    ],
-   "status": "unconfirmed",
+   "status": "replaced",
    "replacedBy": null,
    "category": "semi-auto",
    "heating": {
-    "system": null,
-    "makerTerm": null,
+    "system": "single-boiler",
+    "makerTerm": "single boiler",
     "boilers": [],
     "heatUpSeconds": null,
     "simultaneousBrewSteam": null
@@ -4012,10 +4025,11 @@
     "manualUrl": "https://www.ranciliogroupna.com/wp-content/uploads/2025/05/460100001_MA_Silvia_AC_2024-03.pdf"
    },
    "listPrice": {
-    "usd": null,
-    "kind": null,
-    "url": "https://www.ranciliogroup.com/rancilio/silvia/silvia/",
-    "checked": "2026-10-15"
+    "usd": 995,
+    "kind": "minimum advertised price from Rancilio Group North America, the US importer",
+    "url": "https://www.ranciliogroupna.com/wp-content/uploads/2025/09/PRICING-RANCILIO-HL-MAP-NA-25-09.pdf",
+    "checked": "2026-10-15",
+    "seller": "Rancilio Group North America"
    },
    "amazon": null,
    "sources": [
@@ -4203,10 +4217,11 @@
     "manualUrl": "https://www.ranciliogroupna.com/wp-content/uploads/2026/03/Manual-User-Silvia-Pro-X-2026-01.pdf"
    },
    "listPrice": {
-    "usd": null,
-    "kind": null,
-    "url": "https://www.ranciliogroup.com/rancilio/silvia-pro-x/silvia-pro-x",
-    "checked": "2026-10-15"
+    "usd": 2195,
+    "kind": "minimum advertised price from Rancilio Group North America, the US importer",
+    "url": "https://www.ranciliogroupna.com/wp-content/uploads/2025/09/PRICING-RANCILIO-HL-MAP-NA-25-09.pdf",
+    "checked": "2026-10-15",
+    "seller": "Rancilio Group North America"
    },
    "amazon": null,
    "sources": [
@@ -4579,7 +4594,7 @@
     "PL92T (EU/global maker page)",
     "PL92T-120 (120 V 60 Hz Plug B variant per maker page)"
    ],
-   "status": "unconfirmed",
+   "status": "current",
    "replacedBy": null,
    "category": "semi-auto",
    "heating": {
@@ -4636,10 +4651,11 @@
     "manualUrl": null
    },
    "listPrice": {
-    "usd": null,
-    "kind": null,
-    "url": "https://www.lelit.com/product/elizabeth-pl92t/",
-    "checked": "2026-10-15"
+    "usd": 1799.95,
+    "kind": "list price from LELIT US, the maker",
+    "url": "https://www.lelit.com/en-us/product/pesel01",
+    "checked": "2026-10-15",
+    "seller": "LELIT US"
    },
    "amazon": null,
    "sources": [
@@ -4762,7 +4778,7 @@
     "CM500001-03 (blue)",
     "CM500001-04 (brushed stainless, Exclusive Line)"
    ],
-   "status": "unconfirmed",
+   "status": "replaced",
    "replacedBy": null,
    "category": "semi-auto",
    "heating": {
@@ -4816,10 +4832,11 @@
     "manualUrl": "https://web.archive.org/web/20251215041655/https://www.profitec-espresso.com/media/pages/produkte/go/2d6c2c0c60-1738234502/ba_go.pdf"
    },
    "listPrice": {
-    "usd": null,
-    "kind": null,
-    "url": null,
-    "checked": "2026-10-15"
+    "usd": 1199,
+    "kind": "list price from Whole Latte Love, an authorized US dealer",
+    "url": "https://www.wholelattelove.com/products/profitec-go-espresso-machine?variant=43046168297526",
+    "checked": "2026-10-15",
+    "seller": "Whole Latte Love"
    },
    "amazon": null,
    "sources": [
@@ -5387,10 +5404,11 @@
     "manualUrl": "https://www.profitec-espresso.com/media/pages/produkte/pro-400/6f52c5c90c-1778593561/ba_pro400-jump.pdf"
    },
    "listPrice": {
-    "usd": null,
-    "kind": null,
-    "url": null,
-    "checked": "2026-10-15"
+    "usd": 1599,
+    "kind": "sale price from Whole Latte Love, an authorized US dealer",
+    "url": "https://www.wholelattelove.com/products/profitec-pro-400-espresso-machine",
+    "checked": "2026-10-15",
+    "seller": "Whole Latte Love"
    },
    "amazon": null,
    "sources": [
@@ -5669,8 +5687,8 @@
    "baskets": [],
    "doseG": null,
    "milk": {
-    "type": null,
-    "makerTerm": null
+    "type": "manual-wand",
+    "makerTerm": "manual steam wand"
    },
    "grinder": {
     "builtIn": null,
@@ -5838,8 +5856,8 @@
    "baskets": [],
    "doseG": null,
    "milk": {
-    "type": null,
-    "makerTerm": null
+    "type": "manual-wand",
+    "makerTerm": "manual steam wand"
    },
    "grinder": {
     "builtIn": null,
@@ -5862,10 +5880,11 @@
     "manualUrl": null
    },
    "listPrice": {
-    "usd": null,
-    "kind": null,
-    "url": null,
-    "checked": "2026-10-15"
+    "usd": 2300,
+    "kind": "list price from Seattle Coffee Gear, an authorized US dealer",
+    "url": "https://www.seattlecoffeegear.com/products/rocket-espresso-appartamento-tca-espresso-machine?variant=48308747764019",
+    "checked": "2026-10-15",
+    "seller": "Seattle Coffee Gear"
    },
    "amazon": null,
    "sources": [
@@ -6079,10 +6098,11 @@
     "manualUrlFormat": "Maker ZIP archive containing the STEEL V11 manual; no standalone maker-hosted PDF URL established"
    },
    "listPrice": {
-    "usd": null,
-    "kind": null,
-    "url": null,
-    "checked": "2026-10-15"
+    "usd": 2095,
+    "kind": "list price from Ascaso USA (Espresso Parts LLC), the US importer",
+    "url": "https://ascaso-usa.com/products/steel-duo-pid-programmable-espresso-machine-w-volumetric-conrtroller-dual-thermoblock-120v-black",
+    "checked": "2026-10-15",
+    "seller": "Ascaso USA (Espresso Parts LLC)"
    },
    "amazon": null,
    "sources": [
@@ -6690,7 +6710,11 @@
    },
    "tankL": 1.9,
    "plumbable": null,
-   "dims": null,
+   "dims": {
+    "w": 27.9,
+    "d": 44.7,
+    "h": 35.1
+   },
    "weightKg": 10,
    "watts": 1450,
    "recipe": null,
@@ -7447,8 +7471,8 @@
    "baskets": [],
    "doseG": "Variable brewing unit 5 – 16 g",
    "milk": {
-    "type": null,
-    "makerTerm": null
+    "type": "none",
+    "makerTerm": "none"
    },
    "grinder": {
     "builtIn": true,
@@ -7967,8 +7991,8 @@
    "baskets": [],
    "doseG": "Variable brewing unit 6 – 10 g",
    "milk": {
-    "type": null,
-    "makerTerm": null
+    "type": "none",
+    "makerTerm": "none"
    },
    "grinder": {
     "builtIn": true,
@@ -10093,7 +10117,11 @@
    },
    "tankL": 0.98,
    "plumbable": null,
-   "dims": null,
+   "dims": {
+    "w": 13.2,
+    "d": 37.1,
+    "h": 27.7
+   },
    "weightKg": 4.04,
    "watts": null,
    "recipe": null,
