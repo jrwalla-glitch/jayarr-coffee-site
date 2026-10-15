@@ -11,7 +11,7 @@ import { SITE_TITLE } from '../consts';
 
 type Props = CollectionEntry<'blog'>['data'] & { id: string };
 
-const { title, description, pubDate, updatedDate, heroImage, category, id, videoId } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, category, id, videoId, videoDate } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const site = Astro.site?.toString() ?? 'https://jayarr.coffee/';
@@ -57,7 +57,8 @@ const graph = {
 			thumbnailUrl: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
 			contentUrl: `https://www.youtube.com/watch?v=${videoId}`,
 			embedUrl: `https://www.youtube.com/embed/${videoId}`,
-			uploadDate: day(pubDate),
+			// The video's own upload date when the front matter gives one; the article's date otherwise.
+			uploadDate: day(videoDate ?? pubDate),
 		}] : []),
 	],
 };
@@ -87,7 +88,7 @@ const graph = {
 					{updatedDate && day(updatedDate) !== day(pubDate) && <span>Updated <FormattedDate date={updatedDate} /></span>}
 					<span id="read-time"></span>
 				</p>
-				{videoId && isVideoEra && <p class="video-note">This article accompanies our video from {monthYear(pubDate)}.</p>}
+				{videoId && isVideoEra && <p class="video-note">This article accompanies our video from {monthYear(videoDate ?? pubDate)}.</p>}
 			</header>
 
 			{heroImage && (
