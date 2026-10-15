@@ -53,6 +53,8 @@
     const fromLink = !!location.search;
     if (!fromLink) { try { const last = localStorage.getItem(SAVE_KEY); if (last) q = new URLSearchParams(last); else example = true; } catch { example = true; } }
     const rd = q.get('roast'); if (rd && isRealDate(rd)) roastDate = rd; else if (rd !== null && fromLink) { linkProblem = true; example = true; badLinkDate = /^\d{4}-\d{2}-\d{2}$/.test(rd) ? rd : ''; }
+    // An article's link sets storage or use but no roast date: the bag shown is an example, and says so (Wave D batch 2).
+    else if (rd === null && fromLink) example = true;
     if (q.get('use') === 'espresso') use = 'espresso';
     const s = q.get('storage'); if (s === 'sealed-bag' || s === 'opened' || s === 'frozen') storage = s;
     const f = q.get('frozen'); if (f && isRealDate(f)) frozenOn = f;
