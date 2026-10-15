@@ -1,7 +1,10 @@
 <script>
   import podData from '../../data/nespressoPods.json';
 
-  const pods = podData.pods;
+  // Stable identity: the same name exists in both systems (Original Colombia vs Vertuo Colombia),
+  // so a pod is always line + name, never name alone.
+  const podId = (p) => `${p.line}:${p.name}`;
+  const pods = podData.pods.map((p) => ({ ...p, id: podId(p), slug: `${p.line}-${p.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}` }));
 
   // --- Filter state ---
   let lineFilter = $state('all');       // 'all' | 'vertuo' | 'original'
@@ -11,7 +14,7 @@
   let showDecafOnly = $state(false);
   let showFlavoredOnly = $state(false);
   let intensityRange = $state([1, 13]);
-  let selectedPodName = $state(null);
+  let selectedPodId = $state(null);
   let sortBy = $state('name');          // 'name' | 'intensity' | 'roast'
 
   // --- Derived filter values ---
@@ -54,16 +57,17 @@
     return result;
   })());
 
-  const selectedPod = $derived(pods.find(p => p.name === selectedPodName) || null);
-  const tryAlsoPod = $derived(selectedPod?.try_also ? pods.find(p => p.name === selectedPod.try_also) : null);
+  const selectedPod = $derived(pods.find(p => p.id === selectedPodId) || null);
+  // "Try also" stays within the same system: an Original suggestion never opens a Vertuo pod.
+  const tryAlsoPod = $derived(selectedPod?.try_also ? (pods.find(p => p.name === selectedPod.try_also && p.line === selectedPod.line) ?? null) : null);
 
-  function selectPod(name) {
-    selectedPodName = selectedPodName === name ? null : name;
+  function selectPod(id) {
+    selectedPodId = selectedPodId === id ? null : id;
   }
 
   function selectTryAlso() {
     if (tryAlsoPod) {
-      selectedPodName = tryAlsoPod.name;
+      selectedPodId = tryAlsoPod.id;
     }
   }
 
@@ -280,18 +284,18 @@
 
       <!-- Pod grid -->
       <div class="pod-grid">
-        {#each filtered as pod (pod.name + pod.line)}
+        {#each filtered as pod (pod.id)}
           <button
             class="pod-card"
-            class:pod-card--selected={selectedPodName === pod.name}
-            onclick={() => selectPod(pod.name)}
+            class:pod-card--selected={selectedPodId === pod.id}
+            onclick={() => selectPod(pod.id)}
           >
             <!-- Capsule SVG -->
             <div class="pod-capsule">
               {#if pod.line === 'original'}
-                {@render originalCapsule(pod.color_hex, 'c-' + pod.name.replace(/\s+/g, '-'))}
+                {@render originalCapsule(pod.color_hex, 'c-' + pod.slug)}
               {:else}
-                {@render vertuoCapsule(pod.color_hex, 'c-' + pod.name.replace(/\s+/g, '-'))}
+                {@render vertuoCapsule(pod.color_hex, 'c-' + pod.slug)}
               {/if}
             </div>
 
@@ -333,7 +337,7 @@
     {#if selectedPod}
       <aside class="detail-panel">
         <div class="detail-panel-inner">
-          <button class="detail-close" onclick={() => selectedPodName = null} aria-label="Close detail panel">
+          <button class="detail-close" onclick={() => selectedPodId = null} aria-label="Close detail panel">
             &times;
           </button>
 
