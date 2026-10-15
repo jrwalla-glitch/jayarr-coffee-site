@@ -13,8 +13,13 @@
     compact?: boolean;
     /** Measured mode: numeric axes. Each ideal band is the middle third of its axis. */
     axes?: { ey: [number, number]; tds: [number, number]; eyIdeal: [number, number]; tdsIdeal: [number, number] };
+    /** No reading yet (or an invalid one): draw the chart with no cup on it. */
+    empty?: boolean;
+    emptyText?: string;
+    /** Taste and time disagree: draw the cup as a fuzzy estimate rather than a point. */
+    uncertain?: boolean;
   }
-  let { x, y, zone, showArrow = true, label = '', compact = false, axes }: Props = $props();
+  let { x, y, zone, showArrow = true, label = '', compact = false, axes, empty = false, emptyText = 'enter a valid reading to place your cup', uncertain = false }: Props = $props();
   const n = (v: number) => (Number.isInteger(v) ? String(v) : v.toFixed(2).replace(/0$/, ''));
 
   const L = 64, R = 384, T = 18, B = 338;
@@ -45,11 +50,11 @@
     <line x1={L + (W / 3) * i} x2={L + (W / 3) * i} y1={T} y2={B} stroke="#2a1d15" stroke-opacity=".12" />
     <line x1={L} x2={R} y1={T + (H / 3) * i} y2={T + (H / 3) * i} stroke="#2a1d15" stroke-opacity=".12" />
   {/each}
-  <rect x={L + W / 3} y={T + H / 3} width={W / 3} height={H / 3} rx="6" fill="#fffdf8" fill-opacity=".7" stroke="#c3873a" stroke-width={inSweet ? 2.5 : 1.5} />
+  <rect x={L + W / 3} y={T + H / 3} width={W / 3} height={H / 3} rx="6" fill="#fffdf8" fill-opacity=".7" stroke="#c3873a" stroke-width={inSweet && !empty ? 2.5 : 1.5} />
   <text x={cx} y={cy + 4} text-anchor="middle" class="sweet">sweet spot</text>
   {#each rows as r, ri (r)}
     {#each cols as c, ci (c)}
-      {#if `${c}-${r}` === zone && !inSweet}
+      {#if `${c}-${r}` === zone && !inSweet && !empty}
         <rect x={L + (W / 3) * ci + 3} y={T + (H / 3) * ri + 3} width={W / 3 - 6} height={H / 3 - 6} rx="6" fill="none" stroke="#2a1d15" stroke-width="1.5" stroke-dasharray="4 4" />
       {/if}
     {/each}
@@ -75,14 +80,19 @@
     <text transform="translate({L - 16} {T}) rotate(-90)" text-anchor="end" class="ax">strong</text>
   {/if}
 
+  {#if empty}
+    <text x={cx} y={T + 26} text-anchor="middle" class="ax2">{emptyText}</text>
+  {:else}
   {#if showArrow && arrow && !inSweet}
     <line x1={px} y1={py} x2={arrow.x2} y2={arrow.y2} stroke="#8f5d22" stroke-width="2.2" marker-end="url(#em-head)" class="arrow" />
   {/if}
   <g class="dot" style:transform="translate({px}px, {py}px)">
+    {#if uncertain}<circle r="44" fill="#c3873a" fill-opacity=".1" stroke="#8f5d22" stroke-width="1.4" stroke-dasharray="4 5" />{/if}
     <circle r="16" fill="#c3873a" fill-opacity=".18" />
     <circle r="8" fill="#2a1d15" />
     <circle r="3" fill="#f3ede3" />
   </g>
+  {/if}
 </svg>
 
 <style>

@@ -48,6 +48,14 @@ test('every symptom × method × every answer combination ends in a diagnosis wi
         if (fam === 'immersion') assert.doesNotMatch(text(d), /drawdown|in the cent(re|er)|clog|swirl|bed flat/i, where);
         // Cold brew is never told to change the water temperature.
         if (m.id === 'cold-brew') { assert.equal(d.next.temp, undefined, where); assert.ok(!d.hold.includes('temperature') && d.change !== 'temperature', where); }
+        // The map never contradicts the text (Astra: "Over-extracted" beside "not from over-extraction").
+        const all = text(d);
+        if (/not over-extract|isn't over-extracted|not from over-extraction|under-extracted overall/i.test(all)) assert.ok(!d.zone.startsWith('over'), `${where}: ${d.zone}`);
+        if (d.placement === 'likely' && /^under-extracted/i.test(d.cause)) assert.ok(d.zone.startsWith('under'), where);
+        if (d.placement === 'likely' && /^over-extracted/i.test(d.cause)) assert.ok(d.zone.startsWith('over'), where);
+        if (/uneven|channel/i.test(d.cause)) assert.equal(d.placement, 'uncertain', where);
+        if (d.placement !== 'likely') assert.ok(d.placementNote, where);
+        assert.ok(['likely', 'uncertain', 'other'].includes(d.placement), where);
         n++;
       }
     }
@@ -129,4 +137,41 @@ test('suggestions point toward the sweet spot', () => {
   assert.equal(suggestLevers({ sourBitter: 1.5, body: 0 })[0].id, 'coarser');
   assert.equal(suggestLevers({ sourBitter: 0, body: -1.5 })[0].id, 'more-coffee');
   assert.equal(suggestLevers({ sourBitter: 0, body: 0 }).length, 0);
+});
+
+test('"Not sure" is never treated as on target (Muse: V60 sour + not sure said "at a normal brew time")', () => {
+  for (const method of ['v60', 'chemex', 'drip-machine', 'french-press', 'aeropress', 'cold-brew']) for (const symptom of ['sour', 'bitter']) {
+    const answers = { time: 'unsure', roast: 'medium', grinder: 'burr' };
+    const d = ok(diagnose({ method, symptom, answers }));
+    assert.doesNotMatch(text(d), /normal brew time|usual steep|at the usual|on target and/i, `${method}/${symptom}`);
+    assert.match(d.changeNow, /time/i, `${method}/${symptom} asks for a timed brew`);
+  }
+});
+
+test('machine- or pod-dosed coffee is never told to change the grind', () => {
+  for (const method of ['drip-machine', 'v60', 'french-press']) for (const symptom of ['weak', 'strong']) for (const time of ['fast', 'ok', 'slow', 'unsure']) {
+    const d = ok(diagnose({ method, symptom, answers: { measure: 'machine', time } }));
+    assert.notEqual(d.change, 'grind', `${method}/${symptom}/${time}`); assert.equal(d.next.grind, undefined);
+    assert.ok(!d.hold.includes('grind'));
+  }
+});
+
+test('follow-up experiments change one thing at a time', () => {
+  const d = ok(diagnose({ method: 'espresso', symptom: 'harsh-mixed', answers: { shot: 'ok', grinder: 'burr' } }));
+  assert.doesNotMatch(d.nextExperiment, /less coffee|more coffee/);
+});
+
+test('Opus blind review: moka bitter is one change; cold brew strength changes the dilution; text stands alone', () => {
+  for (const time of ['fast', 'ok', 'slow', 'unsure']) {
+    const d = ok(diagnose({ method: 'moka', symptom: 'bitter', answers: { time, roast: 'medium' } }));
+    assert.equal(d.change, 'heat'); assert.doesNotMatch(d.changeNow, /hot water in the base/);
+  }
+  const weak = ok(diagnose({ method: 'cold-brew', symptom: 'weak', answers: { measure: 'scale', time: 'ok' } }));
+  assert.equal(weak.change, 'dilution'); assert.ok(weak.hold.includes('water') && !weak.hold.includes('dilution')); assert.deepEqual(weak.next, {});
+  for (const m of METHODS) for (const sy of SYMPTOMS) {
+    const applies = m.id === 'espresso' ? sy.espresso : sy.filter; if (!applies) continue;
+    for (const answers of allPaths(m.id, sy.id)) assert.doesNotMatch(text(ok(diagnose({ method: m.id, symptom: sy.id, answers }))), /next row|next path/);
+  }
+  const ap = ok(diagnose({ method: 'aeropress', symptom: 'bitter', answers: { time: 'slow', roast: 'medium' } }));
+  assert.doesNotMatch(ap.changeNow, /pour it all off/);
 });

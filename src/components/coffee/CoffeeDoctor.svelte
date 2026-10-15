@@ -101,10 +101,14 @@
 
 <div class="dr">
   <div class="stage">
-    <ExtractionMap x={pos.x} y={pos.y} {zone} showArrow={step === 'result'} />
+    <ExtractionMap x={pos.x} y={pos.y} {zone} showArrow={step === 'result' && dx?.placement === 'likely'} empty={dx?.placement === 'other'} emptyText="not an extraction problem" uncertain={dx?.placement === 'uncertain'} label={dx?.placement === 'other' ? `Not placed on the extraction map: ${dx.placementNote}` : dx?.placement === 'uncertain' ? `Your cup's position is uncertain: ${dx.placementNote}` : `By taste, your cup probably sits in the ${ZONES[zone].label.toLowerCase()} zone.`} />
     <div class="zone">
-      {#if symptom}
-        <span class="lbl">{step === 'result' ? 'Your cup' : 'Probably'}</span>
+      {#if symptom && dx && dx.placement !== 'likely'}
+        <span class="lbl">{dx.placement === 'other' ? 'Not an extraction problem' : 'Position uncertain'}</span>
+        <p class="zl small">{dx.placementNote}</p>
+        <p class="zt">{dx.placement === 'other' ? 'Grind, time and ratio won\'t fix this one; the change below will.' : 'Taste and time point different ways, so the dot is a best guess.'}</p>
+      {:else if symptom}
+        <span class="lbl">{step === 'result' ? 'Your cup, probably' : 'Probably'}</span>
         <p class="zl">{ZONES[zone].label}</p>
         <p class="zt">{ZONES[zone].tastes}</p>
       {:else}
@@ -153,7 +157,7 @@
         {#if dx.ruleOut}<div><span class="lbl">How you'll know</span><p>{dx.ruleOut}</p></div>{/if}
       </div>
       <div class="actions">
-        {#if brewLink}<a class="go" href={brewLink}>Brew it with this change →</a>{/if}
+        {#if brewLink}<a class="go" href={brewLink}>{dx.next.grind || dx.next.temp || dx.next.strength ? 'Brew it with this change →' : 'Open the Brew Guide →'}</a>{/if}
         {#if dx.next.tool && TOOL_LINK[dx.next.tool]}<a class="ghost" href={TOOL_LINK[dx.next.tool].href}>{TOOL_LINK[dx.next.tool].label}</a>{/if}
         <button type="button" class="ghost" onclick={share}>{copied ? 'Link copied' : 'Share'}</button>
         <button type="button" class="ghost" onclick={restart}>Start over</button>
@@ -172,6 +176,7 @@
     color: var(--ink); font: 16px/1.5 'IBM Plex Sans', system-ui, sans-serif; box-shadow: 0 30px 60px -40px rgba(60, 35, 15, .35);
   }
   .stage { padding: 18px 18px 20px; border-right: 1px solid var(--rule); background: radial-gradient(120% 90% at 50% 10%, #fffdf9 0%, #f4ece0 80%); }
+  .zl.small { font-size: 20px; line-height: 1.2; }
   .zone { padding: 6px 12px 0; min-height: 92px; }
   .lbl { font: 500 11px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); }
   .zl { font: 400 26px/1.1 'Instrument Serif', Georgia, serif; margin: 6px 0 2px; }
