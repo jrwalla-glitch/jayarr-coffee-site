@@ -148,13 +148,13 @@
 
     <label class="slider">
       <span class="lbl">How does it taste?</span>
-      <input type="range" min="-2" max="2" step="0.05" bind:value={sourBitter} oninput={() => (touched = true)} aria-valuetext={word(sourBitter, 'sour', 'bitter')} />
-      <span class="ends"><span>Sour</span><span class="now">{word(sourBitter, 'sour', 'bitter')}</span><span>Bitter</span></span>
+      <input type="range" min="-2" max="2" step="0.05" bind:value={sourBitter} oninput={() => (touched = true)} aria-valuetext={touched ? word(sourBitter, 'sour', 'bitter') : 'not set yet'} />
+      <span class="ends"><span>Sour</span><span class="now" class:unset={!touched}>{touched ? word(sourBitter, 'sour', 'bitter') : 'not set yet'}</span><span>Bitter</span></span>
     </label>
     <label class="slider">
       <span class="lbl">How does it feel?</span>
-      <input type="range" min="-2" max="2" step="0.05" bind:value={body} oninput={() => (touched = true)} aria-valuetext={word(body, 'thin', 'heavy')} />
-      <span class="ends"><span>Thin, watery</span><span class="now">{word(body, 'thin', 'heavy')}</span><span>Heavy, intense</span></span>
+      <input type="range" min="-2" max="2" step="0.05" bind:value={body} oninput={() => (touched = true)} aria-valuetext={touched ? word(body, 'thin', 'heavy') : 'not set yet'} />
+      <span class="ends"><span>Thin, watery</span><span class="now" class:unset={!touched}>{touched ? word(body, 'thin', 'heavy') : 'not set yet'}</span><span>Heavy, intense</span></span>
     </label>
 
     <div class="zonecard" aria-live="polite">
@@ -240,4 +240,5 @@
   .zonecard.suspect .ey { color: var(--ink-3); font-size: 40px; }
   .check { display: flex; gap: 8px; align-items: center; font-size: 14.5px; }
   .check input { width: 18px; height: 18px; }
+  .now.unset { color: var(--ink-3); font-weight: 400; text-transform: none; letter-spacing: 0; font-style: italic; }
 </style>

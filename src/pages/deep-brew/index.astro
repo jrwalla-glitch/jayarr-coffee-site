@@ -203,6 +203,7 @@ const description = 'Three instruments for measuring coffee: mix brewing water t
   /* Research notes */
   .research { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 2fr); gap: 32px; padding-top: 36px; padding-bottom: 44px; border-top: 1px solid var(--t-rule, #d9cdbd); }
   .rhead h2, .sources h2 { font: 400 40px/1 'Instrument Serif', Georgia, serif; margin: 0 0 10px; }
+  .rhead { align-self: start; position: sticky; top: 90px; }
   .rhead p { margin: 0 0 14px; color: var(--t-ink-2, #5b4a3d); font-size: 15.5px; }
   .rlinks { display: flex; flex-wrap: wrap; gap: 8px 18px; }
   .rlinks a { color: var(--t-crema-deep, #8f5d22); font: 500 14px 'IBM Plex Sans', sans-serif; text-underline-offset: 3px; display: inline-flex; align-items: center; gap: 6px; min-height: 32px; }
@@ -226,6 +227,6 @@ const description = 'Three instruments for measuring coffee: mix brewing water t
   .sources > p { max-width: 72ch; color: var(--t-ink-2, #5b4a3d); font-size: 15.5px; line-height: 1.6; margin: 0; }
 
   a:focus-visible { outline: 2px solid var(--t-crema-deep, #8f5d22); outline-offset: 3px; border-radius: 4px; }
-  @media (max-width: 980px) { .bench { grid-template-columns: 1fr; max-width: 560px; } .research { grid-template-columns: 1fr; gap: 16px; } .notes { grid-template-columns: 1fr; } .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 980px) { .bench { grid-template-columns: 1fr; max-width: 560px; } .research { grid-template-columns: 1fr; gap: 16px; } .rhead { position: static; } .notes { grid-template-columns: 1fr; } .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 640px) { .hero { padding: 96px 16px 20px; } .bench, .research, .sources { padding-left: 16px; padding-right: 16px; } }
 </style>

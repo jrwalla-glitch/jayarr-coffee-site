@@ -43,8 +43,8 @@ const deepTools = TOOLS.filter((t) => t.deepBrew).sort((a, b) => ORDER.findIndex
 								{list.map((p) => (
 									<li>
 										<a href={`/deep-brew/research/${p.id}/`}>
-											<span class="t">{p.data.title}</span>
-											<span class="d">{p.data.description}</span>
+											<span class="t">{p.data.title} <span class="go" aria-hidden="true">→</span></span>
+											<span class="d">{p.data.description}<small>Updated {(p.data.updatedDate ?? p.data.pubDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}</small></span>
 										</a>
 									</li>
 								))}
@@ -82,6 +82,8 @@ const deepTools = TOOLS.filter((t) => t.deepBrew).sort((a, b) => ORDER.findIndex
 	li a:hover .t { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
 	.t { font: 400 23px/1.15 'Instrument Serif', Georgia, serif; color: var(--t-ink, #2a1d15); }
 	.d { font-size: 14.5px; line-height: 1.5; color: var(--t-ink-2, #5b4a3d); }
+	.d small { display: block; margin-top: 4px; font: 500 11.5px 'IBM Plex Mono', monospace; color: var(--t-ink-3, #75655a); }
+	.go { color: var(--t-crema-deep, #8f5d22); font-family: 'IBM Plex Sans', sans-serif; font-size: 18px; }
 	.tools { padding-bottom: 80px; }
 	a:focus-visible { outline: 2px solid var(--t-crema-deep, #8f5d22); outline-offset: 3px; border-radius: 3px; }
 	@media (max-width: 760px) { li a { grid-template-columns: 1fr; } .cf-intro { padding: 96px 16px 14px; } .groups, .tools { padding: 8px 16px; } }
