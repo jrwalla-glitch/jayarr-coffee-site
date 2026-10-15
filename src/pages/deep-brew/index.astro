@@ -4,7 +4,7 @@ import DeepBrewLayout from '../../layouts/DeepBrewLayout.astro';
 
 <DeepBrewLayout
   title="Deep Brew Mode | JayArr Coffee"
-  description="Precision brewing tools for the obsessive coffee enthusiast. Water chemistry, extraction diagnostics, and grind calibration — built on peer-reviewed science."
+  description="Three brewing tools for measuring and fixing your coffee: a water recipe builder, an extraction map and a grind calibrator, each showing the sources its numbers come from."
 >
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify({
@@ -12,7 +12,7 @@ import DeepBrewLayout from '../../layouts/DeepBrewLayout.astro';
       "@type": "WebApplication",
       "name": "Deep Brew Mode",
       "url": "https://jayarr.coffee/deep-brew/",
-      "description": "Precision brewing tools for the obsessive coffee enthusiast. Water chemistry, extraction diagnostics, and grind calibration — built on peer-reviewed science.",
+      "description": "Three brewing tools for measuring and fixing your coffee: a water recipe builder, an extraction map and a grind calibrator, each showing the sources its numbers come from.",
       "applicationCategory": "UtilityApplication",
       "operatingSystem": "Any",
       "offers": {
@@ -52,7 +52,7 @@ import DeepBrewLayout from '../../layouts/DeepBrewLayout.astro';
         You've measured your water to the milligram. Welcome home.
       </p>
       <p class="text-sm text-db-text-muted/60 max-w-xl mx-auto mb-12">
-        Three instruments built on peer-reviewed coffee science. Designed for the brewer who wants to understand <em>why</em>, not just <em>how</em>.
+        Three instruments for the brewer who wants to understand <em>why</em>, not just <em>how</em>. Each one shows where its numbers come from.
       </p>
 
       <!-- Divider -->
@@ -78,14 +78,14 @@ import DeepBrewLayout from '../../layouts/DeepBrewLayout.astro';
             Water Recipe Builder
           </h3>
           <p class="text-sm text-db-text-muted leading-relaxed mb-4">
-            Map your water chemistry. See where you stand against 10 named recipes. Get DIY mineral concentrate instructions.
+            Mix brewing water to one of 8 published recipes, from distilled or your own tap water, with the stock or dry-salt amounts to final volume.
           </p>
           <span class="font-db-mono text-xs text-db-copper/70 uppercase tracking-widest group-hover:text-db-copper transition-colors">
             Open Tool &rarr;
           </span>
         </a>
 
-        <!-- Extraction Diagnostic -->
+        <!-- Extraction Map -->
         <a href="/deep-brew/extraction" class="group block p-6 md:p-8 bg-db-surface rounded-lg border border-db-border hover:border-db-copper/40 transition-all duration-300">
           <div class="text-db-copper mb-4">
             <svg class="w-8 h-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
@@ -93,10 +93,10 @@ import DeepBrewLayout from '../../layouts/DeepBrewLayout.astro';
             </svg>
           </div>
           <h3 class="font-db-serif text-xl font-semibold text-db-text group-hover:text-db-copper transition-colors mb-2">
-            Extraction Diagnostic
+            Extraction Map
           </h3>
           <p class="text-sm text-db-text-muted leading-relaxed mb-4">
-            Describe what you taste. See where you are on the extraction curve. Get method-specific fixes backed by chemistry.
+            Measure a cup with a refractometer and see its extraction against the SCA's reference range, or describe how it tastes for a likely direction to adjust.
           </p>
           <span class="font-db-mono text-xs text-db-copper/70 uppercase tracking-widest group-hover:text-db-copper transition-colors">
             Open Tool &rarr;
@@ -115,7 +115,7 @@ import DeepBrewLayout from '../../layouts/DeepBrewLayout.astro';
             Grind Calibrator
           </h3>
           <p class="text-sm text-db-text-muted leading-relaxed mb-4">
-            Pick your grinder and brew method. Its dial turns to the starting setting the maker publishes, with the source.
+            Pick your grinder and brew method to see the maker's published setting or range on your grinder's own dial, with its source.
           </p>
           <span class="font-db-mono text-xs text-db-copper/70 uppercase tracking-widest group-hover:text-db-copper transition-colors">
             Open Tool &rarr;
@@ -172,7 +172,7 @@ import DeepBrewLayout from '../../layouts/DeepBrewLayout.astro';
         <div class="font-db-mono text-xs tracking-[0.3em] uppercase text-db-copper mb-4">Featured Research</div>
         <h2 class="font-db-serif text-3xl md:text-4xl font-semibold text-db-text mb-4">Deep Dives</h2>
         <p class="text-db-text-muted max-w-xl mx-auto leading-relaxed">
-          Long-form articles grounded in coffee science. No fluff. No affiliate bait. Just the research that changes how you brew.
+          Long-form articles on the science behind brewing, each with its sources.
         </p>
       </div>
 
@@ -257,27 +257,27 @@ import DeepBrewLayout from '../../layouts/DeepBrewLayout.astro';
   <section class="py-24 bg-db-surface">
     <div class="max-w-3xl mx-auto px-6 text-center">
       <div class="font-db-mono text-xs tracking-[0.3em] uppercase text-db-copper mb-4">The Foundation</div>
-      <h2 class="font-db-serif text-3xl md:text-4xl font-semibold text-db-text mb-6">Built on Real Research</h2>
+      <h2 class="font-db-serif text-3xl md:text-4xl font-semibold text-db-text mb-6">Where the numbers come from</h2>
       <p class="text-db-text-muted leading-relaxed mb-12">
-        Every recommendation traces back to published science. Not influencer opinions. Not brand partnerships. Peer-reviewed papers and verified data.
+        Each tool names its sources: the SCA's brewing chart for the extraction reference range, published water recipes, and the grinder makers' own charts and manuals, with two labelled secondary sources where no maker chart could be verified.
       </p>
 
       <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
         <div class="p-5 bg-db-bg rounded-lg border border-db-border">
-          <div class="font-db-mono text-2xl text-db-copper font-medium mb-1">13</div>
-          <div class="text-xs text-db-text-muted uppercase tracking-wider">Source Papers</div>
+          <div class="font-db-mono text-2xl text-db-copper font-medium mb-1">21</div>
+          <div class="text-xs text-db-text-muted uppercase tracking-wider">Grinders charted</div>
         </div>
         <div class="p-5 bg-db-bg rounded-lg border border-db-border">
-          <div class="font-db-mono text-2xl text-db-copper font-medium mb-1">10</div>
-          <div class="text-xs text-db-text-muted uppercase tracking-wider">Water Recipes</div>
+          <div class="font-db-mono text-2xl text-db-copper font-medium mb-1">8</div>
+          <div class="text-xs text-db-text-muted uppercase tracking-wider">Published water recipes</div>
         </div>
         <div class="p-5 bg-db-bg rounded-lg border border-db-border">
-          <div class="font-db-mono text-2xl text-db-amber font-medium mb-1">1,000+</div>
-          <div class="text-xs text-db-text-muted uppercase tracking-wider">VOCs Mapped</div>
+          <div class="font-db-mono text-2xl text-db-amber font-medium mb-1">109</div>
+          <div class="text-xs text-db-text-muted uppercase tracking-wider">Grind settings</div>
         </div>
         <div class="p-5 bg-db-bg rounded-lg border border-db-border">
           <div class="font-db-mono text-2xl text-db-amber font-medium mb-1">18-22%</div>
-          <div class="text-xs text-db-text-muted uppercase tracking-wider">Sweet Spot</div>
+          <div class="text-xs text-db-text-muted uppercase tracking-wider">SCA extraction reference</div>
         </div>
       </div>
     </div>

@@ -13,7 +13,7 @@ import GrindCalibrator from '../../components/coffee/GrindCalibrator.svelte';
 import grinderData from '../../data/grinders.json';
 
 const title = 'Grind Calibrator: Your Grinder’s Own Setting for Every Brew Method';
-const description = 'Pick your grinder and brew method and see the starting setting its maker publishes, on your grinder’s own dial: Baratza, Fellow, Comandante, 1Zpresso, Niche, Breville and more, each with its source.';
+const description = 'Pick your grinder and brew method and see the setting or range its maker publishes, on your grinder’s own dial: Baratza, Fellow, Comandante, 1Zpresso, Niche, Breville and more, each with its source.';
 const grinders = grinderData.grinders;
 const secondary = grinders.filter((g) => g.settings.some((s) => s.provenance !== 'maker')).map((g) => g.short);
 ---
@@ -34,7 +34,7 @@ const secondary = grinders.filter((g) => g.settings.some((s) => s.provenance !==
 				<a href="/deep-brew/" class="cf-back">← Deep Brew</a>
 				<p class="cf-kicker">Deep Brew · Grind Calibrator</p>
 				<h1>Your grinder's own <em>starting setting</em></h1>
-				<p class="cf-lede">Choose your grinder and how you brew. Its dial turns to the setting its maker publishes for that method, in the maker's own numbers, with the chart it came from. For the two grinders with no maker chart we could find, it uses a documented secondary source and says so.</p>
+				<p class="cf-lede">Choose your grinder and how you brew. It shows the setting or range its maker publishes for that method, in the maker's own numbers, with the chart it came from. For the two grinders with no maker chart we could find, it uses a documented secondary source and says so.</p>
 			</section>
 			<section class="cf-tool" aria-label="Grind Calibrator"><GrindCalibrator client:load /></section>
 
@@ -58,7 +58,7 @@ const secondary = grinders.filter((g) => g.settings.some((s) => s.provenance !==
 				<h2>Sources</h2>
 				<ul class="cf-sources">
 					<li>Each grinder maker's own grind chart, manual or published recipe, linked beside every setting in the tool, checked {grinderData.checked}.</li>
-					<li>Documented secondary sources, only where no maker chart exists, labelled in the tool.</li>
+					<li>Documented secondary sources, only where no maker chart could be verified, labelled in the tool.</li>
 				</ul>
 			</article>
 		</main>

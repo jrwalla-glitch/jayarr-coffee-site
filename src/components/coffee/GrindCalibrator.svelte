@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import data from '../../data/grinders.json';
-  import { GROUPS, settingsFor, groupsFor, rangeText, headline, countHeadline, turnsLine, grinderById } from '../../lib/coffee/grinders.ts';
+  import { GROUPS, settingsFor, groupsFor, groupFromParam, rangeText, headline, countHeadline, turnsLine, grinderById } from '../../lib/coffee/grinders.ts';
   import type { Grinder, Group, Setting } from '../../lib/coffee/grinders.ts';
 
   // Your grinder's own control, drawn and turned to the maker's starting setting for your brew.
@@ -14,6 +14,8 @@
   let group = $state<Group>('pourover');
   // A second published row for the same method (Breville's two drip filters) is picked from the map.
   let pickKey = $state<string | null>(null);
+  // A method a link asked for that this grinder has no included setting for: said, never swapped silently.
+  let askedFor = $state<Group | null>(null);
   let mounted = $state(false);
   let g = $derived(grinderById(grinders, grinderId) ?? grinders[0]);
   let available = $derived(groupsFor(g));
@@ -29,27 +31,35 @@
   function pickGrinder(id: string) {
     grinderId = id;
     pickKey = null;
+    askedFor = null;
     const gg = grinderById(grinders, id);
     // Keep the method if this grinder's maker publishes it; otherwise the first one it does.
     if (gg && !settingsFor(gg, group).length) group = groupsFor(gg)[0]?.id ?? group;
     try { localStorage.setItem('jayarr-grinder', id); } catch { /* storage unavailable */ }
   }
-  const pickGroup = (id: Group) => { group = id; pickKey = null; };
-  const pickRow = (r: Setting) => { group = r.group; pickKey = r.key; };
+  const pickGroup = (id: Group) => { group = id; pickKey = null; askedFor = null; };
+  const pickRow = (r: Setting) => { group = r.group; pickKey = r.key; askedFor = null; };
   onMount(() => {
     const q = new URLSearchParams(location.search);
     let saved: string | null = null;
     try { saved = localStorage.getItem('jayarr-grinder'); } catch { /* storage unavailable */ }
     const id = q.get('grinder') ?? saved;
     if (id && grinderById(grinders, id)) grinderId = id;
-    const m = q.get('method') as Group | null;
-    if (m && GROUPS.some((x) => x.id === m) && settingsFor(g, m).length) group = m;
-    else if (!settingsFor(g, group).length) group = groupsFor(g)[0]?.id ?? group;
+    const m = groupFromParam(q.get('method'));
+    if (m && settingsFor(g, m).length) group = m;
+    else {
+      if (m) askedFor = m;
+      if (!settingsFor(g, group).length) group = groupsFor(g)[0]?.id ?? group;
+    }
+    // A link to a second row for the same method (Breville's paper-filter drip) restores that row.
+    const key = q.get('setting');
+    if (key && settingsFor(g, group).some((r) => r.key === key)) pickKey = key;
     mounted = true;
   });
   $effect(() => {
     if (!mounted) return;
-    history.replaceState(history.state, '', `${location.pathname}?grinder=${g.id}&method=${group}`);
+    const extra = s && s !== rows[0] ? `&setting=${encodeURIComponent(s.key)}` : '';
+    history.replaceState(history.state, '', `${location.pathname}?grinder=${g.id}&method=${group}${extra}`);
   });
 
   // Where the control turns to: the maker's start, else the fine end of the band.
@@ -346,6 +356,7 @@
   </div>
 
   <div class="answer" aria-live="polite">
+    {#if askedFor && s}<p class="asked">The {g.short} has no included setting for {GROUPS.find((x) => x.id === askedFor)!.label.toLowerCase()}, so this shows {GROUPS.find((x) => x.id === group)!.label.toLowerCase()} instead. Pick another grinder to see {GROUPS.find((x) => x.id === askedFor)!.label.toLowerCase()}.</p>{/if}
     {#if s}
       <p class="kick">{g.short} · {s.label}{s.makerLabel ? ` (the maker's “${s.makerLabel}”)` : ''}</p>
       <h3>{nice(g.kind === 'turns' && g.perTurn ? countHeadline(g, s) : headline(g, s))}</h3>
@@ -476,6 +487,7 @@
   .chips button[aria-pressed='true'] { background: var(--ink); color: #f3ede3; border-color: var(--ink); }
   .chips button:disabled { opacity: .72; color: var(--ink-3); cursor: not-allowed; text-decoration: line-through; text-decoration-color: rgba(117, 101, 90, .5); }
   .why { margin: 8px 0 0; font-size: 12.5px; color: var(--ink-3); }
+  .asked { margin: 0 0 10px; padding: 9px 12px; border-radius: 8px; background: #fff3e0; border: 1px solid #e9c48f; color: var(--ink); font-size: 14px; }
   .answer > :first-child { border-top: 1px solid var(--rule); padding-top: 14px; }
   .kick { font: 500 11.5px/1.3 'IBM Plex Mono', monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--crema-deep); margin: 0; }
   h3 { font: 400 34px/1.05 'Instrument Serif', Georgia, serif; margin: 6px 0 4px; }

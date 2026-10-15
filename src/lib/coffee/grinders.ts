@@ -40,6 +40,13 @@ export const GROUPS: { id: Group; label: string; brew: string }[] = [
   { id: 'cold-brew', label: 'Cold brew', brew: 'cold-brew' },
 ];
 
+/** A method from a link, in either this tool's ids or the site's brewer ids (the Grind Guide sends `drip-machine`, `v60`). */
+export function groupFromParam(m: string | null): Group | null {
+  if (!m) return null;
+  if (m === 'kalita') return 'pourover';
+  return GROUPS.find((x) => x.id === m || x.brew === m)?.id ?? null;
+}
+
 export const settingsFor = (g: Grinder, group: Group) => g.settings.filter((s) => s.group === group);
 export const groupsFor = (g: Grinder) => GROUPS.filter((x) => settingsFor(g, x.id).length > 0);
 
