@@ -73,7 +73,8 @@ export function turnsText(v: number, g: Pick<Grinder, 'perTurn' | 'unit'>): stri
 /** The headline: "Start at 15", "Start between 18 and 35 clicks from zero", "Start in Medium". */
 export function headline(g: Grinder, s: Setting): string {
   if (s.headline) return s.headline;
-  if (s.published) return `As published: ${s.published}`;
+  // The source's own notation, numbers unchanged; "lists" rather than "exactly as published" (Muse WB1 G-5).
+  if (s.published) return `The source lists ${s.published}`;
   if (s.categories) return s.categories.length === 1 ? `Start at ${s.categories[0]}` : `Start between ${s.categories.join(' and ')}`;
   // Turn-counted grinders with a published turn size read in turns, the way the hand counts them:
   // full turns first, then the clicks or numbers past them, always with the unit.

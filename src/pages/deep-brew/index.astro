@@ -1,5 +1,9 @@
 ---
 import DeepBrewLayout from '../../layouts/DeepBrewLayout.astro';
+import grinderData from '../../data/grinders.json';
+// Counted from the data, so the stats can't drift from the calibrator (Muse WB1).
+const grinderCount = grinderData.grinders.length;
+const settingCount = grinderData.grinders.reduce((n, g) => n + g.settings.length, 0);
 ---
 
 <DeepBrewLayout
@@ -115,7 +119,7 @@ import DeepBrewLayout from '../../layouts/DeepBrewLayout.astro';
             Grind Calibrator
           </h3>
           <p class="text-sm text-db-text-muted leading-relaxed mb-4">
-            Pick your grinder and brew method to see the maker's published setting or range on your grinder's own dial, with its source.
+            Pick your grinder and brew method to see the setting or range its maker publishes (or a labelled secondary source), on your grinder's own dial, with its source.
           </p>
           <span class="font-db-mono text-xs text-db-copper/70 uppercase tracking-widest group-hover:text-db-copper transition-colors">
             Open Tool &rarr;
@@ -264,7 +268,7 @@ import DeepBrewLayout from '../../layouts/DeepBrewLayout.astro';
 
       <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
         <div class="p-5 bg-db-bg rounded-lg border border-db-border">
-          <div class="font-db-mono text-2xl text-db-copper font-medium mb-1">21</div>
+          <div class="font-db-mono text-2xl text-db-copper font-medium mb-1">{grinderCount}</div>
           <div class="text-xs text-db-text-muted uppercase tracking-wider">Grinders charted</div>
         </div>
         <div class="p-5 bg-db-bg rounded-lg border border-db-border">
@@ -272,7 +276,7 @@ import DeepBrewLayout from '../../layouts/DeepBrewLayout.astro';
           <div class="text-xs text-db-text-muted uppercase tracking-wider">Published water recipes</div>
         </div>
         <div class="p-5 bg-db-bg rounded-lg border border-db-border">
-          <div class="font-db-mono text-2xl text-db-amber font-medium mb-1">109</div>
+          <div class="font-db-mono text-2xl text-db-amber font-medium mb-1">{settingCount}</div>
           <div class="text-xs text-db-text-muted uppercase tracking-wider">Grind settings</div>
         </div>
         <div class="p-5 bg-db-bg rounded-lg border border-db-border">

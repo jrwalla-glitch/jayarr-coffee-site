@@ -18,6 +18,9 @@
   let askedFor = $state<Group | null>(null);
   // A ?grinder= link that names no grinder we include: said, not silently replaced.
   let badGrinder = $state(false);
+  // A ?method= or ?setting= value we don't recognise: said too, like every other bad link (Muse WB1 G-2).
+  let badMethod = $state(false);
+  let badSetting = $state(false);
   let mounted = $state(false);
   let g = $derived(grinderById(grinders, grinderId) ?? grinders[0]);
   let available = $derived(groupsFor(g));
@@ -35,13 +38,14 @@
     pickKey = null;
     askedFor = null;
     badGrinder = false;
+    badMethod = false; badSetting = false;
     const gg = grinderById(grinders, id);
-    // Keep the method if this grinder's maker publishes it; otherwise the first one it does.
-    if (gg && !settingsFor(gg, group).length) group = groupsFor(gg)[0]?.id ?? group;
+    // Keep the method if this grinder's maker publishes it; otherwise the first one it does, and say so (Muse WB1 G-3).
+    if (gg && !settingsFor(gg, group).length) { askedFor = group; group = groupsFor(gg)[0]?.id ?? group; }
     try { localStorage.setItem('jayarr-grinder', id); } catch { /* storage unavailable */ }
   }
-  const pickGroup = (id: Group) => { group = id; pickKey = null; askedFor = null; };
-  const pickRow = (r: Setting) => { group = r.group; pickKey = r.key; askedFor = null; };
+  const pickGroup = (id: Group) => { group = id; pickKey = null; askedFor = null; badMethod = false; badSetting = false; };
+  const pickRow = (r: Setting) => { group = r.group; pickKey = r.key; askedFor = null; badMethod = false; badSetting = false; };
   onMount(() => {
     const q = new URLSearchParams(location.search);
     let saved: string | null = null;
@@ -50,6 +54,7 @@
     if (id && grinderById(grinders, id)) grinderId = id;
     else if (q.get('grinder')) badGrinder = true;
     const m = groupFromParam(q.get('method'));
+    if (q.get('method') && !m) badMethod = true;
     if (m && settingsFor(g, m).length) group = m;
     else {
       if (m) askedFor = m;
@@ -58,6 +63,7 @@
     // A link to a second row for the same method (Breville's paper-filter drip) restores that row.
     const key = q.get('setting');
     if (key && settingsFor(g, group).some((r) => r.key === key)) pickKey = key;
+    else if (key && !badMethod && !askedFor) badSetting = true;
     mounted = true;
   });
   $effect(() => {
@@ -204,10 +210,11 @@
       <div class="chips" role="group" aria-label="Brew method">
         {#each GROUPS as m (m.id)}
           {@const has = available.some((x) => x.id === m.id)}
-          <button type="button" aria-pressed={group === m.id} disabled={!has} onclick={() => pickGroup(m.id)}>{m.label}</button>
+          <!-- crossed-out methods stay focusable, so keyboard and screen-reader users find them too -->
+          <button type="button" aria-pressed={group === m.id} aria-disabled={!has} class:off={!has} aria-label={has ? undefined : `${m.label}: no verified setting for this grinder`} onclick={() => { if (has) pickGroup(m.id); }}>{m.label}</button>
         {/each}
       </div>
-      {#if missing.length}<p class="why">Crossed out: no verified setting is included here for {missing.length === 1 ? 'this method' : 'these methods'}.</p>{/if}
+      {#if missing.length}<p class="why">Crossed out: no verified setting is included here for {missing.map((x) => x.label.toLowerCase()).join(', ').replace(/, ([^,]*)$/, ' or $1')}.</p>{/if}
     </div>
   </div>
 
@@ -223,6 +230,13 @@
             {@const a1 = ang(bandTo, g.scale)}
             <!-- the round caps sit inside the band's ends, so it stops exactly at the published values -->
             <path d={a1 - a0 > 2 * CAP ? arc(a0 + CAP, a1 - CAP, 120) : arc(a0, a1, 120)} class="band" class:short={a1 - a0 <= 2 * CAP} />
+            {#if s.openTop}
+              <!-- open-ended ("45 or coarser"): an arrow past the scale's end, so the band doesn't read as stopping there (Muse WB1 G-7) -->
+              {@const [tx, ty] = pt(a1 + 9, 120)}
+              {@const [bx0, by0] = pt(a1 - 1, 111)}
+              {@const [bx1, by1] = pt(a1 - 1, 129)}
+              <path d="M{tx} {ty} L{bx0} {by0} L{bx1} {by1} Z" class="openarrow" />
+            {/if}
           {/if}
           {#each ticks(g.scale) as t (t.v)}
             {@const a = ang(t.v, g.scale)}
@@ -290,7 +304,7 @@
           {@const x1 = rx(bandTo)}
           <rect x={x0} y="48" width={x1 - x0} height="12" rx="1" class="bandr" />
           <path d="M{x0 + 6} 42 L{x0} 42 L{x0} 66 L{x0 + 6} 66" class="brk" />
-          <path d="M{x1 - 6} 42 L{x1} 42 L{x1} 66 L{x1 - 6} 66" class="brk" />
+          {#if s.openTop}<path d="M{x1} 44 L{x1 + 10} 54 L{x1} 64 Z" class="openarrow" />{:else}<path d="M{x1 - 6} 42 L{x1} 42 L{x1} 66 L{x1 - 6} 66" class="brk" />{/if}
           {#if x1 - x0 >= (lowText(s).length + String(bandTo).length) * 3.6 + 14}
             <text x={x0} y="35" text-anchor="middle" class="endv">{lowText(s)}</text>
             <text x={x1} y="35" text-anchor={x1 > 296 ? 'end' : 'middle'} class="endv">{bandTo}</text>
@@ -331,7 +345,7 @@
       <p class="cap">{g.id.startsWith('hario') ? 'Hario names steps, not clicks: turn the nut until the grounds look like the step.' : 'Capresso names four steps, each with four positions on the hopper.'}{namedOn.alt.length ? ' The outlined step is the alternative the maker gives.' : ''}</p>
     {:else if s}
       <div class="textcard" role="img" aria-label="{g.short}: {s.published}, exactly as the source writes it.">
-        <p class="pubk">Exactly as the source writes it</p>
+        <p class="pubk">In the source's own notation</p>
         <p class="pub">{s.published}</p>
         {#if textNotes.length}<p class="pubn">{textNotes.join(' ')}</p>{/if}
       </div>
@@ -362,6 +376,8 @@
 
   <div class="answer" aria-live="polite">
     {#if badGrinder}<p class="asked">That link named a grinder this guide doesn't include, so this shows the {g.short}. Pick yours above.</p>{/if}
+    {#if badMethod}<p class="asked">That link named a brew method this guide doesn't know, so this shows {GROUPS.find((x) => x.id === group)!.label.toLowerCase()}. Pick yours above.</p>{/if}
+    {#if badSetting}<p class="asked">That link named a setting the {g.short} doesn't list for {GROUPS.find((x) => x.id === group)!.label.toLowerCase()}, so this shows the first one.</p>{/if}
     {#if askedFor && s}<p class="asked">The {g.short} has no included setting for {GROUPS.find((x) => x.id === askedFor)!.label.toLowerCase()}, so this shows {GROUPS.find((x) => x.id === group)!.label.toLowerCase()} instead. Pick another grinder to see {GROUPS.find((x) => x.id === askedFor)!.label.toLowerCase()}.</p>{/if}
     {#if s}
       <p class="kick">{g.short} · {s.label}{s.makerLabel ? ` (the maker's “${s.makerLabel}”)` : ''}</p>
@@ -378,8 +394,8 @@
       <p class="prov">{who === 'maker' ? `Published by ${brand}` : 'Secondary source'}{#if s.url}{' · '}<a href={s.url} rel="noopener" target="_blank" title={s.source ?? ''}>open the source</a>{/if}{s.checked ? `, checked ${s.checked}` : ''}.</p>
       {#if g.cautions.length}<div class="cbox"><p class="cauth">Cautions</p><ul class="cautions">{#each g.cautions as c (c)}<li>{c}</li>{/each}</ul></div>
       {:else}<p class="cbox nocaut"><span class="cauth">Cautions</span> None listed here; see the maker's manual.</p>{/if}
-      {#if g.kind !== 'named'}
-        <details class="zero" open={g.kind === 'turns' || g.kind === 'text'}><summary>{g.kind === 'turns' ? 'Where zero is, and what one step does' : g.kind === 'text' ? 'Where zero is' : 'How the dial is numbered'}</summary>
+      {#if g.zeroNote}
+        <details class="zero" open={g.kind === 'turns' || g.kind === 'text'}><summary>{g.kind === 'turns' ? 'Where zero is, and what one step does' : 'Where zero is'}</summary>
           <p>{g.zeroNote}</p>
           {#if g.stepNote}<p>{g.stepNote}</p>{:else if g.stepMicrons}<p>The maker says each click moves the burrs about {g.stepMicrons} µm. That's the burr movement, not the size of the grounds.</p>{/if}
         </details>
@@ -421,6 +437,7 @@
   .num.small { fill: #5b4a3d; font-size: 11px; }
   .fine { font: 500 10.5px 'IBM Plex Mono', monospace; fill: #75655a; letter-spacing: .04em; }
   .band { fill: none; stroke: #c3873a; stroke-width: 12; stroke-linecap: round; opacity: .9; }
+  .openarrow { fill: #c3873a; }
   .band.short { stroke-linecap: butt; }
   .karc { fill: none; stroke: #c3873a; stroke-width: 8; }
   .kend { stroke: #f3d7a8; stroke-width: 2.5; }
@@ -491,7 +508,7 @@
   .chips { display: flex; flex-wrap: wrap; gap: 6px; }
   .chips button { appearance: none; border: 1px solid var(--rule); background: #fff; border-radius: 999px; padding: 8px 13px; min-height: 40px; font: 500 13.5px 'IBM Plex Sans', sans-serif; color: var(--ink-2); cursor: pointer; }
   .chips button[aria-pressed='true'] { background: var(--ink); color: #f3ede3; border-color: var(--ink); }
-  .chips button:disabled { opacity: .72; color: var(--ink-3); cursor: not-allowed; text-decoration: line-through; text-decoration-color: rgba(117, 101, 90, .5); }
+  .chips button.off { opacity: .72; color: var(--ink-3); cursor: not-allowed; text-decoration: line-through; text-decoration-color: rgba(117, 101, 90, .5); }
   .why { margin: 8px 0 0; font-size: 12.5px; color: var(--ink-3); }
   .asked { margin: 0 0 10px; padding: 9px 12px; border-radius: 8px; background: #fff3e0; border: 1px solid #e9c48f; color: var(--ink); font-size: 14px; }
   .answer > :first-child { border-top: 1px solid var(--rule); padding-top: 14px; }
