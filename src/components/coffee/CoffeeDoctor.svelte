@@ -14,12 +14,15 @@
     muddy: { d: 'M0 10 Q5 15 10 10 T20 10 T30 10 T40 10', w: 3.4 },
     gushing: { d: 'M0 4 L40 16', w: 1.6 },
     choking: { d: 'M0 10 L12 10 M18 10 L22 10 M28 10 L30 10', w: 2.6 },
+    strong: { d: 'M0 10 Q10 -2 20 10 Q30 22 40 10', w: 4 },
+    bright: { d: 'M0 12 Q5 4 10 12 Q15 4 20 12 Q25 4 30 12 Q35 4 40 12', w: 1.6 },
+    off: { d: 'M0 10 L8 10 L12 4 L16 16 L20 10 L40 10', w: 1.6 },
   };
   const ZONE_XY = (z: ZoneId) => {
     const [e, s] = z.split('-');
     return { x: e === 'under' ? 1 / 6 : e === 'over' ? 5 / 6 : 0.5, y: s === 'weak' ? 1 / 6 : s === 'strong' ? 5 / 6 : 0.5 };
   };
-  const GUESS: Record<SymptomId, ZoneId> = { sour: 'under-ideal', bitter: 'over-ideal', weak: 'ideal-weak', 'harsh-mixed': 'under-strong', flat: 'ideal-weak', muddy: 'over-strong', gushing: 'under-weak', choking: 'over-strong' };
+  const GUESS: Record<SymptomId, ZoneId> = { sour: 'under-ideal', bitter: 'over-ideal', weak: 'ideal-weak', 'harsh-mixed': 'under-strong', flat: 'ideal-weak', muddy: 'over-strong', gushing: 'under-weak', choking: 'over-strong', strong: 'ideal-strong', bright: 'ideal-ideal', off: 'ideal-ideal' };
   const TOOL_LINK: Record<string, { href: string; label: string }> = {
     'grind-guide': { href: '/tools/grind-guide/', label: 'See what the grind should look like' },
     freshness: { href: '/tools/freshness/', label: 'Check how fresh your beans are' },
@@ -145,7 +148,7 @@
       <h3 tabindex="-1" class="cause">{dx.cause}</h3>
       <p class="why">{dx.why}</p>
       <div class="rx">
-        <div class="now"><span class="lbl">Change this now</span><p>{dx.changeNow}</p></div>
+        <div class="now"><span class="lbl">{dx.change ? `Change one thing: ${dx.change}` : 'Change this now'}</span><p>{dx.changeNow}</p>{#if dx.hold.length}<p class="hold">Keep the same: {dx.hold.join(', ')}.</p>{/if}</div>
         <div><span class="lbl">Next time, try</span><p>{dx.nextExperiment}</p></div>
         {#if dx.ruleOut}<div><span class="lbl">How you'll know</span><p>{dx.ruleOut}</p></div>{/if}
       </div>
@@ -195,6 +198,7 @@
   .rx p { margin: 6px 0 0; }
   .rx .now { background: linear-gradient(90deg, rgba(195, 135, 58, .13), transparent); padding-left: 10px; margin-left: -10px; border-radius: 6px; }
   .rx .now p { font: 400 22px/1.25 'Instrument Serif', Georgia, serif; }
+  .rx .now p.hold { font: 400 14px/1.45 'IBM Plex Sans', system-ui, sans-serif; color: var(--ink-2); margin-top: 6px; }
   .actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
   .go { background: var(--ink); color: #f3ede3; border-radius: 999px; padding: 13px 20px; font: 600 15px/1 'IBM Plex Sans', sans-serif; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
   .ghost { appearance: none; border: 1px solid var(--rule); background: #fff; color: var(--ink-2); border-radius: 999px; padding: 11px 15px; font: 500 14px/1 'IBM Plex Sans', sans-serif; cursor: pointer; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }

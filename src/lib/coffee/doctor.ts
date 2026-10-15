@@ -7,15 +7,18 @@ import { failure, success } from './units.ts';
 // compounds (synthesis §1, §14, Gagné); espresso dial-in by shot time and yield (§7, Rao).
 // The map is qualitative: taste cannot give a TDS or extraction reading.
 
-export type SymptomId = 'sour' | 'bitter' | 'weak' | 'harsh-mixed' | 'flat' | 'muddy' | 'gushing' | 'choking';
+export type SymptomId = 'sour' | 'bitter' | 'weak' | 'strong' | 'harsh-mixed' | 'bright' | 'flat' | 'off' | 'muddy' | 'gushing' | 'choking';
 
 export interface Symptom { id: SymptomId; label: string; tagline: string; espresso: boolean; filter: boolean }
 export const SYMPTOMS: Symptom[] = [
   { id: 'sour', label: 'Sour', tagline: 'Sharp, tangy, thin, like under-ripe fruit', espresso: true, filter: true },
   { id: 'bitter', label: 'Bitter', tagline: 'Harsh, ashy, drying finish', espresso: true, filter: true },
   { id: 'weak', label: 'Weak', tagline: 'Watery, thin, not enough coffee', espresso: false, filter: true },
+  { id: 'strong', label: 'Too strong', tagline: 'Heavy and intense, more than you want', espresso: true, filter: true },
   { id: 'harsh-mixed', label: 'Sour and bitter', tagline: 'Both at once, hollow in the middle', espresso: true, filter: true },
+  { id: 'bright', label: 'Bright, is that right?', tagline: 'Lively, fruity acidity you are not sure about', espresso: true, filter: true },
   { id: 'flat', label: 'Flat', tagline: 'Dull, papery, no aroma', espresso: true, filter: true },
+  { id: 'off', label: 'Tastes off', tagline: 'Stale oil, metallic, chlorine or musty notes', espresso: true, filter: true },
   { id: 'muddy', label: 'Muddy', tagline: 'Silty, gritty, heavy sludge', espresso: false, filter: true },
   { id: 'gushing', label: 'Runs too fast', tagline: 'Shot pours in under 20 seconds', espresso: true, filter: false },
   { id: 'choking', label: 'Barely drips', tagline: 'Shot drips slowly or not at all', espresso: true, filter: false },
@@ -23,19 +26,32 @@ export const SYMPTOMS: Symptom[] = [
 
 export interface Option { id: string; label: string }
 export interface Question { id: QuestionId; text: string; options: Option[] }
-export type QuestionId = 'time' | 'roast' | 'grinder' | 'age' | 'water' | 'measure' | 'shot';
+export type QuestionId = 'time' | 'roast' | 'grinder' | 'age' | 'water' | 'measure' | 'shot' | 'finish' | 'clean';
 
 export interface DoctorState { method: MethodId; symptom: SymptomId; answers: Partial<Record<QuestionId, string>> }
 
-const fmt = (s: number) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`;
+/** How the water meets the coffee decides which fixes make sense: drawdown advice means nothing to an immersion brew. */
+export type Family = 'espresso' | 'moka' | 'percolation' | 'immersion';
+export function familyOf(method: MethodId): Family {
+  if (method === 'espresso') return 'espresso';
+  if (method === 'moka') return 'moka';
+  return methodById(method)?.family === 'immersion' ? 'immersion' : 'percolation';
+}
+
+const fmt = (s: number) => (s >= 3600 ? `${Math.round(s / 3600)} h` : `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`);
 
 function question(id: QuestionId, method: MethodId): Question {
   const m = methodById(method);
+  const fam = familyOf(method);
   switch (id) {
     case 'time': {
       const t = m?.timeS ?? { min: 180, max: 240 };
-      return { id, text: `How long did the brew take, start to finish? Target for ${m?.label ?? 'this method'} is about ${fmt(t.min)}–${fmt(t.max)}.`,
-        options: [{ id: 'fast', label: `Faster than ${fmt(t.min)}` }, { id: 'ok', label: 'About on target' }, { id: 'slow', label: `Longer than ${fmt(t.max)}` }, { id: 'unsure', label: 'Not sure' }] };
+      const target = t.min === t.max ? `about ${fmt(t.min)}` : `about ${fmt(t.min)}–${fmt(t.max)}`;
+      const text = fam === 'immersion' ? `How long did it steep before you ${method === 'cold-brew' ? 'strained it' : 'pressed or poured'}? The usual ${m?.label ?? ''} steep is ${target}.`
+        : fam === 'moka' ? `How long from putting the pot on the heat to the coffee finishing? Usually ${target}.`
+        : method === 'drip-machine' ? `How long did the machine take to brew? Usually ${target}.`
+        : `How long did the brew take, from the first pour to the end of drawdown? Target for ${m?.label ?? 'this method'} is ${target}.`;
+      return { id, text, options: [{ id: 'fast', label: `Shorter than ${fmt(t.min)}` }, { id: 'ok', label: 'About on target' }, { id: 'slow', label: `Longer than ${fmt(t.max)}` }, { id: 'unsure', label: 'Not sure' }] };
     }
     case 'shot':
       return { id, text: 'How long did the shot run, from pressing the button to stopping it?',
@@ -50,6 +66,11 @@ function question(id: QuestionId, method: MethodId): Question {
       return { id, text: 'What water did you use?', options: [{ id: 'tap', label: 'Tap or filtered tap' }, { id: 'bottled', label: 'Bottled spring water' }, { id: 'pure', label: 'Distilled or reverse osmosis' }] };
     case 'measure':
       return { id, text: 'How did you measure the coffee?', options: [{ id: 'scale', label: 'On a scale' }, { id: 'scoop', label: 'Scoops or spoons' }, { id: 'machine', label: 'A pod or the machine decided' }] };
+    case 'finish':
+      return { id, text: 'How does a sip finish?', options: [{ id: 'sweet', label: 'Sweet and juicy, it lingers' }, { id: 'short', label: 'Sharp, then thin and gone' }, { id: 'drying', label: 'Dry and puckering' }] };
+    case 'clean':
+      return { id, text: fam === 'espresso' ? 'When did you last backflush and descale the machine?' : 'When did you last deep-clean the brewer (old oils, scale)?',
+        options: [{ id: 'recent', label: 'Within the last month' }, { id: 'months', label: 'Months ago' }, { id: 'never', label: 'Never, or not sure' }] };
   }
 }
 
@@ -57,11 +78,14 @@ function question(id: QuestionId, method: MethodId): Question {
 function questionIds(state: DoctorState): QuestionId[] {
   const esp = state.method === 'espresso';
   switch (state.symptom) {
-    case 'sour': return esp ? ['shot', 'roast'] : ['time', 'roast', 'grinder'];
+    case 'sour': return esp ? ['shot', 'roast'] : familyOf(state.method) === 'percolation' ? ['time', 'roast', 'grinder'] : ['time', 'roast'];
     case 'bitter': return esp ? ['shot', 'roast'] : ['time', 'roast'];
     case 'weak': return ['measure', 'time'];
+    case 'strong': return esp ? ['shot'] : ['measure', 'time'];
     case 'harsh-mixed': return esp ? ['shot', 'grinder'] : ['grinder', 'time'];
+    case 'bright': return ['finish', 'roast'];
     case 'flat': return ['age', 'water'];
+    case 'off': return ['clean', 'water'];
     case 'muddy': return ['grinder'];
     case 'gushing': case 'choking': return ['roast'];
   }
@@ -76,13 +100,26 @@ export function questionsFor(state: DoctorState): Question[] {
   return questionIds(state).map((id) => question(id, state.method));
 }
 
+export type Variable = 'grind' | 'dose' | 'yield' | 'water' | 'temperature' | 'steep time' | 'pour' | 'heat';
+const VARS: Record<Family, Variable[]> = {
+  espresso: ['grind', 'dose', 'yield', 'temperature'],
+  moka: ['grind', 'dose', 'water', 'heat'],
+  percolation: ['grind', 'dose', 'water', 'temperature', 'pour'],
+  immersion: ['grind', 'dose', 'water', 'temperature', 'steep time'],
+};
+
 export interface Diagnosis {
   cause: string;
   why: string;
+  /** The one change to make on the next brew. */
   changeNow: string;
+  /** The single brew variable that changes, if the fix is a brew variable at all. */
+  change?: Variable;
+  /** Everything else to keep exactly the same, so the next cup tests one thing. */
+  hold: Variable[];
   nextExperiment: string;
   ruleOut: string;
-  /** Where the cup likely sits on the extraction map. */
+  /** Where the cup likely sits on the extraction map: a hypothesis from taste, not a measurement. */
   zone: ZoneId;
   /** What to carry into the Brew Guide for the next brew. */
   next: { grind?: 'finer' | 'coarser'; strength?: Strength; temp?: 'hotter' | 'cooler'; tool?: string };
@@ -96,54 +133,120 @@ export function diagnose(state: DoctorState): Result<Diagnosis> {
   if (!m) return failure('unknown-method', 'method', 'Choose how you brewed it.');
   const sym = SYMPTOMS.find((s) => s.id === state.symptom);
   if (!sym) return failure('unknown-symptom', 'symptom', 'Choose what tastes wrong.');
-  const esp = state.method === 'espresso';
+  const fam = familyOf(state.method);
+  const esp = fam === 'espresso';
   if ((esp && !sym.espresso) || (!esp && !sym.filter)) return failure('symptom-method', 'symptom', `That symptom doesn't apply to ${m.label}.`);
   const missing = nextQuestion(state);
   if (missing) return failure('needs-answer', missing.id, missing.text);
   const a = state.answers;
-  const d = (x: Omit<Diagnosis, 'sourceIds'>): Result<Diagnosis> => success({ ...x, sourceIds: S });
+  const cold = state.method === 'cold-brew';
+  const vars = VARS[fam].filter((v) => !(cold && v === 'temperature'));
+  // Every diagnosis changes at most one brew variable and says what stays fixed.
+  const d = (x: Omit<Diagnosis, 'sourceIds' | 'hold'> & { hold?: Variable[] }): Result<Diagnosis> =>
+    success({ ...x, hold: x.hold ?? (x.change ? vars.filter((v) => v !== x.change) : []), sourceIds: S });
+  const t = esp ? a.shot : a.time;
+  const label = m.label;
+  const dark = a.roast === 'dark', light = a.roast === 'light';
 
+  // ── Paths that don't depend on the brew family ──
+  if (state.symptom === 'flat') {
+    if (a.age === 'old' || a.age === 'ground') return d({ cause: 'Stale coffee', why: 'Aroma compounds fade over the weeks after roasting, and much faster once the beans are ground.', changeNow: 'Brew the same recipe with beans roasted within the last month, ground just before brewing.', nextExperiment: 'Store beans airtight away from light; freeze what you won\'t use within a couple of weeks.', ruleOut: 'If fresh beans still taste flat, look at the water next.', zone: 'ideal-weak', next: { tool: 'freshness' } });
+    if (a.water === 'pure') return d({ cause: 'Water with almost no minerals', why: 'Distilled and RO water lack the calcium and magnesium that help pull flavour out, so cups tend to taste flat and hollow.', changeNow: 'Brew the same recipe with mineralised water: filtered tap, spring water or a brewing-water recipe.', change: 'water', hold: vars.filter((v) => v !== 'water'), nextExperiment: 'Try one of the recipes in the Water Recipe Builder and keep everything else the same.', ruleOut: 'If mineralised water fixes it, keep that water.', zone: 'under-weak', next: { tool: 'water' } });
+    return d({ cause: 'Flat flavour: freshness or water, probably', why: 'Dullness without sourness or bitterness usually comes from tired beans or from water that is very soft or very hard.', changeNow: 'Check the roast date first. If it is recent, brew the same recipe with bottled spring water to test the water alone.', nextExperiment: 'Change only the water for one brew; if that does not help, try a fresher bag.', ruleOut: 'If neither changes it, the coffee itself may just be mild: try a brighter, lighter-roasted bag.', zone: 'ideal-weak', next: { tool: 'freshness' } });
+  }
+  if (state.symptom === 'off') {
+    if (a.clean !== 'recent') return d({ cause: 'Old coffee oils or scale in the equipment', why: 'Coffee oils left in a brewer, carafe or machine go rancid and taint every cup; scale also harbours stale flavours.', changeNow: esp ? 'Backflush with a coffee-machine detergent, clean the portafilter and basket, and descale as the maker directs.' : 'Wash the brewer, filter holder and carafe with a coffee-equipment cleaner, and descale a kettle or machine.', nextExperiment: 'Brew your usual recipe again on the clean equipment, changing nothing else.', ruleOut: 'If a clean brewer still tastes off, test the water next.', zone: 'ideal-ideal', next: {} });
+    if (a.water === 'tap') return d({ cause: 'Chlorine or other tastes from the tap water', why: 'Many supplies are treated with chlorine or chloramine, which can come through as a medicinal or swimming-pool note.', changeNow: 'Brew the same recipe with water from a carbon filter, or with bottled spring water.', change: 'water', hold: vars.filter((v) => v !== 'water'), nextExperiment: 'If filtered water fixes it, keep filtering; a brewing-water recipe is the next step up.', ruleOut: 'If the off taste stays with different water, look at the beans: an oily, rancid smell from the bag means they are past it.', zone: 'ideal-ideal', next: { tool: 'water' } });
+    return d({ cause: 'The beans, probably', why: 'With clean equipment and neutral water, rancid, musty or cardboard notes usually come from old or badly stored beans.', changeNow: 'Smell the bag; if it smells stale or oily-rancid, brew the same recipe with a fresh bag.', nextExperiment: 'Store beans sealed, cool and dark; freeze what you won\'t use soon.', ruleOut: 'If a fresh bag still tastes off, ask the roaster or try another coffee.', zone: 'ideal-weak', next: { tool: 'freshness' } });
+  }
+  if (state.symptom === 'bright') {
+    if (a.finish === 'sweet') return d({ cause: 'Probably the coffee, not a fault', why: 'Lively, fruity acidity with a sweet, lingering finish is what many light and washed coffees taste like. Sourness from under-extraction is sharp and finishes thin.', changeNow: 'Nothing has to change. If you want it rounder, the gentlest change is a slightly stronger ratio.', nextExperiment: 'Brew it twice side by side, one a step finer, everything else the same, and keep the one you prefer.', ruleOut: 'If the finer one tastes sweeter and fuller, the first was a little under-extracted.', zone: 'ideal-ideal', next: {} });
+    if (a.finish === 'short') return d({ cause: 'Slightly under-extracted', why: 'Acidity that is sharp and then disappears suggests the brew stopped before enough sweetness came out.', changeNow: esp ? 'Grind one small step finer.' : fam === 'immersion' && cold ? 'Steep a few hours longer.' : 'Grind one step finer.', change: esp || !cold ? 'grind' : 'steep time', nextExperiment: light ? 'Light roasts often want the hot end of the range too; change that only after the grind.' : 'Taste again; if it turns bitter, come back half a step.', ruleOut: 'If it tastes sweeter and longer, keep the change.', zone: 'under-ideal', next: esp || !cold ? { grind: 'finer' } : {} });
+    return d({ cause: 'Astringency, from uneven extraction', why: 'A drying, puckering finish usually comes from very fine particles over-extracting while the rest under-extracts.', changeNow: fam === 'percolation' ? 'Grind one step coarser.' : esp ? 'Prepare the puck more evenly: break up clumps and tamp level.' : 'Grind one step coarser.', change: esp ? undefined : 'grind', hold: esp ? vars : undefined, nextExperiment: 'A burr grinder makes fewer fines than a blade; sifting out the dust also helps.', ruleOut: 'If the dryness fades, keep the coarser grind.', zone: 'over-ideal', next: esp ? { tool: 'grind-guide' } : { grind: 'coarser' } });
+  }
+
+  // ── Espresso ──
   if (esp) {
-    const shot = a.shot;
     switch (state.symptom) {
       case 'sour':
-      case 'gushing':
-        if (shot === 'slow' && state.symptom === 'sour') return d({ cause: 'Water is finding a channel through the puck', why: 'A slow shot that still tastes sour usually means most of the coffee was bypassed while a few paths over-ran.', changeNow: 'Break up clumps and level the grounds before tamping (a needle tool helps), then tamp level.', nextExperiment: 'Keep the grind; if it stays sour, add 0.5 g to the dose.', ruleOut: 'If the puck looks even and wet all over afterwards, channeling is less likely.', zone: 'under-strong', next: { tool: 'grind-guide' } });
-        return d({ cause: 'Under-extracted: the shot ran too fast', why: 'Acids dissolve first; a fast shot stops before the sugars and caramel notes come through.', changeNow: 'Grind finer, one small step, keeping the same dose and yield.', nextExperiment: a.roast === 'light' ? 'Light roasts often taste best a little longer: try a 1:2.5 ratio at the hotter end (95 °C).' : 'If it is still fast after two steps, add 0.5–1 g to the dose.', ruleOut: 'If it reaches 25–30 s and is still sour, the beans may be very light or very fresh; rest them a few more days.', zone: 'under-weak', next: { grind: 'finer', ...(a.roast === 'light' ? { temp: 'hotter' as const, strength: 'lighter' as Strength } : {}) } });
+        if (t === 'fast') return d({ cause: 'Under-extracted: the shot ran fast', why: 'Acids dissolve first; a fast shot stops before the sweeter compounds come through.', changeNow: 'Grind one small step finer.', change: 'grind', nextExperiment: 'Aim for about 25–30 s. If two steps finer still runs fast, then add 0.5 g to the dose, on its own.', ruleOut: 'If it reaches 25–30 s and is still sour, the beans may be very light or very fresh; see the next row.', zone: 'under-weak', next: { grind: 'finer' } });
+        if (t === 'slow') return d({ cause: 'Channeling: water found a path through the puck', why: 'A slow shot that still tastes sour suggests most of the coffee was bypassed while a few paths over-ran.', changeNow: 'Keep the recipe; break up clumps, distribute evenly and tamp level.', hold: vars, nextExperiment: 'If the next shot is still slow and sour, grind one step coarser, keeping dose and yield.', ruleOut: 'An even, wet puck and a steady, centred stream make channeling less likely.', zone: 'under-strong', next: { tool: 'grind-guide' } });
+        return d({ cause: light ? 'A light roast that needs more extraction' : 'Under-extracted at a normal shot time', why: 'On time but sour means the recipe, not the flow, is short: light and very fresh coffees often need more water through the puck.', changeNow: `Pull a longer shot: raise the yield by about a quarter (for example 36 g to 45 g).`, change: 'yield', nextExperiment: light ? 'If it is still sour, raise the brew temperature a couple of degrees, on its own.' : 'If it is still sour, grind one step finer, keeping the new yield.', ruleOut: 'If the longer shot turns thin or bitter, go halfway back.', zone: 'under-ideal', next: { strength: 'lighter' } });
       case 'bitter':
+        if (t === 'slow') return d({ cause: 'Over-extracted: the shot ran slow', why: 'The tail of a long shot carries the drying, bitter compounds.', changeNow: 'Grind one small step coarser.', change: 'grind', nextExperiment: 'Aim for about 25–30 s. If it is still slow, take 0.5 g off the dose, on its own.', ruleOut: 'If it runs 25–30 s and is still bitter, the roast may be the bitterness: see the next path.', zone: 'over-strong', next: { grind: 'coarser' } });
+        if (t === 'fast') return d({ cause: dark ? 'Roast bitterness, with a shot that ran fast' : 'Harshness from a fast, uneven shot', why: 'A fast shot is under-extracted overall, so bitterness here comes from the roast or from channeling, not from over-extraction.', changeNow: 'First bring the shot to 25–30 s: grind one small step finer.', change: 'grind', nextExperiment: dark ? 'Once the timing is right, if it is still bitter, pull a slightly shorter ratio (about 1:1.5–1:2) or drop the temperature a couple of degrees.' : 'Once the timing is right, check puck prep: clumps and an uneven tamp cause harsh, fast shots.', ruleOut: 'If the shot on time tastes balanced, the bitterness was the fast, uneven shot.', zone: dark ? 'over-ideal' : 'under-strong', next: { grind: 'finer' } });
+        return d({ cause: dark ? 'Roast bitterness' : 'A little over-extracted at a normal shot time', why: dark ? 'Dark roasts carry bitter roast compounds and extract easily, so even a well-timed shot can taste bitter.' : 'On time but bitter suggests a little too much water through the puck for this coffee.', changeNow: 'Pull a shorter shot: lower the yield by about a fifth (for example 36 g to 30 g).', change: 'yield', nextExperiment: dark ? 'If it is still bitter, drop the brew temperature a couple of degrees, on its own.' : 'If it is still bitter, grind one step coarser, keeping the new yield.', ruleOut: 'If the shorter shot turns sour, go halfway back.', zone: 'over-ideal', next: { strength: 'stronger' } });
+      case 'strong':
+        if (t === 'slow') return d({ cause: 'Over-extracted and heavy: the shot ran slow', why: 'A long, slow shot is both stronger and more bitter.', changeNow: 'Grind one small step coarser.', change: 'grind', nextExperiment: 'Aim for about 25–30 s before changing anything else.', ruleOut: 'If it is on time and still too intense, see the ratio.', zone: 'over-strong', next: { grind: 'coarser' } });
+        return d({ cause: 'Espresso is intense by design; the ratio sets it', why: 'Strength comes mostly from how much liquid you take per gram of coffee.', changeNow: 'Pull a longer ratio, for example 1:2.5 instead of 1:2, or add hot water to the cup for an americano.', change: 'yield', nextExperiment: 'If a longer shot tastes thin or bitter, keep the shot and dilute in the cup instead.', ruleOut: 'If milk drinks are the goal, the stronger shot may be right.', zone: 'ideal-strong', next: { strength: 'lighter' } });
+      case 'gushing':
+        return d({ cause: 'The grind is too coarse for this coffee', why: 'Water rushes through a coarse puck and leaves the coffee under-extracted, usually sour.', changeNow: 'Grind one small step finer.', change: 'grind', nextExperiment: light ? 'Light roasts are dense and resist extraction: you may need several steps finer.' : 'If two steps finer still gushes, add 0.5 g to the dose, on its own.', ruleOut: 'A 25–30 s shot at the same dose and yield means the grind is right.', zone: 'under-weak', next: { grind: 'finer' } });
       case 'choking':
-        return d({ cause: 'Over-extracted: the shot ran too slowly', why: 'The last part of a long shot carries the drying, bitter compounds.', changeNow: 'Grind coarser, one small step, keeping the same dose and yield.', nextExperiment: a.roast === 'dark' ? 'Dark roasts extract easily: try the cooler end (91 °C) and a shorter 1:1.5–1:2 ratio.' : 'If it is still slow, take 0.5–1 g off the dose.', ruleOut: 'If it runs 25–30 s and is still bitter, the roast itself may be the bitterness; try a shorter ratio.', zone: 'over-strong', next: { grind: 'coarser', ...(a.roast === 'dark' ? { temp: 'cooler' as const, strength: 'stronger' as Strength } : {}) } });
+        return d({ cause: 'The grind is too fine for this coffee', why: 'A puck that is too fine resists the water and over-extracts what does come through.', changeNow: 'Grind one small step coarser.', change: 'grind', nextExperiment: dark ? 'Dark roasts are brittle and make more fines: you may need a coarser setting than for lighter coffee.' : 'If it still chokes, take 0.5 g off the dose, on its own.', ruleOut: 'A 25–30 s shot at the same dose and yield means the grind is right.', zone: 'over-strong', next: { grind: 'coarser' } });
       case 'harsh-mixed':
-        return d({ cause: 'Uneven extraction (channeling)', why: 'Part of the puck over-extracts while the rest is bypassed, so you taste both ends at once.', changeNow: 'Distribute the grounds evenly and tamp level; check the basket isn\'t over- or under-filled.', nextExperiment: a.grinder === 'blade' || a.grinder === 'pre' ? 'Espresso needs fresh, even, fine grounds from a burr grinder made for it.' : 'If it persists, grind a step finer and lower the dose by 0.5 g.', ruleOut: 'Spurts or a split, uneven stream from the portafilter confirm channeling.', zone: 'under-strong', next: {} });
-      case 'flat':
-        return flat();
+        return d({ cause: 'Uneven extraction (channeling)', why: 'Part of the puck over-extracts while the rest is bypassed, so you taste both ends at once.', changeNow: 'Keep the recipe; distribute evenly, tamp level and check the basket isn\'t over- or under-filled.', hold: vars, nextExperiment: a.grinder === 'blade' || a.grinder === 'pre' ? 'Espresso needs fresh, even, fine grounds from a grinder made for it; pre-ground and blade-ground coffee rarely work.' : 'If it persists, try one step finer with 0.5 g less coffee.', ruleOut: 'Spurts or a split, uneven stream from the portafilter confirm channeling.', zone: 'under-strong', next: { tool: 'grind-guide' } });
     }
   }
 
-  function flat(): Result<Diagnosis> {
-    if (a.age === 'old' || a.age === 'ground') return d({ cause: 'Stale coffee', why: 'Aroma compounds fade within weeks of roasting, and within minutes to hours once ground.', changeNow: 'Use beans roasted within the last month and grind just before brewing.', nextExperiment: 'Store beans airtight away from light; freeze what you won\'t use within two weeks.', ruleOut: 'If fresh beans still taste flat, look at the water.', zone: 'ideal-weak', next: { tool: 'freshness' } });
-    if (a.water === 'pure') return d({ cause: 'Water with no minerals', why: 'Distilled and RO water lack the minerals that pull flavour out of coffee, so cups taste flat and hollow.', changeNow: 'Brew with filtered tap or spring water, or add minerals to RO water.', nextExperiment: 'Try a mineral recipe from the Water Recipe Builder.', ruleOut: 'If mineral water fixes it, keep the recipe.', zone: 'under-weak', next: { tool: 'water' } });
-    return d({ cause: 'Flat flavour: freshness or water', why: 'With the brew on target, dullness usually comes from tired beans or water that is too soft or too hard.', changeNow: 'Check the roast date first; then try a different water.', nextExperiment: 'Brew the same coffee with bottled spring water to isolate the water.', ruleOut: 'If both are fine, try a brighter, lighter-roasted coffee.', zone: 'ideal-weak', next: { tool: 'freshness' } });
+  // ── Moka pot ──
+  if (fam === 'moka') {
+    switch (state.symptom) {
+      case 'bitter': return d({ cause: t === 'slow' ? 'Too long on the heat' : t === 'fast' ? 'Too much heat: it rushed and boiled through' : 'Too much heat at the end', why: 'A moka pot pushes hotter and hotter water, then steam, through the coffee as it finishes, which pulls harsh, burnt flavours.', changeNow: 'Use the same coffee, but start with hot water in the base, use medium heat, and take it off the moment it starts to sputter.', change: 'heat', nextExperiment: dark ? 'Dark roasts are easy to over-extract here: if it is still bitter, grind a touch coarser.' : 'Cool the base under the tap right after it sputters to stop the brew.', ruleOut: 'If it is smooth with the heat lower, keep that.', zone: 'over-strong', next: {} });
+      case 'sour': return d({ cause: t === 'fast' ? 'Ran through too quickly' : 'Under-extracted', why: 'Sour moka coffee usually means the water passed through too fast or too cool.', changeNow: 'Grind one step finer (still coarser than espresso), with the basket filled level and not tamped.', change: 'grind', nextExperiment: 'Starting with hot water in the base helps too; change that separately.', ruleOut: 'If it turns bitter, come back half a step.', zone: 'under-weak', next: { grind: 'finer' } });
+      case 'weak': return d({ cause: 'Too little coffee in the basket', why: 'A moka pot is designed around a full basket; a partly filled one lets the water rush through.', changeNow: 'Fill the basket level to the top, without tamping.', change: 'dose', nextExperiment: 'If it is still weak, grind one step finer.', ruleOut: '', zone: 'ideal-weak', next: {} });
+      case 'strong': return d({ cause: 'Moka coffee is concentrated by design', why: 'It sits between filter coffee and espresso in strength; under-filling the basket to weaken it makes it brew unevenly.', changeNow: 'Brew as usual and add hot water to the cup to taste.', hold: vars, nextExperiment: 'If it is also bitter, lower the heat next time.', ruleOut: '', zone: 'ideal-strong', next: {} });
+      case 'harsh-mixed': return d({ cause: 'Uneven extraction', why: 'Uneven grounds or a tilted, partly filled basket let water channel through.', changeNow: 'Fill the basket level, wipe the rim clean and screw the pot tight.', hold: vars, nextExperiment: a.grinder === 'blade' ? 'A burr grinder makes much more even grounds.' : 'Then try one step coarser.', ruleOut: '', zone: 'under-strong', next: {} });
+      case 'muddy': return d({ cause: 'Grounds too fine for a moka pot', why: 'Very fine coffee passes the filter plate and can clog it.', changeNow: 'Grind one step coarser.', change: 'grind', nextExperiment: a.grinder === 'blade' ? 'A burr grinder makes far fewer fines.' : 'Check the filter plate and gasket are clean and seated.', ruleOut: '', zone: 'over-strong', next: { grind: 'coarser' } });
+    }
   }
 
-  const t = a.time;
-  switch (state.symptom) {
-    case 'sour':
-      if (t === 'slow') return d({ cause: 'Uneven extraction: water ran around the coffee', why: 'Sour and slow together usually means a clogged or channelled bed: some grounds over-ran while most were bypassed.', changeNow: 'Pour more gently in the centre and swirl to flatten the bed; check for a fines layer clogging the filter.', nextExperiment: a.grinder === 'blade' ? 'A blade grinder makes dust and boulders together; a burr grinder fixes this.' : 'Grind a step coarser to clear the clog, then fine-tune.', ruleOut: 'A flat, even bed after drawdown suggests the grind, not the pour.', zone: 'under-strong', next: a.grinder === 'blade' ? { tool: 'grind-guide' } : { grind: 'coarser' } });
-      return d({ cause: 'Under-extracted', why: 'Acids dissolve first; the brew stopped before enough of the sweeter compounds came out.', changeNow: t === 'fast' ? 'Grind finer: one or two steps.' : 'Use hotter water, right off the boil.', nextExperiment: a.roast === 'light' ? 'Light roasts need the hot end of the range and a slightly finer grind.' : 'If it is still sour, grind finer again.', ruleOut: 'If it turns bitter, you went too far: come back half a step.', zone: 'under-weak', next: t === 'fast' ? { grind: 'finer' } : { temp: 'hotter' } });
-    case 'bitter':
-      if (t === 'fast') return d({ cause: 'Bitterness from the roast, not the brew', why: 'A fast brew that still tastes bitter points at dark-roast compounds rather than over-extraction.', changeNow: 'Brew cooler (about 91 °C) and use a lighter ratio.', nextExperiment: 'Try a lighter roast if you want less bitterness overall.', ruleOut: 'If cooler water fixes it, keep it.', zone: 'over-strong', next: { temp: 'cooler', strength: 'lighter' } });
-      return d({ cause: 'Over-extracted', why: 'The last compounds to dissolve are the bitter, drying ones; the water pulled too much.', changeNow: t === 'slow' ? 'Grind coarser: one or two steps.' : 'Use slightly cooler water.', nextExperiment: a.roast === 'dark' ? 'Dark roasts extract easily: brew at the cool end and grind a touch coarser.' : 'If it is still bitter, shorten the brew.', ruleOut: 'If it turns sour, you went too far: come back half a step.', zone: 'over-strong', next: t === 'slow' ? { grind: 'coarser' } : { temp: 'cooler' } });
-    case 'weak':
-      if (a.measure === 'scoop') return d({ cause: 'Not enough coffee (measured by volume)', why: 'Scoops vary a lot with the bean and grind; weak usually means fewer grams than intended.', changeNow: 'Weigh the coffee; use the Brew Guide amount for your cup.', nextExperiment: 'Then adjust strength with the ratio, not by guessing scoops.', ruleOut: 'If a weighed dose is still weak, see the brew time.', zone: 'ideal-weak', next: { strength: 'stronger' } });
-      if (t === 'fast') return d({ cause: 'Weak and under-extracted', why: 'Water passed too quickly to dissolve enough.', changeNow: 'Grind finer.', nextExperiment: 'If it is still weak, use a stronger ratio.', ruleOut: '', zone: 'under-weak', next: { grind: 'finer' } });
-      return d({ cause: 'Too dilute: a ratio problem', why: 'Strength is set mostly by the ratio of coffee to water; extraction can be fine and the cup still weak.', changeNow: 'Use more coffee for the same water (a stronger ratio).', nextExperiment: 'Move one step stronger at a time, e.g. 1:16 to 1:15.', ruleOut: 'If it turns harsh as well as strong, grind slightly coarser.', zone: 'ideal-weak', next: { strength: 'stronger' } });
-    case 'harsh-mixed':
-      return d({ cause: 'Uneven extraction', why: 'Some grounds over-extract while others barely extract, so you taste both bitter and sour.', changeNow: a.grinder === 'blade' || a.grinder === 'pre' ? 'Use a burr grinder; a blade makes dust and boulders together.' : 'Pour evenly and swirl to keep the bed flat.', nextExperiment: 'Then fine-tune the grind one step at a time.', ruleOut: 'If the cup is clean but simply sour or bitter, see those symptoms.', zone: 'under-strong', next: { tool: 'grind-guide' } });
-    case 'flat':
-      return flat();
-    case 'muddy':
-      return d({ cause: 'Too many fine particles in the cup', why: 'Metal and mesh filters let fines through; very fine or uneven grounds make it worse.', changeNow: state.method === 'french-press' ? 'After pressing, let it settle a few minutes and pour gently, leaving the last bit in the press.' : 'Grind coarser.', nextExperiment: a.grinder === 'blade' ? 'A burr grinder makes far fewer fines.' : 'Pour through a paper filter for a much cleaner cup.', ruleOut: '', zone: 'over-strong', next: { grind: 'coarser' } });
+  // ── Percolation (pour-over, drip) ──
+  if (fam === 'percolation') {
+    switch (state.symptom) {
+      case 'sour':
+        if (t === 'slow') return d({ cause: 'Uneven extraction: a clogged bed', why: 'Slow and sour together usually mean fines clogged the filter, so water ran around most of the coffee.', changeNow: a.grinder === 'blade' ? 'A blade grinder makes dust and boulders together; until you have a burr grinder, grind one step coarser.' : 'Grind one step coarser to clear the clog.', change: 'grind', nextExperiment: state.method === 'drip-machine' ? 'Use the right filter size and level the bed before brewing.' : 'Pour gently, keep the bed flat with a light swirl, and don\'t pour onto the paper.', ruleOut: 'If the drawdown speeds up and the cup sweetens, it was the clog.', zone: 'under-strong', next: { grind: 'coarser' } });
+        if (t === 'fast') return d({ cause: 'Under-extracted: the water ran through too fast', why: 'Acids dissolve first; the brew stopped before enough of the sweeter compounds came out.', changeNow: 'Grind one or two steps finer.', change: 'grind', nextExperiment: light ? 'Light roasts also want the hot end of the range; change that separately.' : 'If it is still sour, go one step finer again.', ruleOut: 'If it turns bitter, you went too far: come back half a step.', zone: 'under-weak', next: { grind: 'finer' } });
+        return d({ cause: 'Under-extracted at a normal brew time', why: 'On time but sour usually means the water was too cool or the coffee is a dense, light roast.', changeNow: state.method === 'drip-machine' ? 'Grind one step finer; most machines don\'t let you change the temperature.' : 'Use hotter water, right off the boil.', change: state.method === 'drip-machine' ? 'grind' : 'temperature', nextExperiment: 'If it is still sour, grind one step finer as a separate change.', ruleOut: 'If it turns bitter, go halfway back.', zone: 'under-ideal', next: state.method === 'drip-machine' ? { grind: 'finer' } : { temp: 'hotter' } });
+      case 'bitter':
+        if (t === 'slow') return d({ cause: 'Over-extracted: the brew ran long', why: 'The last compounds to dissolve are the bitter, drying ones.', changeNow: 'Grind one or two steps coarser.', change: 'grind', nextExperiment: dark ? 'Dark roasts extract easily; cooler water helps too, as a separate change.' : 'If it is still bitter, check for fines clogging the filter.', ruleOut: 'If it turns sour, come back half a step.', zone: 'over-strong', next: { grind: 'coarser' } });
+        if (t === 'fast' && dark) return d({ cause: 'Roast bitterness, not over-extraction', why: 'A fast brew isn\'t over-extracted overall, so the bitterness is coming from the roast.', changeNow: state.method === 'drip-machine' ? 'Use a lighter ratio: a little less coffee for the same water.' : 'Brew with slightly cooler water, about 90 °C.', change: state.method === 'drip-machine' ? 'dose' : 'temperature', nextExperiment: 'A lighter roast is the bigger change if you want less bitterness overall.', ruleOut: 'If the change helps, keep it.', zone: 'over-ideal', next: state.method === 'drip-machine' ? { strength: 'lighter' } : { temp: 'cooler' } });
+        if (t === 'fast') return d({ cause: 'Harshness from uneven flow, not a long brew', why: 'A fast brew isn\'t over-extracted overall; a harsh edge usually means water rushed through channels, over-extracting a little of the coffee and bypassing the rest.', changeNow: state.method === 'drip-machine' ? 'Level the bed before brewing and check the spray head wets all of it.' : 'Pour more slowly and evenly, in small circles, so the water goes through the coffee rather than around it.', change: state.method === 'drip-machine' ? undefined : 'pour', hold: state.method === 'drip-machine' ? vars : undefined, nextExperiment: a.roast === 'unsure' ? 'If it stays harsh, the roast may be darker than it looks: try slightly cooler water as a separate change.' : 'A blade grinder\'s dust causes the same harshness; a burr grinder fixes it.', ruleOut: 'If an even pour tastes balanced, the flow was the problem.', zone: 'under-strong', next: { tool: 'grind-guide' } });
+        return d({ cause: dark ? 'Roast bitterness' : 'Over-extracted at a normal brew time', why: dark ? 'Dark roasts carry bitter roast compounds and extract quickly.' : 'On time but bitter suggests the grind is a little fine or the water a little hot for this coffee.', changeNow: 'Grind one step coarser.', change: 'grind', nextExperiment: 'If it is still bitter, use slightly cooler water as a separate change.', ruleOut: 'If it turns sour, come back half a step.', zone: 'over-ideal', next: { grind: 'coarser' } });
+      case 'harsh-mixed':
+        return d({ cause: 'Uneven extraction', why: 'Some grounds over-extract while others barely extract, so you taste both bitter and sour.', changeNow: a.grinder === 'blade' || a.grinder === 'pre' ? 'Use a burr grinder; a blade makes dust and boulders together, and pre-ground coffee is ground for an average brewer.' : state.method === 'drip-machine' ? 'Level the bed and check the spray head wets it evenly.' : 'Pour evenly and swirl to keep the bed flat.', hold: a.grinder === 'blade' || a.grinder === 'pre' ? vars.filter((v) => v !== 'grind') : vars.filter((v) => v !== 'pour'), change: a.grinder === 'blade' || a.grinder === 'pre' ? 'grind' : 'pour', nextExperiment: 'Then fine-tune the grind one step at a time.', ruleOut: 'If the cup is clean but simply sour or bitter, see those symptoms.', zone: 'under-strong', next: { tool: 'grind-guide' } });
+      case 'muddy':
+        return d({ cause: 'Fines getting through', why: 'Paper filters usually hold fines back, so a muddy pour-over points at a torn or wrong-size filter or very fine grounds.', changeNow: 'Grind one step coarser and check the filter is the right size and seated.', change: 'grind', nextExperiment: a.grinder === 'blade' ? 'A burr grinder makes far fewer fines.' : 'Rinse the paper before brewing.', ruleOut: '', zone: 'over-strong', next: { grind: 'coarser' } });
+    }
+  }
+
+  // ── Immersion (French press, AeroPress, cold brew): no drawdown, so time is steep time ──
+  if (fam === 'immersion') {
+    switch (state.symptom) {
+      case 'sour':
+        if (t === 'fast') return d({ cause: 'Steeped too briefly', why: 'Acids dissolve first; a short steep stops before the sweeter compounds come out.', changeNow: `Steep for the full ${fmt(m.timeS.min)}.`, change: 'steep time', nextExperiment: 'If it is still sour at the full steep, grind one step finer as a separate change.', ruleOut: 'If it tastes sweeter, keep the longer steep.', zone: 'under-weak', next: {} });
+        return d({ cause: 'Under-extracted', why: cold ? 'Cold water extracts slowly; a coarse grind or a cold room slows it further.' : 'A full steep that is still sour usually means the grind is coarse or the water was cool.', changeNow: 'Grind one step finer.', change: 'grind', nextExperiment: cold ? 'If it is still sour, steep a few hours longer as a separate change.' : 'If it is still sour, use water just off the boil as a separate change.', ruleOut: 'If it turns bitter, come back half a step.', zone: 'under-ideal', next: { grind: 'finer' } });
+      case 'bitter':
+        if (t === 'slow') return d({ cause: 'Steeped too long', why: 'The longer coffee sits in water, the more of the bitter, drying compounds come out.', changeNow: `Steep for ${fmt(m.timeS.max)}${cold ? '' : ', then pour it all off the grounds straight away'}.`, change: 'steep time', nextExperiment: state.method === 'french-press' ? 'Coffee left in the press keeps extracting: decant into a cup or carafe.' : 'If it is still bitter at the normal steep, grind one step coarser as a separate change.', ruleOut: 'If it tastes smoother, keep the shorter steep.', zone: 'over-strong', next: {} });
+        if (t === 'fast' && dark && !cold) return d({ cause: 'Roast bitterness, not over-extraction', why: 'A short steep isn\'t over-extracted, so bitterness comes from the roast itself.', changeNow: 'Use slightly cooler water, about 90 °C.', change: 'temperature', nextExperiment: 'A lighter roast is the bigger change if you want less bitterness overall.', ruleOut: 'If it helps, keep it.', zone: 'over-ideal', next: { temp: 'cooler' } });
+        return d({ cause: dark ? 'Roast bitterness' : 'Over-extracted', why: dark ? 'Dark roasts extract quickly and carry roast bitterness.' : 'At the usual steep, bitterness suggests the grind is a little fine for this coffee.', changeNow: 'Grind one step coarser.', change: 'grind', nextExperiment: cold ? 'If it is still bitter, steep a few hours less as a separate change.' : state.method === 'french-press' ? 'Pour the coffee off the grounds as soon as you press.' : 'If it is still bitter, use slightly cooler water as a separate change.', ruleOut: 'If it turns sour, come back half a step.', zone: 'over-ideal', next: { grind: 'coarser' } });
+      case 'harsh-mixed':
+        return d({ cause: 'Uneven extraction', why: 'A mix of dust and large pieces means some grounds over-extract while others barely start.', changeNow: a.grinder === 'blade' || a.grinder === 'pre' ? 'Use a burr grinder for more even grounds.' : 'Stir once after adding the water so every ground is wet, then leave it.', change: a.grinder === 'blade' || a.grinder === 'pre' ? 'grind' : undefined, hold: a.grinder === 'blade' || a.grinder === 'pre' ? undefined : vars, nextExperiment: 'Then fine-tune the grind one step at a time.', ruleOut: 'If the cup is clean but simply sour or bitter, see those symptoms.', zone: 'under-strong', next: { tool: 'grind-guide' } });
+      case 'muddy':
+        return d({ cause: 'Fines in the cup', why: state.method === 'aeropress' ? 'A paper-filtered AeroPress cup is usually clean, so muddiness points to a metal filter or very fine grounds.' : 'Mesh and cloth filters let the finest particles through.', changeNow: state.method === 'french-press' ? 'Same recipe: after pressing, wait a minute and pour gently, leaving the last bit in the press.' : 'Grind one step coarser.', change: state.method === 'french-press' ? undefined : 'grind', hold: state.method === 'french-press' ? vars : undefined, nextExperiment: a.grinder === 'blade' ? 'A burr grinder makes far fewer fines.' : 'For a much cleaner cup, pour through a paper filter.', ruleOut: '', zone: 'over-strong', next: state.method === 'french-press' ? {} : { grind: 'coarser' } });
+    }
+  }
+
+  // ── Strength (filter, moka handled above): weak and too strong ──
+  if (state.symptom === 'weak') {
+    if (a.measure === 'scoop') return d({ cause: 'Not enough coffee, measured by volume', why: 'Scoops vary a lot with the bean and grind; weak usually means fewer grams than intended.', changeNow: 'Weigh the coffee: use the Brew Guide amount for your cup.', change: 'dose', nextExperiment: 'Then adjust strength with the ratio, not by guessing scoops.', ruleOut: 'If a weighed dose is still weak, look at the brew time.', zone: 'ideal-weak', next: { strength: 'stronger' } });
+    if (t === 'fast' && fam === 'percolation') return d({ cause: 'Weak and under-extracted', why: 'Water passed through too quickly to dissolve enough.', changeNow: 'Grind one step finer.', change: 'grind', nextExperiment: 'If it is still weak but no longer sour, use a stronger ratio as a separate change.', ruleOut: '', zone: 'under-weak', next: { grind: 'finer' } });
+    if (t === 'fast' && fam === 'immersion') return d({ cause: 'Steeped too briefly', why: 'A short steep leaves the cup thin as well as sour.', changeNow: `Steep for the full ${fmt(m.timeS.min)}.`, change: 'steep time', nextExperiment: 'If it is still weak, use a stronger ratio as a separate change.', ruleOut: '', zone: 'under-weak', next: {} });
+    return d({ cause: cold ? 'Diluted too far' : 'Too dilute: a ratio problem', why: cold ? 'Cold brew concentrate is diluted to serve; strength depends on how much water goes in.' : 'Strength is set mostly by the ratio of coffee to water; extraction can be fine and the cup still weak.', changeNow: cold ? 'Dilute the concentrate less when you serve it, for example 1:1 instead of 1:2.' : 'Use more coffee for the same water, one step stronger (for example 1:16 to 1:15).', change: 'dose', nextExperiment: 'Move one step at a time.', ruleOut: 'If it turns harsh as well as strong, grind slightly coarser.', zone: 'ideal-weak', next: { strength: 'stronger' } });
+  }
+  if (state.symptom === 'strong') {
+    if (a.measure === 'scoop') return d({ cause: 'More coffee than intended, measured by volume', why: 'Scoops vary with the bean and grind; a heaped scoop of dense beans can be far more coffee than the recipe means.', changeNow: 'Weigh the coffee: use the Brew Guide amount for your cup.', change: 'dose', nextExperiment: 'Then adjust strength with the ratio.', ruleOut: '', zone: 'ideal-strong', next: { strength: 'lighter' } });
+    if (t === 'slow' && fam === 'percolation') return d({ cause: 'Over-extracted and heavy: the brew ran long', why: 'A slow brew makes the cup both stronger and more bitter.', changeNow: 'Grind one step coarser.', change: 'grind', nextExperiment: 'If it is on time and still too strong, use a lighter ratio as a separate change.', ruleOut: '', zone: 'over-strong', next: { grind: 'coarser' } });
+    return d({ cause: 'Too concentrated: a ratio problem', why: 'Strength is set mostly by the ratio of coffee to water.', changeNow: cold ? 'Dilute the concentrate more when you serve it.' : 'Use a little less coffee for the same water, one step lighter (for example 1:15 to 1:16), or add hot water to the cup.', change: 'dose', nextExperiment: 'Move one step at a time.', ruleOut: 'If it turns thin and sour, go halfway back.', zone: 'ideal-strong', next: { strength: 'lighter' } });
   }
   return failure('no-diagnosis', 'symptom', 'Try another symptom.');
 }
