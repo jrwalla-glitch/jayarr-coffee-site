@@ -23,6 +23,8 @@
     const t = x.timeS;
     if (id === 'espresso') return { fine: `The shot usually runs longer than about ${t.max} s at the same dose and yield, and can taste bitter or harsh.`, coarse: `The shot usually runs faster than about ${t.min} s, and can taste sour or thin.` };
     if (id === 'moka') return { fine: 'It can flow slowly or sputter, taste harsh, or clog the filter plate.', coarse: 'Coffee may rush out early and taste weak or sour.' };
+    // A drip machine's pump sets its run time, so the visible signs are the basket and the taste.
+    if (id === 'drip-machine') return { fine: 'The basket can flood or overflow, and the coffee can taste bitter.', coarse: 'Water runs straight through, and the coffee can taste weak or sour.' };
     if (x.family === 'percolation') return { fine: `It usually drains slower than this recipe's ${mmss(t.max)}, and can taste bitter or dry.`, coarse: `It usually drains faster than ${mmss(t.min)}, and can taste sour or thin.` };
     return { fine: id === 'aeropress' ? 'Pressing gets hard, and the cup can taste bitter.' : 'The cup can turn silty or muddy, harder to press or filter, and sometimes bitter.', coarse: id === 'aeropress' ? 'Water runs through before you press, and the cup can taste weak or sour.' : `At the usual ${mmss(t.min)} steep the cup can taste weak or sour.` };
   }
@@ -101,6 +103,8 @@
       <circle cx="140" cy="140" r="130" fill="none" stroke="#2a1d15" stroke-width="1.2" opacity=".4" />
       <!-- 1 mm scale bar -->
       <line x1="96" x2={96 + 1000 * PX_PER_UM} y1="246" y2="246" stroke="#2a1d15" stroke-width="3" />
+      <!-- A light pill keeps the scale readable over dark grounds. -->
+      <rect x={96 + 500 * PX_PER_UM - 22} y="226" width="44" height="18" rx="9" fill="#fbf8f3" opacity=".92" />
       <text x={96 + 500 * PX_PER_UM} y="240" text-anchor="middle" class="sb">1 mm</text>
     </svg>
     <p class="cap">Drawn to the 1 mm scale bar. An illustration of a typical spread, not a photo or a measurement.</p>

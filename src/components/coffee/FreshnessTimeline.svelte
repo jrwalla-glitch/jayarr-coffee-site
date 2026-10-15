@@ -9,6 +9,7 @@
   const daysAgo = (n: number) => { const d = new Date(); return isoLocal(new Date(d.getFullYear(), d.getMonth(), d.getDate() - n)); };
   let roastDate = $state(daysAgo(10));
   let dateInvalid = $state(false);
+  let linkProblem = $state(false);
   let use = $state<FreshUse>('filter');
   let storage = $state<Storage>('opened');
   let frozenOn = $state(daysAgo(3));
@@ -36,11 +37,12 @@
   let AROMA_PATH = $derived(path(aroma));
   let ticks = $derived(W < 600 ? [0, 7, 21, 30, 60] : [0, 7, 14, 21, 30, 45, 60]);
   let here = $derived(r ? Math.max(0, r.effectiveDays) : 0);
-  let fmt = (s: string) => new Date(s + 'T12:00:00').toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+  // Dates outside this year carry the year, so a past window can't read as an upcoming one (blind Opus r2).
+  let fmt = (s: string) => { const d = new Date(s + 'T12:00:00'); return d.toLocaleDateString(undefined, d.getFullYear() === new Date(today + 'T12:00:00').getFullYear() ? { month: 'short', day: 'numeric' } : { month: 'short', day: 'numeric', year: 'numeric' }); };
 
   onMount(() => {
     const q = new URLSearchParams(location.search);
-    const rd = q.get('roast'); if (rd && /^\d{4}-\d{2}-\d{2}$/.test(rd)) roastDate = rd;
+    const rd = q.get('roast'); if (rd && /^\d{4}-\d{2}-\d{2}$/.test(rd)) roastDate = rd; else if (rd !== null) linkProblem = true;
     if (q.get('use') === 'espresso') use = 'espresso';
     const s = q.get('storage'); if (s === 'sealed-bag' || s === 'opened' || s === 'frozen') storage = s;
     const f = q.get('frozen'); if (f && /^\d{4}-\d{2}-\d{2}$/.test(f)) frozenOn = f;
@@ -72,7 +74,7 @@
         <div class="seg" role="group" aria-label="Storage">
           <button type="button" aria-pressed={storage === 'sealed-bag'} onclick={() => (storage = 'sealed-bag')}>Sealed bag</button>
           <button type="button" aria-pressed={storage === 'opened'} onclick={() => (storage = 'opened')}>Opened</button>
-          <button type="button" aria-pressed={storage === 'frozen'} onclick={() => (storage = 'frozen')}>Frozen</button>
+          <button type="button" aria-pressed={storage === 'frozen'} onclick={() => { storage = 'frozen'; if (frozenOn < roastDate) frozenOn = roastDate; }}>Frozen</button>
         </div>
       </div>
       {#if storage === 'frozen'}
@@ -133,7 +135,8 @@
 
   {#if r}
     <div class="advice">
-      <p class="what">{r.stage.advice}</p>
+      {#if linkProblem}<p class="note">That link's roast date wasn't a date, so here's an example bag.</p>{/if}
+      <p class="what">{storage === 'frozen' && !thawed ? `While they're in the freezer the clock is paused at day ${r.effectiveDays}. Take out only what you'll use; from then, the usual stages apply.` : r.stage.advice}</p>
       {#each r.notes as n (n)}<p class="note">{n}</p>{/each}
       <p class="note">{r.uncertainty}</p>
       {#if r.stage.id === 'fading' || r.stage.id === 'stale'}<p class="note">Tasting flat? The <a href="/tools/fix-my-coffee/?method=v60&symptom=flat">Coffee Doctor</a> can tell freshness from water problems.</p>{/if}
