@@ -173,7 +173,7 @@
     const totalW = items.reduce((a, _, i) => a + slot(i), 0) + gap * Math.max(0, items.length - 1);
     const tallest = Math.max(...hs, needs.heightCm ?? 0, 20);
     const s = Math.min((CW - 48) / Math.max(totalW, 40), (narrow ? 150 : 190) / tallest);
-    const TOP = needs.heightCm ? 36 : 24;
+    const TOP = needs.heightCm ? 46 : 24;
     const FLOOR = TOP + tallest * s;
     let x = (CW - totalW * s) / 2;
     const placed = items.map((m, i) => {
@@ -344,7 +344,7 @@
           {@const words = ['', 'one', 'two', 'three']}
           {@const full = matches.filter((x) => !x.misses.length).length}
           <!-- Only full matches are said to fit; the rest are named as the closest after them (gate r3). -->
-          <p class="kick">{full === 0 ? `Nothing meets everything you asked: the ${words[matches.length]} closest, closest first` : full === matches.length ? `${words[full].charAt(0).toUpperCase() + words[full].slice(1)} ${full === 1 ? 'machine fits' : 'machines fit'}, closest first` : `${words[full].charAt(0).toUpperCase() + words[full].slice(1)} ${full === 1 ? 'machine fits' : 'machines fit'}; then the closest ${matches.length - full === 1 ? 'alternative' : 'alternatives'}`}</p>
+          <p class="kick">{full === 0 ? `Nothing meets everything you asked: the ${words[matches.length]} closest, closest first` : full === matches.length ? `${words[full].charAt(0).toUpperCase() + words[full].slice(1)} ${full === 1 ? 'match' : 'matches'} for what you asked, closest first` : `${words[full].charAt(0).toUpperCase() + words[full].slice(1)} ${full === 1 ? 'match' : 'matches'} for what you asked, then the closest ${matches.length - full === 1 ? 'alternative' : 'alternatives'}`}</p>
           {#if hiddenByWidth.length}
             <div class="widthnote">
               <p>Left out because you gave a width: the {hiddenByWidth.map((m) => m.name).join(hiddenByWidth.length === 2 ? ' and ' : ', ').replace(/, ([^,]*)$/, ' and $1')}, which would otherwise be among your matches. {hiddenByWidth[0].brand}'s published sizes for {hiddenByWidth.length === 1 ? 'it' : 'them'} conflict with its own guidance, so we can't check {hiddenByWidth.length === 1 ? 'it' : 'them'} against your {widthIn} {u}.</p>
@@ -372,7 +372,7 @@
                 <!-- the room left under the cabinets, read in the cabinet band right above each machine -->
                 {@const cy = c.FLOOR - needs.heightCm * c.s}
                 <line x1={p.x + p.w / 2} y1={c.FLOOR - p.h} x2={p.x + p.w / 2} y2={cy} class="gapl" />
-                <text x={p.x + p.w / 2} y={cy - 6} text-anchor="middle" class="clear">{len(needs.heightCm - (p.m.dims?.h ?? p.m.clearanceCm!))} {u}{c.compact ? '' : ' to spare'}</text>
+                <text x={p.x + p.w / 2} y={cy - 6} text-anchor="middle" class="clear">{len(needs.heightCm - neededHeight(p.m)!)} {u}{c.compact ? '' : ' to spare'}{p.m.clearanceCm && p.m.dims && p.m.clearanceCm > p.m.dims.h ? (c.compact ? '*' : ', by the maker\'s clearance') : ''}</text>
               {/if}
               <text x={p.x + p.w / 2} y={c.FLOOR + 17} text-anchor="middle" class="mlbl"><tspan class="rank" class:solo={c.compact}>{i + 1}</tspan>{c.compact ? '' : ` ${p.m.name}`}</text>
               <text x={p.x + p.w / 2} y={c.FLOOR + 32} text-anchor="middle" class="mdim">{p.known ? (c.compact ? `${len(drawW(p.m))} × ${len(p.m.dims!.h)}` : `${len(drawW(p.m))} wide × ${len(p.m.dims!.h)} tall`) : p.m.clearanceCm ? (c.compact ? `needs ${len(p.m.clearanceCm)} ${u}` : `size unclear · needs ${len(p.m.clearanceCm)} ${u}`) : (c.compact ? 'size n/e' : 'size not established')}</text>
@@ -394,9 +394,11 @@
                 <ul class="trade">{#each [...tradeoffs(x), ...(tightLine(m) ? [tightLine(m)!] : [])] as t (t)}<li>{t}</li>{/each}</ul>
                 <dl class="mini">
                   {#if m.capsuleLine}<div><dt>Capsules</dt><dd>Nespresso {LINE[m.capsuleLine]}</dd></div>
-                  {:else if m.heating.system}<div><dt>Heats</dt><dd>{heatLabel(m)}{shortTerm(m) ? ` (${shortTerm(m)})` : ''}</dd></div>{/if}
+                  {:else if m.heating.system}<div><dt>Heats</dt><dd>{heatLabel(m)}{shortTerm(m) ? ` (${shortTerm(m)})` : ''}</dd></div>
+                  {:else}<div aria-hidden="true"></div>{/if}
                   <div><dt>Milk</dt><dd>{m.milk.type ? MILK[m.milk.type] : NE}</dd></div>
-                  <div><dt>Size, W × D × H</dt><dd>{m.dims ? sizeText(m) : m.dimsUnclear && m.clearanceCm ? `Allow about ${len(m.clearanceCm)} ${u} of height (see below)` : NE}</dd></div>
+                  {#if m.dims}<div><dt>Size, W × D × H</dt><dd>{sizeText(m)}</dd></div>
+                  {:else}<div><dt>Height to allow</dt><dd>{m.dimsUnclear && m.clearanceCm ? `About ${len(m.clearanceCm)} ${u}, the maker's suggested clearance` : NE}</dd></div>{/if}
                 </dl>
                 <div class="acts">
                   {#if m.amazon}<a class="go" href={m.amazon.url} rel="sponsored noopener" target="_blank">See it on Amazon</a>
@@ -417,6 +419,7 @@
             {#if nearest}
               <p>No current machine meets your routine{needs.widthCm || needs.heightCm ? ' and counter' : ''} at {money(budget)}. The closest is the <b>{nearest.machine.brand} {nearest.machine.name}</b>, at about {band(nearest.band)}{needsGrinder(nearest.machine) ? ' with a grinder' : ''}.</p>
               <button type="button" class="go" onclick={() => (budget = Math.min(5000, Math.ceil(nearest!.band!.low / 50) * 50))}>Set the budget to {money(Math.ceil(nearest.band!.low / 50) * 50)}</button>
+              <p class="fine">The budget moves in $50 steps, so this is the first step that covers it.</p>
             {:else}
               <p>No current machine with a published size fits that counter. Try clearing the width or height.</p>
             {/if}
@@ -607,8 +610,8 @@
   .bar line { stroke: var(--ink-2); stroke-width: 1.5; }
   .barl { font: 500 10.5px 'IBM Plex Mono', monospace; fill: var(--ink-2); }
   .cap { margin: 8px 0 10px; font-size: 13px; color: var(--ink-3); }
-  .cap.nodraw { margin-top: 0; padding: 12px 14px; border: 1px dashed var(--rule); border-radius: 14px; background: #fffdf9; }
-  .shared { margin: 0 0 10px; font-size: 12.5px; color: var(--ink-3); }
+  .cap.nodraw { margin-top: 16px; padding: 12px 14px; border: 1px dashed var(--rule); border-radius: 14px; background: #fffdf9; }
+  .shared { margin: 14px 0 10px; font-size: 12.5px; color: var(--ink-3); }
   .cards { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
   .card { background: #fff; border: 1px solid var(--rule); border-radius: 16px; padding: 16px 18px; }
   .ck { margin: 0; font: 500 11px 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); display: flex; align-items: center; gap: 8px; }
@@ -679,7 +682,8 @@
   .schem[data-phase='heat'] .heater, .schem[data-phase='wait'] .heater { filter: drop-shadow(0 0 6px #c3873a); }
   .schem[data-phase='brew'] .pbrew, .schem[data-phase='both'] .pbrew { stroke: #2f7484; }
   .schem[data-phase='steam'] .psteam, .schem[data-phase='both'] .psteam { stroke: #9c8f82; stroke-width: 5; }
-  .schem[data-phase='brew'] .pin, .schem[data-phase='steam'] .pin, .schem[data-phase='both'] .pin { stroke: #2f7484; }
+  /* Water is drawn from the tank to brew; steaming a boiler doesn't draw it, so the inlet lights for brewing only (gate r3). */
+  .schem[data-phase='brew'] .pin, .schem[data-phase='both'] .pin { stroke: #2f7484; }
   .schem[data-phase='brew'] .fbrew, .schem[data-phase='both'] .fbrew { opacity: 1; animation: drip 1s linear infinite; }
   .schem[data-phase='steam'] .fsteam, .schem[data-phase='both'] .fsteam { opacity: 1; }
   @keyframes drip { to { stroke-dashoffset: -18; } }
