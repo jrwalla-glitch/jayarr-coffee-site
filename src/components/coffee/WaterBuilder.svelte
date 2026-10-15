@@ -107,7 +107,7 @@
           <label class="fld"><span>GH (ppm)</span><input type="number" min="0" max="1000" bind:value={gh} /></label>
           <label class="fld"><span>KH (ppm)</span><input type="number" min="0" max="1000" bind:value={kh} /></label>
         </div>
-        <p class="note">Closest named water: {nearestRecipe(gh, kh).name}. Aquarium test kits read GH and KH in degrees (dGH, dKH); multiply by 17.9 for ppm.</p>
+        <p class="note">{#if Number.isFinite(gh) && Number.isFinite(kh) && gh >= 0 && kh >= 0}Closest named water: {nearestRecipe(gh, kh).name}. {/if}Aquarium test kits read GH and KH in degrees (dGH, dKH); multiply by 17.9 for ppm.</p>
       {:else if base === 'unknown'}
         <p class="note">Your water utility publishes an annual water quality report with hardness and alkalinity; an aquarium GH/KH test kit costs a few dollars. Until then, start from distilled water: the recipe below works anywhere.</p>
       {/if}
@@ -129,11 +129,13 @@
       <legend class="lbl">3 · How much to make</legend>
       <div class="row">
         <div class="seg">
-          {#each (gallons ? [1, 2, 5] : [1, 4, 10]) as v (v)}<button type="button" aria-pressed={volume === v} onclick={() => (volume = v)}>{v} {gallons ? (v === 1 ? 'gallon' : 'gallons') : 'L'}</button>{/each}
+          {#each (gallons ? [1, 2, 5] : [1, 2, 4, 10]) as v (v)}<button type="button" aria-pressed={volume === v} onclick={() => (volume = v)}>{v} {gallons ? (v === 1 ? 'gallon' : 'gallons') : 'L'}</button>{/each}
+          <label class="fld vol"><span class="sr">Custom batch, {gallons ? 'gallons' : 'litres'}</span><input type="number" inputmode="decimal" min="0.1" step="0.1" value={volume} oninput={(e) => { const v = Number((e.currentTarget as HTMLInputElement).value); volume = Number.isFinite(v) ? v : NaN; }} /><span class="unit">{gallons ? 'gal' : 'L'}</span></label>
         </div>
         <div class="seg">
-          <button type="button" aria-pressed={gallons} onclick={() => { gallons = true; volume = 1; }}>US</button>
-          <button type="button" aria-pressed={!gallons} onclick={() => { gallons = false; volume = 4; }}>Metric</button>
+          <!-- Switching units converts the batch you were building rather than resetting it. -->
+          <button type="button" aria-pressed={gallons} onclick={() => { if (!gallons) { volume = Math.round((volume / 3.785) * 100) / 100; gallons = true; } }}>US</button>
+          <button type="button" aria-pressed={!gallons} onclick={() => { if (gallons) { volume = Math.round(volume * 3.785 * 10) / 10; gallons = false; } }}>Metric</button>
         </div>
       </div>
     </fieldset>
@@ -146,7 +148,11 @@
           {#each steps as st, k (st.key)}<li class:fill={st.fill}><span class="n">{st.fill ? '✓' : k + 1}</span><span>{@html st.html}</span></li>{/each}
         </ol>
         {#if base === 'tested' && p.khStockMl === 0 && p.ghStockMl > 0}<p class="note">No bottle B needed: your water already brings enough alkalinity.</p>{/if}
-        <p class="direct">Or dissolve dry salts straight into the jug: <span class="mono">{p.epsomG.toFixed(2)} g</span> Epsom salt and <span class="mono">{p.bicarbG.toFixed(2)} g</span> baking soda, then fill to the line (needs a 0.01 g scale).</p>
+        {#if p.dry.weighable}
+          <p class="direct"><b>Or skip the bottles:</b> weigh {#if p.dry.epsomG > 0}<span class="mono">{p.dry.epsomG.toFixed(2)} g</span> Epsom salt{/if}{#if p.dry.epsomG > 0 && p.dry.bicarbG > 0}{' '}and{' '}{/if}{#if p.dry.bicarbG > 0}<span class="mono">{p.dry.bicarbG.toFixed(2)} g</span> baking soda{/if} into the empty jug{#if p.dry.baseL > 0}, add <span class="mono">{vol(p.dry.baseL)}</span> of your own water{/if}, then fill with distilled water to the {line} (needs a 0.01 g scale).</p>
+        {:else}
+          <p class="direct">Weighing the dry salts directly isn't practical for this batch: {p.dry.minBatchL <= 40 ? `the amounts are under 0.2 g, too small for a 0.01 g scale to measure accurately. From about ${vol(Math.ceil(p.dry.minBatchL * 10) / 10)} they're big enough.` : 'the amounts are a few milligrams. Use the stock bottles.'}</p>
+        {/if}
         <p class="out">Result: GH {Math.round(p.gh)} · KH {Math.round(p.kh)} ppm as CaCO₃. {p.target.bestFor}.</p>
         {#each p.notes as n (n)}<p class="note">{n}</p>{/each}
         <p class="note">Use plain Epsom salt (magnesium sulfate heptahydrate, unscented, food or USP grade) and ordinary baking soda (sodium bicarbonate). Two salts match a recipe's hardness and alkalinity, not every mineral in a branded product.</p>
@@ -208,4 +214,8 @@
   .err { color: #9a3b1c; }
   button:focus-visible, input:focus-visible { outline: 2px solid var(--crema-deep); outline-offset: 2px; }
   @media (max-width: 860px) { .wb { grid-template-columns: 1fr; } .stage { border-right: 0; border-bottom: 1px solid var(--rule); } .panel { padding: 18px 16px 20px; } .recipes { grid-template-columns: 1fr; } }
+  .vol { flex-direction: row; align-items: center; gap: 6px; }
+  .vol input { width: 84px; }
+  .vol .unit { font: 400 14px 'IBM Plex Mono', monospace; color: var(--ink-2); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 </style>

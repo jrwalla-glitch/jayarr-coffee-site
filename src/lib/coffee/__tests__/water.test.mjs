@@ -60,3 +60,28 @@ test('no boiler-safety verdicts; espresso gets the maker-spec note; junk fails',
   assert.equal(planWater({ targetId: 'sca', volumeL: 1, base: { gh: -1, kh: 0 } }).ok, false);
   assert.equal(nearestRecipe(70, 42).id, 'sca');
 });
+
+// Dry route checked by its own mass balance: salts' minerals plus your water's, over the final volume.
+const dryBalance = (p, base = { gh: 0, kh: 0 }) => ({
+  vol: p.dry.baseL + p.dry.distilledL,
+  gh: (p.dry.baseL * base.gh + (p.dry.epsomG * 1000) / MG_EPSOM_PER_PPM_GH) / p.finalL,
+  kh: (p.dry.baseL * base.kh + (p.dry.bicarbG * 1000) / MG_BICARB_PER_PPM_KH) / p.finalL,
+});
+
+test('the dry-salt route is its own recipe and hits the target (Astra: GH 67/KH 0 source overshot to 70.9/40)', () => {
+  for (const base of [undefined, { gh: 67, kh: 0 }, { gh: 20, kh: 10 }, { gh: 180, kh: 150 }]) for (const r of WATER_RECIPES) for (const V of [1, 3.785, 10]) {
+    const p = ok(planWater({ targetId: r.id, volumeL: V, ...(base ? { base } : {}) }));
+    const b = dryBalance(p, base);
+    near(b.vol, V, 1e-9, `${r.id} ${V}`); near(b.gh, r.gh, 1e-6, `${r.id} ${JSON.stringify(base)} GH`); near(b.kh, r.kh, 1e-6, `${r.id} KH`);
+  }
+});
+
+test('dry salts too small to weigh are flagged, with the batch that would make them weighable', () => {
+  // 1 ppm of hardness short in 1 L is 2.5 mg of Epsom salt: unweighable at any batch this tool makes.
+  const p = ok(planWater({ targetId: 'sca', volumeL: 1, base: { gh: 67, kh: 0 } }));
+  assert.equal(p.dry.weighable, false); assert.ok(p.dry.minBatchL > 40);
+  // SCA from distilled: 0.07 g baking soda per litre, so about 3 L is the smallest weighable batch.
+  const d1 = ok(planWater({ targetId: 'sca', volumeL: 1 }));
+  assert.equal(d1.dry.weighable, false); near(d1.dry.minBatchL, 2.98, 0.01);
+  assert.equal(ok(planWater({ targetId: 'sca', volumeL: 3 })).dry.weighable, true);
+});

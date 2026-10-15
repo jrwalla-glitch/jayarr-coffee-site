@@ -10,6 +10,8 @@ import { failure, finite, success } from './units.ts';
 export const MG_EPSOM_PER_PPM_GH = 246.47 / 100.09;
 export const MG_BICARB_PER_PPM_KH = (2 * 84.01) / 100.09;
 export const CONCENTRATE_G_PER_L = { gh: 2.45, kh: 1.68 };
+/** Smallest dry-salt weight worth offering: a 0.01 g scale reads it to within about 2.5%. */
+export const DRY_MIN_G = 0.2;
 
 // Each mL of stock in a litre of finished water adds this many ppm (exact, from the stock strengths).
 export const PPM_PER_ML_PER_L = { gh: CONCENTRATE_G_PER_L.gh / MG_EPSOM_PER_PPM_GH, kh: CONCENTRATE_G_PER_L.kh / MG_BICARB_PER_PPM_KH };
@@ -42,8 +44,11 @@ export interface WaterPlan {
   /** Distilled water to reach the final line (L). */
   distilledL: number;
   /** The same minerals as dry salts for the whole batch (g). */
-  epsomG: number;
-  bicarbG: number;
+  /**
+   * The dry-salt alternative, as its own recipe: salts weighed straight into the jug add no volume,
+   * so the split between your water and distilled water differs from the stock route.
+   */
+  dry: { baseL: number; distilledL: number; epsomG: number; bicarbG: number; weighable: boolean; minBatchL: number };
   /** Resulting water, ppm as CaCO3. */
   gh: number;
   kh: number;
@@ -79,8 +84,18 @@ export function planWater(input: { targetId: string; volumeL: number; base?: { g
     const what = [base.gh > Tg ? 'harder' : '', base.kh > Tk ? 'more alkaline' : ''].filter(Boolean).join(' and ');
     notes.push(`Your water is ${what} than this recipe, so part of the jug is distilled water.`);
   }
+  if (ghStockMl > 1000 || khStockMl > 1000) notes.push(`This batch uses more than a litre of ${ghStockMl > 1000 && khStockMl > 1000 ? 'each stock' : ghStockMl > 1000 ? 'bottle A' : 'bottle B'}, so make two bottles' worth (or more) before you start.`);
   if (input.espresso) notes.push('For an espresso machine, check the maker\'s water specification (hardness, alkalinity and chloride) first; harder water scales boilers faster. Epsom salt and baking soda add no chloride.');
-  return success({ target, finalL: V, baseL, ghStockMl, khStockMl, distilledL, epsomG: (ghStockMl * CONCENTRATE_G_PER_L.gh) / 1000, bicarbG: (khStockMl * CONCENTRATE_G_PER_L.kh) / 1000, gh, kh, notes });
+  // Dry route: as much of your water as the targets allow (no room needed for stock bottles), then
+  // salts for what's missing. Weighing below DRY_MIN_G on a 0.01 g scale is too imprecise.
+  const sDry = input.base ? Math.max(0, noOvershoot) : 0;
+  const epsomG = (Math.max(0, Tg - sDry * base.gh) * V * MG_EPSOM_PER_PPM_GH) / 1000;
+  const bicarbG = (Math.max(0, Tk - sDry * base.kh) * V * MG_BICARB_PER_PPM_KH) / 1000;
+  const smallest = Math.min(...[epsomG, bicarbG].filter((g) => g > 1e-9));
+  const weighable = !Number.isFinite(smallest) || smallest >= DRY_MIN_G;
+  const minBatchL = Number.isFinite(smallest) && smallest > 0 ? (V * DRY_MIN_G) / smallest : V;
+  const dry = { baseL: sDry * V, distilledL: V - sDry * V, epsomG, bicarbG, weighable, minBatchL };
+  return success({ target, finalL: V, baseL, ghStockMl, khStockMl, distilledL, dry, gh, kh, notes });
 }
 
 /** The recipe nearest to a given water, by distance on the GH/KH map. */
