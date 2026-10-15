@@ -1,215 +1,119 @@
 ---
-title: "Chlorogenic Acid Cascades: Bitterness, Antioxidants, and the Most Important Compounds in Your Cup"
-description: "How chlorogenic acids — the dominant polyphenol in coffee — undergo a three-stage degradation cascade during roasting to produce CGA lactones, quinic acid, and phenylindanes that account for 60-70% of perceived bitterness."
+title: "Chlorogenic Acids in Coffee: Roasting, Bitterness and Antioxidants"
+description: "Chlorogenic acids are coffee's main phenolic compounds, and roasting breaks most of them down into the compounds behind much of its bitterness. This note sums up what the research shows."
 pubDate: "Mar 12 2026"
+updatedDate: "Oct 15 2026"
 category: "Chemistry"
-tags: ["chlorogenic acids", "coffee bitterness", "CGA lactones", "phenylindanes", "antioxidants", "roast chemistry", "arabica vs robusta"]
+tags: ["chlorogenic acids", "coffee bitterness", "chlorogenic acid lactones", "phenylindanes", "antioxidants", "roast chemistry", "arabica vs robusta"]
+finding: "Chlorogenic acids aren't bitter themselves, but roasting turns them into coffee's main bitter compounds: lactones, which peak at a light-medium roast of about 14% weight loss (Farah and colleagues, 2005), and harsher phenylindanes in darker roasts (Hofmann's group)."
+limitation: "The bitterness work comes from a handful of laboratory roasts and brews, and how much each compound adds to a cup's bitterness hasn't been pinned down. The antioxidant figures are test-tube measures; human studies of coffee and oxidative damage are mixed."
 ---
 
-import DeepBrewFAQ from '../../components/DeepBrewFAQ.astro';
 import DeepBrewInfographic from '../../components/infographics/DeepBrewInfographic.astro';
 import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
-import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
+import ToolCallout from '../../components/ToolCallout.astro';
 
-Open a bag of green coffee and you're holding a delivery system for chlorogenic acids. By dry weight, CGAs constitute 6.7-9.2% of Arabica and 7.1-12.1% of Robusta — making them the dominant non-carbohydrate, non-structural constituent in the raw bean. More than caffeine. More than trigonelline. More than free amino acids. If you don't understand what happens to CGAs during roasting, you don't understand coffee bitterness, and you don't understand why your light roast and dark roast taste fundamentally different at the molecular level.
+Green coffee is one of the richest foods there is in chlorogenic acids (CGAs). Roasting breaks most of them down, and what they break into accounts for much of the bitterness in your cup. They're also a large part of why coffee is called an antioxidant drink. This note covers what CGAs are, how roasting takes them apart, where the bitterness comes from, and how far the antioxidant claims go.
 
-This is the compound family that determines the bitterness character of your cup. Not caffeine — caffeine is a bit player. CGAs and their thermal degradation products account for 60-70% of perceived bitterness in brewed coffee. The cascade they undergo during roasting is one of the most consequential chemical transformations in all of food science.
-
-## CGA Taxonomy: What's Actually in the Bean
-
-Chlorogenic acids aren't a single compound. The term covers a family of ester conjugates formed between hydroxycinnamic acids (caffeic, ferulic, p-coumaric) and quinic acid. In green coffee, the dominant subclasses break down like this:
-
-| CGA Subclass | Arabica (mg/g dwb) | Robusta (mg/g dwb) | Share of Total |
-|---|---|---|---|
-| 5-CQA (5-caffeoylquinic acid) | 35-50 | 40-65 | ~50-60% |
-| 3-CQA | 3-5 | 4-7 | ~5-7% |
-| 4-CQA | 3-5 | 4-7 | ~5-7% |
-| Dicaffeoylquinic acids (3 isomers) | 5-11 | 8-17 | ~10-15% |
-| Feruloylquinic acids (FQAs) | 1-3 | 2-4 | ~3-5% |
-| **Total CGAs** | **62-86** | **70-120** | **100%** |
-
-5-CQA is the headline act. It's the single most abundant CGA isomer in both species, and it's the primary substrate for every degradation reaction we're about to discuss. When researchers talk about "chlorogenic acid" in the singular, they almost always mean 5-CQA.
-
-The di-CQAs deserve attention too. These double-ester conjugates are more resistant to thermal degradation than mono-CQAs, which means they persist deeper into the roast. They're also more bitter and more astringent per unit concentration than their mono-CQA cousins. In Robusta, where di-CQAs can reach 17 mg/g, they contribute meaningfully to the harsher baseline bitterness profile.
-
-The FQAs — feruloylquinic acids — are a minor fraction by mass but not by significance. Ferulic acid, their hydroxycinnamic component, is a precursor to 4-vinylguaiacol, which contributes clove-like, spicy [aroma notes](/deep-brew/research/flavor-volatiles-oav-guide/). The FQA pool is one of several routes to phenolic volatile production during roasting.
-
-## The Degradation Cascade: Three Stages of Thermal Destruction
-
-Here is where roasting reshapes the sensory identity of coffee. Intact CGAs in green coffee are astringent but not aggressively bitter. What happens to them under heat is a three-stage degradation cascade, each stage producing compounds with progressively harsher taste characteristics.
+This note summarizes published research; the sources are at the end. The browning reactions that run alongside, and that also pull in some CGAs, are covered in [Maillard, caramelization and Strecker](/deep-brew/research/maillard-caramelization-strecker/).
 
 <DeepBrewInfographic>
   <ProcessFlow
-    title="The CGA Degradation Cascade"
-    subtitle="What roasting does to coffee's most abundant polyphenol"
+    title="What roasting does to chlorogenic acids"
+    subtitle="From green bean to dark roast, as the studies cited below describe it"
     steps={[
-      { label: "Intact 5-CQA", sublabel: "Green Bean", description: "35-50 mg/g Arabica | 40-65 mg/g Robusta", detail: "Mildly astringent, not harsh. High antioxidant activity." },
-      { label: "Stage 1: Hydrolysis", sublabel: "~180-200C / First Crack", description: "Ester bonds break, producing quinic acid + caffeic acid", detail: "Quinic acid accumulates from 2-4 g/kg (green) to 8-12 g/kg (dark). Dry, astringent, lingering bitter." },
-      { label: "Stage 2: Lactonization", sublabel: "~200-220C / Medium Roast", description: "Surviving CGAs cyclize into CGA lactones (CGLs)", detail: "Peak ~230 mg/100g Arabica. Clean, direct bitterness — 60-70% of total perceived bitterness." },
-      { label: "Stage 3: Phenylindane Formation", sublabel: ">220C / Dark Roast", description: "CGA lactones degrade via 4-vinylcatechol to phenylindanes", detail: "Harsh, lingering, drying bitterness. Irreversible — no brewing technique recovers this." },
+      { label: "Green coffee", sublabel: "Before roasting", description: "CGAs are 4–8.4% of arabica's dry weight and 7–14.4% of robusta's. 5-caffeoylquinic acid (5-CQA) alone is about 56–62% of the total.", detail: "Farah and Donangelo, 2006." },
+      { label: "Rearranging and splitting", sublabel: "Early in the roast", description: "The acid groups move around the quinic ring: 5-position esters fall while 3- and 4-position esters rise. Some CGAs split into caffeic and quinic acids.", detail: "Farah and Donangelo, 2006; Rune and colleagues, 2023." },
+      { label: "Lactones form", sublabel: "From about 6–7% weight loss", description: "Some CGAs close into rings called lactones (quinides). The total keeps rising until about 14% weight loss, a light-medium roast, then falls.", detail: "The main lactone, 3-CQL, peaked at 230 mg per 100 g in arabica and 254 mg in robusta (Farah and colleagues, 2005). Lactones taste of coffee-typical bitterness (Blumberg and colleagues, 2010)." },
+      { label: "Phenylindanes form", sublabel: "Darker roasting", description: "Lactones break down again, and 4-vinylcatechol released from their caffeic acid parts links up into phenylindanes and related compounds.", detail: "These taste harsher and linger longer (Frank and colleagues, 2007; Blumberg and colleagues, 2010)." },
+      { label: "Most CGAs gone", sublabel: "Drastic roasting", description: "Severe roasting can destroy up to 95% of the original CGAs; roughly 8–10% are lost for every 1% of dry matter lost.", detail: "Farah and Donangelo, 2006, summarizing Trugo and Clifford." },
     ]}
-    compare={[
-      { title: "Light Roast", points: ["50-60% CGAs intact", "CGA-lactone bitterness", "High antioxidants"] },
-      { title: "Medium Roast", points: ["25-35% CGAs intact", "Peak CGA lactones", "Balanced bitterness"] },
-      { title: "Dark Roast", points: ["5-15% CGAs intact", "Phenylindane-dominated", "Harsh, dry bitterness"] },
-    ]}
-    footnote="At Italian roast, over 95% of the original CGA content is destroyed — converted into quinic acid, lactones, phenylindanes, melanoidin-bound phenolics, and volatile degradation products."
+    footnote="Weight loss is the share of the green coffee's weight lost in roasting, which researchers use as a measure of roast degree."
   />
 </DeepBrewInfographic>
 
-### Stage 1: Hydrolysis (~180-200C)
+## What chlorogenic acids are
 
-As internal bean temperature climbs through first crack territory, ester bonds in CGA molecules begin breaking. The dominant reaction is hydrolysis: water attacks the ester linkage, cleaving 5-CQA into its two component parts — quinic acid and caffeic acid.
+Chlorogenic acids are a family, not one molecule. Each is an ester that joins quinic acid to one or two hydroxycinnamic acids: most often caffeic acid, then ferulic acid and p-coumaric acid. In their review, Adriana Farah and Carmen Donangelo group the ones in green coffee into caffeoylquinic acids (CQAs), dicaffeoylquinic acids (diCQAs), feruloylquinic acids (FQAs), p-coumaroylquinic acids, and mixed caffeoyl-feruloyl esters, each with at least three isomers.
 
-Quinic acid is the critical product here. It accumulates steadily as roasting progresses because it's thermally stable once formed. Green beans contain 2-4 g/kg of quinic acid. By dark roast, that number reaches 8-12 g/kg — a 3-4x increase. Quinic acid is dry, astringent, and persistently bitter. It's the signature compound of dark roast bitterness, the molecule most responsible for the mouth-drying finish of a French roast.
+One isomer dominates. 5-CQA, the compound usually meant by "chlorogenic acid" in the singular, makes up about 56–62% of the total in green coffee. 3-CQA and 4-CQA each reach up to about 10%, the diCQAs 15–20%, and the FQAs 5–13%.
 
-Caffeic acid, the other hydrolysis product, is less stable. Some accumulates, but much of it feeds forward into downstream reactions — polymerization, incorporation into [melanoidin](/deep-brew/research/melanoidins-body-color-health/) structures, and volatile aroma formation.
+How much a green bean holds depends mostly on species and ripeness. Farah and Donangelo give 4–8.4% of dry weight for arabica and 7–14.4% for canephora (robusta). The ranges overlap; at their midpoints, robusta carries about 1.7 times as much (calculated: 10.7% against 6.2%). An earlier version of this note said 1.5 to 2 times, using figures its own table didn't support.
 
-### Stage 2: Lactonization (~200-220C)
+Reported amounts also depend on how they were measured. Farah and Donangelo note that simpler methods and high-resolution chromatography can disagree. Moon, Yoo and Shibamoto measured 34–42 mg per gram in seven commercial green coffees, and 61–86 mg per gram in methanol–water extracts of four others. Treat any single figure as approximate.
 
-CGAs that survive hydrolysis undergo a different transformation: intramolecular cyclization to form chlorogenic acid lactones (CGLs). The carboxyl group on quinic acid attacks the hydroxyl, forming a lactone ring — a small structural change with large sensory consequences.
+## How roasting takes them apart
 
-CGA lactones are genuinely bitter. Not astringent-bitter like intact CGAs, and not harsh-bitter like phenylindanes. Clean, direct bitterness. Hofmann's work established that CGLs are the dominant bitterness source in light-to-medium roast coffee, contributing an estimated 60-70% of total perceived bitterness (1).
+Roasting does three things to CGAs, according to Farah and Donangelo's review:
 
-The lactone 3-CQL peaks at light-to-medium roast levels: approximately 230 mg/100g in Arabica and 254 mg/100g in Robusta. Beyond medium roast, CGL concentrations decline as the lactones themselves degrade. This is why medium roast often hits a bitterness sweet spot — enough CGL formation to provide structure, not enough thermal exposure to push into the harsher products of Stage 3.
+- **It rearranges them.** Early in the roast, the acid groups migrate around the quinic ring. Esters at the 5-position fall, and those at the 3- and 4-positions rise, in some cases almost doubling.
+- **It splits them.** Some diCQAs lose one caffeic acid to become mono-esters. Some CGAs split into free caffeic and quinic acids, and the caffeic acid can break down further into simple phenols.
+- **It closes some into lactones.** A CGA can lose water and form a ring inside itself, a 1,5-lactone or quinide. Only isomers without a group at the 5-position can do this, which is why 3-CQL and 4-CQL are the main lactones.
 
-### Stage 3: Phenylindane Formation (>220C)
+Lactones start forming after about 6–7% weight loss. In Farah and colleagues' 2005 roasting study of two arabicas and a robusta, the main lactone, 3-CQL, peaked at a light-medium roast of about 14% weight loss: 230 mg per 100 g of dry coffee in arabica and 254 mg in robusta. After that, the lactones decline. The same study found that the balance between 3-CQL and 4-CQL was the reverse of their parent acids in the green bean, which suggests the acids rearrange before they close into rings.
 
-Push past second crack, and CGA lactones break down further. The pathway runs through 4-vinylcatechol (an intermediate) and terminates at phenylindanes — specifically, cis- and trans-5,6-dihydroxy-1-methyl-3-(3',4'-dihydroxyphenyl)indane.
+Overall, the losses are steep. Farah and Donangelo summarize earlier work: about 8–10% of the CGAs are lost for every 1% of dry matter lost, and drastic roasting can destroy up to 95%. Moon and colleagues roasted green coffee under set conditions and found the total fell to nearly half at 446°F&nbsp;(230°C) for 12 minutes, and to almost trace levels at 482°F&nbsp;(250°C) for 21 minutes. A meta-analysis of 129 publications by Yeager and colleagues found that roast level mattered more than species for how much CGA a roasted coffee holds.
 
-Phenylindanes are the harshest bitterness compounds in coffee. The bitterness they produce is lingering, drying, and unpleasant at even modest concentrations. Hofmann attributed approximately 10-15% of total perceived bitterness to phenylindanes (1), but that percentage is misleading because it represents the dark-roast-specific fraction — in a dark roast, phenylindanes are the dominant new contributor, replacing the CGA lactones that have degraded.
+Not all of it disappears into simple fragments. Part of the CGA pool is bound into melanoidins, the brown polymers of roasted coffee (Farah and Donangelo; Moreira and colleagues). The [melanoidins note](/deep-brew/research/melanoidins-body-color-health/) covers those.
 
-The sensory difference is unmistakable. CGA lactone bitterness reads as clean and defined, the kind of bitterness that belongs in coffee. Phenylindane bitterness reads as harsh and drying, with a persistent aftertaste that sticks to the palate. Anyone who has done a side-by-side cupping of the same coffee at city versus Italian roast has tasted this transition directly.
+The roaster Rob Hoos describes the same chemistry from the cupping table. In his experience, a development time after first crack that's too short leaves excess CGAs, which he tastes as "bitter and metallic" acidity, and he conjectures that vegetal notes in under-developed roasts may come from leftover CGAs. These are his cupping observations and his own hedged explanation, not measurements of CGAs. An earlier version of this note credited Hoos with measuring lactone distributions and said fast development preserves CGAs as a goal; he did neither.
 
-## The Roast Profile: Tracking CGA Destruction
+## Where coffee's bitterness comes from
 
-The numbers are stark. CGAs are one of the most roast-sensitive compound families in coffee:
+Thomas Hofmann's group at the Technical University of Munich set out to find which molecules make coffee bitter, using chromatography and a tasting panel trained to detect coffee bitterness. Their findings, as the American Chemical Society reported them in 2007:
 
-| Roast Level | Internal Temp | Agtron | CGA Remaining (% of green) |
-|---|---|---|---|
-| Light | ~205C | ~70 | 50-60% |
-| Medium | ~220C | ~55 | 25-35% |
-| Dark | ~230-240C | ~35 | 5-15% |
-| Italian/very dark | ~245-250C | — | 1-5% |
+- **Chlorogenic acid itself isn't bitter.** The bitter compounds are made from it during roasting, and neither class is present in green beans.
+- **Lactones dominate in light to medium roasts.** The CGA lactones, about ten compounds, are "the dominant source of bitterness" in light-to-medium roast brews.
+- **Phenylindanes dominate in darker roasts.** These breakdown products of the lactones are found at higher levels in dark roasts, including espresso, and have "a more lingering, harsh taste."
+- **Caffeine is a small part.** Hofmann estimated that about 15% of coffee's perceived bitterness comes from caffeine, noting that caffeinated and decaffeinated coffees have similar bitterness.
 
-At Italian roast, over 95% of the original CGA content is gone. Destroyed. Converted into quinic acid, lactones, phenylindanes, melanoidin-bound phenolics, and volatile degradation products. The chemical identity of the bean has been fundamentally transformed.
+The papers behind that summary fill in the chemistry. Frank and colleagues (2007) heated caffeic acid and got a bitterness reminiscent of strongly roasted espresso. From it they isolated ten bitter compounds, eight of them phenylindanes, with recognition thresholds of 23–178 micromoles per liter, and showed that all ten occur in coffee brew. Their structures point to one origin: 4-vinylcatechol, released from caffeic acid parts during roasting, linking up into oligomers.
 
-This destruction curve explains one of the most common observations in specialty coffee: darker roasts taste more similar to each other than lighter roasts do. As you destroy CGAs and the acids, sugars, and volatiles that create origin character, you converge on a common set of thermal degradation products. The roast becomes the flavor. At Italian roast, you're primarily tasting quinic acid, phenylindanes, and carbon.
+Blumberg, Frank and Hofmann (2010) then roasted coffee in the lab, either at 500°F&nbsp;(260°C) for 1 to 10 minutes or for 4 minutes at 374–536°F&nbsp;(190–280°C). The lactones, which have a coffee-typical bitterness, formed mostly at slight to medium roasting. Under harsher roasting they broke down again into the harsh-tasting 4-vinylcatechol oligomers. The chemical shift matched the change in bitter quality their panel tasted.
 
-The rate of heat application matters, not just the endpoint temperature. Rob Hoos's work on [roast profiling](/deep-brew/research/cultivar-roast-profiles-hoos/) demonstrates that a fast roast through the 180-220C window produces a different CGA degradation product distribution than a slow roast to the same endpoint (2). Faster development reduces total time in the lactonization zone, producing fewer CGA lactones relative to the amount of intact CGAs destroyed. Slower development extends time in the lactonization zone, allowing more complete conversion of CGAs to lactones before the lactones themselves begin degrading. For a roaster targeting a specific bitterness character, the rate of rise through the CGA-reactive temperature band is a separate control variable from the final roast color.
+So roasting changes what kind of bitterness a coffee has, not only how much. An earlier version of this note gave a table of percentage shares (lactones 60–70%, phenylindanes 10–15%, and so on). We couldn't find those numbers in Hofmann's papers or the ACS report, so the table is gone. Apart from Hofmann's caffeine estimate, the sources here don't give each compound's share.
 
-The di-CQAs follow a parallel but slower degradation timeline. Their double-ester structure makes them more thermally resistant than mono-CQAs. At light roast, di-CQA retention is higher (percentage-wise) than 5-CQA retention. This means the relative contribution of di-CQA-derived bitterness increases at lighter roast levels. In Robusta, where di-CQAs can constitute up to 17 mg/g of green weight, this differential retention contributes to the species' persistent bitterness even at lighter roasts.
+**Quinic acid.** Quinic acid is released as CGAs split, and Rune and colleagues (2023) measured it rising with roast degree across their light roasts. James Hoffmann describes it as stable through roasting, adding that it "can add a pleasing, clean finish." It isn't one of the two bitter classes Hofmann's group identified.
 
-## Arabica vs. Robusta: The CGA Gap
+**Robusta.** Robusta usually starts with more CGAs, and in Farah's 2005 study its main lactone peaked higher (254 against 230 mg per 100 g). More precursor gives more raw material for bitter compounds. How much of robusta's reputation for bitterness this explains, as against its caffeine or its roast, the sources here don't say.
 
-Robusta carries roughly 1.5-2x the total CGA load of Arabica: 70-120 mg/g versus 62-86 mg/g. This matters enormously for bitterness.
+## From bean to cup
 
-More CGAs in the green bean means more of every degradation product at every roast level. More quinic acid accumulation. More CGA lactone formation. More phenylindane production. The bitterness differential between species is not just quantitative — it's compounded at each stage of the cascade.
+Brewing pulls most of what's left into the cup. Farah and Donangelo cite Clifford's figures: home brewing extracts 80–100% of the CGAs, and much of the lactones, giving 70–200 mg of CGAs in a 200&nbsp;ml (about 6.8 US fl oz) cup of arabica and 70–350 mg for robusta. Hotter water below the boil extracts more, and most comes out early: the fastest extraction is in the first 2 minutes at 199°F&nbsp;(93°C). Keeping brewed coffee hot afterwards lowers its CQA and lactone content.
 
-But the CGA gap is only part of the Robusta bitterness story. Robusta also carries 2.2-2.7% caffeine versus Arabica's 1.2-1.5%, and caffeine contributes its own 10-15% of perceived bitterness. And Robusta has lower sucrose content (3-5% versus 6-9%), meaning fewer [caramelization products](/deep-brew/research/maillard-caramelization-strecker/) to provide balancing sweetness.
+The bitter compounds don't all leave the grounds at the same speed. Blumberg and colleagues percolated hot water through ground coffee and found that the CQAs and the mono-caffeoyl lactones came out quickly, the dicaffeoyl lactones slowly, and most of the 4-vinylcatechol oligomers clung strongly to the grounds. They concluded that controlling roasting and extraction "might be helpful in tailoring the bitter taste signature" of a cup. A reasonable reading, though not one they tested directly, is that a longer or more forceful extraction pulls more of the harsh dark-roast compounds out of the grounds. The ACS report adds that espresso-type brewing, with high pressure and high temperature, tended to produce the highest levels of bitter compounds.
 
-The net result: Robusta's bitterness disadvantage is systemic. Higher CGA load, higher caffeine, lower sucrose. Three independent mechanisms pushing in the same direction. This is why even well-roasted, high-grade Robusta has a bitterness floor that Arabica doesn't.
+In practice, that splits bitterness into two questions:
 
-<DeepBrewInfographic>
-  <ComparisonTable
-    title="Coffee Bitterness Attribution"
-    subtitle="Based on Hofmann (ACS 2007) taste dilution analysis and sensory panel validation"
-    columns={["Bitterness Contribution", "Roast Level Dominance"]}
-    rows={[
-      { name: "CGA Lactones", values: ["~60-70%", "Light to medium"], result: "Clean, direct bitterness" },
-      { name: "Caffeine", values: ["~10-15%", "All (thermally stable)"], result: "Decaf still 85% as bitter" },
-      { name: "Phenylindanes", values: ["~10-15%", "Dark"], result: "Harsh, drying, lingering" },
-      { name: "Other (quinic acid, Maillard)", values: ["~5-10%", "Medium to dark"], result: "Dry, astringent" },
-    ]}
-    rowLabel="Compound Class"
-    footnote="Caffeine gets the blame, but CGA degradation products are the real bitterness driver. Decaffeinating a coffee removes only 10-15% of its bitterness. Changing the roast level reshapes 60-70%."
-  />
-</DeepBrewInfographic>
+- **Is it the roast?** The lactones and phenylindanes are made in the roaster. If a dark roast tastes harsh and lingering at a normal brew time, much of that bitterness probably came from the roaster.
+- **Is it the brew?** A grind that's too fine, water that's too hot or a brew that runs long extracts more of everything, including the slow-releasing harsh compounds.
 
-## The Bitterness Attribution Breakdown
+A lighter roast is the bigger change if you want less of the harsh, lingering kind. Brewing a dark roast a touch coarser or cooler can take the edge off, but it can't turn phenylindanes back into lactones. Our guide to [bitter coffee](/blog/why-coffee-tastes-bitter-how-to-fix/) covers the brewing fixes method by method.
 
-Thomas Hofmann's research, presented at the American Chemical Society in 2007, gave us the clearest picture of what actually makes coffee bitter (1). Using taste dilution analysis and sensory panel validation, his team established the attribution:
+<ToolCallout tool="doctor" preset={{ method: 'v60', symptom: 'bitter', roast: 'dark' }} cta="Open Fix My Coffee: bitter, dark roast" context="Fix My Coffee opens on a bitter V60 made with a dark roast and asks how long the brew took. On time or fast, it reads the bitterness as the roast and suggests a coarser grind or cooler water; slow, it reads over-extraction." />
 
-| Compound Class | Bitterness Contribution | Roast Level Dominance |
-|---|---|---|
-| CGA lactones | ~60-70% | Light to medium |
-| Caffeine | ~10-15% | All (thermally stable) |
-| Phenylindanes | ~10-15% | Dark |
-| Other (quinic acid, Maillard products) | ~5-10% | Medium to dark |
+## Antioxidants: what the evidence supports
 
-The takeaway: most of coffee's bitterness comes from the CGA degradation cascade, not from caffeine. Decaffeinating a coffee removes only 10-15% of its bitterness. The CGA cascade is the main event.
+CGAs are strong antioxidants in the test tube. Farah and Donangelo describe them as the main phenolic compounds in green coffee, with potent antioxidant activity. Hofmann's group noted that the bitter lactones and phenylindanes are antioxidants too. So roasting doesn't simply swap antioxidants for bitterness: it changes which compounds are present.
 
-This also means that roast level functions as a bitterness character dial, not just a bitterness intensity dial. Light roast bitterness is CGA-lactone-driven: clean, defined, structuring. Dark roast bitterness shifts to quinic acid and phenylindanes: dry, harsh, lingering. The type of bitter changes, not just the amount.
+Coffee looms large in antioxidant intake because people drink so much of it. Svilaas and colleagues (2004) estimated antioxidant intake from food records of 61 Norwegian adults and a national diet survey of 2,672. Total intake came to about 17 mmol a day, of which coffee supplied about 11.1 mmol, about two-thirds (calculated). It was the single largest source. Antioxidant intake here is a laboratory measure of what's in the food; it doesn't show what those compounds do once swallowed.
 
-## CGAs as Antioxidants: The Health Paradox
+Studies in people are less clear-cut. Martini and colleagues (2016) reviewed 26 intervention studies in which people drank coffee, either once or regularly. Coffee could raise glutathione and improve protection against DNA damage, especially with regular drinking. Its effects on blood antioxidant capacity, antioxidant enzymes, and damage to proteins and fats were unclear. The authors put much of the inconsistency down to differences in coffees, doses, study length and the markers measured. These studies tested coffee, not CGAs on their own.
 
-The same compound class responsible for most of coffee's bitterness is also responsible for most of its antioxidant activity. CGAs are potent free radical scavengers. The catechol group (the two adjacent hydroxyl groups on the caffeic acid moiety) readily donates electrons to neutralize reactive oxygen species. The caffeic acid moiety alone has higher radical scavenging activity than ascorbic acid (vitamin C) in several standard assays.
+Lighter roasts keep more CGAs, so they deliver more of them per cup. Whether that makes them better for you, these sources don't show. An earlier version of this note made claims about diabetes, liver cancer and "five servings of fruit and vegetables" with no studies cited; they've been removed. Our [low-acid coffee guide](/blog/finding-the-best-low-acid-coffee/) covers acidity and the stomach. For questions about your own health, ask your clinician.
 
-Coffee contributes up to 70% of total antioxidant intake in some Western diets — not because coffee is exceptionally rich in antioxidants per serving, but because people drink so much of it. A typical cup of filter coffee delivers 15-325 mg of CGAs depending on roast level, origin, and extraction efficiency. Two to three cups daily can deliver more phenolic antioxidants than five servings of fruits and vegetables. And the bulk of that antioxidant capacity comes from CGAs and their degradation products.
+## Sources
 
-Here's where it gets interesting: light roasts retain more intact CGAs and therefore have higher antioxidant capacity than dark roasts, as measured by standard in vitro assays (ORAC, FRAP, DPPH). But the relationship is not linear with roast level, because some CGA degradation products — particularly those incorporated into [melanoidin](/deep-brew/research/melanoidins-body-color-health/) structures — retain significant antioxidant activity themselves. Melanoidin-bound CGAs account for up to 29% of dark-roast brew phenolics and contribute meaningfully to antioxidant function even at deep roast levels. This means dark roast is not devoid of antioxidant value — it has shifted from free CGA-mediated antioxidant activity to melanoidin-bound phenolic-mediated activity.
-
-The health implications extend well beyond antioxidant activity. CGAs have documented anti-inflammatory properties and modulate glucose metabolism through multiple proposed mechanisms. The epidemiological data is strong: a meta-analysis of over 1.1 million participants found that each cup of daily coffee consumption is associated with a 6% reduced risk of type 2 diabetes — 33% reduction at 6 cups per day. Decaffeinated coffee shows similar protective effects, pointing to CGAs rather than caffeine as the primary active compounds.
-
-The hepatoprotective association is also striking: epidemiological data shows a 40-51% reduction in liver cancer risk among habitual coffee drinkers. The trigonelline degradation product N-methylpyridinium (NMP), formed during roasting alongside CGA degradation, stimulates hepatocyte activity and may complement the CGAs' protective effects. The net health picture is that coffee's phenolic payload — dominated by CGAs and their metabolic progeny — represents one of the most pharmacologically active compound families in the human diet.
-
-## Why Light Roasts Have More Antioxidants but Less Bitterness
-
-This is a question that confuses people, and it shouldn't. The answer falls directly out of the cascade chemistry.
-
-Light roasts retain 50-60% of original CGAs. These intact CGAs are strong antioxidants but are only mildly bitter — astringent, yes, but not the aggressive bitterness of their degradation products. The CGA lactones that do form at light roast contribute clean bitterness, but the total lactone concentration is modest because the reaction has not yet reached peak conversion.
-
-Dark roasts have destroyed 85-99% of their CGAs. The antioxidant capacity drops proportionally (partially offset by melanoidin-bound phenolics). But bitterness intensifies because the degradation products — quinic acid accumulating to 8-12 g/kg, phenylindanes forming at temperatures above 220C — are much more potent bitter compounds per unit mass than intact CGAs.
-
-In other words: you can have high antioxidant content (lots of intact CGAs) with moderate bitterness (limited degradation), or low antioxidant content (CGAs destroyed) with high bitterness (lots of degradation products). The light roast gives you more of the health-active parent compound and less of the sensorially harsh daughter compounds. The dark roast gives you the reverse.
-
-## Brew Chemistry: How CGAs Land in the Cup
-
-CGA [extraction](/deep-brew/research/extraction-sequence-explained/) behavior in the cup is governed by the same polarity and solubility rules as other coffee compounds, but with a wrinkle: intact CGAs are mid-polarity molecules that dissolve readily in the early-to-middle extraction window, while CGA lactones and phenylindanes are less polar and extract more slowly.
-
-This means brew variables modulate not just total CGA concentration but the ratio of parent to degradation products in the cup:
-
-**Brew pH:** Coffee typically lands in the 4.85-5.10 pH range. Light roasts trend toward the lower end (more acidic), dark roasts toward the higher end. CGA solubility increases slightly at lower pH, which means light roast brews extract proportionally more intact CGAs — reinforcing the antioxidant advantage.
-
-**Temperature:** Higher brew temperatures accelerate extraction of all CGA-family compounds, but they disproportionately increase extraction of the less-soluble degradation products (lactones, phenylindanes). Brewing dark roast coffee at lower temperatures can selectively reduce harsh bitterness while retaining body.
-
-**Contact time:** Extended contact time pushes extraction deeper into the slower-dissolving fraction, which includes CGA lactones and phenylindanes. This is one reason over-extracted coffee tastes disproportionately bitter — you're not just extracting more of everything, you're shifting the ratio toward the harsher compounds.
-
-**Grind size:** Finer grinding increases surface area and accelerates extraction across all compound families. For bitterness management, coarser grinding at higher temperatures can extract adequate total solubles while limiting the slow-dissolving bitter fraction.
-
-**Brewing method:** Unfiltered methods (French press, Turkish, espresso) deliver more CGA-family compounds to the cup because metal and cloth filters don't trap mid-weight phenolics the way paper does. Paper filtration primarily traps insoluble oils and diterpenes (removing >95% of cafestol and kahweol), and may also adsorb some phenolic compounds in the process. French press coffee tends to taste more bitter than paper-filtered coffee at the same EY partly because of the unfiltered lipid and phenolic payload, and partly because French press typically brews at higher TDS (1.4-1.6% versus filter's 1.15-1.35%), concentrating all compounds including CGAs. For health-focused drinkers, unfiltered methods deliver more antioxidant CGAs but also more cafestol and kahweol (the cholesterol-raising diterpenes). Paper filtration trades some antioxidant delivery for lipid filtration.
-
-## Practical Implications for Roasters and Brewers
-
-If you roast coffee, the CGA cascade gives you a precise framework for managing bitterness:
-
-**Use roast level as your primary bitterness dial.** The transition from CGA-lactone-dominated bitterness to phenylindane-dominated bitterness happens around 220-225C internal temperature, roughly at the onset of second crack. Pulling before this transition gives you clean, structured bitterness. Pushing past it gives you harsh, lingering bitterness. There is no recovering phenylindane-dominated bitterness through brewing technique.
-
-**Arabica vs. Robusta blends require CGA-aware roasting.** If you're blending Robusta for body or crema, its higher CGA load means you need either a lighter roast on the Robusta component (to stay in the CGA-lactone zone) or a dark enough roast to push most CGAs through to completion. The middle ground — medium-roasted Robusta — maximizes bitter compound accumulation without the compensating flavors of either a lighter or darker profile.
-
-**For origin-forward light roasts, CGA preservation is the goal.** Retaining 50-60% of the original CGA pool means retaining the antioxidant profile, the mild astringency that provides structure, and the CGA-bound volatiles that contribute to aroma complexity. Rapid roast development through the 180-205C window minimizes unnecessary hydrolysis.
-
-If you brew coffee, the cascade tells you:
-
-**Bitterness management starts with roast selection, not brew parameters.** No amount of coarsening your grind or shortening your brew time will convert phenylindane bitterness into CGA-lactone bitterness. That transformation happened in the roaster.
-
-**For dark roasts, brew cooler and shorter.** Reducing temperature and contact time limits the extraction of the slow-dissolving harsh bitter fraction.
-
-**For light roasts, brew hotter and longer.** The intact CGAs and their lactones extract readily and provide structure. The phenylindane pool is small enough that pushing extraction deeper into the sweet spot (18-22% EY) adds complexity without penalty.
-
-The CGA cascade is not just biochemistry trivia. It is the central axis around which coffee bitterness turns. Every roast decision, every brew variable, every species selection feeds back to this three-stage degradation pathway. Master it, and you understand why your coffee tastes the way it does.
-
-## References
-
-1. Hofmann, T. "Identification of the key bitter compounds in our daily diet." Presentation at the 234th National Meeting of the American Chemical Society, Boston, MA, 2007.
-2. Hoos, R. *Modulating the Flavor Profile of Coffee: One Roaster's Manifesto*. Self-published, 2015.
-
-<DeepBrewFAQ items={[
-  { question: "If CGAs are antioxidants, why do they also cause bitterness?", answer: "Different functional groups on the same molecule serve different roles. The catechol group donates electrons to neutralize free radicals (antioxidant mechanism), but the overall molecular structure, particularly after thermal modification into CGA lactones, activates bitter taste receptors (TAS2Rs) on the tongue. Intact CGAs are mild -- more astringent than bitter. It's the degradation products, especially CGA lactones and phenylindanes, that produce aggressive bitterness. Antioxidant activity and bitterness are driven by different parts of the molecule and different stages of its thermal history." },
-  { question: "Does brewing method affect CGA extraction differently than other compounds?", answer: "Yes, because CGA-family compounds span a range of polarities and molecular weights. Intact CGAs are mid-polarity and dissolve readily in the early-to-middle extraction window (roughly 10-18% EY). CGA lactones and phenylindanes are less polar and extract more slowly, concentrating in the 20-26% EY range. Percolation methods (pour-over, drip) extract more efficiently and can push deeper into the bitter fraction. Espresso is a special case: despite short contact time, high pressure and fine grind force rapid dissolution across all polarity ranges, so CGA lactone extraction is proportionally high." },
-  { question: "Why does Robusta taste more bitter -- is it just the CGAs?", answer: "CGAs are the primary factor but not the only one. Robusta carries 1.5-2x the CGA load of Arabica (70-120 mg/g vs. 62-86 mg/g), meaning more of every degradation product at every roast level. But Robusta also has roughly double the caffeine (2.2-2.7% vs. 1.2-1.5%) and only about half the sucrose (3-5% vs. 6-9%). The result is a triple disadvantage: more CGA-derived bitterness, more caffeine bitterness, and less sweetness to offset either." },
-  { question: "Can you taste the difference between CGA bitterness and phenylindane bitterness?", answer: "Absolutely. CGA lactone bitterness is clean and defined -- it registers as a direct bitter sensation that dissipates relatively quickly. Phenylindane bitterness is harsh, drying, and lingering, with a persistent aftertaste that sticks to the palate for 30+ seconds. The easiest way to calibrate: cup the same single-origin coffee at city roast (Agtron ~65) and dark roast (Agtron ~35) side by side. The city roast gives you CGA-lactone bitterness; the dark roast gives you phenylindane bitterness." },
-  { question: "If light roasts have more CGAs, why don't they taste more bitter?", answer: "Because intact CGAs are not strongly bitter -- they're mildly astringent. The aggressive bitterness comes from their degradation products: CGA lactones (clean bitter, peaking at medium roast) and phenylindanes (harsh bitter, forming at dark roast). Light roasts retain 50-60% of the original CGA pool in intact form, meaning high antioxidant activity but limited degradation-product bitterness. This is also why light roasts taste more acidic -- without substantial bitterness from CGA degradation products, the organic acids aren't masked." },
-  { question: "Do CGAs contribute anything positive to flavor?", answer: "CGAs contribute structure. In the same way tannins provide backbone to wine, moderate CGA-derived bitterness gives coffee its characteristic savory depth and prevents it from reading as a purely acidic, fruity beverage. CGA lactones at appropriate concentration provide the clean bitterness most people expect and enjoy. Beyond direct taste, CGAs serve as precursors for volatile aroma compounds and are incorporated into melanoidin structures that contribute body and mouthfeel. A hypothetical CGA-free coffee would taste thin, one-dimensional, and excessively acidic." },
-  { question: "What's the relationship between CGAs and coffee's pH?", answer: "CGAs are acidic (pKa around 3.3-3.5) and contribute meaningfully to total titratable acidity. As CGAs degrade during roasting, titratable acidity from this source decreases, but quinic acid partially replaces the lost acidity. The net pH effect is modest: light roasts land around 4.85-4.95, dark roasts at 5.00-5.10. The perceived acidity shift is much larger because CGA degradation also removes organic acids (citric, malic) that drive perceived brightness, and quinic acid reads as flat rather than bright." },
-]} />
+- Adriana Farah and Carmen Marino Donangelo, "Phenolic compounds in coffee," *Brazilian Journal of Plant Physiology* 18, no. 1 (2006): 23–36, sections "Coffee beans" (CGA groups, contents and isomer shares) and "Changes in chlorogenic acids composition of coffee beans during processing: Roasting" (isomerization, lactones, losses, brewing and Clifford's per-cup figures): [doi.org/10.1590/S1677-04202006000100003](https://doi.org/10.1590/S1677-04202006000100003)
+- Adriana Farah, Tomas de Paulis, Luiz C. Trugo and Peter R. Martin, "Effect of roasting on the formation of chlorogenic acid lactones in coffee," *Journal of Agricultural and Food Chemistry* 53, no. 5 (2005): 1505–1513, abstract: [doi.org/10.1021/jf048701t](https://doi.org/10.1021/jf048701t)
+- J.-K. Moon, H. S. Yoo and T. Shibamoto, "Role of roasting conditions in the level of chlorogenic acid content in coffee beans: correlation with coffee acidity," *Journal of Agricultural and Food Chemistry* 57, no. 12 (2009): 5365–5369, abstract: [doi.org/10.1021/jf900012b](https://doi.org/10.1021/jf900012b)
+- Sara E. Yeager, Mackenzie E. Batali, Jean-Xavier Guinard and William D. Ristenpart, "Acids in coffee: A review of sensory measurements and meta-analysis of chemical composition," *Critical Reviews in Food Science and Nutrition* 63 (2023): 1010–1036, abstract: [doi.org/10.1080/10408398.2021.1957767](https://doi.org/10.1080/10408398.2021.1957767)
+- Ana S. P. Moreira, Fernando M. Nunes, M. Rosário Domingues and Manuel A. Coimbra, "Coffee melanoidins: structures, mechanisms of formation and potential health impacts," *Food & Function* 3, no. 9 (2012): 903–915, abstract: [doi.org/10.1039/c2fo30048f](https://doi.org/10.1039/c2fo30048f)
+- American Chemical Society, "Battling Bitter Coffee: Chemists Identify Roasting As The Main Culprit," news release on Thomas Hofmann's presentation at the 234th ACS National Meeting, Boston, as published by *ScienceDaily*, August 22, 2007: [sciencedaily.com](https://www.sciencedaily.com/releases/2007/08/070821143629.htm)
+- Oliver Frank, Simone Blumberg, Christof Kunert, Gerhard Zehentbauer and Thomas Hofmann, "Structure determination and sensory analysis of bitter-tasting 4-vinylcatechol oligomers and their identification in roasted coffee by means of LC-MS/MS," *Journal of Agricultural and Food Chemistry* 55, no. 5 (2007): 1945–1954, abstract: [doi.org/10.1021/jf0632280](https://doi.org/10.1021/jf0632280)
+- Simone Blumberg, Oliver Frank and Thomas Hofmann, "Quantitative studies on the influence of the bean roasting parameters and hot water percolation on the concentrations of bitter compounds in coffee brew," *Journal of Agricultural and Food Chemistry* 58, no. 6 (2010): 3720–3728, abstract: [doi.org/10.1021/jf9044606](https://doi.org/10.1021/jf9044606)
+- Christina J. Birke Rune, Davide Giacalone, Ida Steen, Lars Duelund, Morten Münchow and Mathias Porsmose Clausen, "Acids in brewed coffees: Chemical composition and sensory threshold," *Current Research in Food Science* 6 (2023): 100485, abstract and section 3 (quinic acid by roast degree): [doi.org/10.1016/j.crfs.2023.100485](https://doi.org/10.1016/j.crfs.2023.100485)
+- James Hoffmann, *The World Atlas of Coffee*, revised edition (Mitchell Beazley, 2018), p. 59 ("Acids in coffee")
+- Rob Hoos, *Modulating the Flavor Profile of Coffee: One Roaster's Manifesto* (self-published, 2015), chapter "Development Time," pp. 31–40 of the PDF edition (development time and CGAs)
+- A. Svilaas and colleagues, "Intakes of antioxidants in coffee, wine, and vegetables are correlated with plasma carotenoids in humans," *Journal of Nutrition* 134, no. 3 (2004): 562–567, abstract: [doi.org/10.1093/jn/134.3.562](https://doi.org/10.1093/jn/134.3.562)
+- Daniela Martini and colleagues, "Coffee Consumption and Oxidative Stress: A Review of Human Intervention Studies," *Molecules* 21, no. 8 (2016): 979, abstract: [doi.org/10.3390/molecules21080979](https://doi.org/10.3390/molecules21080979)
