@@ -13,3 +13,5 @@ export { SYMPTOMS, ZONES, LEVERS, nextQuestion, questionsFor, diagnose, placeOnM
 export type { SymptomId, Symptom, Question, QuestionId, DoctorState, Diagnosis, ZoneId, Zone, Lever } from './doctor.ts';
 export { freshness, stages as freshnessStages } from './freshness.ts';
 export type { FreshUse, Storage, StageId, Stage, FreshnessInput, FreshnessResult } from './freshness.ts';
+export { WATER_RECIPES, planWater, nearestRecipe, MG_EPSOM_PER_PPM_GH, MG_BICARB_PER_PPM_KH, CONCENTRATE_G_PER_L } from './water.ts';
+export type { WaterRecipe, WaterPlan } from './water.ts';

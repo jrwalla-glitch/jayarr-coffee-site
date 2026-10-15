@@ -1,189 +1,94 @@
 ---
-import DeepBrewLayout from '../../layouts/DeepBrewLayout.astro';
-import WaterRecipeBuilder from '../../components/tools/WaterRecipeBuilder.svelte';
+import '@fontsource/instrument-serif/400.css';
+import '@fontsource/instrument-serif/400-italic.css';
+import '@fontsource/ibm-plex-sans/400.css';
+import '@fontsource/ibm-plex-sans/500.css';
+import '@fontsource/ibm-plex-sans/600.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import WaterBuilder from '../../components/coffee/WaterBuilder.svelte';
+import { WATER_RECIPES, SOURCES } from '../../lib/coffee/index.ts';
+
+const title = 'Coffee Water Recipe Builder: Make Your Own Brewing Water';
+const description = 'See where your water sits among the well-known coffee water recipes, pick one, and get the exact mix: Epsom salt and baking soda concentrates in millilitres, or grams for a direct batch.';
 ---
 
-<DeepBrewLayout
-  title="Water Recipe Builder | Deep Brew Mode | JayArr Coffee"
-  description="Plot your water chemistry against 10 named coffee water recipes on an interactive scatter chart. Get DIY mineral concentrate instructions for Rao/Perger, Barista Hustle, RPavlis, TWW, and more."
->
-  <Fragment slot="head">
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "Water Recipe Builder",
-      "url": "https://jayarr.coffee/deep-brew/water/",
-      "description": "Plot your water chemistry against 10 named coffee water recipes on an interactive scatter chart. Get DIY mineral concentrate instructions for Rao/Perger, Barista Hustle, RPavlis, TWW, and more.",
-      "applicationCategory": "UtilityApplication",
-      "operatingSystem": "Any",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "JayArr Coffee",
-        "url": "https://jayarr.coffee"
-      }
-    })}></script>
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "HowTo",
-      "name": "How to Build Custom Coffee Water",
-      "description": "Plot your water chemistry against 9 named coffee water recipes, choose a target, and get the exact DIY mineral concentrate instructions to build it from distilled water.",
-      "totalTime": "PT10M",
-      "tool": [
-        {
-          "@type": "HowToTool",
-          "name": "Distilled or reverse-osmosis water"
-        },
-        {
-          "@type": "HowToTool",
-          "name": "Magnesium sulfate (Epsom salt)"
-        },
-        {
-          "@type": "HowToTool",
-          "name": "Sodium bicarbonate (baking soda)"
-        },
-        {
-          "@type": "HowToTool",
-          "name": "Precision scale (0.01g)"
-        },
-        {
-          "@type": "HowToTool",
-          "name": "Two clean 1-liter bottles"
-        }
-      ],
-      "step": [
-        {
-          "@type": "HowToStep",
-          "position": 1,
-          "name": "Test your current water (optional)",
-          "text": "Use a TDS meter (about $10) and an API GH/KH test kit (about $8 from aquarium stores) to measure your tap water's mineral content. Enter the values to see where your water falls on the chart."
-        },
-        {
-          "@type": "HowToStep",
-          "position": 2,
-          "name": "Choose a target recipe",
-          "text": "Compare 9 named recipes on the scatter chart: SCA Standard, Rao/Perger, Barista Hustle, Hendon, RPavlis, Third Wave Water variants, and more. Each recipe shows its GH, KH, and flavor profile."
-        },
-        {
-          "@type": "HowToStep",
-          "position": 3,
-          "name": "Make the mineral concentrates",
-          "text": "Bottle 1 (Hardness): Dissolve 2.45g Epsom salt in 1L distilled water. Bottle 2 (Alkalinity): Dissolve 1.68g baking soda in 1L distilled water. Each concentrate is calibrated so 1mL per liter = 1 ppm."
-        },
-        {
-          "@type": "HowToStep",
-          "position": 4,
-          "name": "Build your water",
-          "text": "For your chosen recipe, measure the specified milliliters of each concentrate into a clean container, then fill to 1 liter with distilled water. For example, Rao/Perger uses 76mL of Bottle 1 and 50mL of Bottle 2."
-        },
-        {
-          "@type": "HowToStep",
-          "position": 5,
-          "name": "Brew and compare",
-          "text": "Brew the same coffee with your custom water and your regular water side by side. The difference is often immediately apparent, especially with light-roasted specialty coffee."
-        }
-      ]
-    })}></script>
-  </Fragment>
-  <!-- Hero -->
-  <section class="pt-28 pb-8 md:pt-32 md:pb-12">
-    <div class="max-w-3xl mx-auto px-6 text-center">
-      <a href="/deep-brew/" class="font-db-mono text-xs uppercase tracking-[0.2em] text-db-text-muted/50 hover:text-db-copper transition-colors">
-        &larr; Deep Brew Mode
-      </a>
-      <h1 class="font-db-serif text-3xl md:text-5xl font-bold mt-3 mb-3"
-          style="background: linear-gradient(135deg, var(--color-db-text) 0%, var(--color-db-copper) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-        Water Recipe Builder
-      </h1>
-      <p class="text-db-text-muted max-w-xl mx-auto leading-relaxed text-sm mb-1">
-        See where your water falls against 9 named recipes. Pick a target. Get the exact DIY formula.
-      </p>
-      <p class="font-db-mono text-xs text-db-text-muted/40 tracking-wider">
-        GH &times; KH &times; SCA
-      </p>
-    </div>
-  </section>
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} />
+		<script type="application/ld+json" set:html={JSON.stringify({
+			'@context': 'https://schema.org', '@type': 'WebApplication', name: 'Water Recipe Builder', url: 'https://jayarr.coffee/deep-brew/water/', description,
+			applicationCategory: 'UtilityApplication', operatingSystem: 'Any', offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, publisher: { '@type': 'Organization', name: 'JayArr Coffee', url: 'https://jayarr.coffee' },
+		})}></script>
+	</head>
+	<body class="cf-page">
+		<Header />
+		<main>
+			<section class="cf-intro">
+				<a href="/tools/" class="cf-back">← All tools</a>
+				<p class="cf-kicker">Deep Brew · Water Recipe Builder</p>
+				<h1>Brewing water, <em>mixed to a recipe.</em></h1>
+				<p class="cf-lede">Filter coffee is about 98% water. Pick a recipe, tell us what you start from, and get the exact mix, down to the millilitre.</p>
+			</section>
+			<section class="cf-tool" aria-label="Water Recipe Builder"><WaterBuilder client:load /></section>
 
-  <!-- Tool -->
-  <section class="pb-16 md:pb-24">
-    <div class="max-w-3xl mx-auto px-6">
-      <WaterRecipeBuilder client:load />
-    </div>
-  </section>
+			<article class="cf-body">
+				<h2>Hardness and alkalinity, in plain words</h2>
+				<p><strong>Hardness</strong> (GH) is mostly calcium and magnesium. They help pull flavour out of the coffee; magnesium tends to bring out brightness and fruit, calcium more body. Too little and coffee tastes flat and thin; far too much and it turns chalky and scales machines.</p>
+				<p><strong>Alkalinity</strong> (KH) is mostly bicarbonate. It buffers the coffee's acids: too little and the cup can taste sharp; too much and it tastes flat and dull. A good starting point keeps hardness about two to three times the alkalinity.</p>
+				<p>Distilled and reverse-osmosis water have almost no minerals, which is why coffee brewed with them tastes hollow. Very hard tap water has the opposite problem.</p>
 
-  <!-- Narrative -->
-  <section class="py-16 px-6">
-    <div class="prose mx-auto">
-      <h2>The Chemistry of Coffee Water</h2>
+				<h2>Well-known coffee water recipes</h2>
+				<div class="cf-table-wrap">
+					<table>
+						<thead><tr><th scope="col">Recipe</th><th scope="col">GH</th><th scope="col">KH</th><th scope="col">Character</th><th scope="col">Good for</th></tr></thead>
+						<tbody>{WATER_RECIPES.map((r) => <tr><th scope="row">{r.name}</th><td>{r.gh}</td><td>{r.kh}</td><td>{r.profile}</td><td>{r.bestFor}</td></tr>)}</tbody>
+					</table>
+				</div>
+				<p class="cf-note">Hardness and alkalinity in ppm (mg/L) as calcium carbonate.</p>
 
-      <p>Filter coffee is 98&ndash;99% water. Espresso is roughly 90% water. Yet most home brewers obsess over bean selection, grind precision, and pour technique while using whatever comes out of their tap. The mineral content of your water determines how much flavor it can extract from coffee and which flavor compounds survive into the cup.</p>
+				<h2>The two-bottle method</h2>
+				<p>Barista Hustle's method keeps it simple. Dissolve 2.45 g of Epsom salt in a litre of distilled water (bottle A) and 1.68 g of baking soda in another (bottle B). Each millilitre of A in a litre of distilled water adds 1 ppm of hardness; each millilitre of B adds 1 ppm of alkalinity. So the SCA's 68 GH / 40 KH is 68 mL of A and 40 mL of B, topped up to a litre.</p>
 
-      <p>Two mineral parameters matter: General Hardness (GH) and Carbonate Hardness (KH, also called alkalinity). GH measures the concentration of calcium and magnesium ions &mdash; these are the extraction agents that bond with coffee solubles and pull them into solution. Magnesium is slightly more effective than calcium at binding to desirable flavor acids like citric and malic, as demonstrated by Hendon and Colonna-Dashwood&rsquo;s 2014 research using density functional theory to model mineral-compound binding energies. KH measures bicarbonate concentration, which acts as a pH buffer. Bicarbonates neutralize acids in the brewed coffee. Too much KH and the cup tastes flat and chalky because the bright acids have been buffered away. Too little and the cup is excessively sharp and sour.</p>
+				<h2>For espresso machines</h2>
+				<ul>
+					<li>Hardness of about 70 ppm and up will scale a boiler at steam temperatures, so pick a recipe with moderate hardness.</li>
+					<li>Chloride corrodes stainless steel and copper under heat. Epsom salt (a sulfate) and baking soda add none; avoid calcium or magnesium chloride in machines.</li>
+					<li>Don't use softened water for brewing: softeners swap calcium for sodium, which hurts extraction.</li>
+				</ul>
 
-      <p>The ratio between GH and KH shapes the overall flavor profile more than either value alone. A high GH-to-KH ratio (3:1 or higher) produces bright, complex, forward-acidity cups that showcase origin character. A low ratio (1.5:1 or less) produces smoother, rounder, more muted cups. The SCA standard targets 68 ppm GH and 40 ppm KH (a 1.7:1 ratio) at 150 ppm total dissolved solids.</p>
+				<h2>Sources</h2>
+				<ul class="cf-sources">
+					{['barista-hustle-water', 'sca-water', 'hendon-2014', 'gagne', 'rao', 'synthesis'].map((id) => SOURCES[id]).map((s) => <li>{s.author}, <cite>{s.title}</cite>{s.year ? ` (${s.year})` : ''}.</li>)}
+				</ul>
+			</article>
+		</main>
+		<Footer />
+	</body>
+</html>
 
-      <p>The Water Recipe Builder plots your water against nine named recipes from the specialty coffee community. Each recipe occupies a different region of the GH-KH space and produces a distinctly different cup. Rao/Perger (76 GH, 50 KH) is the widely recommended all-rounder. Barista Hustle #4 (80 GH, 40 KH) is clean and balanced for light-medium filter. The Hendon recipe (100 GH, 31 KH), derived from computational chemistry modeling, pushes toward bright and complex for origin-focused brewing. RPavlis (0 GH, 50 KH) is the simplest possible upgrade &mdash; just potassium bicarbonate in distilled water, one ingredient, completely scale-free by design.</p>
-
-      <p>The two-bottle DIY method makes building custom water straightforward. Bottle 1 adds hardness via magnesium sulfate (Epsom salt): 2.45 grams per liter of distilled water, calibrated so 1 mL per liter of final water equals 1 ppm GH. Bottle 2 adds alkalinity via sodium bicarbonate (baking soda): 1.68 grams per liter, with the same 1 mL = 1 ppm calibration. To build any recipe, you simply measure the specified milliliters of each concentrate into a liter of distilled water. The cost is pennies per gallon.</p>
-
-      <p>One critical distinction the tool accounts for: alkalinity&rsquo;s buffering effect is 7.3 times stronger in a 15:1 pour-over ratio than a 2:1 espresso ratio. This means pour-over water needs low alkalinity (20&ndash;40 ppm KH) to preserve bright acidity, while espresso tolerates up to 150 ppm KH without muting flavor. Using the same water recipe for both methods will produce suboptimal results in at least one of them. For espresso machines specifically, chloride levels must stay below 30 ppm to prevent corrosion of stainless steel and copper boiler components under heat.</p>
-    </div>
-  </section>
-
-  <!-- Methodology -->
-  <section class="py-16 bg-db-surface border-t border-db-border">
-    <div class="max-w-3xl mx-auto px-6">
-      <div class="font-db-mono text-xs tracking-[0.2em] uppercase text-db-copper mb-4">Methodology</div>
-      <h2 class="font-db-serif text-xl md:text-2xl font-semibold text-db-text mb-6">How This Works</h2>
-
-      <div class="space-y-6 text-sm text-db-text-muted leading-relaxed">
-        <div>
-          <h3 class="font-db-serif text-base font-semibold text-db-text mb-1">The Two-Bottle Method</h3>
-          <p>
-            Most DIY water recipes use two mineral concentrates. Bottle 1 adds General Hardness (GH) via magnesium sulfate (Epsom salt). Bottle 2 adds Carbonate Hardness (KH) via sodium bicarbonate (baking soda). Our concentrates are calibrated so 1 mL per liter = 1 ppm, making the math simple: a recipe calling for GH 76 needs 76 mL of Bottle 1 per liter of final water.
-          </p>
-        </div>
-
-        <div>
-          <h3 class="font-db-serif text-base font-semibold text-db-text mb-1">Why GH and KH Matter</h3>
-          <p>
-            GH (hardness) determines extraction power &mdash; how much flavor your water pulls from coffee. KH (alkalinity) acts as a buffer, controlling how much acidity survives into the cup. The ratio between them shapes the overall flavor profile: high GH:KH = bright and complex, low GH:KH = smooth and muted.
-          </p>
-        </div>
-
-        <div>
-          <h3 class="font-db-serif text-base font-semibold text-db-text mb-1">The SCA Standard</h3>
-          <p>
-            The Specialty Coffee Association publishes a target of 150 ppm TDS, 68 ppm GH, and 40 ppm KH (1.7:1 ratio). The shaded zone on the chart represents the broader acceptable range. Most well-regarded recipes cluster near or within this zone.
-          </p>
-        </div>
-
-        <div class="pt-4 border-t border-db-border">
-          <span class="font-db-mono text-xs text-db-text-muted/40 tracking-wider uppercase">Sources</span>
-          <p class="mt-2 text-xs text-db-text-muted/50">
-            SCA Water Quality Standards (2019). Hendon, C. et al. "The Role of Dissolved Cations in Coffee Extraction" (Journal of Agricultural and Food Chemistry, 2014). Rao, S. "Everything But Espresso" (2010). Barista Hustle DIY Water Recipes (2017).
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Related -->
-  <section class="py-12">
-    <div class="max-w-3xl mx-auto px-6 text-center">
-      <span class="font-db-mono text-xs uppercase tracking-widest text-db-copper">Related</span>
-      <div class="flex flex-wrap justify-center gap-3 mt-4">
-        <a href="/blog/why-water-matters-more-than-your-coffee-beans/" class="border border-db-border text-db-text-muted px-5 py-2 text-xs uppercase tracking-widest hover:border-db-copper/50 hover:text-db-text transition-all rounded">
-          Water Science Article
-        </a>
-        <a href="/deep-brew/" class="border border-db-border text-db-text-muted px-5 py-2 text-xs uppercase tracking-widest hover:border-db-copper/50 hover:text-db-text transition-all rounded">
-          All Deep Brew Tools
-        </a>
-      </div>
-    </div>
-  </section>
-</DeepBrewLayout>
+<style is:global>.cf-page { background: #f3ede3; }</style>
+<style>
+	main { color: #2a1d15; }
+	.cf-intro { max-width: 1180px; margin: 0 auto; padding: 120px 24px 22px; }
+	.cf-back { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; text-decoration: none; }
+	.cf-kicker { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: #8f5d22; margin: 26px 0 0; }
+	h1 { font: 400 clamp(40px, 6vw, 68px)/.98 'Instrument Serif', Georgia, serif; letter-spacing: -.01em; margin: 10px 0 12px; }
+	h1 em { font-style: italic; color: #7a4e30; }
+	.cf-lede { font: 400 17px/1.5 'IBM Plex Sans', system-ui, sans-serif; color: #5b4a3d; max-width: 60ch; margin: 0; }
+	.cf-tool { max-width: 1180px; margin: 0 auto; padding: 8px 24px 40px; }
+	.cf-body { max-width: 760px; margin: 0 auto; padding: 24px 24px 72px; font: 400 17px/1.7 'IBM Plex Sans', system-ui, sans-serif; }
+	.cf-body h2 { font: 400 34px/1.1 'Instrument Serif', Georgia, serif; margin: 44px 0 12px; }
+	.cf-table-wrap { overflow-x: auto; border: 1px solid #d9cdbd; border-radius: 12px; background: #fbf8f3; }
+	table { width: 100%; border-collapse: collapse; font-size: 15px; }
+	th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid #e6dccd; }
+	thead th { font: 500 11px/1 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; }
+	td:nth-child(2), td:nth-child(3) { font-family: 'IBM Plex Mono', monospace; }
+	tr:last-child th, tr:last-child td { border-bottom: 0; }
+	.cf-note, .cf-sources { font-size: 14.5px; color: #5b4a3d; }
+	@media (max-width: 640px) { .cf-intro { padding: 96px 16px 18px; } .cf-tool { padding: 4px 12px 32px; } .cf-body { padding: 16px 16px 56px; } }
+</style>
