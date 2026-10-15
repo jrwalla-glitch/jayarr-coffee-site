@@ -83,6 +83,8 @@ const links = [
   .brand em { color: #d9a35e; }
   .links { display: flex; gap: 22px; list-style: none; margin: 0 0 0 auto; padding: 0; align-items: center; }
   .links a, .tools-btn { font: 500 13px/1 'IBM Plex Sans', system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: rgba(243, 237, 227, .82); text-decoration: none; padding: 8px 0; border-bottom: 1.5px solid transparent; }
+  /* Links box like the Tools button, so every label sits on the same line. */
+  .links a { display: inline-flex; align-items: center; }
   .links a:hover, .tools-btn:hover { color: #fff; }
   .links a.on, .tools-btn.on { color: #fff; border-bottom-color: #d9a35e; }
   .tools-btn { appearance: none; background: none; border-top: 0; border-left: 0; border-right: 0; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
