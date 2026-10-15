@@ -1,17 +1,29 @@
 // Nespresso pods: one catalogue, two systems that never mix. A pod's identity is its system plus its
 // name (Original Colombia and Vertuo Colombia are different capsules), and every list, suggestion
 // and link stays inside the reader's own system.
-// Data: src/data/nespressoPods.json (Nespresso chart and site, baseline March 2026; colours approximate).
+// Data: src/data/nespressoPods.json, checked against Nespresso's live US catalogue on 2026-10-15 by Astra
+// (makeover-2026-10/research/RESEARCH_PODS.md, R18/R21). Colours are approximate.
 
 export type Line = 'original' | 'vertuo';
 export type Roast = 'Light' | 'Medium' | 'Medium-Dark' | 'Dark';
+/** current, limited (limited edition) and seasonal are on sale; unlisted is not in the current US range
+ * (not the same as discontinued); retired is corroborated as discontinued. */
+export type Status = 'current' | 'limited' | 'seasonal' | 'unlisted' | 'retired';
 
 export interface RawPod {
-  name: string; line: Line; cup_size: string; ml: number; intensity: number | null; blend: string; aroma: string;
-  category: string; color_hex: string; description: string; roast_level: Roast; best_for: string; try_also?: string;
-  amazon_url: string; discontinued?: boolean; note?: string; decaf?: boolean; flavored?: boolean;
+  name: string; line: Line; cup_size: string; ml: number; intensity: number | null; blend: string | null; aroma: string;
+  category: string; color_hex: string; description: string | null; best_for: string | null; try_also?: string;
+  /** Nespresso's own US roast filter (Light, Medium, Dark), not a measurement; null when unpublished. */
+  roast_level: Roast | null;
+  /** Nespresso's roastiness on its 1–5 sensory scale, when published. */
+  roastiness?: number | null;
+  status: Status; discontinued?: boolean; note?: string; decaf?: boolean; flavored?: boolean;
+  /** Other cups the capsule is made to brew, when Nespresso lists more than one. */
+  servings?: { cup_size: string; ml: number }[];
+  source_url?: string; checked?: string;
+  /** Earlier names, so saved links keep working after a rename. */
+  aliases?: string[];
 }
-export interface Pod extends RawPod { id: string; slug: string; size: string }
 
 export const LINES: Record<Line, { label: string; short: string; how: string }> = {
   original: { label: 'Original', short: 'Small capsules, pressure-brewed', how: 'Espresso, ristretto and lungo from a pump, like a small espresso machine.' },
@@ -19,15 +31,23 @@ export const LINES: Record<Line, { label: string; short: string; how: string }> 
 };
 export const ROASTS: Roast[] = ['Light', 'Medium', 'Medium-Dark', 'Dark'];
 
-const SIZE_NAMES: Record<string, string> = { espresso: 'Espresso', double_espresso: 'Double Espresso', gran_lungo: 'Gran Lungo', mug: 'Mug', alto: 'Alto', lungo: 'Lungo' };
+const SIZE_NAMES: Record<string, string> = { espresso: 'Espresso', double_espresso: 'Double Espresso', gran_lungo: 'Gran Lungo', mug: 'Mug', alto: 'Alto', lungo: 'Lungo', cold_brew: 'Over ice' };
+/** On sale now: current, limited and seasonal capsules. */
+export const onSale = (p: Pick<RawPod, 'status'>) => p.status === 'current' || p.status === 'limited' || p.status === 'seasonal';
+export const STATUS_NOTE: Record<Status, string> = {
+  current: '', limited: 'Limited edition', seasonal: 'Seasonal',
+  unlisted: 'Not in Nespresso\'s current US range', retired: 'Discontinued by Nespresso',
+};
 /** "Espresso", or "Ristretto" for a 25 ml espresso-family pod: the badge names the cup the pod makes. */
 export function sizeName(p: Pick<RawPod, 'cup_size' | 'ml'>): string {
   if (p.cup_size === 'espresso' && p.ml <= 30) return 'Ristretto';
   return SIZE_NAMES[p.cup_size] ?? p.cup_size;
 }
 
+const slugOf = (line: Line, name: string) => `${line}-${name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
+export interface Pod extends RawPod { id: string; slug: string; size: string; oldSlugs: string[] }
 export function catalog(raw: RawPod[]): Pod[] {
-  return raw.map((p) => ({ ...p, id: `${p.line}:${p.name}`, slug: `${p.line}-${p.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`, size: sizeName(p) }));
+  return raw.map((p) => ({ ...p, id: `${p.line}:${p.name}`, slug: slugOf(p.line, p.name), size: sizeName(p), oldSlugs: (p.aliases ?? []).map((a) => slugOf(p.line, a)) }));
 }
 
 /** The cup sizes a system makes, smallest first: the rows of the wall and the cups of the ladder. */
@@ -54,12 +74,14 @@ export const aromaFamilies = (p: Pick<RawPod, 'aroma'>) => AROMA_FAMILIES.filter
 
 export interface PodFilters {
   line: Line; query?: string; roast?: Roast | 'all'; family?: string | 'all'; category?: string | 'all';
-  decaf?: boolean; flavored?: 'any' | 'only' | 'none'; includeDiscontinued?: boolean;
+  decaf?: boolean; flavored?: 'any' | 'only' | 'none';
+  /** Also show retired and unlisted capsules (hidden by default: you can't buy them). */
+  includeUnlisted?: boolean;
 }
 export function filterPods(pods: Pod[], f: PodFilters): Pod[] {
   const q = (f.query ?? '').trim().toLowerCase();
   return pods.filter((p) => p.line === f.line
-    && (f.includeDiscontinued || !p.discontinued)
+    && (f.includeUnlisted || onSale(p))
     && (!f.roast || f.roast === 'all' || p.roast_level === f.roast)
     && (!f.family || f.family === 'all' || aromaFamilies(p).includes(f.family))
     && (!f.category || f.category === 'all' || p.category === f.category)
@@ -93,7 +115,7 @@ export function wall(pods: Pod[], rows: SizeRow[]): Placed[] {
 /** "Try also": the suggested pod in the same system, if it's in the catalogue and still made. */
 export function tryAlso(pods: Pod[], pod: Pod): Pod | null {
   if (!pod.try_also) return null;
-  return pods.find((p) => p.line === pod.line && p.name === pod.try_also && !p.discontinued) ?? null;
+  return pods.find((p) => p.line === pod.line && p.name === pod.try_also && onSale(p)) ?? null;
 }
 
 /**
@@ -103,7 +125,7 @@ export function tryAlso(pods: Pod[], pod: Pod): Pod | null {
  */
 export function similar(pods: Pod[], pod: Pod): Pod | null {
   const fam = new Set(aromaFamilies(pod));
-  const pool = pods.filter((p) => p.id !== pod.id && p.line === pod.line && p.size === pod.size && p.ml === pod.ml && !p.discontinued && !!p.flavored === !!pod.flavored);
+  const pool = pods.filter((p) => p.id !== pod.id && p.line === pod.line && p.size === pod.size && p.ml === pod.ml && onSale(p) && !!p.flavored === !!pod.flavored);
   const score = (p: Pod) => Math.abs((p.intensity ?? 0) - (pod.intensity ?? 0)) + (aromaFamilies(p).some((f) => fam.has(f)) ? 0 : 1.5);
   return pool.sort((a, b) => score(a) - score(b) || a.name.localeCompare(b.name))[0] ?? null;
 }
@@ -111,7 +133,7 @@ export function similar(pods: Pod[], pod: Pod): Pod | null {
 /** A pod from a link: by slug, else by "line:name". */
 export function podFromParam(pods: Pod[], v: string | null): Pod | null {
   if (!v) return null;
-  return pods.find((p) => p.slug === v || p.id === v) ?? null;
+  return pods.find((p) => p.slug === v || p.id === v || p.oldSlugs.includes(v)) ?? null;
 }
 
 /** Amazon search for this exact system and pod (a search, not a verified listing; the button says so). */
@@ -120,4 +142,4 @@ export function buySearch(p: Pod): string {
   return `https://www.amazon.com/s?k=${encodeURIComponent(q).replace(/%20/g, '+')}&tag=jayarrcoffee-20`;
 }
 
-export const blendText = (b: string) => (b === 'A' ? 'Arabica' : b === 'A/R' ? 'Arabica and robusta' : b === 'R/A' ? 'Robusta and arabica' : b);
+export const blendText = (b: string | null) => b === null ? null : (b === 'A' ? 'Arabica' : b === 'A/R' ? 'Arabica and robusta' : b === 'R/A' ? 'Robusta and arabica' : b);

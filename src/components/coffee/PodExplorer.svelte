@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte';
   import podData from '../../data/nespressoPods.json';
-  import { catalog, sizeRows, filterPods, wall, tryAlso, similar, podFromParam, buySearch, blendText, LINES, ROASTS, AROMA_FAMILIES } from '../../lib/coffee/pods.ts';
+  import { catalog, sizeRows, filterPods, wall, tryAlso, similar, podFromParam, buySearch, blendText, onSale, sizeName, STATUS_NOTE, LINES, ROASTS, AROMA_FAMILIES } from '../../lib/coffee/pods.ts';
   import type { Line, Pod, Roast, RawPod, SizeRow } from '../../lib/coffee/pods.ts';
 
   // The capsule wall: pick your machine, then every capsule it takes, by cup size and intensity.
@@ -10,7 +10,8 @@
   const pods = catalog(podData.pods as RawPod[]);
   const COLS = 13;
   const LINE_IDS: Line[] = ['original', 'vertuo'];
-  const ML_TOP = 414;
+  // The largest cup any capsule makes is the full height of every drawing.
+  const ML_TOP = Math.max(...pods.map((p) => p.ml));
   const shortSize = (n: string) => (n === 'Double Espresso' ? 'Double' : n === 'Gran Lungo' ? 'Gran Lungo' : n);
 
   let line = $state<Line | null>(null);
@@ -21,7 +22,7 @@
   let category = $state<string>('all');
   let decaf = $state(false);
   let flavored = $state<'any' | 'only' | 'none'>('any');
-  let includeDiscontinued = $state(false);
+  let includeUnlisted = $state(false);
   let view = $state<'wall' | 'list'>('wall');
   let flight = $state<string[]>([]);
   let mounted = $state(false);
@@ -32,8 +33,9 @@
   let narrow = $state(false);
 
   let rows = $derived(line ? sizeRows(pods, line) : []);
-  let all = $derived(line ? pods.filter((p) => p.line === line && (includeDiscontinued || !p.discontinued)) : []);
-  let shown = $derived(line ? filterPods(pods, { line, query, roast, family, category, decaf, flavored, includeDiscontinued }) : []);
+  let all = $derived(line ? pods.filter((p) => p.line === line && (includeUnlisted || onSale(p))) : []);
+  let shown = $derived(line ? filterPods(pods, { line, query, roast, family, category, decaf, flavored, includeUnlisted }) : []);
+  let roastsHere = $derived(ROASTS.filter((r) => all.some((p) => p.roast_level === r)));
   let shownIds = $derived(new Set(shown.map((p) => p.id)));
   let placed = $derived(rows.length ? wall(all, rows) : []);
   let categories = $derived(line ? [...new Set(pods.filter((p) => p.line === line).map((p) => p.category))].sort() : []);
@@ -68,7 +70,7 @@
     let saved: string | null = null;
     try { saved = localStorage.getItem('jayarr-pods-machine'); const f = JSON.parse(localStorage.getItem('jayarr-pods-flight') ?? '[]'); if (Array.isArray(f)) flight = f.filter((x) => typeof x === 'string').slice(0, 3); } catch { /* storage unavailable */ }
     // A pod in a link decides the system; otherwise the link's line, otherwise your machine from last time.
-    if (fromLink) { line = fromLink.line; selectedId = fromLink.id; if (fromLink.discontinued) includeDiscontinued = true; }
+    if (fromLink) { line = fromLink.line; selectedId = fromLink.id; if (!onSale(fromLink)) includeUnlisted = true; }
     else if (l === 'original' || l === 'vertuo') line = l;
     else if (saved === 'original' || saved === 'vertuo') line = saved;
     const mq = matchMedia('(max-width: 640px)');
@@ -85,8 +87,9 @@
   });
   function onKey(e: KeyboardEvent) { if (e.key === 'Escape' && selectedId) selectedId = null; }
 
-  const label = (p: Pod) => `${p.name}: ${p.size}, ${p.ml} ml, ${p.intensity ? `intensity ${p.intensity}` : 'no intensity rating'}${p.discontinued ? ', discontinued' : ''}${flight.includes(p.id) ? ', in your tasting flight' : ''}`;
-  const roastStep = (r: Roast) => ROASTS.indexOf(r);
+  const label = (p: Pod) => `${p.name}: ${p.size}, ${p.ml} ml, ${p.intensity ? `intensity ${p.intensity}` : 'no intensity rating'}${STATUS_NOTE[p.status] ? `, ${STATUS_NOTE[p.status].toLowerCase()}` : ''}${flight.includes(p.id) ? ', in your tasting flight' : ''}`;
+  // Other cups Nespresso says the capsule makes, besides the one it sits under on the wall.
+  const alsoBrews = (p: Pod) => (p.servings ?? []).filter((x) => !(x.cup_size === p.cup_size && x.ml === p.ml)).map((x) => `${sizeName(x).toLowerCase()} (${x.ml} ml)`);
 </script>
 
 <svelte:window onkeydown={onKey} />
@@ -154,7 +157,7 @@
 
 {#snippet wallPod(x: { pod: Pod })}
   {#if shownIds.has(x.pod.id)}
-    <button type="button" class="pod" class:sel={selectedId === x.pod.id} class:gone={x.pod.discontinued} class:inflight={flight.includes(x.pod.id)} aria-pressed={selectedId === x.pod.id} aria-label={label(x.pod)} onclick={() => pick(x.pod)}>{@render capsule(line!, x.pod.color_hex, 28)}<span class="tip" aria-hidden="true">{x.pod.name}</span></button>
+    <button type="button" class="pod" class:sel={selectedId === x.pod.id} class:gone={!onSale(x.pod)} class:inflight={flight.includes(x.pod.id)} aria-pressed={selectedId === x.pod.id} aria-label={label(x.pod)} onclick={() => pick(x.pod)}>{@render capsule(line!, x.pod.color_hex, 28)}<span class="tip" aria-hidden="true">{x.pod.name}</span></button>
   {:else}
     <span class="pod faded" aria-hidden="true">{@render capsule(line!, x.pod.color_hex, 28)}</span>
   {/if}
@@ -183,7 +186,7 @@
     {#if ref}
       {@const x = rws.length * (W + gap) + gap / 2}
       <rect x={x} y="0.6" width={W} height={H - 0.6} rx="2" fill="none" stroke="#9c8f82" stroke-width="1" stroke-dasharray="3 4" opacity=".55" />
-      <text x={x + W / 2} y={H + 14} text-anchor="middle" class="lml ref">414</text>
+      <text x={x + W / 2} y={H + 14} text-anchor="middle" class="lml ref">{ML_TOP}</text>
       {#if names}<text x={x + W / 2} y={H + 27} text-anchor="middle" class="lnm ref">Vertuo</text>{/if}
     {/if}
   </svg>
@@ -201,7 +204,7 @@
             <b>{LINES[l].label}</b>
             <span class="how">{LINES[l].how}</span>
             <span class="askladder">{@render ladder(null, 72, sizeRows(pods, l), false)}<small>its cup sizes in ml, at one scale</small></span>
-            <small class="n">{pods.filter((p) => p.line === l && !p.discontinued).length} capsules →</small>
+            <small class="n">{pods.filter((p) => p.line === l && onSale(p)).length} capsules →</small>
           </button>
         {/each}
       </div>
@@ -222,7 +225,7 @@
       <div class="tools">
         <label class="search"><span class="sr">Search capsules</span><input type="search" bind:value={query} placeholder="Search by name or note" /></label>
         <label class="sel"><span class="lbl">Roast</span>
-          <select bind:value={roast}><option value="all">Any</option>{#each ROASTS as r (r)}<option value={r}>{r}</option>{/each}</select></label>
+          <select bind:value={roast}><option value="all">Any</option>{#each roastsHere as r (r)}<option value={r}>{r}</option>{/each}</select></label>
         <label class="sel"><span class="lbl">Aroma</span>
           <select bind:value={family}><option value="all">Any</option>{#each AROMA_FAMILIES as f (f.id)}<option value={f.id}>{f.label}</option>{/each}</select></label>
         <label class="sel"><span class="lbl">Range</span>
@@ -230,7 +233,7 @@
         <label class="sel"><span class="lbl">Flavoured</span>
           <select bind:value={flavored}><option value="any">Either</option><option value="none">Not flavoured</option><option value="only">Flavoured only</option></select></label>
         <label class="chk"><input type="checkbox" bind:checked={decaf} /> Decaf</label>
-        <label class="chk"><input type="checkbox" bind:checked={includeDiscontinued} /> Show discontinued</label>
+        <label class="chk"><input type="checkbox" bind:checked={includeUnlisted} /> Show retired and unlisted</label>
       </div>
     </details>
     <div class="countrow">
@@ -286,8 +289,8 @@
               <tbody>
                 {#each [...shown].sort((a, b) => a.ml - b.ml || (a.intensity ?? 0) - (b.intensity ?? 0) || a.name.localeCompare(b.name)) as p (p.id)}
                   <tr class:sel={selectedId === p.id}>
-                    <th scope="row"><button type="button" class="lname" aria-pressed={selectedId === p.id} onclick={() => pick(p)}>{@render capsule(line, p.color_hex, 20)}<span>{p.name}{#if p.discontinued}<em> (discontinued)</em>{/if}</span></button></th>
-                    <td class="nw">{shortSize(p.size)} · {p.ml}&nbsp;ml</td><td class="num">{p.intensity ?? 'n/r'}</td><td class="nw">{p.roast_level}</td><td>{p.aroma}</td>
+                    <th scope="row"><button type="button" class="lname" aria-pressed={selectedId === p.id} onclick={() => pick(p)}>{@render capsule(line, p.color_hex, 20)}<span>{p.name}{#if STATUS_NOTE[p.status]}<em> ({STATUS_NOTE[p.status].toLowerCase()})</em>{/if}</span></button></th>
+                    <td class="nw">{shortSize(p.size)} · {p.ml}&nbsp;ml</td><td class="num">{p.intensity ?? 'n/r'}</td><td class="nw">{p.roast_level ?? '—'}</td><td>{p.aroma}</td>
                   </tr>
                 {/each}
               </tbody>
@@ -310,7 +313,10 @@
                 {#if selected.category !== selected.size || selected.decaf || selected.flavored}<p class="cat">{[selected.category !== selected.size ? selected.category : '', selected.decaf ? 'Decaf' : '', selected.flavored ? 'Flavoured' : ''].filter(Boolean).join(' · ')}</p>{/if}
               </div>
             </div>
-            {#if selected.discontinued}<p class="gone-note">Nespresso has discontinued this capsule, so it may be hard to find. {selected.note ?? ''}</p>{/if}
+            {#if selected.status === 'retired'}<p class="gone-note">Nespresso has discontinued this capsule, so it may be hard to find.</p>
+            {:else if selected.status === 'unlisted'}<p class="gone-note">Not in Nespresso's current US range when we checked ({selected.checked ?? 'October 2026'}). It may be gone, or between seasons.</p>
+            {:else if selected.status !== 'current'}<p class="tag-note">{STATUS_NOTE[selected.status]}: on sale for now, while Nespresso has it.</p>{/if}
+            {#if selected.note}<p class="tag-note">{selected.note}</p>{/if}
             <div class="meters">
               <div><span class="lbl">Intensity</span>
                 {#if selected.intensity}
@@ -318,18 +324,22 @@
                 {:else}<span class="mono quiet">Not rated by Nespresso</span>{/if}
               </div>
               <div><span class="lbl">Roast</span>
-                <span class="bar roast" role="img" aria-label="Roast: {selected.roast_level}">{#each ROASTS as r, i (r)}<i class:on={i <= roastStep(selected.roast_level)}></i>{/each}</span><span class="mono">{selected.roast_level}</span>
+                {#if selected.roastiness}
+                  <span class="bar roast" role="img" aria-label="Roastiness {selected.roastiness} of 5, by Nespresso">{#each Array.from({ length: 5 }, (_, i) => i) as i (i)}<i class:on={i < selected.roastiness}></i>{/each}</span><span class="mono">{selected.roast_level ?? ''}{selected.roast_level ? ' · ' : ''}{selected.roastiness}<small>/5</small></span>
+                {:else if selected.roast_level}<span class="mono quiet">{selected.roast_level}, by Nespresso's filter</span><span></span>
+                {:else}<span class="mono quiet">Not published</span><span></span>{/if}
               </div>
             </div>
             <dl class="facts">
               <div><dt>Aroma</dt><dd>{selected.aroma}</dd></div>
-              <div><dt>Beans</dt><dd>{blendText(selected.blend)}</dd></div>
+              {#if selected.blend}<div><dt>Beans</dt><dd>{blendText(selected.blend)}</dd></div>{/if}
+              {#if alsoBrews(selected).length}<div><dt>Also brews</dt><dd>{alsoBrews(selected).join(', ')}</dd></div>{/if}
             </dl>
-            <p class="desc">{selected.description}</p>
-            <p class="best"><span class="lbl">Best for</span>{selected.best_for}</p>
+            {#if selected.description}<p class="desc">{selected.description}</p>{/if}
+            {#if selected.best_for}<p class="best"><span class="lbl">Best for</span>{selected.best_for}</p>{/if}
             <figure class="pours">
               {@render ladder(selected, 150, rows, true, true)}
-              <figcaption>What it pours: {selected.ml} ml, beside every {LINES[selected.line].label} cup size. Every drawing on this page uses one scale, with 414 ml as the full height.</figcaption>
+              <figcaption>What it pours: {selected.ml} ml, beside every {LINES[selected.line].label} cup size. Every drawing on this page uses one scale, with {ML_TOP} ml as the full height.</figcaption>
             </figure>
             {#if suggestion}
               <p class="try"><span class="lbl">Try also</span><button type="button" class="trybtn" onclick={() => pick(suggestion!)}>{@render capsule(suggestion.line, suggestion.color_hex, 20)}{suggestion.name}<small>{suggestion.size} · {suggestion.ml} ml</small></button></p>
@@ -337,10 +347,11 @@
               <p class="try"><span class="lbl">Similar on the wall</span><button type="button" class="trybtn" onclick={() => pick(near!)}>{@render capsule(near.line, near.color_hex, 20)}{near.name}<small>{near.intensity ? `intensity ${near.intensity}` : 'not rated'} · {near.aroma}</small></button><small class="quiet nearwhy">Same cup size, the closest intensity and aroma.</small></p>
             {/if}
             <div class="actions">
-              {#if !selected.discontinued}<a class="go" href={buySearch(selected)} rel="sponsored noopener" target="_blank">Search Amazon for {LINES[selected.line].label} {selected.name} →</a>{/if}
+              {#if onSale(selected)}<a class="go" href={buySearch(selected)} rel="sponsored noopener" target="_blank">Search Amazon for {LINES[selected.line].label} {selected.name} →</a>{/if}
               <button type="button" class="pill" aria-pressed={flight.includes(selected.id)} onclick={() => toggleFlight(selected!)}>{flight.includes(selected.id) ? 'In your flight ✓' : 'Add to a tasting flight'}</button>
             </div>
-            {#if !selected.discontinued}<p class="disc">The button opens an Amazon search for this {LINES[selected.line].label} capsule; as an Amazon Associate we earn from qualifying purchases.</p>{/if}
+            {#if onSale(selected)}<p class="disc">The button opens an Amazon search for this {LINES[selected.line].label} capsule; as an Amazon Associate we earn from qualifying purchases.</p>{/if}
+            {#if selected.source_url}<p class="disc"><a class="src" href={selected.source_url} rel="noopener" target="_blank">Nespresso's page for this capsule ↗</a>{selected.checked ? `, checked ${selected.checked}` : ''}</p>{/if}
           </div>
         {:else}
           <div class="howto">
@@ -364,7 +375,7 @@
                     <small>{shortSize(p.size)} · {p.ml} ml</small>
                     <span class="mini" aria-label={p.intensity ? `Intensity ${p.intensity} of 13` : 'Not rated'} role="img">{#each Array.from({ length: 13 }, (_, i) => i) as i (i)}<i class:on={!!p.intensity && i < p.intensity}></i>{/each}</span>
                     <small class="mono">{p.intensity ? `${p.intensity}/13` : 'n/r'}</small>
-                    <small class="rl2">{p.roast_level}</small>
+                    <small class="rl2">{p.roast_level ?? 'roast not published'}</small>
                     <span class="flglass">{@render glassAt(p.ml, 60)}</span>
                   </button>
                 </li>
@@ -377,7 +388,7 @@
         </div>
       </aside>
     </div>
-    <p class="data">Range from Nespresso's chart and US site, checked March 2026; Nespresso changes it often, so check the box before you buy. Capsule colours are approximate. Aroma groups gather Nespresso's own aroma words.</p>
+    <p class="data">Range checked against Nespresso's US catalogue on 15 October 2026; it changes often, so check the box before you buy. Retired and unlisted capsules are hidden unless you ask. Roast is Nespresso's own filter and 1–5 roastiness, where published. Capsule colours are approximate; aroma groups gather Nespresso's own aroma words.</p>
   {/if}
 </div>
 
@@ -436,7 +447,8 @@
 
   /* The wall: a label column, a "not rated" column, then intensity 1–13 (14 columns). */
   .wall { --lab: 112px; }
-  .head, .row { display: grid; grid-template-columns: var(--lab) repeat(14, minmax(0, 1fr)); align-items: stretch; }
+  /* "Not rated" is wider: unrated limited editions and flavours gather there and sit three abreast. */
+  .head, .row { display: grid; grid-template-columns: var(--lab) minmax(0, 2.8fr) repeat(13, minmax(0, 1fr)); align-items: stretch; }
   .head { font: 500 11.5px/1 'IBM Plex Mono', monospace; color: var(--ink-3); text-align: center; padding-bottom: 6px; border-bottom: 1px solid var(--rule); }
   .head .corner { text-align: left; letter-spacing: .12em; text-transform: uppercase; font-size: 10.5px; }
   .head .nr { font-size: 10.5px; }
@@ -500,12 +512,14 @@
   .kick { font: 500 11.5px/1.3 'IBM Plex Mono', monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--crema-deep); margin: 0; }
   .detail h3 { font: 400 38px/1.02 'Instrument Serif', Georgia, serif; margin: 4px 0 2px; }
   .cat { margin: 0; color: var(--ink-3); font-size: 14px; }
+  .tag-note { margin: 10px 0 0; font-size: 13.5px; color: var(--ink-2); }
+  .src { color: var(--crema-deep); text-underline-offset: 3px; }
   .gone-note { margin: 10px 0 0; padding: 8px 10px; border-radius: 8px; background: #f6efe5; color: var(--ink-2); font-size: 14px; }
   .meters { display: grid; gap: 10px; margin-top: 14px; }
   .meters > div { display: grid; grid-template-columns: 78px 1fr auto; align-items: center; gap: 10px; }
   .meters .lbl { margin: 0; }
   .bar, .mini { display: grid; grid-template-columns: repeat(13, 1fr); gap: 2px; height: 10px; }
-  .bar.roast { grid-template-columns: repeat(4, 1fr); }
+  .bar.roast { grid-template-columns: repeat(5, 1fr); }
   .bar i, .mini i { background: #ece3d6; border-radius: 2px; }
   .bar i.on, .mini i.on { background: #7a4e30; }
   .bar.roast i.on { background: linear-gradient(90deg, #b77a3c, #3b2214); background-size: 400% 100%; }
