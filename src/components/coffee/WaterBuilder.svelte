@@ -18,7 +18,8 @@
   let share = $derived(p ? p.baseL / p.finalL : 0);
   const unitName = (v: number) => (gallons ? (v === 1 ? 'gallon' : 'gallons') : 'L');
   const vol = (litres: number) => (gallons ? (litres < 3.785 ? `${Math.round(litres * 33.814)} fl oz` : `${fmt1(litres / 3.785)} gal`) : litres < 1 ? `${Math.round(litres * 1000)} mL` : `${fmt1(litres)} L`);
-  const line = $derived(`${volume} ${unitName(volume)} line`);
+  // Under a gallon, US jugs are marked in ounces.
+  const line = $derived(gallons && volume < 1 ? `${Math.round(volume * 128)} fl oz line` : `${volume} ${unitName(volume)} line`);
   // Stocks first, then your water, then distilled to the line; when no distilled is needed, fill with your own water instead.
   let steps = $derived.by(() => {
     if (!p) return [];
@@ -91,7 +92,7 @@
         <text x={mx(gh)} y={my(kh) - 20} text-anchor={mx(gh) < L + 50 ? 'start' : mx(gh) > R - 50 ? 'end' : 'middle'} class="ln strong">your water{gh > GMAX || kh > KMAX ? ' (off the chart)' : ''}</text>
       {/if}
     </svg>
-    <figcaption>Hardness (calcium and magnesium) helps pull flavour out; alkalinity (bicarbonate) buffers acidity. Most good brewing water sits between the 2:1 and 3:1 lines.</figcaption>
+    <figcaption>Hardness (calcium and magnesium) helps pull flavour out; alkalinity (bicarbonate) buffers acidity. The dashed lines mark hardness two and three times the alkalinity, a common starting range; recipes sit on both sides of it.</figcaption>
   </figure>
 
   <div class="panel">
@@ -148,8 +149,10 @@
           {#each steps as st, k (st.key)}<li class:fill={st.fill}><span class="n">{st.fill ? '✓' : k + 1}</span><span>{@html st.html}</span></li>{/each}
         </ol>
         {#if base === 'tested' && p.khStockMl === 0 && p.ghStockMl > 0}<p class="note">No bottle B needed: your water already brings enough alkalinity.</p>{/if}
-        {#if p.dry.weighable}
-          <p class="direct"><b>Or skip the bottles:</b> weigh {#if p.dry.epsomG > 0}<span class="mono">{p.dry.epsomG.toFixed(2)} g</span> Epsom salt{/if}{#if p.dry.epsomG > 0 && p.dry.bicarbG > 0}{' '}and{' '}{/if}{#if p.dry.bicarbG > 0}<span class="mono">{p.dry.bicarbG.toFixed(2)} g</span> baking soda{/if} into the empty jug{#if p.dry.baseL > 0}, add <span class="mono">{vol(p.dry.baseL)}</span> of your own water{/if}, then fill with distilled water to the {line} (needs a 0.01 g scale).</p>
+        {#if p.dry.epsomG === 0 && p.dry.bicarbG === 0}
+          <p class="direct">Your water already matches this recipe, so no salts are needed.</p>
+        {:else if p.dry.weighable}
+          <p class="direct"><b>Or skip the bottles:</b> weigh {#if p.dry.epsomG > 0}<span class="mono">{p.dry.epsomG.toFixed(2)} g</span> Epsom salt{/if}{#if p.dry.epsomG > 0 && p.dry.bicarbG > 0}{' '}and{' '}{/if}{#if p.dry.bicarbG > 0}<span class="mono">{p.dry.bicarbG.toFixed(2)} g</span> baking soda{/if} into the empty jug, then {#if p.dry.baseL > 0 && p.dry.distilledL < p.finalL * 0.005}fill with your own water to the {line}{:else if p.dry.baseL > 0}add <span class="mono">{vol(p.dry.baseL)}</span> of your own water and fill with distilled water to the {line}{:else}fill with distilled water to the {line}{/if} (needs a 0.01 g scale).</p>
         {:else}
           <p class="direct">Weighing the dry salts directly isn't practical for this batch: {p.dry.minBatchL <= 40 ? `the amounts are under 0.2 g, too small for a 0.01 g scale to measure accurately. From about ${vol(Math.ceil(p.dry.minBatchL * 10) / 10)} they're big enough.` : 'the amounts are a few milligrams. Use the stock bottles.'}</p>
         {/if}
@@ -213,6 +216,8 @@
   .note { font-size: 13.5px; color: var(--ink-3); margin: 8px 0 0; }
   .err { color: #9a3b1c; }
   button:focus-visible, input:focus-visible { outline: 2px solid var(--crema-deep); outline-offset: 2px; }
+  /* Phones: the map scales down, so its words scale up to stay readable (about 9–10 px on screen). */
+  @media (max-width: 640px) { .ln { font-size: 16px; } .tk, .gl, .ax { font-size: 14px; } }
   @media (max-width: 860px) { .wb { grid-template-columns: 1fr; } .stage { border-right: 0; border-bottom: 1px solid var(--rule); } .panel { padding: 18px 16px 20px; } .recipes { grid-template-columns: 1fr; } }
   .vol { flex-direction: row; align-items: center; gap: 6px; }
   .vol input { width: 84px; }
