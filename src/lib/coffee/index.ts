@@ -9,3 +9,5 @@ export { simulate } from './simulate.ts';
 export type { Frame, Simulation } from './simulate.ts';
 export { encodeBrew, decodeBrew } from './share.ts';
 export type { BrewState, Units } from './share.ts';
+export { SYMPTOMS, ZONES, nextQuestion, questionsFor, diagnose, placeOnMap } from './doctor.ts';
+export type { SymptomId, Symptom, Question, QuestionId, DoctorState, Diagnosis, ZoneId, Zone } from './doctor.ts';
