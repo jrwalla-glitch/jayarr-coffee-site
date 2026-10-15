@@ -15,20 +15,36 @@
   let volumeL = $derived(gallons ? volume * 3.785 : volume);
   let plan = $derived(planWater({ targetId, volumeL, espresso, ...(base === 'tested' ? { base: { gh, kh } } : {}) }));
   let p = $derived(plan.ok ? plan.value : null);
-  let shown = $derived(WATER_RECIPES.filter((r) => !espresso || r.espressoSafe));
-  let perUnit = $derived(gallons ? 3.785 : 1);
+  let share = $derived(p ? p.baseL / p.finalL : 0);
+  const unitName = (v: number) => (gallons ? (v === 1 ? 'gallon' : 'gallons') : 'L');
+  const vol = (litres: number) => (gallons ? (litres < 3.785 ? `${Math.round(litres * 33.814)} fl oz` : `${fmt1(litres / 3.785)} gal`) : litres < 1 ? `${Math.round(litres * 1000)} mL` : `${fmt1(litres)} L`);
+  const line = $derived(`${volume} ${unitName(volume)} line`);
+  // Stocks first, then your water, then distilled to the line; when no distilled is needed, fill with your own water instead.
+  let steps = $derived.by(() => {
+    if (!p) return [];
+    const out: { key: string; html: string; fill?: boolean }[] = [];
+    if (p.ghStockMl > 0) out.push({ key: 'a', html: `Add <span class="mono a">${fmt1(p.ghStockMl)} mL</span> of bottle A to an empty jug.` });
+    if (p.khStockMl > 0) out.push({ key: 'b', html: `Add <span class="mono b">${fmt1(p.khStockMl)} mL</span> of bottle B.` });
+    const noDistilled = p.distilledL < p.finalL * 0.005;
+    if (p.baseL > 0 && noDistilled) out.push({ key: 'fill', fill: true, html: `Fill with your own water <b>to the ${line}</b> (about <span class="mono">${vol(p.baseL)}</span>), cap and shake.` });
+    else {
+      if (p.baseL > 0) out.push({ key: 'base', html: `Pour in <span class="mono">${vol(p.baseL)}</span> of your own water.` });
+      out.push({ key: 'fill', fill: true, html: `Fill with distilled water <b>to the ${line}</b> (about <span class="mono">${vol(p.distilledL)}</span>), cap and shake.` });
+    }
+    return out;
+  });
+  const shortName = (n: string) => n.replace(' (GH/KH only)', '').replace('Third Wave Water', 'Third Wave');
+  // Hand-placed labels where recipes crowd together on the KH 40 row.
+  const LBL: Record<string, { dx: number; dy: number; a: string }> = { sca: { dx: -11, dy: 4, a: 'end' }, bh4: { dx: 8, dy: -8, a: 'start' }, 'tww-classic': { dx: 0, dy: 20, a: 'middle' } };
   const fmt1 = (n: number) => (n < 10 ? n.toFixed(1) : Math.round(n).toString());
 
   // ── map: GH across, KH up ──
   const L = 46, R = 470, T = 16, B = 300, GMAX = 180, KMAX = 100;
   const mx = (v: number) => L + (Math.min(v, GMAX) / GMAX) * (R - L);
   const my = (v: number) => B - (Math.min(v, KMAX) / KMAX) * (B - T);
-  // Label placement: flip left near the right edge; nudge the two recipes that sit close together.
-  const NUDGE: Record<string, number> = { sca: -11, bh4: 15 };
+  // Label placement: flip left near the right edge.
   const lx = (gh: number) => (mx(gh) > R - 150 ? mx(gh) - 10 : mx(gh) + 10);
   const la = (gh: number) => (mx(gh) > R - 150 ? 'end' : 'start');
-
-  $effect(() => { if (espresso && !WATER_RECIPES.find((r) => r.id === targetId)?.espressoSafe) targetId = 'rao'; });
 
   onMount(() => {
     const q = new URLSearchParams(location.search);
@@ -63,16 +79,16 @@
       <text x={(L + R) / 2} y={B + 38} text-anchor="middle" class="ax">hardness (GH, ppm) → brighter, more extraction</text>
       <text transform="translate(12 {(T + B) / 2}) rotate(-90)" text-anchor="middle" class="ax">alkalinity (KH) → rounder, flatter</text>
       {#each WATER_RECIPES as r (r.id)}
-        <g class="lm" class:on={r.id === targetId} class:dim={espresso && !r.espressoSafe} role="button" tabindex="-1" onclick={() => { if (!espresso || r.espressoSafe) targetId = r.id; }} onkeydown={(e) => e.key === 'Enter' && (targetId = r.id)}>
+        <g class="lm" class:on={r.id === targetId} role="button" tabindex="-1" onclick={() => (targetId = r.id)} onkeydown={(e) => e.key === 'Enter' && (targetId = r.id)}>
           <circle cx={mx(r.gh)} cy={my(r.kh)} r={r.id === targetId ? 8 : 5} />
-          <text x={lx(r.gh)} y={my(r.kh) + 4 + (NUDGE[r.id] ?? 0)} text-anchor={la(r.gh)} class="ln">{r.name}</text>
+          <text x={LBL[r.id] ? mx(r.gh) + LBL[r.id].dx : lx(r.gh)} y={my(r.kh) + (LBL[r.id] ? LBL[r.id].dy : 4)} text-anchor={LBL[r.id]?.a ?? la(r.gh)} class="ln">{shortName(r.name)}</text>
         </g>
       {/each}
       {#if base === 'tested' && p}
-        <line x1={mx(gh)} y1={my(kh)} x2={mx(gh * p.baseShare)} y2={my(kh * p.baseShare)} class="path" />
-        <line x1={mx(gh * p.baseShare)} y1={my(kh * p.baseShare)} x2={mx(p.gh)} y2={my(p.kh)} class="path add" />
+        <line x1={mx(gh)} y1={my(kh)} x2={mx(gh * share)} y2={my(kh * share)} class="path" />
+        <line x1={mx(gh * share)} y1={my(kh * share)} x2={mx(p.gh)} y2={my(p.kh)} class="path add" />
         <g transform="translate({mx(gh)} {my(kh)})"><path d="M0 -14 C 7 -6, 7 0, 0 4 C -7 0, -7 -6, 0 -14 Z" fill="#3f8796" stroke="#2a1d15" stroke-width="1.2" /></g>
-        <text x={lx(gh)} y={my(kh) - 10} text-anchor={la(gh)} class="ln strong">your water{gh > GMAX || kh > KMAX ? ' (off the chart)' : ''}</text>
+        <text x={mx(gh)} y={my(kh) - 20} text-anchor={mx(gh) < L + 50 ? 'start' : mx(gh) > R - 50 ? 'end' : 'middle'} class="ln strong">your water{gh > GMAX || kh > KMAX ? ' (off the chart)' : ''}</text>
       {/if}
     </svg>
     <figcaption>Hardness (calcium and magnesium) helps pull flavour out; alkalinity (bicarbonate) buffers acidity. Most good brewing water sits between the 2:1 and 3:1 lines.</figcaption>
@@ -101,7 +117,7 @@
       <legend class="lbl">2 · What you want</legend>
       <label class="check"><input type="checkbox" bind:checked={espresso} /> It's for an espresso machine</label>
       <div class="recipes">
-        {#each shown as r (r.id)}
+        {#each WATER_RECIPES as r (r.id)}
           <button type="button" aria-pressed={r.id === targetId} onclick={() => (targetId = r.id)}>
             <span class="rn">{r.name}</span><span class="rp">{r.profile}</span><span class="rv">GH {r.gh} · KH {r.kh}</span>
           </button>
@@ -125,15 +141,15 @@
     {#if p}
       <div class="result" aria-live="polite">
         <p class="kick">Your recipe: {p.target.name}</p>
-        <ol>
-          <li><b>Make two concentrates once</b> (they keep for months): <span class="mono">{CONCENTRATE_G_PER_L.gh} g</span> Epsom salt in 1 L of distilled water (bottle A, hardness), and <span class="mono">{CONCENTRATE_G_PER_L.kh} g</span> baking soda in another litre (bottle B, buffer).</li>
-          <li><b>For {volume} {gallons ? (volume === 1 ? 'gallon' : 'gallons') : 'L'}:</b>
-            {#if p.baseShare > 0 && base === 'tested'}<span class="mono">{fmt1(p.baseShare * volumeL / perUnit)} {gallons ? 'gal' : 'L'}</span> of your water, then {/if}
-            {#if p.ghMlPerL > 0}<span class="mono a">{fmt1(p.ghMlPerL * volumeL)} mL</span> of bottle A{/if}{#if p.ghMlPerL > 0 && p.khMlPerL > 0}{' '}and{' '}{/if}{#if p.khMlPerL > 0}<span class="mono b">{fmt1(p.khMlPerL * volumeL)} mL</span> of bottle B{/if}{#if p.ghMlPerL === 0 && p.khMlPerL === 0}nothing extra{/if}, topped up with distilled water.{#if p.khMlPerL === 0 && p.ghMlPerL > 0}{' '}No bottle B needed: your water brings enough alkalinity.{/if}</li>
+        <p class="once"><b>Once:</b> make two stock bottles (they keep for months, capped, out of the sun). Bottle A: <span class="mono a">{CONCENTRATE_G_PER_L.gh} g</span> Epsom salt in distilled water, made up to 1 L. Bottle B: <span class="mono b">{CONCENTRATE_G_PER_L.kh} g</span> baking soda, made up to 1 L.</p>
+        <ol class="steps">
+          {#each steps as st, k (st.key)}<li class:fill={st.fill}><span class="n">{st.fill ? '✓' : k + 1}</span><span>{@html st.html}</span></li>{/each}
         </ol>
-        <p class="direct">Or dissolve directly: <span class="mono">{p.epsomG.toFixed(2)} g</span> Epsom salt and <span class="mono">{p.bicarbG.toFixed(2)} g</span> baking soda in the batch (needs a 0.01 g scale).</p>
-        <p class="out">Result: GH {Math.round(p.gh)} · KH {Math.round(p.kh)} ppm. {p.target.bestFor}.</p>
+        {#if base === 'tested' && p.khStockMl === 0 && p.ghStockMl > 0}<p class="note">No bottle B needed: your water already brings enough alkalinity.</p>{/if}
+        <p class="direct">Or dissolve dry salts straight into the jug: <span class="mono">{p.epsomG.toFixed(2)} g</span> Epsom salt and <span class="mono">{p.bicarbG.toFixed(2)} g</span> baking soda, then fill to the line (needs a 0.01 g scale).</p>
+        <p class="out">Result: GH {Math.round(p.gh)} · KH {Math.round(p.kh)} ppm as CaCO₃. {p.target.bestFor}.</p>
         {#each p.notes as n (n)}<p class="note">{n}</p>{/each}
+        <p class="note">Use plain Epsom salt (magnesium sulfate heptahydrate, unscented, food or USP grade) and ordinary baking soda (sodium bicarbonate). Two salts match a recipe's hardness and alkalinity, not every mineral in a branded product.</p>
       </div>
     {:else if !plan.ok}
       <p class="err">{plan.errors[0].message}</p>
@@ -179,7 +195,11 @@
   .rv { font: 400 12px 'IBM Plex Mono', monospace; color: var(--water); }
   .result { border-top: 1px solid var(--rule); padding-top: 12px; }
   .kick { font: 400 26px/1.1 'Instrument Serif', Georgia, serif; margin: 0 0 8px; }
-  .result ol { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+  .once { font-size: 14.5px; color: var(--ink-2); margin: 0 0 12px; }
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .steps li { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; font-size: 16px; }
+  .steps .n { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--ink); display: grid; place-items: center; font: 500 13px/1 'IBM Plex Mono', monospace; }
+  .steps .fill .n { background: var(--water); border-color: var(--water); color: #fff; }
   .mono { font-family: 'IBM Plex Mono', monospace; font-weight: 500; }
   .mono.a { color: var(--crema-deep); }
   .mono.b { color: var(--water); }

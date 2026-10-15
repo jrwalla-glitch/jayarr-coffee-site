@@ -2,115 +2,95 @@
 import BaseHead from '../../../components/BaseHead.astro';
 import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
-import DrinkBuilder from '../../../components/tools/DrinkBuilder.svelte';
+import CoffeeDrinks from '../../../components/coffee/CoffeeDrinks.svelte';
+import { DRINKS } from '../../../lib/coffee/index.ts';
+
+const title = 'Types of Coffee Drinks, Drawn to Scale';
+const description = 'Compare espresso drinks side by side, from espresso and cortado to flat white, cappuccino and latte, drawn to one scale from published recipes, with the regional differences that change them.';
+const fmtLayer = (l: (typeof DRINKS)[number]['refs'][number]['layers'][number]) => {
+	const r = l.ml ?? l.g;
+	const unit = l.ml ? 'ml' : 'g';
+	return r ? `${r[0] === r[1] ? r[0] : `${r[0]}–${r[1]}`} ${unit} ${l.kind === 'frothed' ? 'frothed milk' : l.kind === 'water' ? 'hot water' : l.kind === 'brewed' ? 'brewed coffee' : l.kind}` : `${l.kind === 'frothed' ? 'frothed milk' : l.kind} (amount not published)`;
+};
+const allSources = [...new Map(DRINKS.flatMap((d) => d.refs.map((r) => [r.source.url, r.source]))).values()];
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead
-			title="Espresso Drink Builder — JayArr Coffee"
-			description="Visual guide to espresso drink proportions. See exactly what goes into a latte, cappuccino, cortado, flat white, americano, and more."
-		/>
+		<BaseHead title={title} description={description} />
 		<script type="application/ld+json" set:html={JSON.stringify({
-			"@context": "https://schema.org",
-			"@type": "WebApplication",
-			"name": "Espresso Drink Builder",
-			"url": "https://jayarr.coffee/tools/drink-builder/",
-			"description": "Visual guide to espresso drink proportions. See exactly what goes into a latte, cappuccino, cortado, flat white, americano, and more.",
-			"applicationCategory": "UtilityApplication",
-			"operatingSystem": "Any",
-			"offers": {
-				"@type": "Offer",
-				"price": "0",
-				"priceCurrency": "USD"
-			},
-			"publisher": {
-				"@type": "Organization",
-				"name": "JayArr Coffee",
-				"url": "https://jayarr.coffee"
-			}
+			'@context': 'https://schema.org', '@type': 'WebApplication', name: 'Coffee Drinks', url: 'https://jayarr.coffee/tools/drink-builder/', description,
+			applicationCategory: 'UtilityApplication', operatingSystem: 'Any', offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, publisher: { '@type': 'Organization', name: 'JayArr Coffee', url: 'https://jayarr.coffee' },
 		})}></script>
-		<script type="application/ld+json" set:html={JSON.stringify({
-			"@context": "https://schema.org",
-			"@type": "HowTo",
-			"name": "How to Use the Espresso Drink Builder",
-			"description": "Explore espresso drink recipes visually. See the exact proportions of espresso, milk, foam, and other ingredients that define each classic coffee drink.",
-			"totalTime": "PT1M",
-			"step": [
-						{
-									"@type": "HowToStep",
-									"position": 1,
-									"name": "Browse the drink menu",
-									"text": "Scroll through classic espresso drinks including espresso, americano, macchiato, cortado, flat white, cappuccino, latte, and mocha."
-						},
-						{
-									"@type": "HowToStep",
-									"position": 2,
-									"name": "View the layer breakdown",
-									"text": "Each drink shows a visual cross-section with color-coded layers: espresso (dark brown), steamed milk (cream), foam (light), hot water (tan), and chocolate (dark). Proportions are shown in ounces."
-						},
-						{
-									"@type": "HowToStep",
-									"position": 3,
-									"name": "Compare drinks side by side",
-									"text": "Select different drinks to see how they differ in total volume, espresso ratio, and milk texture. A cortado is 4 oz total while a latte is 10-12 oz \u2014 the espresso is the same, only the milk changes."
-						}
-			]
-})}></script>
 	</head>
-	<body class="bg-cream">
+	<body class="cf-page">
 		<Header />
+		<main>
+			<section class="cf-intro">
+				<a href="/tools/" class="cf-back">← All tools</a>
+				<p class="cf-kicker">Coffee Drinks</p>
+				<h1>Every espresso drink, <em>drawn to scale.</em></h1>
+				<p class="cf-lede">Put two drinks side by side in their own cups, at the same scale, from published recipes. A cortado in Madrid and a cortado at Starbucks are not the same drink, so each recipe says where it comes from.</p>
+			</section>
+			<section class="cf-tool" aria-label="Coffee Drinks"><CoffeeDrinks client:load /></section>
 
-		<section class="bg-charcoal pt-32 pb-12 md:pb-16">
-			<div class="max-w-3xl mx-auto px-6 text-center">
-				<a href="/tools/" class="text-xs uppercase tracking-widest text-cream/40 hover:text-copper transition-colors">
-					&larr; All Tools
-				</a>
-				<h1 class="font-serif text-3xl md:text-5xl font-bold text-cream mt-3 mb-3">Drink Builder</h1>
-				<p class="text-cream/60 max-w-lg mx-auto leading-relaxed text-sm">
-					See how every espresso drink is built — from a straight shot to a layered mocha.
-				</p>
-			</div>
-		</section>
+			<article class="cf-body">
+				<h2>Types of coffee drinks</h2>
+				<p>Each entry gives one published reference recipe. Cafés vary, sometimes a lot; where a source gives a range, so do we.</p>
+				<dl class="glossary">
+					{DRINKS.map((d) => (
+						<div id={d.id}>
+							<dt>{d.name}</dt>
+							<dd>
+								<p>{d.definition}</p>
+								<p class="ref">{d.refs[0].label}: {d.refs[0].shots} shot{d.refs[0].shots === 'single' ? '' : 's'}; {d.refs[0].layers.map(fmtLayer).join(', ')}; {d.refs[0].vessel.name.toLowerCase()}{d.refs[0].vessel.capacityMl ? ` (${d.refs[0].vessel.capacityMl[1]} ml)` : ''}. {d.refs.length > 1 ? `Also: ${d.refs.slice(1).map((r) => r.label).join(', ')}.` : ''}</p>
+							</dd>
+						</div>
+					))}
+				</dl>
 
-		<section class="py-12 md:py-16">
-			<div class="max-w-xl mx-auto px-6">
-				<DrinkBuilder client:load />
-			</div>
-		</section>
+				<h2>Latte vs cappuccino vs flat white</h2>
+				<p>All three are espresso with steamed milk; the difference is how much milk and how much foam. In the Italian certification recipe a cappuccino is 25 ml of espresso and about 125 ml of frothed milk in a 150–160 ml cup, with a deep cap of foam. Cimbali's flat white uses a double shot with 125–130 ml of finely textured milk and only about half a centimetre of foam. A latte is the longest of the three; illy's version is a single shot with 120 ml of milk heated without foam, while most cafés add a thin layer. The old "thirds" rule for cappuccino (equal espresso, milk and foam) has no historical basis.</p>
 
+				<h2>A cortado depends on where you order it</h2>
+				<p>In Spain a cortado is an espresso "cut" with a little milk: anything from a few drops to equal parts, with about three parts coffee to one part milk common. Specialty cafés often use a double shot. Starbucks' cortado is three ristretto shots with steamed milk in an 8 oz cup. The Gibraltar is a cortado named after the 4½ oz glass it was served in.</p>
 
-		<section class="py-16 px-6">
-			<div class="prose mx-auto">
-				<h2>The Anatomy of Espresso Drinks</h2>
-				<p>Every espresso-based drink is built from the same foundation: a concentrated shot of coffee extracted under roughly 9 bars of pressure in 25-35 seconds. What defines each drink is not the espresso itself but what you add to it, in what proportion, and how you texture the milk.</p>
-				<p>The science of milk in coffee begins with protein. Cow’s milk contains about 3.4% protein split between two types: casein (80%) and whey (20%). Casein proteins form micelles that stabilize fat and create the structural matrix of foam. Whey proteins are heat-sensitive — they denature during steaming and migrate to bubble surfaces, forming flexible films that stabilize microfoam into that glossy, paint-like texture baristas call “wet paint.” This is why temperature matters so much: milk proteins denature above 68 degrees Celsius (154 degrees Fahrenheit). Above this temperature, sweetness drops and a cooked, sulfurous taste develops.</p>
-				<p>The ideal steaming window is 55-65 degrees Celsius (130-149 degrees Fahrenheit). Counterintuitively, properly steamed milk tastes sweeter than cold milk without any added sugar. This isn’t magic — at 65-68 degrees, lactose breaks down into glucose and galactose, which are perceptibly sweeter than the lactose they came from. Fat plays a dual role: solid fat below 40 degrees Celsius actually destabilizes foam by puncturing bubbles, but once fully melted during steaming, liquid fat contributes richness without destroying the foam structure.</p>
-				<p>What separates a cappuccino from a latte from a flat white is foam volume and milk ratio, not fundamentally different techniques. A cappuccino is heavily aerated — roughly one-third espresso, one-third steamed milk, one-third foam (though James Hoffmann notes the “rule of thirds” has no actual historical basis). A latte uses more milk and less foam, creating a creamier, more diluted drink. A flat white is essentially a small latte with minimal aeration — just a thin skin of microfoam on top. A cortado splits the difference by using equal parts espresso and steamed milk with no foam layer, letting the milk soften the espresso without masking it.</p>
-				<p>The americano takes a different path entirely: espresso diluted with hot water. It approximates the strength of drip coffee but retains the body and flavor profile of pressure extraction. Hoffmann’s tip for a cleaner americano: skim off the crema before drinking. Crema — the tawny foam on top of a fresh shot — actually tastes quite bitter and ashy on its own. It indicates freshness but is not a reliable quality indicator. An espresso actually tastes more bitter as an americano because adding water dilutes the oil content that normally coats the tongue, reducing bitterness perception through a different mechanism.</p>
-				<p>Understanding these proportions matters because small changes shift the drink dramatically. Adding one more ounce of milk to a cortado makes it a flat white. Cutting the foam from a cappuccino makes it a latte. The drink builder visualizes these differences so you can see exactly how each recipe is constructed and find the drink that matches your preference for espresso intensity, milk texture, and overall volume. Once you know the proportions, you can replicate any cafe drink at home with nothing more than an espresso machine and a milk pitcher.</p>
-			</div>
-		</section>
+				<h2>Related</h2>
+				<ul>
+					<li><a href="/blog/what-is-a-cortado/">What is a cortado?</a></li>
+					<li><a href="/blog/what-is-a-flat-white-latte-vs-flat-white-comparison/">Flat white vs latte</a></li>
+					<li><a href="/blog/affogato-recipe-guide/">Affogato recipe</a></li>
+					<li><a href="/tools/caffeine/">How much caffeine is in each drink</a></li>
+				</ul>
 
-		<section class="bg-charcoal py-12">
-			<div class="max-w-3xl mx-auto px-6 text-center">
-				<span class="text-xs uppercase tracking-widest text-copper font-medium">Learn More</span>
-				<h2 class="font-serif text-xl md:text-2xl font-bold text-cream mt-2 mb-6">Related Articles</h2>
-				<div class="flex flex-wrap justify-center gap-4">
-					<a href="/blog/what-is-a-cortado/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						Cortado Guide
-					</a>
-					<a href="/blog/what-is-a-flat-white-latte-vs-flat-white-comparison/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						Flat White vs Latte
-					</a>
-					<a href="/blog/whats-different-about-ristretto-or-lungo-espresso-shots/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						Espresso Shots
-					</a>
-				</div>
-			</div>
-		</section>
-
+				<h2>Sources</h2>
+				<ul class="cf-sources">{allSources.map((s) => <li><a href={s.url} rel="noopener" target="_blank">{s.name}</a></li>)}</ul>
+			</article>
+		</main>
 		<Footer />
 	</body>
 </html>
+
+<style is:global>.cf-page { background: #f3ede3; }</style>
+<style>
+	main { color: #2a1d15; }
+	.cf-intro { max-width: 1180px; margin: 0 auto; padding: 120px 24px 22px; }
+	.cf-back { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; text-decoration: none; }
+	.cf-kicker { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: #8f5d22; margin: 26px 0 0; }
+	h1 { font: 400 clamp(40px, 6vw, 68px)/.98 'Instrument Serif', Georgia, serif; letter-spacing: -.01em; margin: 10px 0 12px; }
+	h1 em { font-style: italic; color: #7a4e30; }
+	.cf-lede { font: 400 17px/1.5 'IBM Plex Sans', system-ui, sans-serif; color: #5b4a3d; max-width: 62ch; margin: 0; }
+	.cf-tool { max-width: 1180px; margin: 0 auto; padding: 8px 24px 40px; }
+	.cf-body { max-width: 760px; margin: 0 auto; padding: 24px 24px 72px; font: 400 17px/1.7 'IBM Plex Sans', system-ui, sans-serif; }
+	.cf-body h2 { font: 400 34px/1.1 'Instrument Serif', Georgia, serif; margin: 44px 0 12px; }
+	.cf-body a { color: #7a4e30; text-underline-offset: 3px; }
+	.glossary { margin: 0; }
+	.glossary div { border-top: 1px solid #d9cdbd; padding: 12px 0; scroll-margin-top: 90px; }
+	.glossary dt { font: 400 26px/1.1 'Instrument Serif', Georgia, serif; }
+	.glossary dd { margin: 4px 0 0; }
+	.glossary p { margin: 0 0 4px; }
+	.glossary .ref { font: 400 14px/1.5 'IBM Plex Mono', monospace; color: #5b4a3d; }
+	.cf-sources { font-size: 14px; color: #5b4a3d; }
+	@media (max-width: 640px) { .cf-intro { padding: 96px 16px 18px; } .cf-tool { padding: 4px 12px 32px; } .cf-body { padding: 16px 16px 56px; } }
+</style>

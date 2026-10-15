@@ -35,6 +35,16 @@ test('the INEI cappuccino is 25 ml espresso + about 125 ml frothed milk in a 150
 
 test('comparisons say something true or admit they can\'t', () => {
   const s = compareRefs(refById('capp-inei'), refById('espresso-inei'), 'Cappuccino', 'Espresso');
-  assert.match(s, /6× the liquid|espresso has no milk/i);
+  assert.match(s, /only the cappuccino has milk/i);
+  assert.match(s, /6× the size/);
+  const c = compareRefs(refById('cortado-sabora'), refById('flat-cimbali'), 'Cortado', 'Flat white');
+  assert.match(c, /single shot and the flat white a double/);
+  assert.match(c, /flat white carries about 13× the milk \(10 ml against 128 ml\)/);
   assert.match(compareRefs(refById('gibraltar-bluebottle'), refById('cortado-sbux'), 'Gibraltar', 'Cortado'), /don't publish enough/);
+});
+
+test('drinks with different extras say what only one of them has', () => {
+  const s = compareRefs(refById('affogato-illy'), refById('americano-lavazza'), 'Affogato', 'Americano');
+  assert.match(s, /only the affogato has gelato/);
+  assert.match(s, /only the americano has hot water/);
 });

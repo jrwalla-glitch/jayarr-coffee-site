@@ -139,20 +139,40 @@ export function knownVolume(ref: DrinkRef): { ml: number; complete: boolean } {
   return { ml, complete };
 }
 
-/** One honest sentence comparing two references. */
+/** One honest sentence comparing two references, using only amounts both recipes publish. */
 export function compareRefs(a: DrinkRef, b: DrinkRef, nameA: string, nameB: string): string {
-  const va = knownVolume(a), vb = knownVolume(b);
-  const milk = (r: DrinkRef) => r.layers.filter((l) => l.kind === 'milk' || l.kind === 'frothed');
+  const A = nameA.toLowerCase(), B = nameB.toLowerCase();
+  const mid = (r?: [number, number]) => (r ? (r[0] + r[1]) / 2 : undefined);
+  const milkMl = (r: DrinkRef) => {
+    const ls = r.layers.filter((l) => l.kind === 'milk' || l.kind === 'frothed');
+    if (ls.length === 0) return 0;
+    if (ls.some((l) => !l.ml)) return undefined;
+    return ls.reduce((t, l) => t + (mid(l.ml) ?? 0), 0);
+  };
   const parts: string[] = [];
-  if (va.complete && vb.complete && va.ml > 0 && vb.ml > 0) {
-    const big = va.ml >= vb.ml ? [nameA, va.ml, vb.ml] as const : [nameB, vb.ml, va.ml] as const;
-    parts.push(`The ${big[0].toLowerCase()} holds about ${Math.round((big[1] / big[2]) * 10) / 10}× the liquid`);
+  const shots = (r: DrinkRef) => (/double|2|two/.test(r.shots) ? 2 : /triple|three|3/.test(r.shots) ? 3 : /single|1/.test(r.shots) ? 1 : undefined);
+  const sa = shots(a), sb = shots(b);
+  if (sa && sb && sa !== sb) parts.push(`the ${A} uses ${sa === 1 ? 'a single shot' : sa === 2 ? 'a double' : 'three shots'} and the ${B} ${sb === 1 ? 'a single' : sb === 2 ? 'a double' : 'three shots'}`);
+  else if (sa && sb && sa === sb) parts.push(`both use ${sa === 1 ? 'a single shot' : sa === 2 ? 'a double shot' : 'three shots'}`);
+  const ma = milkMl(a), mb = milkMl(b);
+  if (ma === 0 && mb !== undefined && mb > 0) parts.push(`only the ${B} has milk`);
+  else if (mb === 0 && ma !== undefined && ma > 0) parts.push(`only the ${A} has milk`);
+  else if (ma !== undefined && mb !== undefined && ma > 0 && mb > 0 && Math.abs(ma - mb) > 5) {
+    const [big, bigV, smallV] = ma > mb ? [A, ma, mb] : [B, mb, ma];
+    parts.push(`the ${big} carries about ${Math.round(bigV / smallV)}× the milk (${Math.round(smallV)} ml against ${Math.round(bigV)} ml)`);
   }
-  const ma = milk(a), mb = milk(b);
-  if (ma.length === 0 && mb.length > 0) parts.push(`the ${nameA.toLowerCase()} has no milk`);
-  else if (mb.length === 0 && ma.length > 0) parts.push(`the ${nameB.toLowerCase()} has no milk`);
-  if (a.foamCm && b.foamCm && a.foamCm[0] !== b.foamCm[0]) parts.push(`foam is about ${a.foamCm[0]} cm against ${b.foamCm[0]} cm`);
-  if (parts.length === 0) return `These recipes don't publish enough amounts to compare volumes; compare the shots (${a.shots} vs ${b.shots}) and the cups.`;
+  const EXTRA: Record<string, string> = { water: 'hot water', brewed: 'brewed coffee', gelato: 'gelato', chocolate: 'chocolate', cream: 'whipped cream' };
+  for (const [r, other, N] of [[a, b, A], [b, a, B]] as const) {
+    const own = Object.keys(EXTRA).filter((k) => r.layers.some((l) => l.kind === k) && !other.layers.some((l) => l.kind === k));
+    if (own.length) parts.push(`only the ${N} has ${own.map((k) => EXTRA[k]).join(' and ')}`);
+  }
+  if (a.foamCm && b.foamCm && a.foamCm[0] !== b.foamCm[0]) parts.push(`its foam is about ${Math.max(a.foamCm[0], b.foamCm[0])} cm against ${Math.min(a.foamCm[0], b.foamCm[0])} cm`);
+  const va = knownVolume(a), vb = knownVolume(b);
+  if (va.complete && vb.complete && va.ml > 0 && vb.ml > 0 && Math.abs(va.ml - vb.ml) > 10) {
+    const [big, r] = va.ml > vb.ml ? [A, va.ml / vb.ml] : [B, vb.ml / va.ml];
+    parts.push(`overall the ${big} is about ${Math.round(r * 10) / 10}× the size`);
+  }
+  if (parts.length === 0) return `These recipes don't publish enough amounts to compare; compare the shots (${a.shots} vs ${b.shots}) and the cups.`;
   const s = parts.join('; ');
   return s.charAt(0).toUpperCase() + s.slice(1) + '.';
 }
