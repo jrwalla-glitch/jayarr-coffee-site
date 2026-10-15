@@ -10,6 +10,9 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://jayarr.coffee',
+  // Each worktree keeps its own build cache. node_modules is shared between worktrees, and Astro's default
+  // cache inside it let one worktree's build read another's content (Wave D research batch R1).
+  cacheDir: './.astro-cache',
   integrations: [mdx(), sitemap(), svelte()],
 
   build: {
