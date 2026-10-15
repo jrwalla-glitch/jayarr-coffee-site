@@ -125,11 +125,23 @@
     return ka === kb && Math.abs((a as Record<string, number>)[ka] - (b as Record<string, number>)[kb]) < 0.06;
   };
   // A preset size moves to the other system's default; a custom amount (or a dose or water weight) is kept.
+  // Each brewer's default in each unit system, checked against what it can make at the chosen
+  // strength; if it doesn't fit, the largest size that does (Astra r4: 350 mL was too much for one AeroPress).
+  const METRIC_DEFAULTS: Partial<Record<MethodId, number>> = { v60: 350, chemex: 475, kalita: 350, 'french-press': 475, aeropress: 240, 'cold-brew': 1000, 'drip-machine': 1000 };
+  function defaultTarget(id: MethodId, u: Units): Target {
+    if (id === 'espresso' || id === 'moka') return DEFAULTS[id];
+    const want: Target = u === 'us' ? DEFAULTS[id] : { cupMl: METRIC_DEFAULTS[id] ?? 350 };
+    const st = id === 'moka' ? 'classic' : strength;
+    if (buildRecipe({ method: id, target: want, strength: st, roast }).ok) return want;
+    const sizes = (u === 'us' ? (id === 'cold-brew' || id === 'drip-machine' ? BATCH_US : CUPS_US).map((v) => flOzToMl(v)) : id === 'cold-brew' || id === 'drip-machine' ? BATCH_METRIC : CUPS_METRIC);
+    const fits = sizes.filter((ml) => buildRecipe({ method: id, target: { cupMl: ml }, strength: st, roast }).ok);
+    return fits.length ? { cupMl: Math.max(...fits) } : want;
+  }
   function switchUnits(u: Units) {
     if (u === units) return;
     const wasPreset = !customOpen && 'cupMl' in target && allChoices.some((c) => same(c.t, target));
     units = u;
-    if (wasPreset && !byDose) target = u === 'us' ? DEFAULTS[method] : isBatch ? { cupMl: 1000 } : { cupMl: 350 };
+    if (wasPreset && !byDose) target = defaultTarget(method, u);
   }
   // Moka has no strength choice (the pot sets it), so it always starts at its own ratio.
   // A Doctor change belongs to the brewer it was given for, so switching brewer drops it (blind Opus r3).
@@ -137,7 +149,7 @@
   function pickMethod(id: MethodId) {
     method = id; ratioOverride = undefined; customOpen = false; adjust = undefined;
     if (id === 'moka') strength = 'classic';
-    target = units === 'metric' && !(id === 'espresso' || id === 'moka') ? (id === 'cold-brew' || id === 'drip-machine' ? { cupMl: 1000 } : { cupMl: 350 }) : DEFAULTS[id];
+    target = defaultTarget(id, units);
   }
   function nudgeRatio(d: number) {
     const base = ratioOverride ?? m.ratio[strength];
@@ -170,7 +182,7 @@
       // No link: pick up where you left off on this device.
       loadSaved(store.last);
     } else if (navigator.language && !/^en-US/i.test(navigator.language) && !location.search) {
-      units = 'metric'; if ('cupMl' in target) target = { cupMl: 350 };
+      units = 'metric'; if ('cupMl' in target) target = defaultTarget(method, 'metric');
     }
     mounted = true;
     return () => cancelAnimationFrame(raf);
