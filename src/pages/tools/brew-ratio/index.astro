@@ -1,107 +1,131 @@
 ---
+import '@fontsource/instrument-serif/400.css';
+import '@fontsource/instrument-serif/400-italic.css';
+import '@fontsource/ibm-plex-sans/400.css';
+import '@fontsource/ibm-plex-sans/500.css';
+import '@fontsource/ibm-plex-sans/600.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
 import BaseHead from '../../../components/BaseHead.astro';
 import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
-import BrewRatio from '../../../components/tools/BrewRatio.svelte';
+import BrewGuide from '../../../components/coffee/BrewGuide.svelte';
+import { METHODS, SOURCES, cToF } from '../../../lib/coffee/index.ts';
+
+const title = 'Coffee Ratio Calculator and Brew Guide';
+const description = 'Pick your brewer and your mug and get the coffee, water, temperature, grind and every timed pour, then brew along. Ratios for V60, Chemex, French press, AeroPress, cold brew and espresso.';
+const ratioText = (m: (typeof METHODS)[number]) => m.id === 'espresso'
+  ? `1:${m.ratio.stronger}–1:${m.ratio.lighter} (yield)`
+  : `1:${m.ratio.stronger}–1:${m.ratio.lighter}`;
+const tempText = (m: (typeof METHODS)[number]) => m.id === 'cold-brew' ? 'cold or room temp'
+  : m.id === 'moka' ? 'just boiled' : `${Math.round(cToF(m.tempC.min))}–${Math.round(cToF(m.tempC.max))}°F`;
+const timeText = (m: (typeof METHODS)[number]) => m.timeS.min >= 3600
+  ? `${m.timeS.min / 3600}–${m.timeS.max / 3600} h`
+  : m.timeS.min < 60 ? `${m.timeS.min}–${m.timeS.max} s`
+  : `${Math.floor(m.timeS.min / 60)}:${String(m.timeS.min % 60).padStart(2, '0')}${m.timeS.max !== m.timeS.min ? `–${Math.floor(m.timeS.max / 60)}:${String(m.timeS.max % 60).padStart(2, '0')}` : ''}`;
+const cited = [...new Set(METHODS.flatMap((m) => m.sourceIds))].map((id) => SOURCES[id]).filter(Boolean);
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead
-			title="Brew Ratio Calculator — JayArr Coffee"
-			description="Calculate the perfect coffee-to-water ratio for any brew method. Pour over, French press, AeroPress, cold brew, espresso, and more."
-		/>
+		<BaseHead title={title} description={description} />
 		<script type="application/ld+json" set:html={JSON.stringify({
-			"@context": "https://schema.org",
-			"@type": "WebApplication",
-			"name": "Brew Ratio Calculator",
-			"url": "https://jayarr.coffee/tools/brew-ratio/",
-			"description": "Calculate the perfect coffee-to-water ratio for any brew method. Pour over, French press, AeroPress, cold brew, espresso, and more.",
-			"applicationCategory": "UtilityApplication",
-			"operatingSystem": "Any",
-			"offers": {
-				"@type": "Offer",
-				"price": "0",
-				"priceCurrency": "USD"
-			},
-			"publisher": {
-				"@type": "Organization",
-				"name": "JayArr Coffee",
-				"url": "https://jayarr.coffee"
-			}
-		})}></script>
-		<script type="application/ld+json" set:html={JSON.stringify({
-			"@context": "https://schema.org",
-			"@type": "HowTo",
-			"name": "How to Calculate Your Coffee Brew Ratio",
-			"description": "Use the Brew Ratio Calculator to find the ideal coffee-to-water ratio for any brew method, then adjust to taste.",
-			"totalTime": "PT2M",
-			"step": [
-				{ "@type": "HowToStep", "position": 1, "name": "Select your brew method", "text": "Choose from Pour Over, French Press, AeroPress, Cold Brew, Espresso, or Moka Pot. Each method has a recommended starting ratio based on extraction science and industry standards." },
-				{ "@type": "HowToStep", "position": 2, "name": "Enter your coffee dose or water volume", "text": "Toggle between coffee-to-water and water-to-coffee mode. Enter the amount of coffee you want to use (in grams) or the volume of water you want to brew with." },
-				{ "@type": "HowToStep", "position": 3, "name": "Read the calculated result", "text": "The calculator displays the precise water or coffee amount needed for your chosen ratio. For example, 18g of coffee at a 1:16 ratio requires 288g of water." },
-				{ "@type": "HowToStep", "position": 4, "name": "Fine-tune the ratio to taste", "text": "Adjust the ratio up or down using the controls. A lower ratio (e.g., 1:14) produces a stronger cup. A higher ratio (e.g., 1:17) produces a lighter cup. Brew, taste, and iterate." }
-			]
+			'@context': 'https://schema.org',
+			'@type': 'WebApplication',
+			name: title,
+			url: 'https://jayarr.coffee/tools/brew-ratio/',
+			description,
+			applicationCategory: 'UtilityApplication',
+			operatingSystem: 'Any',
+			offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+			publisher: { '@type': 'Organization', name: 'JayArr Coffee', url: 'https://jayarr.coffee' },
 		})}></script>
 	</head>
-	<body class="bg-cream">
+	<body class="cf-page">
 		<Header />
+		<main>
+			<section class="cf-intro">
+				<a href="/tools/" class="cf-back">← All tools</a>
+				<p class="cf-kicker">Brew Guide</p>
+				<h1>Coffee ratio calculator <em>and brew guide</em></h1>
+				<p class="cf-lede">Pick your brewer and your mug. You get the coffee, the water, the temperature, the grind and every pour, timed, then you can brew along with it.</p>
+			</section>
 
-		<!-- Hero -->
-		<section class="bg-charcoal pt-32 pb-12 md:pb-16">
-			<div class="max-w-3xl mx-auto px-6 text-center">
-				<a href="/tools/" class="text-xs uppercase tracking-widest text-cream/40 hover:text-copper transition-colors">
-					&larr; All Tools
-				</a>
-				<h1 class="font-serif text-3xl md:text-5xl font-bold text-cream mt-3 mb-3">Brew Ratio Calculator</h1>
-				<p class="text-cream/60 max-w-lg mx-auto leading-relaxed text-sm">
-					Dial in the perfect coffee-to-water ratio for any brew method. Adjust to taste.
-				</p>
-			</div>
-		</section>
+			<section class="cf-tool" aria-label="Brew Guide">
+				<BrewGuide client:load />
+				<noscript><p class="cf-noscript">The interactive guide needs JavaScript. The table below gives the starting ratio, temperature, grind and time for every method.</p></noscript>
+			</section>
 
-		<!-- Calculator -->
-		<section class="py-12 md:py-16">
-			<div class="max-w-xl mx-auto px-6">
-				<BrewRatio client:load />
-			</div>
-		</section>
-
-		<section class="py-16 px-6">
-			<div class="prose mx-auto">
-				<h2>The Science of Coffee Ratios</h2>
-				<p>Every cup of coffee is a ratio problem. The relationship between the mass of ground coffee and the mass of water determines two independent outcomes: how strong the cup tastes (Total Dissolved Solids, or TDS) and how much of the coffee's soluble material actually makes it into the liquid (extraction yield, or EY). These are not the same thing, and confusing them is one of the most common mistakes home brewers make.</p>
-				<p>Roasted coffee is roughly 28–30% soluble by weight. The rest is insoluble cellulose that stays in the spent grounds. But we don't want to dissolve all of it. The Specialty Coffee Association's Brewing Control Chart, originally developed by MIT chemist E.E. Lockhart in the 1950s, established that trained tasters consistently rate coffee highest when extraction yield falls between 18% and 22% of the dry mass. Below 18%, only the fast-extracting fruit acids have dissolved, and the cup tastes sour and underdeveloped. Above 22%, bitter dry distillates accumulate faster than flavor complexity increases.</p>
-				<p>Strength is the other axis. TDS measures the concentration of dissolved coffee solids in your cup. Most well-brewed filter coffee lands between 1.15% and 1.35% TDS. Here's the critical insight that most ratio guides miss: you can have strong, underextracted coffee and weak, overextracted coffee. Diner coffee is the classic example of the latter — too much water passed through old grounds produces a dilute cup that's also bitter and harsh.</p>
-				<p>The brew ratio controls strength directly and extraction yield indirectly. A 1:15 ratio (15 grams of water per gram of coffee) produces a stronger cup than 1:17, but it also means each gram of coffee contacts less water, potentially limiting extraction. This is why different brew methods call for different ratios. Pour over and French press work well at 1:15 to 1:17 because the extended contact time and higher temperatures drive extraction efficiently. Espresso operates at roughly 1:2 because the 9 bars of pressure and extremely fine grind compensate for the tiny water volume. Cold brew concentrates use 1:5 to 1:8 because the 12–24 hour steep time and coarse grind create a different extraction dynamic entirely — low temperature dramatically slows diffusion, so you compensate with time and higher dose.</p>
-				<p>The Noyes-Whitney equation governs the underlying physics: extraction rate depends on the difference between the saturation concentration at the particle surface and the bulk concentration of the surrounding water. As water becomes more concentrated with dissolved coffee, extraction slows. This is why percolation methods like pour over (where fresh water continuously passes through the grounds) achieve higher extraction yields than immersion methods like French press (where the water approaches equilibrium and extraction plateaus).</p>
-				<p>Ratio is your starting point, not your endpoint. If a cup at 1:16 tastes sour, the extraction yield is too low — grinding finer, increasing water temperature, or extending brew time will push more soluble material into the cup. If it tastes bitter and harsh, you've overextracted. The ratio calculator gives you the weight targets; your palate tells you whether to adjust the other variables around it.</p>
-			</div>
-		</section>
-
-		<!-- Related articles -->
-		<section class="bg-charcoal py-12">
-			<div class="max-w-3xl mx-auto px-6 text-center">
-				<span class="text-xs uppercase tracking-widest text-copper font-medium">Learn More</span>
-				<h2 class="font-serif text-xl md:text-2xl font-bold text-cream mt-2 mb-6">Related Articles</h2>
-				<div class="flex flex-wrap justify-center gap-4">
-					<a href="/blog/ultimate-pour-over-coffee-guide-and-best-v60-technique/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						Pour Over Guide
-					</a>
-					<a href="/blog/how-to-use-a-french-press-the-most-amazing-coffee-youve-ever-had/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						French Press Guide
-					</a>
-					<a href="/blog/why-water-matters-more-than-your-coffee-beans/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						Water Science
-					</a>
-					<a href="/blog/coffee-to-water-ratio-guide/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						Coffee-to-Water Ratio Guide
-					</a>
+			<article class="cf-body">
+				<h2>Coffee-to-water ratios by method</h2>
+				<p>A ratio of 1:16 means 16 grams of water for every gram of coffee. Lower numbers make a stronger cup. These are the starting ranges the guide uses, from stronger to lighter.</p>
+				<div class="cf-table-wrap">
+					<table>
+						<thead><tr><th scope="col">Method</th><th scope="col">Ratio</th><th scope="col">Water</th><th scope="col">Grind</th><th scope="col">Time</th></tr></thead>
+						<tbody>
+							{METHODS.map((m) => (
+								<tr><th scope="row">{m.label}</th><td>{ratioText(m)}</td><td>{tempText(m)}</td><td>{m.grindLabel}</td><td>{timeText(m)}</td></tr>
+							))}
+						</tbody>
+					</table>
 				</div>
-			</div>
-		</section>
+				<p class="cf-note">Espresso is measured differently: the ratio is the liquid in the cup to the dry coffee, so 18 g in and 36 g out is 1:2. Cold brew is brewed as a concentrate at about 1:6 and diluted one to one before serving.</p>
 
+				<h2>Why your cup is smaller than the water you pour</h2>
+				<p>The grounds hold on to water. A filter bed keeps roughly two grams of water for every gram of coffee, so 400 g of water through 25 g of coffee leaves about 350 g in the cup. The guide works backwards from the cup you want, which is why a 12 oz mug at 1:16 needs about 25 g of coffee and 405 g of water, not 355 g.</p>
+
+				<h2>Strength and extraction are different things</h2>
+				<p>Strength is how concentrated the cup is, measured as total dissolved solids (TDS); most filter coffee people like sits around 1.15–1.45%. Extraction is how much of the coffee's soluble material made it into the water, usually 18–22% of the dry grounds. The Specialty Coffee Association's brewing control chart, after E. E. Lockhart's work in the 1950s, plots one against the other.</p>
+				<p>The ratio sets strength most directly. Grind, temperature and time mostly set extraction. That's why a cup can be strong and sour (too little extracted) or weak and bitter (too much water through tired, over-extracted grounds). The strength the guide shows is an estimate from typical extraction for each method, not a measurement.</p>
+
+				<h2>If the cup tastes off</h2>
+				<p>Sour and thin usually means under-extracted: grind finer or use hotter water. Bitter and dry usually means over-extracted: grind coarser. <a href="/tools/fix-my-coffee/">Fix My Coffee</a> asks a few questions and gives you one change for the next brew, and the <a href="/tools/grind-guide/">Grind Guide</a> shows what each grind should look like.</p>
+
+				<h2>Related guides</h2>
+				<ul>
+					<li><a href="/blog/coffee-to-water-ratio-guide/">Coffee-to-water ratio guide</a></li>
+					<li><a href="/blog/ultimate-pour-over-coffee-guide-and-best-v60-technique/">V60 pour-over technique</a></li>
+					<li><a href="/blog/how-to-use-a-french-press-the-most-amazing-coffee-youve-ever-had/">How to use a French press</a></li>
+					<li><a href="/blog/cold-brew-concentrate-guide/">Cold brew concentrate: ratios, steep time and dilution</a></li>
+					<li><a href="/blog/why-water-matters-more-than-your-coffee-beans/">Why water matters</a></li>
+				</ul>
+
+				<h2>Sources</h2>
+				<ul class="cf-sources">
+					{cited.map((s) => <li>{s.author}, <cite>{s.title}</cite>{s.year ? ` (${s.year})` : ''}{s.where ? `: ${s.where}` : ''}.</li>)}
+				</ul>
+			</article>
+		</main>
 		<Footer />
 	</body>
 </html>
+
+<style is:global>
+	.cf-page { background: #f3ede3; }
+</style>
+<style>
+	main { color: #2a1d15; }
+	.cf-intro { max-width: 1180px; margin: 0 auto; padding: 120px 24px 22px; }
+	.cf-back { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; text-decoration: none; }
+	.cf-back:hover { color: #8f5d22; }
+	.cf-kicker { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: #8f5d22; margin: 26px 0 0; }
+	h1 { font: 400 clamp(40px, 6vw, 68px)/.98 'Instrument Serif', Georgia, serif; letter-spacing: -.01em; margin: 10px 0 12px; color: #2a1d15; }
+	h1 em { font-style: italic; color: #7a4e30; }
+	.cf-lede { font: 400 17px/1.5 'IBM Plex Sans', system-ui, sans-serif; color: #5b4a3d; max-width: 58ch; margin: 0; }
+	.cf-tool { max-width: 1180px; margin: 0 auto; padding: 8px 24px 40px; }
+	.cf-noscript { font-family: 'IBM Plex Sans', sans-serif; }
+	.cf-body { max-width: 760px; margin: 0 auto; padding: 24px 24px 72px; font: 400 17px/1.7 'IBM Plex Sans', system-ui, sans-serif; color: #2a1d15; }
+	.cf-body h2 { font: 400 34px/1.1 'Instrument Serif', Georgia, serif; margin: 44px 0 12px; letter-spacing: 0; }
+	.cf-body a { color: #7a4e30; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+	.cf-table-wrap { overflow-x: auto; border: 1px solid #d9cdbd; border-radius: 12px; background: #fbf8f3; }
+	table { width: 100%; border-collapse: collapse; font-size: 15px; }
+	th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid #e6dccd; white-space: nowrap; }
+	thead th { font: 500 11px/1 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; }
+	tbody th { font-weight: 600; }
+	td { font-family: 'IBM Plex Mono', monospace; font-size: 14px; }
+	tr:last-child th, tr:last-child td { border-bottom: 0; }
+	.cf-note { font-size: 15px; color: #5b4a3d; }
+	.cf-sources { font-size: 14.5px; color: #5b4a3d; }
+	@media (max-width: 640px) { .cf-intro { padding: 96px 16px 18px; } .cf-tool { padding: 4px 12px 32px; } .cf-body { padding: 16px 16px 56px; } }
+</style>
