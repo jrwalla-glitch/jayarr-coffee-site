@@ -40,6 +40,14 @@ export function estimateStrength(methodId: Recipe['method'], doseG: number, beve
   };
 }
 
+/** Grams of coffee for a served cup by the method's own arithmetic, ignoring brewer size limits. */
+export function doseForCup(m: Method, cupMl: number, ratio: number): number {
+  if (m.id === 'espresso') return cupMl / ratio;
+  // Cold brew: the served drink is the concentrate diluted one to one.
+  if (m.id === 'cold-brew') return cupMl / 2 / (ratio - m.retentionGPerG);
+  return cupMl / (ratio - m.retentionGPerG);
+}
+
 export function buildRecipe(input: RecipeInput): Result<Recipe> {
   const m = methodById(input?.method);
   if (!m) return failure('unknown-method', 'method', 'Choose a brewer.');
@@ -65,19 +73,18 @@ export function buildRecipe(input: RecipeInput): Result<Recipe> {
 
   if (m.id === 'espresso') {
     if ('waterG' in t) return failure('espresso-no-water', 'waterG', 'Espresso is set by the coffee dose and the yield in the cup, not by water poured.');
-    doseG = 'doseG' in t ? t.doseG : t.cupMl / ratio;
+    doseG = 'doseG' in t ? t.doseG : doseForCup(m, t.cupMl, ratio);
     yieldG = doseG * ratio;
     cupMl = yieldG;
   } else if (m.id === 'cold-brew') {
     // Target cup = served drink after diluting the concentrate one to one.
-    const concentrateG = 'cupMl' in t ? t.cupMl / 2 : NaN;
-    doseG = 'doseG' in t ? t.doseG : 'waterG' in t ? t.waterG / ratio : concentrateG / (ratio - r);
+    doseG = 'doseG' in t ? t.doseG : 'waterG' in t ? t.waterG / ratio : doseForCup(m, t.cupMl, ratio);
     waterG = doseG * ratio;
     const conc = waterG - r * doseG;
     dilution = { waterG: conc, servedMl: conc * 2 };
     cupMl = conc * 2;
   } else {
-    doseG = 'doseG' in t ? t.doseG : 'waterG' in t ? t.waterG / ratio : t.cupMl / (ratio - r);
+    doseG = 'doseG' in t ? t.doseG : 'waterG' in t ? t.waterG / ratio : doseForCup(m, t.cupMl, ratio);
     waterG = doseG * ratio;
     cupMl = waterG - r * doseG;
   }

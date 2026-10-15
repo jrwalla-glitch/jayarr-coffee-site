@@ -1,9 +1,9 @@
 export * from './types.ts';
 export { METHODS, EY_BY_METHOD, methodById } from './methods.ts';
-export { buildRecipe, estimateStrength } from './brew.ts';
+export { buildRecipe, estimateStrength, doseForCup } from './brew.ts';
 export { SOURCES } from './sources.ts';
 export { gToOz, ozToG, mlToFlOz, flOzToMl, cToF, fToC, approxTablespoons, G_PER_OZ, ML_PER_FL_OZ } from './units.ts';
-export { CAFFEINE, GUIDANCE, estimateBrewedMg, espressoMg, caffeineInBody, caffeineCurve, intakeMg, dayCurve, dailyTotal, inBodyAt, encodeDay, decodeDay } from './caffeine.ts';
+export { CAFFEINE, GUIDANCE, estimateBrewedMg, espressoMg, caffeineInBody, caffeineCurve, intakeMg, dayCurve, dailyTotal, inBodyAt, encodeDay, decodeDay, dayMinute, DAY_START_MIN } from './caffeine.ts';
 export type { Intake, IntakeKind, DayPoint, Bean } from './caffeine.ts';
 export { simulate } from './simulate.ts';
 export type { Frame, Simulation } from './simulate.ts';

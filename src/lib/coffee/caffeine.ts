@@ -1,6 +1,6 @@
 import type { MethodId, Range, Result } from './types.ts';
 import { failure, finite, success } from './units.ts';
-import { buildRecipe } from './brew.ts';
+import { doseForCup } from './brew.ts';
 import { methodById } from './methods.ts';
 
 // Caffeine model for the Caffeine Calculator and anything that quotes caffeine.
@@ -101,11 +101,19 @@ export function intakeMg(i: Intake): Result<Range> {
   if (!finite(i.cupMl) || i.cupMl < 30 || i.cupMl > 2000) return failure('bad-cup', 'cupMl', 'Choose a cup size.');
   if (i.kind === 'decaf') return success({ min: CAFFEINE.decafPer6Oz.min * i.cupMl / 177, max: CAFFEINE.decafPer6Oz.max * i.cupMl / 177 });
   const method = i.method ?? 'drip-machine';
-  if (!methodById(method) || method === 'espresso') return failure('bad-method', 'method', 'Choose how it was brewed.');
-  const r = buildRecipe({ method, target: { cupMl: i.cupMl } });
-  // A cup bigger than one brewer makes is still a cup of that coffee: estimate from the strength alone.
-  const doseG = r.ok ? r.value.doseG : i.cupMl / 14;
-  return estimateBrewedMg(doseG, method, i.bean ?? 'arabica');
+  const m = methodById(method);
+  if (!m || method === 'espresso') return failure('bad-method', 'method', 'Choose how it was brewed.');
+  // The Brew Guide's own arithmetic at the classic ratio, without the brewer's size limit, so the
+  // estimate grows smoothly with the cup (a cup bigger than one brewer makes is still that coffee).
+  return estimateBrewedMg(doseForCup(m, i.cupMl, m.ratio.classic), method, i.bean ?? 'arabica');
+}
+
+/** The diary's day runs from 6 am to 6 am: a drink or bedtime before 6 am belongs to the night before. */
+export const DAY_START_MIN = 6 * 60;
+/** Clock minutes (0–1439) to diary minutes, so 00:30 after a late evening is 1470, not 30. */
+export function dayMinute(clockMin: number): number {
+  const m = ((Math.round(clockMin) % 1440) + 1440) % 1440;
+  return m < DAY_START_MIN ? m + 1440 : m;
 }
 
 export interface DayPoint { tMin: number; min: number; max: number }
@@ -132,7 +140,8 @@ export function inBodyAt(intakes: Intake[], atMin: number, halfLifeH: number = C
 }
 
 // Share: ?d=v60.355@480,esp.2@630,decaf.237@1200&hl=5&bed=1380
-export function encodeDay(state: { intakes: Intake[]; halfLifeH: number; bedMin: number; pregnant?: boolean }): string {
+// Health details never go into a link: there is no pregnancy field, and old links' preg= is ignored.
+export function encodeDay(state: { intakes: Intake[]; halfLifeH: number; bedMin: number }): string {
   const q = new URLSearchParams();
   q.set('d', state.intakes.map((i) => i.kind === 'espresso' ? `esp.${i.shots}@${Math.round(i.atMin)}`
     : i.kind === 'custom' ? `mg.${Math.round(i.mg ?? 0)}@${Math.round(i.atMin)}`
@@ -140,11 +149,10 @@ export function encodeDay(state: { intakes: Intake[]; halfLifeH: number; bedMin:
     : `${i.method}.${Math.round(i.cupMl ?? 0)}${i.bean && i.bean !== 'arabica' ? '.' + i.bean : ''}@${Math.round(i.atMin)}`).join(','));
   if (state.halfLifeH !== CAFFEINE.halfLifeH.typical) q.set('hl', String(state.halfLifeH));
   if (state.bedMin !== 1380) q.set('bed', String(state.bedMin));
-  if (state.pregnant) q.set('preg', '1');
   return q.toString();
 }
 
-export function decodeDay(query: string): Result<{ intakes: Intake[]; halfLifeH: number; bedMin: number; pregnant: boolean }> {
+export function decodeDay(query: string): Result<{ intakes: Intake[]; halfLifeH: number; bedMin: number }> {
   const q = new URLSearchParams(query.startsWith('?') ? query.slice(1) : query);
   const d = q.get('d');
   if (!d) return failure('empty', 'd', 'No drinks in the link.');
@@ -153,14 +161,17 @@ export function decodeDay(query: string): Result<{ intakes: Intake[]; halfLifeH:
     const m = part.match(/^([a-z0-9-]+)\.(\d+)(?:\.(arabica|robusta|blend))?@(\d+)$/);
     if (!m) return failure('bad-drink', 'd', 'A drink in the link is not valid.');
     const [, kind, n, bean, at] = m;
-    const atMin = Number(at);
+    // Older links wrote after-midnight drinks as 0–359; they belong to the end of the day.
+    const n0 = Number(at);
+    const atMin = n0 < DAY_START_MIN ? n0 + 1440 : n0;
+    if (n0 > 2880) return failure('bad-drink', 'd', 'A drink in the link is not valid.');
     if (kind === 'esp') intakes.push({ kind: 'espresso', shots: Number(n), atMin });
     else if (kind === 'mg') intakes.push({ kind: 'custom', mg: Number(n), atMin });
     else if (kind === 'decaf') intakes.push({ kind: 'decaf', cupMl: Number(n), atMin });
     else intakes.push({ kind: 'brewed', method: kind as MethodId, cupMl: Number(n), atMin, ...(bean ? { bean: bean as Bean } : {}) });
   }
   for (const i of intakes) { const r = intakeMg(i); if (!r.ok) return failure('bad-drink', 'd', r.errors[0].message); }
-  const hl = Number(q.get('hl') ?? CAFFEINE.halfLifeH.typical), bed = Number(q.get('bed') ?? 1380);
+  const hl = Number(q.get('hl') ?? CAFFEINE.halfLifeH.typical), bed0 = Number(q.get('bed') ?? 1380), bed = bed0 < DAY_START_MIN ? bed0 + 1440 : bed0;
   if (!finite(hl) || hl < 1 || hl > 15 || !finite(bed) || bed < 0 || bed > 2880) return failure('bad-option', 'hl', 'An option in the link is not valid.');
-  return success({ intakes, halfLifeH: hl, bedMin: bed, pregnant: q.get('preg') === '1' });
+  return success({ intakes, halfLifeH: hl, bedMin: bed });
 }

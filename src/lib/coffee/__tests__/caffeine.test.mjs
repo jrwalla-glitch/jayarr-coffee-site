@@ -54,7 +54,7 @@ test('guidance lines are in the agencies\' own terms', () => {
   assert.ok(CAFFEINE.VERIFY.length > 0);
 });
 
-import { intakeMg, dayCurve, dailyTotal, inBodyAt, encodeDay, decodeDay } from '../index.ts';
+import { intakeMg, dayCurve, dailyTotal, inBodyAt, encodeDay, decodeDay, dayMinute } from '../index.ts';
 
 test('a day: totals add up, bedtime level is below the peak, ranges stay ordered', () => {
   const day = [
@@ -78,12 +78,41 @@ test('decaf scales with the cup and stays tiny', () => {
   assert.ok(r.max < 15 && r.min > 5);
 });
 
-test('a cup bigger than one brewer makes still gets an estimate', () => {
+test('a cup bigger than one brewer makes still gets an estimate, with no jump at the brewer\'s limit', () => {
   assert.equal(intakeMg({ kind: 'brewed', method: 'aeropress', cupMl: 473, atMin: 480 }).ok, true);
+  // Astra's probe: AeroPress dropped from 148.5–271.7 mg at 264 mL to 127.8–233.8 mg at 265 mL.
+  for (const method of ['aeropress', 'v60', 'french-press', 'cold-brew', 'drip-machine', 'moka']) {
+    let prev = intakeMg({ kind: 'brewed', method, cupMl: 99, atMin: 480 }).value.max;
+    for (let ml = 100; ml <= 1200; ml += 1) {
+      const r = intakeMg({ kind: 'brewed', method, cupMl: ml, atMin: 480 }).value;
+      assert.ok(r.max > prev, `${method} ${ml} mL`);
+      assert.ok(r.max - prev < 2, `${method} jumps at ${ml} mL: ${prev} → ${r.max}`);
+      prev = r.max;
+    }
+  }
+});
+
+test('the diary day runs 6 am to 6 am: a 00:30 drink and a 1 am bedtime come after the evening', () => {
+  assert.equal(dayMinute(30), 1470); assert.equal(dayMinute(60), 1500); assert.equal(dayMinute(6 * 60), 360); assert.equal(dayMinute(23 * 60), 1380);
+  assert.equal(dayMinute(1470), 1470);
+  // Astra's probe: 100 mg at 00:30, bedtime 01:00 → about 87.5 mg left (illustrative model), not 3.4 mg.
+  const day = [{ kind: 'custom', mg: 100, atMin: dayMinute(30) }];
+  const left = inBodyAt(day, dayMinute(60));
+  assert.ok(Math.abs(left.min - 87.52) < 0.05, String(left.min));
+});
+
+test('share links carry no pregnancy setting, and old links\' preg=1 is ignored', () => {
+  const q = encodeDay({ intakes: [{ kind: 'espresso', shots: 2, atMin: 600 }], halfLifeH: 8, bedMin: 1380, pregnant: true });
+  assert.doesNotMatch(q, /preg/);
+  const d = decodeDay('d=esp.2@600&preg=1').value;
+  assert.equal('pregnant' in d, false);
+  // An older link that wrote a 00:30 drink as minute 30 lands at the end of the day.
+  const old = decodeDay('d=esp.1@30&bed=60').value;
+  assert.equal(old.intakes[0].atMin, 1470); assert.equal(old.bedMin, 1500);
 });
 
 test('day state round-trips through the link; junk fails', () => {
-  const s = { intakes: [{ kind: 'brewed', method: 'v60', cupMl: 355, atMin: 420 }, { kind: 'espresso', shots: 2, atMin: 630 }, { kind: 'decaf', cupMl: 237, atMin: 1200 }, { kind: 'brewed', method: 'drip-machine', cupMl: 296, bean: 'robusta', atMin: 900 }, { kind: 'custom', mg: 200, atMin: 960 }], halfLifeH: 8, bedMin: 1350, pregnant: true };
+  const s = { intakes: [{ kind: 'brewed', method: 'v60', cupMl: 355, atMin: 420 }, { kind: 'espresso', shots: 2, atMin: 630 }, { kind: 'decaf', cupMl: 237, atMin: 1200 }, { kind: 'brewed', method: 'drip-machine', cupMl: 296, bean: 'robusta', atMin: 900 }, { kind: 'custom', mg: 200, atMin: 960 }], halfLifeH: 8, bedMin: 1350 };
   const d = decodeDay(encodeDay(s));
   assert.equal(d.ok, true, JSON.stringify(d));
   assert.deepEqual(d.value, s);

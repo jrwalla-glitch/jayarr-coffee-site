@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { METHODS, GUIDANCE, CAFFEINE, intakeMg, dayCurve, dailyTotal, inBodyAt, encodeDay, decodeDay, flOzToMl, mlToFlOz } from '../../lib/coffee/index.ts';
+  import { METHODS, GUIDANCE, CAFFEINE, intakeMg, dayCurve, dailyTotal, inBodyAt, encodeDay, decodeDay, dayMinute, flOzToMl, mlToFlOz } from '../../lib/coffee/index.ts';
   import type { Intake, MethodId } from '../../lib/coffee/index.ts';
 
   const FROM = 6 * 60, TO = 26 * 60; // 6 am to 2 am
@@ -28,7 +28,8 @@
   let mounted = $state(false);
   let example = $state(true);
   const STORE = 'jayarr-caffeine-day-v1';
-  const todayKey = () => { const d = new Date(); return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`; };
+  // The diary day starts at 6 am, so a 1 am coffee still belongs to yesterday's diary.
+  const todayKey = () => { const d = new Date(Date.now() - 6 * 3600e3); return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`; };
 
   // add-drink form
   let addKind = $state<'brewed' | 'espresso' | 'decaf' | 'custom'>('brewed');
@@ -39,7 +40,8 @@
   let addEsp = $state('Double espresso');
   let addTime = $state('09:00');
 
-  const toMin = (hhmm: string) => { const [h, m] = hhmm.split(':').map(Number); return h * 60 + m; };
+  // Diary minutes: the day runs 6 am to 6 am, so 00:30 after a late evening is 1470, not 30.
+  const toMin = (hhmm: string) => { const [h, m] = hhmm.split(':').map(Number); return dayMinute(h * 60 + m); };
   const hhmm = (min: number) => { const m = ((min % 1440) + 1440) % 1440; return `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`; };
   const clock12 = (min: number) => { const m = ((min % 1440) + 1440) % 1440; const h = Math.floor(m / 60), mm = m % 60; return `${((h + 11) % 12) + 1}${mm ? ':' + String(mm).padStart(2, '0') : ''} ${h < 12 ? 'am' : 'pm'}`; };
   const r0 = (n: number) => Math.round(n);
@@ -106,14 +108,15 @@
       try {
         const saved = JSON.parse(localStorage.getItem(STORE) ?? 'null');
         if (saved) {
-          halfLifeH = saved.halfLifeH ?? 5; bedMin = saved.bedMin ?? 1380; pregnant = !!saved.pregnant;
-          if (saved.day === todayKey() && Array.isArray(saved.intakes)) { intakes = saved.intakes.filter((x: Intake) => intakeMg(x).ok); example = false; }
+          halfLifeH = saved.halfLifeH ?? 5; bedMin = dayMinute(saved.bedMin ?? 1380); pregnant = !!saved.pregnant;
+          // Older saves stored after-midnight times as 0–359; move them to the end of the day.
+          if (saved.day === todayKey() && Array.isArray(saved.intakes)) { intakes = saved.intakes.map((x: Intake) => ({ ...x, atMin: dayMinute(x.atMin) })).filter((x: Intake) => intakeMg(x).ok); example = false; }
           else { intakes = []; example = false; }
         }
       } catch { /* storage unavailable: keep the example day */ }
     }
-    const n = new Date(); const m = n.getHours() * 60 + n.getMinutes(); nowMin = m < 360 ? m + 1440 : m;
-    const timer = setInterval(() => { const d2 = new Date(); const m2 = d2.getHours() * 60 + d2.getMinutes(); nowMin = m2 < 360 ? m2 + 1440 : m2; }, 60000);
+    const n = new Date(); nowMin = dayMinute(n.getHours() * 60 + n.getMinutes());
+    const timer = setInterval(() => { const d2 = new Date(); nowMin = dayMinute(d2.getHours() * 60 + d2.getMinutes()); }, 60000);
     mounted = true;
     return () => clearInterval(timer);
   });
@@ -155,7 +158,7 @@
         <span class="fill hi" style:width="{Math.min(100, (total.max / (guidance.mg * 1.5)) * 100)}%"></span>
         <span class="mark" style:left="{(1 / 1.5) * 100}%"></span>
       </div>
-      <span class="sub">{guidance.who}: {guidance.mg} mg a day{pregnant ? ' in pregnancy' : ' for healthy adults'}</span>
+      <span class="sub">{guidance.who} reference: {guidance.mg} mg a day{pregnant ? ' in pregnancy' : ' for healthy adults'}; a population guide, not a personal limit</span>
     </div>
   </div>
 
@@ -208,7 +211,7 @@
           <li>
             <input type="time" value={hhmm(i.atMin)} aria-label={`Time of ${describe(i)}`} onchange={(e) => retime(row.idx, (e.currentTarget as HTMLInputElement).value)} />
             <span class="what">{describe(i)}</span>
-            <span class="mg">{mg.ok ? rangeText(mg.value.min, mg.value.max) : '—'} mg</span>
+            <span class="mg">{mg.ok ? rangeText(mg.value.min, mg.value.max) : '—'} mg<small class="basis">{i.kind === 'custom' ? 'label' : 'estimate'}</small></span>
             <button type="button" class="x" aria-label={`Remove ${describe(i)}`} onclick={() => remove(row.idx)}>×</button>
           </li>
         {/each}
@@ -338,4 +341,5 @@
     li .mg { grid-column: 2; grid-row: 2; }
     .chart { padding: 10px 4px 4px; }
   }
+  .mg .basis { display: block; font: 400 10.5px/1.2 'IBM Plex Mono', monospace; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3, #75655a); }
 </style>
