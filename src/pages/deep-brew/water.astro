@@ -12,6 +12,8 @@ import Footer from '../../components/Footer.astro';
 import WaterBuilder from '../../components/coffee/WaterBuilder.svelte';
 import { WATER_RECIPES, SOURCES } from '../../lib/coffee/index.ts';
 
+const provenance = WATER_RECIPES.filter((r) => r.provenance).map((r) => r.provenance).join(' ');
+
 const title = 'Coffee Water Recipe Builder: Make Your Own Brewing Water';
 const description = 'See where your water sits among the well-known coffee water recipes, pick one, and get the exact mix: Epsom salt and baking soda concentrates in millilitres, or grams for a direct batch.';
 ---
@@ -38,32 +40,32 @@ const description = 'See where your water sits among the well-known coffee water
 
 			<article class="cf-body">
 				<h2>Hardness and alkalinity, in plain words</h2>
-				<p><strong>Hardness</strong> (GH) is mostly calcium and magnesium. They help pull flavour out of the coffee; magnesium tends to bring out brightness and fruit, calcium more body. Too little and coffee tastes flat and thin; far too much and it turns chalky and scales machines.</p>
-				<p><strong>Alkalinity</strong> (KH) is mostly bicarbonate. It buffers the coffee's acids: too little and the cup can taste sharp; too much and it tastes flat and dull. A good starting point keeps hardness about two to three times the alkalinity.</p>
+				<p><strong>Hardness</strong> (GH) is mostly calcium and magnesium. They help pull flavor out of the coffee. Magnesium is "believed to extract slightly different flavors," Jonathan Gagné writes, though he knows of no lab tests that back this up yet. Too little and coffee tastes flat and thin; far too much and it turns chalky and scales machines.</p>
+				<p><strong>Alkalinity</strong> (KH) is mostly bicarbonate. It buffers the coffee's acids: too little and the cup can taste sharp; too much and it tastes flat and dull. The map's dashed lines mark hardness two and three times the alkalinity; they're guides for reading the map, not a rule, and the recipes sit on both sides of them.</p>
 				<p>Distilled and reverse-osmosis water have almost no minerals, which is why coffee brewed with them tastes hollow. Very hard tap water has the opposite problem.</p>
 
 				<h2>Well-known coffee water recipes</h2>
 				<div class="cf-table-wrap">
 					<table>
 						<thead><tr><th scope="col">Recipe</th><th scope="col">GH</th><th scope="col">KH</th><th scope="col">Character</th><th scope="col">Good for</th></tr></thead>
-						<tbody>{WATER_RECIPES.map((r) => <tr><th scope="row">{r.name}</th><td>{r.gh}</td><td>{r.kh}</td><td>{r.profile}</td><td>{r.bestFor}</td></tr>)}</tbody>
+						<tbody>{WATER_RECIPES.map((r) => <tr><th scope="row">{r.name}{r.untraced ? <small> (original not traced)</small> : ''}</th><td>{r.gh}{r.ghEstimated ? <small> (Builder's estimate)</small> : ''}</td><td>{r.kh}</td><td>{r.profile}</td><td>{r.bestFor}</td></tr>)}</tbody>
 					</table>
 				</div>
-				<p class="cf-note">Hardness and alkalinity in ppm (mg/L) as calcium carbonate. These are each recipe's GH and KH targets; branded products such as Third Wave Water also contain other minerals that two salts don't copy.</p>
+				<p class="cf-note">Hardness and alkalinity in ppm (mg/L) as calcium carbonate. These are each recipe's GH and KH targets; branded products such as Third Wave Water also contain other minerals that two salts don't copy. {provenance}</p>
 
 				<h2>The two-bottle method</h2>
 				<p>Barista Hustle's method keeps it simple. Dissolve 2.45 g of Epsom salt in a litre of distilled water (bottle A) and 1.68 g of baking soda in another (bottle B). Each millilitre of A in a litre of finished water adds about 1 ppm of hardness; each millilitre of B adds about 1 ppm of alkalinity. So the SCA's 68 GH / 40 KH is roughly 68 mL of A and 40 mL of B in a jug, filled with distilled water to the one-litre line. The builder above works out the exact amounts, including how much of your own water to use if you start from tap.</p>
 
 				<h2>For espresso machines</h2>
 				<ul>
-					<li>Check your machine maker's water specification first; warranties depend on it. Harder water scales boilers faster, steam boilers most of all.</li>
+					<li>Check your machine maker's water specification first. Harder water scales boilers faster, steam boilers most of all.</li>
 					<li>Chloride corrodes stainless steel and copper under heat. Epsom salt (a sulfate) and baking soda add none; avoid calcium or magnesium chloride in machines.</li>
 					<li>Softened water is a poor base: a softener swaps calcium and magnesium for sodium, removing the hardness that helps extraction.</li>
 				</ul>
 
 				<h2>Sources</h2>
 				<ul class="cf-sources">
-					{['barista-hustle-water', 'sca-water', 'hendon-2014', 'gagne', 'rao', 'synthesis'].map((id) => SOURCES[id]).map((s) => <li>{s.author}, <cite>{s.title}</cite>{s.year ? ` (${s.year})` : ''}.</li>)}
+					{['barista-hustle-water', 'sca-water', 'hendon-2014', 'gagne-water', 'rao', 'synthesis'].map((id) => SOURCES[id]).map((s) => <li>{s.author}, <cite>{s.title}</cite>{s.year ? ` (${s.year})` : ''}.</li>)}
 				</ul>
 			</article>
 		</main>

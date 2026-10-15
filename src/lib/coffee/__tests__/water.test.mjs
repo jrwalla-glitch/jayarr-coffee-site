@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { planWater, WATER_RECIPES, nearestRecipe, MG_EPSOM_PER_PPM_GH, MG_BICARB_PER_PPM_KH, CONCENTRATE_G_PER_L, PPM_PER_ML_PER_L } from '../index.ts';
+import { planWater, WATER_RECIPES, nearestRecipe, recipeNumbers, MG_EPSOM_PER_PPM_GH, MG_BICARB_PER_PPM_KH, CONCENTRATE_G_PER_L, PPM_PER_ML_PER_L } from '../index.ts';
 
 const ok = (r) => { assert.equal(r.ok, true, JSON.stringify(r)); return r.value; };
 const near = (a, b, eps, msg = '') => assert.ok(Math.abs(a - b) <= eps, `${msg} ${a} vs ${b}`);
@@ -91,4 +91,20 @@ test('Muse r4: very hard source water is still used, continuously, never silentl
   const a = at(500, 497), b = at(500, 498), c = at(500, 600);
   assert.ok(Math.abs(a.baseL - b.baseL) < 0.002, `${a.baseL} vs ${b.baseL}`);
   for (const v of [a, b, c]) { assert.ok(v.baseL > 0); assert.ok(Math.abs(v.gh - 68) < 1e-6 && Math.abs(v.kh - 40) < 1e-6); assert.ok(Math.abs(v.baseL + v.distilledL + (v.ghStockMl + v.khStockMl) / 1000 - 1) < 1e-9); }
+});
+
+test('R7: Third Wave Water GH is labeled the Builder\'s estimate, and Holy Water as untraced, wherever the numbers show', () => {
+  const tww = WATER_RECIPES.filter((r) => r.id.startsWith('tww-'));
+  assert.equal(tww.length, 2);
+  for (const r of tww) {
+    assert.equal(r.ghEstimated, true, r.id);
+    assert.match(r.provenance, /Builder's estimate, not a maker figure/);
+    assert.match(recipeNumbers(r), new RegExp(`^GH ${r.gh} \\(the Builder's estimate\\) · KH ${r.kh}$`));
+  }
+  const holy = WATER_RECIPES.find((r) => r.id === 'holy');
+  assert.equal(holy.untraced, true);
+  assert.match(holy.provenance, /couldn't trace Holy Water to a published original/);
+  assert.match(recipeNumbers(holy), /original not traced/);
+  // Every other recipe is labeled with its plain numbers.
+  for (const r of WATER_RECIPES.filter((x) => !x.ghEstimated && !x.untraced)) { assert.equal(recipeNumbers(r), `GH ${r.gh} · KH ${r.kh}`); assert.equal(r.provenance, undefined); }
 });
