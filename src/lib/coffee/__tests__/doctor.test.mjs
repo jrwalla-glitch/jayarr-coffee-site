@@ -175,3 +175,20 @@ test('Opus blind review: moka bitter is one change; cold brew strength changes t
   const ap = ok(diagnose({ method: 'aeropress', symptom: 'bitter', answers: { time: 'slow', roast: 'medium' } }));
   assert.doesNotMatch(ap.changeNow, /pour it all off/);
 });
+
+test('Opus r2: espresso sour-and-bitter follows the shot time; too strong but fast fixes timing first', () => {
+  const slow = ok(diagnose({ method: 'espresso', symptom: 'harsh-mixed', answers: { shot: 'slow', grinder: 'burr' } }));
+  assert.match(slow.nextExperiment, /coarser/); assert.doesNotMatch(slow.nextExperiment, /finer/);
+  const fast = ok(diagnose({ method: 'espresso', symptom: 'harsh-mixed', answers: { shot: 'fast', grinder: 'burr' } }));
+  assert.match(fast.nextExperiment, /finer/);
+  const strongFast = ok(diagnose({ method: 'espresso', symptom: 'strong', answers: { shot: 'fast' } }));
+  assert.equal(strongFast.next.grind, 'finer');
+  const bitterOk = ok(diagnose({ method: 'espresso', symptom: 'bitter', answers: { shot: 'ok', roast: 'medium' } }));
+  assert.match(bitterOk.changeNow, /1:1\.5/); assert.equal(bitterOk.next.strength, 'stronger');
+});
+
+test('immersion steep advice uses the recipe\'s own steep (Opus r2: AeroPress 0:50, cold brew 18 h)', () => {
+  assert.match(ok(diagnose({ method: 'aeropress', symptom: 'sour', answers: { time: 'fast', roast: 'medium' } })).changeNow, /0:30/);
+  assert.match(ok(diagnose({ method: 'cold-brew', symptom: 'bitter', answers: { time: 'slow', roast: 'medium' } })).changeNow, /12 h/);
+  assert.match(nextQuestion({ method: 'aeropress', symptom: 'sour', answers: {} }).text, /0:30/);
+});

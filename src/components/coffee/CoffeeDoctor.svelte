@@ -50,6 +50,8 @@
     const q = new URLSearchParams({ method });
     if (method === 'espresso' || method === 'moka') q.set('dose', method === 'espresso' ? '18' : '15'); else q.set('cup', method === 'cold-brew' || method === 'drip-machine' ? '946' : method === 'aeropress' ? '237' : '355');
     if (dx.next.strength) q.set('strength', dx.next.strength);
+    // The roast travels too, so the Brew Guide's temperature starts from the same coffee.
+    if (answers.roast === 'light' || answers.roast === 'dark') q.set('roast', answers.roast);
     const adj = dx.next.grind ?? dx.next.temp;
     if (adj) q.set('adjust', adj);
     return `/tools/brew-ratio/?${q}`;
@@ -102,11 +104,12 @@
 <div class="dr">
   <div class="stage">
     <ExtractionMap x={pos.x} y={pos.y} {zone} showArrow={step === 'result' && dx?.placement === 'likely'} empty={dx?.placement === 'other'} emptyText="not an extraction problem" uncertain={dx?.placement === 'uncertain'} label={dx?.placement === 'other' ? `Not placed on the extraction map: ${dx.placementNote}` : dx?.placement === 'uncertain' ? `Your cup's position is uncertain: ${dx.placementNote}` : `By taste, your cup probably sits in the ${ZONES[zone].label.toLowerCase()} zone.`} />
+    <p class="mini-axes" aria-hidden="true">sour ← extraction → bitter · weak ↓ strength ↑ strong</p>
     <div class="zone">
       {#if symptom && dx && dx.placement !== 'likely'}
         <span class="lbl">{dx.placement === 'other' ? 'Not an extraction problem' : 'Position uncertain'}</span>
         <p class="zl small">{dx.placementNote}</p>
-        <p class="zt">{dx.placement === 'other' ? 'Grind, time and ratio won\'t fix this one; the change below will.' : 'Taste and time point different ways, so the dot is a best guess.'}</p>
+        <p class="zt">{dx.placement === 'other' ? 'Grind, time and ratio won\'t fix this one; the change below will.' : 'Taste and time can\'t place this one precisely, so the dot is a best guess.'}</p>
       {:else if symptom}
         <span class="lbl">{step === 'result' ? 'Your cup, probably' : 'Probably'}</span>
         <p class="zl">{ZONES[zone].label}</p>
@@ -152,7 +155,7 @@
       <h3 tabindex="-1" class="cause">{dx.cause}</h3>
       <p class="why">{dx.why}</p>
       <div class="rx">
-        <div class="now"><span class="lbl">{dx.change ? `Change one thing: ${dx.change}` : 'Change this now'}</span><p>{dx.changeNow}</p>{#if dx.hold.length}<p class="hold">Keep the same: {dx.hold.join(', ')}.</p>{/if}</div>
+        <div class="now"><span class="lbl">{dx.change ? `Change one thing: ${dx.change}` : 'Change this now'}</span><p>{dx.changeNow}</p>{#if dx.hold.length}<p class="hold">Keep the same: {dx.hold.join(', ')}.</p>{:else}<p class="hold">Keep your usual recipe the same, so you can tell whether this was the cause.</p>{/if}</div>
         <div><span class="lbl">Next time, try</span><p>{dx.nextExperiment}</p></div>
         {#if dx.ruleOut}<div><span class="lbl">How you'll know</span><p>{dx.ruleOut}</p></div>{/if}
       </div>
@@ -175,6 +178,7 @@
     background: var(--card); border: 1px solid var(--rule); border-radius: 18px; overflow: hidden;
     color: var(--ink); font: 16px/1.5 'IBM Plex Sans', system-ui, sans-serif; box-shadow: 0 30px 60px -40px rgba(60, 35, 15, .35);
   }
+  .mini-axes { display: none; grid-column: 1; margin: -4px 0 0; font: 400 11px/1.3 'IBM Plex Mono', monospace; color: #75655a; text-align: center; }
   .stage { padding: 18px 18px 20px; border-right: 1px solid var(--rule); background: radial-gradient(120% 90% at 50% 10%, #fffdf9 0%, #f4ece0 80%); }
   .zl.small { font-size: 20px; line-height: 1.2; }
   .zone { padding: 6px 12px 0; min-height: 92px; }
@@ -210,8 +214,11 @@
   button:focus-visible, a:focus-visible { outline: 2px solid var(--crema-deep); outline-offset: 2px; }
   @media (max-width: 860px) {
     .dr { grid-template-columns: 1fr; }
-    .stage { border-right: 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 150px 1fr; gap: 10px; align-items: center; padding: 12px; }
-    .zone { min-height: 0; padding: 0; }
+    .stage { border-right: 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 170px 1fr; gap: 10px; align-items: center; padding: 12px; }
+    /* The thumbnail map is too small for its axis words (about 4 px), so they move into readable text. */
+    .stage :global(.ax), .stage :global(.ax2), .stage :global(.sweet) { display: none; }
+    .mini-axes { display: block; }
+    .zone { min-height: 0; padding: 0; grid-column: 2; grid-row: 1 / span 2; }
     .zl { font-size: 21px; }
     .zt { font-size: 13.5px; }
     .panel { padding: 18px 16px 20px; }
