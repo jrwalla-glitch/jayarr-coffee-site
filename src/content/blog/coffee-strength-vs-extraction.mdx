@@ -1,204 +1,85 @@
 ---
 title: "Coffee Strength vs. Extraction: The Key Insight Most Brewers Miss"
-description: "Strength and extraction are different things. Understanding the difference — and the 2x2 matrix — is the fastest way to diagnose what's wrong with your coffee."
+description: "Strength is how concentrated your coffee is; extraction is how much of the grounds dissolved. Worked examples show how diluting differs from extracting, and which change fixes which cup."
 pubDate: "Mar 11 2026"
+updatedDate: "Oct 15 2026"
 heroImage: "../../assets/blog/coffee-strength-vs-extraction.jpg"
 category: "Science"
 videoId: "n289-PKF0lo"
 ---
 
-import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
-import FAQ from '../../components/FAQ.astro';
+import AnswerBox from '../../components/AnswerBox.astro';
 import ToolCallout from '../../components/ToolCallout.astro';
-import DeepBrewCallout from '../../components/DeepBrewCallout.astro';
 import LiteYouTube from '../../components/LiteYouTube.astro';
 
-Here's the most common coffee troubleshooting mistake: your cup tastes weak, so you grind finer. Or it tastes bitter, so you use less coffee. Both of these might be wrong — because "weak" is a strength problem and "bitter" is an extraction problem, and the fix for one has nothing to do with the other.
+<AnswerBox answer="Strength is how concentrated the drink is, measured as total dissolved solids (TDS); extraction is how much of the coffee dissolved into it. Adding water after brewing lowers strength and leaves extraction where it was, while pouring more water through the same coffee lowers strength and raises extraction a little. So a cup that tastes clean but thin wants more coffee for the same water, and one that tastes sour or bitter wants a grind change first." />
 
-Most home brewers treat strength and extraction as the same thing. They're not. They're independent variables controlled by different inputs, and confusing them is why so many people chase their tails adjusting recipe after recipe without ever landing on a good cup.
+"Strong" and "weak" get used for everything from bitterness to caffeine. In brewing they mean one thing: how much coffee is dissolved in the cup. Extraction is a different number, and the two can point in opposite directions: Jessica Easto, in *Craft Coffee: A Manual*, notes that you can brew a cup that is strong and under-extracted, or weak and over-extracted, which she says describes typical diner coffee. Telling them apart tells you which change to make.
 
-Once you understand the difference, diagnosing coffee problems becomes almost mechanical. Sour? That's under-extraction. Weak? That's low concentration. Both? You need two different fixes, applied separately. This framework is the single most useful mental model in coffee brewing.
+<LiteYouTube videoId="n289-PKF0lo" title="Coffee Extraction Explained: You Stopped Too Soon" />
 
-## The Two Variables
+## Two numbers, one link
 
-### Strength (TDS)
+**Strength** is TDS: the share of the drink that is dissolved coffee. A cup at 1.4% TDS is 1.4% coffee solids and 98.6% water.
 
-**What it is:** How much dissolved coffee is in your cup. The concentration.
+**Extraction yield** is the share of the dry coffee that dissolved: drink weight × TDS ÷ dose. Our guide to [extraction yield](/blog/coffee-extraction-yield-explained/) covers how to measure it.
 
-**How it's measured:** Total Dissolved Solids (TDS), expressed as a percentage. Brewed filter coffee typically falls between 1.0% and 1.6% TDS. The SCA recommends 1.15–1.45% for filter methods.
+The two are linked by the amount of water: strength = extraction × dose ÷ drink weight. That gives two quite different ways to change strength, and the worked examples below show the difference. The readings in them are illustrative; the arithmetic is calculated.
 
-**What controls it:** Primarily **ratio** — the amount of coffee relative to water. More coffee per unit of water = higher TDS = stronger cup. Less coffee = lower TDS = weaker cup. See our [ratio guide](/blog/coffee-to-water-ratio-guide/) for method-specific starting points.
+## Diluting after brewing changes strength only
 
-**What it tastes like:**
-- Low TDS (weak): thin, watery, like the coffee was diluted. The flavors might be balanced — not sour, not bitter — just... faint.
-- High TDS (strong): intense, concentrated, mouth-coating. Can be delicious or overwhelming depending on extraction.
+Take the Brew Guide's espresso: 18 g of coffee makes a 36 g shot. Say it reads 10% TDS. That's 3.6 g of dissolved coffee, an extraction of 3.6 ÷ 18 = 20%.
 
-### Extraction Yield (EY)
+Now add 144 g of hot water to make an americano. The drink weighs 180 g and still holds the same 3.6 g of dissolved coffee, so it reads 3.6 ÷ 180 = 2.0% TDS. Strength has fallen to a fifth. Extraction hasn't moved: it's still 3.6 ÷ 18 = 20%, because nothing more came out of the coffee.
 
-**What it is:** How much of the coffee's soluble material you dissolved out of the grounds. What percentage of the dry coffee ended up in the liquid.
+The same goes for cold brew concentrate. Easto's French-press cold brew, which the Brew Guide uses, steeps 96 g of coffee in 600 g of cold water, and the concentrate is mixed one to one with water or milk to serve. If the concentrate read 2.5%, its extraction would be 600 × 2.5% ÷ 96 ≈ 15.6% (for immersion brews you use all the water added), and the served drink would read about 1.25%: half the strength, the same extraction. Read an immersion brew before you dilute it: as the Extraction Map explains, a reading taken after dilution makes the extraction look too low.
 
-**How it's measured:** Extraction Yield, expressed as a percentage. Coffee contains roughly 28–30% soluble material by weight; the rest is insoluble cellulose fiber. The target is to dissolve 18–22% of the coffee's weight. Below 18% is under-extracted. Above 22% is over-extracted.
+<ToolCallout tool="extraction" preset={{ mode: 'measured', kind: 'espresso', dose: 18, liquid: 180, tds: 2, diluted: 1 }} cta="Open the Extraction Map: the americano" context="Opens the Extraction Map's measured mode with the americano above, marked as diluted: 20% extraction, inside the reference range, with strength not judged because water was added on purpose. Enter your own dose, drink weight and refractometer reading." />
 
-**What controls it:** Primarily **grind size, water temperature, and brew time.** Finer grinds expose more surface area → faster extraction. Hotter water dissolves compounds faster. Longer contact time allows more extraction. Ratio has minimal direct effect on EY. [Grind size](/blog/coffee-grind-size-micron-chart/) is the most powerful lever.
+## Pouring more water through the coffee changes both
 
-**What it tastes like:**
-- Under-extracted (EY below ~18%): sour, sharp, lacking sweetness, thin flavor. The pleasant sugars and oils haven't dissolved yet — you're mostly tasting the acids that extract first.
-- Well-extracted (EY 18–22%): balanced sweetness, pleasant acidity, clean finish. The sweet spot.
-- Over-extracted (EY above ~22%): bitter, harsh, astringent, dry, ashy. You've pulled out the dry distillates — large molecules that taste bitter and create a drying sensation.
+A percolation brew is different, because the extra water passes through the grounds. Take the V60 recipe in our [pour-over guide](/blog/ultimate-pour-over-coffee-guide-and-best-v60-technique/): 22 g of coffee and 352 g of water (1:16) give about 308 g in the cup, since the grounds hold back about 2 g of water per gram. Say it reads 1.43%: that's about 4.4 g dissolved, an extraction of 20%.
 
-## The 2x2 Matrix
+Pour to 374 g instead (1:17) and about 330 g reaches the cup. If extraction stayed at 20%, the same 4.4 g in 330 g would read about 1.33%. In practice extraction rises a little, because more water has passed through the coffee. Scott Rao makes this point about espresso in *Espresso Extraction: Measurement and Mastery*: run extra water through the grounds and extraction increases while strength decreases. So the lighter ratio lands a little above 1.33%, but it's still weaker.
 
-This is the framework. Strength on one axis, extraction on the other. Four quadrants, each with a distinct taste profile and a distinct fix.
+The Extraction Map draws the ratio the same way: more water for the same coffee mostly lowers strength and nudges extraction up; more coffee for the same water mostly raises strength and nudges extraction down.
 
-### Weak + Under-Extracted (Bottom Left)
+## Reading your cup on both axes
 
-**Tastes like:** Sour, thin, watery, hollow. Like someone made weak tea with coffee beans.
+Taste can suggest where a cup sits, but only as a hypothesis: water, freshness and an uneven bed cause similar tastes. Easto describes the strength axis as body. Too much coffee for the water gives a thick mouthfeel and muddled flavours; too little gives a thin mouthfeel, weak flavours and a faint aroma. She describes under-extracted cups as often sour and lacking complexity, and over-extracted ones as often bitter and astringent.
 
-**What went wrong:** Not enough coffee AND the coffee that's there wasn't extracted enough. Double trouble.
+These are the Extraction Map's zones for those tastes, and the first moves it suggests:
 
-**The fix:** Two separate adjustments. Increase the coffee dose (fixes strength — go from 1:17 to 1:15). AND grind finer or brew longer (fixes extraction). If you only add more coffee, you get stronger sour coffee. If you only grind finer, you get properly extracted but still thin coffee. You need both.
+| How it tastes | Where it likely sits | First change |
+|---|---|---|
+| Sour and watery | Under-extracted and weak | Grind finer; then more coffee if it's still thin |
+| Sour, body about right | Under-extracted | Grind finer, or hotter water, or longer contact |
+| Pleasant but thin | Well extracted, too dilute | More coffee for the same water |
+| Heavy and intense, but clean | Well extracted, too strong | More water for the same coffee, or dilute in the cup |
+| Bitter and thin | Over-extracted and weak | Grind coarser; then more coffee if it's still thin |
+| Bitter, drying finish | Over-extracted | Grind coarser, or slightly cooler water, or shorter contact |
+| Harsh and heavy | Over-extracted and strong | Grind coarser; then more water if it's still heavy |
 
-### Strong + Under-Extracted (Top Left)
+Two cups don't fit the grid. A cup that tastes sour and bitter at once, hollow in the middle, usually points to uneven extraction rather than a wrong average; see our guide to [channeling](/blog/fix-channeling-uneven-extraction/). And a cup can be bitter from a dark roast however well it's brewed; our guide to [bitter coffee](/blog/why-coffee-tastes-bitter-how-to-fix/) separates the causes.
 
-**Tastes like:** Sour but intense. Concentrated, mouth-coating, but sharp and lacking sweetness. Like a very strong lemonade — there's body, but it's all acid and no balance.
+## Which to fix first
 
-**What went wrong:** Plenty of coffee (high dose, maybe 1:14 or even 1:12), but the grind is too coarse or the water too cool. The ratio is fine; the extraction is short.
+Fix the taste before the strength. If a cup is sour or bitter, change the grind one step and keep the ratio. Once it tastes balanced, set the strength with the ratio: one step stronger (1:16 to 1:15) or lighter (1:16 to 1:17). Fix My Coffee works in that order and suggests one change at a time, so you can tell which change helped. Our [ratio guide](/blog/coffee-to-water-ratio-guide/) has the amounts for each step.
 
-**The fix:** Grind finer. Or use hotter water. Or extend brew time. Don't reduce the coffee dose — that would fix the strength but not the sourness. Attack the extraction directly.
+<ToolCallout tool="doctor" preset={{ method: 'v60' }} cta="Open Fix My Coffee for a V60" context="Opens Fix My Coffee on a V60. Pick what you tasted (sour, bitter, weak, too strong, or sour and bitter at once), answer a question or two about how it brewed, and it gives one change to try and what to keep the same." />
 
-### Weak + Over-Extracted (Bottom Right)
+## How strong is normal?
 
-**Tastes like:** Bitter but thin. Dry, astringent, harsh finish — but somehow also watery. Like oversteeped tea that's been diluted.
+There's no single right strength. Easto writes that most good cups fall somewhere between 1% and 2% TDS, and that most people in the US would find 1% too weak and 2% too strong. Rao reports that most professionals seem to prefer 1.25% to 1.45% for brews made without pressure, such as filter coffee, and 10% to 13% for espresso. The SCA's 2019 brewing chart uses 1.15% to 1.45% as its reference range for brewed coffee; our [extraction yield guide](/blog/coffee-extraction-yield-explained/) covers it by edition.
 
-**What went wrong:** Not enough coffee (low concentration), but what's there has been extracted too far — grind too fine, water too hot, or brewed too long.
+Espresso has no SCA chart. The Extraction Map treats 8% to 12% TDS as a rule of thumb for espresso strength, a little lower than the range Rao reports; neither is a target your shot has to hit.
 
-**The fix:** Grind coarser (fixes extraction) AND add more coffee (fixes strength). Again, two independent adjustments. Just grinding coarser gives you balanced-but-still-weak. Just adding coffee gives you stronger bitter coffee.
+Preference really does vary. In a UC Davis study, Cotter and colleagues had 118 black-coffee drinkers rate brews of one coffee at different strengths and extractions. They split into two groups whose preferences varied most with strength, and the authors concluded that the chart's single "ideal" should be reconsidered.
 
-### Strong + Well-Extracted (Top Right)
+## Sources
 
-**Tastes like:** Intense, rich, sweet, balanced, mouth-coating. This is what great espresso feels like. For filter coffee, it might be more concentration than you prefer, but the flavors are clean and balanced.
-
-**The fix:** If it's too strong for your taste, simply add hot water (this is literally an Americano). Dilution reduces TDS without changing extraction — the flavors stay balanced, just less concentrated.
-
-### The Center: Balanced
-
-**Tastes like:** Sweet, clean, the right amount of body, pleasant acidity, no harshness. This is the target — adequate strength with proper extraction. You know you're here when the coffee tastes "complete" — nothing missing, nothing excessive.
-
-## The Brewing Control Chart
-
-This framework isn't new. In 1957, Ernest Lockhart at MIT's Coffee Brewing Institute created the original Brewing Control Chart — a graph with TDS on the y-axis and extraction yield on the x-axis, with a highlighted zone in the center representing the "ideal" cup.
-
-The SCA updated it and it remains the industry standard. The recommended zone: **1.15–1.45% TDS** and **18–22% extraction yield**. In 2023, a UC Davis study (Guinard et al.) proposed expanding this to **1.1–1.3% TDS** and **19–24% EY**, finding that TDS had a bigger effect on consumer preference than extraction yield alone.
-
-You don't need the chart printed on your wall. The mental model is enough: strength and extraction are separate, and they're controlled by different variables.
-
-## The Extraction Sequence
-
-Understanding what extracts when explains why under and over-extraction taste the way they do.
-
-Coffee compounds dissolve in a predictable order:
-
-1. **Acids** (first) — fruity, bright, sour. These are small molecules that dissolve quickly.
-2. **Sugars** (middle) — sweet, round, caramel, chocolate. This is the sweet spot.
-3. **Dry distillates** (last) — bitter, ashy, astringent, dry. Large, heavy molecules that dissolve slowly.
-
-Under-extraction stops the process early — you get acids but not enough sugars to balance them. The result: sour. Over-extraction goes too far — you get the sugars but also pull the bitter dry distillates. The result: bitter and harsh.
-
-Proper extraction (18–22% EY) dissolves enough acid and sugar to create balance, without going deep enough to pull significant bitterness.
-
-## How to Measure (And Why You Might Not Need To)
-
-A **refractometer** measures TDS directly. You place a drop of brewed coffee on the lens and read the percentage. VST, Atago, and DiFluid make popular models ($100–250). From TDS, you can calculate extraction yield:
-
-**EY = (brewed coffee weight × TDS%) ÷ dry coffee dose**
-
-Example: You brewed with 16g of coffee and got 240g of liquid at 1.35% TDS.
-EY = (240 × 0.0135) ÷ 16 = 3.24 ÷ 16 = **20.3%**
-
-That's right in the sweet spot.
-
-But you don't need a refractometer to use this framework. Your taste buds are remarkably good at distinguishing the four quadrants:
-
-- **Sour** = under-extracted → grind finer, hotter water, longer time
-- **Bitter** = over-extracted → grind coarser, cooler water, shorter time
-- **Weak** = low concentration → use more coffee (or less water)
-- **Strong** = high concentration → use less coffee (or more water)
-
-If it's sour AND weak, fix both. If it's bitter AND strong, fix both. The 2x2 tells you exactly which knobs to turn.
-
-## Practical Scenarios
-
-**"My pour over is weak but tastes balanced."**
-Pure strength problem. Your extraction is fine — the flavors are clean and in balance. Increase your dose: go from 1:17 to 1:15, or from 15g to 17g of coffee. Don't grind finer — that would increase extraction, which you don't need.
-
-**"My French press is bitter and thick."**
-Over-extracted AND strong. Grind coarser (fixes the bitterness) and consider reducing the dose slightly or adding water after brewing (fixes the intensity). The Hoffmann method's extended rest period helps too — it lets fines settle instead of continuing to extract in your cup.
-
-**"My espresso is sour but very concentrated."**
-Under-extracted, strong. Classic espresso dial-in problem. Grind finer (longer extraction time in the puck) or run a longer shot (1:2.5 instead of 1:2). Don't reduce the dose — that would make it weaker without fixing the sourness.
-
-**"My AeroPress tastes hollow and thin."**
-Weak and possibly under-extracted. Use more coffee, use hotter water, and steep longer. The AeroPress is extremely forgiving — push it harder.
-
-Not sure which quadrant you're in? The [Fix My Coffee](/tools/fix-my-coffee/) diagnostic walks you through specific symptoms and maps them to fixes — it's built on exactly this strength vs. extraction framework.
-
-<ToolCallout tool="fix-my-coffee" />
-
-## The One Variable Rule
-
-Every experienced coffee person says the same thing: change one variable at a time. The 2x2 matrix is why.
-
-If your coffee is weak AND sour — bottom-left quadrant — you need two fixes: more coffee (strength) and finer grind (extraction). But if you change both simultaneously and the cup improves, you don't know how much of the improvement came from each change. Worse, you might overcorrect one while undercorrecting the other.
-
-The disciplined approach: fix one axis, brew, taste. Then fix the other axis if needed. Most people should start with the extraction axis (grind size) because it has a larger effect on flavor than ratio does. Get the extraction right first — eliminate the sourness or bitterness. Then adjust ratio to hit your preferred strength.
-
-This takes two brews instead of guessing. But those two brews give you a recipe you can reproduce every morning. Changing three things at once gives you a cup you'll never recreate.
-
-## Method-Specific TDS Targets
-
-Different brewing methods produce intentionally different strengths. Comparing your pour over to your espresso is meaningless — they're designed for different TDS ranges.
-
-<ComparisonTable
-  title="TDS Targets by Method"
-  subtitle="Each method is designed for a different concentration range"
-  rowLabel="Method"
-  columns={["Typical TDS", "Notes"]}
-  rows={[
-    { name: "Filter (pour over, drip)", values: ["1.15–1.45%", "SCA recommended zone"] },
-    { name: "French press", values: ["1.2–1.5%", "Slightly higher than filter due to oils"] },
-    { name: "AeroPress", values: ["1.2–1.6%", "Wide range depending on style"] },
-    { name: "Espresso", values: ["8–13%", "Roughly 10x filter concentration"] },
-    { name: "Cold brew concentrate", values: ["3–5%", "Dilute before comparing"] },
-    { name: "Turkish", values: ["3–5%+", "Unfiltered, extremely concentrated"] },
-  ]}
-/>
-
-If you own a refractometer, use these as ballparks. If you don't, taste is your guide — the 2x2 matrix works just as well without numbers.
-
-## Why This Matters
-
-Most coffee advice on the internet conflates strength and extraction into a single dimension: "strong" to "weak." This causes brewers to make one adjustment when they need two, or to fix the wrong variable entirely.
-
-The 2x2 matrix gives you a diagnostic framework that actually works. Taste your coffee. Identify which quadrant you're in. Apply the right fix to the right variable. That's it. No chasing, no guessing, no throwing out perfectly good recipes because you changed three things at once and don't know which one helped.
-
-Strength is ratio. Extraction is grind, time, and temperature. They're independent. Fix them independently.
-
-<DeepBrewCallout tool="extraction" context="Use the TDS and extraction yield sliders to pinpoint which quadrant you're in — and get the exact fix for your brew method." />
-
----
-
-## Sources & Further Reading
-
-- Lockhart, E. — MIT Coffee Brewing Institute Brewing Control Chart (1957)
-- SCA Brewing Best Practices — updated Brewing Control Chart
-- Guinard, J.-X. et al. (2023, UC Davis) — updated preferred TDS/EY range
-- Gagné, J. *The Physics of Filter Coffee* — extraction yield framework, compound solubility sequence
-- Rao, S. *Everything but Espresso* — TDS and extraction independence
-
-<FAQ items={[
-  { question: "What's the difference between coffee strength and extraction?", answer: "Strength (TDS) is how concentrated your coffee is — how much dissolved coffee is in the liquid. It's controlled by the ratio of coffee to water. Extraction yield (EY) is how much of the coffee's solubles you dissolved out of the grounds — controlled by grind size, temperature, and brew time. They're independent: you can have strong under-extracted coffee (sour concentrate) or weak over-extracted coffee (thin and bitter). Separating these two concepts is the key to diagnosing any coffee problem." },
-  { question: "Why is my coffee weak but not sour?", answer: "That's a pure strength problem with good extraction. Your grind size, temperature, and brew time are fine — the flavors are balanced. You just need more coffee per unit of water. Increase your dose: go from 1:17 to 1:15, or add 2–3 grams more coffee. Don't grind finer — that would change extraction, which isn't the issue." },
-  { question: "Can coffee be both sour and bitter at the same time?", answer: "Yes, but that's usually not a strength or extraction problem — it's channeling (uneven extraction). Some parts of the coffee bed are over-extracted (bitter) while others are under-extracted (sour). The fix is improving grind consistency, pour technique, and bed uniformity. See our guide on fixing channeling and uneven extraction." },
-  { question: "Do I need a refractometer to use this framework?", answer: "No. Your taste buds can distinguish the four quadrants reliably. Sour = under-extracted (grind finer). Bitter = over-extracted (grind coarser). Weak = low strength (use more coffee). Strong = high strength (use less coffee or dilute). A refractometer ($100–250) gives you precise numbers, which is useful for dialing in recipes, but the taste-based framework works for daily brewing." },
-  { question: "What is the ideal TDS and extraction yield for coffee?", answer: "The SCA recommends 1.15–1.45% TDS and 18–22% extraction yield for filter coffee. A 2023 UC Davis study suggested expanding to 1.1–1.3% TDS and 19–24% EY. Espresso targets are different: 8–13% TDS. These are ranges, not rules — some people prefer coffee slightly outside these zones." },
-]} />
+- Jessica Easto, *Craft Coffee: A Manual* (Agate Surrey, 2017), pp. 19–20, "Strength and Yield"; p. 23, "Brew Ratio and Taste"; and pp. 217–218, "The French Press Cold Brew Method"
+- Scott Rao, *Espresso Extraction: Measurement and Mastery* (2013), chapter 13, "The Benefits of Using a Coffee Refractometer" (brew strength, brewing ratio)
+- Jonathan Gagné, "How to Brew Better Coffee with a V60," *Coffee ad Astra*, 2018, §7.3 (22 g of coffee to 352 g of water): [coffeeadastra.com](https://coffeeadastra.com/2018/11/30/brewing-better-coffee/)
+- Specialty Coffee Association, *Coffee Brewing Control Chart*, revised March 2019, Version 3: [SCA chart (PDF)](https://static1.squarespace.com/static/587af1d4db29d69a1a226b95/t/60aece65e4f2134d99f6e646/1622068839009/SCA%2BBrewing%2BChart%2B-%2BRevised%2BMarch%2B2019-US-Letter.pdf)
+- A. R. Cotter, M. E. Batali, W. D. Ristenpart and J.-X. Guinard, "Consumer preferences for black coffee are spread over a wide range of brew strengths and extraction yields," *Journal of Food Science* 86, no. 1 (2021): 194–205, abstract: [doi.org/10.1111/1750-3841.15561](https://doi.org/10.1111/1750-3841.15561)
