@@ -21,7 +21,7 @@ export const SYMPTOMS: Symptom[] = [
   { id: 'flat', label: 'Flat', tagline: 'Dull, papery, no aroma', espresso: true, filter: true },
   { id: 'off', label: 'Tastes off', tagline: 'Stale oil, metallic, chlorine or musty notes', espresso: true, filter: true },
   { id: 'muddy', label: 'Muddy', tagline: 'Silty, gritty, heavy sludge', espresso: false, filter: true },
-  { id: 'gushing', label: 'Runs too fast', tagline: 'Shot pours in under 20 seconds', espresso: true, filter: false },
+  { id: 'gushing', label: 'Runs too fast', tagline: 'Shot pours in under 25 seconds', espresso: true, filter: false },
   { id: 'choking', label: 'Barely drips', tagline: 'Shot drips slowly or not at all', espresso: true, filter: false },
 ];
 
