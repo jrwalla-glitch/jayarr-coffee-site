@@ -11,13 +11,20 @@ export interface Setting {
   source?: string; url?: string; checked?: string;
   min?: number | null; max?: number | null; start?: number | null; openTop?: boolean;
   categories?: string[]; published?: string;
+  /** The maker's own name for the method, where it differs (Baratza's "Automatic Brewer"). */
+  makerLabel?: string;
+  /** Wording where the source's own range or scope needs saying (a conflict, a recipe-scoped start). */
+  headline?: string; note?: string;
 }
 export interface Grinder {
   id: string; name: string; short: string; maker: string; type: 'electric' | 'hand'; kind: Kind;
   unit: string; unitDetail: string; scale: [number, number] | null; step: number | null; stepless: boolean;
   perTurn: number | null; sub?: string | null; avoid?: [number, number] | null; categories?: string[] | null;
   stepMicrons: number | null; zeroNote: string | null; cautions: string[];
-  startingPoint: { status?: string; quote?: string | null; url?: string | null };
+  /** What one step is, in the maker's terms; which model or revision the settings apply to; travel notes. */
+  stepNote?: string | null; applies?: string | null; rulerNote?: string | null;
+  /** What the maker says about its settings (starting points, a reference, a band), in plain words. */
+  startingPoint: { status?: string; note?: string | null; url?: string | null };
   chart: { title?: string | null; url?: string | null }; status?: string | null;
   amazon: { asin: string; url: string } | null; settings: Setting[];
 }
@@ -47,19 +54,27 @@ export function rangeText(s: Setting): string {
   return `${fmt(s.min)} to ${fmt(s.max)}`;
 }
 
-/** A turn-counted value as turns plus a remainder, for grinders whose maker gives the units per turn. */
+/** A turn-counted value as turns plus a remainder ("3 turns + 2"), for grinders whose maker gives the units per turn. */
 export function turnsText(v: number, g: Pick<Grinder, 'perTurn' | 'unit'>): string | null {
   if (!g.perTurn) return null;
-  const turns = Math.floor(v / g.perTurn), rest = Math.round((v - turns * g.perTurn) * 100) / 100;
-  if (turns === 0) return `${fmt(rest)} ${g.unit} from zero`;
-  const t = `${turns} full turn${turns === 1 ? '' : 's'}`;
-  return rest === 0 ? t : `${t} plus ${fmt(rest)} ${g.unit}`;
+  const turns = Math.floor(v / g.perTurn + 1e-9), rest = Math.round((v - turns * g.perTurn) * 100) / 100;
+  if (turns === 0) return `${fmt(rest)} on the first turn`;
+  const t = `${turns} turn${turns === 1 ? '' : 's'}`;
+  return rest === 0 ? t : `${t} + ${fmt(rest)}`;
 }
 
 /** The headline: "Start at 15", "Start between 18 and 35 clicks from zero", "Start in Medium". */
 export function headline(g: Grinder, s: Setting): string {
+  if (s.headline) return s.headline;
   if (s.published) return `As published: ${s.published}`;
   if (s.categories) return s.categories.length === 1 ? `Start at ${s.categories[0]}` : `Start between ${s.categories.join(' and ')}`;
+  // Turn-counted grinders with a published turn size read in turns, the way you count them on the grinder.
+  if (g.kind === 'turns' && g.perTurn && s.min != null) {
+    if (s.start != null) return `Start at ${turnsText(s.start, g)}`;
+    if (s.max == null || s.max === s.min) return `Start at ${turnsText(s.min, g)}`;
+    if (s.max < g.perTurn) return `Start between ${fmt(s.min)} and ${fmt(s.max)} on the first turn`;
+    return `Start between ${turnsText(s.min, g)} and ${turnsText(s.max, g)}`;
+  }
   const unit = g.kind === 'turns' ? ` ${g.unit} from zero` : '';
   if (s.start != null) return `Start at ${fmt(s.start)}${unit}`;
   if (s.openTop) return `Start at ${fmt(s.min!)}${unit} or coarser`;

@@ -22,13 +22,16 @@
    "avoid": null,
    "categories": null,
    "stepMicrons": null,
+   "stepNote": null,
+   "applies": "The original Encore (ZCG485), not the Encore ESP.",
+   "rulerNote": null,
    "zeroNote": "Setting 1 = very fine, 40 = very coarse per manual. Micron range 250-1200 µm is maker product-sheet wording (not a per-step value). No step size published.",
    "cautions": [
-    "Grinder must be running or completely empty of beans when adjusting grind setting (manual p.6 box, 'Note: Partially ground coffee beans may remain between the burrs...')."
+    "Change the setting only while the grinder is running or empty of beans."
    ],
    "startingPoint": {
     "status": "yes",
-    "quote": "Below are suggested grind setting starting points to use for common brew methods. The grind size will need to be adjusted coarser or finer based on variables such as the recipe used, roast level, type of coffee, and taste preference.",
+    "note": "Baratza calls these suggested starting points, to adjust coarser or finer for your recipe, roast, coffee and taste.",
     "url": "https://assets.breville.com/ZCG485/manual-encore-en-v4-3-120122.pdf"
    },
    "chart": {
@@ -68,7 +71,7 @@
     {
      "key": "pour-over-v60",
      "group": "pourover",
-     "label": "V60 pour-over",
+     "label": "Pour-over (V60)",
      "provenance": "maker",
      "source": "Encore Operations Manual v4.3 p.6 chart",
      "url": "https://assets.breville.com/ZCG485/manual-encore-en-v4-3-120122.pdf",
@@ -80,11 +83,12 @@
     {
      "key": "drip-machine",
      "group": "drip",
-     "label": "Drip machine (“Automatic Brewer”)",
+     "label": "Drip machine",
      "provenance": "maker",
      "source": "Encore Operations Manual v4.3 p.6 chart",
      "url": "https://assets.breville.com/ZCG485/manual-encore-en-v4-3-120122.pdf",
      "checked": "2026-10-15",
+     "makerLabel": "Automatic Brewer",
      "min": 18,
      "max": 18,
      "start": 18
@@ -135,14 +139,16 @@
    "avoid": null,
    "categories": null,
    "stepMicrons": null,
+   "stepNote": null,
+   "applies": "The Encore ESP (ZCG495).",
+   "rulerNote": null,
    "zeroNote": "Dual-range system: espresso micro-steps 1-20 and filter macro-steps 21-40 (manual p.5). Maker product sheet says 'micron accurate' adjustments but publishes no per-step micron value. Calibrated at factory with custom tool.",
    "cautions": [
-    "Grinder must be running or empty of beans to adjust settings to prevent damage (manual p.5 'Initial setup / Grinding operation').",
-    "Shim kit: inserting one shim shifts grind by about five settings (manual shim section, p.9-10). Shim use is a maker-described drift correction, not a zero reset."
+    "Change the setting only while the grinder is running or empty of beans."
    ],
    "startingPoint": {
     "status": "yes",
-    "quote": "Below are suggested starting points for what grind settings to use for common brew methods. Coarser or finer grinding may be needed depending on recipe requirements and taste preference.",
+    "note": "Baratza calls these suggested starting points; grind coarser or finer to suit your recipe and taste.",
     "url": "https://breville-production-aem-assets.s3.us-west-2.amazonaws.com/ZCG495/Encore+ESP+Documents/manual-encoreesp-v1-0-en-010923.pdf"
    },
    "chart": {
@@ -182,7 +188,7 @@
     {
      "key": "pour-over-v60",
      "group": "pourover",
-     "label": "V60 pour-over",
+     "label": "Pour-over (V60)",
      "provenance": "maker",
      "source": "Encore ESP Operations Manual v1.0 p.5",
      "url": "https://breville-production-aem-assets.s3.us-west-2.amazonaws.com/ZCG495/Encore+ESP+Documents/manual-encoreesp-v1-0-en-010923.pdf",
@@ -194,11 +200,12 @@
     {
      "key": "drip-machine",
      "group": "drip",
-     "label": "Drip machine (“Automatic Brewer”)",
+     "label": "Drip machine",
      "provenance": "maker",
      "source": "Encore ESP Operations Manual v1.0 p.5",
      "url": "https://breville-production-aem-assets.s3.us-west-2.amazonaws.com/ZCG495/Encore+ESP+Documents/manual-encoreesp-v1-0-en-010923.pdf",
      "checked": "2026-10-15",
+     "makerLabel": "Automatic Brewer",
      "min": 28,
      "max": 28,
      "start": 28
@@ -249,14 +256,16 @@
    "avoid": null,
    "categories": null,
    "stepMicrons": null,
+   "stepNote": null,
+   "applies": "The Virtuoso+ (ZCG587).",
+   "rulerNote": null,
    "zeroNote": "Settings go from 40 (very coarse) to 1 (very fine) per manual p.5. No micron value per step published.",
    "cautions": [
-    "p.6 note: \"Partially ground coffee beans may remain between the burrs after the grinder is turned off. When making ANY grind adjustments, the grinder must be running.\" (Virtuoso+ manual v1.6, p.6)",
-    "p.5 ADJUSTING THE GRIND SIZE says: \"When adjusting the grind setting, the grinder must be running or completely empty of beans to prevent damage to the grinder.\" (Virtuoso+ manual v1.6, p.5). This is a second printed passage; the p.6 \"ANY ... must be running\" note is the stricter wording. Both are kept as printed."
+    "Change the setting while the grinder is running, or when it is completely empty."
    ],
    "startingPoint": {
     "status": "yes",
-    "quote": "Below are suggested grind setting starting points to use for common brew methods. The grind size will need to be adjusted coarser or finer based on variables such as the recipe used, roast level, type of coffee, and taste preference.",
+    "note": "Baratza calls these suggested starting points, to adjust coarser or finer for your recipe, roast, coffee and taste.",
     "url": "https://breville-production-aem-assets.s3.us-west-2.amazonaws.com/ZCG587/Virtuoso%2B+Documents/manual-virtuosoplus-en-v1-6.pdf"
    },
    "chart": {
@@ -296,7 +305,7 @@
     {
      "key": "pour-over-v60",
      "group": "pourover",
-     "label": "V60 pour-over",
+     "label": "Pour-over (V60)",
      "provenance": "maker",
      "source": "Virtuoso+ Operations Manual v1.6 p.6 chart",
      "url": "https://breville-production-aem-assets.s3.us-west-2.amazonaws.com/ZCG587/Virtuoso%2B+Documents/manual-virtuosoplus-en-v1-6.pdf",
@@ -308,11 +317,12 @@
     {
      "key": "drip-machine",
      "group": "drip",
-     "label": "Drip machine (“Automatic Brewer”)",
+     "label": "Drip machine",
      "provenance": "maker",
      "source": "Virtuoso+ Operations Manual v1.6 p.6 chart",
      "url": "https://breville-production-aem-assets.s3.us-west-2.amazonaws.com/ZCG587/Virtuoso%2B+Documents/manual-virtuosoplus-en-v1-6.pdf",
      "checked": "2026-10-15",
+     "makerLabel": "Automatic Brewer",
      "min": 18,
      "max": 18,
      "start": 18
@@ -363,13 +373,17 @@
    "avoid": null,
    "categories": null,
    "stepMicrons": null,
+   "stepNote": null,
+   "applies": "The Smart Grinder Pro BCG820 (US).",
+   "rulerNote": null,
    "zeroNote": "No zero/touch-point convention published. The internal upper-burr setting default is 6 and is the documented baseline for the factory adjustment. Maker says \"We recommend making only one adjustment at a time.\" Breville does not publish a numeric zero for the user dial.",
    "cautions": [
-    "Use single-wall filter baskets when grinding fresh beans and the finer 1-30 espresso settings; for dual-wall filters, start at 30 and go finer if needed (L26 manual p.10)."
+    "For espresso with fresh beans, use a single-wall basket with settings 1 to 30; with a dual-wall basket, start at 30 and go finer if needed.",
+    "If the grind-size dial feels tight, turn it with the grinder running."
    ],
    "startingPoint": {
     "status": "yes",
-    "quote": "For espresso, we recommend selecting Grind Size setting 12 as a starting point and moving the Grind Size dial Coarser or Finer to adjust the flow of espresso as required. (French press: \"Select grind size setting 58.\")",
+    "note": "Breville gives these as starting points and suggests adjusting from there; for espresso it names setting 12.",
     "url": "https://assets.breville.com/BCG820/BCG820_USCM_IB_L26_LR.pdf"
    },
    "chart": {
@@ -409,7 +423,7 @@
     {
      "key": "drip-machine-gold-tone",
      "group": "drip",
-     "label": "Drip machine, gold-tone filter",
+     "label": "Drip machine (gold-tone filter)",
      "provenance": "maker",
      "source": "L26 manual p.10 Coffee Chart, DRIP FILTER/PERCOLATOR MEDIUM column",
      "url": "https://assets.breville.com/BCG820/BCG820_USCM_IB_L26_LR.pdf",
@@ -421,7 +435,7 @@
     {
      "key": "drip-machine-paper",
      "group": "drip",
-     "label": "Drip machine, paper filter",
+     "label": "Drip machine (paper filter)",
      "provenance": "maker",
      "source": "L26 manual p.10 Coffee Chart, MEDIUM COARSE column",
      "url": "https://assets.breville.com/BCG820/BCG820_USCM_IB_L26_LR.pdf",
@@ -478,14 +492,17 @@
     "COARSE"
    ],
    "stepMicrons": null,
+   "stepNote": null,
+   "applies": "The Infinity model 560.",
+   "rulerNote": null,
    "zeroNote": "No burr-gap zero is published. The 0 on the timer is the grind-timer position, not a fineness zero. The bean container dot points to a fineness setting; between the insertion marking and the coarsest setting the grinder will not grind.",
    "cautions": [
-    "Manual \"Helpful Hints\" 6: for the two or three finest settings (Turkish), check that ground coffee passes through; clean the grinding chamber after the finest settings.",
-    "Manual \"Grind Settings\" hint: \"Dark, oily beans: Grind dark oily beans one or two steps coarser than medium or light brown beans.\" Clean more often (manual p.7)."
+    "Dark, oily beans: Capresso says to grind one or two steps coarser than for medium or light beans.",
+    "After the finest settings, check the coffee passes through and clean the grinding chamber."
    ],
    "startingPoint": {
     "status": "not-stated",
-    "quote": null,
+    "note": "Capresso's manual gives named steps for each method, not numbers.",
     "url": "https://www.capresso.com/media/wysiwyg/capresso_565-560_infinity-grinder_IB.pdf"
    },
    "chart": {
@@ -506,6 +523,7 @@
      "source": "Capresso manual section 5",
      "url": "https://www.capresso.com/media/wysiwyg/capresso_565-560_infinity-grinder_IB.pdf",
      "checked": "2026-10-15",
+     "headline": "Start at FINE (EXTRA FINE for some pump machines)",
      "categories": [
       "FINE",
       "EXTRA FINE"
@@ -593,14 +611,16 @@
    "avoid": null,
    "categories": null,
    "stepMicrons": null,
+   "stepNote": null,
+   "applies": "DF64 Gen 2 (Turin). Settings from a documented secondary source; its dial numbers aren’t tied to burr contact.",
+   "rulerNote": null,
    "zeroNote": "Turin maker page gives no zero value. Espresso Outlet (retailer) guide says dial indicators are not set at true zero and to go fine until burrs touch to find zero; this is retailer guidance, not maker.",
    "cautions": [
-    "Turin page: \"Record the setting for each coffee as a starting point, rather than expecting a dial number to work on every grinder.\" (turingrinders.com DF64 Gen 2 page)",
-    "Espresso Outlet guide: never run at finest setting or below as burrs can be damaged (retailer guidance)."
+    "Don't run it at the finest setting or below: the burrs can be damaged (retailer guidance)."
    ],
    "startingPoint": {
     "status": "not-stated",
-    "quote": null,
+    "note": "No maker chart was found in our research; the maker suggests recording the setting that works for each coffee rather than expecting one number to suit every grinder.",
     "url": "https://www.turingrinders.com/products/turin-df64-gen-2-single-dose-coffee-grinder-1"
    },
    "chart": {
@@ -618,6 +638,8 @@
      "source": "Honest Coffee Guide Turin DF64 (Gen 2) table, fully fetched 2026-10-15",
      "url": "https://honestcoffeeguide.com/turin-df64-gen-2-grind-settings/",
      "checked": "2026-10-15",
+     "headline": "The source lists 0 to 20 on its dial",
+     "note": "These are the secondary source’s dial numbers. It doesn’t say where its 0 is, so don’t read 0 as burr contact: find your grinder’s own zero first, and never grind at the finest point.",
      "min": 0,
      "max": 20,
      "start": null
@@ -625,7 +647,7 @@
     {
      "key": "pour-over-v60",
      "group": "pourover",
-     "label": "V60 pour-over",
+     "label": "Pour-over (V60)",
      "provenance": "documented-secondary",
      "source": "Honest Coffee Guide table",
      "url": "https://honestcoffeeguide.com/turin-df64-gen-2-grind-settings/",
@@ -725,11 +747,16 @@
    "avoid": null,
    "categories": null,
    "stepMicrons": null,
+   "stepNote": null,
+   "applies": "Mignon Specialità. Settings from a documented secondary source.",
+   "rulerNote": null,
    "zeroNote": "No zero convention in Eureka manual. Eureka page describes lower-burr repositioning and maintenance without losing setting.",
-   "cautions": [],
+   "cautions": [
+    "Turn the knob only while the motor is running; the manual warns the grinder could stop otherwise."
+   ],
    "startingPoint": {
     "status": "not-established",
-    "quote": null,
+    "note": "Eureka's manual gives no starting settings; these come from a documented secondary source.",
     "url": "https://www.eureka.co.it/public/files/catalogo/20/Mignon%20-%20User%20Manual.pdf"
    },
    "chart": {
@@ -752,7 +779,7 @@
     {
      "key": "pour-over-v60",
      "group": "pourover",
-     "label": "V60 pour-over",
+     "label": "Pour-over (V60)",
      "provenance": "documented-secondary",
      "source": "Honest Coffee Guide table",
      "url": "https://honestcoffeeguide.com/eureka-mignon-specialita-grind-settings/",
@@ -841,14 +868,17 @@
    "avoid": null,
    "categories": null,
    "stepMicrons": null,
+   "stepNote": null,
+   "applies": "Ode with the stock Gen 2 Brew Burrs (not SSP burrs).",
+   "rulerNote": null,
    "zeroNote": "Factory calibrated. Maker: \"Setting 1 is always 1 click away from the burr touch point\" and \"the burr touch point will drift slightly ... expect the settings to shift slightly coarser\" as burrs season. Calibration uses Phillips screwdriver per Fellow help article; no numeric zero micron published.",
    "cautions": [
-    "Designed for brewed coffee only; \"Ode is not intended for espresso\" (maker product page). Espresso is therefore omitted from settings.",
-    "Maker Gear Guide (search excerpt): \"We recommend adjusting the grind dial with the machine on\" when moving finer, because the dial can bind if moved from 11 to 1 while off."
+    "Ode is made for brewed coffee, not espresso.",
+    "Move the dial toward finer with the grinder running; it can bind if turned from 11 to 1 while off."
    ],
    "startingPoint": {
     "status": "yes",
-    "quote": "We suggest starting with setting 5 on Ode with Gen 2 Burrs",
+    "note": "Fellow gives these as the starting settings in its own recipes.",
     "url": "https://fellowproducts.com/pages/how-to-pour-over"
    },
    "chart": {
@@ -869,6 +899,7 @@
      "source": "Fellow how-to brew guide, Measure and grind coffee",
      "url": "https://fellowproducts.com/pages/how-to-pour-over",
      "checked": "2026-10-15",
+     "note": "This is the start in Fellow’s own pour-over recipe (22 g of coffee to 350 g of water, flat-bottom brewer), not a general chart.",
      "min": 5,
      "max": 5,
      "start": 5
@@ -881,6 +912,7 @@
      "source": "Fellow how-to brew guide, Measure and grind coffee",
      "url": "https://fellowproducts.com/pages/how-to-cold-brew",
      "checked": "2026-10-15",
+     "note": "This is the start in Fellow’s cold-brew recipe (70 g of coffee to 700 g of water, 16 hours); Fellow says not to go finer than 7.",
      "min": 10,
      "max": 10,
      "start": 10
@@ -907,14 +939,16 @@
    "avoid": null,
    "categories": null,
    "stepMicrons": 50,
+   "stepNote": "Each quarter-setting click on the outer ring moves the burrs about 50 µm (so a whole number is about 200 µm). That’s burr movement, not the size of the grounds.",
+   "applies": "The Opus 1, not the Opus 2.",
+   "rulerNote": null,
    "zeroNote": "No explicit zero/touch-point definition found in fetched Opus 1 sources. Maker says inner ring \"calibrates as burrs wear down\" and can extend the outer ring to 0 and 12. Calibration procedure: center outer ring at 6, remove load bin, press calibration ring tabs, rotate outer ring to move the inner scale arrow (counterclockwise \"-\" finer, clockwise \"+\" coarser), release, and rotate outer ring to re-engage. (QA) Inner-ring calibration is separate from the 0-12 range extension; the help text does not define a numeric zero micron.",
    "cautions": [
-    "Help article explicitly says it is written for Opus 1 and \"Opus 2 does not feature the same inner adjustment ring, and calibration is done with a completely different set of instructions.\" Do not apply Opus 1 inner-ring steps to Opus 2.",
-    "Tip (GTKYG, verbatim): \"If your brew tastes sour, go a few clicks finer. If your brew tastes bitter, try using a coarser grind.\""
+    "This chart is for the Opus 1; the Opus 2 calibrates differently."
    ],
    "startingPoint": {
     "status": "yes",
-    "quote": "the grind recommendations are just suggested starting places",
+    "note": "Fellow calls its grind recommendations suggested starting places.",
     "url": "https://help.fellowproducts.com/hc/en-us/articles/22857010246939-Adjusting-Opus-1-Grinder-Settings-for-Espresso"
    },
    "chart": {
@@ -1021,14 +1055,17 @@
    "avoid": null,
    "categories": null,
    "stepMicrons": null,
+   "stepNote": null,
+   "applies": "The Niche Zero.",
+   "rulerNote": null,
    "zeroNote": "Manual calibration: screw bean funnel finger tight, align white dot on bezel with the calibrate mark, then unscrew funnel to chosen setting. Calibrated position = burrs touching; not a brew setting.",
    "cautions": [
-    "WARNING: do not use when set to calibrated as you will damage the burrs. (NZ manual p.8, p.11)",
-    "Run grinder briefly (1 s) when adjusting finer after coarse grinding every 10 marks (manual p.9)."
+    "Never grind at the calibration setting: it damages the burrs.",
+    "When going finer after coarse grinding, run the grinder briefly every 10 marks."
    ],
    "startingPoint": {
     "status": "yes",
-    "quote": "This ultimate grind size guide provides a solid foundation, but the best results will come from tweaking and fine-tuning to suit your taste.",
+    "note": "Niche calls its guide a solid foundation and recommends fine-tuning to your taste.",
     "url": "https://www.nichecoffee.co.uk/blogs/exploring-coffee/the-ultimate-grind-size-guide-for-niche-grinders"
    },
    "chart": {
@@ -1077,7 +1114,7 @@
     {
      "key": "pour-over-v60",
      "group": "pourover",
-     "label": "V60 pour-over",
+     "label": "Pour-over (V60)",
      "provenance": "maker",
      "source": "same Niche blog table: V60 \"Medium-Coarse (35-45)\"",
      "url": "https://www.nichecoffee.co.uk/blogs/exploring-coffee/the-ultimate-grind-size-guide-for-niche-grinders",
@@ -1121,13 +1158,16 @@
    "avoid": null,
    "categories": null,
    "stepMicrons": null,
+   "stepNote": null,
+   "applies": "The standard OXO Brew Conical Burr grinder (15 settings), not the model with a scale.",
+   "rulerNote": null,
    "zeroNote": "Setting 1 = fine, 15 = coarse per manual p.7. Micro-settings exist but no micron or per-micro value published. Manual says grind size settings only; no micron range printed.",
    "cautions": [
-    "If beans are in the hopper, adjust grind size while the motor is running to prevent jamming (manual printed p.7)."
+    "With beans in the hopper, change the setting while the motor is running so it doesn't jam."
    ],
    "startingPoint": {
     "status": "not-stated",
-    "quote": null,
+    "note": "OXO's manual gives a range of settings for each method.",
     "url": "https://www.oxo.com/media/wysiwyg/PDF_Files/BL_On_8717000_Booklet_Temp.pdf"
    },
    "chart": {
@@ -1222,11 +1262,14 @@
    "avoid": null,
    "categories": null,
    "stepMicrons": null,
+   "stepNote": null,
+   "applies": "The Sculptor 064S (TEG064S), not the 064S II.",
+   "rulerNote": null,
    "zeroNote": "Printed dial includes0; exact burr-touch calibration relationship to printed0 not established in the inspected original-064S manual.",
    "cautions": [],
    "startingPoint": {
     "status": "not-stated",
-    "quote": null,
+    "note": "Timemore's manual gives a range of settings for each method.",
     "url": "https://cdn.shopify.com/s/files/1/0642/9153/7138/files/064-064S_20230630_ZQ.pdf"
    },
    "chart": {
@@ -1306,11 +1349,14 @@
    "avoid": null,
    "categories": null,
    "stepMicrons": 8.8,
+   "stepNote": "Each click moves the burrs about 8.8 µm (90 clicks per turn).",
+   "applies": "The J-Max.",
+   "rulerNote": "1Zpresso’s manual gives about 4.5 turns of travel (405 clicks), but its chart runs to 420. The ruler is drawn for illustration, not as the grinder’s limit.",
    "zeroNote": "Exact maker wording (manual, Adjusting the grind setting step 1): turn the adjustment dial ring counter-clockwise all the way to the starting point \"where the resistance starts and the crank handle can't spin freely\". Calibration tutorial (J-Max / J-Ultra): starting point should align with #0 on scale mark. Start may vary within +/-10 clicks.",
    "cautions": [],
    "startingPoint": {
     "status": "not-stated",
-    "quote": null,
+    "note": "1Zpresso's chart prints a band for each method, not a single setting.",
     "url": "https://1zpresso.coffee/grind-setting/"
    },
    "chart": {
@@ -1414,11 +1460,14 @@
    "avoid": null,
    "categories": null,
    "stepMicrons": 12.5,
+   "stepNote": "Each click (a quarter of a number) moves the burrs about 12.5 µm.",
+   "applies": "From 1Zpresso’s archived JX-Pro chart; whether it applies to both the gray-dot and red-dot versions isn’t established.",
+   "rulerNote": null,
    "zeroNote": "Exact maker wording (JX-Pro S manual): \"We define the zero point as where the handle starts to spin with resistance instead of the tightest position.\" Setting the zero to #0 is by removing the dial and turning the knurled thumb nut 1-2 clicks; start may be off by 2 or more clicks.",
    "cautions": [],
    "startingPoint": {
     "status": "not-stated",
-    "quote": null,
+    "note": "1Zpresso's chart prints a band for each method, not a single setting.",
     "url": "https://1zpresso.coffee/grind-setting/"
    },
    "chart": {
@@ -1522,13 +1571,14 @@
    "avoid": null,
    "categories": null,
    "stepMicrons": 20,
+   "stepNote": "Each click (a tenth of a number) moves the burrs about 20 µm.",
+   "applies": "The K-Ultra.",
+   "rulerNote": null,
    "zeroNote": "Exact maker wording (K-Ultra manual, Adjustment Dial Calibration): \"The zero point is defined as the position where the handle begins to spin with resistance, not the absolute tightest position.\" Instructions: find the zero point by turning the dial counter-clockwise until resistance; if the pointer is right of #0 loosen knurled nut, if left tighten it. Offset may be 2+ clicks.",
-   "cautions": [
-    "Do not disassemble central shaft and inner/conical burr, burr ring unit and outer burr, adjustment dial ring, or body bearings."
-   ],
+   "cautions": [],
    "startingPoint": {
     "status": "not-stated",
-    "quote": null,
+    "note": "1Zpresso's chart prints a band for each method, not a single setting.",
     "url": "https://1zpresso.coffee/grind-setting/"
    },
    "chart": {
@@ -1635,11 +1685,14 @@
    "avoid": null,
    "categories": null,
    "stepMicrons": 25,
+   "stepNote": "Each click (a third of a number) moves the burrs about 25 µm.",
+   "applies": "From 1Zpresso’s Q-series chart; which Q2 burr it applies to isn’t established.",
+   "rulerNote": null,
    "zeroNote": "Exact maker wording (Q manual): \"Turn the adjustment dial clockwise to the tightest. The number (#) marked at the dot is the starting point/zero point. NOTE: the number (#) might not be 0.\" Calibration tutorial (internal adjustment): \"turn the adjustment dial clockwise until the crank handle stops spinning freely, without any resistance.\"",
    "cautions": [],
    "startingPoint": {
     "status": "not-stated",
-    "quote": null,
+    "note": "1Zpresso's chart prints a band for each method, not a single setting.",
     "url": "https://1zpresso.coffee/grind-setting/"
    },
    "chart": {
@@ -1726,16 +1779,19 @@
    ],
    "step": null,
    "stepless": false,
-   "perTurn": null,
-   "sub": null,
+   "perTurn": 9,
+   "sub": "10 clicks per number",
    "avoid": null,
    "categories": null,
    "stepMicrons": 22,
+   "stepNote": "Each click moves the burrs about 22 µm; 10 clicks make a number and 9 numbers a turn.",
+   "applies": "The ZP6 Special only.",
+   "rulerNote": null,
    "zeroNote": "Exact maker wording (K-series manual / calibration tutorial): \"tighten the adjustment dial counterclockwise all the way to #0. Ensure the gap is fully closed,\" then after tightening the nut \"If the red dot still passes #0, loosen the adjustment dial clockwise slightly and repeat.\"",
    "cautions": [],
    "startingPoint": {
     "status": "not-stated",
-    "quote": null,
+    "note": "1Zpresso's chart prints a band for each method, not a single setting.",
     "url": "https://1zpresso.coffee/grind-setting/"
    },
    "chart": {
@@ -1791,14 +1847,17 @@
    "avoid": null,
    "categories": null,
    "stepMicrons": null,
+   "stepNote": null,
+   "applies": "The C40 MK4 with the standard axle, not the Red Clix upgrade.",
+   "rulerNote": null,
    "zeroNote": "Official FAQ \"Where is Zero?\": hold grinder horizontally; when burrs are open the handle turns and falls to 6 o'clock; while closing, click zero is the first setting where the handle no longer falls (from 9 o'clock). Tightening further = -1, -2. Manual: start with burrs touching/closed (click zero) and count clicks anticlockwise.",
    "cautions": [
-    "Manual p.10 (warning): \"Please do not adjust or remove the three screws on the bottom of your grinder. They have been carefully and perfectly calibrated by our team of production experts. Doing so could de-calibrate or even damage your grinder.\" (Same as FAQ: do not adjust or remove the three mounting screws.)",
-    "FAQ: the three-pointed grind setting dial must be unscrewed only during disassembly per the maker's instructions; the burrs are \"floating cone\" and may touch at finer settings (normal per FAQ)."
+    "Don't adjust or remove the three screws on the bottom: they're set at the factory.",
+    "The burrs can touch at the finest settings; Comandante says that's normal."
    ],
    "startingPoint": {
     "status": "yes",
-    "quote": "Here are some good starting points for you, but please trust your tastebuds and dial in to suit your grinder, your coffee and your preference:",
+    "note": "Comandante calls these good starting points and says to trust your taste buds.",
     "url": "https://comandantegrinder.com/pages/faq"
    },
    "chart": {
@@ -1880,15 +1939,18 @@
     "Coarse"
    ],
    "stepMicrons": null,
+   "stepNote": null,
+   "applies": "The Skerton Pro (MMCS-2B).",
+   "rulerNote": null,
    "zeroNote": "No zero convention printed. Manual says to hold the center of the handle firmly and turn the grind adjustment nut: Rotate clockwise for finer grounds, counterclockwise for coarser grounds.",
    "cautions": [
-    "Manual \"Precautions for Use\": \"Always turn the handle clockwise. Never spin the handle or turn it counterclockwise, as doing so will damage the grinder.\"",
-    "Manual: \"Turning the grind adjustment nut too far in the clockwise direction causes the ceramic burrs to grind together, which may result in a malfunction.\"",
-    "Manual \"Adjusting\": the grind adjustment nut must be attached in the correct orientation (warning icon, with the side with 6 dimples facing the burr side)."
+    "Turn the handle clockwise only.",
+    "Don't tighten the adjustment nut too far: the ceramic burrs can grind against each other.",
+    "Fit the adjustment nut the right way round: the side with eight dimples faces the burr."
    ],
    "startingPoint": {
     "status": "not-stated",
-    "quote": null,
+    "note": "Hario's manual gives coarseness steps, not clicks.",
     "url": "https://global.hario.com/product/MMCS-2B.pdf"
    },
    "chart": {
@@ -1904,7 +1966,7 @@
     {
      "key": "paper-filter",
      "group": "pourover",
-     "label": "Paper-filter pour-over",
+     "label": "Paper filter",
      "provenance": "maker",
      "source": "Hario MMCS-2B manual \"Choosing the Correct Coarseness\"",
      "url": "https://global.hario.com/product/MMCS-2B.pdf",
@@ -1917,7 +1979,7 @@
     {
      "key": "paperless-filter",
      "group": "pourover",
-     "label": "Metal-filter pour-over",
+     "label": "Paperless filter",
      "provenance": "maker",
      "source": "Hario MMCS-2B manual",
      "url": "https://global.hario.com/product/MMCS-2B.pdf",
@@ -1971,16 +2033,22 @@
    "stepless": false,
    "perTurn": 60,
    "sub": null,
-   "avoid": null,
+   "avoid": [
+    0,
+    15
+   ],
    "categories": null,
    "stepMicrons": 16,
+   "stepNote": "Each click moves the burrs about 16 µm (60 clicks per turn).",
+   "applies": "The K6.",
+   "rulerNote": null,
    "zeroNote": "Turn adjustment nut clockwise until it stops at number 0 for the final time; side indicators 1, 2, 3, 4 are fully visible. Do not tighten with force. Maximum adjustment travel not established.",
    "cautions": [
-    "Do not rotate the handle at 0 or below 15 clicks; this could damage the burr set."
+    "Don't turn the handle at 0 or below 15 clicks: it can damage the burrs."
    ],
    "startingPoint": {
     "status": "yes",
-    "quote": "For reference only; adjustments may be made according to personal preference.",
+    "note": "KINGrinder gives these for reference, to adjust to your taste.",
     "url": "https://uploads.strikinglycdn.com/files/ee29f87e-528d-40eb-9e1d-3ac54583a9dd/KINGrinder+K6-EN.pdf"
    },
    "chart": {
@@ -2078,14 +2146,17 @@
    ],
    "categories": null,
    "stepMicrons": null,
+   "stepNote": null,
+   "applies": "From Timemore’s Chestnut C family manual, linked from the C2 page.",
+   "rulerNote": null,
    "zeroNote": "Maker manual: rotate clockwise until dial stops; this is START POINT (zero); adjust counter-clockwise by clicks from START POINT. Do not grind at 0-6 clicks (maker caution).",
    "cautions": [
-    "Maker manual: do not grind at finest 0-6 clicks to protect burr sharpness.",
-    "Maker manual: cover the lid before adjusting coarseness."
+    "Don't grind at the finest 0 to 6 clicks: it dulls the burrs.",
+    "Put the lid on before adjusting."
    ],
    "startingPoint": {
     "status": "yes",
-    "quote": "The table above is for your reference only.",
+    "note": "Timemore gives its chart as a reference only.",
     "url": "https://www.timemore.cn/wp-content/uploads/2020/03/%E6%B3%B0%E6%91%A9%E6%A0%97%E5%AD%90C%E7%A3%A8%E8%B1%86%E6%9C%BA%E8%AF%B4%E6%98%8E%E4%B9%A6-%E4%B8%AD%E8%8B%B1%E6%96%87.pdf"
    },
    "chart": {
@@ -2103,6 +2174,8 @@
      "source": "Timemore Chestnut C manual (Chinese/English, 2020) p.5 Adjust table; table label 意式咖啡 / espresso 6-12 counted from START POINT",
      "url": "https://www.timemore.cn/wp-content/uploads/2020/03/%E6%B3%B0%E6%91%A9%E6%A0%97%E5%AD%90C%E7%A3%A8%E8%B1%86%E6%9C%BA%E8%AF%B4%E6%98%8E%E4%B9%A6-%E4%B8%AD%E8%8B%B1%E6%96%87.pdf",
      "checked": "2026-10-15",
+     "headline": "Start above 6, up to 12 clicks from zero",
+     "note": "Timemore’s chart starts this range at 6 clicks, but its manual says not to grind at 0 to 6. Start above 6.",
      "min": 6,
      "max": 12,
      "start": null
