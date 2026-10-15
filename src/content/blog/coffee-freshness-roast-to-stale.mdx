@@ -1,227 +1,114 @@
 ---
 title: "Coffee Freshness Timeline: When Beans Peak and When They Go Stale"
-description: "A day-by-day guide to coffee freshness after roasting. Learn peak windows by roast level, the three mechanisms of staling, and storage methods that work."
+description: "Whole beans usually taste best 7 to 21 days after roasting and are worth finishing by about day 30. Ground coffee runs on a much faster clock. Here's why, and what moves the windows."
 pubDate: "Mar 07 2026"
-updatedDate: "Dec 03 2025"
+updatedDate: "Oct 15 2026"
 heroImage: "../../assets/blog/coffee-freshness-roast-to-stale.jpg"
 category: "Science"
 ---
 
-import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
+import AnswerBox from '../../components/AnswerBox.astro';
 import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
-import FAQ from '../../components/FAQ.astro';
 import ToolCallout from '../../components/ToolCallout.astro';
 
-That bag of freshly roasted coffee you just bought? It's already changing. Every hour, CO2 is escaping, volatile aromatics are drifting off, and oils are slowly migrating toward the surface. Coffee is a living, evolving product from the moment it leaves the roaster — and the window between "too fresh" and "going stale" is narrower than most people think.
+<AnswerBox answer="Whole beans usually taste best about 7 to 21 days after roasting, stay good to about day 30 and fade over the following month. Very fresh beans need a few days' rest first, longer for espresso. These are typical windows, not a forecast for your bag. Ground coffee runs on a much faster clock: it releases much of its trapped gas within minutes of grinding, so grind just before you brew." />
 
-Here's the day-by-day reality of what happens to your beans, why [roast level](/blog/how-is-coffee-roasted/) changes the timeline, and what actually works to slow the clock.
+Roasted coffee starts changing the day it leaves the roaster. For a few days it's too gassy to brew evenly; then it opens up, peaks and slowly goes flat. Whole beans do this over weeks. Ground coffee does a lot of it in minutes.
 
-## The Three Mechanisms of Staling
+## The typical timeline for whole beans
 
-Before the timeline, you need to understand *what* staling is. It's not one thing. Coffee scientist Jonathan Gagne identifies three distinct mechanisms working simultaneously:
-
-**1. CO2 Loss.** Roasting traps enormous amounts of carbon dioxide inside the bean's cellular structure. This CO2 slowly escapes over days and weeks. While it's present, it physically interferes with extraction — but it also acts as a protective shield against oxygen. As CO2 leaves, oxygen moves in. It's a double-edged sword: you need some CO2 to leave before brewing, but once it's gone, the clock accelerates.
-
-**2. Aroma Volatilization.** Over 800 volatile aromatic compounds develop during roasting. They escape at different rates — the lightest, most delicate aromatics (floral, fruity) disappear first. Heavier compounds (chocolate, nutty) linger longer. This is why old coffee smells flat and one-dimensional: the complex top notes are simply gone.
-
-**3. Oil Oxidation and Sweating.** Coffee oils migrate to the bean's surface through capillary action over time, then go rancid through oxidation. This is why oily beans are not a sign of freshness — they're often a sign of staling. Fresh beans have a dry, matte surface. That glossy sheen means oils have already migrated out and begun breaking down.
-
-## Day-by-Day: The Freshness Timeline
+These are the stages our [Freshness tool](/tools/freshness/) uses, counted in days since the roast date on the bag, for beans brewed as filter coffee.
 
 <ProcessFlow
-  title="Coffee Freshness Timeline"
-  subtitle="What happens to your beans from roast day to stale"
+  title="Whole beans, roast to stale"
+  subtitle="Days since roasting, for filter coffee. Typical windows, not a forecast for your bag."
   steps={[
     {
-      label: "Days 1-3: Too Fresh",
-      sublabel: "Excess CO2 disrupts extraction",
-      description: "Coffee straight off the roaster is full of CO2 — so much that it creates channeling in espresso and aggressive, uneven blooms in pour-over. The cup tastes sharp, unbalanced, and hard to dial in.",
-      detail: "Many roasters won't sell beans until they've rested at least 48 hours."
+      label: "Probably still resting",
+      sublabel: "Days 0–3",
+      description: "Likely too fresh: trapped carbon dioxide can push water away from the grounds and make the coffee brew unevenly.",
+      detail: "For espresso, the Freshness tool keeps beans in this stage through day 6."
     },
     {
-      label: "Days 3-7: Opening Up",
-      sublabel: "Dark roasts often peak here",
-      description: "The initial CO2 rush subsides. Aromatics begin expressing themselves more clearly. Each day brings subtle shifts — more sweetness, more defined fruit notes.",
-      detail: "For medium and light roasts, the coffee is good and getting better, but hasn't fully arrived yet."
+      label: "Opening up",
+      sublabel: "Days 4–6",
+      description: "Ready to brew. Most coffees keep getting sweeter for a few more days."
     },
     {
-      label: "Days 7-14: Peak Window",
-      sublabel: "Sweet spot for most coffees",
-      description: "CO2 has dropped to levels that allow clean, even extraction. The full aromatic profile is present and expressive. Sweetness is at its maximum. Acidity is bright without being sharp.",
-      detail: "If you're evaluating a new coffee — dialing in your recipe — this is the window to do it."
+      label: "Likely at its best",
+      sublabel: "Days 7–21",
+      description: "Most coffees taste their best in this window. A good time to dial in a new coffee."
     },
     {
-      label: "Days 14-28: Plateau, Then Decline",
-      sublabel: "Still decent, trajectory downward",
-      description: "The coffee holds reasonably steady. Most people wouldn't notice a dramatic difference between day 14 and day 21 in a blind tasting. But top notes thin out. Body softens. The coffee becomes less interesting.",
-      detail: "Hoffmann's rule: buy within 2 weeks of roasting, use within 1 month."
+      label: "Probably still good",
+      sublabel: "Days 22–30",
+      description: "Typically past its best but still good. Finish it soon, or freeze what you won't use."
     },
     {
-      label: "Day 28+: Stale",
-      sublabel: "Decline becomes obvious",
-      description: "The protective CO2 is largely gone. Oxidation picks up speed. Oils on the surface go rancid. The cup tastes papery, woody, or just generically 'coffee-like' — none of the origin character remains.",
-      detail: "By 6-8 weeks, you're drinking a shadow of what the roaster produced. Safe, but stale."
+      label: "Likely fading",
+      sublabel: "Days 31–59",
+      description: "Aroma usually fades by now, and the cup turns flatter."
+    },
+    {
+      label: "Likely stale",
+      sublabel: "Day 60 onward",
+      description: "Probably flat, woody or papery by now, though still safe to drink."
     }
   ]}
-  footnote="Timeline assumes whole beans stored in an airtight container at room temperature."
+  footnote="Roast level, the bag and storage can move these windows by days to weeks. Your taste is the final check."
 />
 
-### Days 1-3: Too Fresh
+The day counts are the Freshness tool's typical windows, built on practical advice rather than on a measured curve. James Hoffmann's rules in *The World Atlas of Coffee* are to buy within two weeks of roasting and use the coffee within a month, because it's "at its most vibrant during the first few weeks". The boundaries after a month (fading from day 31, stale from day 60) are our own guide, not a rule from any study.
 
-This surprises people. Coffee straight off the roaster isn't at its best. It's full of CO2 — so much that it actively disrupts extraction. In espresso, all that gas creates channeling: the CO2 pushes water away from certain areas of the puck, creating uneven flow and sour, chaotic shots. In [pour-over](/blog/ultimate-pour-over-coffee-guide-and-best-v60-technique/), you'll see an aggressive bloom that looks impressive but actually signals that the water can't properly saturate the grounds.
+The resting days differ a little from Hoffmann's. For espresso at home he recommends at least three to four days between roasting and brewing; for filter coffee he says the rest matters less, though he finds coffee tastes better after two to three days than straight off the roaster. The Freshness tool rests filter beans through day 3 and espresso through day 6, a little longer than he suggests. If your beans taste fine sooner, brew them.
 
-The cup at this stage tastes sharp, unbalanced, and hard to dial in. Many roasters won't sell beans until they've rested at least 48 hours. Some won't ship for 3-4 days.
+Stale coffee isn't unsafe. Hoffmann notes that coffee is considered shelf stable and safe to drink two years after roasting, "but it will taste pretty terrible at that point." He describes stale coffee as tasting flat, woody and "vaguely of cardboard".
 
-### Days 3-7: Opening Up
+## What staling actually is
 
-The initial CO2 rush subsides. Aromatics begin developing and expressing themselves more clearly. Each day brings subtle shifts in flavor — you might taste more sweetness on day 5 than day 3, or notice fruit notes becoming more defined.
+In *The Physics of Filter Coffee*, Jonathan Gagné describes three things happening at once:
 
-This is the window where dark roasts often peak (more on that below). For medium and light roasts, the coffee is good and getting better, but hasn't fully arrived yet.
+- **Carbon dioxide leaves.** Roasting fills the beans with CO₂, and they slowly lose it. It doesn't affect the taste of filter coffee directly, but it interferes with extraction, which is why very fresh beans need a rest. In a bag with a one-way valve, it also pushes oxygen out and protects the beans.
+- **Aromas escape.** Aroma compounds leave at different rates, so a coffee's smell and taste shift as it ages before they fade overall. Moisture speeds this up.
+- **Oils come to the surface and oxidize.** Oils migrate outward over days to months, faster in darker roasts and decaf, and turn rancid once they meet oxygen. Fresh beans usually don't look oily, so a glossy bean is usually a sign of age, a dark roast, or both.
 
-### Days 7-14: Peak Window
+He lists the enemies of freshness as time, heat, moisture, oxygen and UV light. Our guide to [storing coffee beans](/blog/how-to-store-coffee-beans/) turns those into everyday decisions.
 
-For most coffees, this is the sweet spot. CO2 has dropped to levels that allow clean, even extraction. The full aromatic profile is present and expressive. Sweetness is at its maximum. Acidity is bright without being sharp.
+## Darker roasts move faster
 
-If you're evaluating a new coffee — deciding whether you like it, dialing in your recipe — this is the window to do it. You're tasting the coffee as the roaster intended.
+The sources agree on the direction. Samo Smrke and colleagues at the Zurich University of Applied Sciences measured whole beans degassing for weeks: the darker the roast, and the faster the roast for a given color, the more gas came out and the faster it came. Even their light roast, kept warm at 95°F&nbsp;(35°C), was still degassing a month after roasting. Gagné adds that darker roasts lose aromas faster because their pores are larger, and Hoffmann writes that "the darker the coffee has been roasted, the faster it will go stale."
 
-### Days 14-28: The Plateau, Then Decline
+None of them gives day counts by roast level, so the Freshness tool uses one set of windows for every roast, and we don't print separate ones. Going by the direction they agree on, a dark roast will likely open up and fade a little sooner, and a light roast that tastes sharp and thin in its first week may simply need more rest.
 
-From two to four weeks, the coffee holds reasonably steady. It's still good. Most people wouldn't notice a dramatic difference between day 14 and day 21 in a blind tasting. But the trajectory is downward. Top notes thin out. Body softens. The coffee becomes less interesting — pleasant, but flatter.
+## Ground coffee runs on a different clock
 
-James Hoffmann's practical advice: buy within 2 weeks of roasting, use within 1 month. That's a solid rule of thumb for anyone not obsessing over peak optimization.
+Grinding breaks open the pores that hold the gas. Smrke's team found that for freshly roasted coffee, up to 75% of the trapped gas was released during and immediately after grinding, within about 90 seconds. They cite earlier studies that measured 40% to 73% lost within the first few minutes. Gagné explains that aromas degas much like CO₂, and that a ground particle gives oils a far shorter path to the surface than a whole bean does.
 
-### Day 28+: Staling Accelerates
+You'll often read that ground coffee is stale 15 to 30 minutes after grinding. Treat that as a rule of thumb, not a measured threshold: the measurements above are of gas, and how soon the lost aroma becomes something you can taste depends on the coffee, the grind and how you brew. The safe habit is Hoffmann's: buy whole beans and grind them yourself, just before you brew. If you buy pre-ground coffee, the National Coffee Association's advice is to keep it in an airtight container and buy smaller batches.
 
-Past a month, decline becomes obvious. The protective CO2 is largely gone. Oxidation picks up speed. Oils on the surface go rancid. The cup tastes papery, woody, or just generically "coffee-like" — none of the origin character or roast nuance remains. By 6-8 weeks, you're drinking a shadow of what the roaster produced.
+## Sealed bags, opened bags
 
-This doesn't mean the coffee is unsafe. It just means it's stale.
+A good bag changes the picture. Many roasters use foil bags with a one-way valve that lets gas out without letting air in. Hoffmann notes that coffee goes stale more slowly in these, and most slowly of all in bags flushed with nitrogen, but once a bag is opened the staling speeds up.
 
-## Roast Level Changes Everything
+Gagné goes further. In a blind tasting, he couldn't tell a fresh bag from a three-month-old bag of the same coffee from the same roaster, as long as the old bag had never been opened. Every time a bag is opened, moisture and oxygen get back in, at a point when there's little gas left to push them out.
 
-The timeline above is a general guide. But roast level dramatically shifts the curve because of one factor: **cell structure porosity**.
+That's one taster's comparison, and the Freshness tool doesn't model it: it counts from the roast date whether the bag is sealed or opened, adds a note that opened bags go stale faster, and says the bag can move its windows by days to weeks.
 
-Darker roasts undergo more cellular breakdown. Second crack literally fractures the bean's internal architecture. This creates a more porous structure — think of it as the difference between a sponge and a rock. Gas escapes faster. Oils migrate faster. Everything accelerates.
+<ToolCallout tool="freshness" preset={{ storage: 'sealed-bag' }} cta="Open Freshness for a sealed bag" context="Opens the Freshness tool for a sealed bag of whole beans brewed as filter. It starts on a bag roasted ten days ago: enter the roast date from yours to see its stage and its usual best dates, or switch to espresso for the longer rest." />
 
-<ComparisonTable
-  title="Peak Freshness by Roast Level"
-  subtitle="Darker roasts peak faster but decline sooner — cell porosity from second crack accelerates everything"
-  rowLabel="Roast Level"
-  columns={["Peak Window", "Ready to Brew", "Noticeable Decline", "Why"]}
-  rows={[
-    { name: "Dark Roast", values: ["Days 4-7", "Day 3-4", "By day 14", "Porous cell structure — CO2 and oils escape fast"] },
-    { name: "Medium Roast", values: ["Days 7-10", "Day 5-6", "After day 21", "Moderate porosity — balanced degassing rate"] },
-    { name: "Light Roast", values: ["Days 10-14", "Day 8-10", "After day 28", "Dense, intact cells — slow CO2 release, longest shelf life"] }
-  ]}
-  footnote="Light roasts that taste sour on day 5 may just need more rest time, not a recipe change."
-/>
+## Slowing the clock
 
-### Dark Roasts: Peak at Days 4-7
+You can't stop staling, but you can slow it:
 
-Dark roasts degas quickly. They can be ready to brew in 3-4 days and often peak within the first week. By two weeks, they're already noticeably declining. Dark roasts also show surface oil earlier — another consequence of the broken-down cell structure allowing oils to reach the surface faster.
+- **Keep whole beans sealed, cool, dark and dry**, in the roaster's bag with the air pressed out or an airtight container. The [storage guide](/blog/how-to-store-coffee-beans/) compares bags and canisters.
+- **Freeze what you won't use within about two weeks.** Gagné writes that freezing, done properly, can keep coffee fresh for up to a year or more. Our [freezing guide](/blog/how-to-freeze-coffee-beans/) covers the method.
+- **Buy coffee with a roast date.** Hoffmann notes that supermarket coffee often carries a best-before date 12 to 24 months after roasting, which says nothing about when it was roasted. Look for the roast date on the bag.
 
-If you buy dark roasts, buy smaller quantities and use them fast.
+The bloom is a weaker clue. Fresher coffee usually bubbles more when the water hits it, but the size of the bloom also depends on the roast, so it isn't a reliable test of age on its own.
 
-### Medium Roasts: Peak at Days 7-10
+## Sources
 
-The middle ground. Medium roasts retain enough cell structure to hold CO2 longer, but they've undergone enough development that they don't need an extended rest. Seven to ten days is the typical sweet spot. They hold well through week three.
-
-### Light Roasts: Peak at Days 10-14
-
-Light roasts have the densest, most intact cell structure. CO2 escapes slowly. Many light roasts taste tight, slightly sour, and underdeveloped at one week — they need 10-14 days to fully open up. The upside: they also stale more slowly. A properly stored light roast can still taste excellent at 3-4 weeks.
-
-Specialty roasters who ship light roasts often include rest recommendations on the bag for exactly this reason. If you're brewing a light roast on day 5 and wondering why it tastes sour and sharp, it might not be your technique. It might just need more time.
-
-<ToolCallout tool="freshness" />
-
-## Whole Bean vs. Ground: The Surface Area Problem
-
-Everything above assumes whole beans. The moment you [grind coffee](/blog/coffee-grind-size-guide-what-grind-for-every-brew-method/), you explode the timeline.
-
-A whole bean has relatively little surface area exposed to air. Grinding shatters it into thousands of particles, increasing surface area by orders of magnitude. Every volatile compound, every oil molecule, is suddenly exposed to oxygen simultaneously. Ground coffee begins staling in minutes, not days. Within 15-30 minutes, measurable aroma loss has occurred. Within hours, the difference is obvious to anyone paying attention.
-
-This is the single strongest argument for grinding fresh. Not because it's trendy — because the chemistry is unforgiving.
-
-**The exception that proves the rule:** Scott Rao found that pre-grinding drip coffee 12 hours ahead of time can actually produce a *better* cup in certain situations. The theory: letting grounds rest reduces the turbulence of fresh-ground CO2 during extraction, producing more even flow and more uniform extraction. But this applies specifically to filter coffee with relatively fresh beans. It doesn't apply to espresso, and it doesn't mean pre-ground from the store shelf is fine. Context matters.
-
-## The Five Enemies of Freshness
-
-Gagne and other coffee scientists identify five factors that accelerate staling:
-
-**1. Time.** The unavoidable one. Every minute counts once roasting ends.
-
-**2. Oxygen.** The primary driver of chemical degradation. Oxidation breaks down aromatics and turns oils rancid.
-
-**3. Heat.** Increases the rate of every chemical reaction involved in staling. Room temperature is fine; next to the stove is not.
-
-**4. Moisture.** Coffee is hygroscopic — it absorbs moisture from the air. Absorbed [water](/blog/why-water-matters-more-than-your-coffee-beans/) accelerates oxidation and dilutes flavor compounds. It also encourages mold in extreme cases.
-
-**5. UV Light.** Breaks down organic compounds through photodegradation. That clear glass jar on the counter looks great but is actively destroying your coffee.
-
-## Storage: What Actually Works
-
-<ComparisonTable
-  title="Coffee Storage Methods Compared"
-  subtitle="Not all storage is equal — the fridge is actively harmful while the freezer is the best option available"
-  rowLabel="Method"
-  columns={["Verdict", "Duration", "Key Detail"]}
-  rows={[
-    { name: "Airtight Container (cool, dark)", values: ["Good", "Up to 1 month", "Squeeze air from valve bags. Vacuum canisters are a meaningful upgrade."], result: "Good" },
-    { name: "Refrigerator", values: ["Bad — Never", "N/A", "Absorbs odors, moisture condenses on beans, accelerates staling."], result: "Avoid" },
-    { name: "Freezer (vacuum sealed)", values: ["Best", "1 year+", "Oxidation drops ~15x. Single-dose portions, grind from frozen."], result: "Best" }
-  ]}
-  footnote="Freezer storage requires vacuum sealing and single-dose portioning. Never thaw and refreeze."
-/>
-
-### The Basics
-
-Store coffee in an <a href="https://www.amazon.com/s?k=coffee+storage+container+airtight&tag=jayarrcoffee-20" rel="sponsored noopener">airtight container</a>, in a cool and dark location, away from moisture. The original bag with a one-way valve works well — squeeze out excess air before sealing. Dedicated <a href="https://www.amazon.com/s?k=Fellow+Atmos+vacuum+canister+coffee&tag=jayarrcoffee-20" rel="sponsored noopener">vacuum canisters</a> like the Fellow Atmos or Airscape are a meaningful upgrade.
-
-Do not decant beans into a decorative open-top container. Do not store them near the stove, in direct sunlight, or in the fridge.
-
-### Why the Fridge Is Bad
-
-Every coffee authority agrees on this: never refrigerate coffee. The fridge is a hostile environment. It's damp, full of odors (onions, garlic, leftovers), and cycles between temperatures every time you open the door. Coffee absorbs those odors readily. Moisture condenses on cold beans when exposed to warmer air, accelerating oxidation. The fridge makes your coffee worse faster.
-
-### Why the Freezer Is Good (With Protocol)
-
-The freezer, done correctly, is the single most effective preservation tool available to home brewers. Both Rao and Gagne advocate for it strongly. For the full method, see our [single-dose coffee freezing guide](/blog/single-dose-coffee-freezing-guide/).
-
-The key word is "correctly." Here's the protocol:
-
-**Single-dose freezing:** Divide your beans into single-brew portions (typically 15-20g for [pour-over](/blog/ultimate-pour-over-coffee-guide-and-best-v60-technique/), 18g for espresso). <a href="https://www.amazon.com/s?k=vacuum+sealer+bags+coffee&tag=jayarrcoffee-20" rel="sponsored noopener">Vacuum seal</a> each portion individually. Place in the freezer.
-
-When ready to brew, pull one portion, grind immediately from frozen — do not thaw first. Cold beans fracture more uniformly during grinding, producing a more consistent particle size distribution. Christopher Hendon's research confirmed this: frozen beans yield measurably better grind uniformity than room-temperature beans.
-
-**How well does it work?** Oxidation drops approximately fifteen-fold when coffee is properly frozen and sealed. Rao has reported that a Kenya AA frozen for six years was "really good" when finally thawed and brewed. Six years. That's not a typo.
-
-The rules: vacuum seal to prevent moisture migration and freezer burn. Never thaw and refreeze — each freeze-thaw cycle introduces condensation. Grind from frozen. If you follow the protocol, frozen coffee can remain excellent for a year or longer with negligible degradation.
-
-## Myths Worth Killing
-
-**"Oily beans are fresh."** False. Oils on the surface mean they've migrated out of the bean's interior through capillary action — a process that takes time and accelerates with dark roasts. Oily beans are often *older* beans, or very dark roasts where the broken cell structure allows rapid oil migration. Fresh beans are dry.
-
-**"Best by" dates mean something.** They're nearly meaningless without a roast date. A "best by" date of six months from now tells you nothing about when the coffee was [roasted](/blog/how-is-coffee-roasted/). It could have been sitting in a warehouse for four months already. Always look for the roast date. If there's no roast date on the bag, that's a red flag.
-
-**"Coffee should never be frozen."** Outdated advice based on improper freezing technique (tossing an open bag in the freezer). Properly vacuum-sealed, [single-dose frozen coffee](/blog/single-dose-coffee-freezing-guide/) is the best long-term storage method available. The science is clear.
-
-**"Buy the freshest beans possible."** More nuanced than it sounds. If you're buying light roasts and brewing them the same day they were roasted, you'll get a worse cup than if you waited 10 days. "Fresh" doesn't mean "today." It means "within the optimal window for that roast level."
-
-## The Practical Takeaway
-
-Here's the simple version. Buy coffee with a roast date — not a "best by" date. Know your roast level and give it appropriate rest: 4-7 days for dark, 7-10 for medium, 10-14 for light. Store in an airtight container away from heat, light, and moisture. Use it within a month for whole beans.
-
-If you want to buy in bulk or stock up on a favorite, [single-dose vacuum seal and freeze](/blog/single-dose-coffee-freezing-guide/). It works. The research backs it up. A six-year-old frozen Kenya AA still tasted good.
-
-And grind fresh. Always. The 12-hour pre-grind trick is interesting science, but for daily coffee, grinding right before brewing is the simplest, most impactful thing you can do to preserve what the roaster worked so hard to create.
-
----
-
-<FAQ items={[
-  { question: "How long do coffee beans last after roasting?", answer: "Whole beans are at their best between 7-21 days after roasting, depending on roast level. They remain decent through 4 weeks with proper storage. After a month, staling becomes noticeable — flattened aromatics, reduced sweetness, papery or woody notes. Beans are safe to drink indefinitely, but flavor quality drops significantly after 6-8 weeks. For long-term storage, vacuum-sealed frozen beans can stay excellent for a year or more." },
-  { question: "When is coffee best after roasting?", answer: "It depends on roast level. Dark roasts peak at 4-7 days because their porous cell structure lets CO2 escape quickly. Medium roasts hit their stride at 7-10 days. Light roasts need the longest rest — 10-14 days — because their dense, intact cell structure releases CO2 slowly. Brewing any roast on days 1-3 produces chaotic, gassy cups because excess CO2 disrupts extraction." },
-  { question: "Can you freeze coffee beans without ruining them?", answer: "Yes — freezing is the single most effective preservation method when done correctly. Vacuum seal beans in single-brew portions (15-20g each) and freeze. Grind directly from frozen without thawing — cold beans fracture more uniformly, producing better grind consistency. Oxidation drops approximately fifteen-fold when properly sealed and frozen. Scott Rao reported that a Kenya AA frozen for six years still tasted 'really good.' The key rules: vacuum seal to prevent moisture and odor absorption, never thaw and refreeze, and grind from frozen." },
-  { question: "Why are my coffee beans oily — does that mean they're fresh?", answer: "No. Oily beans are often stale. Coffee oils migrate from the bean's interior to the surface through capillary action over time. Fresh beans have a dry, matte appearance. Surface oil means those oils have already escaped the cell structure and begun oxidizing. Dark roasts show oil sooner because their broken-down cell structure (from second crack) allows faster oil migration — but even on dark roasts, heavy surface oil usually indicates the beans have been sitting for a while." },
-  { question: "Should I store coffee in the fridge?", answer: "Never. Every major coffee authority agrees on this. The fridge is damp, full of odors from other foods, and cycles between temperatures every time you open the door. Coffee readily absorbs those odors and moisture, which accelerates staling. If you want cold storage, use the freezer with proper protocol — vacuum-sealed, single-dose portions, grind from frozen. The fridge is the worst of both worlds: cold enough to cause condensation problems but not cold enough to meaningfully slow oxidation." }
-]} />
-
-*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*
+- Jonathan Gagné, *The Physics of Filter Coffee* (2021), chapter 8, "Freshness," §§8.1–8.5, pp. 159–165
+- James Hoffmann, *The World Atlas of Coffee*, revised edition (Mitchell Beazley, 2018), "Buying and Storing Coffee," pp. 62–65 ("Golden rules for fresh coffee," "Freshness," "Staling," "'Resting' coffee" and "Packaging coffee")
+- National Coffee Association, "Storage and shelf life," *About Coffee* (aboutcoffee.org), checked October 15, 2026: [aboutcoffee.org](https://www.aboutcoffee.org/beans/storage-and-shelf-life/)
+- Samo Smrke, Marco Wellinger, Tomonori Suzuki, Franz Balsiger, Sebastian E. W. Opitz and Chahan Yeretzian, "Time-Resolved Gravimetric Method To Assess Degassing of Roasted Coffee," *Journal of Agricultural and Food Chemistry* 66, no. 21 (2018): 5293–5300, Introduction and Results ("Whole Roasted Coffee Beans"; "Roast and Ground Coffee"): [doi.org/10.1021/acs.jafc.7b03310](https://doi.org/10.1021/acs.jafc.7b03310)
