@@ -1,232 +1,180 @@
 ---
-title: "How to Dial In Espresso: Complete Troubleshooting Guide"
-description: "How to dial in espresso at home — taste-based troubleshooting, the beginner workflow, Rao on tamping and preinfusion, Hendon's research on fewer grams, and what crema actually tells you. Grounded in Rao, Hoffmann, and Hendon 2020."
+title: "How to Dial In Espresso: A Step-by-Step Workflow and Shot Log"
+description: "Dial in espresso one change at a time: fix the dose, stop the shot by weight, time it, taste it and log it. Start at 18 g in and 36 g out in 25 to 30 seconds, then let the taste pick the next change."
 pubDate: "Mar 13 2026"
-updatedDate: "Mar 13 2026"
+updatedDate: "Oct 15 2026"
 heroImage: "../../assets/blog/how-to-dial-in-espresso.jpg"
 category: "Brewing"
 ---
 
-import RecipeSchema from '../../components/RecipeSchema.astro';
-import ReferenceGuide from '../../components/infographics/ReferenceGuide.astro';
-import FAQ from '../../components/FAQ.astro';
 import AnswerBox from '../../components/AnswerBox.astro';
-import HowToSchema from '../../components/HowToSchema.astro';
+import RecipeSchema from '../../components/RecipeSchema.astro';
+import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
 import ToolCallout from '../../components/ToolCallout.astro';
-import DeepBrewCallout from '../../components/DeepBrewCallout.astro';
 
 <RecipeSchema
-  title="Espresso (Dialed-In Double Shot)"
-  description="A properly dialed-in double espresso using the systematic beginner workflow: fixed dose, 1:2 yield ratio, and taste-based grind adjustments."
+  title="Espresso starting shot for dialing in (18 g in, 36 g out)"
+  description="A 1:2 double espresso to dial in from: 18 g of coffee, stopped by weight at 36 g, timed from pressing the button and aiming for about 25 to 30 seconds."
   prepTime="PT2M"
   cookTime="PT30S"
-  totalTime="PT3M"
-  recipeYield="1 serving"
+  totalTime="PT2M30S"
+  recipeYield="1 double shot, 36 g of espresso by weight"
   recipeCategory="Beverage"
-  recipeCuisine="American"
   recipeIngredient={[
-    "18g finely ground coffee (espresso grind)",
-    "Water (machine-supplied, 90-96°C)"
+    "18 g coffee, ground fine for espresso",
+    "Hot water from the espresso machine"
   ]}
   recipeInstructions={[
-    "Weigh 18g of coffee into the portafilter basket using a 0.1g scale.",
-    "Use a WDT tool (thin needle) to rake through the grounds, breaking up clumps for even distribution.",
-    "Tamp level and firm (about 15-20 lbs pressure). Focus on levelness, not force.",
-    "Lock the portafilter, place cup on scale, and start the shot and timer simultaneously.",
-    "Stop the shot when the scale reads 36g out. Note the time — target is 25-30 seconds.",
-    "Taste and adjust: if sour/thin, grind finer. If bitter/harsh, grind coarser. Change one variable per shot."
+    "Grind and weigh 18 g of coffee into a clean, dry double basket.",
+    "Break up any clumps, level the grounds and tamp once, straight down, until the bed is firm and flat. Don't tap the side of the portafilter afterwards.",
+    "Lock in the portafilter, put the cup on the scale and tare it, then start the shot and the timer together.",
+    "Stop the shot when the scale reads 36 g, and note the time.",
+    "Taste the shot and name what you notice: sour, bitter, both at once, too strong, or balanced.",
+    "Write down the dose, yield, time and taste, then change one thing for the next shot."
   ]}
-  nutrition={{
-    calories: "5 calories",
-    servingSize: "1 double shot (2 oz)",
-    fatContent: "0 g",
-    carbohydrateContent: "0 g",
-    proteinContent: "0 g",
-    sodiumContent: "5 mg",
-  }}
 />
 
-<AnswerBox answer="Dial in espresso by fixing dose (18g), targeting a 1:2 yield ratio (36g out in 25–30 seconds), then adjusting grind size based on taste: sour means grind finer, bitter means grind coarser. Change one variable per shot. WDT before tamping prevents channeling. Tamping pressure barely matters — levelness is everything." />
+<AnswerBox answer="Fix the dose (18 g in a double basket), stop the shot by weight at twice the dose (36 g), and time it from pressing the button; about 25 to 30 seconds is the starting target. Taste it, write it down and change one thing: the grind first when the shot is sour and fast or bitter and slow, the yield when the time is right but the taste isn't. Repeat until a shot tastes good, then save that recipe and stop changing things." />
 
-<HowToSchema
-  name="How to Dial In Espresso"
-  description="A systematic beginner workflow for dialing in espresso at home using taste-based adjustments. Requires an espresso machine, a burr grinder, a 0.1g scale, and a WDT tool."
-  totalTime="PT15M"
+Dialing in means finding the grind, dose and yield that make the coffee in front of you taste good on your machine. Each new bag needs it, and the same bag can drift as it ages. The method is simple: hold everything steady, change one thing, taste, and write down what happened. If you're new to how espresso works, start with [what espresso actually is](/blog/what-espresso-actually-is/).
+
+## What you need
+
+- **A grinder that can grind fine enough for espresso,** in small steps. Rao advises putting the grinder ahead of the machine when you budget.
+- **A scale that reads to 0.1 g.** In Rao's experience, a dose that varies by just 1 g can change a shot's time by several seconds.
+- **A timer.** Most espresso scales have one.
+- **A tamper that fits the basket.** Rao recommends one 0.25 to 0.30 mm smaller than the basket's inside diameter, such as a 58.4 mm tamper in a 58.7 mm basket. A loose tamper lets water channel down the side, which he found can cost about half a percentage point of extraction.
+- **Somewhere to write.** A notebook or a notes app is enough.
+
+## The starting recipe
+
+Start at 18 g of coffee in and 36 g of espresso out, a 1:2 ratio, and expect the shot to take about 25 to 30 seconds, timed from the moment you start the pump. That's our Brew Guide's espresso default. It sits inside Scott Rao's ranges for a *normale* (14 to 22 g, a shot 1.5 to 2 times the dose, 25 to 40 seconds) and matches the example recipe in James Hoffmann's *World Atlas of Coffee*: 18 g to about 36 g in 27 to 29 seconds. Use the dose your basket is designed for; Rao suggests staying within about 10% of it.
+
+- **Coffee:** 18 g, ground fine, about the texture of powdered sugar. The Brew Guide's illustrative band is about 200 to 300&nbsp;µm, but a size only becomes a setting on a particular grinder, so start where your grinder's maker suggests for espresso.
+- **Water temperature, if your machine lets you set it:** the Brew Guide starts at 199°F&nbsp;(93°C) for a medium roast, 203°F&nbsp;(95°C) for a light roast and 196°F&nbsp;(91°C) for a dark one. All three sit inside Rao's range of 196–203°F&nbsp;(91–95°C) at the group head. If your machine doesn't let you set the temperature, that's fine; dial in with the grind.
+- **Makes:** one double shot, 36 g. We give it by weight only, because crema changes the volume: Rao found the same 30 g shot can fill almost twice the volume when the beans are very fresh.
+- **Time:** about 2 minutes to grind, dose and tamp, then 25 to 30 seconds for the shot; about 2½ minutes in all.
+
+<ProcessFlow
+  title="One dial-in shot"
+  subtitle="18 g in · 36 g out · timed from pressing the button · about 25 to 30 seconds"
   steps={[
-    { name: "Weigh 18g into the basket", text: "Use a scale accurate to 0.1g. Eyeballing dose is a meaningful source of shot variation. 18g in a standard double basket is the correct starting point." },
-    { name: "WDT to break clumps", text: "Use a thin needle tool (WDT tool or bent paper clip) to rake through the grounds in the portafilter, breaking up clumps that form during grinding. This distributes coffee evenly and prevents channeling." },
-    { name: "Tamp level and consistent", text: "Place the portafilter on a flat surface. Press the tamper straight down until resistance is firm — approximately 15–20 lbs. The critical variable is levelness, not force. Never twist on the way up." },
-    { name: "Pull shot targeting 36g out in 25–30 seconds", text: "Place the cup on the scale. Start the shot and timer simultaneously. When the scale reads 36g, stop the shot. Note the time." },
-    { name: "Taste and adjust one variable", text: "If the shot is sour or thin with fast time, grind finer. If bitter or harsh with slow time, grind coarser. If watery but on-time, reduce yield or increase dose. Change only one variable per shot." }
+    {
+      label: "Weigh",
+      sublabel: "Before the shot",
+      description: "Grind and weigh 18 g of coffee into a clean, dry double basket.",
+      detail: "Keep the dose the same on every shot while you dial in."
+    },
+    {
+      label: "Distribute and tamp",
+      sublabel: "Before the shot",
+      description: "Break up any clumps, level the grounds and tamp once, straight down, until the bed is firm and flat. Don't tap the side of the portafilter afterwards.",
+      detail: "A level bed matters more than a hard tamp."
+    },
+    {
+      label: "Start",
+      sublabel: "0:00",
+      description: "Lock in the portafilter, put the cup on the scale and tare it, then start the shot and the timer together.",
+      detail: "Rao and our tools time the shot from pressing the button, not from the first drip."
+    },
+    {
+      label: "Stop by weight",
+      sublabel: "About 0:25–0:30",
+      description: "Stop the shot when the scale reads 36 g, and note the time.",
+      detail: "Stop on the weight even if the time is off; the time is what you're reading."
+    },
+    {
+      label: "Taste",
+      sublabel: "Straight away",
+      description: "Taste the shot and name what you notice: sour, bitter, both at once, too strong, or balanced."
+    },
+    {
+      label: "Log and change one thing",
+      sublabel: "Before the next shot",
+      description: "Write down the dose, yield, time and taste, then change one thing for the next shot.",
+      detail: "Usually the grind first; the table below gives the change."
+    }
   ]}
+  footnote="Weigh the shot rather than judging it by eye: crema makes the volume vary."
 />
 
-Dialing in espresso means finding the specific combination of grind size, dose, yield, and time that produces the best shot your coffee can make. Every variable affects every other variable. New beans require a new dial-in. A humidity change in the room can shift your grind setting by a notch. You don't find the perfect shot once and lock it in forever — you understand the system well enough to read a shot, diagnose what's wrong, and make the right adjustment.
+<ToolCallout tool="brew" preset={{ method: 'espresso', dose: 18 }} cta="Open the Brew Guide at 18 g" context="Opens the Brew Guide's espresso recipe at 18 g: 36 g out, a 25- to 30-second shot and a starting temperature for your roast. When a shot tastes right, Save keeps that recipe on this device; it doesn't record each shot's taste, so keep the log below for that." />
 
-This guide covers the beginner workflow, the science behind each parameter, what your shot is telling you, and the counterintuitive research that challenges some standard advice.
+## Keep a shot log
 
-## The Five Parameters
+Rao recommends that cafés keep a running record of the dose, the shot weight, the time and tasting notes (plus refractometer readings, if they have one), because a trend shows what a single shot can't. He also advises against changing the grind because of a single odd shot when the dose might have been different; change it when several shots trend the same way.
 
-Espresso extraction is controlled by five variables. Four you adjust routinely. One is mostly fixed by your machine.
+A log only needs six columns. Here's what one might look like for a new bag; the numbers are illustrative.
 
-**1. Pressure: 8-9 bars**
-This is largely determined by your machine. Standard espresso targets 9 bars at the puck, which is the established optimum for the combination of dissolved solids, emulsified oils, and CO2 retention that defines espresso. Modern machines are often set to 9 bars from the factory; some allow pressure profiling (variable pressure over the shot). For home brewers on standard machines: pressure is not what you're adjusting day to day.
+| Shot | In | Out | Time | Taste | Next change |
+|---|---|---|---|---|---|
+| 1 | 18.0&nbsp;g | 36&nbsp;g | 21&nbsp;s | Sour, thin | Grind one step finer |
+| 2 | 18.0&nbsp;g | 36&nbsp;g | 24&nbsp;s | Less sour, still sharp | Grind one step finer |
+| 3 | 18.0&nbsp;g | 36&nbsp;g | 27&nbsp;s | Sweeter, a little sour | Pull to 45&nbsp;g |
+| 4 | 18.0&nbsp;g | 45&nbsp;g | 31&nbsp;s | Balanced | Keep and save |
 
-**2. Temperature: 185-204°F / 85-96°C**
-Higher temperatures extract more efficiently — specifically, they unlock compounds that dissolve poorly at lower temperatures. The practical home range is 90-95°C for most coffees. Light roasts benefit from higher temperatures (92-96°C) because their denser structure resists extraction; dark roasts are often pulled at the lower end (88-92°C) because they extract freely and can over-extract at higher temperatures. See [the full brewing temperature guide](/blog/whats-the-ideal-coffee-brewing-temperature/) for the extraction chemistry behind these numbers.
+A longer yield takes longer to pour, so shot 4's 31 seconds isn't a slow shot: the 25- to 30-second target belongs to the 36 g recipe.
 
-**3. Time: 20-35 seconds**
-The shot clock starts when water reaches the puck, not when you press the button. A standard single espresso should complete in 20-35 seconds; most specialty coffee targets 25-30 seconds for a 1:2 ratio. Time is a diagnostic output more than an input — you don't set time directly, you adjust other variables and observe what the time becomes.
+## Read the shot, then change one thing
 
-**4. Dose: 6.5-21g**
-Dose is the weight of dry ground coffee in the portafilter basket. The range is wide because baskets come in different sizes — single (6.5-9g), double (14-21g), and various "ridgeless" modern baskets that allow different dose ranges. For most home setups with a standard double basket, 18g is a common starting point. Measure this with a <a href="https://www.amazon.com/s?k=espresso+scale+0.1g+accuracy&tag=jayarrcoffee-20" rel="sponsored noopener">0.1g resolution scale</a> — volume is not reliable for coffee because grind density varies.
+On this recipe, the times below are common signs, not rules: the same time can taste right with one coffee and wrong with another. Read the time together with the taste, and change one thing per shot. Hoffmann's advice is to try the grind first, because if the grind is wrong, nothing else will fix the shot.
 
-**5. Yield (Output): 1:2 ratio by weight as default**
-Yield is the weight of liquid espresso in the cup. The standard starting ratio is 1:2 — for every gram of coffee in, target two grams of coffee out. An 18g dose targets 36g yield. This ratio defines what "espresso" is in contemporary specialty coffee; it is not the only ratio, but it is the correct starting point for dialing in.
+| What you taste | Shot time | One change to try |
+|---|---|---|
+| Sour, thin | Under 25&nbsp;s | Grind one small step finer |
+| Sour | 25–&#8288;30&nbsp;s | Pull a longer shot: 45&nbsp;g instead of 36&nbsp;g (1:2.5) |
+| Bitter, harsh, drying | Over 30&nbsp;s | Grind one small step coarser |
+| Bitter | 25–&#8288;30&nbsp;s | Pull a shorter shot: 27&nbsp;g instead of 36&nbsp;g (1:1.5) |
+| Bitter, but the shot ran fast | Under 25&nbsp;s | Grind finer first; a fast shot is usually under-extracted, so the bitterness may come from the roast or from channeling |
+| Sour and bitter at once | Any | Keep the recipe and fix the puck: break up clumps, level the grounds, tamp straight |
+| Too strong, otherwise balanced | 25–&#8288;30&nbsp;s | Pull a longer ratio, 1:2.5 |
+| Balanced and sweet | 25–&#8288;30&nbsp;s | Keep it, and save the recipe |
 
-## The Beginner Workflow
+The yields in the table are calculated from 18 g: 18 × 2.5 = 45 g and 18 × 1.5 = 27 g. If two steps finer still leave the shot running fast, add 0.5 g to the dose as a separate change; if it's still slow after you go coarser, take 0.5 g off.
 
-This sequence solves most dialing-in problems for home baristas who are new to espresso. It doesn't require experience — it requires a scale and the willingness to taste and adjust.
+Change the temperature last, and only if your machine lets you. For a light roast that stays sour once the time and the longer yield are right, try a couple of degrees hotter; for a dark roast that stays bitter on a shorter shot, a couple of degrees cooler.
 
-**Step 1: Weigh 18g into the basket.** Use a scale accurate to 0.1g. Eyeballing dose is a meaningful source of shot variation. Consistency here is foundational.
+<ToolCallout tool="doctor" preset={{ method: 'espresso' }} cta="Open Fix My Coffee for espresso" context="Fix My Coffee asks what you tasted and how long the shot ran, from pressing the button, using the same 25- to 30-second target as this recipe. It then gives one change to try and what to keep the same, along with the next step if that doesn't fix it." />
 
-**Step 2: Use a WDT tool before tamping.** WDT (Weiss Distribution Technique) uses a thin wire or needle to rake through the grounds in the basket, breaking up clumps that form during grinding. Clumps create uneven density in the puck, which creates channels where water flows preferentially — the primary cause of uneven extraction. A <a href="https://www.amazon.com/s?k=espresso+WDT+distribution+tool&tag=jayarrcoffee-20" rel="sponsored noopener">WDT tool</a> costs $10-20 and dramatically improves extraction consistency on most setups.
+## Why the grind comes first
 
-**Step 3: Tamp level and consistent.** Place the portafilter on a flat surface. Lower the tamper until it meets the grounds and press straight down until resistance is firm. Target approximately 15-20 lbs of pressure — but the critical variable is levelness, not force. A tilted tamp creates a wedge-shaped puck that channels water toward the thin side. If you're not confident in your leveling, a <a href="https://www.amazon.com/s?k=self+leveling+espresso+tamper&tag=jayarrcoffee-20" rel="sponsored noopener">self-leveling tamper</a> ($30-80) removes the human variable entirely.
+You've fixed the dose on the scale, so when the shot runs too fast or too slow, the grind is the thing that's off. Rao advises adjusting in small steps, rarely more than one notch at a time. On a grinder with a chute between the burrs and the basket, he suggests using or discarding the first 5 g or so before judging a new setting, since old grounds sit in the chute.
 
-**Step 4: Target 36g out in 25-30 seconds.** Place the cup on the scale before pulling. Start the shot and start the timer simultaneously. When the scale reads 36g, stop the shot. Note the time.
+Taste can mislead, though. Rao points out that extraction changes taste unevenly: one step finer can taste slightly worse before the next step tastes clearly better. That's one reason to keep the log and look for a trend, and why he recommends a refractometer to anyone who wants to measure extraction rather than guess it.
 
-**Step 5: Taste and adjust.** This is the irreplaceable step. Drink a small amount of the shot — even if it doesn't seem ready — and use what you taste to diagnose the next adjustment.
+## Puck prep, briefly
 
-## Tasting Your Way to the Right Shot
+- **Break up clumps.** Rao found that grinders that dose straight into the portafilter tend to leave clumps, and clumps make the bed unevenly dense. A WDT tool, a few fine needles stirred through the grounds, is one way to break them up; see our [WDT guide](/blog/best-wdt-tool-espresso-distribution/).
+- **Tamp once, level.** Rao tamps with 20 to 30 lb (9 to 14 kg) and sees no need for a twist or a second tamp. Cameron and colleagues tried a range of tamping pressures and saw no appreciable change in shot time or extraction. Level matters more than force; our [tamping guide](/blog/tamping-pressure-doesnt-matter-myth/) explains why.
+- **Don't tap the portafilter.** Rao and Hoffmann both warn that a tap on the side can break the seal between the coffee and the basket wall and leave a path for the water around the edge.
+- **Watch the flow.** Coffee that spurts, or that runs or turns pale faster from one part of the basket (easiest to see with a bottomless portafilter), is a sign of [channeling](/blog/fix-channeling-uneven-extraction/).
 
-The flavor tells you exactly what to do next. There are three basic states:
+## Preinfusion, if your machine has it
 
-**Sour / thin / sharp / astringent with fast time (under 20 seconds)**
-Grind finer. Sourness in espresso almost always indicates under-extraction — not enough dissolved material in the cup. Fine-grinding increases surface area and slows water flow through the puck, allowing more extraction in the same time frame.
+Some machines wet the puck at low pressure for a few seconds before full pressure. Rao's view is that preinfusion won't necessarily improve your best shot, but it makes great shots much more frequent: it reduces channeling, limits fines migration and lets you grind finer. With preinfusion you'll usually need a finer grind for the same flow, and Rao expects shots with a progressive preinfusion to run toward the middle of his 25- to 40-second range. So on a machine that preinfuses, a shot a little over 30 seconds may still be on target; let the taste decide. Our [pressure profiling guide](/blog/pressure-profiling-espresso-guide/) covers it in more detail.
 
-**Bitter / harsh / dry with slow time (over 35 seconds)**
-Grind coarser. Bitterness and excessive dryness (astringency in a different register than sour astringency) indicate over-extraction — too much dissolved material, including the bitter compounds that extract last. Coarser grinding speeds flow and reduces extraction.
+## Fresh beans and crema
 
-**Watery / flat / thin but on-time**
-Adjust dose or yield, not grind. If time is correct but flavor is thin, try increasing dose (19-20g) or reducing yield (target 30-32g instead of 36g) to concentrate what's there.
+Very fresh beans release a lot of carbon dioxide during the shot. Rao explains that the gas pushes back against the water, so you end up grinding coarser and extracting less; it's one reason baristas rest beans for several days before using them for espresso. Our [bean-resting guide](/blog/bean-resting-for-espresso-freshness-trap/) goes into it.
 
-**Balanced / sweet / complex**
-You're in range. Fine-tune grind by single increments to optimize.
+Crema is not a reliable guide to a good shot. Hoffmann notes it tells you roughly how fresh the coffee is and how strong the shot is, and nothing about whether it tastes good.
 
-**One variable at a time.** Changing grind and dose simultaneously makes diagnosis impossible — you don't know which change produced the result. Change one variable, pull one shot, taste, decide the next step.
+## When it won't dial in
 
-## What Rao Says About Tamping
+- **The grinder can't go fine enough.** If the finest setting still gushes, the grinder isn't built for espresso. Pre-ground coffee is ground for an average brewer and stales quickly, so it rarely dials in well.
+- **Dull burrs.** Rao found that dull burrs make more fines and more large pieces at once, which slows the shot and lowers extraction.
+- **The dose wanders.** Weigh every dose while you dial in.
+- **The machine isn't fully warm.** Follow your machine's manual for heat-up time before the first shot.
 
-Scott Rao's tamping research is the most important single reframe for home baristas who overthink this step.
+## If you have a refractometer
 
-The pump exerts roughly **533 lbs of force** on the coffee puck. A barista applying 30-50 lbs of hand pressure is contributing less than 10% of the total compression force the grounds will experience. That asymmetry means additional tamping pressure — beyond the minimum needed to eliminate void spaces and create a flat, level surface — is effectively irrelevant to extraction.
+A refractometer turns taste guesses into a number. Rao finds most espresso shots taste best at about 19 to 20% extraction with typical grinders, though large, sharp burrs can go higher and a bright, fruit-forward shot may sit lower. There's also a different approach to espresso entirely, with less coffee, a much coarser grind and a fast shot; see [turbo shots](/blog/turbo-shots-fast-espresso-science/).
 
-Once you've eliminated air gaps with firm, level contact, additional force changes nothing. The pump will compress the puck far beyond anything your wrist can provide.
+<ToolCallout tool="extraction" preset={{ mode: 'measured', kind: 'espresso' }} cta="Open the Extraction Map for espresso" context="Opens the Extraction Map's measured mode for espresso, on a labelled example shot until you enter your own dose, shot weight and TDS reading. It calculates the extraction yield and shows where the shot sits against a reference of 18 to 22% extraction." />
 
-**What Rao recommends:**
-- Tamp lightly but firmly until resistance is felt and void spaces are closed
-- Never twist the tamper on the way up — no "polish." Twisting can disrupt the top layer of grounds without providing any benefit
-- Never do a "second tamp" after the first — it doesn't add additional compression; it just wastes time and can introduce tilt
-- Level surface is the goal. That's all tamping needs to accomplish.
+## Sources
 
-## The Tap Rule: Do Not Tap the Portafilter
-
-Many home baristas tap the side of the portafilter between tamps, following what they've seen in cafes or videos. Rao is explicit: **do not do this**.
-
-Tapping the portafilter side fractures the seal between the grounds and the basket wall. This creates a gap at the perimeter that water exploits, flowing around the outside of the puck rather than through it. Once this gap exists, it cannot be fixed by additional tamping. The result is [channeling](/blog/fix-channeling-uneven-extraction/) — water racing through the path of least resistance and under-extracting the bulk of the puck. Use WDT to level the grounds before tamping; tap nothing after.
-
-## Preinfusion: The Most Underrated Variable
-
-Preinfusion means running low-pressure water (typically 3.5-4.5 bar) through the puck for a few seconds before ramping to full extraction pressure (9 bar).
-
-Rao describes preinfusion precisely: "will not necessarily make the best shot better, but will result in a much higher frequency of great shots." This is the correct framing for home baristas. Preinfusion doesn't magically improve every cup — it reduces the variance of outcomes by doing two things:
-
-**1. Decreases channeling:** Low-pressure water gradually wets the puck and creates more uniform density before the full pressure surge hits. An uneven puck subjected to immediate 9-bar pressure channels before the grounds can redistribute. A pre-wetted puck channels less because pressure is applied to already-saturated, more-uniform grounds.
-
-**2. Reduces fines migration:** Fine coffee particles ("fines") migrate toward the filter basket under pressure and can clog it, restricting flow and causing pressure backup. Low-pressure preinfusion allows the puck to expand and seal more gradually, reducing the pressure differential that drives fines migration.
-
-Target: 3.5-4.5 bar for 3-10 seconds before ramping to full pressure. Many machines include preinfusion settings; if yours doesn't, some baristas simulate it by briefly activating the pump at partial throttle.
-
-## Hendon's Research: The Case for Fewer Grams
-
-In 2020, physicist Christopher Hendon published a paper in *Matter* that challenged standard espresso practice. His finding: fine-grinding espresso creates inhomogeneous channels in the puck, leading to poor shot-to-shot reproducibility. His recommendation was counterintuitive — **use fewer grams of coffee, a slightly coarser grind, and pull shorter shots**.
-
-Specifically, Hendon found that reducing from ~20g to ~15g dose while grinding coarser could maintain or improve shot quality while reducing waste by approximately 25%. The coarser grind reduces the fines content that causes channeling; the smaller dose creates a puck with more uniform density.
-
-This conflicts with specialty coffee's prevailing norm of high-dose, fine-grind espresso. The debate is ongoing. Hendon's findings have been replicated by some baristas and disputed by others. What's not disputed is his fundamental observation: that fine-grinding creates inherent inconsistency that's worth considering.
-
-**Practical takeaway:** If you're pulling consistent, beautiful shots with an 18g dose and fine grind, keep doing what works. If you're struggling with channeling and inconsistency on every grind-level approach you try, experimenting with a lighter dose and coarser grind is legitimate and supported by published research.
-
-## What Crema Actually Tells You
-
-Crema is the tan-to-rust-colored foam on an espresso shot. It's an emulsion of CO2 bubbles stabilized by surfactant coffee oils, formed when pressure forces CO2 into solution under the puck and it precipitates out as the shot exits the basket at atmospheric pressure.
-
-Hoffmann's crema assessment is unambiguous: crema on its own **tastes bitter and ashy**. If you taste it separately from the espresso (spoon it off and taste), it's noticeably less pleasant than the shot beneath it. Crema's contribution to the whole shot is as an emulsion that carries aromatic compounds, not as a flavor component you should optimize for independently.
-
-**What crema reliably tells you:**
-- **Rich, persistent crema:** Fresh beans (high CO2 content) and appropriate extraction pressure
-- **Thin or absent crema:** Stale beans (CO2 has off-gassed over weeks) or incorrect machine pressure
-- **Very pale crema:** Possible under-extraction or very light roast
-- **Dark, tiger-striped crema:** Often associated with well-developed extraction
-
-**What crema does not reliably tell you:**
-- Shot quality. You can have beautiful crema on a poorly extracted shot. You can have modest crema on a perfectly extracted shot. Taste is the only reliable quality indicator.
-
-The "good crema = good espresso" heuristic leads baristas astray because it optimizes for the wrong output. Optimize for what's in the cup.
-
-## Common Mistakes and Their Fixes
-
-**Channeling (espresso spurting unevenly from the spout)**
-Uneven puck density is the culprit. Fix: WDT before tamping, level tamp, confirm basket is clean and dry before dosing, consider preinfusion. Do not tap the portafilter. See our full [channeling guide](/blog/fix-channeling-uneven-extraction/) for detailed diagnosis and fixes.
-
-**No crema / flat shot**
-Almost always stale beans. Specialty coffee should be used within 3-4 weeks of roast date for espresso. Beans that have lost most of their CO2 will produce little crema and fast, under-extracted shots. Buy fresher beans before changing anything else. See [coffee freshness guide](/blog/coffee-freshness-roast-to-stale/).
-
-**Shot time varies wildly between pulls**
-Inconsistent dose (weigh every shot), inconsistent grind (check hopper for clumping beans), or inconsistent tamping (use a leveling tamper). If mechanical variables are consistent, check bean freshness — beans near end of shelf life can behave erratically.
-
-**Bitter every time regardless of grind**
-Temperature may be too high, or extraction is genuinely over-running. Try lowering machine temperature by 1-2°C or reducing yield (target 30g out instead of 36g). Also check whether your machine is properly thermostabilized before pulling — machines that haven't reached operating temperature produce inconsistent shots.
-
-**Under-extracted regardless of how fine you grind**
-If you've exhausted your grinder's fine range and the shot is still running fast and tasting sour, either your grinder lacks the range for espresso (not all grinders go fine enough — see [electric grinder guide](/blog/top-5-best-electric-coffee-grinders/)) or the beans are very old and extracting inconsistently. A capable burr grinder is non-negotiable for espresso — blade grinders and entry-level burr grinders without sufficient range produce shots that cannot be dialed in regardless of other adjustments.
-
-For machine selection at different price points, the [espresso machines under $500 guide](/blog/best-espresso-machines-under-500-2026-7-picks-for-every-budget/) and [espresso battle royale](/blog/espresso-battle-royale-reviews-of-gaggia-breville-bambino-and-phillips-3200/) cover the complete home espresso hardware landscape. Grinder investment matters at least as much as the machine — the [electric grinder guide](/blog/top-5-best-electric-coffee-grinders/) covers which ones can actually handle espresso grinding.
-
-<ToolCallout tool="fix-my-coffee" context="If your shot tastes off and you can't figure out why, use our Fix My Coffee diagnostic — it identifies whether you're dealing with extraction, concentration, or channeling." />
-
-<ReferenceGuide
-  title="Espresso Troubleshooting Reference"
-  subtitle="Taste → diagnosis → fix. Change one variable at a time and re-pull."
-  items={[
-    { label: "Sour / Thin / Sharp", description: "Under-extraction. Shot runs fast (<20s). Often metallic or astringent.", value: "Grind finer" },
-    { label: "Bitter / Harsh / Dry", description: "Over-extraction. Shot runs slow (>35s). Ashy, drying finish.", value: "Grind coarser" },
-    { label: "Watery / Flat (On-Time)", description: "Low concentration — time is fine, flavor is thin. Not a grind problem.", value: "Reduce yield or ↑ dose" },
-    { label: "Sour AND Bitter", description: "Channeling — uneven puck density. Water finds path of least resistance.", value: "WDT + level tamp" },
-    { label: "No Crema / Flat Shot", description: "Almost always stale beans. CO2 has degassed over weeks.", value: "Replace beans (<4 wks)" },
-    { label: "Pressure", description: "Machine-set. Standard espresso optimum.", value: "8–9 bar" },
-    { label: "Temperature", description: "Higher for light roasts, lower for dark roasts.", value: "90–96°C" },
-    { label: "Dose", description: "Standard double basket starting point.", value: "18g" },
-    { label: "Yield", description: "1:2 ratio — grams in × 2 = grams out.", value: "36g out" },
-    { label: "Time", description: "Diagnostic output, not an input. Adjust grind to change time.", value: "25–30 seconds" },
-    { label: "Preinfusion", description: "Reduces channeling and fines migration. Use if your machine supports it.", value: "3–10s at ~4 bar" }
-  ]}
-  footnote="Troubleshooting: taste the shot, find the matching symptom, apply the fix, pull again. Parameters: starting defaults for a standard double basket."
-/>
-
-<DeepBrewCallout tool="extraction" context="Explore the extraction curve for espresso — see how dose, yield, and grind size shift you between sour and bitter, and get chemistry-backed fixes for your shot." />
-
----
-
-<FAQ items={[
-  { question: "Where do I start when dialing in espresso for the first time?", answer: "Start with 18g dose, target 36g out in 25-30 seconds. Taste the shot. If it's sour or thin and ran fast, grind finer. If it's bitter or harsh and ran slow, grind coarser. Change only one variable per shot and taste every adjustment. Most dial-ins resolve within 5-10 shots. The systematic approach — fixed dose and yield, adjust grind only until time and taste are right — is faster than intuitive adjustments." },
-  { question: "Why does my espresso taste bitter even when I grind coarser?", answer: "Several possible causes beyond grind: water temperature too high (try dropping 1-2°C), yield too high (reduce from 36g to 30-32g output), or beans are so fresh that excessive CO2 is causing irregular extraction. Also check machine thermostabilization — a machine that hasn't fully reached operating temperature produces inconsistent shot temperatures that can over-extract at higher-than-expected temperature. If you've exhausted grind range and temperature adjustments, examine dose and yield." },
-  { question: "Does tamping pressure actually matter?", answer: "Beyond the minimum needed to eliminate void spaces and create a flat, level surface, no. The pump exerts approximately 533 lbs of force on the puck — far more than any hand tamp (typically 15-50 lbs). Rao's research shows that once voids are closed, additional pressure is negligible. What matters is level tamping. A tilted tamp creates a wedge-shaped puck that water routes through the thin side. Use a leveling tamper if consistency is an issue." },
-  { question: "What does preinfusion do and do I need it?", answer: "Preinfusion means running low-pressure water (3.5-4.5 bar) through the puck for 3-10 seconds before ramping to full 9-bar extraction pressure. Rao: it won't necessarily make the best shot better, but it produces a much higher frequency of great shots by reducing channeling and fines migration. If your machine supports it, use it — the consistency benefit is real. If it doesn't, it's not a blocker to good espresso, just a variable you can't control." },
-  { question: "What is channeling and how do I prevent it?", answer: "Channeling occurs when water finds a low-resistance path through the puck and flows through it preferentially, under-extracting the surrounding grounds. The result is simultaneously sour (under-extracted bulk) and bitter (over-extracted channel). Prevention: use WDT to break up clumps before tamping, tamp level, and never tap the portafilter side (which breaks the wall seal and creates an unfixable perimeter channel per Rao). Preinfusion also reduces channeling by wetting the puck gradually before full pressure hits." },
-  { question: "Is crema a reliable sign of good espresso?", answer: "No. Crema indicates bean freshness (lots of CO2) and correct machine pressure — but not extraction quality or flavor. Hoffmann notes that crema on its own tastes bitter and ashy; its value is as an aromatic carrier in the context of the full shot. You can have beautiful crema on a poorly extracted shot, and modest crema on an excellent one. Taste is the only reliable quality indicator. Don't optimize for crema — optimize for what's in the cup." },
-  { question: "How often do I need to re-dial in?", answer: "Every time you open a new bag of beans — different origin, processing, roast level, and density all shift the extraction parameters. Seasonal humidity changes can shift your grind setting by a notch or two. Beans near the end of their shelf life (3-4 weeks post-roast for espresso) often need adjustments as CO2 decreases and extraction speed changes. A consistent setup with fresh beans from the same roaster may need only minor adjustments between bags, but plan to pull 3-5 diagnostic shots whenever something changes." }
-]} />
-
-*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*
+- Scott Rao, *Espresso Extraction: Measurement and Mastery* (2013), chapter 1 ("What Is an Ideal Extraction?" and "But What about Taste?"), chapter 6 ("Tamper Fit"), chapter 8 ("Roast Age"), chapter 9 ("Grinding"), chapter 10 ("Doser Versus Doserless") and chapter 13 ("The Benefits of Using a Coffee Refractometer")
+- Scott Rao, *The Professional Barista's Handbook* (2008), p. 10 ("Adjusting the Grind"), pp. 16–18 ("Tamping," "To Tap or Not to Tap?," "How to Tamp") and pp. 27–30 ("Preinfusion")
+- James Hoffmann, *The World Atlas of Coffee*, revised edition (Mitchell Beazley, 2018), pp. 96–99 ("Crema," "The basic technique," "Pressure and resistance" and "Tamping")
+- Michael I. Cameron and nine co-authors, including Christopher H. Hendon and Jamie M. Foster, "Systematically Improving Espresso: Insights from Mathematical Modeling and Experiment," *Matter* 2 (2020): 631–648, "Brewing Espresso": [doi.org/10.1016/j.matt.2019.12.019](https://doi.org/10.1016/j.matt.2019.12.019)
