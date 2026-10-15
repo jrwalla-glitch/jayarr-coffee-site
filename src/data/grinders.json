@@ -612,7 +612,7 @@
    "categories": null,
    "stepMicrons": null,
    "stepNote": null,
-   "applies": "DF64 Gen 2 (Turin). Settings from a documented secondary source; its dial numbers aren’t tied to burr contact.",
+   "applies": "DF64 Gen 2 (Turin).",
    "rulerNote": null,
    "zeroNote": "Turin maker page gives no zero value. Espresso Outlet (retailer) guide says dial indicators are not set at true zero and to go fine until burrs touch to find zero; this is retailer guidance, not maker.",
    "cautions": [
@@ -748,7 +748,7 @@
    "categories": null,
    "stepMicrons": null,
    "stepNote": null,
-   "applies": "Mignon Specialità. Settings from a documented secondary source.",
+   "applies": null,
    "rulerNote": null,
    "zeroNote": "No zero convention in Eureka manual. Eureka page describes lower-burr repositioning and maintenance without losing setting.",
    "cautions": [
@@ -1056,7 +1056,7 @@
    "categories": null,
    "stepMicrons": null,
    "stepNote": null,
-   "applies": "The Niche Zero.",
+   "applies": null,
    "rulerNote": null,
    "zeroNote": "Manual calibration: screw bean funnel finger tight, align white dot on bezel with the calibrate mark, then unscrew funnel to chosen setting. Calibrated position = burrs touching; not a brew setting.",
    "cautions": [
@@ -1350,7 +1350,7 @@
    "categories": null,
    "stepMicrons": 8.8,
    "stepNote": "Each click moves the burrs about 8.8 µm (90 clicks per turn).",
-   "applies": "The J-Max.",
+   "applies": null,
    "rulerNote": "1Zpresso’s manual gives about 4.5 turns of travel (405 clicks), but its chart runs to 420. The ruler is drawn for illustration, not as the grinder’s limit.",
    "zeroNote": "Exact maker wording (manual, Adjusting the grind setting step 1): turn the adjustment dial ring counter-clockwise all the way to the starting point \"where the resistance starts and the crank handle can't spin freely\". Calibration tutorial (J-Max / J-Ultra): starting point should align with #0 on scale mark. Start may vary within +/-10 clicks.",
    "cautions": [],
@@ -1572,7 +1572,7 @@
    "categories": null,
    "stepMicrons": 20,
    "stepNote": "Each click (a tenth of a number) moves the burrs about 20 µm.",
-   "applies": "The K-Ultra.",
+   "applies": null,
    "rulerNote": null,
    "zeroNote": "Exact maker wording (K-Ultra manual, Adjustment Dial Calibration): \"The zero point is defined as the position where the handle begins to spin with resistance, not the absolute tightest position.\" Instructions: find the zero point by turning the dial counter-clockwise until resistance; if the pointer is right of #0 loosen knurled nut, if left tighten it. Offset may be 2+ clicks.",
    "cautions": [],
@@ -1940,7 +1940,7 @@
    ],
    "stepMicrons": null,
    "stepNote": null,
-   "applies": "The Skerton Pro (MMCS-2B).",
+   "applies": "The Skerton Pro, model MMCS-2B.",
    "rulerNote": null,
    "zeroNote": "No zero convention printed. Manual says to hold the center of the handle firmly and turn the grind adjustment nut: Rotate clockwise for finer grounds, counterclockwise for coarser grounds.",
    "cautions": [
@@ -2040,7 +2040,7 @@
    "categories": null,
    "stepMicrons": 16,
    "stepNote": "Each click moves the burrs about 16 µm (60 clicks per turn).",
-   "applies": "The K6.",
+   "applies": null,
    "rulerNote": null,
    "zeroNote": "Turn adjustment nut clockwise until it stops at number 0 for the final time; side indicators 1, 2, 3, 4 are fully visible. Do not tighten with force. Maximum adjustment travel not established.",
    "cautions": [
@@ -2175,7 +2175,7 @@
      "url": "https://www.timemore.cn/wp-content/uploads/2020/03/%E6%B3%B0%E6%91%A9%E6%A0%97%E5%AD%90C%E7%A3%A8%E8%B1%86%E6%9C%BA%E8%AF%B4%E6%98%8E%E4%B9%A6-%E4%B8%AD%E8%8B%B1%E6%96%87.pdf",
      "checked": "2026-10-15",
      "headline": "Start above 6, up to 12 clicks from zero",
-     "note": "Timemore’s chart starts this range at 6 clicks, but its manual says not to grind at 0 to 6. Start above 6.",
+     "note": "Timemore’s chart prints 6 to 12 clicks, but its own manual says not to grind at 0 to 6.",
      "min": 6,
      "max": 12,
      "start": null
