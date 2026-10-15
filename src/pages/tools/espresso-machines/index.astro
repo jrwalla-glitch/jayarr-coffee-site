@@ -1,127 +1,79 @@
 ---
+import '@fontsource/instrument-serif/400.css';
+import '@fontsource/instrument-serif/400-italic.css';
+import '@fontsource/ibm-plex-sans/400.css';
+import '@fontsource/ibm-plex-sans/500.css';
+import '@fontsource/ibm-plex-sans/600.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
 import BaseHead from '../../../components/BaseHead.astro';
 import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
-import EspressoMachines from '../../../components/tools/EspressoMachines.svelte';
+import MachineChooser from '../../../components/coffee/MachineChooser.svelte';
+import machineData from '../../../data/machines.json';
+
+const title = 'Espresso Machine Chooser: The Right Machine for Your Counter, Budget and Milk';
+const description = 'Tell us how you take your coffee, your budget with a grinder included and the space you have, and see two or three machines that fit, with the makers’ own specs and how each one brews and steams.';
+const count = machineData.machines.length;
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead
-			title="Espresso Machine Guide — JayArr Coffee"
-			description="Browse 24 espresso machines — semi-auto, super-auto, and Nespresso. Compare specs, prices, and find the right machine for your setup."
-		/>
+		<BaseHead title={title} description={description} />
 		<script type="application/ld+json" set:html={JSON.stringify({
-			"@context": "https://schema.org",
-			"@type": "WebApplication",
-			"name": "Espresso Machine Guide",
-			"url": "https://jayarr.coffee/tools/espresso-machines/",
-			"description": "Browse 24 espresso machines — semi-auto, super-auto, and Nespresso. Compare specs, prices, and find the right machine for your setup.",
-			"applicationCategory": "UtilityApplication",
-			"operatingSystem": "Any",
-			"offers": {
-				"@type": "Offer",
-				"price": "0",
-				"priceCurrency": "USD"
-			},
-			"publisher": {
-				"@type": "Organization",
-				"name": "JayArr Coffee",
-				"url": "https://jayarr.coffee"
-			}
+			'@context': 'https://schema.org', '@type': 'WebApplication', name: 'Espresso Machine Chooser', url: 'https://jayarr.coffee/tools/espresso-machines/', description,
+			applicationCategory: 'UtilityApplication', operatingSystem: 'Any', offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, publisher: { '@type': 'Organization', name: 'JayArr Coffee', url: 'https://jayarr.coffee' },
 		})}></script>
-		<script type="application/ld+json" set:html={JSON.stringify({
-			"@context": "https://schema.org",
-			"@type": "HowTo",
-			"name": "How to Choose the Right Espresso Machine",
-			"description": "Browse 24 espresso machines across semi-auto, super-auto, and Nespresso categories. Compare specs, boiler types, and features to find the right machine for your setup and budget.",
-			"totalTime": "PT5M",
-			"step": [
-						{
-									"@type": "HowToStep",
-									"position": 1,
-									"name": "Choose your category",
-									"text": "Decide between semi-automatic (you control the shot), super-automatic (bean-to-cup at a button press), or Nespresso (capsule-based). Semi-auto offers the best quality ceiling; super-auto offers the best convenience."
-						},
-						{
-									"@type": "HowToStep",
-									"position": 2,
-									"name": "Set your budget",
-									"text": "Entry-level semi-autos start around $300. The quality sweet spot is $700-1,200 for the machine plus $300-600 for a capable grinder. Prosumer dual-boiler machines range $1,600-6,000."
-						},
-						{
-									"@type": "HowToStep",
-									"position": 3,
-									"name": "Compare key specs",
-									"text": "Focus on boiler type (thermoblock, single, heat exchanger, or dual boiler), portafilter size (54mm or 58mm), PID temperature control, and pump type (vibratory, rotary, or gear pump)."
-						},
-						{
-									"@type": "HowToStep",
-									"position": 4,
-									"name": "Budget for a grinder",
-									"text": "Allocate at least 40% of your total budget to the grinder. A precision burr grinder is the single most impactful upgrade for espresso quality \u2014 more important than the machine itself."
-						}
-			]
-})}></script>
 	</head>
-	<body class="bg-cream">
+	<body class="cf-page">
 		<Header />
+		<main>
+			<section class="cf-intro">
+				<a href="/tools/" class="cf-back">← Tools</a>
+				<p class="cf-kicker">Tools · Espresso Machine Chooser</p>
+				<h1>The espresso machine that <em>fits your morning</em></h1>
+				<p class="cf-lede">Say how you drink your coffee, how much work you want and what you can spend with a grinder included. You get two or three machines that fit, drawn to scale on your counter, each with the maker's own specs and a plain account of its trade-offs. Own one already? It shows what the maker says about dose and care.</p>
+			</section>
+			<section class="cf-tool" aria-label="Espresso Machine Chooser"><MachineChooser client:load /></section>
 
-		<!-- Hero -->
-		<section class="bg-charcoal pt-32 pb-12 md:pb-16">
-			<div class="max-w-3xl mx-auto px-6 text-center">
-				<a href="/tools/" class="text-xs uppercase tracking-widest text-cream/40 hover:text-copper transition-colors">
-					&larr; All Tools
-				</a>
-				<h1 class="font-serif text-3xl md:text-5xl font-bold text-cream mt-3 mb-3">Espresso Machine Guide</h1>
-				<p class="text-cream/60 max-w-lg mx-auto leading-relaxed text-sm">
-					Flip through 24 machines across every category — from your first semi-auto to prosumer dual-boilers to one-touch super-autos.
-				</p>
-			</div>
-		</section>
+			<article class="cf-body">
+				<h2>Budget for the grinder too</h2>
+				<p>A semi-automatic machine or a manual lever needs a grinder that can grind fine and evenly enough for espresso, and that grinder is part of the price of good shots. So the chooser counts it. Machines with a built-in grinder, super-automatics and capsule machines don't need one, so their band is the machine alone. The grinder range comes from makers' own US prices for espresso-capable grinders seen on October 15, 2026; prices move, so check them before you buy.</p>
 
-		<!-- Explorer -->
-		<section class="py-12 md:py-16">
-			<div class="max-w-5xl mx-auto px-6">
-				<EspressoMachines client:load />
-			</div>
-		</section>
+				<h2>How the heating system shapes your routine</h2>
+				<p>The heating system decides whether you can brew and steam at the same time. A thermoblock and a single boiler do one, then the other: the machine has to change temperature in between, quickly on some designs and slowly on others. A heat exchanger keeps a boiler hot enough for steam and runs the brew water through its own circuit, so both can happen together. A dual boiler gives each job its own boiler. If you make one drink at a time, any of them works; if you make several milk drinks back to back, the ones that steam while they brew save the most waiting. The animation above steps through each system; your own manual has the timings for your machine.</p>
 
-		<section class="py-16 px-6">
-			<div class="prose mx-auto">
-				<h2>What Actually Matters in an Espresso Machine</h2>
-				<p>Choosing an espresso machine is fundamentally a question about which compromises you’re willing to make. Every machine at every price point is balancing the same set of engineering constraints: temperature stability, pressure control, steam capacity, build quality, and user complexity.</p>
-				<p>The boiler system is the most important differentiator. A thermoblock heats water on demand through a small metal channel — it’s fast, compact, and affordable, but temperature fluctuates during a shot. A single boiler heats one reservoir for both brewing and steaming, meaning you brew first, wait for the boiler to reheat to steam temperature, then froth your milk. It works, but it’s slow. A heat exchanger runs a small tube through a large steam boiler, using the steam boiler’s heat to bring brew water to temperature. This allows simultaneous brewing and steaming but offers less precise brew temperature control. A dual boiler maintains separate reservoirs at different temperatures for brewing and steaming — the gold standard for temperature stability and workflow speed, but the most expensive and complex.</p>
-				<p>Pressure profiling has become the frontier of espresso engineering. Traditional machines deliver a flat 9 bars throughout the shot. Pressure profiling machines allow you to control pressure across three phases: a low-pressure preinfusion that lets the grounds swell and form even resistance (reducing channeling), a full-pressure extraction phase, and a declining-pressure tail that improves clarity. Scott Rao’s three-phase pressure model — validated extensively in commercial settings — uses 10-12 seconds of preinfusion, 6-9 seconds at peak pressure, then a 15-18 second linear decline. The results are consistently higher extraction yields and more forgiving puck preparation.</p>
-				<p>The grinder matters more than the machine at every price point. A $450 Gaggia Classic Pro paired with a $400 precision grinder will consistently outperform a $1,500 machine using a $50 blade grinder. The price-to-quality sweet spot for a complete home espresso setup sits between $1,000 and $1,500 total. Diminishing returns hit hard above $3,000 — the leap from $1,500 to $5,000 buys convenience, build quality, and workflow speed, but not dramatically better espresso in the cup.</p>
-				<p>Portafilter size determines your ecosystem of accessories. The industry standard is 58mm, which offers the widest selection of precision baskets, calibrated tampers, and WDT tools. Breville’s newer machines use 54mm, which is adequate but more limited in aftermarket options. Avoid 51mm portafilters if possible — the shallow baskets at this diameter make dose consistency difficult and channeling more likely because thinner coffee beds provide less resistance to water flow.</p>
-				<p>Temperature stability through PID control should be considered non-negotiable for anyone serious about espresso consistency. A PID (Proportional-Integral-Derivative) controller maintains brew water within a degree or two of your target temperature. Without one, temperature can swing 5-10 degrees between shots, making it impossible to isolate grind adjustments from temperature fluctuations. The Gaggia Classic is the most popular candidate for aftermarket PID installation — kits run about $50 and the improvement is transformative. Pump type also matters: vibratory pumps (affordable, louder, pulsed pressure) have a 5-7 year lifespan, while rotary pumps are quieter and deliver more consistent pressure but add significantly to cost.</p>
-			</div>
-		</section>
+				<h2>Milk: wand, automatic or none</h2>
+				<p>A manual steam wand gives you the most control over milk texture, with practice. A frothing wand (a panarello) is easier but less precise. An automatic wand or milk system textures the milk for you. If you don't take milk, a capsule or a black-coffee super-automatic is simpler, and you don't pay for a milk system you won't use.</p>
 
-		<!-- Related articles -->
-		<section class="bg-charcoal py-12">
-			<div class="max-w-3xl mx-auto px-6 text-center">
-				<span class="text-xs uppercase tracking-widest text-copper font-medium">Learn More</span>
-				<h2 class="font-serif text-xl md:text-2xl font-bold text-cream mt-2 mb-6">Related Articles</h2>
-				<div class="flex flex-wrap justify-center gap-4">
-					<a href="/blog/best-espresso-machines-under-500-2026-7-picks-for-every-budget/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						Under $500 Guide
-					</a>
-					<a href="/blog/best-espresso-machines-under-200/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						Under $200 Guide
-					</a>
-					<a href="/blog/espresso-battle-royale-reviews-of-gaggia-breville-bambino-and-phillips-3200/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						Espresso Battle Royale
-					</a>
-					<a href="/blog/how-to-dial-in-espresso/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						Dialing In Espresso
-					</a>
-				</div>
-			</div>
-		</section>
+				<h2>About the data</h2>
+				<p>{count} machines, from the makers' own product pages and manuals, checked October 15, 2026. The chooser only suggests machines that are current, have a dated price and have a known milk system; the rest are in "Every machine", with what's missing. Sizes are as each maker publishes them. Breville lists the Bambino as wider than it is deep, which looks swapped, so the chooser tests the narrower side against your counter and says so. Where the research couldn't establish a value, the chooser says "not established" instead of guessing.</p>
+				<p>Amazon links go to the exact model, checked the same day. As an Amazon Associate we earn from qualifying purchases; it doesn't change which machines the chooser suggests.</p>
 
+				<h2>Sources</h2>
+				<ul class="cf-sources">
+					<li>Each maker's US product page and manual, linked from the machine's card and its "dose and care" view, checked October 15, 2026.</li>
+					<li>How each heating system brews and steams: the makers' manuals and technical pages (Breville BES870 and BES920, Rancilio Silvia, ECM), summarised as schematics without universal timings.</li>
+				</ul>
+			</article>
+		</main>
 		<Footer />
 	</body>
 </html>
+
+<style is:global>.cf-page { background: #f3ede3; }</style>
+<style>
+	main { color: #2a1d15; }
+	.cf-intro { max-width: 1180px; margin: 0 auto; padding: 120px 24px 22px; }
+	.cf-back { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; text-decoration: none; }
+	.cf-kicker { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: #8f5d22; margin: 26px 0 0; }
+	h1 { font: 400 clamp(40px, 6vw, 68px)/.98 'Instrument Serif', Georgia, serif; letter-spacing: -.01em; margin: 10px 0 12px; }
+	h1 em { font-style: italic; color: #7a4e30; }
+	.cf-lede { font: 400 17px/1.5 'IBM Plex Sans', system-ui, sans-serif; color: #5b4a3d; max-width: 64ch; margin: 0; }
+	.cf-tool { max-width: 1180px; margin: 0 auto; padding: 8px 24px 40px; }
+	.cf-body { max-width: 760px; margin: 0 auto; padding: 24px 24px 72px; font: 400 17px/1.7 'IBM Plex Sans', system-ui, sans-serif; }
+	.cf-body h2 { font: 400 34px/1.1 'Instrument Serif', Georgia, serif; margin: 44px 0 12px; }
+	.cf-sources { font-size: 14.5px; color: #5b4a3d; }
+	@media (max-width: 640px) { .cf-intro { padding: 96px 16px 18px; } .cf-tool { padding: 4px 12px 32px; } .cf-body { padding: 16px 16px 56px; } }
+</style>

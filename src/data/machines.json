@@ -6,6 +6,7 @@
    "id": "breville-bambino-bes450",
    "brand": "Breville",
    "name": "Bambino",
+   "fullName": "Bambino",
    "models": [
     "BES450"
    ],
@@ -237,6 +238,14 @@
     }
    ],
    "axisFlag": true,
+   "owner": {
+    "dose": "Breville gives 18 g as the ideal dose for the 54 mm portafilter.",
+    "recipe": "The extraction guide gives 8–11 g for 1 Cup or 16–19 g for 2 Cup.",
+    "baskets": "Single-wall and dual-wall baskets are included for both 1 cup and 2 cup shots.",
+    "temperature": "PID controls brew temperature. Low-pressure pre-infusion is followed by extraction at 9 bar.",
+    "descale": "Cleaning and descaling are one combined cycle. Breville gives no fixed interval; the 2 Cup button flashes continuously when it is due.",
+    "clean": "Rinse the group head with the 2 Cup fresh-water flush. Cleaning and descaling share a combined cycle."
+   },
    "dimsPublished": {
     "w": 11.9,
     "d": 6.1,
@@ -248,6 +257,7 @@
    "id": "breville-bambino-plus-bes500",
    "brand": "Breville",
    "name": "Bambino Plus",
+   "fullName": "Bambino Plus",
    "models": [
     "BES500"
    ],
@@ -479,6 +489,14 @@
     }
    ],
    "axisFlag": true,
+   "owner": {
+    "dose": "Breville gives an 18 g dose for the 54 mm portafilter.",
+    "recipe": "The extraction guide gives 8–11 g for 1 Cup or 16–19 g for 2 Cup.",
+    "baskets": "Single-wall and dual-wall baskets are included for both 1 cup and 2 cup shots.",
+    "temperature": "PID controls brew temperature. Low-pressure pre-infusion is adjustable.",
+    "descale": "Breville gives no fixed descaling interval; the 1 CUP+STEAM and 2 CUP buttons flash alternately for 15 seconds when it is due. Descaling uses descaling agent followed by a rinse cycle.",
+    "clean": "The flushing cycle is due after 200 extractions since the last cleaning; 1 CUP and 2 CUP flash alternately. Put the cleaning disc in the basket with one cleaning tablet on top."
+   },
    "dimsPublished": {
     "w": 11.9,
     "d": 7.4,
@@ -490,6 +508,7 @@
    "id": "breville-barista-express-bes870",
    "brand": "Breville",
    "name": "Barista Express",
+   "fullName": "Barista Express",
    "models": [
     "BES870"
    ],
@@ -751,6 +770,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": null,
+    "recipe": "The extraction guide gives 8–11 g for 1 CUP or 16–19 g for 2 CUP, with a 25–30 second shot.",
+    "baskets": "Single-wall and dual-wall baskets are included for both 1 cup and 2 cup shots.",
+    "temperature": "PID lets you adjust the default brew temperature by ±4°F in 2°F increments. Low-pressure pre-infusion time is adjustable.",
+    "descale": "Breville gives no fixed interval; a solid CLEAN / DESCALE light signals descaling. Use Breville descaling solution for the coffee, steam, and hot-water components.",
+    "clean": "A flashing CLEAN / DESCALE light signals the backflush cycle, which is separate from descaling. Put the cleaning disc and one cleaning tablet in the 1 CUP basket; the cycle takes about 5 minutes."
+   },
    "dimsPublished": {
     "w": 15.9,
     "d": 13.1,
@@ -762,6 +789,7 @@
    "id": "breville-barista-express-impress-bes876",
    "brand": "Breville",
    "name": "Barista Express Impress",
+   "fullName": "Barista Express Impress",
    "models": [
     "BES876"
    ],
@@ -1024,6 +1052,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": null,
+    "recipe": "The extraction guide gives 8–11 g for 1 CUP or 16–19 g for 2 CUP, with a 25–30 second shot.",
+    "baskets": "Single-wall and dual-wall baskets are included for both 1 cup and 2 cup shots.",
+    "temperature": "PID lets you adjust the default temperature by ±4°F (2°C) in 2°F (1°C) increments. Hold 1 CUP or 2 CUP for the pre-infusion time you want.",
+    "descale": "Descaling uses descaling sachets or powder for the coffee, steam, and hot-water components. Breville gives no fixed interval.",
+    "clean": "A flashing CLEAN / DESCALE light signals the backflush cycle, which is separate from descaling. Put the cleaning disc and one cleaning tablet in the 1 CUP basket; the cycle takes about 5 minutes."
+   },
    "dimsPublished": {
     "w": 16.6,
     "d": 14.4,
@@ -1035,6 +1071,7 @@
    "id": "breville-barista-pro-bes878",
    "brand": "Breville",
    "name": "Barista Pro",
+   "fullName": "Barista Pro",
    "models": [
     "BES878BSS1BUS1"
    ],
@@ -1383,6 +1420,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": null,
+    "recipe": "The dose guidance is 16–19 g for the 2-cup basket.",
+    "baskets": "Single-wall and dual-wall baskets are included for both 1 cup and 2 cup shots.",
+    "temperature": "PID controls brew temperature; adjust it through MENU > SHOT TEMP with HOTTER or COOLER. Low-pressure pre-infusion duration is programmable, followed by extraction at 9 bar.",
+    "descale": "Select DESCALE in MENU and use descaling powder.",
+    "clean": "The FLUSH cleaning cycle uses a cleaning disc and cleaning tablet. It is separate from descaling."
+   },
    "dimsPublished": {
     "w": 16.1,
     "d": 13.8,
@@ -1395,6 +1440,7 @@
    "id": "breville-barista-touch-bes880",
    "brand": "Breville",
    "name": "Barista Touch",
+   "fullName": "Barista Touch",
    "models": [
     "BES880BSS1BUS1"
    ],
@@ -1733,6 +1779,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": null,
+    "recipe": "The 2-cup basket guidance is 16–19 g; Breville separately gives an ideal dose of 18 g. Shot volumes are programmable.",
+    "baskets": "The 54 mm single-wall and dual-wall baskets come in 1 cup and 2 cup sizes.",
+    "temperature": "PID controls brew temperature, with low-pressure pre-infusion followed by extraction at 9 bar. The 104–167°F temperature range is for milk.",
+    "descale": "Open Settings > Descale cycle and follow the on-screen steps.",
+    "clean": "The screen prompts you to run the backflush cleaning cycle. It is separate from descaling."
+   },
    "dimsPublished": {
     "w": 15.7,
     "d": 12.6,
@@ -1744,7 +1798,8 @@
   {
    "id": "breville-oracle-bes980",
    "brand": "Breville",
-   "name": "Oracle (original BES980)",
+   "name": "Oracle",
+   "fullName": "Oracle (original BES980)",
    "models": [
     "BES980XL"
    ],
@@ -2082,6 +2137,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": "The machine automatically grinds, doses, and tamps 22 g into the 58 mm portafilter.",
+    "recipe": "Breville gives a 22 g dose separately from the 25–30 second balanced-shot guide. Defaults are 25 seconds for 1 CUP, 30 seconds for 2 CUP, and 200°F (93°C) for brewing.",
+    "baskets": "Single-wall baskets are included for 1 cup and 2 cup shots.",
+    "temperature": "PID brew temperature defaults to 200°F (93°C); low-pressure pre-infusion is programmable before extraction at 9 bar. Milk temperature defaults to 150°F (65°C), with a 104–167°F range.",
+    "descale": "Use the dESc procedure in the advanced menu, with the descale access point.",
+    "clean": "The cleaning cycle cleans the shower screen and backflushes the group head."
+   },
    "dimsPublished": {
     "w": 18,
     "d": 16,
@@ -2094,6 +2157,7 @@
    "id": "breville-dual-boiler-bes920",
    "brand": "Breville",
    "name": "Dual Boiler",
+   "fullName": "Dual Boiler",
    "models": [
     "BES920XL"
    ],
@@ -2431,6 +2495,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": "Breville gives 22 g as the ideal dose for the 58 mm portafilter.",
+    "recipe": "Breville gives a 22 g dose separately from the 25–30 second balanced-shot guide. Defaults are 25 seconds for 1 CUP, 30 seconds for 2 CUP, and 200°F (93°C) for brewing.",
+    "baskets": "Single-wall and dual-wall baskets are included for both 1 cup and 2 cup shots.",
+    "temperature": "PID brew temperature defaults to 200°F (93°C), adjusts from 190–205°F (86–96°C), and has a recommended range of 194–203°F (90–95°C). Steam defaults to 275°F (135°C); low-pressure pre-infusion duration is programmable before extraction at 9 bar.",
+    "descale": "Select DESCALE (dESc) from the menu and use the descale access point.",
+    "clean": "The cleaning cycle cleans the shower screen and backflushes the group head."
+   },
    "dimsPublished": {
     "w": 37.9,
     "d": 40.3,
@@ -2443,6 +2515,7 @@
    "id": "delonghi-dinamica-ecam35025",
    "brand": "De'Longhi",
    "name": "Dinamica Automatic Coffee & Espresso Machine with Iced Coffee + Adjustable Milk Frother",
+   "fullName": "Dinamica Automatic Coffee & Espresso Machine with Iced Coffee + Adjustable Milk Frother",
    "models": [
     "ECAM35025SB"
    ],
@@ -2590,6 +2663,7 @@
     }
    ],
    "axisFlag": false,
+   "owner": null,
    "dimsPublished": {
     "w": 9.45,
     "d": 17.32,
@@ -2600,7 +2674,8 @@
   {
    "id": "delonghi-stilosa-ec260",
    "brand": "De'Longhi",
-   "name": "Stilosa Espresso Machine",
+   "name": "Stilosa",
+   "fullName": "Stilosa Espresso Machine",
    "models": [
     "EC260BK"
    ],
@@ -2732,12 +2807,21 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": "Filters are included for single and double espresso.",
+    "temperature": null,
+    "descale": "Descale about every 200 coffees with De'Longhi descaler.",
+    "clean": null
+   },
    "dimsPublished": null
   },
   {
    "id": "delonghi-eletta-explore-ecam45086",
    "brand": "De'Longhi",
-   "name": "Eletta Explore Fully Automatic Espresso Machine",
+   "name": "Eletta Explore Fully Automatic",
+   "fullName": "Eletta Explore Fully Automatic Espresso Machine",
    "models": [
     "ECAM45086S EX:4"
    ],
@@ -2871,12 +2955,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": null,
    "dimsPublished": null
   },
   {
    "id": "delonghi-magnifica-s-ecam22110",
    "brand": "De'Longhi",
    "name": "MAGNIFICA XS",
+   "fullName": "MAGNIFICA XS",
    "models": [
     "ECAM22110B"
    ],
@@ -3020,6 +3106,7 @@
     }
    ],
    "axisFlag": false,
+   "owner": null,
    "dimsPublished": {
     "w": 238,
     "d": 430,
@@ -3031,6 +3118,7 @@
    "id": "delonghi-dedica-ec685m",
    "brand": "De'Longhi",
    "name": "Dedica DeLuxe",
+   "fullName": "Dedica DeLuxe",
    "models": [
     "EC685M"
    ],
@@ -3109,12 +3197,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": null,
    "dimsPublished": null
   },
   {
    "id": "delonghi-dedica-duo-ec890",
    "brand": "De'Longhi",
-   "name": "Dedica Duo Espresso Machine",
+   "name": "Dedica Duo",
+   "fullName": "Dedica Duo Espresso Machine",
    "models": [
     "EC890M",
     "EC890WI",
@@ -3276,6 +3366,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": null,
+    "temperature": null,
+    "descale": "Descale when the B5 indicator lights. The cycle takes about 30 minutes.",
+    "clean": null
+   },
    "dimsPublished": {
     "w": 5.8,
     "d": 12.9,
@@ -3287,6 +3385,7 @@
    "id": "philips-3200-latte-go-ep3241",
    "brand": "Philips",
    "name": "Series 3200 Fully automatic espresso machines",
+   "fullName": "Series 3200 Fully automatic espresso machines",
    "models": [
     "EP3241/54"
    ],
@@ -3429,6 +3528,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": null,
+    "temperature": null,
+    "descale": "The machine provides guided descaling and supports AquaClean filters.",
+    "clean": null
+   },
    "dimsPublished": {
     "w": 246,
     "h": 371,
@@ -3439,7 +3546,8 @@
   {
    "id": "gaggia-classic-pro-2019",
    "brand": "Gaggia",
-   "name": "Classic Pro (2019 generation, requested)",
+   "name": "Classic Pro",
+   "fullName": "Classic Pro (2019 generation, requested)",
    "models": [
     "Classic Pro (Amazon title RI9380/47 Classic Pro)"
    ],
@@ -3519,12 +3627,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": null,
    "dimsPublished": null
   },
   {
    "id": "gaggia-classic-e24",
    "brand": "Gaggia",
-   "name": "Classic E24 (extra row; importer-named Classic Pro E24)",
+   "name": "Classic E24",
+   "fullName": "Classic E24 (extra row; importer-named Classic Pro E24)",
    "models": [
     "Classic E24 (US/Canada manual code 6420-010-43466)",
     "RI9380/46 (Amazon title E24 brushed steel)"
@@ -3651,12 +3761,21 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": "The Crema perfetta filter serves 1 or 2 cups. Traditional filters are included for 1 cup and 2 cups.",
+    "temperature": null,
+    "descale": "Descale every 2 months using only Gaggia descaling product. Never use vinegar or other descaling agents.",
+    "clean": "Clean the brew group monthly with Gaggia Coffee Oil Remover tablets and the blind filter."
+   },
    "dimsPublished": null
   },
   {
    "id": "gaggia-classic-evo-pro",
    "brand": "Gaggia",
    "name": "Classic Evo Pro",
+   "fullName": "Classic Evo Pro",
    "models": [
     "Classic Evo Pro (Amazon RI9380/48 Polar White)",
     "Manual title CLASSIC EVO PRO (USA Rev 00)"
@@ -3759,12 +3878,21 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": null,
+    "temperature": null,
+    "descale": "Descale every 2 months.",
+    "clean": null
+   },
    "dimsPublished": null
   },
   {
    "id": "rancilio-silvia-current",
    "brand": "Rancilio",
-   "name": "Silvia (current Home Line listing)",
+   "name": "Silvia",
+   "fullName": "Silvia (current Home Line listing)",
    "models": [
     "Silvia (NA manual title: SILVIA and SILVIA E)"
    ],
@@ -3928,6 +4056,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": "Rancilio lists filter baskets as 8/16 g and 14/18 g.",
+    "temperature": "A thermostat controls temperature.",
+    "descale": null,
+    "clean": "For daily cleaning, use the blind filter disk and espresso-machine detergent. Turn the coffee switch on for 5 seconds and off for 10 seconds; repeat until the water runs clear."
+   },
    "dimsPublished": {
     "w": 235,
     "d": 290,
@@ -3939,6 +4075,7 @@
    "id": "rancilio-silvia-pro-x",
    "brand": "Rancilio",
    "name": "Silvia Pro X",
+   "fullName": "Silvia Pro X",
    "models": [
     "Silvia Pro X (1GR)"
    ],
@@ -4132,6 +4269,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": "Rancilio lists filter baskets as 8/16 g.",
+    "temperature": "The machine has 2 PID temperature controllers. When enabled, Variable Soft Infusion soaks the coffee at low pressure for up to 6 seconds before normal brewing pressure.",
+    "descale": null,
+    "clean": "Use the F.01 washing cycle with the blind filter disk and detergent, following the CL1–CL3 screens. Rancilio gives no fixed cleaning interval."
+   },
    "dimsPublished": {
     "w": 250,
     "d": 420,
@@ -4142,7 +4287,8 @@
   {
    "id": "lelit-bianca-pl162t",
    "brand": "Lelit",
-   "name": "Bianca (V3 unresolved)",
+   "name": "Bianca",
+   "fullName": "Bianca (V3 unresolved)",
    "models": [
     "PL162T-120 (US maker page name \"Bianca PL162T-120\")",
     "PL162T-EU (maker EU page)",
@@ -4330,6 +4476,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": "Included IMS LELIT58 filters are 1 dose (9–11 g), 2 doses (14–18 g), 2 doses (18–21 g), and a blind filter.",
+    "temperature": "Use the LCC electronic control and OLED display to adjust coffee and steam temperatures. Low flow and pre-infusion time are adjustable, and pre-infusion can be enabled.",
+    "descale": null,
+    "clean": null
+   },
    "dimsPublished": {
     "w": 29,
     "d": 58.5,
@@ -4341,6 +4495,7 @@
    "id": "lelit-elizabeth-pl92t",
    "brand": "Lelit",
    "name": "Elizabeth",
+   "fullName": "Elizabeth",
    "models": [
     "PL92T (EU/global maker page)",
     "PL92T-120 (120 V 60 Hz Plug B variant per maker page)"
@@ -4495,6 +4650,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": "Included IMS LELIT58 filters are 1 dose (9–11 g), 2 doses (14–18 g), and a blind filter.",
+    "temperature": "The LCC electronic control has an OLED display and °F/°C units. Pre-infusion can be enabled.",
+    "descale": null,
+    "clean": null
+   },
    "dimsPublished": {
     "w": 32,
     "d": 38,
@@ -4505,7 +4668,8 @@
   {
    "id": "profitec-go-original",
    "brand": "Profitec",
-   "name": "GO (original generation, archived maker page)",
+   "name": "GO",
+   "fullName": "GO (original generation, archived maker page)",
    "models": [
     "GO",
     "CM500001-00 (black)",
@@ -4757,6 +4921,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": "Included filters are 1 cup (7 g), 2 cups (14 g), and a blind filter. A portafilter with 2 spouts is also included.",
+    "temperature": "PID controls brew and steam temperatures. Factory defaults are 93°C for coffee and 130°C for steam.",
+    "descale": "Preventive descaling may be needed, and Profitec recommends a water filter cartridge. If the machine is already calcified, only a specialized dealer may descale it because partial disassembly is required.",
+    "clean": null
+   },
    "dimsPublished": {
     "w": 210,
     "d": 362,
@@ -4768,6 +4940,7 @@
    "id": "profitec-go-2-0",
    "brand": "Profitec",
    "name": "GO 2.0",
+   "fullName": "GO 2.0",
    "models": [
     "GO 2.0",
     "CM500014-00 (black)",
@@ -5037,6 +5210,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": "A blind filter and a bottomless portafilter with silicone attachments are included.",
+    "temperature": "Set PID temperatures in the menu: brew defaults to 92°C, steam defaults to 128°C and adjusts from 115–134°C, and the offset is -10 to +10°C. Selectable pre-infusion runs the pump for 3 seconds, pauses for 8 seconds, then extracts at 9 bar.",
+    "descale": "Use only Profitec original descaler for menu-guided descaling. Have the blind filter and a receptacle holding at least 500 ml ready.",
+    "clean": "Automatic brew-group cleaning and a manual cleaning procedure are available."
+   },
    "dimsPublished": {
     "w": 210,
     "d": 362,
@@ -5048,6 +5229,7 @@
    "id": "profitec-pro-400",
    "brand": "Profitec",
    "name": "PRO 400",
+   "fullName": "PRO 400",
    "models": [
     "PRO 400",
     "CM500004-00"
@@ -5340,6 +5522,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": null,
+    "recipe": "The dark-roast example uses 16.5 g and prints a 45 g yield, but its printed 1:2.5 ratio implies 41.25 g. After flushing, switch I gives about 90°C, II about 94°C, and III about 98°C; the separate boiler presets are 120°C, 124°C, and 128°C.",
+    "baskets": "Filters are included for 1 cup (7 g), 2 cups (14 g), and 21 g, plus a blind filter.",
+    "temperature": "The multifunction switch selects PID boiler presets of 120°C, 124°C, or 128°C. It also switches pre-infusion on or off.",
+    "descale": "Preventive descaling may be needed. If the machine is already calcified, only a specialized dealer may descale it.",
+    "clean": "Clean the brew group with the blind filter."
+   },
    "dimsPublished": {
     "w": 228,
     "d": 448,
@@ -5350,7 +5540,8 @@
   {
    "id": "rocket-appartamento",
    "brand": "Rocket Espresso Milano",
-   "name": "Appartamento (original generation, pre-TCA; maker-page latest version)",
+   "name": "Appartamento",
+   "fullName": "Appartamento (original generation, pre-TCA; maker-page latest version)",
    "models": [
     "APPARTAMENTO"
    ],
@@ -5502,6 +5693,7 @@
     }
    ],
    "axisFlag": false,
+   "owner": null,
    "dimsPublished": {
     "w": 274,
     "d": 439.5,
@@ -5513,6 +5705,7 @@
    "id": "rocket-appartamento-tca",
    "brand": "Rocket Espresso Milano",
    "name": "Appartamento TCA",
+   "fullName": "Appartamento TCA",
    "models": [
     "APPARTAMENTO TCA"
    ],
@@ -5709,6 +5902,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": null,
+    "temperature": "Temperature Control Adjustment (TCA) lets you adjust temperature.",
+    "descale": null,
+    "clean": null
+   },
    "dimsPublished": {
     "w": 270,
     "d": 448,
@@ -5719,7 +5920,8 @@
   {
    "id": "ascaso-steel-duo-pid",
    "brand": "Ascaso",
-   "name": "Steel DUO PID (2026 maker range, Duo PID column)",
+   "name": "Steel DUO PID",
+   "fullName": "Steel DUO PID (2026 maker range, Duo PID column)",
    "models": [
     "STEEL DUO PID"
    ],
@@ -5987,6 +6189,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": null,
+    "temperature": "The PID display lets you set coffee temperature from 80–110°C and steam from 110–165°C, both in 1°C increments. Pre-infusion is programmable from 0–5 seconds.",
+    "descale": "Use Coffee Washer monthly above 10 coffees a day, every 2 months at 5–10 coffees a day, or every 3 months at 1–5 coffees a day. Water-treatment filters are optional.",
+    "clean": "Backflush weekly with the blind filter, pressing the coffee switch for 10 seconds twice. The machine also has a CLn cleaning mode."
+   },
    "dimsPublished": {
     "w": 270,
     "d": 315,
@@ -5998,6 +6208,7 @@
    "id": "flair-58-plus-2",
    "brand": "Flair Espresso",
    "name": "Flair 58 Plus 2",
+   "fullName": "Flair 58 Plus 2",
    "models": [
     "Flair 58 Plus 2",
     "Flair 58 Plus 2 with Travel Case"
@@ -6176,6 +6387,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": null,
+    "recipe": "Flair gives a standard dose of 16–20 g with the included baskets.",
+    "baskets": "High-flow, high-dose, low-dose, and pressurized baskets are included.",
+    "temperature": "Preheat settings are low at about 185°F (85°C), medium at about 194°F (90°C), and high at about 203°F (95°C).",
+    "descale": null,
+    "clean": null
+   },
    "dimsPublished": {
     "raw": [
      17.5,
@@ -6190,7 +6409,8 @@
   {
    "id": "flair-58-original",
    "brand": "Flair Espresso",
-   "name": "Flair 58 (original, base model)",
+   "name": "Flair 58",
+   "fullName": "Flair 58 (original, base model)",
    "models": [
     "Flair 58"
    ],
@@ -6296,12 +6516,21 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": "The low-flow basket accommodates 16–22 g.",
+    "recipe": null,
+    "baskets": "The base model has a chamfered low-flow 18 g basket. A straight-walled high-flow 18 g basket is optional.",
+    "temperature": "Choose from three heat settings.",
+    "descale": null,
+    "clean": null
+   },
    "dimsPublished": null
   },
   {
    "id": "jura-e8-gen4-nac",
    "brand": "JURA",
-   "name": "E8 (Gen 4, NAC)",
+   "name": "E8",
+   "fullName": "E8 (Gen 4, NAC)",
    "models": [
     "15646 E8 Chrome (NAC) 2023",
     "15648 E8 Piano Black (NAC) 2023",
@@ -6518,12 +6747,21 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": "The brewing unit has a variable 5–16 g dose. Coffee strength has 10 levels.",
+    "recipe": null,
+    "baskets": null,
+    "temperature": "Brewing temperature is individually programmable with 3 levels. Hot-water temperature also has 3 levels.",
+    "descale": "When prompted, dissolve 3 JURA descaling tablets in 500 ml water for the approximately 40-minute program. The machine does not prompt for descaling with a CLEARYL Smart+ filter.",
+    "clean": "Cleaning is prompted after 180 preparations or 80 switch-on rinses. Insert a JURA cleaning tablet in the filler funnel for the approximately 20-minute program."
+   },
    "dimsPublished": null
   },
   {
    "id": "jura-e8-nad",
    "brand": "JURA",
-   "name": "E8 (NAD, 27 specialities)",
+   "name": "E8",
+   "fullName": "E8 (NAD, 27 specialities)",
    "models": [
     "15722 E8 Midnight Silver (NAD) 2025",
     "15777 E8 Piano Black (NAD) 2025"
@@ -6762,6 +7000,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": "The brewing unit has a variable 5–16 g dose. Coffee strength has 10 levels.",
+    "recipe": null,
+    "baskets": null,
+    "temperature": "Brewing temperature is individually programmable. Hot-water temperature has 3 levels.",
+    "descale": "Use 3 JURA descaling tablets in the water tank for the descaling program.",
+    "clean": "Use JURA cleaning tablets for the cleaning program."
+   },
    "dimsPublished": {
     "w": 27,
     "h": 34.8,
@@ -6773,7 +7019,8 @@
   {
    "id": "jura-e6-nac-2022",
    "brand": "JURA",
-   "name": "E6 (NAC, 2022)",
+   "name": "E6",
+   "fullName": "E6 (NAC, 2022)",
    "models": [
     "15465 E6 Platinum (NAC) 2022",
     "15559 E6 Piano White (NAC) 2022",
@@ -7016,6 +7263,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": "The brewing unit has a variable 5–16 g dose. Coffee strength has 10 individually programmable levels.",
+    "recipe": null,
+    "baskets": null,
+    "temperature": "Brewing and hot-water temperatures each have 3 levels.",
+    "descale": "Dissolve 3 JURA descaling tablets in the water tank for the approximately 40-minute program.",
+    "clean": "Insert 1 JURA cleaning tablet in the filler funnel for the approximately 20-minute cleaning program."
+   },
    "dimsPublished": {
     "w": 28,
     "h": 35.1,
@@ -7027,7 +7282,8 @@
   {
    "id": "jura-e4-naa-2022",
    "brand": "JURA",
-   "name": "E4 (NAA, 2022)",
+   "name": "E4",
+   "fullName": "E4 (NAA, 2022)",
    "models": [
     "15466 E4 Piano Black (NAA) 2022",
     "15560 E4 Piano White (NAA) 2022"
@@ -7249,6 +7505,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": "The brewing unit has a variable 5–16 g dose. Coffee strength has 3 levels on the symbol display.",
+    "recipe": null,
+    "baskets": null,
+    "temperature": null,
+    "descale": "Use 3 JURA descaling tablets in the water tank for the approximately 45-minute program.",
+    "clean": "Put 1 JURA cleaning tablet in the filler funnel for the approximately 20-minute cleaning program."
+   },
    "dimsPublished": {
     "w": 28,
     "h": 34.6,
@@ -7260,7 +7524,8 @@
   {
    "id": "jura-ena8-nac-2022",
    "brand": "JURA",
-   "name": "ENA 8 (NAC, 2022)",
+   "name": "ENA 8",
+   "fullName": "ENA 8 (NAC, 2022)",
    "models": [
     "15495 ENA 8 Full Nordic White (NAC) 2022",
     "15496 ENA 8 Full Metropolitan Black (NAC) 2022"
@@ -7508,6 +7773,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": "The brewing unit has a variable 6–10 g dose. Coffee strength has 10 levels.",
+    "recipe": null,
+    "baskets": null,
+    "temperature": "Brewing and hot-water temperatures each have 3 levels.",
+    "descale": "Use 3 JURA descaling tablets in the water tank for the approximately 40-minute program.",
+    "clean": "Insert 1 JURA cleaning tablet in the powder chute for the approximately 20-minute cleaning program."
+   },
    "dimsPublished": {
     "w": 27.1,
     "h": 32.3,
@@ -7519,7 +7792,8 @@
   {
    "id": "jura-ena4-nab-2022",
    "brand": "JURA",
-   "name": "ENA 4 (NAB, 2022)",
+   "name": "ENA 4",
+   "fullName": "ENA 4 (NAB, 2022)",
    "models": [
     "15519 ENA 4 Full Nordic White (NAB) 2022",
     "15518 ENA 4 Full Metropolitan Black (NAB) - spec tab not extracted"
@@ -7742,6 +8016,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": "The brewing unit has a variable 6–10 g dose. Coffee strength has 3 levels on the symbol display.",
+    "recipe": null,
+    "baskets": null,
+    "temperature": null,
+    "descale": "Use 3 JURA descaling tablets in the water tank for the approximately 45-minute program.",
+    "clean": "Put 1 JURA cleaning tablet in the powder chute for the approximately 20-minute cleaning program."
+   },
    "dimsPublished": {
     "w": 27.1,
     "h": 32.3,
@@ -7753,7 +8035,8 @@
   {
    "id": "jura-s8-nab-2023",
    "brand": "JURA",
-   "name": "S8 (NAB, 2023 Chrome / Dark Inox 2024)",
+   "name": "S8",
+   "fullName": "S8 (NAB, 2023 Chrome / Dark Inox 2024)",
    "models": [
     "15653 S8 Chrome (NAB) 2023",
     "15755 S8 Dark Inox (NAB) 2024"
@@ -7991,6 +8274,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": "The brewing unit has a variable 5–16 g dose. Coffee strength has 10 levels, and grind consistency has 7 levels.",
+    "recipe": null,
+    "baskets": null,
+    "temperature": "Brewing and hot-water temperatures each have 3 levels.",
+    "descale": "Dissolve 3 JURA descaling tablets in the water tank for the descaling program.",
+    "clean": "Put a JURA cleaning tablet in the filler funnel for the approximately 20-minute cleaning program."
+   },
    "dimsPublished": {
     "w": 28,
     "h": 34.8,
@@ -8002,7 +8293,8 @@
   {
    "id": "jura-j8-naa",
    "brand": "JURA",
-   "name": "J8 (NAA, Midnight Silver)",
+   "name": "J8",
+   "fullName": "J8 (NAA, Midnight Silver)",
    "models": [
     "15555 J8 Midnight Silver (NAA)"
    ],
@@ -8239,6 +8531,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": "The brewing unit has a variable 5–16 g dose. Coffee strength has 10 levels.",
+    "recipe": null,
+    "baskets": null,
+    "temperature": "Brewing and hot-water temperatures each have 3 levels.",
+    "descale": "Use 3 JURA descaling tablets in the water tank for the approximately 45-minute program.",
+    "clean": "Put a JURA cleaning tablet in the filler funnel for the approximately 20-minute cleaning program."
+   },
    "dimsPublished": {
     "w": 31.8,
     "h": 34.8,
@@ -8250,7 +8550,8 @@
   {
    "id": "jura-j8-twin-naa",
    "brand": "JURA",
-   "name": "J8 twin (NAA, Diamond White / Black)",
+   "name": "J8 twin",
+   "fullName": "J8 twin (NAA, Diamond White / Black)",
    "models": [
     "15657 J8 twin Diamond White (NAA) 2024",
     "15658 J8 twin Diamond Black (NAA) 2024"
@@ -8488,6 +8789,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": "The variable dose is 5–16 g per grinder, with two grinders. Coffee strength has 8 levels per extraction.",
+    "recipe": null,
+    "baskets": null,
+    "temperature": "Brewing and hot-water temperatures each have 3 levels.",
+    "descale": "Dissolve 3 JURA descaling tablets in the water tank for the approximately 20-minute program.",
+    "clean": "Put a JURA cleaning tablet in the powder chute for the cleaning program."
+   },
    "dimsPublished": {
     "w": 31,
     "h": 36,
@@ -8499,7 +8808,8 @@
   {
    "id": "jura-z10-nab-2026",
    "brand": "JURA",
-   "name": "Z10 (NAB, Light Brew / Cold Extraction, 51 specialities)",
+   "name": "Z10",
+   "fullName": "Z10 (NAB, Light Brew / Cold Extraction, 51 specialities)",
    "models": [
     "15702 Z10 Aluminium Black (NAB)",
     "15792 Z10 Aluminium White (NAB)",
@@ -8739,6 +9049,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": "The brewing unit has a variable 5–16 g dose. Coffee strength has 10 levels.",
+    "recipe": null,
+    "baskets": null,
+    "temperature": "Brewing and hot-water temperatures each have 3 levels. Milk and milk-foam temperatures are individually programmable.",
+    "descale": "Use 3 JURA descaling tablets in the water tank for the descaling program.",
+    "clean": "Use 1 JURA cleaning tablet for the cleaning program."
+   },
    "dimsPublished": {
     "w": 32,
     "h": 36.3,
@@ -8750,7 +9068,8 @@
   {
    "id": "jura-z10-naa-2021",
    "brand": "JURA",
-   "name": "Z10 (NAA, 2021 generation)",
+   "name": "Z10",
+   "fullName": "Z10 (NAA, 2021 generation)",
    "models": [
     "15361 Z10 Aluminium White (NAA) 2021",
     "15464 Z10 Diamond Black (NAA) 2021",
@@ -8983,6 +9302,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": "Coffee strength has 10 levels.",
+    "recipe": null,
+    "baskets": null,
+    "temperature": "Hot-water temperature has 3 levels.",
+    "descale": "Use 3 JURA descaling tablets in the water tank for the approximately 45-minute program.",
+    "clean": "Put 1 JURA cleaning tablet in the filler funnel for the approximately 20-minute cleaning program."
+   },
    "dimsPublished": {
     "w": 32,
     "h": 36.3,
@@ -8993,8 +9320,9 @@
   },
   {
    "id": "nespresso-vertuo-next",
-   "brand": "Nespresso (Breville/De'Longhi partner)",
+   "brand": "Nespresso",
    "name": "Vertuo Next",
+   "fullName": "Vertuo Next",
    "models": [
     "Breville BNV520 (Navy Blue; Breville US page; manual GCV1/GDV1 hosted for BNV520)",
     "De'Longhi ENV120 (not separately bound)"
@@ -9119,6 +9447,7 @@
     }
    ],
    "axisFlag": false,
+   "owner": null,
    "dimsPublished": {
     "w": 5.5,
     "d": 16.9,
@@ -9128,8 +9457,9 @@
   },
   {
    "id": "nespresso-vertuoplus",
-   "brand": "Nespresso (Breville/De'Longhi partner)",
+   "brand": "Nespresso",
    "name": "VertuoPlus",
+   "fullName": "VertuoPlus",
    "models": [
     "Breville BNV420BLK1BUC1 (Black; Breville US page)"
    ],
@@ -9233,6 +9563,7 @@
     }
    ],
    "axisFlag": false,
+   "owner": null,
    "dimsPublished": {
     "w": 5.6,
     "d": 16.7,
@@ -9242,8 +9573,9 @@
   },
   {
    "id": "nespresso-vertuo-creatista",
-   "brand": "Nespresso (Breville partner)",
+   "brand": "Nespresso",
    "name": "Vertuo Creatista",
+   "fullName": "Vertuo Creatista",
    "models": [
     "Breville BVE850BSS (Brushed Stainless Steel; Breville US page)"
    ],
@@ -9382,6 +9714,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": null,
+    "temperature": null,
+    "descale": "Descaling uses 2 units of Nespresso liquid. Water-hardness settings run from 1–5.",
+    "clean": null
+   },
    "dimsPublished": {
     "w": 8.98,
     "d": 16.41,
@@ -9391,8 +9731,9 @@
   },
   {
    "id": "nespresso-lattissima-one",
-   "brand": "Nespresso (De'Longhi partner)",
+   "brand": "Nespresso",
    "name": "Lattissima One",
+   "fullName": "Lattissima One",
    "models": [
     "De'Longhi EN510W (Silky White)",
     "De'Longhi EN510B (Shadow Black)"
@@ -9507,6 +9848,7 @@
     }
    ],
    "axisFlag": false,
+   "owner": null,
    "dimsPublished": {
     "w": 6.1,
     "d": 12.8,
@@ -9516,8 +9858,9 @@
   },
   {
    "id": "nespresso-citiz",
-   "brand": "Nespresso (De'Longhi partner)",
+   "brand": "Nespresso",
    "name": "CitiZ",
+   "fullName": "CitiZ",
    "models": [
     "Nespresso US \"CitiZ White\" standalone listing (partner model not established)"
    ],
@@ -9612,12 +9955,14 @@
     }
    ],
    "axisFlag": false,
+   "owner": null,
    "dimsPublished": null
   },
   {
    "id": "nespresso-pixie-silver-redesign",
-   "brand": "Nespresso (De'Longhi partner)",
-   "name": "Pixie Silver Redesign (current Nespresso US listing)",
+   "brand": "Nespresso",
+   "name": "Pixie Silver Redesign",
+   "fullName": "Pixie Silver Redesign (current Nespresso US listing)",
    "models": [
     "Nespresso US \"Pixie Silver Redesign\" (model string not stated)"
    ],
@@ -9721,6 +10066,7 @@
     }
    ],
    "axisFlag": false,
+   "owner": null,
    "dimsPublished": {
     "w": 4.65,
     "d": 9.25,
@@ -9730,8 +10076,9 @@
   },
   {
    "id": "delonghi-pixie-en124s",
-   "brand": "Nespresso (De'Longhi partner)",
-   "name": "Pixie (De'Longhi EN124S, US manual UM_PIXIE_DELONGHI_US)",
+   "brand": "Nespresso",
+   "name": "Pixie",
+   "fullName": "Pixie (De'Longhi EN124S, US manual UM_PIXIE_DELONGHI_US)",
    "models": [
     "De'Longhi EN124S (Nespresso Pixie, Aluminum, Silver; De'Longhi US page)"
    ],
@@ -9841,6 +10188,7 @@
     }
    ],
    "axisFlag": false,
+   "owner": null,
    "dimsPublished": null
   }
  ],

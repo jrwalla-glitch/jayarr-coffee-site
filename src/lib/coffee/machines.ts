@@ -77,7 +77,7 @@ export function fitsCounter(m: Machine, n: Pick<Needs, 'widthCm' | 'heightCm'>):
 
 const EFFORT_OK: Record<Needs['effort'], Category[]> = {
   button: ['super-auto', 'capsule'],
-  guided: ['semi-auto-grinder', 'super-auto', 'semi-auto'],
+  guided: ['semi-auto-grinder', 'super-auto'],
   'hands-on': ['semi-auto', 'semi-auto-grinder', 'manual-lever'],
 };
 
@@ -100,6 +100,8 @@ export function chooseMachines(machines: Machine[], grinders: GrinderPrice[], n:
     const why: string[] = [], tradeoffs: string[] = [];
     // Effort
     if (EFFORT_OK[n.effort].includes(m.category)) why.push(effortWhy(m, n));
+    // Guided, but a plain semi-automatic: close, with a separate grinder to learn too.
+    else if (n.effort === 'guided' && m.category === 'semi-auto') { score += m.milk.type === 'auto-wand' ? 1 : 2; tradeoffs.push('Needs a separate grinder, and you dose and tamp by hand.'); }
     else { score += 4; tradeoffs.push(effortTrade(m, n)); }
     // Milk
     if (n.milk !== 'none') {
@@ -107,11 +109,12 @@ export function chooseMachines(machines: Machine[], grinders: GrinderPrice[], n:
       else if (n.effort === 'button' && (m.milk.type === 'manual-wand' || m.milk.type === 'panarello')) { score += 1.5; tradeoffs.push('Milk is steamed by hand, not at the press of a button.'); }
       else why.push(milkWhy(m));
       if (n.milk === 'most' && n.cups >= 3 && m.category !== 'capsule' && m.category !== 'super-auto') {
-        if (m.heating.simultaneousBrewSteam) why.push('Brews and steams at the same time, which keeps a run of milk drinks moving.');
-        else if ((m.heating.heatUpSeconds ?? Infinity) <= 10) why.push(`Switches from brewing to steaming quickly (the maker quotes about ${m.heating.heatUpSeconds} seconds to heat).`);
+        // Brewing and steaming at once matters most for a run of milk drinks; a fast switch is next best.
+        if (m.heating.simultaneousBrewSteam) { score -= n.cups >= 5 ? 1.5 : 0.5; why.push('Brews and steams at the same time, which keeps a run of milk drinks moving.'); }
+        else if ((m.heating.heatUpSeconds ?? Infinity) <= 10) { score += n.cups >= 5 ? 1 : 0; why.push(`Switches from brewing to steaming quickly (the maker quotes about ${m.heating.heatUpSeconds} seconds to heat).`); if (n.cups >= 5) tradeoffs.push('Brews and steams one after the other: quick to switch, but five milk drinks still queue.'); }
         else { score += 2; tradeoffs.push('Brews and steams one after the other, so several milk drinks take a while.'); }
       }
-    } else if (m.milk.type !== 'none') tradeoffs.push('You would be paying for a milk system you don\'t need.');
+    } else if (m.milk.type === 'carafe' || m.milk.type === 'auto-wand') { score += 0.5; tradeoffs.push('You would be paying for an automatic milk system you don\'t need.'); }
     // Budget: room to spare is fine; using all of it on the machine alone is not.
     if (band.high > n.budget) { score += 1; tradeoffs.push('The upper end of its grinder range runs past your budget.'); }
     out.push({ machine: m, band, score, why, tradeoffs });
@@ -133,11 +136,10 @@ function effortTrade(m: Machine, n: Needs): string {
   return 'More automatic than you asked for: less control over each shot.';
 }
 function milkWhy(m: Machine): string {
-  const t = m.milk.makerTerm ? ` (${m.milk.makerTerm})` : '';
-  if (m.milk.type === 'carafe') return `Makes milk drinks from a milk carafe${t}.`;
-  if (m.milk.type === 'auto-wand') return `Steam wand that textures milk automatically${t}.`;
-  if (m.milk.type === 'panarello') return `A beginner-friendly frothing wand${t}.`;
-  return `A manual steam wand${t}: the most control over milk texture.`;
+  if (m.milk.type === 'carafe') return 'Makes milk drinks automatically from its own milk system.';
+  if (m.milk.type === 'auto-wand') return 'A steam wand that textures the milk for you.';
+  if (m.milk.type === 'panarello') return 'A beginner-friendly frothing wand.';
+  return 'A manual steam wand: the most control over milk texture, with practice.';
 }
 
 /** "$650–$1,350" for a band. */
