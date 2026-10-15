@@ -96,6 +96,18 @@ export function tryAlso(pods: Pod[], pod: Pod): Pod | null {
   return pods.find((p) => p.line === pod.line && p.name === pod.try_also && !p.discontinued) ?? null;
 }
 
+/**
+ * When there's no editorial "try also", the nearest current capsule on the same row of the wall:
+ * same system and cup size, closest intensity, sharing an aroma family where possible. Shown as
+ * "Similar", not as a recommendation.
+ */
+export function similar(pods: Pod[], pod: Pod): Pod | null {
+  const fam = new Set(aromaFamilies(pod));
+  const pool = pods.filter((p) => p.id !== pod.id && p.line === pod.line && p.size === pod.size && p.ml === pod.ml && !p.discontinued && !!p.flavored === !!pod.flavored);
+  const score = (p: Pod) => Math.abs((p.intensity ?? 0) - (pod.intensity ?? 0)) + (aromaFamilies(p).some((f) => fam.has(f)) ? 0 : 1.5);
+  return pool.sort((a, b) => score(a) - score(b) || a.name.localeCompare(b.name))[0] ?? null;
+}
+
 /** A pod from a link: by slug, else by "line:name". */
 export function podFromParam(pods: Pod[], v: string | null): Pod | null {
   if (!v) return null;

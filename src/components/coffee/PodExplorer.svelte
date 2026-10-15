@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte';
   import podData from '../../data/nespressoPods.json';
-  import { catalog, sizeRows, filterPods, wall, tryAlso, podFromParam, buySearch, blendText, LINES, ROASTS, AROMA_FAMILIES } from '../../lib/coffee/pods.ts';
+  import { catalog, sizeRows, filterPods, wall, tryAlso, similar, podFromParam, buySearch, blendText, LINES, ROASTS, AROMA_FAMILIES } from '../../lib/coffee/pods.ts';
   import type { Line, Pod, Roast, RawPod, SizeRow } from '../../lib/coffee/pods.ts';
 
   // The capsule wall: pick your machine, then every capsule it takes, by cup size and intensity.
@@ -39,6 +39,8 @@
   let categories = $derived(line ? [...new Set(pods.filter((p) => p.line === line).map((p) => p.category))].sort() : []);
   let selected = $derived(selectedId ? pods.find((p) => p.id === selectedId) ?? null : null);
   let suggestion = $derived(selected ? tryAlso(pods, selected) : null);
+  // No editorial suggestion: the nearest capsule on the same row, labelled as such (design gate r2).
+  let near = $derived(selected && !suggestion ? similar(pods, selected) : null);
   // The flight is tasted mildest first, so it's shown in that order (unrated last).
   let flightPods = $derived(flight.map((id) => pods.find((p) => p.id === id)).filter((p): p is Pod => !!p && p.line === line).sort((a, b) => (a.intensity ?? 99) - (b.intensity ?? 99)));
   let filtering = $derived(!!query.trim() || roast !== 'all' || family !== 'all' || category !== 'all' || decaf || flavored !== 'any');
@@ -180,7 +182,7 @@
     {/each}
     {#if ref}
       {@const x = rws.length * (W + gap) + gap / 2}
-      <rect x={x} y="0.6" width={W} height={H - 0.6} rx="2" fill="none" stroke="#9c8f82" stroke-width="1" stroke-dasharray="3 3" />
+      <rect x={x} y="0.6" width={W} height={H - 0.6} rx="2" fill="none" stroke="#9c8f82" stroke-width="1" stroke-dasharray="3 4" opacity=".55" />
       <text x={x + W / 2} y={H + 14} text-anchor="middle" class="lml ref">414</text>
       {#if names}<text x={x + W / 2} y={H + 27} text-anchor="middle" class="lnm ref">Vertuo</text>{/if}
     {/if}
@@ -245,7 +247,7 @@
           <div class="wall tall" role="group" aria-label="{LINES[line].label} capsules by intensity and cup size">
             <div class="thead" style:--n={rows.length} aria-hidden="true">
               <span class="corner">int.</span>
-              {#each rows as r (r.key)}<span class="th">{@render glassAt(r.ml, 22)}<b>{shortSize(r.name)}</b><small>{r.ml}&nbsp;ml</small></span>{/each}
+              {#each rows as r (r.key)}<span class="th">{@render glassAt(r.ml, 22)}<b>{r.name === 'Gran Lungo' ? 'Gran L.' : shortSize(r.name)}</b><small>{r.ml}&nbsp;ml</small></span>{/each}
             </div>
             {#each Array.from({ length: COLS + 1 }, (_, c) => c) as c (c)}
               {@const here = placed.filter((x) => x.col === c)}
@@ -256,7 +258,7 @@
                 {/each}
               </div>
             {/each}
-            <p class="axis tallaxis" aria-hidden="true">Intensity runs down, mild to intense (Nespresso's 1–13: roast and body, not caffeine). <b>n/r</b>: not rated.{#if flightPods.length}{' '}<span class="key"></span> in your flight.{/if}</p>
+            <p class="axis tallaxis" aria-hidden="true">Nespresso intensity runs down: roast and body, not caffeine. <b>n/r</b>: not rated.{#if flightPods.length}{' '}<span class="key"></span> in your flight.{/if}</p>
           </div>
         {:else if view === 'wall'}
           <div class="wall" role="group" aria-label="{LINES[line].label} capsules by cup size and intensity">
@@ -274,7 +276,7 @@
                 {/each}
               </div>
             {/each}
-            <p class="axis" aria-hidden="true"><span>← milder</span><span>Nespresso intensity, 1–13: roast and body, not caffeine</span><span>more intense →</span></p>
+            <p class="axis" aria-hidden="true"><span>← milder</span><span>intensity: roast and body, not caffeine</span><span>more intense →</span></p>
             {#if flightPods.length}<p class="axis keyrow" aria-hidden="true"><span><span class="key"></span> in your tasting flight</span></p>{/if}
           </div>
         {:else}
@@ -326,11 +328,13 @@
             <p class="desc">{selected.description}</p>
             <p class="best"><span class="lbl">Best for</span>{selected.best_for}</p>
             <figure class="pours">
-              {@render ladder(selected, 120, rows, true, true)}
-              <figcaption>What it pours: {selected.ml} ml, beside every {LINES[selected.line].label} cup size. Every cup on this page is drawn to one scale: same width, height by volume.</figcaption>
+              {@render ladder(selected, 150, rows, true, true)}
+              <figcaption>What it pours: {selected.ml} ml, beside every {LINES[selected.line].label} cup size. Every drawing on this page uses one scale, with 414 ml as the full height.</figcaption>
             </figure>
             {#if suggestion}
               <p class="try"><span class="lbl">Try also</span><button type="button" class="trybtn" onclick={() => pick(suggestion!)}>{@render capsule(suggestion.line, suggestion.color_hex, 20)}{suggestion.name}<small>{suggestion.size} · {suggestion.ml} ml</small></button></p>
+            {:else if near}
+              <p class="try"><span class="lbl">Similar on the wall</span><button type="button" class="trybtn" onclick={() => pick(near!)}>{@render capsule(near.line, near.color_hex, 20)}{near.name}<small>{near.intensity ? `intensity ${near.intensity}` : 'not rated'} · {near.aroma}</small></button><small class="quiet nearwhy">Same cup size, the closest intensity and aroma.</small></p>
             {/if}
             <div class="actions">
               {#if !selected.discontinued}<a class="go" href={buySearch(selected)} rel="sponsored noopener" target="_blank">Search Amazon for {LINES[selected.line].label} {selected.name} →</a>{/if}
@@ -359,7 +363,8 @@
                     <b>{p.name}</b>
                     <small>{shortSize(p.size)} · {p.ml} ml</small>
                     <span class="mini" aria-label={p.intensity ? `Intensity ${p.intensity} of 13` : 'Not rated'} role="img">{#each Array.from({ length: 13 }, (_, i) => i) as i (i)}<i class:on={!!p.intensity && i < p.intensity}></i>{/each}</span>
-                    <small class="mono">{p.intensity ? `${p.intensity}/13` : 'n/r'} · {p.roast_level}</small>
+                    <small class="mono">{p.intensity ? `${p.intensity}/13` : 'n/r'}</small>
+                    <small class="rl2">{p.roast_level}</small>
                     <span class="flglass">{@render glassAt(p.ml, 60)}</span>
                   </button>
                 </li>
@@ -449,7 +454,7 @@
   .pod.gone :global(.cap) { opacity: .55; }
   .pod.faded { cursor: default; opacity: .22; filter: grayscale(.6); }
   .tip { position: absolute; bottom: calc(100% + 4px); left: 50%; transform: translateX(-50%); white-space: nowrap; background: var(--ink); color: #f3ede3; font: 500 12px/1 'IBM Plex Sans', sans-serif; padding: 6px 8px; border-radius: 6px; pointer-events: none; opacity: 0; transition: opacity .15s; z-index: 3; }
-  .pod:hover .tip, .pod:focus-visible .tip { opacity: 1; }
+  .pod:hover .tip, .pod:focus-visible .tip, .pod.sel .tip { opacity: 1; }
   .axis { display: flex; justify-content: space-between; gap: 8px; margin: 8px 0 0 var(--lab); font: 400 11.5px 'IBM Plex Mono', monospace; color: var(--ink-3); }
   .axis span:nth-child(2) { text-align: center; }
   .axis > span:first-child, .axis > span:last-child { white-space: nowrap; }
@@ -465,7 +470,7 @@
   .thead b { display: block; font: 600 11.5px/1.15 'IBM Plex Sans', sans-serif; }
   .thead small { display: block; font: 500 11px 'IBM Plex Mono', monospace; color: var(--ink-3); white-space: nowrap; }
   .trow { border-bottom: 1px dashed var(--rule); min-height: 34px; }
-  .trow.empty { min-height: 18px; }
+  .trow.empty { min-height: 24px; }
   .tl { font: 500 12px 'IBM Plex Mono', monospace; color: var(--ink-3); align-self: center; }
   /* Two capsules side by side in a 5-column phone cell (about 58 px at 360 px wide). */
   .tall .pod { width: 29px; height: 28px; }
@@ -483,6 +488,7 @@
   .list tr.sel th { box-shadow: inset 3px 0 0 var(--crema-deep); }
   .lname { appearance: none; border: 0; background: none; padding: 4px 0; display: inline-flex; gap: 8px; align-items: center; font: 600 14.5px 'IBM Plex Sans', sans-serif; color: var(--ink); cursor: pointer; text-align: left; min-height: 32px; }
   .lname em { font-weight: 400; color: var(--ink-3); }
+  .lname :global(svg) { flex: none; }
   .none { margin: 10px 4px; color: var(--ink-2); }
 
   /* Panel */
@@ -515,15 +521,16 @@
   .ladder :global(.glass) { fill: #fffdf9; stroke: #9c8f82; stroke-width: 1.2; }
   .ladder :global(.glass.on) { stroke: var(--ink); stroke-width: 1.6; }
   .ladder :global(.pour) { transform-box: fill-box; transform-origin: 50% 100%; animation: pour .7s cubic-bezier(.2, .7, .2, 1) both; }
-  .ladder :global(.lml) { font: 500 11px 'IBM Plex Mono', monospace; fill: #75655a; }
-  .ladder :global(.lnm) { font: 400 10.5px 'IBM Plex Sans', sans-serif; fill: #75655a; }
+  .ladder :global(.lml) { font: 500 12px 'IBM Plex Mono', monospace; fill: #75655a; }
+  .ladder :global(.lnm) { font: 400 11px 'IBM Plex Sans', sans-serif; fill: #5b4a3d; }
   .ladder :global(.lml.on), .ladder :global(.lnm.on) { fill: #2a1d15; font-weight: 600; }
   @keyframes pour { from { transform: scaleY(0); } to { transform: scaleY(1); } }
   .try { margin: 12px 0 0; }
   .trybtn { appearance: none; border: 1px solid var(--rule); background: #fff; border-radius: 999px; padding: 6px 14px 6px 8px; display: inline-flex; gap: 8px; align-items: center; cursor: pointer; font: 600 14px 'IBM Plex Sans', sans-serif; color: var(--ink); min-height: 40px; }
   .trybtn small { font: 500 12px 'IBM Plex Mono', monospace; color: var(--ink-3); }
+  .nearwhy { display: block; margin-top: 4px; font-size: 12.5px; }
   .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-  .go { background: var(--ink); color: #f3ede3; border-radius: 999px; padding: 12px 18px; font: 600 14.5px/1.2 'IBM Plex Sans', sans-serif; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
+  .go { background: #fff; color: var(--ink); border: 1.5px solid var(--ink); border-radius: 999px; padding: 11px 18px; font: 600 14.5px/1.2 'IBM Plex Sans', sans-serif; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
   .pill { appearance: none; border: 1px solid var(--rule); background: #fff; color: var(--ink-2); border-radius: 999px; padding: 10px 15px; font: 500 14px 'IBM Plex Sans', sans-serif; cursor: pointer; min-height: 44px; }
   .pill[aria-pressed='true'] { border-color: var(--crema); background: #fff8ec; color: var(--ink); }
   .disc { font-size: 12.5px; color: var(--ink-3); margin: 8px 0 0; }
@@ -538,7 +545,8 @@
   .cmp li { position: relative; border: 1px solid #ece3d6; border-radius: 12px; background: radial-gradient(120% 90% at 50% 0%, #fffdf9, #f7f1e8); }
   .fl { appearance: none; border: 0; background: none; width: 100%; padding: 12px 8px 10px; display: grid; justify-items: center; gap: 4px; cursor: pointer; color: var(--ink); text-align: center; }
   .fl b { font: 600 14px/1.15 'IBM Plex Sans', sans-serif; }
-  .fl small { font-size: 12px; color: var(--ink-3); }
+  .fl small { font-size: 12px; color: var(--ink-3); white-space: nowrap; }
+  .fl .rl2 { margin-top: -2px; }
   .fl .mini { width: 100%; max-width: 110px; height: 7px; gap: 1px; margin-top: 2px; }
   .flglass { display: grid; place-items: end center; height: 64px; margin-top: 4px; }
   .rm { position: absolute; top: 4px; right: 4px; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--rule); background: #fff; cursor: pointer; color: var(--ink-3); z-index: 1; }

@@ -60,3 +60,13 @@ test('aroma families come from the published aroma words', () => {
   assert.ok(fam('Maple & Pecan').includes('sweet'));
   assert.ok(all.filter((p) => !p.flavored).every((p) => aromaFamilies(p).length > 0 || /Bold|Balanced/.test(p.aroma)), 'unflavoured pods land in a family');
 });
+
+test('"Similar on the wall" stays on the same row, system and current range', async () => {
+  const { similar } = await import('../pods.ts');
+  for (const p of all) {
+    const s = similar(all, p);
+    if (!s) continue;
+    assert.equal(s.line, p.line); assert.equal(s.ml, p.ml); assert.notEqual(s.id, p.id); assert.ok(!s.discontinued);
+  }
+  assert.ok(similar(all, all.find((p) => p.line === 'vertuo' && p.name === 'Colombia')));
+});
