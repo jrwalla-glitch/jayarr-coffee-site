@@ -71,7 +71,7 @@ const efsa = GUIDANCE.find((g) => g.id === 'efsa-single-dose')!;
 				<p class="cf-note">Estimates for arabica at the Brew Guide's classic ratios; a stronger ratio or robusta beans push them up. Café cups are often larger and stronger.</p>
 
 				<h2>Does espresso have more caffeine than drip coffee?</h2>
-				<p>Per sip, yes; per drink, usually not. A single shot holds about {CAFFEINE.espressoShotMg.typical} mg in about an ounce, so it is far more concentrated, but an 8 oz cup of drip coffee carries more in total. A latte or cappuccino made with a double shot lands near {Math.round(double.min)}–{Math.round(double.max)} mg, close to a cup of drip.</p>
+				<p>Per sip, yes; per drink, usually not. A single shot holds about {CAFFEINE.espressoShotMg.typical} mg in about an ounce (the USDA lists espresso at 212 mg per 100 g, which is 62.8 mg per fluid ounce, calculated), so it is far more concentrated, but an 8 oz cup of drip coffee carries more in total. A latte or cappuccino made with a double shot lands near {Math.round(double.min)}–{Math.round(double.max)} mg, close to a cup of drip.</p>
 
 				<h2>How long caffeine stays in your body</h2>
 				<p>The body clears caffeine at a steady proportional rate: on average, half of it is gone after about five hours, but that half-life ranges from about 1.5 to 10 hours between people. Smoking speeds it up; pregnancy and oral contraceptives slow it down, and late in pregnancy it can take up to three times longer. A 200 mg coffee at 3 pm can leave around 100 mg in you at 8 pm and around 50 mg near 1 am, which is why an afternoon coffee can still matter at bedtime.</p>
@@ -95,7 +95,7 @@ const efsa = GUIDANCE.find((g) => g.id === 'efsa-single-dose')!;
 
 				<h2>Sources</h2>
 				<ul class="cf-sources">
-					<li>{SOURCES['newcastle-2018'].author}, <cite>{SOURCES['newcastle-2018'].title}</cite> ({SOURCES['newcastle-2018'].year}).</li>
+					<li>{SOURCES['usda-fdc-espresso'].author}, <cite>{SOURCES['usda-fdc-espresso'].title}</cite> ({SOURCES['usda-fdc-espresso'].year}): {SOURCES['usda-fdc-espresso'].where}.</li>
 					<li>U.S. Food and Drug Administration, <cite>Spilling the Beans: How Much Caffeine is Too Much?</cite>, consumer update, content current as of August 28, 2024; European Food Safety Authority, scientific opinion on the safety of caffeine (2015); American College of Obstetricians and Gynecologists, <cite>Committee Opinion No. 462: Moderate Caffeine Consumption During Pregnancy</cite> (2010, reaffirmed).</li>
 					<li>{SOURCES.synthesis.author}, <cite>{SOURCES.synthesis.title}</cite>: §15 caffeine metabolism and half-life, §17 caffeine by brew method.</li>
 				</ul>

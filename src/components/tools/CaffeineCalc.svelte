@@ -1,6 +1,6 @@
 <script>
   // Caffeine data sourced from COFFEE_KNOWLEDGE_SYNTHESIS.md
-  // Newcastle University 2018 HPLC analysis, Gloess et al. 2013
+  // Espresso 63 mg: USDA FoodData Central SR Legacy 171891 (212 mg per 100 g × 29.6 g per fl oz, calculated)
   // FDA reference: 400 mg/day for most adults | ACOG Committee Opinion 462: under 200 mg/day is "moderate" (quoted below, R5)
   const drinks = [
     { id: 'pour-over', name: 'Pour Over', serving: '8 oz', mg: 100, note: 'V60, Chemex, Kalita' },

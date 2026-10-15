@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { CAFFEINE, GUIDANCE, caffeineCurve, caffeineInBody, espressoMg, estimateBrewedMg, buildRecipe } from '../index.ts';
+import { CAFFEINE, GUIDANCE, SOURCES, caffeineCurve, caffeineInBody, espressoMg, estimateBrewedMg, buildRecipe } from '../index.ts';
 
 const ok = (r) => { assert.equal(r.ok, true, JSON.stringify(r)); return r.value; };
 
@@ -22,6 +22,14 @@ test('espresso is counted by shots, about 63 mg each', () => {
   const two = espressoMg(2);
   assert.ok(two.min <= 126 && two.max >= 126);
   assert.equal(estimateBrewedMg(18, 'espresso').ok, false);
+});
+
+test('R1: the 63 mg shot is sourced to USDA FoodData Central 171891, not Newcastle 2018', () => {
+  assert.ok(CAFFEINE.sourceIds.includes('usda-fdc-espresso') && !CAFFEINE.sourceIds.includes('newcastle-2018'));
+  assert.equal(SOURCES['newcastle-2018'], undefined);
+  assert.match(SOURCES['usda-fdc-espresso'].title, /171891/);
+  // 212 mg per 100 g × 29.6 g (1 fl oz) = 62.75 mg: the engine's typical shot, unchanged.
+  assert.equal(Math.round(212 * 29.6 / 100), CAFFEINE.espressoShotMg.typical);
 });
 
 test('body curve: rises to a peak near 45 minutes, then halves every half-life', () => {

@@ -8,7 +8,10 @@ import { methodById } from './methods.ts';
 // VERIFY need an independent primary source before ship (fact-check queue).
 
 export const CAFFEINE = {
-  /** Single espresso shot (about 1 oz), synthesis §15 and §20 #35 (Newcastle 2018). */
+  /**
+   * Single espresso shot (about 1 oz). Typical 63 mg: USDA FoodData Central SR Legacy 171891, espresso
+   * at 212 mg per 100 g, is 62.8 mg in 1 fl oz (29.6 g), calculated (R1). The 60–75 range is synthesis §15, §20 #35.
+   */
   espressoShotMg: { min: 60, max: 75, typical: 63 },
   /** Caffeine as a fraction of roasted coffee mass. */
   beanFraction: { arabica: { min: 0.009, max: 0.013 }, robusta: { min: 0.017, max: 0.025 } },
@@ -23,7 +26,7 @@ export const CAFFEINE = {
   },
   decafPer6Oz: { min: 3, max: 6 },
   halfLifeH: { typical: 5, min: 1.5, max: 10 },
-  sourceIds: ['synthesis', 'newcastle-2018'],
+  sourceIds: ['synthesis', 'usda-fdc-espresso'],
   VERIFY: ['beanFraction (arabica/robusta, roasted basis)', 'extractionFraction by method', 'absorption rate used by the curve'],
 } as const;
 
