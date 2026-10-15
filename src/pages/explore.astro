@@ -1,44 +1,46 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import ExploreGallery from '../components/ExploreGallery.svelte';
+import BenchPage from '../layouts/BenchPage.astro';
+import ExploreGallery from '../components/coffee/ExploreGallery.svelte';
+
+const title = 'The Coffee Collection: Explore Origins, Brewing Methods and Flavor';
+const description = 'Three interactive pieces: a map of when and where coffee is harvested, a star chart of thirteen brewing methods, and a flower of tasting notes you can learn to find.';
+const pieces = [
+  { name: 'The Coffee Origins', url: 'https://jayarr.coffee/explore/origins/', description: 'Harvest seasons, altitude, production and flavor descriptions for 30 coffee origins.' },
+  { name: 'The Brewing Constellations', url: 'https://jayarr.coffee/explore/methods/', description: 'Thirteen brewing methods compared by contact, filter, force and time.' },
+  { name: 'The Flavor Bloom', url: 'https://jayarr.coffee/explore/flavors/', description: 'Tasting notes, how to train your nose on them, and which coffees roasters use them for.' },
+];
 ---
 
-<html lang="en">
-  <head>
-    <BaseHead
-      title="Explore — The Coffee Collection | JayArr Coffee"
-      description="Three interactive studies in coffee science. Explore origins on our world map, discover brewing methods through constellations, and find your perfect flavor."
-    />
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "The Coffee Collection",
-      "url": "https://jayarr.coffee/explore/",
-      "description": "Three interactive studies in coffee science. Explore origins on our world map, discover brewing methods through constellations, and find your perfect flavor.",
-      "applicationCategory": "EducationalApplication",
-      "operatingSystem": "Any",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "JayArr Coffee",
-        "url": "https://jayarr.coffee"
-      }
-    })}></script>
-  </head>
-  <body class="bg-cream">
-    <Header />
+<BenchPage
+  title={title}
+  description={description}
+  kicker="Explore"
+  lede="Three studies in coffee: where it grows, how it's brewed and how it tastes."
+  gallery
+  schema={[{
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'The Coffee Collection',
+    url: 'https://jayarr.coffee/explore/',
+    description,
+    hasPart: pieces.map((p) => ({ '@type': 'WebApplication', name: p.name, url: p.url, description: p.description, applicationCategory: 'EducationalApplication', operatingSystem: 'Any' })),
+    publisher: { '@type': 'Organization', name: 'JayArr Coffee', url: 'https://jayarr.coffee' },
+  }]}
+>
+  <Fragment slot="title">The Coffee Collection</Fragment>
+  <ExploreGallery client:load />
 
-    <main class="pt-20 pb-20">
-      <h1 class="sr-only">The Coffee Collection</h1>
-      <ExploreGallery client:load />
-    </main>
+  <Fragment slot="body">
+    <div class="walltext">
+      <h2>About the collection</h2>
+      <p>A bag of coffee names a place, a process and a few tasting notes. Each piece here draws one of them, and each is built on sourced research: harvest calendars and production from importers, national coffee bodies and the USDA; brewing recipes from the site's Brew Guide and brewing guides; tasting vocabulary from the SCA and World Coffee Research flavor wheel.</p>
+      <p>For the working tools, see the <a href="/tools/">toolkit</a>; for the science behind them, <a href="/deep-brew/">Deep Brew</a>.</p>
+    </div>
+  </Fragment>
+</BenchPage>
 
-    <Footer />
-  </body>
-</html>
+<style>
+  .walltext { max-width: 58ch; margin: 0 auto; text-align: center; }
+  .walltext h2 { font-size: 28px; margin-top: 12px; }
+  .walltext p { font-size: 16px; color: #5b4a3d; }
+</style>

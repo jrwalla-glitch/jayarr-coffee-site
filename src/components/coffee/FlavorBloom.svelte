@@ -1,5 +1,7 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte';
+  import { Tween } from 'svelte/motion';
+  import { cubicOut } from 'svelte/easing';
   import {
     FAMILIES, OFF_GROUPS, ALL_NOTES, MAX_PINS, noteById, familyById, groupById, exercise, evidenceFor,
     compareCard, encodeCard, decodeCard, notesInText, PROCESS_LABEL, ROAST_LABEL, ROASTER_SAMPLE,
@@ -18,7 +20,10 @@
   let { lots, origins }: Props = $props();
 
   const STORE = 'jayarr-tasting-card-v1';
-  const CX = 360, CY = 266, R = 148, CORE = 30, SPRAY = 84;
+  const CX = 360, CY = 276, R = 148, CORE = 30, SPRAY = 84;
+  const FULL = [0, 0, 720, 590];
+  // The painting's reading order, clockwise from the top: the list view follows it.
+  const DISPLAY_ORDER: FamilyId[] = ['sweet', 'floral', 'fruity', 'sour-fermented', 'green', 'roasted', 'spices', 'nutty-cocoa'];
   // Clockwise from lower left, leaving a gap at the bottom for the stem.
   const ANGLE: Record<FamilyId, number> = { roasted: -140, spices: -100, 'nutty-cocoa': -60, sweet: -20, floral: 20, fruity: 60, 'sour-fermented': 100, green: 140 };
   const SHORT: Record<FamilyId, string> = { roasted: 'Roasted', spices: 'Spices', 'nutty-cocoa': 'Nutty & cocoa', sweet: 'Sweet', floral: 'Floral', fruity: 'Fruity', 'sour-fermented': 'Sour', green: 'Green' };
@@ -26,6 +31,10 @@
   const OFF_COLOUR = '#8a8378';
 
   let familyId = $state<FamilyId | 'off' | null>(null);
+  let groupId = $state<string | null>(null);
+  let stageW = $state(640);
+  let reduced = $state(false);
+  const vb = new Tween(FULL, { duration: 700, easing: cubicOut });
   let noteId = $state<string | null>(null);
   let pins = $state<string[]>([]);
   let bag = $state('');
@@ -39,10 +48,21 @@
   let headEl = $state<HTMLElement | null>(null);
 
   let fam = $derived(familyId && familyId !== 'off' ? familyById(familyId) ?? null : null);
+
+  // How many of the sample's lots name each note: buds on the plate grow with it.
+  const COUNTS: Record<string, number> = (() => {
+    const c: Record<string, number> = {};
+    for (const l of lots) for (const id of new Set(l.notes.flatMap((t) => notesInText(t)))) c[id] = (c[id] ?? 0) + 1;
+    return c;
+  })();
+  const MAXC = Math.max(1, ...Object.values(COUNTS));
+  const budR = (id: string) => 4.5 + 8.5 * Math.sqrt((COUNTS[id] ?? 0) / MAXC);
   let note = $derived(noteId ? noteById(noteId) ?? null : null);
   let groups = $derived(familyId === 'off' ? OFF_GROUPS : fam ? fam.groups : []);
   let ev = $derived(note && note.family !== 'off' ? evidenceFor(note.id, lots) : null);
   let cmp = $derived(compareCard(pins, bag));
+  // How each phrase on the bag was read, so "milk chocolate → Chocolate" is visible, not silent.
+  let bagMapping = $derived(bag.split(/[,;\/]| and /).map((t) => t.trim()).filter(Boolean).map((t) => { const ids = notesInText(t); return ids.length ? `${t} → ${ids.map((id) => noteById(id)?.label).join(', ')}` : `${t} → no match`; }));
   let thinOrigins = $derived(note && ev?.thin ? [...new Set(lots.filter((l) => l.notes.some((t) => notesInText(t).includes(note.id))).map((l) => originName(l.o)))] : []);
   let originName = (id: string) => origins.find((o) => o.id === id)?.name ?? id;
   let originPage = (id: string) => origins.find((o) => o.id === id)?.page;
@@ -73,15 +93,23 @@
   }
   function labelAnchor(deg: number) { const s = Math.sin(rad(deg)); return s > 0.3 ? 'start' : s < -0.3 ? 'end' : 'middle'; }
 
-  async function openFamily(id: FamilyId | 'off', focusPanel = false) {
-    familyId = familyId === id && !noteId ? null : id;
+  // A family zooms the plate into its branch; the picture stays in play, so on a phone the page
+  // doesn't jump. Picking a note (a bud, or a chip in the panel) brings the note card into view.
+  function openFamily(id: FamilyId | 'off') {
+    if (familyId === id && !noteId) { closeFamily(); return; }
+    familyId = id;
     noteId = null;
-    if (focusPanel) await revealPanel();
+    const groups = id === 'off' ? OFF_GROUPS : familyById(id)!.groups;
+    // Start on the group roasters write about most, so the first buds have something to show.
+    groupId = [...groups].sort((a, b) => sumCounts(b) - sumCounts(a))[0]?.id ?? null;
   }
+  const sumCounts = (g: { notes: Note[] }) => g.notes.reduce((t, n) => t + (COUNTS[n.id] ?? 0), 0);
+  function closeFamily() { familyId = null; noteId = null; groupId = null; }
   async function openNote(id: string, reveal = true) {
     const n = noteById(id);
     if (!n) return;
     familyId = n.family as FamilyId | 'off';
+    groupId = n.group;
     noteId = id;
     if (reveal) await revealPanel();
   }
@@ -118,6 +146,7 @@
   }
 
   onMount(() => {
+    reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const q = new URLSearchParams(location.search);
     let fromLink = false;
     if (q.get('pins') || q.get('bag')) {
@@ -132,8 +161,9 @@
       if (!fromLink && s?.current && Array.isArray(s.current.pins)) { pins = s.current.pins.filter((p: string) => !!noteById(p)).slice(0, MAX_PINS); bag = typeof s.current.bag === 'string' ? s.current.bag : ''; }
     } catch { /* storage unavailable */ }
     const n = q.get('note');
-    if (n && noteById(n)) { noteId = n; familyId = noteById(n)!.family as FamilyId | 'off'; }
-    else { const f = q.get('family'); if (f && (familyById(f) || f === 'off')) familyId = f as FamilyId | 'off'; }
+    if (n && noteById(n)) { noteId = n; familyId = noteById(n)!.family as FamilyId | 'off'; groupId = noteById(n)!.group; }
+    else { const f = q.get('family'); if (f && (familyById(f) || f === 'off')) openFamily(f as FamilyId | 'off'); }
+    vb.set(zoomTarget(), { duration: 0 });
     mounted = true;
   });
   let firstSave = true;
@@ -151,6 +181,86 @@
     history.replaceState(history.state, '', q.toString() ? `${location.pathname}?${q}` : location.pathname);
   });
 
+  // ── The zoomed branch: group petals spray from the family's tip, the active group's notes grow
+  // as buds around its tip, and every label is placed so none overlap (in screen pixels).
+  const groupTip = (f: FamilyId, angle: number) => { const [tx, ty] = at(ANGLE[f], R - 6); return [tx + Math.sin(rad(angle)) * SPRAY, ty - Math.cos(rad(angle)) * SPRAY]; };
+  function zoomTarget(): number[] {
+    // Phones zoom closer: labels keep their size in pixels, so the branch needs more room on screen.
+    const W = stageW < 520 ? 370 : 440, H = W / (FULL[2] / FULL[3]);
+    if (fam) {
+      const sp = fan(fam), act = sp.find((x) => x.g.id === groupId) ?? sp[0];
+      const [gx, gy] = groupTip(fam.id, act.angle);
+      const [tx, ty] = at(ANGLE[fam.id], R);
+      // On a phone the frame centres on the buds themselves; on desktop it keeps the family petal in view too.
+      const w = stageW < 520 ? 0.9 : 0.6;
+      const ox = Math.sin(rad(act.angle)) * (stageW < 520 ? 22 : 0), oy = -Math.cos(rad(act.angle)) * (stageW < 520 ? 22 : 0);
+      const cx = gx * w + tx * (1 - w) + ox, cy = gy * w + ty * (1 - w) + oy;
+      return [cx - W / 2, cy - H / 2, W, H];
+    }
+    if (familyId === 'off') return [CX - 220, CY + 70, W, H];
+    return FULL;
+  }
+  $effect(() => { void [familyId, groupId, stageW < 520]; if (mounted) vb.set(zoomTarget(), { duration: reduced ? 0 : 700 }); });
+  let upp = $derived(vb.current[2] / Math.max(240, stageW));
+  interface Box { x: number; y: number; w: number; h: number }
+  const hit = (a: Box, b: Box) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
+  interface Bud { id: string; label: string; x: number; y: number; r: number; lx: number; ly: number; anchor: string }
+  interface GLabel { id: string; label: string; x: number; y: number; anchor: string }
+  let branch = $derived.by(() => {
+    if (!fam || !groupId) return { buds: [] as Bud[], glabels: [] as GLabel[], hidden: 0 };
+    const u = upp, fs = 14 * u;
+    const sp = fan(fam);
+    const boxes: Box[] = [];
+    // The petals' own space is taken: buds and labels go around them.
+    const [tx0, ty0] = at(ANGLE[fam.id], R - 6);
+    for (const x of sp) for (const f of [0.25, 0.5, 0.75, 1]) {
+      const px = tx0 + Math.sin(rad(x.angle)) * SPRAY * f, py = ty0 - Math.cos(rad(x.angle)) * SPRAY * f, half = f === 1 ? 6 : 12;
+      boxes.push({ x: px - half, y: py - half, w: half * 2, h: half * 2 });
+    }
+    for (const f of [0.45, 0.65, 0.85]) { const [px, py] = at(ANGLE[fam.id], R * f); boxes.push({ x: px - 26, y: py - 26, w: 52, h: 52 }); }
+    const act = sp.find((x) => x.g.id === groupId) ?? sp[0];
+    const [gx, gy] = groupTip(fam.id, act.angle);
+    // Long groups show their eight most-used notes on the plate; the panel lists every note.
+    const keep = new Set([...act.g.notes].sort((p, q) => (COUNTS[q.id] ?? 0) - (COUNTS[p.id] ?? 0)).slice(0, 8).map((x) => x.id));
+    const notes = act.g.notes.filter((x) => keep.has(x.id)), n = notes.length;
+    const span = Math.min(200, 26 * Math.max(1, n - 1)), rho = (n > 6 ? 50 : 38) * Math.max(0.8, u / 0.7);
+    const buds: Bud[] = notes.map((nt, k) => {
+      const a = n === 1 ? act.angle : act.angle - span / 2 + (k * span) / (n - 1);
+      const r = budR(nt.id);
+      const x = gx + Math.sin(rad(a)) * rho, y = gy - Math.cos(rad(a)) * rho;
+      boxes.push({ x: x - r, y: y - r, w: r * 2, h: r * 2 });
+      return { id: nt.id, label: nt.label, x, y, r, lx: 0, ly: 0, anchor: 'start', a } as Bud & { a: number };
+    });
+    const [vx, vy, vw, vh] = zoomTarget();
+    const inside = (b: Box) => b.x > vx + 6 * u && b.y > vy + 30 * u && b.x + b.w < vx + vw - 6 * u && b.y + b.h < vy + vh - 6 * u;
+    // Try spots around the point, near first, radially outward first; keep the first that is free
+    // and inside the frame, else the one that overlaps least.
+    const place = (x: number, y: number, r: number, text: string, prefer: number): { lx: number; ly: number; anchor: string } => {
+      const w = text.length * fs * 0.5, h = fs * 1.15;
+      const dirs = [prefer, prefer + 35, prefer - 35, 90, -90, 0, 180, 45, -45, 135, -135];
+      const spots: { lx: number; ly: number; anchor: string }[] = [];
+      for (const k of [1, 1.45]) for (const d of dirs) {
+        const sn = Math.sin(rad(d)), cs = Math.cos(rad(d)), g = (r + 5 * u) * k;
+        spots.push({ lx: sn * g, ly: -cs * g + fs * 0.35, anchor: sn > 0.3 ? 'start' : sn < -0.3 ? 'end' : 'middle' });
+      }
+      const boxOf = (sp: { lx: number; ly: number; anchor: string }) => ({ x: x + sp.lx - (sp.anchor === 'end' ? w : sp.anchor === 'middle' ? w / 2 : 0), y: y + sp.ly - fs * 0.85, w, h });
+      const overlap = (bx: Box) => boxes.reduce((t, b) => t + (hit(b, bx) ? Math.min(b.x + b.w, bx.x + bx.w) - Math.max(b.x, bx.x) : 0), 0) + (inside(bx) ? 0 : 1e4);
+      let pick = spots.find((spot) => { const bx = boxOf(spot); return inside(bx) && !boxes.some((b) => hit(b, bx)); });
+      if (!pick) pick = [...spots].sort((a, b2) => overlap(boxOf(a)) - overlap(boxOf(b2)))[0];
+      boxes.push(boxOf(pick));
+      return pick;
+    };
+    for (const b of buds as (Bud & { a: number })[]) Object.assign(b, place(b.x, b.y, b.r, b.label, b.a));
+    const glabels: GLabel[] = sp.map((x) => {
+      const [mx, my] = at(ANGLE[fam.id], R - 6);
+      const px = mx + Math.sin(rad(x.angle)) * SPRAY * 0.62, py = my - Math.cos(rad(x.angle)) * SPRAY * 0.62;
+      const side = x.angle - ANGLE[fam.id] >= 0 ? 90 : -90;
+      const pl = place(px, py, 16 * u, x.label, x.angle + side);
+      return { id: x.g.id, label: x.label, x: px + pl.lx, y: py + pl.ly, anchor: pl.anchor };
+    });
+    return { buds, glabels, hidden: act.g.notes.length - notes.length };
+  });
+
   const ROAST_LINE: Record<string, string> = {
     fruity: 'Lighter roasts keep more of it; darker roasts turn fruit into roast and cocoa notes.',
     floral: 'Lighter roasts keep it; floral aromas are among the first to go as a roast darkens.',
@@ -166,8 +276,8 @@
 
 {#snippet bloomSvg(mini: boolean)}
   {@const lit = mini ? new Set(pins.map((p) => noteById(p)?.family)) : null}
-  <svg viewBox={mini ? '130 30 460 520' : '0 0 720 590'} class:mini role={mini ? 'img' : 'group'}
-    aria-label={mini ? (pins.length ? `Your card: ${pins.map((p) => noteById(p)?.label).join(', ')}` : 'An empty tasting card') : 'Flavour families as petals. Choose one to see its groups and notes.'}>
+  <svg viewBox={mini ? '130 40 460 520' : vb.current.join(' ')} class:mini role={mini ? 'img' : 'group'}
+    aria-label={mini ? (pins.length ? `Your card: ${pins.map((p) => noteById(p)?.label).join(', ')}` : 'An empty tasting card') : fam ? `${fam.label}: choose a group, then a note` : 'Flavor families as petals. Choose one to open it.'}>
     <defs>
       {#each [...FAMILIES.map((f) => [f.id, f.colour]), ['off', OFF_COLOUR]] as [id, c] (id)}
         <radialGradient id="fb-wc-{mini ? 'm' : 'b'}-{id}" cx=".5" cy=".62" r=".62">
@@ -193,14 +303,15 @@
         transform="translate({CX + leaf.d * 2} {leaf.y}) rotate({leaf.d * 62})"
         role={mini ? undefined : 'button'} tabindex={mini ? undefined : 0} aria-pressed={mini ? undefined : sel}
         aria-label={mini ? undefined : `Off notes: ${OFF_GROUPS[leaf.g].label.toLowerCase()}`}
-        onclick={mini ? undefined : () => openFamily('off', true)} onkeydown={mini ? undefined : (e) => keyAct(e, () => openFamily('off', true))}>
+        onclick={mini ? undefined : () => openFamily('off')} onkeydown={mini ? undefined : (e) => keyAct(e, () => openFamily('off'))}>
         <path d={petal(78, 22, 0)} fill={mini && !lit?.has('off') ? '#e9ece2' : 'url(#fb-wc-' + (mini ? 'm' : 'b') + '-off)'} filter="url(#fb-soft-{mini ? 'm' : 'b'})" fill-opacity={mini ? 1 : sel ? 1 : 0.7} />
         <path d={petal(78, 22, 0)} fill="none" stroke="#2a1d15" stroke-opacity={mini ? 0.35 : sel ? 0.55 : 0.18} stroke-width={mini ? 2 : 1} />
         <path d="M0 -4 L0 -70" stroke="#2a1d15" stroke-width=".8" opacity=".3" />
       </g>
     {/each}
     {#if !mini}
-      <text x={CX + 66} y={CY + 262} class="leaflab" class:on={familyId === 'off'}>Off notes</text>
+      <text x={CX + 80} y={CY + 232} class="leaflab" class:on={familyId === 'off'}>Off notes</text>
+      {#if !familyId}<text x={CX} y="34" text-anchor="middle" class="cue">Tap a petal to open a family</text>{/if}
     {/if}
 
     <!-- Petals -->
@@ -210,7 +321,7 @@
       <g class="petal" class:sel class:dim transform="translate({CX} {CY}) rotate({ANGLE[f.id]})"
         role={mini ? undefined : 'button'} tabindex={mini ? undefined : 0} aria-pressed={mini ? undefined : sel}
         aria-label={mini ? undefined : `${f.label}: ${f.groups.map((g) => g.label.toLowerCase()).join(', ')}`}
-        onclick={mini ? undefined : () => openFamily(f.id, true)} onkeydown={mini ? undefined : (e) => keyAct(e, () => openFamily(f.id, true))}>
+        onclick={mini ? undefined : () => openFamily(f.id)} onkeydown={mini ? undefined : (e) => keyAct(e, () => openFamily(f.id))}>
         <path class="shape" d={petal(R, 46)} fill={mini && !lit?.has(f.id) ? '#e9ece2' : `url(#fb-wc-${mini ? 'm' : 'b'}-${f.id})`} filter="url(#fb-soft-{mini ? 'm' : 'b'})"
           fill-opacity={mini ? 1 : sel ? 1 : dim ? 0.38 : 0.86} />
         <path d={petal(R, 46)} fill="none" stroke="#2a1d15" stroke-opacity={mini ? 0.35 : sel ? 0.55 : 0.16} stroke-width={mini ? 2 : 1} />
@@ -224,21 +335,41 @@
     <!-- The open family's groups fan out from its tip -->
     {#if !mini && fam}
       {#each fan(fam) as x (x.g.id)}
-        <g class="sub" transform="translate({x.tx} {x.ty}) rotate({x.angle})" aria-hidden="true">
-          <path d={petal(SPRAY, 16, 0)} fill="url(#fb-wc-b-{fam.id})" filter="url(#fb-soft-b)" fill-opacity={note && note.group === x.g.id ? 1 : 0.72} />
-          <path d={petal(SPRAY, 16, 0)} fill="none" stroke="#2a1d15" stroke-opacity={note && note.group === x.g.id ? 0.6 : 0.25} stroke-width="1" />
+        {@const on = groupId === x.g.id}
+        <g class="sub" class:on transform="translate({x.tx} {x.ty}) rotate({x.angle})" role="button" tabindex="0" aria-pressed={on}
+          aria-label="{x.g.label}: {x.g.notes.map((n) => n.label).join(', ')}" onclick={() => (groupId = x.g.id)} onkeydown={(e) => keyAct(e, () => (groupId = x.g.id))}>
+          <path d={petal(SPRAY, 17, 0)} fill="url(#fb-wc-b-{fam.id})" filter="url(#fb-soft-b)" fill-opacity={on ? 1 : 0.62} />
+          <path d={petal(SPRAY, 17, 0)} fill="none" stroke="#2a1d15" stroke-opacity={on ? 0.6 : 0.25} stroke-width={on ? 1.4 : 1} />
           <path d="M0 -4 L0 {-SPRAY + 10}" stroke="#2a1d15" stroke-width=".7" opacity=".3" />
         </g>
-        <text x={x.lx} y={x.ly + (Math.cos(rad(x.angle)) > 0.6 ? 0 : 6)} text-anchor={labelAnchor(x.angle)} class="glab" class:on={note?.group === x.g.id}>{x.label}</text>
+      {/each}
+      {#each branch.glabels as gl (gl.id)}
+        <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions (the group petal is the keyboard target) -->
+        <text x={gl.x} y={gl.y} text-anchor={gl.anchor} class="glab" class:on={groupId === gl.id} style="font-size: {15 * upp}px; stroke-width: {4 * upp}px" onclick={() => (groupId = gl.id)}>{gl.label}</text>
+      {/each}
+      <!-- The active group's notes, as buds: bigger buds are words roasters use more often -->
+      {#each branch.buds as b (b.id)}
+        {@const sel = noteId === b.id}
+        {@const pinned = pins.includes(b.id)}
+        <g class="bud" class:sel role="button" tabindex="0" aria-pressed={sel}
+          aria-label="{b.label}{COUNTS[b.id] ? `, named in ${COUNTS[b.id]} of ${lots.length} roaster descriptions` : ''}{pinned ? ', on your card' : ''}"
+          onclick={() => openNote(b.id)} onkeydown={(e) => keyAct(e, () => openNote(b.id))}>
+          <circle cx={b.x} cy={b.y} r={Math.max(b.r, 14 * upp)} fill="transparent" />
+          <circle cx={b.x} cy={b.y} r={b.r} fill={fam.colour} fill-opacity={COUNTS[b.id] ? (sel ? 1 : 0.82) : 0.18} stroke="#2a1d15" stroke-opacity={sel ? 0.9 : 0.45} stroke-width={(sel ? 2 : 1) * upp} />
+          {#if sel}<circle cx={b.x} cy={b.y} r={b.r + 5 * upp} fill="none" stroke="#8f5d22" stroke-width={2 * upp} />{/if}
+          {#if pinned}<circle cx={b.x} cy={b.y} r={2.6 * upp} fill="#fffaf2" />{/if}
+          <text x={b.x + b.lx} y={b.y + b.ly} text-anchor={b.anchor} class="blab" class:on={sel} style="font-size: {14 * upp}px; stroke-width: {4 * upp}px">{b.label}</text>
+        </g>
       {/each}
     {/if}
 
     <!-- Family labels -->
-    {#if !mini}
+    {#if !mini && !familyId}
       {#each FAMILIES as f (f.id)}
         {#if familyId !== f.id}
           {@const [lx, ly] = at(ANGLE[f.id], R + 22)}
-          <text x={lx} y={ly + (Math.cos(rad(ANGLE[f.id])) > 0.5 ? 0 : 7)} text-anchor={labelAnchor(ANGLE[f.id])} class="flab" class:dim={!!familyId}>{SHORT[f.id]}</text>
+          <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions (the petal itself is the keyboard target) -->
+          <text x={lx} y={ly + (Math.cos(rad(ANGLE[f.id])) > 0.5 ? 0 : 7)} text-anchor={labelAnchor(ANGLE[f.id])} class="flab" onclick={() => openFamily(f.id)}>{SHORT[f.id]}</text>
         {/if}
       {/each}
     {/if}
@@ -263,8 +394,7 @@
   </svg>
 {/snippet}
 
-{#snippet bars(title: string, rows: { key: string; hits: number; of: number; rate: number }[], label: (k: string) => string, overall: number)}
-  {@const top = Math.max(overall, ...rows.map((r) => r.rate), 0.05)}
+{#snippet bars(title: string, rows: { key: string; hits: number; of: number; rate: number }[], label: (k: string) => string, overall: number, top: number)}
   <div class="bars">
     <p class="lbl">{title}</p>
     {#each rows as r (r.key)}
@@ -274,7 +404,7 @@
           <span class="fill" style:width="{(r.rate / top) * 100}%"></span>
           <span class="base" style:left="{(overall / top) * 100}%"></span>
         </span>
-        <span class="bn"><b>{r.hits}</b> of {r.of}</span>
+        <span class="bn"><b>{r.hits}</b> of {r.of} · {pct(r.rate)}</span>
       </div>
     {/each}
   </div>
@@ -291,18 +421,22 @@
         </div>
       </div>
       {#if view === 'bloom'}
-        <div class="gp-frame painting" style="--mat: #dde4d6; --matpad: 4px; --matpad-phone: 2px">
-          <div class="bloom">{@render bloomSvg(false)}</div>
+        <div class="gp-frame painting" style="--mat: #efe8da; --matpad: 16px; --matpad-phone: 8px">
+          <div class="bloom" bind:clientWidth={stageW}>
+            {@render bloomSvg(false)}
+            {#if familyId}<button type="button" class="allfam" onclick={closeFamily}>← All families</button>{/if}
+          </div>
         </div>
         <p class="gp-plaque"><b>The Flavor Bloom</b><small>A botanical tasting guide</small></p>
-        <p class="cap">Eight families from the SCA and WCR Coffee Taster's Flavor Wheel. The leaves on the stem are off notes: tastes that usually mean a flaw.</p>
+        <p class="cap">{#if fam}Tap a group, then a note. Bigger buds are words roasters use more often in their lot descriptions.{#if branch.hidden}{' '}{branch.hidden} rarer {branch.hidden === 1 ? 'note is' : 'notes are'} in the list beside the plate.{/if}{:else}Eight families from the SCA and WCR Coffee Taster's Flavor Wheel; the leaves on the stem are off notes, tastes that usually mean a flaw.{/if}</p>
       {:else}
-        <div class="list gp-label">
-          {#each [...FAMILIES.map((f) => ({ id: f.id as FamilyId | 'off', label: f.label, colour: f.colour, groups: f.groups })), { id: 'off' as const, label: 'Off notes', colour: OFF_COLOUR, groups: OFF_GROUPS }] as f (f.id)}
+        <div class="gp-frame" style="--mat: #efe8da; --matpad: 16px; --matpad-phone: 8px">
+        <div class="list">
+          {#each [...DISPLAY_ORDER.map((id) => familyById(id)!).map((f) => ({ id: f.id as FamilyId | 'off', label: f.label, colour: f.colour, groups: f.groups })), { id: 'off' as const, label: 'Off notes', colour: OFF_COLOUR, groups: OFF_GROUPS }] as f (f.id)}
             <section class="lfam">
               <h3><span class="sw" style:background={f.colour}></span>{f.label}</h3>
               {#each f.groups as g (g.id)}
-                <p class="lgroup">{g.label}</p>
+                {#if !(g.notes.length === 1 && g.notes[0].label === g.label)}<p class="lgroup">{g.label}</p>{/if}
                 <ul class="chips">
                   {#each g.notes as n (n.id)}
                     <li><button type="button" class="chip" class:on={noteId === n.id} aria-pressed={noteId === n.id} onclick={() => openNote(n.id)}>{n.label}{#if pins.includes(n.id)}<span class="pinmark" aria-label=", on your card">●</span>{/if}</button></li>
@@ -312,6 +446,8 @@
             </section>
           {/each}
         </div>
+        </div>
+        <p class="gp-plaque"><b>The Flavor Bloom</b><small>Every note, as a list</small></p>
       {/if}
     </div>
 
@@ -319,7 +455,7 @@
       {#if !familyId}
         <div class="intro">
           <h2 tabindex="-1" bind:this={headEl}>What can a coffee taste like?</h2>
-          <p>Pick a petal to open a flavour family, then a note. For each note you get what it's like, a kitchen exercise to train your nose on it, and what roasters' own descriptions show about where it turns up.</p>
+          <p>Tap a petal to open a flavor family; its notes grow on the plate. For each note you get what it's like, a kitchen exercise to train your nose on it, and what roasters' own descriptions show about where it turns up.</p>
           <p class="lbl">Or start with a note</p>
           <ul class="chips">
             {#each STARTERS as id (id)}
@@ -329,7 +465,7 @@
           </ul>
           <div class="kinds">
             <p><b>Roasters say</b> Words counted from {lots.length} lot descriptions in {ROASTER_SAMPLE.label}.</p>
-            <p><b>Tends to</b> General tendencies, with their sources.</p>
+            <p><b>In general</b> Broad tendencies, with their sources.</p>
             <p><b>You noticed</b> Your own tasting card, kept on this device.</p>
           </div>
         </div>
@@ -338,23 +474,23 @@
         <div class="famhead">
           <span class="sw big" style:background={colourOf(familyId)}></span>
           <div>
-            <p class="kick">Flavour family</p>
+            <p class="kick">Flavor family</p>
             <h2 tabindex="-1" bind:this={headEl}>{label}</h2>
           </div>
         </div>
         <p class="blurb">{fam ? fam.blurb : 'The wheel\'s "other" notes: papery, musty and chemical tastes. If you can pick one out, something went wrong on the farm, in processing, in storage or with age.'}</p>
         {#if fam?.brings}
-          <div class="tends"><p class="lbl">Tends to come with</p><p>{fam.brings}</p></div>
+          <div class="tends"><p class="lbl">In general</p><p>{fam.brings}</p></div>
         {/if}
         {#each groups as g (g.id)}
-          <p class="lgroup">{g.label}</p>
+          <button type="button" class="lgroup gbtn" class:on={groupId === g.id} aria-pressed={groupId === g.id} onclick={() => (groupId = g.id)}>{g.label}</button>
           <ul class="chips">
             {#each g.notes as n (n.id)}
               <li><button type="button" class="chip" onclick={() => openNote(n.id, true)}>{n.label}{#if pins.includes(n.id)}<span class="pinmark" aria-label=", on your card">●</span>{/if}</button></li>
             {/each}
           </ul>
         {/each}
-        <button type="button" class="linkish back" onclick={() => { familyId = null; noteId = null; }}>← All families</button>
+        <button type="button" class="linkish back" onclick={closeFamily}>← All families</button>
       {:else}
         {@const g = groupById(note.group)}
         <div class="notecard">
@@ -379,8 +515,9 @@
               {#if ev.thin}
                 <p>Too few to compare processes or origins honestly. {ev.lots === 1 ? 'The lot is' : 'They are'} from {thinOrigins.join(', ')}.</p>
               {:else}
-                {@render bars('By process', ev.process, (k) => PROCESS_LABEL[k] ?? k, ev.overall)}
-                {@render bars('By roast', ev.roast, (k) => ROAST_LABEL[k] ?? k, ev.overall)}
+                {@const top = Math.max(ev.overall, ...ev.process.map((r) => r.rate), ...ev.roast.map((r) => r.rate), 0.05)}
+                {@render bars('By process', ev.process, (k) => PROCESS_LABEL[k] ?? k, ev.overall, top)}
+                {@render bars('By roast', ['light', 'medium', 'dark'].map((k) => ev!.roast.find((r) => r.key === k)).filter((r) => !!r) as typeof ev.roast, (k) => ROAST_LABEL[k] ?? k, ev.overall, top)}
                 {#if ev.origins.filter((o) => o.hits >= 2).length}
                   <p class="lbl orig">Origins where it's named most often</p>
                   <ul class="origins">
@@ -390,11 +527,12 @@
                     {/each}
                   </ul>
                 {/if}
-                <p class="quiet small">The line on each bar marks {pct(ev.overall)}, the share across all lots. These are roasters' words about their own lots, not a measurement, and small groups swing with a single lot.</p>
+                <p class="quiet small">All bars share one scale; the dark line marks {pct(ev.overall)}, the share across all lots. These are roasters' words about their own lots, not a measurement, and small groups swing with a single lot.</p>
               {/if}
             {/if}
           </div>
 
+          {#if fam?.brings}<div class="tends"><p class="lbl">In general</p><p>{fam.brings}</p></div>{/if}
           <div class="changes">
             <p class="lbl">What changes it</p>
             <ul>
@@ -441,7 +579,8 @@
           {#if cmp.shared.length}<p><b>You both found</b> {cmp.shared.map((x) => noteById(x)?.label).join(', ')}</p>{/if}
           {#if cmp.near.length}<p><b>Close</b> {cmp.near.map((x) => `${noteById(x)?.label} (same family as the bag's ${noteById(cmp.bagNotes.find((b) => noteById(b)?.family === noteById(x)?.family)!)?.label.toLowerCase()})`).join(', ')}</p>{/if}
           {#if cmp.yoursOnly.length}<p><b>Only you</b> {cmp.yoursOnly.map((x) => noteById(x)?.label).join(', ')}</p>{/if}
-          {#if cmp.bagOnly.length}<p><b>Only the bag</b> {cmp.bagOnly.map((x) => noteById(x)?.label).join(', ')}: open {cmp.bagOnly.length === 1 ? 'it' : 'one'} to try the exercise.</p>{/if}
+          {#if cmp.bagOnly.length}<p><b>Only the bag</b> {#each cmp.bagOnly as x, i (x)}{i > 0 ? ', ' : ''}<button type="button" class="inl" onclick={() => openNote(x)}>{noteById(x)?.label}</button>{/each}{' '}<span class="quiet">(open one to try its exercise)</span></p>{/if}
+          <p class="quiet small mapping">Read from the bag: {bagMapping.join(' · ')}</p>
           <p class="quiet small">Tasting notes are hints, not a test: a note in the same family counts as close.</p>
         </div>
       {:else if bag.trim() && !cmp.bagNotes.length}
@@ -482,9 +621,19 @@
   .warn { color: #8f3b22; margin: 8px 0 0; }
 
   .body { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 32px; align-items: start; }
-  .stage { min-width: 0; }
+  .stage { min-width: 0; position: sticky; top: 84px; }
   .stagebar { display: flex; justify-content: flex-end; margin-bottom: 10px; }
-  .painting .bloom { background: radial-gradient(90% 80% at 50% 42%, #e7ece0 0%, #dde4d6 70%, #d3dbcb 100%); }
+  .painting .bloom { position: relative; background: radial-gradient(90% 80% at 50% 42%, #e7ece0 0%, #dde4d6 70%, #d3dbcb 100%); box-shadow: inset 0 0 0 1px rgba(120, 140, 100, .35); }
+  .allfam { position: absolute; top: 10px; left: 10px; appearance: none; border: 1px solid rgba(42, 29, 21, .25); background: rgba(251, 248, 243, .92); border-radius: 999px; padding: 6px 12px; font: 500 13.5px 'IBM Plex Sans', sans-serif; color: var(--ink); cursor: pointer; }
+  .allfam:hover { background: #fff; }
+  .budcue { position: absolute; bottom: 8px; left: 0; right: 0; margin: 0; text-align: center; font: italic 400 15px 'Instrument Serif', Georgia, serif; color: #4f5b49; pointer-events: none; }
+  .cue { font: italic 400 21px 'Instrument Serif', Georgia, serif; fill: #4f5b49; }
+  .bud { cursor: pointer; outline: none; }
+  .bud:focus-visible circle:nth-of-type(2) { stroke: var(--crema-deep); stroke-width: 3; }
+  .blab { font-family: 'Instrument Serif', Georgia, serif; fill: #2a1d15; paint-order: stroke; stroke: #e6ebde; stroke-linejoin: round; }
+  .blab.on { fill: #6b3a12; }
+  .sub { cursor: pointer; outline: none; }
+  .sub:focus-visible path:nth-child(2) { stroke: var(--crema-deep); stroke-width: 3; stroke-opacity: 1; }
   .seg { display: flex; border: 1px solid var(--rule); border-radius: 999px; overflow: hidden; flex: none; }
   .seg button { appearance: none; border: 0; background: #fff; padding: 7px 14px; min-height: 36px; font: 500 13.5px 'IBM Plex Sans', sans-serif; color: var(--ink-2); cursor: pointer; }
   .seg button[aria-pressed='true'] { background: var(--ink); color: #f3ede3; }
@@ -498,17 +647,21 @@
   .petal:focus-visible .shape, .leaf:focus-visible path:first-child { stroke: var(--crema-deep); stroke-width: 4; }
   .sub path { animation: grow .45s cubic-bezier(.2, .7, .2, 1) both; transform-origin: 0 0; }
   @keyframes grow { from { transform: scale(.82); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-  .flab { font: 400 25px 'Instrument Serif', Georgia, serif; fill: #2a1d15; pointer-events: none; }
+  .flab { font: 400 25px 'Instrument Serif', Georgia, serif; fill: #2a1d15; cursor: pointer; }
   .flab.dim { fill: #5f6a58; }
-  .glab { font: italic 400 22px 'Instrument Serif', Georgia, serif; fill: #2a1d15; pointer-events: none; paint-order: stroke; stroke: #e2e8da; stroke-width: 5px; }
+  .glab { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; fill: #2a1d15; cursor: pointer; paint-order: stroke; stroke: #e2e8da; stroke-linejoin: round; }
   .glab.on { fill: var(--crema-deep); }
   .leaflab { font: italic 400 19px 'Instrument Serif', Georgia, serif; fill: #4f5b49; letter-spacing: .02em; }
   .leaflab.on { fill: var(--ink); }
   svg.mini { width: 100%; height: auto; }
 
-  .list { max-height: 640px; overflow: auto; padding: 4px 6px 8px; }
+  .list { max-height: 640px; overflow: auto; padding: 8px 14px 12px; background: #fbf8f1; }
   .lfam h3 { font: 400 26px/1.1 'Instrument Serif', Georgia, serif; margin: 14px 0 4px; display: flex; gap: 10px; align-items: center; }
   .lgroup { font: 600 13px/1.3 'IBM Plex Sans', sans-serif; color: var(--ink-2); margin: 10px 0 6px; }
+  .gbtn { display: block; appearance: none; border: 0; background: none; padding: 2px 0; cursor: pointer; text-align: left; }
+  .gbtn.on { color: var(--crema-deep); text-decoration: underline; text-underline-offset: 3px; }
+  .inl { appearance: none; border: 0; background: none; padding: 0; font: inherit; color: var(--crema-deep); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .mapping { margin-top: 6px !important; }
   .chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
   .chip { appearance: none; border: 1px solid var(--rule); background: #fff; color: var(--ink); border-radius: 999px; padding: 6px 12px; min-height: 36px; font: 500 14px 'IBM Plex Sans', sans-serif; cursor: pointer; display: inline-flex; gap: 8px; align-items: center; }
   .chip:hover { border-color: var(--ink-3); }
@@ -537,7 +690,7 @@
   .evidence .lbl { margin: 0 0 6px; }
   .evidence .evhead { font-size: 16px; }
   .bars { margin: 10px 0 6px; }
-  .bar { display: grid; grid-template-columns: 112px minmax(0, 1fr) 76px; gap: 10px; align-items: center; margin: 4px 0; font-size: 14px; }
+  .bar { display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; gap: 10px; align-items: center; margin: 4px 0; font-size: 14px; }
   .bk { color: var(--ink-2); }
   .track { position: relative; height: 10px; background: #f1e9dd; border-radius: 5px; }
   .fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 5px; background: var(--crema); }
@@ -570,6 +723,7 @@
   .x:hover { background: #f1e9dd; }
   .bagin { display: block; max-width: 520px; }
   .bagin input { width: 100%; font: 400 15px 'IBM Plex Sans', sans-serif; padding: 9px 12px; border: 1px solid var(--rule); border-radius: 10px; background: #fff; color: var(--ink); min-height: 42px; }
+  .bagin input:focus-visible { outline: 3px solid rgba(143, 93, 34, .55); outline-offset: 1px; border-color: var(--crema-deep); }
   .cmp { margin: 12px 0 0; padding: 10px 14px; background: #f6efe4; border-radius: 12px; }
   .cmp p { margin: 0 0 4px; font-size: 15px; }
   .cmp b { font: 500 11px 'IBM Plex Mono', monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--crema-deep); margin-right: 6px; }
@@ -581,14 +735,16 @@
 
   @media (max-width: 900px) {
     .body { grid-template-columns: 1fr; }
-    .card { grid-template-columns: 110px minmax(0, 1fr); gap: 14px; }
+    .stage { position: static; }
+    .card { grid-template-columns: 1fr; gap: 10px; }
+    .cardart { width: 120px; }
   }
   @media (max-width: 640px) {
     .flab { font-size: 31px; }
     .glab { font-size: 26px; stroke-width: 6px; }
     .leaflab { font-size: 24px; }
     .panel h2 { font-size: 34px; }
-    .bar { grid-template-columns: 88px minmax(0, 1fr) 70px; gap: 8px; }
+    .bar { grid-template-columns: 78px minmax(0, 1fr) auto; gap: 8px; }
     .card h2 { font-size: 28px; }
   }
   @media (prefers-reduced-motion: reduce) { .sub path { animation: none; } .petal .shape, .petal { transition: none; } }

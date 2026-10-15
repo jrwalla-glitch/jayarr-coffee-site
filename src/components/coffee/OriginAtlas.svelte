@@ -157,13 +157,21 @@
     return { ring, label, regionLabel };
   });
 
+  // Research scopes in plain words: which calendar or band a figure describes.
+  function scopeText(sc: string): string {
+    if (/^arabica$/i.test(sc)) return 'The arabica harvest.';
+    if (/^robusta$/i.test(sc)) return 'The robusta harvest.';
+    return `The calendar shown: ${sc.replace(/ illustrative calendar/i, '').replace(/^\w/, (c) => c.toLowerCase())}.`.replace('calendar shown: huila', "calendar shown: Huila's");
+  }
+  const altScope = (sc: string) => sc.replace(/;?\s*not national extrema\.?/i, '; not the highest or lowest farms.').replace(/not national extrema/i, "not the country's highest or lowest farms");
   const stateOf = (o: Origin) => harvestState(o, month);
   const live = (o: Origin) => { const s = stateOf(o); return s === 'main' || s === 'second'; };
+  // Country fills stay quiet: a whole country isn't a growing region. Only the chosen ones are rust;
+  // the dots carry who is harvesting.
   function fillFor(id: string) {
-    if (!COFFEE.has(id)) return '#e2dbcd';
-    const o = originById(id)!;
-    if (sel?.id === id || vs?.id === id) return '#a65f26';
-    return live(o) ? '#c98a4e' : '#dfc29c';
+    if (!COFFEE.has(id)) return '#e4ddd0';
+    if (sel?.id === id || vs?.id === id) return '#b0672b';
+    return '#ddc9a8';
   }
   const src = (id?: string) => (id && sources[id]) || null;
   let arrival = $derived(sel ? ARRIVAL_EXAMPLES.find((a) => a.origin === sel!.name) ?? null : null);
@@ -177,11 +185,14 @@
       <HarvestRing harvest={o.harvest} month={month} labels size={compact ? 118 : 150} label="{o.name} harvest: {harvestText(o)}" />
       <AltitudeBand arabica={o.altitudeM} robusta={o.robustaAltitudeM} name={o.name} height={compact ? 128 : 160} />
     </div>
+    {#if !compact}
+      <ul class="rkey" aria-label="Ring key"><li><span class="k main"></span>Main harvest</li>{#if o.harvest.second}<li><span class="k second"></span>Second crop</li>{/if}<li><span class="k edge"></span>Uncertain edge</li><li>The hand points to {MONTHS_LONG[month - 1]}</li></ul>
+    {/if}
     <dl class="facts">
-      <div><dt>Harvest</dt><dd>{harvestText(o)}{#if o.harvest.scope && !compact}<span class="sub">Shown: {o.harvest.scope.charAt(0).toLowerCase() + o.harvest.scope.slice(1)}.</span>{/if}{#if o.harvest.variesBy && !compact}<span class="sub">{o.harvest.variesBy}</span>{/if}</dd></div>
-      <div><dt>Altitude</dt><dd>{o.altitudeM ? bandText(o.altitudeM) : 'Not established'}{#if o.robustaAltitudeM}<span class="sub">Robusta {bandText(o.robustaAltitudeM)}</span>{/if}{#if o.altitudeM?.scope && !compact}<span class="sub">{o.altitudeM.scope}</span>{/if}</dd></div>
+      <div><dt>Harvest</dt><dd>{harvestText(o)}{#if o.harvest.scope && !compact}<span class="sub">{scopeText(o.harvest.scope)}</span>{/if}{#if o.harvest.variesBy && !compact}<span class="sub">{o.harvest.variesBy}</span>{/if}</dd></div>
+      <div><dt>Altitude</dt><dd>{o.altitudeM ? bandText(o.altitudeM) : 'Not established'}{#if o.robustaAltitudeM}<span class="sub">Robusta {bandText(o.robustaAltitudeM)}</span>{/if}{#if o.altitudeM?.scope && !compact}<span class="sub">{altScope(o.altitudeM.scope)}</span>{/if}</dd></div>
       {#if !compact}
-        <div><dt>Production</dt><dd>{productionText(o) ?? 'No current official figure'}{#if o.production?.arabicaShare != null && o.production.arabicaShare < 0.95}<span class="sub">About {Math.round(o.production.arabicaShare * 100)}% arabica, the rest robusta</span>{/if}{#if o.production}<span class="sub">{src(o.production.source)?.title ?? 'USDA FAS'}</span>{/if}</dd></div>
+        <div><dt>Production</dt><dd>{productionText(o) ?? 'No current official figure'}{#if o.production?.arabicaShare != null && o.production.arabicaShare < 0.95}<span class="sub">{o.production.arabicaShare < 0.03 ? 'All counted as robusta' : `About ${Math.round(o.production.arabicaShare * 100)}% arabica, the rest robusta`}</span>{/if}{#if o.production}<span class="sub">{src(o.production.source)?.title ?? 'USDA FAS'}</span>{/if}</dd></div>
       {/if}
       <div><dt>Varieties</dt><dd>{o.varieties.join(', ') || 'Not established'}</dd></div>
       <div><dt>Processing</dt><dd>{o.processing.join(', ') || 'Not established'}</dd></div>
@@ -201,10 +212,13 @@
     </div>
     {#if narrow && !sel}
       <div class="seg regions" role="group" aria-label="Map region">
-        {#each CONTINENTS as c (c.id)}<button type="button" aria-pressed={region === c.id} onclick={() => (region = c.id)}>{c.label}</button>{/each}
+        {#each CONTINENTS as c (c.id)}<button type="button" aria-pressed={region === c.id} onclick={() => (region = c.id)}>{c.label} <span class="cnt">{harvesting.filter((o) => o.continent === c.id).length}</span></button>{/each}
       </div>
     {/if}
   </div>
+  <p class="nowline"><span class="lbl">Harvesting in {MONTHS_LONG[month - 1]}</span>
+    {#each harvesting as o, i (o.id)}{i > 0 ? ' · ' : ''}<button type="button" class="nowname" onclick={() => choose(o.id)}>{o.name}</button>{/each}
+  </p>
 
   <div class="body">
     <div class="stage">
@@ -220,7 +234,8 @@
             </filter>
             <radialGradient id="oa-vignette" cx=".5" cy=".5" r=".7"><stop offset=".6" stop-color="#5a5040" stop-opacity="0" /><stop offset="1" stop-color="#5a5040" stop-opacity=".22" /></radialGradient>
           </defs>
-          <rect x="-50" y="-50" width="1100" height="470" fill="#cbcfd5" filter="url(#oa-grain)" />
+          <rect x="-50" y="-50" width="1100" height="470" fill="#ccd0cc" filter="url(#oa-grain)" />
+          <rect x="-50" y="-50" width="1100" height="470" fill="#f1e2c4" opacity=".18" />
           <rect x="-50" y={TROPIC_CANCER_Y} width="1100" height={TROPIC_CAPRICORN_Y - TROPIC_CANCER_Y} fill="#d9d2c2" opacity=".35" />
           <g class="lines">
             <line x1="-50" x2="1050" y1={TROPIC_CANCER_Y} y2={TROPIC_CANCER_Y} />
@@ -310,7 +325,7 @@
           <span><span class="dot on"></span> Harvesting in {MONTHS_LONG[month - 1]}</span>
           <span><span class="dot edge"></span> Uncertain edge</span>
           <span><span class="dot"></span> Not harvesting</span>
-          <span><span class="ringk"></span> Rings: each origin's year, January at the top</span>
+          <span class="kring">{#if zoom > 2}<span class="ringk"></span> Ring: its 12-month harvest calendar, January at the top{:else}Pick an origin to zoom in and see its year as a ring{/if}</span>
         </div>
       </div>
       <p class="gp-plaque"><b>The Coffee Origins</b><small>An interactive world map</small></p>
@@ -368,7 +383,7 @@
         {/if}
         {#if roasterWords[sel.id]?.words.length}
           <div class="desc">
-            <p class="lbl">Roasters' words, winter 2026</p>
+            <p class="lbl">Roasters' words, January–March 2026</p>
             <p class="small">Across {roasterWords[sel.id].lots} lots from {sel.name} in our catalog sample, the notes roasters used most:</p>
             <ul class="chips">
               {#each roasterWords[sel.id].words as w (w.id)}<li><a class="chip" href="/explore/flavors/?note={w.id}">{w.label} <span class="n">{w.n}</span></a></li>{/each}
@@ -396,7 +411,7 @@
         </div>
         <label class="pickvs">
           <span class="lbl">Compare with</span>
-          <select onchange={(e) => { const v = (e.currentTarget as HTMLSelectElement).value; if (v) { vsId = v; picking = false; } }}>
+          <select onchange={async (e) => { const v = (e.currentTarget as HTMLSelectElement).value; if (v) { vsId = v; picking = false; await tick(); document.getElementById('oa-label')?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' }); headEl?.focus({ preventScroll: true }); } }}>
             <option value="">Choose an origin…</option>
             {#each ORIGINS.filter((o) => o.id !== sel!.id) as o (o.id)}<option value={o.id}>{o.name}</option>{/each}
           </select>
@@ -430,7 +445,13 @@
   .quiet { color: var(--ink-3); }
   .small { font-size: 14px; }
 
-  .controls { display: flex; justify-content: space-between; align-items: center; gap: 10px 14px; flex-wrap: wrap; margin-bottom: 12px; }
+  .controls { display: flex; justify-content: center; align-items: center; gap: 10px 14px; flex-wrap: wrap; margin-bottom: 10px; }
+  .nowline { text-align: center; margin: 0 auto 14px; max-width: 980px; font-size: 15px; color: var(--ink-2); line-height: 1.7; }
+  .nowline .lbl { display: inline; margin-right: 8px; color: var(--crema-deep); }
+  .nowname { appearance: none; border: 0; background: none; padding: 0; font: 500 15px 'IBM Plex Sans', sans-serif; color: var(--ink); text-decoration: underline; text-decoration-color: #c9a46e; text-underline-offset: 3px; cursor: pointer; }
+  .nowname:hover { color: var(--crema-deep); }
+  .cnt { font: 500 11.5px 'IBM Plex Mono', monospace; background: #f1e3cc; color: #6b3a12; border-radius: 999px; padding: 1px 6px; margin-left: 2px; }
+  [aria-pressed='true'] .cnt { background: #f3ede3; color: #2a1d15; }
   .monthpick { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .monthpick .lbl { margin: 0; }
   .months { display: flex; border: 1px solid var(--rule); border-radius: 999px; overflow: hidden; background: #fff; }
@@ -497,9 +518,15 @@
   .oname { font: 600 15px 'IBM Plex Sans', sans-serif; }
   .ohar { font: 500 12.5px 'IBM Plex Mono', monospace; color: var(--ink-3); text-align: right; }
 
-  .x { position: absolute; top: 0; right: 0; width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--rule); background: #fff; font-size: 19px; cursor: pointer; color: var(--ink-2); }
+  .x { position: absolute; top: 14px; right: 14px; width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--rule); background: #fff; font-size: 19px; cursor: pointer; color: var(--ink-2); }
   .pfacts .pair { display: flex; gap: 18px; align-items: center; justify-content: center; margin: 4px 0 8px; }
   .facts { margin: 0; border-top: 1px solid var(--rule); }
+  .rkey { list-style: none; margin: 0 0 10px; padding: 0; display: flex; gap: 4px 12px; flex-wrap: wrap; justify-content: center; font-size: 12.5px; color: var(--ink-2); }
+  .rkey li { display: inline-flex; align-items: center; gap: 5px; }
+  .k { width: 14px; height: 8px; border-radius: 2px; display: inline-block; }
+  .k.main { background: #b86e2c; }
+  .k.second { background: #e2a861; }
+  .k.edge { background: repeating-linear-gradient(45deg, #f1e2cc 0 2px, #c98a4e 2px 3.4px); }
   .facts div { display: grid; grid-template-columns: 96px 1fr; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--rule); }
   .facts dt { font: 500 11px 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); padding-top: 2px; }
   .facts dd { margin: 0; font-size: 14.5px; }
@@ -516,7 +543,8 @@
   .actions { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin: 14px 0; }
   .primary { display: inline-block; background: var(--ink); color: #f3ede3; border-radius: 999px; padding: 10px 18px; font: 600 15px 'IBM Plex Sans', sans-serif; text-decoration: none; }
   .linkish { appearance: none; border: 0; background: none; padding: 2px 0; font: inherit; font-size: 15px; color: var(--crema-deep); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
-  .pickvs select { font: 400 15px 'IBM Plex Sans', sans-serif; padding: 8px 12px; border: 1px solid var(--rule); border-radius: 10px; background: #fff; color: var(--ink); min-height: 42px; }
+  .pickvs select { appearance: none; font: 500 15px 'IBM Plex Sans', sans-serif; padding: 9px 38px 9px 14px; border: 1px solid #c9b493; border-radius: 999px; color: var(--ink); min-height: 44px; cursor: pointer; background: #fbf6ec url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%235b4a3d' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 14px center; }
+  .pickvs select:focus-visible { outline: 3px solid rgba(143, 93, 34, .55); outline-offset: 2px; }
   .cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .cmp h3 { font: 400 24px 'Instrument Serif', Georgia, serif; margin: 0; text-align: center; }
 

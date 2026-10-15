@@ -1,57 +1,41 @@
 ---
-import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
-import WorkshopScene from '../../components/WorkshopScene.svelte';
+import BenchPage from '../../layouts/BenchPage.astro';
+import ToolBench from '../../components/coffee/ToolBench.svelte';
+import { TOOLS, TOOL_GROUPS } from '../../data/tools.ts';
+
+const title = 'Coffee Tools: Brew Guide, Grind, Water, Caffeine and More';
+const description = 'Every JayArr Coffee tool on one bench, grouped by the job: brew a cup, fix a bad one, check caffeine and freshness, choose a machine or pods, and explore origins and flavour.';
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead
-			title="Coffee Toolkit — JayArr Coffee"
-			description="Coffee tools that do the maths and show the reasoning: a brew guide with timed pours, a coffee doctor, grind and water guides, caffeine, freshness, drinks, machines and Nespresso pods."
-		/>
-		<script type="application/ld+json" set:html={JSON.stringify({
-			"@context": "https://schema.org",
-			"@type": "WebApplication",
-			"name": "JayArr Coffee tools",
-			"url": "https://jayarr.coffee/tools/",
-			"description": "Coffee tools: brew guide, coffee doctor, extraction map, grind guide and calibrator, water recipes, caffeine, freshness, drinks, espresso machines and Nespresso pods.",
-			"applicationCategory": "UtilityApplication",
-			"operatingSystem": "Any",
-			"offers": {
-				"@type": "Offer",
-				"price": "0",
-				"priceCurrency": "USD"
-			},
-			"publisher": {
-				"@type": "Organization",
-				"name": "JayArr Coffee",
-				"url": "https://jayarr.coffee"
-			}
-		})}></script>
-		<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-	</head>
-	<body class="bg-cream">
-		<Header />
+<BenchPage
+  title={title}
+  description={description}
+  kicker="The toolkit"
+  lede="Every tool draws what it works out, so you can see why the numbers are what they are. Pick the job you're doing; anything you've saved on this device is waiting at the top."
+  schema={[{
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'JayArr Coffee tools',
+    url: 'https://jayarr.coffee/tools/',
+    description,
+    hasPart: TOOLS.map((t) => ({ '@type': 'WebApplication', name: t.name, url: `https://jayarr.coffee${t.href}`, description: t.blurb, applicationCategory: t.group === 'explore' ? 'EducationalApplication' : 'UtilityApplication', operatingSystem: 'Any' })),
+    publisher: { '@type': 'Organization', name: 'JayArr Coffee', url: 'https://jayarr.coffee' },
+  }]}
+>
+  <Fragment slot="title">The coffee bench: <em>every tool, by the job</em></Fragment>
+  <ToolBench client:load />
 
-		<!-- Slim header strip -->
-		<section class="bg-charcoal pt-28 pb-10">
-			<div class="max-w-3xl mx-auto px-6 text-center">
-				<span class="text-xs uppercase tracking-widest text-copper font-medium">Practical Tools</span>
-				<h1 class="font-serif text-3xl md:text-5xl font-bold text-cream mt-2 mb-3">Your Coffee Toolkit</h1>
-				<p class="text-cream/60 max-w-xl mx-auto text-sm leading-relaxed">
-					Brew a better cup, fix a disappointing one, and choose the right gear. Every tool shows its reasoning and its sources.
-				</p>
-			</div>
-		</section>
-
-		<!-- Workshop scene -->
-		<section class="py-8 md:py-12">
-			<WorkshopScene client:load />
-		</section>
-
-		<Footer />
-	</body>
-</html>
+  <Fragment slot="body">
+    <h2>How the tools fit together</h2>
+    <p>Most cups start in the <a href="/tools/brew-ratio/">Brew Guide</a>: pick a brewer and a mug and it works out the coffee, the water, the temperature and every pour. The <a href="/tools/grind-guide/">Grind Guide</a> shows how fine to grind, and the <a href="/deep-brew/calibrator/">Grind Calibrator</a> turns that into a setting on your own grinder.</p>
+    <p>If the cup comes out sour, bitter or weak, <a href="/tools/fix-my-coffee/">Fix My Coffee</a> asks a few questions and hands one change back to the Brew Guide. The <a href="/deep-brew/extraction/">Extraction Map</a> goes further, with a refractometer reading if you have one.</p>
+    <p>The tools marked Deep Brew belong to the site's science section, <a href="/deep-brew/">Deep Brew</a>, where the research behind them lives.</p>
+    <h2>Every tool</h2>
+    {TOOL_GROUPS.map((g) => (
+      <>
+        <h3>{g.label}</h3>
+        <ul>{TOOLS.filter((t) => t.group === g.id).map((t) => <li><a href={t.href}>{t.name}</a>: {t.blurb.charAt(0).toLowerCase() + t.blurb.slice(1)}.</li>)}</ul>
+      </>
+    ))}
+  </Fragment>
+</BenchPage>

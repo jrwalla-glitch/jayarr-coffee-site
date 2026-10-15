@@ -57,8 +57,8 @@ function family(id: FamilyId, label: string, colour: string, blurb: string, brin
 // Petal order, clockwise from lower left; the wheel's neighbours stay neighbours, and the gap at the
 // bottom (where the wheel has "Other") holds the stem and its leaves: the off notes.
 export const FAMILIES: Family[] = [
-  family('roasted', 'Roasted', '#5a3826',
-    'The flavours roasting itself creates: cereal and malt early, then tobacco, smoke and burnt as a roast goes darker.',
+  family('roasted', 'Roasted', '#46301f',
+    'The flavors roasting itself creates: cereal and malt early, then tobacco, smoke and burnt as a roast goes darker.',
     'Darker roasts and longer roast development. WCR\'s lexicon calls this the category most affected by roast level.',
     ['wcr-lexicon'],
     [
@@ -76,7 +76,7 @@ export const FAMILIES: Family[] = [
         n('tobacco', 'Tobacco', 'Dried leaf, sweet and a little earthy.', 'dried tea leaves or a fresh cigar\'s wrapper smell', ['tobacco', 'pipe tobacco', 'leather']),
       ]],
     ]),
-  family('spices', 'Spices', '#a95f2c',
+  family('spices', 'Spices', '#b4532a',
     'Warm baking spices, pepper and the pungent edge of fresh spice.',
     '',
     ['sca-wcr-wheel'],
@@ -87,7 +87,7 @@ export const FAMILIES: Family[] = [
         n('nutmeg', 'Nutmeg', 'Warm, nutty, a little piney.', 'freshly grated nutmeg', ['nutmeg']),
         n('anise', 'Anise', 'Licorice-like and sweet.', 'a fennel seed or star anise', ['anise', 'licorice', 'liquorice']),
         n('cardamom', 'Cardamom', 'Bright, resinous, citrus-and-pine spice.', 'a cracked green cardamom pod', ['cardamom'], extraWord),
-        n('baking-spice', 'Baking spice, general', 'Warm mixed spice, like a spice cookie.', 'a pinch of mixed spice or pumpkin-pie spice', ['baking spice', 'brown spice', 'allspice', 'gingersnap', 'snickerdoodle cookie', 'spice', 'spiced'], extraWord),
+        n('baking-spice', 'Baking spice', 'Warm mixed spice, like a spice cookie.', 'a pinch of mixed spice or pumpkin-pie spice', ['baking spice', 'brown spice', 'allspice', 'gingersnap', 'snickerdoodle cookie', 'spice', 'spiced'], extraWord),
       ]],
       ['pepper', 'Pepper', [
         n('pepper', 'Pepper', 'Black-pepper bite at the back of the nose.', 'freshly cracked black pepper', ['pepper', 'peppery']),
@@ -96,8 +96,8 @@ export const FAMILIES: Family[] = [
         n('pungent', 'Pungent', 'A sharp, prickly spice smell that fills the nose.', 'a raw ginger slice', ['pungent', 'ginger']),
       ]],
     ]),
-  family('nutty-cocoa', 'Nutty & cocoa', '#7a4e30',
-    'Roasted nuts and chocolate: the most familiar coffee flavours, and the base of many blends.',
+  family('nutty-cocoa', 'Nutty & cocoa', '#9a6238',
+    'Roasted nuts and chocolate: the most familiar coffee flavors, and the base of many blends.',
     'Very common in coffee, and especially in medium roasts, where roasting has developed nut and cocoa aromas without burying them.',
     ['wcr-lexicon'],
     [
@@ -113,9 +113,9 @@ export const FAMILIES: Family[] = [
         n('pecan', 'Pecan & walnut', 'Rich, buttery nuts with a tannic skin.', 'a pecan or walnut half', ['pecan', 'walnut', 'macadamia', 'cashew', 'chestnut', 'nutty', 'nut'], extraWord),
       ]],
     ]),
-  family('sweet', 'Sweet', '#c98f35',
+  family('sweet', 'Sweet', '#d79a33',
     'Brown sugar, caramel, honey and vanilla: sweetness you smell as much as taste.',
-    'Roasting turns the bean\'s sugars into caramel-like aromas; light to medium roasts carry the most perceived sweetness, and almost no sugar is left by a medium roast (synthesis, flavour chemistry).',
+    'Roasting turns the bean\'s sugars into caramel-like aromas; light to medium roasts carry the most perceived sweetness, and almost no sugar is left by a medium roast (synthesis, flavor chemistry).',
     ['synthesis', 'wcr-lexicon'],
     [
       ['brown-sugar', 'Brown sugar', [
@@ -181,10 +181,10 @@ export const FAMILIES: Family[] = [
         n('orange', 'Orange', 'Sweet, juicy, floral citrus.', 'a segment of orange', ['orange', 'blood orange', 'tangerine', 'mandarin', 'mandarin orange', 'clementine', 'sweet orange', 'orange zest', 'yuzu', 'marmalade']),
         n('grapefruit', 'Grapefruit', 'Sour with a bitter peel edge.', 'a strip of grapefruit peel', ['grapefruit', 'ruby grapefruit', 'pomelo']),
         n('bergamot', 'Bergamot', 'Perfumed citrus, the scent of Earl Grey.', 'an Earl Grey tea bag', ['bergamot'], extraWord),
-        n('citrus', 'Citrus, general', 'Bright citrus without one fruit in front.', 'a mix of orange and lemon zest', ['citrus', 'complex citrus', 'ripe citrus', 'citrus oil', 'lemon citrus', 'candied peel'], extraWord),
+        n('citrus', 'Mixed citrus', 'Bright citrus without one fruit in front.', 'a mix of orange and lemon zest', ['citrus', 'complex citrus', 'ripe citrus', 'citrus oil', 'lemon citrus', 'candied peel'], extraWord),
       ]],
     ]),
-  family('sour-fermented', 'Sour & fermented', '#a7922f',
+  family('sour-fermented', 'Sour & fermented', '#b9b23e',
     'Acids you taste on the tongue, and the boozy, winey notes of fermentation. Pleasant in balance, a flaw when they dominate.',
     'Light roasts keep more acid. Natural and anaerobic processing add winey and boozy notes; vinegar-like or cheesy sourness usually means over-fermentation or a defect.',
     ['easto', 'wcr-lexicon'],

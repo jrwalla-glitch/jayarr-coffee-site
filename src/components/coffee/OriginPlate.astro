@@ -1,0 +1,89 @@
+---
+// A detail plate cut from the Coffee Origins map: one country on the antique map, its growing
+// regions marked. Rendered at build time; no JavaScript.
+import { countryPaths, TROPIC_CANCER_Y, TROPIC_CAPRICORN_Y, EQUATOR_Y } from '../../data/mapPaths.ts';
+import { project } from '../../lib/coffee/origins.ts';
+import type { Origin } from '../../lib/coffee/origins.ts';
+
+interface Props { origin: Origin; width?: number }
+const { origin, width = 560 } = Astro.props;
+
+// The country's main landmass (its largest sub-path) plus its regions set the frame, so islands
+// far offshore (Galápagos, outlying archipelagos) don't shrink the country to a dot.
+const own = countryPaths.find((c) => c.id === origin.id);
+const pts: [number, number][] = [];
+if (own) {
+  const subs = own.path.split('M').filter(Boolean).map((sp) => [...sp.matchAll(/(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/g)].map((m) => [Number(m[1]), Number(m[2])] as [number, number]));
+  const area = (ps: [number, number][]) => { const xs = ps.map((p) => p[0]), ys = ps.map((p) => p[1]); return (Math.max(...xs) - Math.min(...xs)) * (Math.max(...ys) - Math.min(...ys)); };
+  const main = subs.sort((a, b) => area(b) - area(a))[0] ?? [];
+  pts.push(...main);
+}
+const regions = origin.regions.filter((r) => r.lat !== null && r.lon !== null).map((r) => ({ name: r.name, xy: project(r.lat!, r.lon!) }));
+pts.push(...regions.map((r) => r.xy), project(origin.lat, origin.lon));
+const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
+let [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
+const ASPECT = 1.5;
+let w = Math.max(x1 - x0, 12) * 1.32, h = Math.max(y1 - y0, 9) * 1.32;
+if (w / h < ASPECT) w = h * ASPECT; else h = w / ASPECT;
+const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+const vb = [cx - w / 2, cy - h / 2, w, h];
+const u = w / width; // map units per screen pixel at the plate's drawn width
+const fmt = (n: number) => Math.round(n * 100) / 100;
+// Region labels: try right, left, above and below each mark; keep the first spot that doesn't
+// touch another label or mark (all in screen pixels at the plate's drawn width).
+type Box = { x: number; y: number; w: number; h: number };
+const hit = (a: Box, b: Box) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
+const sx = (x: number) => (x - vb[0]) / u, sy = (y: number) => (y - vb[1]) / u;
+const boxes: Box[] = regions.map((r) => ({ x: sx(r.xy[0]) - 6, y: sy(r.xy[1]) - 6, w: 12, h: 12 }));
+const PX_W = width, PX_H = width / ASPECT;
+const labelled = regions.map((r) => {
+  const px = sx(r.xy[0]), py = sy(r.xy[1]), tw = r.name.length * 6.6, th = 15;
+  const inside = (b: Box) => b.x > 4 && b.y > 4 && b.x + b.w < PX_W - 4 && b.y + b.h < PX_H - 4;
+  // Near spots first, then farther ones with a leader line back to the mark.
+  const spots: { dx: number; dy: number; anchor: string; b: Box; lead: boolean }[] = [];
+  for (const d of [9, 30, 52, 76]) {
+    const lead = d > 9;
+    spots.push(
+      { dx: d, dy: 5, anchor: 'start', b: { x: px + d, y: py - 10, w: tw, h: th }, lead },
+      { dx: -d, dy: 5, anchor: 'end', b: { x: px - d - tw, y: py - 10, w: tw, h: th }, lead },
+      { dx: lead ? d * 0.7 : 0, dy: -d - 1, anchor: lead ? 'start' : 'middle', b: lead ? { x: px + d * 0.7, y: py - d - 12, w: tw, h: th } : { x: px - tw / 2, y: py - d - 16, w: tw, h: th }, lead },
+      { dx: lead ? d * 0.7 : 0, dy: d + 11, anchor: lead ? 'start' : 'middle', b: lead ? { x: px + d * 0.7, y: py + d - 1, w: tw, h: th } : { x: px - tw / 2, y: py + d - 2, w: tw, h: th }, lead },
+      { dx: lead ? -d * 0.7 : 0, dy: d + 11, anchor: lead ? 'end' : 'middle', b: lead ? { x: px - d * 0.7 - tw, y: py + d - 1, w: tw, h: th } : { x: px - tw / 2, y: py + d - 2, w: tw, h: th }, lead },
+    );
+  }
+  const pick = spots.find((c) => inside(c.b) && !boxes.some((b) => hit(b, c.b))) ?? spots.find((c) => inside(c.b)) ?? spots[0];
+  boxes.push(pick.b);
+  return { ...r, dx: pick.dx * u, dy: pick.dy * u, anchor: pick.anchor, lead: pick.lead };
+});
+---
+
+<svg viewBox={vb.map(fmt).join(' ')} class="plate-map" role="img" aria-label={`Map of ${origin.name} with its growing regions: ${origin.regions.map((r) => r.name).join(', ')}.`}>
+  <defs>
+    <filter id="op-grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" seed="4" result="n" />
+      <feColorMatrix type="saturate" values="0" in="n" result="g" />
+      <feComponentTransfer in="g" result="f"><feFuncR type="linear" slope=".12" intercept=".44" /><feFuncG type="linear" slope=".12" intercept=".44" /><feFuncB type="linear" slope=".12" intercept=".44" /></feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="f" mode="soft-light" />
+    </filter>
+    <radialGradient id="op-vig" cx=".5" cy=".5" r=".7"><stop offset=".6" stop-color="#5a5040" stop-opacity="0" /><stop offset="1" stop-color="#5a5040" stop-opacity=".22" /></radialGradient>
+  </defs>
+  <rect x={fmt(vb[0] - 5)} y={fmt(vb[1] - 5)} width={fmt(vb[2] + 10)} height={fmt(vb[3] + 10)} fill="#cbcfd5" filter="url(#op-grain)" />
+  {[TROPIC_CANCER_Y, EQUATOR_Y, TROPIC_CAPRICORN_Y].map((y) => <line x1={fmt(vb[0])} x2={fmt(vb[0] + vb[2])} y1={y} y2={y} stroke="#8b9ba8" stroke-width={fmt(u)} stroke-dasharray={`${fmt(4 * u)} ${fmt(6 * u)}`} opacity=".55" />)}
+  {countryPaths.map((c) => <path d={c.path} fill={c.id === origin.id ? '#c98a4e' : '#e2dbcd'} stroke="#a89878" stroke-width={fmt(0.8 * u)} />)}
+  {labelled.map((r) => (
+    <g>
+      <path d={`M${fmt(r.xy[0])} ${fmt(r.xy[1] - 5 * u)} L${fmt(r.xy[0] + 5 * u)} ${fmt(r.xy[1])} L${fmt(r.xy[0])} ${fmt(r.xy[1] + 5 * u)} L${fmt(r.xy[0] - 5 * u)} ${fmt(r.xy[1])} Z`} fill="#2a1d15" stroke="#fbf6ee" stroke-width={fmt(1.2 * u)} />
+      {r.lead && <line x1={fmt(r.xy[0])} y1={fmt(r.xy[1])} x2={fmt(r.xy[0] + r.dx * 0.92)} y2={fmt(r.xy[1] + r.dy - 4 * u)} stroke="#2a1d15" stroke-width={fmt(0.8 * u)} opacity=".55" />}
+      <text x={fmt(r.xy[0] + r.dx)} y={fmt(r.xy[1] + r.dy)} text-anchor={r.anchor} font-size={fmt(14 * u)} stroke-width={fmt(3 * u)} class="op-rl">{r.name}</text>
+    </g>
+  ))}
+  <g transform={`translate(${fmt(vb[0] + vb[2] - 22 * u)} ${fmt(vb[1] + 24 * u)}) scale(${fmt(u * 1.4)})`} opacity=".55">
+    <circle r="12" fill="none" stroke="#5b4a3d" stroke-width=".5" /><polygon points="0,-10 -1.6,-3 0,-4 1.6,-3" fill="#2a1d15" /><polygon points="0,10 -1.6,3 0,4 1.6,3" fill="#a6896a" /><polygon points="10,0 3,-1.6 4,0 3,1.6" fill="#a6896a" /><polygon points="-10,0 -3,-1.6 -4,0 -3,1.6" fill="#a6896a" />
+  </g>
+  <rect x={fmt(vb[0] - 5)} y={fmt(vb[1] - 5)} width={fmt(vb[2] + 10)} height={fmt(vb[3] + 10)} fill="url(#op-vig)" />
+</svg>
+
+<style>
+  .plate-map { display: block; width: 100%; height: auto; aspect-ratio: 1.5; background: #cbcfd5; }
+  .op-rl { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; fill: #2a1d15; paint-order: stroke; stroke: #f3eee4; stroke-linejoin: round; }
+</style>

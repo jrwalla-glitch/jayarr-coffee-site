@@ -1,534 +1,160 @@
 ---
-import BaseHead from '../../../components/BaseHead.astro';
-import Header from '../../../components/Header.astro';
-import Footer from '../../../components/Footer.astro';
+import BenchPage from '../../../layouts/BenchPage.astro';
+import OriginPlate from '../../../components/coffee/OriginPlate.astro';
+import HarvestNow from '../../../components/coffee/HarvestNow.svelte';
+import AltitudeBand from '../../../components/coffee/art/AltitudeBand.svelte';
 import originHubs from '../../../data/origin-hubs.json';
+import summaries from '../../../data/origin-summaries.json';
+import originSources from '../../../data/origins-sources.json';
+import { originByPage, harvestText, bandText, productionText, ARRIVAL_EXAMPLES, ORIGINS } from '../../../lib/coffee/origins.ts';
+import { notesInText, noteById } from '../../../lib/coffee/flavors.ts';
 
+// The 19 country pages keep their indexed URLs (underscores included). Each is a detail plate
+// from the Origins map: the country, its regions, its year, and the lots roasters described.
 export function getStaticPaths() {
-  return originHubs.map((hub) => ({
-    params: { origin: hub.origin_slug },
-    props: { hub },
-  }));
+  return originHubs.map((hub) => ({ params: { origin: hub.origin_slug }, props: { hub } }));
 }
-
 const { hub } = Astro.props;
+const o = originByPage(hub.origin_slug)!;
+const summary = (summaries as Record<string, string>)[hub.origin_slug];
+const sources = originSources as Record<string, { title: string; url: string; checked: string }>;
+const arrival = ARRIVAL_EXAMPLES.find((a) => a.origin === o.name);
 
-const BREWER_NAMES = {
-  'chemex-6cup': 'Chemex',
-  'hario-v60-02': 'V60',
-  'kalita-wave-185': 'Kalita Wave',
-  'aeropress': 'AeroPress',
-  'clever-dripper': 'Clever Dripper',
-  'espresso-generic': 'Espresso',
-  'moka-pot': 'Moka Pot',
-  'french-press': 'French Press',
-  'cold-brew': 'Cold Brew',
-};
+const url = `https://jayarr.coffee/explore/origins/${hub.origin_slug}/`;
+const title = `${o.name} Coffee: Harvest Season, Growing Regions and Flavor`;
+const description = `${o.name} coffee at a glance: when it's harvested (${harvestText(o)}), where and how high it grows, how much is produced, and how its coffees are described, with sources.`;
 
-const roastPositions = { light: 1, medium_light: 2, medium: 3, medium_dark: 4, dark: 5 };
+// Roasters' words for this origin's lots, and the lots themselves (as the roasters described them).
+const counts = new Map<string, number>();
+for (const b of hub.beans) for (const n of new Set(b.flavor_notes.flatMap((t) => notesInText(t)))) counts.set(n, (counts.get(n) ?? 0) + 1);
+const words = [...counts.entries()].filter(([, n]) => n >= 2).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([id, n]) => ({ id, label: noteById(id)!.label, n }));
+const PROC: Record<string, string> = { washed: 'Washed', natural: 'Natural', honey: 'Honey', honey_white: 'White honey', honey_red: 'Red honey', anaerobic_washed: 'Anaerobic washed', anaerobic_natural: 'Anaerobic natural', 'semi-washed': 'Semi-washed', washed_ea_decaf: 'Washed, EA decaf', blend_washed_natural: 'Washed and natural blend', natural_and_washed_blend: 'Washed and natural blend' };
+const ROAST: Record<string, string> = { light: 'Light', medium_light: 'Medium-light', medium: 'Medium', medium_dark: 'Medium-dark', dark: 'Dark' };
+const titleCase = (s: string) => (s === s.toUpperCase() ? s.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase()) : s);
+const lots = hub.beans.map((b) => ({ roaster: b.roaster, name: titleCase(b.name), process: PROC[b.processing] ?? b.processing, roast: ROAST[b.roast_level] ?? b.roast_level, notes: b.flavor_notes.filter((n) => n.length < 40 && !/^and\b|nbsp/.test(n)).join(', ') }));
 
-// Split narrative into paragraphs
-const paragraphs = (hub.regional_brief || '').split('\n\n').filter(p => p.trim());
-
-// Unique processing methods and roast levels for filters
-const processingMethods = [...new Set(hub.beans.map(b => b.processing))].sort();
-const roastLevels = [...new Set(hub.beans.map(b => b.roast_level))].sort((a,b) => (roastPositions[a]||3) - (roastPositions[b]||3));
-const roasters = [...new Set(hub.beans.map(b => b.roaster))].sort();
+const sourceIds = [...new Set([...o.harvest.sources, ...(o.altitudeM?.sources ?? []), ...(o.robustaAltitudeM?.sources ?? []), ...(o.production ? [o.production.source] : []), o.tendencies.source, ...(o.sources?.varieties ?? []), ...(o.sources?.processing ?? []), ...(o.sources?.regions ?? [])])].filter((id) => sources[id]);
+const neighbours = ORIGINS.filter((x) => x.id !== o.id && x.continent === o.continent && x.page).slice(0, 4);
 ---
 
-<html lang="en">
-  <head>
-    <BaseHead
-      title={`${hub.display_name} Coffee: Origin Profile`}
-      description={`${hub.display_name} coffee: growing regions, processing, typical flavours${hub.quick_stats?.signature_flavors?.length ? ' (' + hub.quick_stats.signature_flavors.slice(0, 3).join(', ') + ')' : ''} and how to brew it.`}
-      breadcrumbs={false}
-    />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<BenchPage
+  title={title}
+  description={description}
+  kicker="Country profile"
+  back={{ href: '/explore/origins/', label: 'The Coffee Origins' }}
+  gallery
+  breadcrumbs={false}
+  schema={[
+    { '@context': 'https://schema.org', '@type': 'WebPage', name: title, description, url, publisher: { '@type': 'Organization', name: 'JayArr Coffee', url: 'https://jayarr.coffee' } },
+    { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://jayarr.coffee/' },
+      { '@type': 'ListItem', position: 2, name: 'Explore', item: 'https://jayarr.coffee/explore/' },
+      { '@type': 'ListItem', position: 3, name: 'The Coffee Origins', item: 'https://jayarr.coffee/explore/origins/' },
+      { '@type': 'ListItem', position: 4, name: o.name, item: url },
+    ] },
+  ]}
+>
+  <Fragment slot="title">{`${o.name} `}<em>coffee</em></Fragment>
+  <Fragment slot="intro"><p class="op-answer">{summary}</p></Fragment>
 
-    <!-- Breadcrumb Schema -->
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://jayarr.coffee/" },
-        { "@type": "ListItem", "position": 2, "name": "Explore", "item": "https://jayarr.coffee/explore/" },
-        { "@type": "ListItem", "position": 3, "name": "Origins", "item": "https://jayarr.coffee/explore/origins/" },
-        { "@type": "ListItem", "position": 4, "name": hub.display_name }
-      ]
-    })}></script>
-
-    <!-- WebPage Schema -->
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      "name": `${hub.display_name} Coffee: Origin Profile`,
-      "description": `Regional coffee profile for ${hub.display_name}: growing regions, processing and typical flavours.`,
-      "url": `https://jayarr.coffee${hub.page_route}`,
-      "publisher": { "@type": "Organization", "name": "JayArr Coffee", "url": "https://jayarr.coffee" }
-    })}></script>
-
-    <style>
-      :root {
-        --copper: #C17A3A;
-        --copper-light: #D4944F;
-        --dark: #1A1A1A;
-        --muted: #6B6560;
-        --cream: #FAF8F5;
-        --cream-dark: #F0EDE8;
-        --border: #E5E0D8;
-      }
-      body {
-        font-family: 'Inter', -apple-system, sans-serif;
-        color: var(--dark);
-        background: var(--cream);
-        margin: 0;
-      }
-      .origin-page {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 2rem 1.5rem 4rem;
-      }
-
-      /* Breadcrumbs */
-      .breadcrumbs {
-        font-size: 0.85rem;
-        color: var(--muted);
-        margin-bottom: 2.5rem;
-      }
-      .breadcrumbs a {
-        color: var(--muted);
-        text-decoration: none;
-      }
-      .breadcrumbs a:hover {
-        color: var(--copper);
-      }
-      .breadcrumbs span {
-        margin: 0 0.4rem;
-      }
-
-      /* Dossier Header */
-      .dossier-header {
-        text-align: center;
-        margin-bottom: 3rem;
-      }
-      .classification {
-        font-family: 'Inter', monospace;
-        font-size: 0.75rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.15em;
-        color: var(--copper);
-        margin-bottom: 0.5rem;
-      }
-      .dossier-header h1 {
-        font-family: 'Playfair Display', serif;
-        font-size: clamp(3rem, 6vw, 5rem);
-        font-weight: 700;
-        color: var(--dark);
-        margin: 0.25rem 0;
-        letter-spacing: -0.02em;
-        line-height: 1.1;
-      }
-      .dossier-subtitle {
-        font-family: 'Playfair Display', serif;
-        font-style: italic;
-        font-size: 1.15rem;
-        color: var(--muted);
-        margin-top: 0.25rem;
-      }
-      .copper-rule {
-        width: 60px;
-        height: 3px;
-        background: var(--copper);
-        margin: 1.5rem auto 0;
-        border: none;
-      }
-
-      /* Two-column layout */
-      .content-grid {
-        display: grid;
-        grid-template-columns: 1fr 340px;
-        gap: 3rem;
-        align-items: start;
-      }
-
-      /* Main content */
-      .main-content section {
-        margin-bottom: 3rem;
-      }
-      .main-content h2 {
-        font-family: 'Playfair Display', serif;
-        font-size: 1.75rem;
-        font-weight: 700;
-        color: var(--dark);
-        margin: 0 0 0.5rem;
-        line-height: 1.2;
-      }
-      .section-rule {
-        width: 100%;
-        height: 1px;
-        background: var(--copper);
-        opacity: 0.3;
-        border: none;
-        margin: 0.5rem 0 1.5rem;
-      }
-
-      /* Regional brief */
-      .brief p {
-        font-size: 1rem;
-        line-height: 1.8;
-        color: #3A3530;
-        margin-bottom: 1rem;
-        max-width: 65ch;
-      }
-      .brief p:first-child::first-letter {
-        font-family: 'Playfair Display', serif;
-        font-size: 3.5rem;
-        float: left;
-        line-height: 0.8;
-        margin: 0.1em 0.15em 0 0;
-        color: var(--copper);
-        font-weight: 700;
-      }
-
-      /* Brewing note */
-      .brewing-note {
-        font-size: 1rem;
-        line-height: 1.8;
-        color: #3A3530;
-        max-width: 65ch;
-      }
-      .brewing-cta {
-        display: inline-block;
-        margin-top: 1rem;
-        color: var(--copper);
-        font-weight: 600;
-        text-decoration: none;
-        font-size: 0.95rem;
-      }
-      .brewing-cta:hover {
-        text-decoration: underline;
-      }
-
-      /* Sidebar */
-      .sidebar {
-        position: sticky;
-        top: 2rem;
-      }
-
-      /* Quick Stats */
-      .quick-stats {
-        background: var(--cream-dark);
-        border: 1px solid var(--copper);
-        border-radius: 2px;
-        padding: 1.5rem;
-      }
-      .quick-stats h3 {
-        font-family: 'Playfair Display', serif;
-        font-size: 1.25rem;
-        text-align: center;
-        margin: 0 0 1.25rem;
-        color: var(--dark);
-      }
-      .stat-row {
-        display: flex;
-        justify-content: space-between;
-        padding: 0.6rem 0;
-        border-bottom: 1px dotted var(--border);
-        font-size: 0.9rem;
-      }
-      .stat-row:last-child {
-        border-bottom: none;
-      }
-      .stat-label {
-        font-weight: 600;
-        color: var(--dark);
-      }
-      .stat-value {
-        color: var(--muted);
-        text-align: right;
-        max-width: 55%;
-      }
-
-      /* Bean Grid */
-      .bean-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-      }
-      .bean-card {
-        background: white;
-        border: 1px solid var(--border);
-        border-left: 3px solid var(--copper);
-        border-radius: 2px;
-        padding: 1.25rem;
-        transition: box-shadow 0.2s;
-        text-decoration: none;
-        color: inherit;
-        display: block;
-      }
-      .bean-card:hover {
-        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-      }
-      .bean-roaster {
-        font-family: 'Inter', sans-serif;
-        font-size: 0.7rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: var(--muted);
-        margin-bottom: 0.25rem;
-      }
-      .bean-name {
-        font-family: 'Playfair Display', serif;
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: var(--dark);
-        margin-bottom: 0.6rem;
-        line-height: 1.3;
-      }
-      .flavor-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.35rem;
-        margin-bottom: 0.75rem;
-      }
-      .flavor-tag {
-        font-size: 0.75rem;
-        color: var(--muted);
-        border: 1px solid var(--border);
-        padding: 0.15rem 0.5rem;
-        border-radius: 2px;
-      }
-      .roast-indicator {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: var(--muted);
-      }
-      .roast-dots {
-        display: flex;
-        gap: 3px;
-      }
-      .roast-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--border);
-      }
-      .roast-dot.active {
-        background: var(--copper);
-      }
-      .bean-cta {
-        display: block;
-        text-align: right;
-        font-size: 0.8rem;
-        color: var(--copper);
-        margin-top: 0.75rem;
-        font-weight: 500;
-      }
-
-      /* Blog links */
-      .blog-links a {
-        display: block;
-        padding: 0.75rem 0;
-        border-bottom: 1px solid var(--border);
-        text-decoration: none;
-        color: var(--dark);
-        font-size: 0.95rem;
-        transition: color 0.2s;
-      }
-      .blog-links a:last-child {
-        border-bottom: none;
-      }
-      .blog-links a:hover {
-        color: var(--copper);
-      }
-      .blog-arrow {
-        color: var(--copper);
-        margin-right: 0.5rem;
-      }
-      .blog-context {
-        display: block;
-        font-size: 0.8rem;
-        color: var(--muted);
-        margin-top: 0.15rem;
-        margin-left: 1.25rem;
-      }
-
-      /* Filter bar */
-      .filter-bar {
-        display: flex;
-        gap: 0.75rem;
-        margin-bottom: 1.5rem;
-        flex-wrap: wrap;
-      }
-      .filter-bar select {
-        font-family: 'Inter', sans-serif;
-        font-size: 0.8rem;
-        padding: 0.4rem 0.75rem;
-        border: 1px solid var(--border);
-        border-radius: 2px;
-        background: white;
-        color: var(--dark);
-        cursor: pointer;
-      }
-
-      /* Mobile */
-      @media (max-width: 900px) {
-        .content-grid {
-          grid-template-columns: 1fr;
-        }
-        .sidebar {
-          position: static;
-          order: -1;
-        }
-        .bean-grid {
-          grid-template-columns: 1fr;
-        }
-        .dossier-header h1 {
-          font-size: 3rem;
-        }
-      }
-    </style>
-  </head>
-  <body class="bg-cream">
-    <Header />
-
-    <main class="origin-page">
-      <!-- Breadcrumbs -->
-      <nav class="breadcrumbs">
-        <a href="/">Home</a> <span>/</span>
-        <a href="/explore/">Explore</a> <span>/</span>
-        <a href="/explore/origins/">Origins</a> <span>/</span>
-        {hub.display_name}
-      </nav>
-
-      <!-- Dossier Header -->
-      <header class="dossier-header">
-        <div class="classification">REGIONAL PROFILE // {hub.classification_code}</div>
-        <h1>{hub.display_name}</h1>
-        <p class="dossier-subtitle">{hub.brief_section_title}</p>
-        <hr class="copper-rule" />
-      </header>
-
-      <!-- Two-column layout -->
-      <div class="content-grid">
-        <!-- Main Content -->
-        <div class="main-content">
-          <!-- Regional Brief -->
-          <section>
-            <h2>Regional Brief</h2>
-            <hr class="section-rule" />
-            <div class="brief">
-              {paragraphs.map((p) => <p>{p}</p>)}
-            </div>
-          </section>
-
-          <!-- Brewing This Origin -->
-          {hub.brewing_note && (
-            <section>
-              <h2>Brewing This Origin</h2>
-              <hr class="section-rule" />
-              <p class="brewing-note">{hub.brewing_note}</p>
-            </section>
-          )}
-
-          <!-- Available Specimens -->
-          <section>
-            <h2>Example lots</h2>
-            <hr class="section-rule" />
-            <p class="lots-note">Examples of {hub.display_name} coffees from roasters' 2026 catalogs, to show the range of flavours. Lots are seasonal; this is not a list of what's in stock.</p>
-
-            <div class="bean-grid">
-              {hub.beans.map((bean) => (
-                <div class="bean-card">
-                  <div class="bean-roaster">{bean.roaster}</div>
-                  <div class="bean-name">{bean.name}</div>
-                  <div class="flavor-tags">
-                    {bean.flavor_notes.map((note) => (
-                      <span class="flavor-tag">{note}</span>
-                    ))}
-                  </div>
-                  <div class="roast-indicator">
-                    <span>Roast Level</span>
-                    <div class="roast-dots">
-                      {[1,2,3,4,5].map((i) => (
-                        <span class={`roast-dot ${i <= (roastPositions[bean.roast_level] || 3) ? 'active' : ''}`}></span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <!-- Blog Deep-Dives -->
-          {hub.blog_references && hub.blog_references.length > 0 && (
-            <section>
-              <h2>Further Reading</h2>
-              <hr class="section-rule" />
-              <div class="blog-links">
-                {hub.blog_references.map((blog) => (
-                  <a href={`/blog/${blog.slug}/`}>
-                    <span class="blog-arrow">&rarr;</span>
-                    {blog.title}
-                    {blog.context && <span class="blog-context">{blog.context}</span>}
-                  </a>
-                ))}
-              </div>
-            </section>
-          )}
-        </div>
-
-        <!-- Sidebar -->
-        <aside class="sidebar">
-          <div class="quick-stats">
-            <h3>Quick Stats</h3>
-            {hub.quick_stats?.altitude_range && (
-              <div class="stat-row">
-                <span class="stat-label">Altitude</span>
-                <span class="stat-value">{hub.quick_stats.altitude_range}</span>
-              </div>
-            )}
-            {hub.quick_stats?.annual_production && (
-              <div class="stat-row">
-                <span class="stat-label">Production</span>
-                <span class="stat-value">{hub.quick_stats.annual_production}</span>
-              </div>
-            )}
-            {hub.quick_stats?.harvest_window && (
-              <div class="stat-row">
-                <span class="stat-label">Harvest</span>
-                <span class="stat-value">{hub.quick_stats.harvest_window}</span>
-              </div>
-            )}
-            {hub.quick_stats?.key_varieties && (
-              <div class="stat-row">
-                <span class="stat-label">Varieties</span>
-                <span class="stat-value">{hub.quick_stats.key_varieties.join(', ')}</span>
-              </div>
-            )}
-            {hub.quick_stats?.dominant_processing && (
-              <div class="stat-row">
-                <span class="stat-label">Processing</span>
-                <span class="stat-value">{hub.quick_stats.dominant_processing.join(', ')}</span>
-              </div>
-            )}
-            {hub.quick_stats?.signature_flavors && (
-              <div class="stat-row">
-                <span class="stat-label">Signature Flavors</span>
-                <span class="stat-value">{hub.quick_stats.signature_flavors.join(', ')}</span>
-              </div>
-            )}
-          </div>
-        </aside>
+  <div class="op">
+    <figure class="op-plate">
+      <div class="gp-frame" style="--mat: #e8e1d4; --matpad: 12px; --matpad-phone: 7px">
+        <OriginPlate origin={o} />
       </div>
-    </main>
+      <figcaption class="gp-plaque"><b>{o.name}</b><small>A detail from The Coffee Origins</small></figcaption>
+    </figure>
 
-    <Footer />
-  </body>
-</html>
+    <section class="gp-label op-label" aria-labelledby="op-glance">
+      <h2 id="op-glance">At a glance</h2>
+      <div class="op-pair">
+        <HarvestNow client:load harvest={o.harvest} name={o.name} size={150} />
+        <AltitudeBand arabica={o.altitudeM} robusta={o.robustaAltitudeM} name={o.name} height={160} />
+      </div>
+      <dl class="op-facts">
+        <div><dt>Harvest</dt><dd>{harvestText(o)}{o.harvest.variesBy && <span class="sub">{o.harvest.variesBy}</span>}{arrival && <span class="sub">Typical arrival in the US: {arrival.arrival} (Café Imports).</span>}</dd></div>
+        <div><dt>Altitude</dt><dd>{o.altitudeM ? bandText(o.altitudeM) : 'Not established'}{o.robustaAltitudeM && <span class="sub">Robusta: {bandText(o.robustaAltitudeM)}</span>}{o.altitudeM?.scope && <span class="sub">{o.altitudeM.scope.replace(/;?\s*not national extrema\.?/i, "; not the country's highest or lowest farms.")}</span>}</dd></div>
+        <div><dt>Production</dt><dd>{productionText(o) ?? 'No current official figure'}{o.production && <span class="sub">USDA Foreign Agricultural Service, PSD (July 2026)</span>}</dd></div>
+        <div><dt>Varieties</dt><dd>{o.varieties.join(', ')}</dd></div>
+        <div><dt>Processing</dt><dd>{o.processing.join(', ')}</dd></div>
+        <div><dt>Regions</dt><dd>{o.regions.map((r) => r.name).join(', ')}</dd></div>
+        <div><dt>Often described as</dt><dd><em class="op-notes">{o.tendencies.notes.join(', ')}</em></dd></div>
+      </dl>
+      <p class="op-map"><a href={`/explore/origins/?o=${o.id}`}>See {o.name} on the map, and compare it →</a></p>
+    </section>
+  </div>
+
+  <Fragment slot="body">
+    <h2>How its coffees are described</h2>
+    <p>Importers usually describe {o.name}'s coffees as <em class="op-notes">{o.tendencies.notes.join(', ')}</em>. {o.tendencies.caveat} These are tendencies, not a promise about a particular bag.</p>
+
+    {words.length > 0 && (
+      <>
+        <h2>Roasters' words</h2>
+        <p>Across {hub.beans.length} lots from {o.name} in 38 specialty roasters' catalogs (recorded January–March 2026), these are the notes roasters used most. Each opens in the <a href="/explore/flavors/">Flavor Bloom</a> with an exercise to train your nose on it.</p>
+        <ul class="op-words">{words.map((w) => <li><a href={`/explore/flavors/?note=${w.id}`}>{w.label}</a> <span>{w.n} lots</span></li>)}</ul>
+      </>
+    )}
+
+    <details class="op-lots">
+      <summary>The {lots.length} lots, as roasters described them (winter 2026)</summary>
+      <p class="bp-note">Lots are seasonal: this is a record of how roasters described these coffees in early 2026, not a list of what's in stock.</p>
+      <div class="op-tab-wrap">
+        <table class="op-tab">
+          <thead><tr><th scope="col">Lot</th><th scope="col">Roaster</th><th scope="col">Process</th><th scope="col">Roast</th><th scope="col">Roaster's notes</th></tr></thead>
+          <tbody>{lots.map((l) => <tr><th scope="row">{l.name}</th><td>{l.roaster}</td><td>{l.process}</td><td>{l.roast}</td><td>{l.notes}</td></tr>)}</tbody>
+        </table>
+      </div>
+    </details>
+
+    {o.articles.length > 0 && (
+      <>
+        <h2>Read more</h2>
+        <ul>{o.articles.map((a) => <li><a href={`/blog/${a.slug}/`}>{a.title}</a></li>)}</ul>
+      </>
+    )}
+
+    <h2>Brew it</h2>
+    <p>Single origins show their character best brewed clean. The <a href="/tools/brew-ratio/?method=v60&cup=355">Brew Guide</a> starts you on a V60; if the cup comes out sour or bitter, <a href="/tools/fix-my-coffee/">Fix My Coffee</a> finds the one change to make. <a href="/explore/methods/">Brewing Constellations</a> shows how other brewers change the cup.</p>
+
+    {neighbours.length > 0 && (
+      <>
+        <h2>Nearby origins</h2>
+        <p>{neighbours.map((n, i) => <>{i > 0 && ' · '}<a href={n.page}>{n.name}</a></>)}</p>
+      </>
+    )}
+
+    <h2>Sources</h2>
+    <ul class="bp-sources">
+      {sourceIds.map((id) => <li><a href={sources[id].url} rel="noopener">{sources[id].title}</a>, checked {sources[id].checked}.</li>)}
+    </ul>
+  </Fragment>
+</BenchPage>
+
+<style>
+  .op { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+  .op-plate { margin: 0; }
+  .op-label h2 { font: 400 30px/1.1 'Instrument Serif', Georgia, serif; margin: 0 0 6px; }
+  .op-pair { display: flex; gap: 22px; align-items: center; justify-content: center; margin: 6px 0 10px; }
+  .op-facts { margin: 0; border-top: 1px solid #d9cdbd; font: 400 15px/1.45 'IBM Plex Sans', sans-serif; }
+  .op-facts div { display: grid; grid-template-columns: 112px 1fr; gap: 10px; padding: 7px 0; border-bottom: 1px solid #d9cdbd; }
+  .op-facts dt { font: 500 11px 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; padding-top: 2px; }
+  .op-facts dd { margin: 0; color: #2a1d15; }
+  .op-facts .sub { display: block; font-size: 13.5px; color: #75655a; margin-top: 2px; }
+  .op-map { margin: 12px 0 0; font: 600 15px 'IBM Plex Sans', sans-serif; }
+  .op-map a { color: #7a4e30; text-underline-offset: 3px; }
+  .op-answer { font: 400 23px/1.4 'Instrument Serif', Georgia, serif; color: #2a1d15; max-width: 62ch; margin: 6px auto 0; text-align: center; }
+  .op-notes { font-family: 'Instrument Serif', Georgia, serif; font-size: 1.15em; }
+  .op-words { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .op-words li { border: 1px solid #d9cdbd; background: #fbf8f3; border-radius: 999px; padding: 5px 12px; margin: 0; }
+  .op-words span { font: 500 12px 'IBM Plex Mono', monospace; color: #75655a; margin-left: 4px; }
+  .op-lots { margin: 26px 0; }
+  .op-lots summary { cursor: pointer; font-weight: 600; }
+  .op-tab-wrap { overflow-x: auto; border: 1px solid #d9cdbd; border-radius: 4px; background: #fbf8f3; }
+  .op-tab { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .op-tab th, .op-tab td { text-align: left; padding: 7px 10px; border-bottom: 1px solid #e6dccd; vertical-align: top; }
+  .op-tab thead th { font: 500 11px/1 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; white-space: nowrap; }
+  .op-tab tbody th { font-weight: 600; }
+  @media (max-width: 900px) { .op { grid-template-columns: 1fr; gap: 22px; } .op-label { order: -1; } }
+  @media (max-width: 640px) { .op-answer { font-size: 20px; text-align: left; } }
+</style>

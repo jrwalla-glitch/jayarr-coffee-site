@@ -31,7 +31,7 @@ export const FILTER: Record<FilterKind, { label: string; line: string; order: nu
 
 // Ordered by how hard the water is pushed.
 export const FORCE: Record<Force, { label: string; line: string; order: number }> = {
-  none: { label: 'Steeped', line: 'Nothing pushes the water through the coffee: it steeps, then the grounds are separated.', order: 0 },
+  none: { label: 'None: it steeps', line: 'Nothing pushes the water through the coffee: it steeps, then the grounds are separated.', order: 0 },
   gravity: { label: 'Gravity', line: 'The water\'s own weight pulls it through the bed.', order: 1 },
   hand: { label: 'Hand pressure', line: 'You press a plunger to push the brew through the bed and filter.', order: 2 },
   vapour: { label: 'Vapour and vacuum', line: 'Heated vapour pushes the water up; as it cools, a vacuum pulls the brew back down.', order: 3 },
@@ -64,6 +64,8 @@ export interface AtlasMethod {
   /** The site's guide to this brewer. */
   guide: { slug: string; title: string };
   sourceIds: string[];
+  /** A note on the time, where recipes vary a lot. */
+  timeNote?: string;
   /** Anything Astra should check before this ships. */
   verify?: string[];
 }
@@ -122,6 +124,7 @@ export const ATLAS: AtlasMethod[] = [
   {
     id: 'french-press', label: 'French press', the: 'the French press', line: 'Coffee steeps in all the water; a metal mesh holds the grounds back.',
     contact: 'immersion', filter: 'metal', force: 'none', attention: 1,
+    timeNote: 'Easto\'s recipe; 4-minute recipes are common too',
     ...fromEngine('french-press'),
     guide: { slug: 'how-to-use-a-french-press-the-most-amazing-coffee-youve-ever-had', title: 'How to use a French press' },
     sourceIds: ['easto', 'synthesis'],
@@ -252,14 +255,14 @@ export function differenceSentence(a: AtlasMethod, b: AtlasMethod): string {
   if (!d.length) return `${cap(a.the)} and ${b.the} work the same way on every axis here; they differ in the brewer's shape and how fast it drains.`;
   const parts: string[] = [];
   if (d.includes('contact')) {
-    const verb = (m: AtlasMethod) => m.contact === 'percolation' ? 'runs water through the coffee' : m.contact === 'immersion' ? 'steeps the coffee in all the water' : 'steeps first, then drains through the bed';
+    const verb = (m: AtlasMethod) => m.contact === 'percolation' ? 'runs water through the coffee' : m.contact === 'immersion' ? 'steeps it in all the water' : 'steeps it, then drains it through the bed';
     parts.push(`${a.the} ${verb(a)}; ${b.the} ${verb(b)}`);
   } else if (d.includes('force')) {
     parts.push(`${a.the} ${FORCE_DO[a.force]}; ${b.the} ${FORCE_DO[b.force]}`);
   }
   if (d.includes('filter')) {
     const [clear, full] = FILTER[a.filter].order <= FILTER[b.filter].order ? [a, b] : [b, a];
-    parts.push(full.filter === 'none' ? `${clear.the} is filtered and ${full.the} isn't` : `${clear.the}'s ${FILTER_PHRASE[clear.filter]} gives a clearer cup than ${full.the}'s ${FILTER_PHRASE[full.filter]}`);
+    parts.push(full.filter === 'none' ? `only ${clear.the} is filtered` : `${clear.the} gets the clearer cup (${FILTER_PHRASE[clear.filter]} against ${FILTER_PHRASE[full.filter]})`);
   } else if (d.includes('time')) {
     const [fast, slow] = a.timeS[1] <= b.timeS[1] ? [a, b] : [b, a];
     parts.push(`${fast.the} takes ${timeText(fast)}, ${slow.the} ${timeText(slow)}`);
@@ -278,5 +281,5 @@ export function timePosition(s: number): number {
   return Math.max(0, Math.min(1, (Math.log(s) - lo) / (hi - lo)));
 }
 export const TIME_TICKS: { s: number; label: string }[] = [
-  { s: 30, label: '30 s' }, { s: 60, label: '1 min' }, { s: 180, label: '3 min' }, { s: 600, label: '10 min' }, { s: 3600, label: '1 h' }, { s: 43200, label: '12 h' },
+  { s: 30, label: '30 s' }, { s: 180, label: '3 min' }, { s: 600, label: '10 min' }, { s: 3600, label: '1 h' }, { s: 43200, label: '12 h' },
 ];

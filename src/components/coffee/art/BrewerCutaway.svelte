@@ -194,7 +194,7 @@
     <path class="o" fill="none" d="M42 92 L77 151 M130 92 L95 151" />
     <path class="o rim" d="M38 92 L134 92" />
     <path class="o" fill="none" d="M45.6 98 C 24 98, 24 128, 63.7 128" />
-    {@render kettle(76, 70)}
+    {#if !compact}{@render kettle(76, 70)}{/if}
     {@render stream('M77 72 Q 81 86, 84 112', 'w')}
     {@render arrow('M71 115 Q 75 128, 79 136', url('bed'), 'mb')}
     {@render arrow('M86 114 L86 145', url('bed'), 'mb')}
@@ -221,7 +221,7 @@
     <rect class="d f-metal" x="78.2" y="151" width="6.6" height="6" />
     <rect class="d f-metal" x="87.2" y="151" width="6.6" height="6" />
     <rect class="d f-metal" x="96.2" y="151" width="19.8" height="6" rx="1" />
-    {@render kettle(78, 82)}
+    {#if !compact}{@render kettle(78, 82)}{/if}
     {@render stream('M79 84 Q 83 98, 85 124', 'w')}
     {@render arrow('M77 127 L77 146', url('bed'), 'mb')}
     {@render arrow('M86 127 L86 146', url('bed'), 'mb')}
@@ -251,7 +251,7 @@
     <path class="d f-wood" d="M112 116 L105 116 L99.5 128 L113 145 L121 145 Z" />
     <path class="tie" d="M58 131 L73 131 M103 131 L118 131 M59 131 Q 54 138 55 144" />
     <circle class="d f-wood" cx="55" cy="147" r="2.6" />
-    {@render kettle(100, 66, true)}
+    {#if !compact}{@render kettle(100, 66, true)}{/if}
     {@render stream('M99 68 Q 95 78, 94 90', 'w')}
     {@render arrow('M74 93 Q 78 106, 81 114', url('bed'), 'mb')}
     {@render arrow('M88 93 L88 123', url('bed'), 'mb')}
