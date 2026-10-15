@@ -19,3 +19,44 @@ test('cross-system or missing "try also" suggestions do not grow', () => {
   const broken = pods.filter((p) => p.try_also && !names.has(`${p.line}:${p.try_also}`)).length;
   assert.ok(broken <= 35, String(broken));
 });
+
+// ── The rebuilt explorer's engine (Wave B) ──
+import { catalog, sizeRows, filterPods, wall, tryAlso, podFromParam, buySearch, aromaFamilies, sizeName } from '../pods.ts';
+const all = catalog(pods);
+
+test('the wall places every pod of a system exactly once, on its own system\'s rows', () => {
+  for (const line of ['original', 'vertuo']) {
+    const mine = all.filter((p) => p.line === line);
+    const rows = sizeRows(all, line);
+    const placed = wall(mine, rows);
+    assert.equal(placed.length, mine.length, line);
+    assert.equal(new Set(placed.map((x) => x.pod.id)).size, mine.length);
+    for (const x of placed) { assert.equal(rows[x.row].ml, x.pod.ml); assert.equal(x.col, x.pod.intensity ?? 0); }
+    // Rows run smallest first.
+    assert.deepEqual(rows.map((r) => r.ml), [...rows.map((r) => r.ml)].sort((a, b) => a - b));
+  }
+  assert.deepEqual(sizeRows(all, 'original').map((r) => r.name), ['Ristretto', 'Espresso', 'Lungo']);
+  assert.equal(sizeName({ cup_size: 'espresso', ml: 25 }), 'Ristretto');
+});
+
+test('filters, suggestions and links never cross systems; discontinued pods are opt-in', () => {
+  for (const line of ['original', 'vertuo']) {
+    const shown = filterPods(all, { line, query: 'colombia' });
+    assert.ok(shown.length >= 1 && shown.every((p) => p.line === line), line);
+    assert.ok(filterPods(all, { line }).every((p) => !p.discontinued));
+    assert.ok(filterPods(all, { line, includeDiscontinued: true }).length > filterPods(all, { line }).length || line === 'original');
+  }
+  for (const p of all) { const t = tryAlso(all, p); if (t) { assert.equal(t.line, p.line); assert.equal(t.discontinued, undefined); } }
+  assert.equal(podFromParam(all, 'vertuo-colombia').line, 'vertuo');
+  assert.equal(podFromParam(all, 'original-colombia').line, 'original');
+  assert.equal(podFromParam(all, 'nope'), null);
+  for (const p of all) assert.match(buySearch(p), new RegExp(`Nespresso\\+${p.line === 'original' ? 'Original' : 'Vertuo'}\\+`));
+  assert.match(buySearch(all.find((p) => p.name.startsWith('Café'))), /Caf%C3%A9/, 'accents survive in the search');
+});
+
+test('aroma families come from the published aroma words', () => {
+  const fam = (aroma) => aromaFamilies({ aroma });
+  assert.deepEqual(fam('Cocoa & Fruity').sort(), ['cocoa', 'fruity']);
+  assert.ok(fam('Maple & Pecan').includes('sweet'));
+  assert.ok(all.filter((p) => !p.flavored).every((p) => aromaFamilies(p).length > 0 || /Bold|Balanced/.test(p.aroma)), 'unflavoured pods land in a family');
+});
