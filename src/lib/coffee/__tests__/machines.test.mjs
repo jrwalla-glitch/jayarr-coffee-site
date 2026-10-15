@@ -44,3 +44,19 @@ test('a hands-on milk-heavy routine with room in the budget prefers brewing and 
 test('a budget below every band returns nothing rather than a stretch', () => {
   assert.deepEqual(chooseMachines(fleet, grinders, { milk: 'none', cups: 1, budget: 150, effort: 'hands-on' }), []);
 });
+
+test('on the real data: recommendations are current, priced and fully described, for every routine', async () => {
+  const { readFileSync } = await import('node:fs');
+  const data = JSON.parse(readFileSync(new URL('../../../data/machines.json', import.meta.url), 'utf8'));
+  for (const milk of ['none', 'some', 'most']) for (const effort of ['button', 'guided', 'hands-on']) for (const budget of [300, 800, 2000, 5000]) {
+    const r = chooseMachines(data.machines, data.grinders, { milk, cups: 3, budget, effort });
+    for (const x of r) {
+      assert.equal(x.machine.status, 'current');
+      assert.ok(x.machine.category && x.band && x.band.low <= budget, `${x.machine.id} ${budget}`);
+      if (milk !== 'none') assert.ok(x.machine.milk.type, `${x.machine.id} milk`);
+    }
+  }
+  // A narrow counter still finds the Bambino, whose maker-listed width looks like its depth.
+  const narrow = chooseMachines(data.machines, data.grinders, { milk: 'some', cups: 1, budget: 700, effort: 'hands-on', widthCm: 20 });
+  assert.ok(narrow.some((x) => x.machine.id === 'breville-bambino-bes450'));
+});

@@ -10,24 +10,30 @@ export type Milk = 'none' | 'manual-wand' | 'panarello' | 'auto-wand' | 'carafe'
 
 export interface Machine {
   id: string; brand: string; name: string; models: string[];
-  status: 'current' | 'discontinued' | 'replaced'; replacedBy?: string | null;
-  category: Category;
+  /** 'unconfirmed': the research couldn't establish whether the maker still sells it. */
+  status: 'current' | 'discontinued' | 'replaced' | 'unconfirmed'; replacedBy?: string | null;
+  /** null where the research couldn't establish it; such machines are browsable, never recommended. */
+  category: Category | null;
   heating: { system: Heating; makerTerm?: string | null; boilers?: { role: string; liters: number | null }[]; heatUpSeconds?: number | null; simultaneousBrewSteam?: boolean | null };
   tempControl?: { type: string; range?: string | null } | null;
-  pumpBar?: number | null; preInfusion?: boolean | null; gauge?: boolean | null;
-  portafilterMm?: number | null; baskets?: string[]; doseG?: number | null;
-  milk: { type: Milk; makerTerm?: string | null };
-  grinder: { builtIn: boolean; type?: string | null; settings?: number | null };
+  pumpBar?: number | null; preInfusion?: boolean | string | null; gauge?: boolean | null;
+  portafilterMm?: number | null; baskets?: string[]; doseG?: number | string | null;
+  milk: { type: Milk | null; makerTerm?: string | null };
+  grinder: { builtIn: boolean | null; type?: string | null; settings?: number | string | null };
   tankL?: number | null; plumbable?: boolean | null;
   /** Width, depth and height in centimetres. */
   dims?: { w: number; d: number; h: number } | null;
   weightKg?: number | null; watts?: number | null;
-  recipe?: { doseG?: number | null; yield?: string | null; seconds?: string | null; tempC?: number | null } | null;
+  recipe?: { doseG?: number | string | null; yield?: string | null; seconds?: string | number | null; tempC?: number | null } | null;
   care?: { descale?: string | null; backflush?: string | null; manualUrl?: string | null } | null;
-  listPrice: { usd: number | null; url?: string | null; checked?: string | null };
+  /** The dated price seen on the maker's US site or shop, and what kind it was; only for budget bands. */
+  listPrice: { usd: number | null; kind?: string | null; url?: string | null; checked?: string | null };
   amazon?: { asin: string | null; url: string | null; title?: string | null; checked?: string | null } | null;
   sources?: { field: string; url: string; checked: string }[];
   notes?: string | null;
+  /** The maker's published width and depth look swapped (the research kept them as published). */
+  axisFlag?: boolean;
+  dimsPublished?: { w: number; d: number; h: number; unit: string } | null;
 }
 export interface GrinderPrice { id: string; name: string; usd: number | null; checked?: string | null; url?: string | null }
 
@@ -64,7 +70,9 @@ export function setupBand(m: Machine, grinders: GrinderPrice[]): { low: number; 
 export function fitsCounter(m: Machine, n: Pick<Needs, 'widthCm' | 'heightCm'>): boolean | null {
   if (!n.widthCm && !n.heightCm) return true;
   if (!m.dims) return null;
-  return (!n.widthCm || m.dims.w <= n.widthCm) && (!n.heightCm || m.dims.h <= n.heightCm);
+  // Where the maker's width and depth look swapped, test the narrower side, and say so on the card.
+  const w = m.axisFlag ? Math.min(m.dims.w, m.dims.d) : m.dims.w;
+  return (!n.widthCm || w <= n.widthCm) && (!n.heightCm || m.dims.h <= n.heightCm);
 }
 
 const EFFORT_OK: Record<Needs['effort'], Category[]> = {
@@ -82,8 +90,10 @@ export interface Match { machine: Machine; band: { low: number; high: number } |
 export function chooseMachines(machines: Machine[], grinders: GrinderPrice[], n: Needs, k = 3): Match[] {
   const out: Match[] = [];
   for (const m of machines) {
-    if (m.status !== 'current') continue;
+    if (m.status !== 'current' || !m.category) continue;
     if (fitsCounter(m, n) !== true) continue;
+    // A milk routine can't be matched to a machine whose milk system the research couldn't establish.
+    if (n.milk !== 'none' && m.milk.type == null) continue;
     const band = setupBand(m, grinders);
     if (!band || band.low > n.budget) continue;
     let score = 0;
