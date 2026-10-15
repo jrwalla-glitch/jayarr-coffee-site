@@ -76,6 +76,7 @@ const breadcrumbSchema = {
 			isArticle={true}
 			pubDate={pubDate}
 			updatedDate={updatedDate}
+			breadcrumbs={false}
 		/>
 		<script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
 		<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />

@@ -1,7 +1,16 @@
 ---
 import '../styles/global.css';
 
-// Self-hosted fonts — eliminates render-blocking Google Fonts request
+// Self-hosted fonts. The site's type: Instrument Serif (display), IBM Plex Sans (text),
+// IBM Plex Mono (numbers and labels). Cormorant and JetBrains Mono remain for Deep Brew
+// pages until their rebuild; Inter and Playfair are kept for the not-yet-rebuilt pages.
+import '@fontsource/instrument-serif/400.css';
+import '@fontsource/instrument-serif/400-italic.css';
+import '@fontsource/ibm-plex-sans/400.css';
+import '@fontsource/ibm-plex-sans/500.css';
+import '@fontsource/ibm-plex-sans/600.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
 import '@fontsource-variable/inter';
 import '@fontsource-variable/playfair-display';
 import '@fontsource/cormorant-garamond/400.css';
@@ -19,11 +28,13 @@ interface Props {
 	isArticle?: boolean;
 	pubDate?: Date;
 	updatedDate?: Date;
+	/** Emit the URL-derived BreadcrumbList. Pages with their own (articles) pass false: one owner per page. */
+	breadcrumbs?: boolean;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description, image = FallbackImage, isArticle = false, pubDate, updatedDate } = Astro.props;
+const { title, description, image = FallbackImage, isArticle = false, pubDate, updatedDate, breadcrumbs: emitCrumbs = true } = Astro.props;
 
 // Differentiate <title> from <h1> — append site name unless this IS the homepage
 const isHomepage = title === SITE_TITLE;
@@ -84,7 +95,7 @@ const breadcrumbSchema = {
 <meta name="title" content={pageTitle} />
 
 <!-- BreadcrumbList Schema -->
-{pathSegments.length > 0 && (
+{emitCrumbs && pathSegments.length > 0 && (
 	<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 )}
 <meta name="description" content={description} />
@@ -113,17 +124,20 @@ const breadcrumbSchema = {
 <!-- Pinterest Domain Verification -->
 <meta name="p:domain_verify" content="54b67cdd8d98db76f65f872a6247cda4"/>
 
-<!-- Google Analytics — queue calls now, fetch gtag.js after page load so
-     it doesn't compete with the LCP image for bandwidth on slow networks -->
-<script>
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-1N7FMBHFWV');
-	addEventListener('load', () => {
-		const s = document.createElement('script');
-		s.async = true;
-		s.src = 'https://www.googletagmanager.com/gtag/js?id=G-1N7FMBHFWV';
-		document.head.appendChild(s);
-	});
+<!-- Google Analytics: production hostname only, so local and preview builds send nothing.
+     page_location drops the query string: tool state never reaches analytics.
+     gtag.js loads after the page so it doesn't compete with the LCP image. -->
+<script is:inline>
+	if (location.hostname === 'jayarr.coffee') {
+		window.dataLayer = window.dataLayer || [];
+		window.gtag = function () { dataLayer.push(arguments); };
+		gtag('js', new Date());
+		gtag('config', 'G-1N7FMBHFWV', { page_location: location.origin + location.pathname });
+		addEventListener('load', () => {
+			const s = document.createElement('script');
+			s.async = true;
+			s.src = 'https://www.googletagmanager.com/gtag/js?id=G-1N7FMBHFWV';
+			document.head.appendChild(s);
+		});
+	}
 </script>

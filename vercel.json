@@ -65,6 +65,16 @@
       "source": "/blog/coffee-profilers-berlin-friedrichshain-bean-identity/:path(.+)",
       "destination": "/blog/coffee-profilers-method/",
       "permanent": true
+    },
+    {
+      "source": "/blog/ultimate-pour-over-coffee-guide",
+      "destination": "/blog/ultimate-pour-over-coffee-guide-and-best-v60-technique/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/ultimate-pour-over-coffee-guide/",
+      "destination": "/blog/ultimate-pour-over-coffee-guide-and-best-v60-technique/",
+      "permanent": true
     }
   ]
 }

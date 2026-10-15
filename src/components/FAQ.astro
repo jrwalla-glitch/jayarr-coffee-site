@@ -10,7 +10,9 @@ interface Props {
 
 const { items } = Astro.props;
 
-// Generate FAQPage JSON-LD structured data
+// FAQPage JSON-LD is no longer emitted (2026-10-15): an identical FAQ block on every post was a
+// template signature, and Google limits FAQ rich results to a few site types. The visible FAQ stays.
+// Kept for reference only:
 const faqSchema = {
 	'@context': 'https://schema.org',
 	'@type': 'FAQPage',
@@ -38,7 +40,6 @@ const faqSchema = {
 	</dl>
 </section>
 
-<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 
 <style>
 	.faq-section {

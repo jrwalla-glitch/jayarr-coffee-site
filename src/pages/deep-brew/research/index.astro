@@ -1,0 +1,83 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../../components/BaseHead.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import { DB_CATEGORIES } from '../../../content.config';
+import { TOOLS } from '../../../data/tools';
+
+const title = 'Deep Brew Research: The Science Behind Better Coffee';
+const description = 'Long-form explanations of coffee science, from extraction and espresso physics to roasting chemistry, aroma and climate, each linked to the tools that put it to use.';
+const posts = (await getCollection('deepbrew')).sort((a, b) => a.data.title.localeCompare(b.data.title));
+const deepTools = TOOLS.filter((t) => t.deepBrew);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} />
+		<link rel="alternate" type="application/rss+xml" title="JayArr Coffee: Deep Brew research" href="/deep-brew/rss.xml" />
+		<script type="application/ld+json" set:html={JSON.stringify({
+			'@context': 'https://schema.org', '@type': 'CollectionPage', name: title, description, url: 'https://jayarr.coffee/deep-brew/research/',
+			hasPart: posts.map((p) => ({ '@type': 'Article', headline: p.data.title, url: `https://jayarr.coffee/deep-brew/research/${p.id}/` })),
+		})}></script>
+	</head>
+	<body class="cf-page">
+		<Header />
+		<main>
+			<section class="cf-intro">
+				<a href="/deep-brew/" class="cf-back">← Deep Brew</a>
+				<p class="cf-kicker">Deep Brew · Research</p>
+				<h1>The science behind <em>better coffee</em></h1>
+				<p class="cf-lede">Ten long reads on what actually happens in the grinder, the brewer and the roaster, each with its sources and a tool that puts it to use. <a href="/deep-brew/rss.xml">Follow by RSS</a>.</p>
+			</section>
+			<section class="groups">
+				{DB_CATEGORIES.map((cat) => {
+					const list = posts.filter((p) => p.data.category === cat);
+					return list.length > 0 && (
+						<section class="group" aria-labelledby={`g-${cat}`}>
+							<h2 id={`g-${cat}`}>{cat}</h2>
+							<ul>
+								{list.map((p) => (
+									<li>
+										<a href={`/deep-brew/research/${p.id}/`}>
+											<span class="t">{p.data.title}</span>
+											<span class="d">{p.data.description}</span>
+										</a>
+									</li>
+								))}
+							</ul>
+						</section>
+					);
+				})}
+			</section>
+			<section class="tools">
+				<h2>Put it to use</h2>
+				<ul>{deepTools.map((t) => <li><a href={t.href}><span class="t">{t.name}</span><span class="d">{t.blurb}</span></a></li>)}</ul>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style is:global>.cf-page { background: #f3ede3; }</style>
+<style>
+	main { color: #2a1d15; font: 400 16px/1.5 'IBM Plex Sans', system-ui, sans-serif; }
+	.cf-intro { max-width: 1180px; margin: 0 auto; padding: 120px 24px 18px; }
+	.cf-back { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; text-decoration: none; }
+	.cf-kicker { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: #8f5d22; margin: 26px 0 0; }
+	h1 { font: 400 clamp(40px, 6vw, 68px)/.98 'Instrument Serif', Georgia, serif; margin: 10px 0 12px; }
+	h1 em { font-style: italic; color: #7a4e30; }
+	.cf-lede { font-size: 17px; color: #5b4a3d; max-width: 62ch; margin: 0; }
+	.cf-lede a { color: #7a4e30; }
+	.groups, .tools { max-width: 1180px; margin: 0 auto; padding: 16px 24px; }
+	.group, .tools { border-top: 1px solid #d9cdbd; padding-top: 18px; margin-top: 18px; }
+	h2 { font: 400 32px/1.1 'Instrument Serif', Georgia, serif; margin: 0 0 12px; }
+	ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+	li a { display: grid; gap: 4px; padding: 14px 16px; background: #fbf8f3; border: 1px solid #d9cdbd; border-radius: 12px; text-decoration: none; color: inherit; height: 100%; box-sizing: border-box; }
+	li a:hover { border-color: #75655a; }
+	.t { font: 400 22px/1.15 'Instrument Serif', Georgia, serif; }
+	.d { font-size: 14px; color: #5b4a3d; }
+	.tools { padding-bottom: 72px; }
+	@media (max-width: 760px) { ul { grid-template-columns: 1fr; } .cf-intro { padding: 96px 16px 14px; } .groups, .tools { padding: 12px 16px; } }
+</style>

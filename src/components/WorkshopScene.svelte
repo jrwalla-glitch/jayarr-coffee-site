@@ -46,7 +46,7 @@
   <!-- =========================================================== -->
   <div class="mobile-scene">
     <div class="mobile-counter">
-      <div class="mobile-overline">Other Tools</div>
+      <div class="mobile-overline">The tools</div>
 
       <!-- 2×2 prop grid -->
       <div class="prop-grid">

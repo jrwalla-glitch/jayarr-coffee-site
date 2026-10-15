@@ -1,0 +1,60 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SOURCES } from '../lib/coffee/index.ts';
+
+const title = 'How We Make JayArr Coffee';
+const description = 'Where the numbers in our tools and guides come from, how we date and correct articles, how our affiliate links work, and what stays private in the tools.';
+const core = ['easto', 'gagne', 'hoffmann', 'rao', 'sca-chart', 'sca-water', 'barista-hustle-water', 'newcastle-2018'].map((id) => SOURCES[id]).filter(Boolean);
+---
+
+<!doctype html>
+<html lang="en">
+	<head><BaseHead title={title} description={description} /></head>
+	<body class="cf-page">
+		<Header />
+		<main>
+			<article class="cf-body">
+				<p class="cf-kicker">About the site</p>
+				<h1>How we make <em>JayArr Coffee</em></h1>
+				<p class="lede">JayArr Coffee started as a YouTube channel in 2019. The site adds written guides and interactive tools. Here is how they are put together.</p>
+
+				<h2>Where the numbers come from</h2>
+				<p>The tools calculate from published methods and measurements, not from guesses. Brew recipes are scaled from named methods, such as Jessica Easto's V60 and Chemex recipes or Scott Rao's espresso parameters. Extraction and strength follow the Specialty Coffee Association's brewing control chart. Caffeine guidance uses the FDA's, EFSA's and ACOG's own wording. Every tool lists its sources on its page.</p>
+				<p>When a figure is an estimate rather than a measurement (how much caffeine a particular cup holds, how fresh a bag is, where a cup sits between sour and bitter), the tool says so and shows a range instead of a single number.</p>
+				<p>The core references:</p>
+				<ul>{core.map((s) => <li>{s.author}, <cite>{s.title}</cite>{s.year ? ` (${s.year})` : ''}.</li>)}</ul>
+
+				<h2>How articles are written and dated</h2>
+				<ul>
+					<li>Articles cite the books, studies and maker pages they rely on, in a Sources section at the end.</li>
+					<li>Product facts come from the maker's published specifications and carry the date we checked them. Prices change, so we don't print them as fixed figures.</li>
+					<li>Articles that accompany an older video keep that video's original date. When we substantially revise an article, it shows the date of the revision; small fixes don't change the date.</li>
+				</ul>
+
+				<h2>Corrections</h2>
+				<p>If something is wrong, tell us at <a href="mailto:jay@jayarr.coffee">jay@jayarr.coffee</a>. We check it against the sources, fix it, and update the revision date.</p>
+
+				<h2>Affiliate links</h2>
+				<p>Some links go to Amazon, and JayArr Coffee earns a commission on qualifying purchases at no cost to you. A link to a specific product goes to that exact product; a link that opens an Amazon search says so. Recommendations come from what fits the reader's need, and every guide includes options for improving what you already own. More in the <a href="/affiliate-disclosure/">affiliate disclosure</a>.</p>
+
+				<h2>What stays private</h2>
+				<p>What you enter in the tools stays in your browser. Your caffeine diary is stored on your device, and nothing you type is sent to our analytics. A share link is only made when you press Share.</p>
+			</article>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style is:global>.cf-page { background: #f3ede3; }</style>
+<style>
+	.cf-body { max-width: 720px; margin: 0 auto; padding: 120px 24px 80px; font: 400 17px/1.7 'IBM Plex Sans', system-ui, sans-serif; color: #2a1d15; }
+	.cf-kicker { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: #8f5d22; margin: 0; }
+	h1 { font: 400 clamp(40px, 6vw, 60px)/1 'Instrument Serif', Georgia, serif; margin: 10px 0 14px; }
+	h1 em { font-style: italic; color: #7a4e30; }
+	.lede { font-size: 19px; color: #5b4a3d; }
+	h2 { font: 400 32px/1.1 'Instrument Serif', Georgia, serif; margin: 40px 0 10px; }
+	a { color: #7a4e30; text-underline-offset: 3px; }
+	@media (max-width: 640px) { .cf-body { padding: 96px 16px 56px; } }
+</style>

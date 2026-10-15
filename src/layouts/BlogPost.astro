@@ -14,243 +14,154 @@ type Props = CollectionEntry<'blog'>['data'] & { id: string };
 const { title, description, pubDate, updatedDate, heroImage, category, id, videoId } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const site = Astro.site?.toString() ?? 'https://jayarr.coffee/';
+// Frontmatter dates parse to local midnight; emit the calendar day so builds agree everywhere.
+const day = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const monthYear = (d: Date) => d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+const isVideoEra = pubDate.getFullYear() < 2026;
+const categoryUrl = category ? new URL(`/blog/category/${category.toLowerCase()}/`, Astro.site).toString() : undefined;
 
-// JSON-LD Article structured data
-const articleSchema = {
+// One owner for each schema type on an article page: this layout.
+const graph = {
 	'@context': 'https://schema.org',
-	'@type': 'Article',
-	headline: title,
-	description: description,
-	image: heroImage ? new URL(heroImage.src, Astro.site).toString() : undefined,
-	datePublished: pubDate.toISOString(),
-	dateModified: (updatedDate ?? pubDate).toISOString(),
-	author: {
-		'@type': 'Person',
-		name: 'Jay Arr',
-		url: Astro.site?.toString(),
-		sameAs: [
-			'https://www.youtube.com/@jayarrcoffee',
-		],
-	},
-	publisher: {
-		'@type': 'Organization',
-		name: SITE_TITLE,
-		url: Astro.site?.toString(),
-	},
-	mainEntityOfPage: {
-		'@type': 'WebPage',
-		'@id': canonicalURL.toString(),
-	},
-};
-
-// VideoObject structured data (for posts with YouTube embeds that lack RecipeSchema video)
-const videoSchema = videoId ? {
-	'@context': 'https://schema.org',
-	'@type': 'VideoObject',
-	name: title,
-	description: description,
-	thumbnailUrl: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
-	contentUrl: `https://www.youtube.com/watch?v=${videoId}`,
-	embedUrl: `https://www.youtube.com/embed/${videoId}`,
-	uploadDate: pubDate.toISOString(),
-} : null;
-
-// Breadcrumb structured data
-const breadcrumbSchema = {
-	'@context': 'https://schema.org',
-	'@type': 'BreadcrumbList',
-	itemListElement: [
+	'@graph': [
 		{
-			'@type': 'ListItem',
-			position: 1,
-			name: 'Home',
-			item: Astro.site?.toString(),
+			'@type': 'Article',
+			'@id': `${canonicalURL}#article`,
+			headline: title,
+			description,
+			image: heroImage ? new URL(heroImage.src, Astro.site).toString() : undefined,
+			datePublished: day(pubDate),
+			dateModified: day(updatedDate ?? pubDate),
+			articleSection: category,
+			author: { '@type': 'Person', name: 'Jay Arr', url: new URL('/about/', Astro.site).toString(), sameAs: ['https://www.youtube.com/@jayarrcoffee'] },
+			publisher: { '@type': 'Organization', name: SITE_TITLE, url: site, logo: { '@type': 'ImageObject', url: new URL('/apple-touch-icon.png', Astro.site).toString() } },
+			mainEntityOfPage: canonicalURL.toString(),
+			...(videoId ? { video: { '@id': `${canonicalURL}#video` } } : {}),
 		},
 		{
-			'@type': 'ListItem',
-			position: 2,
-			name: 'Articles',
-			item: new URL('/blog/', Astro.site).toString(),
+			'@type': 'BreadcrumbList',
+			'@id': `${canonicalURL}#breadcrumbs`,
+			itemListElement: [
+				{ '@type': 'ListItem', position: 1, name: 'Home', item: site },
+				{ '@type': 'ListItem', position: 2, name: 'Articles', item: new URL('/blog/', Astro.site).toString() },
+				...(category ? [{ '@type': 'ListItem', position: 3, name: category, item: categoryUrl }] : []),
+				{ '@type': 'ListItem', position: category ? 4 : 3, name: title, item: canonicalURL.toString() },
+			],
 		},
-		...(category
-			? [
-					{
-						'@type': 'ListItem',
-						position: 3,
-						name: category,
-						item: new URL(`/blog/category/${category.toLowerCase()}/`, Astro.site).toString(),
-					},
-					{
-						'@type': 'ListItem',
-						position: 4,
-						name: title,
-						item: canonicalURL.toString(),
-					},
-				]
-			: [
-					{
-						'@type': 'ListItem',
-						position: 3,
-						name: title,
-						item: canonicalURL.toString(),
-					},
-				]),
+		...(videoId ? [{
+			'@type': 'VideoObject',
+			'@id': `${canonicalURL}#video`,
+			name: title,
+			description,
+			thumbnailUrl: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+			contentUrl: `https://www.youtube.com/watch?v=${videoId}`,
+			embedUrl: `https://www.youtube.com/embed/${videoId}`,
+			uploadDate: day(pubDate),
+		}] : []),
 	],
 };
 ---
 
 <html lang="en">
 	<head>
-		<BaseHead
-			title={title}
-			description={description}
-			image={heroImage}
-			isArticle={true}
-			pubDate={pubDate}
-			updatedDate={updatedDate}
-		/>
-		<script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
-		<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
-		{videoSchema && <script type="application/ld+json" set:html={JSON.stringify(videoSchema)} />}
+		<BaseHead title={title} description={description} image={heroImage} isArticle={true} pubDate={pubDate} updatedDate={updatedDate} breadcrumbs={false} />
+		<script type="application/ld+json" set:html={JSON.stringify(graph)} />
 	</head>
-	<body class="bg-cream">
+	<body class="post-page">
 		<Header />
+		<main>
+			<header class="post-head">
+				<nav aria-label="Breadcrumb" class="crumbs">
+					<ol>
+						<li><a href="/">Home</a></li>
+						<li><a href="/blog/">Articles</a></li>
+						{category && <li><a href={`/blog/category/${category.toLowerCase()}/`}>{category}</a></li>}
+					</ol>
+				</nav>
+				<h1>{title}</h1>
+				{description && <p class="deck">{description}</p>}
+				<p class="byline">
+					<span>By <a href="/about/">Jay Arr</a></span>
+					<span><FormattedDate date={pubDate} /></span>
+					{updatedDate && day(updatedDate) !== day(pubDate) && <span>Updated <FormattedDate date={updatedDate} /></span>}
+					<span id="read-time"></span>
+				</p>
+				{videoId && isVideoEra && <p class="video-note">This article accompanies our video from {monthYear(pubDate)}.</p>}
+			</header>
 
-		<!-- Breadcrumbs -->
-		<div class="pt-24 pb-0 bg-charcoal">
-			<nav class="max-w-3xl mx-auto px-6" aria-label="Breadcrumb">
-				<ol class="flex items-center gap-2 text-xs text-cream/40">
-					<li><a href="/" class="hover:text-cream/60 transition-colors">Home</a></li>
-					<li class="select-none">/</li>
-					<li><a href="/blog/" class="hover:text-cream/60 transition-colors">Articles</a></li>
-					{category && (
-						<>
-							<li class="select-none">/</li>
-							<li>
-								<a href={`/blog/category/${category.toLowerCase()}/`} class="hover:text-cream/60 transition-colors">
-									{category}
-								</a>
-							</li>
-						</>
-					)}
-					<li class="select-none">/</li>
-					<li class="text-cream/60 truncate max-w-[200px]">{title}</li>
-				</ol>
-			</nav>
-		</div>
-
-		<!-- Article header -->
-		<div class="pt-6 pb-12 bg-charcoal">
-			<div class="max-w-3xl mx-auto px-6 text-center">
-				{category && (
-					<a
-						href={`/blog/category/${category.toLowerCase()}/`}
-						class="inline-block text-xs uppercase tracking-widest text-copper hover:text-copper-light transition-colors mb-3"
-					>
-						{category}
-					</a>
-				)}
-				<div class="flex items-center justify-center gap-3 text-xs uppercase tracking-widest text-cream/50">
-					<time>
-						<FormattedDate date={pubDate} />
-					</time>
-					{updatedDate && (
-						<span class="text-cream/40">
-							(Updated <FormattedDate date={updatedDate} />)
-						</span>
-					)}
-					<span class="text-cream/30">|</span>
-					<span id="read-time" class="text-cream/40"></span>
+			{heroImage && (
+				<div class="hero">
+					<Image widths={[400, 640, 1020]} sizes="(min-width: 960px) 880px, 100vw" src={heroImage} alt="" loading="eager" fetchpriority="high" />
 				</div>
-				<h1 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-cream mt-4 leading-tight">
-					{title}
-				</h1>
-				{description && (
-					<p class="text-lg text-cream/60 mt-4 max-w-2xl mx-auto">{description}</p>
-				)}
-			</div>
-		</div>
+			)}
 
-		<!-- Hero image -->
-		{heroImage && (
-			<div class="max-w-4xl mx-auto px-6 -mt-1">
-				<Image
-					widths={[400, 640, 1020]}
-					sizes="(min-width: 896px) 720px, 100vw"
-					src={heroImage}
-					alt={title}
-					loading="eager"
-					fetchpriority="high"
-					class="w-full rounded-sm"
-				/>
-			</div>
-		)}
+			<nav id="toc" class="toc" hidden aria-label="In this article">
+				<details>
+					<summary>In this article</summary>
+					<ol id="toc-list"></ol>
+				</details>
+			</nav>
 
-		<!-- Table of Contents (auto-generated from h2 headings) -->
-		<nav id="toc" class="hidden max-w-[720px] mx-auto px-6 mt-10 mb-2">
-			<details class="bg-cream-dark rounded-sm p-5 group" open>
-				<summary class="cursor-pointer text-xs uppercase tracking-widest text-warm-gray font-medium select-none list-none flex items-center justify-between">
-					<span>In This Article</span>
-					<svg class="w-4 h-4 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-				</summary>
-				<ol id="toc-list" class="mt-4 flex flex-col gap-2 text-sm text-charcoal/70"></ol>
-			</details>
-		</nav>
-
-		<!-- Article body -->
-		<main class="py-16 px-6">
 			<article class="prose" id="article-content">
 				<slot />
 			</article>
 
-			<!-- Share buttons -->
-			<div class="max-w-[720px] mx-auto">
+			<div class="after">
 				<ShareButtons title={title} url={canonicalURL.toString()} />
-			</div>
-
-			<!-- Related Posts -->
-			<div class="max-w-[720px] mx-auto">
 				<RelatedPosts currentId={id} category={category} />
 			</div>
 		</main>
-
 		<Footer />
 
-		<!-- Read time + Table of Contents script -->
 		<script>
 			const article = document.getElementById('article-content');
-			const toc = document.getElementById('toc');
-			const tocList = document.getElementById('toc-list');
-			const readTimeEl = document.getElementById('read-time');
-
 			if (article) {
-				// Calculate read time (~230 words per minute)
-				const text = article.textContent || '';
-				const words = text.trim().split(/\s+/).length;
-				const minutes = Math.max(1, Math.round(words / 230));
-				if (readTimeEl) {
-					readTimeEl.textContent = `${minutes} min read`;
-				}
-
-				// Build table of contents
-				if (toc && tocList) {
-					const headings = article.querySelectorAll('h2');
-					if (headings.length >= 3) {
-						toc.classList.remove('hidden');
-						headings.forEach((heading, i) => {
-							const id = heading.id || `section-${i}`;
-							heading.id = id;
-							const li = document.createElement('li');
-							const a = document.createElement('a');
-							a.href = `#${id}`;
-							a.textContent = heading.textContent;
-							a.className = 'text-copper hover:text-copper-dark transition-colors';
-							li.appendChild(a);
-							tocList.appendChild(li);
-						});
-					}
+				const words = (article.textContent || '').trim().split(/\s+/).length;
+				const rt = document.getElementById('read-time');
+				if (rt) rt.textContent = `${Math.max(1, Math.round(words / 230))} min read`;
+				const toc = document.getElementById('toc');
+				const list = document.getElementById('toc-list');
+				const heads = article.querySelectorAll('h2');
+				if (toc && list && heads.length >= 4) {
+					heads.forEach((h, i) => {
+						if (!h.id) h.id = `section-${i + 1}`;
+						const li = document.createElement('li');
+						const a = document.createElement('a');
+						a.href = `#${h.id}`;
+						a.textContent = h.textContent;
+						li.appendChild(a);
+						list.appendChild(li);
+					});
+					toc.hidden = false;
+					if (window.matchMedia('(min-width: 900px)').matches) toc.querySelector('details')?.setAttribute('open', '');
 				}
 			}
 		</script>
 	</body>
 </html>
+
+<style is:global>.post-page { background: #f3ede3; }</style>
+<style>
+	main { color: #2a1d15; }
+	.post-head { max-width: 760px; margin: 0 auto; padding: 112px 24px 18px; }
+	.crumbs ol { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 18px; padding: 0; font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .1em; text-transform: uppercase; }
+	.crumbs li + li::before { content: '/'; margin-right: 6px; color: #b3a493; }
+	.crumbs a { color: #75655a; text-decoration: none; }
+	.crumbs a:hover { color: #8f5d22; }
+	h1 { font: 400 clamp(38px, 5.6vw, 60px)/1.02 'Instrument Serif', Georgia, serif; letter-spacing: -.01em; margin: 0 0 14px; }
+	.deck { font: 400 19px/1.5 'IBM Plex Sans', system-ui, sans-serif; color: #5b4a3d; margin: 0 0 16px; }
+	.byline { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0; font: 400 13.5px 'IBM Plex Mono', monospace; color: #75655a; }
+	.byline a { color: #7a4e30; }
+	.video-note { margin: 12px 0 0; font: 400 14px 'IBM Plex Sans', sans-serif; color: #5b4a3d; border-left: 2px solid #c3873a; padding: 4px 0 4px 10px; }
+	.hero { max-width: 960px; margin: 10px auto 0; padding: 0 24px; }
+	.hero :global(img) { width: 100%; height: auto; border-radius: 14px; display: block; }
+	.toc { max-width: 720px; margin: 28px auto 0; padding: 0 24px; }
+	.toc details { background: #fbf8f3; border: 1px solid #d9cdbd; border-radius: 12px; padding: 12px 16px; }
+	.toc summary { cursor: pointer; font: 500 11px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: #75655a; }
+	.toc ol { margin: 12px 0 2px; padding-left: 20px; display: grid; gap: 6px; font-size: 15px; }
+	.toc :global(a) { color: #7a4e30; }
+	.prose { padding: 34px 24px 16px; }
+	.after { max-width: 720px; margin: 0 auto; padding: 0 24px 72px; }
+	@media (max-width: 640px) { .post-head { padding: 92px 16px 14px; } .hero, .toc { padding: 0 12px; } .prose { padding: 26px 16px 12px; } .after { padding: 0 16px 56px; } }
+</style>

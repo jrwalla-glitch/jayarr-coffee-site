@@ -76,14 +76,18 @@ const {
 	recipeInstructions,
 	keywords,
 	videoId,
-	author = 'JayArr',
+	author = 'Jay Arr',
 	nutrition,
 } = Astro.props;
 
-// Derive fallback image from page URL slug → /images/blog/{slug}.jpg
-const slug = Astro.url.pathname.replace(/^\/blog\//, '').replace(/\/$/, '');
-const fallbackImage = slug ? new URL(`/images/blog/${slug}.jpg`, Astro.site).href : undefined;
-const resolvedImage = image || fallbackImage;
+// The page's own hero image (a guessed /images/blog/{slug}.jpg path often didn't exist).
+import { getEntry as getHeroEntry } from 'astro:content';
+let heroUrl: string | undefined;
+try {
+	const e = await getHeroEntry('blog', Astro.url.pathname.replace(/^\/blog\//, '').replace(/\/$/, ''));
+	if (e?.data.heroImage) heroUrl = new URL(e.data.heroImage.src, Astro.site).href;
+} catch { /* no entry: no image */ }
+const resolvedImage = image ? new URL(image, Astro.site).href : heroUrl;
 
 // Auto-derive keywords from recipe title + category + cuisine + site context
 const cleanTitle = title.toLowerCase().replace(/[()[\]]/g, '').replace(/\s+/g, ' ').trim();
@@ -103,7 +107,8 @@ if (videoId) {
 	try {
 		const entry = await getEntry('blog', pageSlug);
 		if (entry?.data.pubDate) {
-			videoUploadDate = entry.data.pubDate.toISOString().split('T')[0];
+			const d = entry.data.pubDate;
+			videoUploadDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 		}
 	} catch { /* fallback: omit uploadDate */ }
 }
@@ -143,17 +148,11 @@ const recipeSchema = {
 					position: i + 1,
 					name: `Step ${i + 1}`,
 					text,
-					url: `${Astro.url}#step-${i + 1}`,
 					...(resolvedImage ? { image: resolvedImage } : {}),
 				})),
 			}
 		: {}),
-	...(nutrition ? {
-		nutrition: {
-			'@type': 'NutritionInformation',
-			...nutrition,
-		}
-	} : {}),
+	// Nutrition is not emitted: the per-post figures were estimates, not measurements.
 	author: {
 		'@type': 'Person',
 		name: author,

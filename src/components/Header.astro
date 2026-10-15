@@ -1,94 +1,150 @@
 ---
-import { SITE_TITLE } from '../consts';
 import Search from './Search.astro';
+import { TOOLS, TOOL_GROUPS } from '../data/tools';
 
 const pathname = Astro.url.pathname;
 const isHome = pathname === '/';
+const on = (prefix: string) => pathname.startsWith(prefix);
+const toolsActive = on('/tools') || ['/deep-brew/water', '/deep-brew/extraction', '/deep-brew/calibrator'].some((p) => on(p));
+const links = [
+  { href: '/blog/', label: 'Articles', active: on('/blog') },
+  { href: '/explore/', label: 'Explore', active: on('/explore') },
+  { href: '/deep-brew/', label: 'Deep Brew', active: on('/deep-brew') && !toolsActive },
+  { href: '/videos/', label: 'Videos', active: on('/videos') },
+  { href: '/about/', label: 'About', active: on('/about') },
+];
 ---
 
-<header class:list={[
-  'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-  isHome ? 'bg-transparent' : 'bg-charcoal'
-]} id="site-header">
-  <nav class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-    <a href="/" class="font-serif text-2xl font-bold text-cream tracking-tight hover:text-copper transition-colors">
-      JayArr Coffee
-    </a>
-    <div class="hidden md:flex items-center gap-8">
-      <a href="/explore" class:list={[
-        'text-sm uppercase tracking-widest transition-colors',
-        pathname.startsWith('/explore') ? 'text-copper' : 'text-cream/80 hover:text-cream'
-      ]}>Explore</a>
-      <a href="/blog" class:list={[
-        'text-sm uppercase tracking-widest transition-colors',
-        pathname.startsWith('/blog') ? 'text-copper' : 'text-cream/80 hover:text-cream'
-      ]}>Articles</a>
-      <a href="/tools" class:list={[
-        'text-sm uppercase tracking-widest transition-colors',
-        pathname.startsWith('/tools') ? 'text-copper' : 'text-cream/80 hover:text-cream'
-      ]}>Tools</a>
-      <a href="/videos" class:list={[
-        'text-sm uppercase tracking-widest transition-colors',
-        pathname.startsWith('/videos') ? 'text-copper' : 'text-cream/80 hover:text-cream'
-      ]}>Videos</a>
-      <a href="/about" class:list={[
-        'text-sm uppercase tracking-widest transition-colors',
-        pathname.startsWith('/about') ? 'text-copper' : 'text-cream/80 hover:text-cream'
-      ]}>About</a>
-      <!-- Search button -->
-      <button id="search-btn" class="text-cream/60 hover:text-copper transition-colors" aria-label="Search">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607z"/></svg>
+<a href="#main" class="skip-link">Skip to content</a>
+<header class:list={['site-header', isHome && 'is-home']} id="site-header">
+  <nav class="bar" aria-label="Main">
+    <a href="/" class="brand">JayArr <em>Coffee</em></a>
+    <ul class="links">
+      <li>
+        <button type="button" class:list={['tools-btn', toolsActive && 'on']} aria-expanded="false" aria-controls="tools-panel" id="tools-btn">
+          Tools <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" /></svg>
+        </button>
+      </li>
+      {links.map((l) => <li><a href={l.href} class:list={[l.active && 'on']} aria-current={l.active ? 'page' : undefined}>{l.label}</a></li>)}
+    </ul>
+    <div class="icons">
+      <button id="search-btn" class="icon" aria-label="Search the site">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="m21 21-5.2-5.2m0 0A7.5 7.5 0 1 0 5.2 5.2a7.5 7.5 0 0 0 10.6 10.6z" /></svg>
       </button>
-      <a href="https://www.youtube.com/@jayarrcoffee" target="_blank" rel="noopener" class="text-cream/60 hover:text-copper transition-colors" aria-label="YouTube">
-        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      <a href="https://www.youtube.com/@jayarrcoffee" target="_blank" rel="noopener" class="icon yt" aria-label="JayArr Coffee on YouTube">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.5 15.6V8.4l6.3 3.6-6.3 3.6z" /></svg>
       </a>
-    </div>
-    <!-- Mobile: search + menu buttons -->
-    <div class="flex items-center gap-4 md:hidden">
-      <button id="mobile-search-btn" class="text-cream" aria-label="Search">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607z"/></svg>
-      </button>
-      <button id="mobile-menu-btn" class="text-cream" aria-label="Open menu">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      <button id="mobile-menu-btn" class="icon menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" /></svg>
       </button>
     </div>
   </nav>
-  <!-- Mobile menu -->
-  <div id="mobile-menu" class="hidden md:hidden bg-charcoal/95 backdrop-blur-sm border-t border-white/10">
-    <div class="px-6 py-4 flex flex-col gap-4">
-      <a href="/explore" class="text-sm uppercase tracking-widest text-cream/80 hover:text-cream">Explore</a>
-      <a href="/blog" class="text-sm uppercase tracking-widest text-cream/80 hover:text-cream">Articles</a>
-      <a href="/tools" class="text-sm uppercase tracking-widest text-cream/80 hover:text-cream">Tools</a>
-      <a href="/videos" class="text-sm uppercase tracking-widest text-cream/80 hover:text-cream">Videos</a>
-      <a href="/about" class="text-sm uppercase tracking-widest text-cream/80 hover:text-cream">About</a>
+
+  <div id="tools-panel" class="tools-panel" hidden>
+    <div class="tp-inner">
+      {TOOL_GROUPS.map((g) => (
+        <div class="tp-group">
+          <p class="tp-label">{g.label}</p>
+          <ul>
+            {TOOLS.filter((t) => t.group === g.id).map((t) => (
+              <li><a href={t.href}><span class="tp-name">{t.name}</span><span class="tp-blurb">{t.blurb}</span></a></li>
+            ))}
+          </ul>
+        </div>
+      ))}
+      <a href="/tools/" class="tp-all">All tools →</a>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="mobile-menu" hidden>
+    <div class="mm-inner">
+      {TOOL_GROUPS.map((g) => (
+        <div class="mm-group">
+          <p class="tp-label">{g.label}</p>
+          <ul>{TOOLS.filter((t) => t.group === g.id).map((t) => <li><a href={t.href}>{t.name}</a></li>)}</ul>
+        </div>
+      ))}
+      <ul class="mm-links">
+        <li><a href="/tools/">All tools</a></li>
+        {links.map((l) => <li><a href={l.href} aria-current={l.active ? 'page' : undefined}>{l.label}</a></li>)}
+      </ul>
     </div>
   </div>
 </header>
 
-<!-- Search modal -->
 <Search />
 
-<script>
-  // Header scroll behavior - add solid bg on scroll
-  const header = document.getElementById('site-header');
-  const isHomePage = window.location.pathname === '/';
+<style>
+  .site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 50; background: #1f1610; color: #f3ede3; transition: background .3s; }
+  .site-header.is-home:not(.scrolled):not(.open) { background: transparent; }
+  .site-header.scrolled { background: rgba(31, 22, 16, .96); backdrop-filter: blur(6px); }
+  .bar { max-width: 1180px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; gap: 28px; }
+  .brand { font: 400 26px/1 'Instrument Serif', Georgia, serif; color: #f3ede3; text-decoration: none; letter-spacing: .005em; white-space: nowrap; }
+  .brand em { color: #d9a35e; }
+  .links { display: flex; gap: 22px; list-style: none; margin: 0 0 0 auto; padding: 0; align-items: center; }
+  .links a, .tools-btn { font: 500 13px/1 'IBM Plex Sans', system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: rgba(243, 237, 227, .82); text-decoration: none; padding: 8px 0; border-bottom: 1.5px solid transparent; }
+  .links a:hover, .tools-btn:hover { color: #fff; }
+  .links a.on, .tools-btn.on { color: #fff; border-bottom-color: #d9a35e; }
+  .tools-btn { appearance: none; background: none; border-top: 0; border-left: 0; border-right: 0; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+  .tools-btn svg { width: 11px; height: 11px; transition: transform .2s; }
+  .tools-btn[aria-expanded='true'] svg { transform: rotate(180deg); }
+  .icons { display: flex; gap: 6px; align-items: center; }
+  .icon { appearance: none; background: none; border: 0; color: rgba(243, 237, 227, .75); width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 999px; }
+  .icon:hover { color: #fff; background: rgba(255, 255, 255, .06); }
+  .icon svg { width: 20px; height: 20px; }
+  .menu-btn { display: none; }
+  .tools-panel { background: #241a13; border-top: 1px solid rgba(255, 255, 255, .08); box-shadow: 0 24px 40px -24px rgba(0, 0, 0, .6); }
+  .tp-inner { max-width: 1180px; margin: 0 auto; padding: 22px 24px 26px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 22px; position: relative; }
+  .tp-label { font: 500 11px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: #d9a35e; margin: 0 0 10px; }
+  .tp-group ul, .mm-group ul, .mm-links { list-style: none; margin: 0; padding: 0; }
+  .tp-group a { display: grid; gap: 2px; padding: 7px 0; text-decoration: none; }
+  .tp-name { font: 500 15px/1.2 'IBM Plex Sans', sans-serif; color: #f3ede3; }
+  .tp-blurb { font-size: 12.5px; line-height: 1.3; color: rgba(243, 237, 227, .62); }
+  .tp-group a:hover .tp-name { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+  .tp-all { position: absolute; right: 24px; bottom: 14px; font: 500 13px 'IBM Plex Sans', sans-serif; color: #d9a35e; }
+  .mobile-menu { background: #241a13; max-height: calc(100vh - 68px); overflow-y: auto; border-top: 1px solid rgba(255, 255, 255, .08); }
+  .mm-inner { padding: 16px 20px 24px; display: grid; gap: 16px; }
+  .mm-group a, .mm-links a { display: block; padding: 9px 0; font: 500 16px 'IBM Plex Sans', sans-serif; color: #f3ede3; text-decoration: none; }
+  .mm-links { border-top: 1px solid rgba(255, 255, 255, .1); padding-top: 8px; }
+  a:focus-visible, button:focus-visible { outline: 2px solid #d9a35e; outline-offset: 3px; border-radius: 4px; }
+  @media (max-width: 960px) {
+    .links { display: none; }
+    .menu-btn { display: inline-flex; }
+    .icons { margin-left: auto; }
+    .bar { padding: 12px 16px; }
+    .yt { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .site-header, .tools-btn svg { transition: none; } }
+</style>
 
-  if (isHomePage && header) {
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 100) {
-        header.classList.remove('bg-transparent');
-        header.classList.add('bg-charcoal/95', 'backdrop-blur-sm');
-      } else {
-        header.classList.remove('bg-charcoal/95', 'backdrop-blur-sm');
-        header.classList.add('bg-transparent');
-      }
+<script>
+  const header = document.getElementById('site-header');
+  if (header?.classList.contains('is-home')) {
+    const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 80);
+    addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  }
+  // The skip link targets #main; give the page's <main> that id if it lacks one.
+  const main = document.querySelector('main');
+  if (main && !document.getElementById('main')) main.id = 'main';
+  if (main && !main.hasAttribute('tabindex')) main.setAttribute('tabindex', '-1');
+
+  function disclosure(btnId: string, panelId: string) {
+    const btn = document.getElementById(btnId);
+    const panel = document.getElementById(panelId);
+    if (!btn || !panel) return;
+    const set = (open: boolean, focusBack = false) => {
+      btn.setAttribute('aria-expanded', String(open));
+      panel.hidden = !open;
+      header?.classList.toggle('open', open || document.querySelector('[aria-expanded="true"][aria-controls]') !== null);
+      if (!open && focusBack) btn.focus();
+    };
+    btn.addEventListener('click', () => set(btn.getAttribute('aria-expanded') !== 'true'));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') set(false, true); });
+    document.addEventListener('click', (e) => {
+      const t = e.target as Node;
+      if (btn.getAttribute('aria-expanded') === 'true' && !panel.contains(t) && !btn.contains(t)) set(false);
     });
   }
-
-  // Mobile menu toggle
-  const btn = document.getElementById('mobile-menu-btn');
-  const menu = document.getElementById('mobile-menu');
-  btn?.addEventListener('click', () => {
-    menu?.classList.toggle('hidden');
-  });
+  disclosure('tools-btn', 'tools-panel');
+  disclosure('mobile-menu-btn', 'mobile-menu');
 </script>

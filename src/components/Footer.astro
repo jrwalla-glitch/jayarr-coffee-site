@@ -1,52 +1,76 @@
 ---
 import { CATEGORIES } from '../content.config';
+import { TOOLS, TOOL_GROUPS } from '../data/tools';
 
-const today = new Date();
+const year = new Date().getFullYear();
 ---
 
-<footer class="bg-charcoal text-cream/70">
-  <div class="max-w-6xl mx-auto px-6 py-16">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
-      <!-- Brand -->
-      <div>
-        <h3 class="font-serif text-2xl font-bold text-cream mb-4">JayArr Coffee</h3>
-        <p class="text-sm leading-relaxed">
-          Exploring specialty coffee through science, scoring, and honest reviews. From origin to cup.
-        </p>
-      </div>
-      <!-- Categories -->
-      <div>
-        <h4 class="text-xs uppercase tracking-widest text-copper mb-4">Topics</h4>
-        <div class="flex flex-col gap-3">
-          {CATEGORIES.map((cat) => (
-            <a href={`/blog/category/${cat.toLowerCase()}/`} class="text-sm hover:text-cream transition-colors py-1">{cat}</a>
-          ))}
-        </div>
-      </div>
-      <!-- Navigation -->
-      <div>
-        <h4 class="text-xs uppercase tracking-widest text-copper mb-4">Navigate</h4>
-        <div class="flex flex-col gap-3">
-          <a href="/blog" class="text-sm hover:text-cream transition-colors py-1">All Articles</a>
-          <a href="/explore" class="text-sm hover:text-cream transition-colors py-1">Explore Flavors</a>
-          <a href="/videos" class="text-sm hover:text-cream transition-colors py-1">Videos</a>
-          <a href="/about" class="text-sm hover:text-cream transition-colors py-1">About</a>
-        </div>
-      </div>
-      <!-- Connect -->
-      <div>
-        <h4 class="text-xs uppercase tracking-widest text-copper mb-4">Connect</h4>
-        <div class="flex flex-col gap-3">
-          <a href="https://www.youtube.com/@jayarrcoffee" target="_blank" rel="noopener" class="text-sm hover:text-cream transition-colors py-1">YouTube</a>
-          <a href="/rss.xml" class="text-sm hover:text-cream transition-colors py-1">RSS Feed</a>
-          <a href="/privacy" class="text-sm hover:text-cream transition-colors py-1">Privacy Policy</a>
-          <a href="/affiliate-disclosure" class="text-sm hover:text-cream transition-colors py-1">Affiliate Disclosure</a>
-        </div>
-      </div>
+<footer class="site-footer">
+  <div class="inner">
+    <div class="brand-col">
+      <p class="brand">JayArr <em>Coffee</em></p>
+      <p class="tag">Tools and guides for better coffee at home, built from published research and the JayArr Coffee video library since 2019.</p>
+      <p class="contact">Corrections and questions: <a href="mailto:jay@jayarr.coffee">jay@jayarr.coffee</a></p>
     </div>
-    <div class="border-t border-white/10 mt-12 pt-8 text-center text-xs text-cream/40">
-      <p>From the makers of <a href="https://jayarr.pizza" target="_blank" rel="noopener" class="text-copper/70 hover:text-copper transition-colors">jayarr.pizza</a>, <a href="https://jayarrbread.com" target="_blank" rel="noopener" class="text-copper/70 hover:text-copper transition-colors">jayarrbread.com</a>, and <a href="https://jayarrchocolate.com" target="_blank" rel="noopener" class="text-copper/70 hover:text-copper transition-colors">jayarrchocolate.com</a></p>
-      <p class="mt-2">&copy; {today.getFullYear()} JayArr Coffee. All rights reserved.</p>
-    </div>
+    <nav class="cols" aria-label="Footer">
+      <div>
+        <p class="h">Tools</p>
+        <ul>
+          {TOOL_GROUPS.slice(0, 3).flatMap((g) => TOOLS.filter((t) => t.group === g.id)).map((t) => <li><a href={t.href}>{t.name}</a></li>)}
+        </ul>
+      </div>
+      <div>
+        <p class="h">More tools</p>
+        <ul>
+          {TOOL_GROUPS.slice(3).flatMap((g) => TOOLS.filter((t) => t.group === g.id)).map((t) => <li><a href={t.href}>{t.name}</a></li>)}
+          <li><a href="/tools/">All tools</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="h">Read</p>
+        <ul>
+          {CATEGORIES.map((c) => <li><a href={`/blog/category/${c.toLowerCase()}/`}>{c}</a></li>)}
+          <li><a href="/deep-brew/research/">Deep Brew research</a></li>
+          <li><a href="/videos/">Videos</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="h">About</p>
+        <ul>
+          <li><a href="/about/">About Jay Arr</a></li>
+          <li><a href="/how-we-make-this/">How we make this</a></li>
+          <li><a href="/affiliate-disclosure/">Affiliate disclosure</a></li>
+          <li><a href="/privacy/">Privacy</a></li>
+          <li><a href="/terms/">Terms</a></li>
+          <li><a href="https://www.youtube.com/@jayarrcoffee" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="/rss.xml">RSS: articles</a></li>
+          <li><a href="/deep-brew/rss.xml">RSS: Deep Brew research</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <div class="base">
+    <p>Sister sites: <a href="https://jayarr.pizza" target="_blank" rel="noopener">jayarr.pizza</a> · <a href="https://jayarrbread.com" target="_blank" rel="noopener">jayarrbread.com</a> · <a href="https://jayarrchocolate.com" target="_blank" rel="noopener">jayarrchocolate.com</a></p>
+    <p>As an Amazon Associate, JayArr Coffee earns from qualifying purchases. © {year} JayArr Coffee.</p>
   </div>
 </footer>
+
+<style>
+  .site-footer { background: #1f1610; color: rgba(243, 237, 227, .78); font: 400 14.5px/1.5 'IBM Plex Sans', system-ui, sans-serif; }
+  .inner { max-width: 1180px; margin: 0 auto; padding: 56px 24px 36px; display: grid; grid-template-columns: 1.1fr 2.4fr; gap: 40px; }
+  .brand { font: 400 30px/1 'Instrument Serif', Georgia, serif; color: #f3ede3; margin: 0 0 14px; }
+  .brand em { color: #d9a35e; }
+  .tag { margin: 0 0 14px; max-width: 34ch; }
+  .contact { margin: 0; font-size: 13.5px; }
+  .cols { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+  .h { font: 500 11px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: #d9a35e; margin: 0 0 12px; }
+  ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+  a { color: rgba(243, 237, 227, .86); text-decoration: none; display: inline-block; padding: 4px 0; }
+  a:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+  .contact a { color: #e8c38f; }
+  .base { border-top: 1px solid rgba(255, 255, 255, .1); max-width: 1180px; margin: 0 auto; padding: 18px 24px 28px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 13px; color: rgba(243, 237, 227, .7); }
+  .base p { margin: 0; }
+  .base a { color: #e8c38f; padding: 0; }
+  a:focus-visible { outline: 2px solid #d9a35e; outline-offset: 2px; border-radius: 3px; }
+  @media (max-width: 860px) { .inner { grid-template-columns: 1fr; } .cols { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+</style>

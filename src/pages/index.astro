@@ -38,14 +38,6 @@ const popularPosts = popularSlugs
 			name: SITE_TITLE,
 			url: 'https://jayarr.coffee',
 			description: SITE_DESCRIPTION,
-			potentialAction: {
-				'@type': 'SearchAction',
-				target: {
-					'@type': 'EntryPoint',
-					urlTemplate: 'https://jayarr.coffee/?s={search_term_string}',
-				},
-				'query-input': 'required name=search_term_string',
-			},
 			publisher: {
 				'@type': 'Organization',
 				name: SITE_TITLE,
@@ -375,36 +367,6 @@ const popularPosts = popularSlugs
 			</div>
 		</section>
 
-		<!-- Newsletter CTA -->
-		<section class="py-24 bg-cream-dark">
-			<div class="max-w-2xl mx-auto px-6 text-center">
-				<span class="text-xs uppercase tracking-widest text-copper font-medium">Stay Updated</span>
-				<h2 class="font-serif text-3xl md:text-4xl font-bold text-charcoal mt-2 mb-4">
-					Join the Newsletter
-				</h2>
-				<p class="text-warm-gray mb-8 leading-relaxed">
-					Get new articles, video drops, and coffee insights delivered to your inbox. No spam, just good coffee content.
-				</p>
-				<form
-					action="https://buttondown.com/api/emails/embed-subscribe/jayarrcoffee"
-					method="post"
-					target="popupwindow"
-					class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
-				>
-					<input
-						type="email"
-						name="email"
-						required
-						placeholder="your@email.com"
-						class="flex-1 px-4 py-3 bg-cream border border-charcoal/20 text-charcoal placeholder:text-warm-gray/60 text-sm focus:outline-none focus:border-copper transition-colors"
-					/>
-					<button type="submit" class="bg-charcoal text-cream px-6 py-3 text-sm uppercase tracking-widest hover:bg-copper transition-colors">
-						Subscribe
-					</button>
-				</form>
-				<p class="text-xs text-warm-gray/60 mt-4">No spam. Unsubscribe anytime.</p>
-			</div>
-		</section>
 
 		</main>
 

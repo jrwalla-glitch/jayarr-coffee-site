@@ -39,8 +39,9 @@ const roasters = [...new Set(hub.beans.map(b => b.roaster))].sort();
 <html lang="en">
   <head>
     <BaseHead
-      title={`${hub.display_name} Coffee: Origin Profile | JayArr Coffee`}
-      description={`Explore ${hub.bean_count} ${hub.display_name} coffees with personalized brewing recipes. ${hub.quick_stats?.signature_flavors?.join(', ') || 'Discover the flavors of this origin.'}`}
+      title={`${hub.display_name} Coffee: Origin Profile`}
+      description={`${hub.display_name} coffee: growing regions, processing, typical flavours${hub.quick_stats?.signature_flavors?.length ? ' (' + hub.quick_stats.signature_flavors.slice(0, 3).join(', ') + ')' : ''} and how to brew it.`}
+      breadcrumbs={false}
     />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
@@ -61,7 +62,7 @@ const roasters = [...new Set(hub.beans.map(b => b.roaster))].sort();
       "@context": "https://schema.org",
       "@type": "WebPage",
       "name": `${hub.display_name} Coffee: Origin Profile`,
-      "description": `Regional coffee profile for ${hub.display_name}. ${hub.bean_count} specialty coffees with personalized brewing recommendations.`,
+      "description": `Regional coffee profile for ${hub.display_name}: growing regions, processing and typical flavours.`,
       "url": `https://jayarr.coffee${hub.page_route}`,
       "publisher": { "@type": "Organization", "name": "JayArr Coffee", "url": "https://jayarr.coffee" }
     })}></script>
@@ -438,8 +439,9 @@ const roasters = [...new Set(hub.beans.map(b => b.roaster))].sort();
 
           <!-- Available Specimens -->
           <section>
-            <h2>Available Specimens</h2>
+            <h2>Example lots</h2>
             <hr class="section-rule" />
+            <p class="lots-note">Examples of {hub.display_name} coffees from roasters' 2026 catalogs, to show the range of flavours. Lots are seasonal; this is not a list of what's in stock.</p>
 
             <div class="bean-grid">
               {hub.beans.map((bean) => (
