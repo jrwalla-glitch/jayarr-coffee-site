@@ -14,9 +14,11 @@ interface Props {
 	tool: string;
 	context?: string;
 	preset?: Record<string, string | number>;
+	/** The button's words; by default it says the tool opens with these settings, not "this recipe". */
+	cta?: string;
 }
 
-const { tool, context, preset } = Astro.props;
+const { tool, context, preset, cta } = Astro.props;
 const data = toolById(LEGACY[tool] ?? tool);
 if (!data) throw new Error(`ToolCallout: unknown tool "${tool}"`);
 const query = preset ? `?${new URLSearchParams(Object.entries(preset).map(([k, v]) => [k, String(v)])).toString()}` : '';
@@ -27,7 +29,7 @@ const href = `${data.href}${query}`;
 	<p class="tc-kicker">{data.deepBrew ? 'Deep Brew tool' : 'Tool'}</p>
 	<p class="tc-title">{data.name}</p>
 	<p class="tc-desc">{context || `${data.blurb}.`}</p>
-	<a href={href} class="tc-link">{preset ? 'Open it with this recipe' : 'Open the tool'} <span aria-hidden="true">→</span></a>
+	<a href={href} class="tc-link">{cta ?? (preset ? 'Open it with these settings' : 'Open the tool')} <span aria-hidden="true">→</span></a>
 </aside>
 
 <style>
