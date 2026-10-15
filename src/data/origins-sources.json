@@ -1,0 +1,660 @@
+{
+ "aeki-robusta": {
+  "id": "aeki-robusta",
+  "title": "AEKI — Robusta Coffee Tree",
+  "url": "https://www.aeki-aice.org/en/robusta-coffee-tree/",
+  "checked": "2026-10-15",
+  "use": "Growing conditions: 200–800 m; BP selections and processing discussion."
+ },
+ "apex-bolivia": {
+  "id": "apex-bolivia",
+  "title": "Apex Coffee Imports — Bolivia",
+  "url": "https://apexcoffeeimports.com/pages/origin/bolivia",
+  "checked": "2026-10-15",
+  "use": "Harvest and growing-region sections; regional elevations and flavour descriptions."
+ },
+ "apex-brazil": {
+  "id": "apex-brazil",
+  "title": "Apex Coffee Imports — Brazil",
+  "url": "https://apexcoffeeimports.com/pages/origin/brazil",
+  "checked": "2026-10-15",
+  "use": "Growing Regions: Sul de Minas 800–1,250 m; Cerrado Mineiro narrative 850–1,250 m. Harvesting timeline May–September, scoped to its sourcing programme."
+ },
+ "apex-burundi": {
+  "id": "apex-burundi",
+  "title": "Apex Coffee Imports — Burundi",
+  "url": "https://apexcoffeeimports.com/pages/origin/burundi",
+  "checked": "2026-10-15",
+  "use": "Harvest and growing-region sections; regional elevations and flavour descriptions."
+ },
+ "apex-costa-rica": {
+  "id": "apex-costa-rica",
+  "title": "Apex Coffee Imports — Costa Rica",
+  "url": "https://apexcoffeeimports.com/pages/origin/costa-rica",
+  "checked": "2026-10-15",
+  "use": "Harvest and growing-region sections; regional elevations and flavour descriptions."
+ },
+ "apex-kenya": {
+  "id": "apex-kenya",
+  "title": "Apex Coffee Imports — Kenya",
+  "url": "https://apexcoffeeimports.com/pages/origin/kenya",
+  "checked": "2026-10-15",
+  "use": "Harvest and growing-region sections; regional elevations and flavour descriptions."
+ },
+ "apex-panama": {
+  "id": "apex-panama",
+  "title": "Apex Coffee Imports — Panama",
+  "url": "https://apexcoffeeimports.com/pages/origin/panama",
+  "checked": "2026-10-15",
+  "use": "Harvest and growing-region sections; regional elevations and flavour descriptions."
+ },
+ "apex-peru": {
+  "id": "apex-peru",
+  "title": "Apex Coffee Imports — Peru",
+  "url": "https://apexcoffeeimports.com/pages/origin/peru",
+  "checked": "2026-10-15",
+  "use": "Harvest and growing-region sections; regional elevations and flavour descriptions."
+ },
+ "atlas-myanmar": {
+  "id": "atlas-myanmar",
+  "title": "Atlas Coffee Importers — Myanmar",
+  "url": "https://www.atlascoffee.com/coffee/myanmar/",
+  "checked": "2026-10-15",
+  "use": "Origin/producer geography: Ywangan, Pyin Oo Lwin, Pinlaung; Shan naturals / Mandalay washed estates. Old conflicting production estimates excluded."
+ },
+ "bijdendijk-cuba": {
+  "id": "bijdendijk-cuba",
+  "title": "Bijdendijk — Coffee from Cuba",
+  "url": "https://www.bijdendijk.nl/coffee-from-cuba/",
+  "checked": "2026-10-15",
+  "use": "CUBA COFFEE facts: September–January harvest, Caturra/Typica; Sierra Maestra paragraph and washed export-grade sensory paragraph. Unsourced altitude and output not used."
+ },
+ "bmj-spec": {
+  "id": "bmj-spec",
+  "title": "Blue Mountain Coffee Jamaica — Specifications & Quality",
+  "url": "https://www.bluemountaincoffeejamaica.com/en/specifications-quality",
+  "checked": "2026-10-15",
+  "use": "FAQ COUNTRY (j): two harvest cycles; opening processing paragraphs; Cupping Profile / Coffee Review example. Old export tonnage ignored."
+ },
+ "burman-malawi": {
+  "id": "burman-malawi",
+  "title": "Burman Coffee — Malawi FTO Mzuzu Coop AB",
+  "url": "https://burmancoffee.com/malawi-fto-mzuzu-co-op-ab/",
+  "checked": "2026-10-15",
+  "use": "Tasting Notes; older washed lot used only as a scoped sensory example, not current output evidence."
+ },
+ "cabi-coffee-ch2": {
+  "id": "cabi-coffee-ch2",
+  "title": "Coffee sector chapter 2, UK government-hosted agronomic reference",
+  "url": "https://assets.publishing.service.gov.uk/media/57a08b4040f0b652dd000bb4/Coffee_CH02.pdf",
+  "checked": "2026-10-15",
+  "use": "PDF p. 11 / printed p. 19, Uganda paragraph: Arabica 1,500–2,300 m. Old acreage and output shares excluded."
+ },
+ "caravela-ecuador": {
+  "id": "caravela-ecuador",
+  "title": "Caravela — Ecuador origin",
+  "url": "https://origin.caravela.coffee/",
+  "checked": "2026-10-15",
+  "use": "Ecuador mainland specialty elevations 1,200–2,000 m; Galápagos lower-altitude discussion and regional sections."
+ },
+ "ci-bolivia": {
+  "id": "ci-bolivia",
+  "title": "Café Imports — Bolivia",
+  "url": "https://www.cafeimports.com/north-america/bolivia",
+  "checked": "2026-10-15",
+  "use": "COFFEE PROFILE: Growing Regions, Common Varieties, Processing Method/s, Harvest Period, Typical Arrival; named narrative/region sections for descriptive profiles. Old production/export totals on these pages are not used."
+ },
+ "ci-brazil": {
+  "id": "ci-brazil",
+  "title": "Café Imports — Brazil",
+  "url": "https://www.cafeimports.com/north-america/brazil",
+  "checked": "2026-10-15",
+  "use": "COFFEE PROFILE: Growing Regions, Common Varieties, Processing Method/s, Harvest Period, Typical Arrival; named narrative/region sections for descriptive profiles. Old production/export totals on these pages are not used."
+ },
+ "ci-burundi": {
+  "id": "ci-burundi",
+  "title": "Café Imports — Burundi",
+  "url": "https://www.cafeimports.com/north-america/burundi",
+  "checked": "2026-10-15",
+  "use": "COFFEE PROFILE: Growing Regions, Common Varieties, Processing Method/s, Harvest Period, Typical Arrival; named narrative/region sections for descriptive profiles. Old production/export totals on these pages are not used."
+ },
+ "ci-colombia": {
+  "id": "ci-colombia",
+  "title": "Café Imports — Colombia",
+  "url": "https://www.cafeimports.com/north-america/colombia",
+  "checked": "2026-10-15",
+  "use": "COFFEE PROFILE: Growing Regions, Common Varieties, Processing Method/s, Harvest Period, Typical Arrival; named narrative/region sections for descriptive profiles. Old production/export totals on these pages are not used."
+ },
+ "ci-costa-rica": {
+  "id": "ci-costa-rica",
+  "title": "Café Imports — Costa Rica",
+  "url": "https://www.cafeimports.com/north-america/costa-rica",
+  "checked": "2026-10-15",
+  "use": "COFFEE PROFILE: Growing Regions, Common Varieties, Processing Method/s, Harvest Period, Typical Arrival; named narrative/region sections for descriptive profiles. Old production/export totals on these pages are not used."
+ },
+ "ci-ecuador": {
+  "id": "ci-ecuador",
+  "title": "Café Imports — Ecuador",
+  "url": "https://www.cafeimports.com/north-america/ecuador",
+  "checked": "2026-10-15",
+  "use": "COFFEE PROFILE: Growing Regions, Common Varieties, Processing Method/s, Harvest Period, Typical Arrival; named narrative/region sections for descriptive profiles. Old production/export totals on these pages are not used."
+ },
+ "ci-el-salvador": {
+  "id": "ci-el-salvador",
+  "title": "Café Imports — El Salvador",
+  "url": "https://www.cafeimports.com/north-america/el-salvador",
+  "checked": "2026-10-15",
+  "use": "COFFEE PROFILE: Growing Regions, Common Varieties, Processing Method/s, Harvest Period, Typical Arrival; named narrative/region sections for descriptive profiles. Old production/export totals on these pages are not used."
+ },
+ "ci-ethiopia": {
+  "id": "ci-ethiopia",
+  "title": "Café Imports — Ethiopia",
+  "url": "https://www.cafeimports.com/north-america/ethiopia",
+  "checked": "2026-10-15",
+  "use": "COFFEE PROFILE: Growing Regions, Common Varieties, Processing Method/s, Harvest Period, Typical Arrival; named narrative/region sections for descriptive profiles. Old production/export totals on these pages are not used."
+ },
+ "ci-guatemala": {
+  "id": "ci-guatemala",
+  "title": "Café Imports — Guatemala",
+  "url": "https://www.cafeimports.com/north-america/guatemala",
+  "checked": "2026-10-15",
+  "use": "COFFEE PROFILE: Growing Regions, Common Varieties, Processing Method/s, Harvest Period, Typical Arrival; named narrative/region sections for descriptive profiles. Old production/export totals on these pages are not used."
+ },
+ "ci-hawaii": {
+  "id": "ci-hawaii",
+  "title": "Café Imports — Hawaii",
+  "url": "https://www.cafeimports.com/north-america/hawaii",
+  "checked": "2026-10-15",
+  "use": "COFFEE PROFILE: Growing Regions, Common Varieties, Processing Method/s, Harvest Period, Typical Arrival; named narrative/region sections for descriptive profiles. Old production/export totals on these pages are not used."
+ },
+ "ci-honduras": {
+  "id": "ci-honduras",
+  "title": "Café Imports — Honduras",
+  "url": "https://www.cafeimports.com/north-america/honduras",
+  "checked": "2026-10-15",
+  "use": "COFFEE PROFILE: Growing Regions, Common Varieties, Processing Method/s, Harvest Period, Typical Arrival; named narrative/region sections for descriptive profiles. Old production/export totals on these pages are not used."
+ },
+ "ci-india": {
+  "id": "ci-india",
+  "title": "Café Imports — India",
+  "url": "https://www.cafeimports.com/north-america/india",
+  "checked": "2026-10-15",
+  "use": "COFFEE PROFILE: Growing Regions, Common Varieties, Processing Method/s, Harvest Period, Typical Arrival; named narrative/region sections for descriptive profiles. Old production/export totals on these pages are not used."
+ },
+ "ci-jamaica": {
+  "id": "ci-jamaica",
+  "title": "Café Imports — Jamaica",
+  "url": "https://www.cafeimports.com/north-america/jamaica",
+  "checked": "2026-10-15",
+  "use": "COFFEE PROFILE: Growing Regions, Common Varieties, Processing Method/s, Harvest Period, Typical Arrival; named narrative/region sections for descriptive profiles. Old production/export totals on these pages are not used."
+ },
+ "ci-kenya": {
+  "id": "ci-kenya",
+  "title": "Café Imports — Kenya",
+  "url": "https://www.cafeimports.com/north-america/kenya",
+  "checked": "2026-10-15",
+  "use": "COFFEE PROFILE: Growing Regions, Common Varieties, Processing Method/s, Harvest Period, Typical Arrival; named narrative/region sections for descriptive profiles. Old production/export totals on these pages are not used."
+ },
+ "ci-malawi": {
+  "id": "ci-malawi",
+  "title": "Café Imports — Malawi",
+  "url": "https://www.cafeimports.com/north-america/malawi",
+  "checked": "2026-10-15",
+  "use": "COFFEE PROFILE: Growing Regions, Common Varieties, Processing Method/s, Harvest Period, Typical Arrival; named narrative/region sections for descriptive profiles. Old production/export totals on these pages are not used."
+ },
+ "ci-mexico": {
+  "id": "ci-mexico",
+  "title": "Café Imports — Mexico",
+  "url": "https://www.cafeimports.com/north-america/mexico",
+  "checked": "2026-10-15",
+  "use": "COFFEE PROFILE: Growing Regions, Common Varieties, Processing Method/s, Harvest Period, Typical Arrival; named narrative/region sections for descriptive profiles. Old production/export totals on these pages are not used."
+ },
+ "ci-nicaragua": {
+  "id": "ci-nicaragua",
+  "title": "Café Imports — Nicaragua",
+  "url": "https://www.cafeimports.com/north-america/nicaragua",
+  "checked": "2026-10-15",
+  "use": "COFFEE PROFILE: Growing Regions, Common Varieties, Processing Method/s, Harvest Period, Typical Arrival; named narrative/region sections for descriptive profiles. Old production/export totals on these pages are not used."
+ },
+ "ci-panama": {
+  "id": "ci-panama",
+  "title": "Café Imports — Panama",
+  "url": "https://www.cafeimports.com/north-america/panama",
+  "checked": "2026-10-15",
+  "use": "COFFEE PROFILE: Growing Regions, Common Varieties, Processing Method/s, Harvest Period, Typical Arrival; named narrative/region sections for descriptive profiles. Old production/export totals on these pages are not used."
+ },
+ "ci-papua-new-guinea": {
+  "id": "ci-papua-new-guinea",
+  "title": "Café Imports — Papua New-guinea",
+  "url": "https://www.cafeimports.com/north-america/papua-new-guinea",
+  "checked": "2026-10-15",
+  "use": "COFFEE PROFILE: Growing Regions, Common Varieties, Processing Method/s, Harvest Period, Typical Arrival; named narrative/region sections for descriptive profiles. Old production/export totals on these pages are not used."
+ },
+ "ci-peru": {
+  "id": "ci-peru",
+  "title": "Café Imports — Peru",
+  "url": "https://www.cafeimports.com/north-america/peru",
+  "checked": "2026-10-15",
+  "use": "COFFEE PROFILE: Growing Regions, Common Varieties, Processing Method/s, Harvest Period, Typical Arrival; named narrative/region sections for descriptive profiles. Old production/export totals on these pages are not used."
+ },
+ "ci-rwanda": {
+  "id": "ci-rwanda",
+  "title": "Café Imports — Rwanda",
+  "url": "https://www.cafeimports.com/north-america/rwanda",
+  "checked": "2026-10-15",
+  "use": "COFFEE PROFILE: Growing Regions, Common Varieties, Processing Method/s, Harvest Period, Typical Arrival; named narrative/region sections for descriptive profiles. Old production/export totals on these pages are not used."
+ },
+ "ci-sumatra": {
+  "id": "ci-sumatra",
+  "title": "Café Imports — Sumatra",
+  "url": "https://www.cafeimports.com/north-america/sumatra",
+  "checked": "2026-10-15",
+  "use": "COFFEE PROFILE: Growing Regions, Common Varieties, Processing Method/s, Harvest Period, Typical Arrival; named narrative/region sections for descriptive profiles. Old production/export totals on these pages are not used."
+ },
+ "ci-tanzania": {
+  "id": "ci-tanzania",
+  "title": "Café Imports — Tanzania",
+  "url": "https://www.cafeimports.com/north-america/tanzania",
+  "checked": "2026-10-15",
+  "use": "COFFEE PROFILE: Growing Regions, Common Varieties, Processing Method/s, Harvest Period, Typical Arrival; named narrative/region sections for descriptive profiles. Old production/export totals on these pages are not used."
+ },
+ "ci-yemen": {
+  "id": "ci-yemen",
+  "title": "Café Imports — Yemen",
+  "url": "https://www.cafeimports.com/north-america/yemen",
+  "checked": "2026-10-15",
+  "use": "COFFEE PROFILE: Growing Regions, Common Varieties, Processing Method/s, Harvest Period, Typical Arrival; named narrative/region sections for descriptive profiles. Old production/export totals on these pages are not used."
+ },
+ "coffee-board-india": {
+  "id": "coffee-board-india",
+  "title": "Coffee Board of India — Coffee regions of India",
+  "url": "https://coffeeboard.gov.in/coffee-regions-india.html",
+  "checked": "2026-10-15",
+  "use": "Growing Conditions table: Arabica altitude 1,000–1,500 m, Robusta 500–1,000 m; Important Varieties; region blocks Coorg, Chikmagalur, Wayanad, Shevaroys. Introductory sensory description."
+ },
+ "ctahr-coffee-2008": {
+  "id": "ctahr-coffee-2008",
+  "title": "University of Hawaiʻi CTAHR — Growing Coffee in Hawaii (2008)",
+  "url": "https://www.ctahr.hawaii.edu/oc/freepubs/pdf/coffee08.pdf",
+  "checked": "2026-10-15",
+  "use": "PDF p. 4 climate/elevation suitability; PDF p. 5 August–December harvest and island locations; variety and harvesting sections. Old production not used."
+ },
+ "cuba-trade": {
+  "id": "cuba-trade",
+  "title": "US–Cuba Trade and Economic Council — Café O'Reilly field report (2017)",
+  "url": "https://www.cubatrade.org/blog/2017/2/12/cafe-oreilly-for-freshly-roasted-freshly-ground-coffee-from-cuba",
+  "checked": "2026-10-15",
+  "use": "Field account and grade list: Escambray and Guantánamo; Lavado export grades. Used for geography/process only."
+ },
+ "go-rwanda": {
+  "id": "go-rwanda",
+  "title": "Genuine Origin — Rwanda",
+  "url": "https://www.genuineorigin.com/rwanda",
+  "checked": "2026-10-15",
+  "use": "2026 Inzovu washed offering flavour description: chocolate, stone fruit, citrus, tea."
+ },
+ "hamdan-yemen": {
+  "id": "hamdan-yemen",
+  "title": "Hamdan Coffee — Altitude and Yemeni Coffee, March 31, 2026",
+  "url": "https://hamdancoffee.com/blogs/coffee-break/altitude-and-yemeni-coffee-why-elevation-matters-for-flavour",
+  "checked": "2026-10-15",
+  "use": "'At what altitude does Yemeni coffee grow?' 1,500–2,500 m; Haraaz/Bani Matar/Sanani; sensory and traditional varieties paragraphs."
+ },
+ "iniap-robusta-2017": {
+  "id": "iniap-robusta-2017",
+  "title": "INIAP — Guía para facilitar el aprendizaje en el manejo del cultivo de café robusta (2017)",
+  "url": "https://repositorio.iniap.gob.ec/bitstreams/275ad4f8-dce0-428b-86f5-8148e8c89d99/download",
+  "checked": "2026-10-15",
+  "use": "PDF p. 7, introduction: Robusta from near sea level to 600 m, growing provinces and selected clones; PDF p. 56 / printed p. 52, lowland growing conditions."
+ },
+ "ip-vietnam-lamdong": {
+  "id": "ip-vietnam-lamdong",
+  "title": "Intellectual Property Office of Vietnam — GI protection Lâm Đồng coffee",
+  "url": "https://ipvietnam.gov.vn/vi_VN/web/english/news-events/-/asset_publisher/ZMuTgR44COLR/content/geographical-indication-protection-lam-dong-for-coffee-products/pop_up",
+  "checked": "2026-10-15",
+  "use": "Geographic conditions paragraphs: Arabica 1,200 to above 2,200 m; Robusta 700–850 m; regional varieties."
+ },
+ "jacoffee-faq": {
+  "id": "jacoffee-faq",
+  "title": "JACoffee — Frequently asked questions",
+  "url": "https://www.jacoffee.com/pages/faq",
+  "checked": "2026-10-15",
+  "use": "Blue Mountain origin/elevation answer: 3,000–5,500 ft. Treated as a trade description, not legal verification."
+ },
+ "jacra-coffee": {
+  "id": "jacra-coffee",
+  "title": "JACRA — About Coffee",
+  "url": "https://jacra.org/divisions/coffee/about-coffee/",
+  "checked": "2026-10-15",
+  "use": "Blue Mountain parishes St Andrew, St Thomas, Portland; High Mountain outside that area; Typica predominance."
+ },
+ "lb-el-salvador": {
+  "id": "lb-el-salvador",
+  "title": "List + Beisler — Finca Don Nacho, washed Arabica",
+  "url": "https://www.list-beisler.coffee/media/pdf/624_844_ELS_Washed_Arabica_Finca_Don_Nacho_POSTCARD.pdf",
+  "checked": "2026-10-15",
+  "use": "PDF p. 2, last sensory line: fruity acidity, hazelnut, sweet; Apaneca–Ilamatepec washed Sarchimor example."
+ },
+ "mercanta-bolivia": {
+  "id": "mercanta-bolivia",
+  "title": "Mercanta — Bolivia",
+  "url": "https://coffeehunter.com/our-origins/bolivia/",
+  "checked": "2026-10-15",
+  "use": "Country profile harvest field and geography/growing-region narrative; Honduras regional elevation table; Bolivia specialty altitude paragraph."
+ },
+ "mercanta-costa-rica": {
+  "id": "mercanta-costa-rica",
+  "title": "Mercanta — Costa Rica",
+  "url": "https://coffeehunter.com/our-origins/costa-rica/",
+  "checked": "2026-10-15",
+  "use": "Country profile harvest field and geography/growing-region narrative; Honduras regional elevation table; Bolivia specialty altitude paragraph."
+ },
+ "mercanta-ecuador": {
+  "id": "mercanta-ecuador",
+  "title": "Mercanta — Ecuador",
+  "url": "https://coffeehunter.com/our-origins/ecuador/",
+  "checked": "2026-10-15",
+  "use": "Country profile harvest field and geography/growing-region narrative; Honduras regional elevation table; Bolivia specialty altitude paragraph."
+ },
+ "mercanta-el-salvador": {
+  "id": "mercanta-el-salvador",
+  "title": "Mercanta — El Salvador",
+  "url": "https://coffeehunter.com/our-origins/el-salvador/",
+  "checked": "2026-10-15",
+  "use": "Country profile harvest field and geography/growing-region narrative; Honduras regional elevation table; Bolivia specialty altitude paragraph."
+ },
+ "mercanta-guatemala": {
+  "id": "mercanta-guatemala",
+  "title": "Mercanta — Guatemala",
+  "url": "https://coffeehunter.com/our-origins/guatemala/",
+  "checked": "2026-10-15",
+  "use": "Country profile harvest field and geography/growing-region narrative; Honduras regional elevation table; Bolivia specialty altitude paragraph."
+ },
+ "mercanta-honduras": {
+  "id": "mercanta-honduras",
+  "title": "Mercanta — Honduras",
+  "url": "https://coffeehunter.com/our-origins/honduras/",
+  "checked": "2026-10-15",
+  "use": "Country profile harvest field and geography/growing-region narrative; Honduras regional elevation table; Bolivia specialty altitude paragraph."
+ },
+ "mercanta-mexico": {
+  "id": "mercanta-mexico",
+  "title": "Mercanta — Mexico",
+  "url": "https://coffeehunter.com/our-origins/mexico/",
+  "checked": "2026-10-15",
+  "use": "Country profile harvest field and geography/growing-region narrative; Honduras regional elevation table; Bolivia specialty altitude paragraph."
+ },
+ "mercanta-nicaragua": {
+  "id": "mercanta-nicaragua",
+  "title": "Mercanta — Nicaragua",
+  "url": "https://coffeehunter.com/our-origins/nicaragua/",
+  "checked": "2026-10-15",
+  "use": "Country profile harvest field and geography/growing-region narrative; Honduras regional elevation table; Bolivia specialty altitude paragraph."
+ },
+ "mercanta-nicaragua-mountain": {
+  "id": "mercanta-nicaragua-mountain",
+  "title": "Mercanta — Nicaragua Mountain Harvest",
+  "url": "https://coffeehunter.com/coffee/mountain-harvest/",
+  "checked": "2026-10-15",
+  "use": "Coffee profile: washed regional blend, Jinotega/Matagalpa; dark chocolate, red fruit, tangerine."
+ },
+ "mercanta-peru": {
+  "id": "mercanta-peru",
+  "title": "Mercanta — Peru",
+  "url": "https://coffeehunter.com/our-origins/peru/",
+  "checked": "2026-10-15",
+  "use": "Country profile harvest field and geography/growing-region narrative; Honduras regional elevation table; Bolivia specialty altitude paragraph."
+ },
+ "moka-cuba": {
+  "id": "moka-cuba",
+  "title": "Moka Trade / Benecke — Cuba Serrano Superior",
+  "url": "https://moka-trade.com/en/Coffie.aspx?ID=9",
+  "checked": "2026-10-15",
+  "use": "Specification bullets: El Nicho / Escambray, 600–800 m, Arabica, October–March harvest; cup profile. Shipment bullet is not harvest."
+ },
+ "movaci-thailand": {
+  "id": "movaci-thailand",
+  "title": "Movaci Coffee — Northern Thai sourcing",
+  "url": "https://www.movaci.coffee/",
+  "checked": "2026-10-15",
+  "use": "02 Origin: Doi Chang/Doi Tung 1,200–1,600 m, Nov–Feb; Doi Inthanon/Mae Wang 1,100–1,500 m, Dec–Mar; 03 Process; Chiang Rai sensory description."
+ },
+ "mzuzu": {
+  "id": "mzuzu",
+  "title": "Mzuzu Coffee Planters Cooperative Union",
+  "url": "https://www.mzuzucoffee.org/",
+  "checked": "2026-10-15",
+  "use": "Homepage regional list and paragraph beginning 'Mzuzu coffee beans are washed': bean-growing altitude 1,000–2,000 m and wet processing."
+ },
+ "naeb-rwanda": {
+  "id": "naeb-rwanda",
+  "title": "NAEB — Rwanda Coffee",
+  "url": "https://www.naeb.gov.rw/rwanda-coffee",
+  "checked": "2026-10-15",
+  "use": "Coffee overview: Bourbon predominance."
+ },
+ "nass-may2026": {
+  "id": "nass-may2026",
+  "title": "USDA NASS Noncitrus Fruits and Nuts 2025 Summary, May 2026",
+  "url": "https://www.nass.usda.gov/Publications/Todays_Reports/reports/ncit0526.pdf",
+  "checked": "2026-10-15",
+  "use": "p. 32, Coffee Utilized Production and Price on Equivalent Basis – Hawaii: 2023-2024, 2024-2025, and 2025-2026; Green market basis, 2025-2026 utilized production 3,928 (1,000 lb). Cherry utilized 20,185; total cherry 20,735 (1,000 lb)."
+ },
+ "nilaa-myanmar": {
+  "id": "nilaa-myanmar",
+  "title": "Nilaa Coffee — Origin Myanmar",
+  "url": "https://www.nilaacoffee.com/origin-myanmar",
+  "checked": "2026-10-15",
+  "use": "The Source: 1,300–1,500 m, late December–April harvest and late summer/early fall US arrivals; Myin Dwin natural lot tasting notes."
+ },
+ "shac-regions": {
+  "id": "shac-regions",
+  "title": "Hawaii coffee growers — Growing regions",
+  "url": "https://hawaiigrown.coffee/hawaii-coffee/hawaii-coffee-growing-regions/",
+  "checked": "2026-10-15",
+  "use": "Hāmākua, Kona, Kaʻū and Puna region blocks: farm elevation bands; Kona Typica; island/district descriptions."
+ },
+ "shade-indonesia": {
+  "id": "shade-indonesia",
+  "title": "ShadeCoffee research catalogue — Indonesia",
+  "url": "https://www.shadecoffee.org/en/catalog/indonesia",
+  "checked": "2026-10-15",
+  "use": "Opening growing-geography paragraph: Arabica roughly 1,000–1,500 m in North Sumatra, Aceh and Java; Robusta landscape discussed separately."
+ },
+ "suca-brazil": {
+  "id": "suca-brazil",
+  "title": "Sucafina — Brazil",
+  "url": "https://www.sucafina.com/na/origins/brazil",
+  "checked": "2026-10-15",
+  "use": "Details: Common Arabica Varieties, Key Regions, Harvest Months; country narrative and processing paragraphs. Historical production/rank figures excluded."
+ },
+ "suca-burundi": {
+  "id": "suca-burundi",
+  "title": "Sucafina — Burundi",
+  "url": "https://www.sucafina.com/na/origins/burundi",
+  "checked": "2026-10-15",
+  "use": "Details: Common Arabica Varieties, Key Regions, Harvest Months; country narrative and processing paragraphs. Historical production/rank figures excluded."
+ },
+ "suca-china": {
+  "id": "suca-china",
+  "title": "Sucafina — China",
+  "url": "https://www.sucafina.com/na/origins/china",
+  "checked": "2026-10-15",
+  "use": "Details: Common Arabica Varieties, Key Regions, Harvest Months; country narrative and processing paragraphs. Historical production/rank figures excluded."
+ },
+ "suca-colombia": {
+  "id": "suca-colombia",
+  "title": "Sucafina — Colombia",
+  "url": "https://www.sucafina.com/na/origins/colombia",
+  "checked": "2026-10-15",
+  "use": "Details: Common Arabica Varieties, Key Regions, Harvest Months; country narrative and processing paragraphs. Historical production/rank figures excluded."
+ },
+ "suca-costa-rica": {
+  "id": "suca-costa-rica",
+  "title": "Sucafina — Costa Rica",
+  "url": "https://www.sucafina.com/na/origins/costa-rica",
+  "checked": "2026-10-15",
+  "use": "Details: Common Arabica Varieties, Key Regions, Harvest Months; country narrative and processing paragraphs. Historical production/rank figures excluded."
+ },
+ "suca-el-salvador": {
+  "id": "suca-el-salvador",
+  "title": "Sucafina — El Salvador",
+  "url": "https://www.sucafina.com/na/origins/el-salvador",
+  "checked": "2026-10-15",
+  "use": "Details: Common Arabica Varieties, Key Regions, Harvest Months; country narrative and processing paragraphs. Historical production/rank figures excluded."
+ },
+ "suca-ethiopia": {
+  "id": "suca-ethiopia",
+  "title": "Sucafina — Ethiopia",
+  "url": "https://www.sucafina.com/na/origins/ethiopia",
+  "checked": "2026-10-15",
+  "use": "Details: Common Arabica Varieties, Key Regions, Harvest Months; country narrative and processing paragraphs. Historical production/rank figures excluded."
+ },
+ "suca-guatemala": {
+  "id": "suca-guatemala",
+  "title": "Sucafina — Guatemala",
+  "url": "https://www.sucafina.com/na/origins/guatemala",
+  "checked": "2026-10-15",
+  "use": "Details: Common Arabica Varieties, Key Regions, Harvest Months; country narrative and processing paragraphs. Historical production/rank figures excluded."
+ },
+ "suca-honduras": {
+  "id": "suca-honduras",
+  "title": "Sucafina — Honduras",
+  "url": "https://www.sucafina.com/na/origins/honduras",
+  "checked": "2026-10-15",
+  "use": "Details: Common Arabica Varieties, Key Regions, Harvest Months; country narrative and processing paragraphs. Historical production/rank figures excluded."
+ },
+ "suca-indonesia": {
+  "id": "suca-indonesia",
+  "title": "Sucafina — Indonesia",
+  "url": "https://www.sucafina.com/na/origins/indonesia",
+  "checked": "2026-10-15",
+  "use": "Details: Common Arabica Varieties, Key Regions, Harvest Months; country narrative and processing paragraphs. Historical production/rank figures excluded."
+ },
+ "suca-kenya": {
+  "id": "suca-kenya",
+  "title": "Sucafina — Kenya",
+  "url": "https://www.sucafina.com/na/origins/kenya",
+  "checked": "2026-10-15",
+  "use": "Details: Common Arabica Varieties, Key Regions, Harvest Months; country narrative and processing paragraphs. Historical production/rank figures excluded."
+ },
+ "suca-malawi": {
+  "id": "suca-malawi",
+  "title": "Sucafina — Malawi",
+  "url": "https://www.sucafina.com/na/origins/malawi",
+  "checked": "2026-10-15",
+  "use": "Details: Common Arabica Varieties, Key Regions, Harvest Months; country narrative and processing paragraphs. Historical production/rank figures excluded."
+ },
+ "suca-malawi-sable": {
+  "id": "suca-malawi-sable",
+  "title": "Sucafina — Sable Farms FW PB RFA",
+  "url": "https://sucafina.com/emea/offerings/malawi-sable-farms-pb-rfa",
+  "checked": "2026-10-15",
+  "use": "Details and producer narrative: southern/eastern estates, Mangochi; washed coffee."
+ },
+ "suca-mexico": {
+  "id": "suca-mexico",
+  "title": "Sucafina — Mexico",
+  "url": "https://www.sucafina.com/na/origins/mexico",
+  "checked": "2026-10-15",
+  "use": "Details: Common Arabica Varieties, Key Regions, Harvest Months; country narrative and processing paragraphs. Historical production/rank figures excluded."
+ },
+ "suca-myanmar": {
+  "id": "suca-myanmar",
+  "title": "Sucafina — Myanmar",
+  "url": "https://www.sucafina.com/na/origins/myanmar",
+  "checked": "2026-10-15",
+  "use": "Details: Common Arabica Varieties, Key Regions, Harvest Months; country narrative and processing paragraphs. Historical production/rank figures excluded."
+ },
+ "suca-nicaragua": {
+  "id": "suca-nicaragua",
+  "title": "Sucafina — Nicaragua",
+  "url": "https://www.sucafina.com/na/origins/nicaragua",
+  "checked": "2026-10-15",
+  "use": "Details: Common Arabica Varieties, Key Regions, Harvest Months; country narrative and processing paragraphs. Historical production/rank figures excluded."
+ },
+ "suca-panama": {
+  "id": "suca-panama",
+  "title": "Sucafina — Panama",
+  "url": "https://www.sucafina.com/na/origins/panama",
+  "checked": "2026-10-15",
+  "use": "Details: Common Arabica Varieties, Key Regions, Harvest Months; country narrative and processing paragraphs. Historical production/rank figures excluded."
+ },
+ "suca-peru": {
+  "id": "suca-peru",
+  "title": "Sucafina — Peru",
+  "url": "https://www.sucafina.com/na/origins/peru",
+  "checked": "2026-10-15",
+  "use": "Details: Common Arabica Varieties, Key Regions, Harvest Months; country narrative and processing paragraphs. Historical production/rank figures excluded."
+ },
+ "suca-rwanda": {
+  "id": "suca-rwanda",
+  "title": "Sucafina — Rwanda",
+  "url": "https://www.sucafina.com/na/origins/rwanda",
+  "checked": "2026-10-15",
+  "use": "Details: Common Arabica Varieties, Key Regions, Harvest Months; country narrative and processing paragraphs. Historical production/rank figures excluded."
+ },
+ "suca-tanzania-robusta": {
+  "id": "suca-tanzania-robusta",
+  "title": "Sucafina — Tanzania Robusta FTO",
+  "url": "https://www.sucafina.com/na/offerings/tanzania-robusta-fto",
+  "checked": "2026-10-15",
+  "use": "Details: Kagera / Karagwe, altitude 800–1,100 m, natural processing."
+ },
+ "suca-uganda": {
+  "id": "suca-uganda",
+  "title": "Sucafina — Uganda",
+  "url": "https://www.sucafina.com/na/origins/uganda",
+  "checked": "2026-10-15",
+  "use": "Details: Common Arabica Varieties, Key Regions, Harvest Months; country narrative and processing paragraphs. Historical production/rank figures excluded."
+ },
+ "suca-vietnam": {
+  "id": "suca-vietnam",
+  "title": "Sucafina — Vietnam",
+  "url": "https://www.sucafina.com/na/origins/vietnam",
+  "checked": "2026-10-15",
+  "use": "Details: Common Arabica Varieties, Key Regions, Harvest Months; country narrative and processing paragraphs. Historical production/rank figures excluded."
+ },
+ "suca-vietnam-ganh": {
+  "id": "suca-vietnam-ganh",
+  "title": "Sucafina — Gánh Sucafina Originals",
+  "url": "https://sucafina.com/emea/offerings/ganh-sucafina-originals",
+  "checked": "2026-10-15",
+  "use": "Gia Lai natural Robusta offering; chocolate, honey, caramelized nuts in sensory description."
+ },
+ "sucafina-handbook-2026": {
+  "id": "sucafina-handbook-2026",
+  "title": "Sucafina Handbook 2026, Australia/New Zealand",
+  "url": "https://assets-eu-01.kc-usercontent.com/4192440f-b944-0135-c768-e05d36ed3e93/38046e31-55e0-4af4-9194-c343409eae58/Sucafina%20Handbook%202026_AU_NZ_Online.pdf",
+  "checked": "2026-10-15",
+  "use": "Altitude overview tables pp. 6 Africa, 20 Asia/Pacific, 32 South America, 40 Central America; country pages specified per origin below. Its average production, ranks and crop-year labels are NOT used."
+ },
+ "tcb-manual-2023": {
+  "id": "tcb-manual-2023",
+  "title": "Tanzania Coffee Board — Coffee curriculum manual, June 2023",
+  "url": "https://www.coffee.go.tz/uploads/documents/sw-1720694516-Tanzania%20coffee%20curriculum%20Manual_June%202023%20Final%206.pdf",
+  "checked": "2026-10-15",
+  "use": "§1.1.3, printed p. 14, Arabica 1,000–2,500 m."
+ },
+ "thai-moac": {
+  "id": "thai-moac",
+  "title": "Thailand Ministry of Agriculture, Ranong — GI coffee profiles",
+  "url": "https://www.opsmoac.go.th/ranong-news-preview-471591792916",
+  "checked": "2026-10-15",
+  "use": "Thep Sadet paragraph (Catimor, 1,100–1,600 m); Tham Sing Chumphon (Robusta 85–120 m); Khao Thalu (Robusta 200–300 m); Wang Nam Khiao (Catimor F7 / Chumphon 2); Ranong/Krabi profiles."
+ },
+ "ucda-summit": {
+  "id": "ucda-summit",
+  "title": "UCDA summit programme — About Uganda Coffee",
+  "url": "https://summit.ugandacoffee.go.ug/media/media/files/uploads/UCDA_program_booklet_NEW_final.pdf",
+  "checked": "2026-10-15",
+  "use": "PDF p. 26 / printed p. 24, sensory paragraph; PDF p. 27 / printed p. 25, Robusta panel: 900–1,500 m."
+ },
+ "usda-psd-2026-07": {
+  "id": "usda-psd-2026-07",
+  "title": "USDA PSD Coffee, Green CSV (July 2026)",
+  "url": "https://apps.fas.usda.gov/psdonline/downloads/psd_coffee_csv.zip",
+  "checked": "2026-10-15",
+  "use": "psd_coffee.csv; Commodity_Code=0711100, Market_Year=2026, Calendar_Year=2026, Month=07; attributes 028 Production, 029 Arabica Production, 053 Robusta Production; units 1,000 60-kg bags. Exact country row in each JSON production locator."
+ }
+}

@@ -1,0 +1,2790 @@
+{
+ "status": "final",
+ "checked": "2026-10-15",
+ "note": "Built by makeover-2026-10/tools/build_origins.py from Astra's research; edit the research, then rebuild.",
+ "origins": [
+  {
+   "id": "ethiopia",
+   "harvest": {
+    "main": [
+     10,
+     1
+    ],
+    "second": null,
+    "variesBy": "Lower elevations can finish in December; highland picking often runs November–January.",
+    "edgeMonths": 1,
+    "sources": [
+     "ci-ethiopia",
+     "suca-ethiopia"
+    ],
+    "scope": "Arabica"
+   },
+   "altitudeM": {
+    "min": 1100,
+    "max": 2300,
+    "species": "arabica",
+    "scope": "Country sourcing band; not national extrema.",
+    "sources": [
+     "sucafina-handbook-2026"
+    ]
+   },
+   "robustaAltitudeM": null,
+   "production": {
+    "bags60kg": 12100000,
+    "season": "2026/27",
+    "kind": "forecast",
+    "arabicaShare": 1,
+    "source": "usda-psd-2026-07",
+    "scope": "National green-bean-equivalent production."
+   },
+   "regions": [
+    {
+     "name": "Gedeo / Yirgacheffe",
+     "lat": 6.2,
+     "lon": 38.2
+    },
+    {
+     "name": "Sidama",
+     "lat": 6.8,
+     "lon": 38.4
+    },
+    {
+     "name": "Guji",
+     "lat": 5.8,
+     "lon": 38.9
+    },
+    {
+     "name": "Jimma / Limu",
+     "lat": 7.7,
+     "lon": 36.8
+    },
+    {
+     "name": "Harar",
+     "lat": 9.3,
+     "lon": 42.1
+    }
+   ],
+   "varieties": [
+    "Regional landraces",
+    "JARC 74110",
+    "JARC 74112",
+    "JARC 74165"
+   ],
+   "processing": [
+    "Washed",
+    "Natural"
+   ],
+   "tendencies": {
+    "notes": [
+     "floral",
+     "citrus",
+     "stone fruit",
+     "winey"
+    ],
+    "source": "ci-ethiopia",
+    "caveat": "Floral/citrus descriptions often concern washed coffees; fruit and wine-like notes often concern naturals."
+   },
+   "sources": {
+    "varieties": [
+     "suca-ethiopia"
+    ],
+    "processing": [
+     "ci-ethiopia"
+    ],
+    "regions": [
+     "suca-ethiopia"
+    ]
+   },
+   "status": "full",
+   "gaps": []
+  },
+  {
+   "id": "kenya",
+   "harvest": {
+    "main": [
+     10,
+     12
+    ],
+    "second": [
+     5,
+     7
+    ],
+    "variesBy": "District, rainfall and elevation change the main and early crops.",
+    "edgeMonths": 2,
+    "sources": [
+     "suca-kenya",
+     "ci-kenya",
+     "sucafina-handbook-2026"
+    ],
+    "scope": "Arabica"
+   },
+   "altitudeM": {
+    "min": 1100,
+    "max": 2300,
+    "species": "arabica",
+    "scope": "Country sourcing band.",
+    "sources": [
+     "sucafina-handbook-2026"
+    ]
+   },
+   "robustaAltitudeM": null,
+   "production": {
+    "bags60kg": 950000,
+    "season": "2026/27",
+    "kind": "forecast",
+    "arabicaShare": 1,
+    "source": "usda-psd-2026-07",
+    "scope": "National green-bean-equivalent production."
+   },
+   "regions": [
+    {
+     "name": "Nyeri",
+     "lat": -0.4,
+     "lon": 36.9
+    },
+    {
+     "name": "Kirinyaga",
+     "lat": -0.5,
+     "lon": 37.3
+    },
+    {
+     "name": "Murang'a",
+     "lat": -0.7,
+     "lon": 37.2
+    },
+    {
+     "name": "Embu",
+     "lat": -0.5,
+     "lon": 37.5
+    }
+   ],
+   "varieties": [
+    "SL28",
+    "SL34",
+    "Ruiru 11",
+    "Batian",
+    "K7"
+   ],
+   "processing": [
+    "Washed",
+    "Natural"
+   ],
+   "tendencies": {
+    "notes": [
+     "blackcurrant",
+     "citrus",
+     "black tea"
+    ],
+    "source": "apex-kenya",
+    "caveat": "These descriptions chiefly concern washed specialty Arabica; cultivar and roast matter."
+   },
+   "sources": {
+    "varieties": [
+     "suca-kenya"
+    ],
+    "processing": [
+     "ci-kenya"
+    ],
+    "regions": [
+     "suca-kenya"
+    ]
+   },
+   "status": "full",
+   "gaps": []
+  },
+  {
+   "id": "rwanda",
+   "harvest": {
+    "main": [
+     3,
+     6
+    ],
+    "second": null,
+    "variesBy": "Local rainfall and elevation shift picking.",
+    "edgeMonths": 1,
+    "sources": [
+     "ci-rwanda",
+     "suca-rwanda"
+    ],
+    "scope": "Arabica"
+   },
+   "altitudeM": {
+    "min": 1000,
+    "max": 2100,
+    "species": "arabica",
+    "scope": "Country sourcing band.",
+    "sources": [
+     "sucafina-handbook-2026"
+    ]
+   },
+   "robustaAltitudeM": null,
+   "production": {
+    "bags60kg": 350000,
+    "season": "2026/27",
+    "kind": "forecast",
+    "arabicaShare": 1,
+    "source": "usda-psd-2026-07",
+    "scope": "National green-bean-equivalent production."
+   },
+   "regions": [
+    {
+     "name": "Lake Kivu / western highlands",
+     "lat": -2.1,
+     "lon": 29.3
+    },
+    {
+     "name": "Huye",
+     "lat": -2.6,
+     "lon": 29.7
+    },
+    {
+     "name": "Eastern highlands / Ngoma",
+     "lat": -2.2,
+     "lon": 30.5
+    }
+   ],
+   "varieties": [
+    "Bourbon",
+    "French Mission Bourbon",
+    "Caturra",
+    "Catuai",
+    "Mibirizi"
+   ],
+   "processing": [
+    "Washed",
+    "Natural",
+    "Honey"
+   ],
+   "tendencies": {
+    "notes": [
+     "chocolate",
+     "stone fruit",
+     "citrus",
+     "tea"
+    ],
+    "source": "go-rwanda",
+    "caveat": "This washed-offering description is illustrative, not a national sensory guarantee."
+   },
+   "sources": {
+    "varieties": [
+     "naeb-rwanda",
+     "ci-rwanda"
+    ],
+    "processing": [
+     "ci-rwanda"
+    ],
+    "regions": [
+     "ci-rwanda"
+    ]
+   },
+   "status": "full",
+   "gaps": []
+  },
+  {
+   "id": "burundi",
+   "harvest": {
+    "main": [
+     3,
+     7
+    ],
+    "second": null,
+    "variesBy": "Higher sites can ripen later.",
+    "edgeMonths": 1,
+    "sources": [
+     "ci-burundi",
+     "suca-burundi",
+     "apex-burundi"
+    ],
+    "scope": "Arabica"
+   },
+   "altitudeM": {
+    "min": 1600,
+    "max": 2150,
+    "species": "arabica",
+    "scope": "Highland sourcing band; lower producing sites exist.",
+    "sources": [
+     "sucafina-handbook-2026"
+    ]
+   },
+   "robustaAltitudeM": null,
+   "production": {
+    "bags60kg": 140000,
+    "season": "2026/27",
+    "kind": "forecast",
+    "arabicaShare": 1,
+    "source": "usda-psd-2026-07",
+    "scope": "National green-bean-equivalent production."
+   },
+   "regions": [
+    {
+     "name": "Kayanza",
+     "lat": -2.9,
+     "lon": 29.6
+    },
+    {
+     "name": "Ngozi",
+     "lat": -2.9,
+     "lon": 29.8
+    },
+    {
+     "name": "Gitega / Kirimiro",
+     "lat": -3.4,
+     "lon": 29.9
+    },
+    {
+     "name": "Muyinga",
+     "lat": -2.8,
+     "lon": 30.3
+    }
+   ],
+   "varieties": [
+    "Bourbon",
+    "French Mission Bourbon",
+    "Jackson",
+    "Mibirizi"
+   ],
+   "processing": [
+    "Washed",
+    "Natural"
+   ],
+   "tendencies": {
+    "notes": [
+     "fig",
+     "jam",
+     "floral",
+     "citrus"
+    ],
+    "source": "ci-burundi",
+    "caveat": "This chiefly describes washed Bourbon; washing station and process change the result."
+   },
+   "sources": {
+    "varieties": [
+     "ci-burundi"
+    ],
+    "processing": [
+     "ci-burundi"
+    ],
+    "regions": [
+     "suca-burundi"
+    ]
+   },
+   "status": "full",
+   "gaps": []
+  },
+  {
+   "id": "tanzania",
+   "harvest": {
+    "main": [
+     5,
+     9
+    ],
+    "second": null,
+    "variesBy": "Southern Arabica runs May–September; northern Arabica June/July–October/November; Robusta has a separate calendar.",
+    "edgeMonths": 1,
+    "sources": [
+     "ci-tanzania",
+     "sucafina-handbook-2026"
+    ],
+    "scope": "Southern Arabica"
+   },
+   "altitudeM": {
+    "min": 1000,
+    "max": 2500,
+    "species": "arabica",
+    "scope": "National training manual Arabica growing range.",
+    "sources": [
+     "tcb-manual-2023"
+    ]
+   },
+   "robustaAltitudeM": {
+    "min": 800,
+    "max": 1100,
+    "species": "robusta",
+    "scope": "Kagera / Karagwe sourcing band.",
+    "sources": [
+     "suca-tanzania-robusta"
+    ]
+   },
+   "production": {
+    "bags60kg": 1600000,
+    "season": "2026/27",
+    "kind": "forecast",
+    "arabicaShare": 0.53125,
+    "source": "usda-psd-2026-07",
+    "scope": "National green-bean-equivalent production."
+   },
+   "regions": [
+    {
+     "name": "Kilimanjaro",
+     "lat": -3.4,
+     "lon": 37.3
+    },
+    {
+     "name": "Arusha / Meru",
+     "lat": -3.4,
+     "lon": 36.7
+    },
+    {
+     "name": "Mbeya",
+     "lat": -8.9,
+     "lon": 33.5
+    },
+    {
+     "name": "Ruvuma",
+     "lat": -10.7,
+     "lon": 35.6
+    },
+    {
+     "name": "Kagera",
+     "lat": -1.3,
+     "lon": 31.8
+    }
+   ],
+   "varieties": [
+    "Bourbon",
+    "Kent",
+    "Arusha",
+    "Blue Mountain",
+    "Robusta KR selections"
+   ],
+   "processing": [
+    "Washed",
+    "Natural"
+   ],
+   "tendencies": {
+    "notes": [
+     "juicy",
+     "acidic",
+     "complex"
+    ],
+    "source": "ci-tanzania",
+    "caveat": "These descriptors concern washed Arabica; Kagera Robusta deserves a separate profile."
+   },
+   "sources": {
+    "varieties": [
+     "ci-tanzania",
+     "sucafina-handbook-2026"
+    ],
+    "processing": [
+     "ci-tanzania",
+     "sucafina-handbook-2026"
+    ],
+    "regions": [
+     "ci-tanzania",
+     "sucafina-handbook-2026"
+    ]
+   },
+   "status": "full",
+   "gaps": []
+  },
+  {
+   "id": "uganda",
+   "harvest": {
+    "main": [
+     5,
+     8
+    ],
+    "second": [
+     11,
+     2
+    ],
+    "variesBy": "These Robusta windows differ between western/Masaka and central/eastern districts; Arabica follows other regional calendars.",
+    "edgeMonths": 1,
+    "sources": [
+     "sucafina-handbook-2026",
+     "suca-uganda"
+    ],
+    "scope": "Robusta regional seasons"
+   },
+   "altitudeM": {
+    "min": 1500,
+    "max": 2300,
+    "species": "arabica",
+    "scope": "Published Arabica growing belt, not a current farm census.",
+    "sources": [
+     "cabi-coffee-ch2"
+    ]
+   },
+   "robustaAltitudeM": {
+    "min": 900,
+    "max": 1500,
+    "species": "robusta",
+    "scope": "UCDA Robusta growing band.",
+    "sources": [
+     "ucda-summit"
+    ]
+   },
+   "production": {
+    "bags60kg": 7160000,
+    "season": "2026/27",
+    "kind": "forecast",
+    "arabicaShare": 0.15852,
+    "source": "usda-psd-2026-07",
+    "scope": "National green-bean-equivalent production."
+   },
+   "regions": [
+    {
+     "name": "Bugisu / Mount Elgon",
+     "lat": 1.1,
+     "lon": 34.2
+    },
+    {
+     "name": "Rwenzori",
+     "lat": 0.2,
+     "lon": 30.1
+    },
+    {
+     "name": "West Nile",
+     "lat": 2.5,
+     "lon": 31.1
+    },
+    {
+     "name": "Masaka",
+     "lat": -0.3,
+     "lon": 31.7
+    }
+   ],
+   "varieties": [
+    "SL14",
+    "SL28",
+    "Kent",
+    "Robusta clonal selections"
+   ],
+   "processing": [
+    "Natural",
+    "Washed"
+   ],
+   "tendencies": {
+    "notes": [
+     "dried fruit",
+     "citrus",
+     "chocolate"
+    ],
+    "source": "ucda-summit",
+    "caveat": "UCDA's Arabica-oriented description should not be applied to the larger Robusta crop."
+   },
+   "sources": {
+    "varieties": [
+     "suca-uganda"
+    ],
+    "processing": [
+     "sucafina-handbook-2026"
+    ],
+    "regions": [
+     "suca-uganda"
+    ]
+   },
+   "status": "full",
+   "gaps": []
+  },
+  {
+   "id": "malawi",
+   "harvest": {
+    "main": [
+     4,
+     10
+    ],
+    "second": null,
+    "variesBy": "Northern smallholders and southern estates do not necessarily pick together.",
+    "edgeMonths": 1,
+    "sources": [
+     "suca-malawi",
+     "ci-malawi"
+    ],
+    "scope": "Arabica"
+   },
+   "altitudeM": {
+    "min": 1000,
+    "max": 2000,
+    "species": "arabica",
+    "scope": "Mzuzu cooperative's stated bean-growing range.",
+    "sources": [
+     "mzuzu"
+    ]
+   },
+   "robustaAltitudeM": null,
+   "production": null,
+   "regions": [
+    {
+     "name": "Misuku Hills",
+     "lat": -9.7,
+     "lon": 33.5
+    },
+    {
+     "name": "Viphya / Mzimba",
+     "lat": -11.5,
+     "lon": 34
+    },
+    {
+     "name": "Nkhata Bay highlands",
+     "lat": -11.6,
+     "lon": 34.3
+    },
+    {
+     "name": "Mangochi estates",
+     "lat": -14.5,
+     "lon": 35.3
+    }
+   ],
+   "varieties": [
+    "Catimor",
+    "Gesha",
+    "Caturra",
+    "Mundo Novo",
+    "SL28"
+   ],
+   "processing": [
+    "Washed"
+   ],
+   "tendencies": {
+    "notes": [
+     "citrus",
+     "floral",
+     "chocolate"
+    ],
+    "source": "burman-malawi",
+    "caveat": "This older washed Mzuzu example is not a promise for all Malawian estates or roasts."
+   },
+   "sources": {
+    "varieties": [
+     "suca-malawi",
+     "ci-malawi"
+    ],
+    "processing": [
+     "mzuzu"
+    ],
+    "regions": [
+     "mzuzu",
+     "suca-malawi-sable"
+    ]
+   },
+   "status": "partial",
+   "gaps": [
+    "production"
+   ]
+  },
+  {
+   "id": "brazil",
+   "harvest": {
+    "main": [
+     4,
+     9
+    ],
+    "second": null,
+    "variesBy": "Cerrado often starts in May; Conilon/Robusta commonly runs March–August.",
+    "edgeMonths": 1,
+    "sources": [
+     "suca-brazil",
+     "ci-brazil",
+     "sucafina-handbook-2026",
+     "apex-brazil"
+    ],
+    "scope": "Arabica"
+   },
+   "altitudeM": {
+    "min": 800,
+    "max": 1250,
+    "species": "arabica",
+    "scope": "Sul de Minas / Cerrado Arabica sourcing band, not all Brazil.",
+    "sources": [
+     "apex-brazil"
+    ]
+   },
+   "robustaAltitudeM": null,
+   "production": {
+    "bags60kg": 71900000,
+    "season": "2026/27",
+    "kind": "forecast",
+    "arabicaShare": 0.66064,
+    "source": "usda-psd-2026-07",
+    "scope": "National green-bean-equivalent production."
+   },
+   "regions": [
+    {
+     "name": "Sul de Minas",
+     "lat": -21.6,
+     "lon": -45.4
+    },
+    {
+     "name": "Cerrado Mineiro",
+     "lat": -18.9,
+     "lon": -47
+    },
+    {
+     "name": "Mogiana",
+     "lat": -20.5,
+     "lon": -47.4
+    },
+    {
+     "name": "Espírito Santo",
+     "lat": -19,
+     "lon": -40.5
+    },
+    {
+     "name": "Rondônia",
+     "lat": -11.4,
+     "lon": -61.4
+    }
+   ],
+   "varieties": [
+    "Catuai",
+    "Mundo Novo",
+    "Catucai",
+    "Bourbon",
+    "Conilon clonal selections"
+   ],
+   "processing": [
+    "Natural",
+    "Pulped natural"
+   ],
+   "tendencies": {
+    "notes": [
+     "chocolate",
+     "nuts",
+     "fruit"
+    ],
+    "source": "ci-brazil",
+    "caveat": "Natural and pulped-natural Arabica descriptions differ from Conilon/Robusta and individual regional lots."
+   },
+   "sources": {
+    "varieties": [
+     "suca-brazil",
+     "sucafina-handbook-2026"
+    ],
+    "processing": [
+     "ci-brazil",
+     "sucafina-handbook-2026"
+    ],
+    "regions": [
+     "suca-brazil",
+     "sucafina-handbook-2026"
+    ]
+   },
+   "status": "partial",
+   "gaps": [
+    "robustaAltitudeM"
+   ]
+  },
+  {
+   "id": "colombia",
+   "harvest": {
+    "main": [
+     11,
+     1
+    ],
+    "second": [
+     5,
+     7
+    ],
+    "variesBy": "This is Huila; southern districts can reverse main and mitaca seasons, and coffee is harvested somewhere year-round.",
+    "edgeMonths": 1,
+    "sources": [
+     "ci-colombia",
+     "suca-colombia",
+     "sucafina-handbook-2026"
+    ],
+    "scope": "Huila illustrative calendar"
+   },
+   "altitudeM": {
+    "min": 1200,
+    "max": 2200,
+    "species": "arabica",
+    "scope": "Country sourcing band.",
+    "sources": [
+     "sucafina-handbook-2026"
+    ]
+   },
+   "robustaAltitudeM": null,
+   "production": {
+    "bags60kg": 13400000,
+    "season": "2026/27",
+    "kind": "forecast",
+    "arabicaShare": 1,
+    "source": "usda-psd-2026-07",
+    "scope": "National green-bean-equivalent production."
+   },
+   "regions": [
+    {
+     "name": "Southern Huila",
+     "lat": 1.9,
+     "lon": -76.1
+    },
+    {
+     "name": "Nariño",
+     "lat": 1.6,
+     "lon": -77.1
+    },
+    {
+     "name": "Antioquia",
+     "lat": 5.7,
+     "lon": -75.9
+    },
+    {
+     "name": "Southern Tolima",
+     "lat": 3.2,
+     "lon": -75.6
+    },
+    {
+     "name": "Cauca",
+     "lat": 2.6,
+     "lon": -76.5
+    }
+   ],
+   "varieties": [
+    "Castillo",
+    "Colombia",
+    "Caturra",
+    "Typica",
+    "Bourbon"
+   ],
+   "processing": [
+    "Washed"
+   ],
+   "tendencies": {
+    "notes": [
+     "chocolate",
+     "nuts",
+     "citrus",
+     "sweet"
+    ],
+    "source": "suca-colombia",
+    "caveat": "Northern profiles often emphasize chocolate/nuts; southern highlands often emphasize citrus and sweetness."
+   },
+   "sources": {
+    "varieties": [
+     "suca-colombia"
+    ],
+    "processing": [
+     "ci-colombia"
+    ],
+    "regions": [
+     "suca-colombia"
+    ]
+   },
+   "status": "full",
+   "gaps": []
+  },
+  {
+   "id": "ecuador",
+   "harvest": {
+    "main": [
+     1,
+     12
+    ],
+    "second": null,
+    "variesBy": "Year-round means somewhere nationally; highlands, coast, Amazonian Robusta and Galápagos have different local calendars.",
+    "edgeMonths": 0,
+    "sources": [
+     "ci-ecuador",
+     "mercanta-ecuador"
+    ],
+    "scope": "Arabica"
+   },
+   "altitudeM": {
+    "min": 1200,
+    "max": 2000,
+    "species": "arabica",
+    "scope": "Mainland specialty Arabica; excludes lowland Galápagos.",
+    "sources": [
+     "caravela-ecuador"
+    ]
+   },
+   "robustaAltitudeM": {
+    "min": 0,
+    "max": 600,
+    "species": "robusta",
+    "scope": "Lowland Robusta; 0 denotes near sea level, not a measured farm minimum.",
+    "sources": [
+     "iniap-robusta-2017"
+    ]
+   },
+   "production": {
+    "bags60kg": 350000,
+    "season": "2026/27",
+    "kind": "forecast",
+    "arabicaShare": 0.285714,
+    "source": "usda-psd-2026-07",
+    "scope": "National green-bean-equivalent production."
+   },
+   "regions": [
+    {
+     "name": "Loja",
+     "lat": -4,
+     "lon": -79.2
+    },
+    {
+     "name": "Zamora Chinchipe",
+     "lat": -4.1,
+     "lon": -79
+    },
+    {
+     "name": "Manabí",
+     "lat": -1.3,
+     "lon": -80.6
+    },
+    {
+     "name": "Orellana",
+     "lat": -0.4,
+     "lon": -77
+    }
+   ],
+   "varieties": [
+    "Typica",
+    "Bourbon",
+    "Caturra",
+    "Sidra",
+    "Robusta selected clones"
+   ],
+   "processing": [
+    "Washed",
+    "Natural",
+    "Honey"
+   ],
+   "tendencies": {
+    "notes": [
+     "fruity",
+     "floral",
+     "distinctive"
+    ],
+    "source": "ci-ecuador",
+    "caveat": "These describe specialty Arabica, not the larger Robusta component of USDA's national total."
+   },
+   "sources": {
+    "varieties": [
+     "ci-ecuador",
+     "iniap-robusta-2017"
+    ],
+    "processing": [
+     "ci-ecuador"
+    ],
+    "regions": [
+     "ci-ecuador",
+     "iniap-robusta-2017"
+    ]
+   },
+   "status": "full",
+   "gaps": []
+  },
+  {
+   "id": "peru",
+   "harvest": {
+    "main": [
+     3,
+     9
+    ],
+    "second": null,
+    "variesBy": "Regional harvests spread well beyond any one district's peak.",
+    "edgeMonths": 2,
+    "sources": [
+     "suca-peru",
+     "mercanta-peru",
+     "ci-peru",
+     "sucafina-handbook-2026"
+    ],
+    "scope": "Arabica"
+   },
+   "altitudeM": {
+    "min": 1000,
+    "max": 2300,
+    "species": "arabica",
+    "scope": "Country sourcing band.",
+    "sources": [
+     "sucafina-handbook-2026"
+    ]
+   },
+   "robustaAltitudeM": null,
+   "production": {
+    "bags60kg": 4780000,
+    "season": "2026/27",
+    "kind": "forecast",
+    "arabicaShare": 1,
+    "source": "usda-psd-2026-07",
+    "scope": "National green-bean-equivalent production."
+   },
+   "regions": [
+    {
+     "name": "Cajamarca",
+     "lat": -5.7,
+     "lon": -78.8
+    },
+    {
+     "name": "Junín / Satipo",
+     "lat": -11.3,
+     "lon": -74.6
+    },
+    {
+     "name": "Cusco / La Convención",
+     "lat": -12.9,
+     "lon": -72.7
+    },
+    {
+     "name": "San Martín",
+     "lat": -6,
+     "lon": -77
+    }
+   ],
+   "varieties": [
+    "Typica",
+    "Caturra",
+    "Catimor",
+    "Bourbon",
+    "Pache"
+   ],
+   "processing": [
+    "Washed"
+   ],
+   "tendencies": {
+    "notes": [
+     "stone fruit",
+     "nuts",
+     "chocolate",
+     "caramel",
+     "citrus"
+    ],
+    "source": "apex-peru",
+    "caveat": "These chiefly describe washed specialty lots; region and roast change the balance."
+   },
+   "sources": {
+    "varieties": [
+     "suca-peru"
+    ],
+    "processing": [
+     "ci-peru"
+    ],
+    "regions": [
+     "suca-peru"
+    ]
+   },
+   "status": "full",
+   "gaps": []
+  },
+  {
+   "id": "bolivia",
+   "harvest": {
+    "main": [
+     6,
+     10
+    ],
+    "second": null,
+    "variesBy": "Yungas and Santa Cruz sites can ripen at different times.",
+    "edgeMonths": 1,
+    "sources": [
+     "ci-bolivia",
+     "apex-bolivia",
+     "mercanta-bolivia"
+    ],
+    "scope": "Arabica"
+   },
+   "altitudeM": {
+    "min": 1200,
+    "max": 2000,
+    "species": "arabica",
+    "scope": "Specialty highlands; excludes lower Santa Cruz sites.",
+    "sources": [
+     "mercanta-bolivia"
+    ]
+   },
+   "robustaAltitudeM": null,
+   "production": {
+    "bags60kg": 80000,
+    "season": "2026/27",
+    "kind": "forecast",
+    "arabicaShare": 1,
+    "source": "usda-psd-2026-07",
+    "scope": "National green-bean-equivalent production."
+   },
+   "regions": [
+    {
+     "name": "Caranavi",
+     "lat": -15.8,
+     "lon": -67.6
+    },
+    {
+     "name": "Coroico / North Yungas",
+     "lat": -16.2,
+     "lon": -67.7
+    },
+    {
+     "name": "Samaipata",
+     "lat": -18.2,
+     "lon": -63.9
+    }
+   ],
+   "varieties": [
+    "Typica",
+    "Catuai"
+   ],
+   "processing": [
+    "Washed",
+    "Natural"
+   ],
+   "tendencies": {
+    "notes": [
+     "fruit",
+     "chocolate",
+     "floral"
+    ],
+    "source": "apex-bolivia",
+    "caveat": "This describes specialty highland Arabica, not a uniform national cup."
+   },
+   "sources": {
+    "varieties": [
+     "ci-bolivia"
+    ],
+    "processing": [
+     "ci-bolivia"
+    ],
+    "regions": [
+     "ci-bolivia",
+     "apex-bolivia"
+    ]
+   },
+   "status": "full",
+   "gaps": []
+  },
+  {
+   "id": "guatemala",
+   "harvest": {
+    "main": [
+     11,
+     4
+    ],
+    "second": null,
+    "variesBy": "Warmer districts begin earlier and highland sites can finish later.",
+    "edgeMonths": 2,
+    "sources": [
+     "suca-guatemala",
+     "mercanta-guatemala",
+     "ci-guatemala"
+    ],
+    "scope": "Arabica"
+   },
+   "altitudeM": {
+    "min": 700,
+    "max": 1800,
+    "species": "arabica",
+    "scope": "Country sourcing band; high farms can exceed it.",
+    "sources": [
+     "sucafina-handbook-2026"
+    ]
+   },
+   "robustaAltitudeM": null,
+   "production": {
+    "bags60kg": 3260000,
+    "season": "2026/27",
+    "kind": "forecast",
+    "arabicaShare": 0.960123,
+    "source": "usda-psd-2026-07",
+    "scope": "National green-bean-equivalent production."
+   },
+   "regions": [
+    {
+     "name": "Antigua",
+     "lat": 14.6,
+     "lon": -90.7
+    },
+    {
+     "name": "Huehuetenango",
+     "lat": 15.3,
+     "lon": -91.5
+    },
+    {
+     "name": "Atitlán",
+     "lat": 14.8,
+     "lon": -91.2
+    },
+    {
+     "name": "Cobán",
+     "lat": 15.5,
+     "lon": -90.4
+    }
+   ],
+   "varieties": [
+    "Bourbon",
+    "Caturra",
+    "Catuai",
+    "Typica",
+    "Pache"
+   ],
+   "processing": [
+    "Washed"
+   ],
+   "tendencies": {
+    "notes": [
+     "chocolate",
+     "nuts",
+     "citrus",
+     "toffee"
+    ],
+    "source": "ci-guatemala",
+    "caveat": "Antigua's chocolate/nut descriptions differ from Huehuetenango's fruit/toffee profiles."
+   },
+   "sources": {
+    "varieties": [
+     "ci-guatemala"
+    ],
+    "processing": [
+     "ci-guatemala"
+    ],
+    "regions": [
+     "ci-guatemala"
+    ]
+   },
+   "status": "full",
+   "gaps": []
+  },
+  {
+   "id": "honduras",
+   "harvest": {
+    "main": [
+     11,
+     4
+    ],
+    "second": null,
+    "variesBy": "Timing follows region/elevation; some calendars finish in March.",
+    "edgeMonths": 1,
+    "sources": [
+     "ci-honduras",
+     "suca-honduras",
+     "mercanta-honduras",
+     "sucafina-handbook-2026"
+    ],
+    "scope": "Arabica"
+   },
+   "altitudeM": {
+    "min": 950,
+    "max": 1950,
+    "species": "arabica",
+    "scope": "Envelope of six named regional ranges.",
+    "sources": [
+     "mercanta-honduras"
+    ]
+   },
+   "robustaAltitudeM": null,
+   "production": {
+    "bags60kg": 6030000,
+    "season": "2026/27",
+    "kind": "forecast",
+    "arabicaShare": 1,
+    "source": "usda-psd-2026-07",
+    "scope": "National green-bean-equivalent production."
+   },
+   "regions": [
+    {
+     "name": "Copán",
+     "lat": 14.8,
+     "lon": -88.8
+    },
+    {
+     "name": "Montecillos / Marcala",
+     "lat": 14.2,
+     "lon": -88
+    },
+    {
+     "name": "Comayagua",
+     "lat": 14.5,
+     "lon": -87.6
+    },
+    {
+     "name": "El Paraíso",
+     "lat": 14,
+     "lon": -86.6
+    }
+   ],
+   "varieties": [
+    "Lempira",
+    "IHCAFE 90",
+    "Catuai",
+    "Caturra",
+    "Bourbon",
+    "Typica"
+   ],
+   "processing": [
+    "Washed",
+    "Natural",
+    "Honey"
+   ],
+   "tendencies": {
+    "notes": [
+     "sweet",
+     "nutty",
+     "full-bodied"
+    ],
+    "source": "ci-honduras",
+    "caveat": "These washed-coffee descriptions allow substantial regional and producer variation."
+   },
+   "sources": {
+    "varieties": [
+     "ci-honduras"
+    ],
+    "processing": [
+     "ci-honduras"
+    ],
+    "regions": [
+     "mercanta-honduras"
+    ]
+   },
+   "status": "full",
+   "gaps": []
+  },
+  {
+   "id": "el-salvador",
+   "harvest": {
+    "main": [
+     10,
+     3
+    ],
+    "second": null,
+    "variesBy": "High farms may continue into April.",
+    "edgeMonths": 1,
+    "sources": [
+     "suca-el-salvador",
+     "mercanta-el-salvador",
+     "ci-el-salvador",
+     "sucafina-handbook-2026"
+    ],
+    "scope": "Arabica"
+   },
+   "altitudeM": {
+    "min": 400,
+    "max": 1600,
+    "species": "arabica",
+    "scope": "Country sourcing band, not volcano summit heights.",
+    "sources": [
+     "sucafina-handbook-2026"
+    ]
+   },
+   "robustaAltitudeM": null,
+   "production": {
+    "bags60kg": 542000,
+    "season": "2026/27",
+    "kind": "forecast",
+    "arabicaShare": 1,
+    "source": "usda-psd-2026-07",
+    "scope": "National green-bean-equivalent production."
+   },
+   "regions": [
+    {
+     "name": "Apaneca–Ilamatepec",
+     "lat": 14,
+     "lon": -89.6
+    },
+    {
+     "name": "Alotepec–Metapán / Chalatenango",
+     "lat": 14,
+     "lon": -88.9
+    },
+    {
+     "name": "Tecapa–Chinameca",
+     "lat": 13.5,
+     "lon": -88.3
+    }
+   ],
+   "varieties": [
+    "Bourbon",
+    "Pacas",
+    "Pacamara",
+    "Catuai"
+   ],
+   "processing": [
+    "Washed",
+    "Natural",
+    "Honey"
+   ],
+   "tendencies": {
+    "notes": [
+     "fruit",
+     "hazelnut",
+     "sweet"
+    ],
+    "source": "lb-el-salvador",
+    "caveat": "A washed Apaneca–Ilamatepec example; Pacamara and experimental lots can differ."
+   },
+   "sources": {
+    "varieties": [
+     "ci-el-salvador",
+     "sucafina-handbook-2026"
+    ],
+    "processing": [
+     "ci-el-salvador",
+     "sucafina-handbook-2026"
+    ],
+    "regions": [
+     "ci-el-salvador",
+     "sucafina-handbook-2026"
+    ]
+   },
+   "status": "full",
+   "gaps": []
+  },
+  {
+   "id": "nicaragua",
+   "harvest": {
+    "main": [
+     10,
+     3
+    ],
+    "second": null,
+    "variesBy": "Higher northern districts often concentrate picking in December–March.",
+    "edgeMonths": 2,
+    "sources": [
+     "ci-nicaragua",
+     "sucafina-handbook-2026",
+     "suca-nicaragua",
+     "mercanta-nicaragua"
+    ],
+    "scope": "Arabica"
+   },
+   "altitudeM": {
+    "min": 600,
+    "max": 1500,
+    "species": "arabica",
+    "scope": "Country sourcing band.",
+    "sources": [
+     "sucafina-handbook-2026"
+    ]
+   },
+   "robustaAltitudeM": null,
+   "production": {
+    "bags60kg": 2440000,
+    "season": "2026/27",
+    "kind": "forecast",
+    "arabicaShare": 0.942623,
+    "source": "usda-psd-2026-07",
+    "scope": "National green-bean-equivalent production."
+   },
+   "regions": [
+    {
+     "name": "Jinotega",
+     "lat": 13.1,
+     "lon": -86
+    },
+    {
+     "name": "Matagalpa",
+     "lat": 12.9,
+     "lon": -85.9
+    },
+    {
+     "name": "Nueva Segovia",
+     "lat": 13.6,
+     "lon": -86.5
+    }
+   ],
+   "varieties": [
+    "Caturra",
+    "Catuai",
+    "Catimor",
+    "Bourbon",
+    "Maracaturra",
+    "Maragogype"
+   ],
+   "processing": [
+    "Washed",
+    "Natural",
+    "Honey"
+   ],
+   "tendencies": {
+    "notes": [
+     "dark chocolate",
+     "red fruit",
+     "tangerine"
+    ],
+    "source": "mercanta-nicaragua-mountain",
+    "caveat": "These describe a washed regional blend, not every Nicaraguan coffee."
+   },
+   "sources": {
+    "varieties": [
+     "ci-nicaragua"
+    ],
+    "processing": [
+     "ci-nicaragua"
+    ],
+    "regions": [
+     "ci-nicaragua"
+    ]
+   },
+   "status": "full",
+   "gaps": []
+  },
+  {
+   "id": "costa-rica",
+   "harvest": {
+    "main": [
+     10,
+     3
+    ],
+    "second": null,
+    "variesBy": "District and elevation matter; highland picking can continue into April.",
+    "edgeMonths": 2,
+    "sources": [
+     "suca-costa-rica",
+     "mercanta-costa-rica",
+     "ci-costa-rica",
+     "apex-costa-rica"
+    ],
+    "scope": "Arabica"
+   },
+   "altitudeM": {
+    "min": 700,
+    "max": 1900,
+    "species": "arabica",
+    "scope": "Importer sourcing band, not every district's full range.",
+    "sources": [
+     "sucafina-handbook-2026"
+    ]
+   },
+   "robustaAltitudeM": null,
+   "production": {
+    "bags60kg": 1200000,
+    "season": "2026/27",
+    "kind": "forecast",
+    "arabicaShare": 1,
+    "source": "usda-psd-2026-07",
+    "scope": "National green-bean-equivalent production."
+   },
+   "regions": [
+    {
+     "name": "Los Santos / Tarrazú",
+     "lat": 9.7,
+     "lon": -84
+    },
+    {
+     "name": "West Valley",
+     "lat": 10.1,
+     "lon": -84.4
+    },
+    {
+     "name": "Central Valley",
+     "lat": 10,
+     "lon": -84.2
+    },
+    {
+     "name": "Turrialba",
+     "lat": 9.9,
+     "lon": -83.7
+    }
+   ],
+   "varieties": [
+    "Caturra",
+    "Catuai",
+    "Villa Sarchi",
+    "Bourbon"
+   ],
+   "processing": [
+    "Washed",
+    "Honey",
+    "Natural"
+   ],
+   "tendencies": {
+    "notes": [
+     "honey",
+     "chocolate",
+     "fruit"
+    ],
+    "source": "apex-costa-rica",
+    "caveat": "Honey/natural processing can emphasize sweetness and fruit; washed regional profiles vary."
+   },
+   "sources": {
+    "varieties": [
+     "ci-costa-rica"
+    ],
+    "processing": [
+     "ci-costa-rica"
+    ],
+    "regions": [
+     "ci-costa-rica"
+    ]
+   },
+   "status": "full",
+   "gaps": []
+  },
+  {
+   "id": "panama",
+   "harvest": {
+    "main": [
+     11,
+     3
+    ],
+    "second": null,
+    "variesBy": "Higher Chiriquí farms can ripen later.",
+    "edgeMonths": 1,
+    "sources": [
+     "ci-panama",
+     "apex-panama",
+     "sucafina-handbook-2026",
+     "suca-panama"
+    ],
+    "scope": "Arabica"
+   },
+   "altitudeM": {
+    "min": 1000,
+    "max": 2200,
+    "species": "arabica",
+    "scope": "Envelope of Boquete, Volcán and Renacimiento growing bands.",
+    "sources": [
+     "apex-panama"
+    ]
+   },
+   "robustaAltitudeM": null,
+   "production": {
+    "bags60kg": 100000,
+    "season": "2026/27",
+    "kind": "forecast",
+    "arabicaShare": 1,
+    "source": "usda-psd-2026-07",
+    "scope": "National green-bean-equivalent production."
+   },
+   "regions": [
+    {
+     "name": "Boquete",
+     "lat": 8.8,
+     "lon": -82.4
+    },
+    {
+     "name": "Volcán",
+     "lat": 8.8,
+     "lon": -82.6
+    },
+    {
+     "name": "Renacimiento",
+     "lat": 8.8,
+     "lon": -82.9
+    }
+   ],
+   "varieties": [
+    "Catuai",
+    "Caturra",
+    "Typica",
+    "Bourbon",
+    "Gesha"
+   ],
+   "processing": [
+    "Washed",
+    "Natural",
+    "Honey"
+   ],
+   "tendencies": {
+    "notes": [
+     "sweet",
+     "nutty",
+     "mild"
+    ],
+    "source": "ci-panama",
+    "caveat": "Conventional lots can fit this description; floral/tropical Gesha profiles are cultivar-specific."
+   },
+   "sources": {
+    "varieties": [
+     "ci-panama",
+     "sucafina-handbook-2026"
+    ],
+    "processing": [
+     "ci-panama",
+     "sucafina-handbook-2026"
+    ],
+    "regions": [
+     "apex-panama"
+    ]
+   },
+   "status": "full",
+   "gaps": []
+  },
+  {
+   "id": "mexico",
+   "harvest": {
+    "main": [
+     11,
+     3
+    ],
+    "second": null,
+    "variesBy": "Southern and lower sites may begin in October.",
+    "edgeMonths": 1,
+    "sources": [
+     "ci-mexico",
+     "suca-mexico",
+     "mercanta-mexico",
+     "sucafina-handbook-2026"
+    ],
+    "scope": "Arabica"
+   },
+   "altitudeM": {
+    "min": 600,
+    "max": 1800,
+    "species": "arabica",
+    "scope": "Arabica sourcing band.",
+    "sources": [
+     "sucafina-handbook-2026"
+    ]
+   },
+   "robustaAltitudeM": null,
+   "production": {
+    "bags60kg": 4135000,
+    "season": "2026/27",
+    "kind": "forecast",
+    "arabicaShare": 0.864571,
+    "source": "usda-psd-2026-07",
+    "scope": "National green-bean-equivalent production."
+   },
+   "regions": [
+    {
+     "name": "Chiapas",
+     "lat": 15.9,
+     "lon": -92.7
+    },
+    {
+     "name": "Veracruz / Coatepec",
+     "lat": 19.5,
+     "lon": -97
+    },
+    {
+     "name": "Oaxaca / Pluma",
+     "lat": 15.9,
+     "lon": -96.4
+    },
+    {
+     "name": "Puebla / Sierra Norte",
+     "lat": 20.3,
+     "lon": -98
+    }
+   ],
+   "varieties": [
+    "Typica",
+    "Bourbon",
+    "Caturra",
+    "Catuai",
+    "Marsellesa",
+    "Oro Azteca"
+   ],
+   "processing": [
+    "Washed",
+    "Natural"
+   ],
+   "tendencies": {
+    "notes": [
+     "chocolate",
+     "toffee",
+     "citrus",
+     "nuts"
+    ],
+    "source": "ci-mexico",
+    "caveat": "These chiefly concern washed Arabica; southern Robusta and individual regions differ."
+   },
+   "sources": {
+    "varieties": [
+     "ci-mexico",
+     "suca-mexico"
+    ],
+    "processing": [
+     "ci-mexico"
+    ],
+    "regions": [
+     "ci-mexico"
+    ]
+   },
+   "status": "full",
+   "gaps": []
+  },
+  {
+   "id": "cuba",
+   "harvest": {
+    "main": [
+     9,
+     1
+    ],
+    "second": null,
+    "variesBy": "Escambray's October–March trade calendar differs from the broad country window.",
+    "edgeMonths": 2,
+    "sources": [
+     "bijdendijk-cuba",
+     "moka-cuba"
+    ],
+    "scope": "Arabica"
+   },
+   "altitudeM": {
+    "min": 600,
+    "max": 800,
+    "species": "arabica",
+    "scope": "Escambray / El Nicho Arabica offering; no national range established.",
+    "sources": [
+     "moka-cuba"
+    ]
+   },
+   "robustaAltitudeM": null,
+   "production": {
+    "bags60kg": 100000,
+    "season": "2026/27",
+    "kind": "forecast",
+    "arabicaShare": 1,
+    "source": "usda-psd-2026-07",
+    "scope": "National green-bean-equivalent production."
+   },
+   "regions": [
+    {
+     "name": "Sierra Maestra",
+     "lat": 20.3,
+     "lon": -76.5
+    },
+    {
+     "name": "Escambray",
+     "lat": 21.9,
+     "lon": -80
+    },
+    {
+     "name": "Guantánamo highlands",
+     "lat": 20.1,
+     "lon": -75.2
+    }
+   ],
+   "varieties": [
+    "Caturra",
+    "Typica"
+   ],
+   "processing": [
+    "Washed"
+   ],
+   "tendencies": {
+    "notes": [
+     "sweet",
+     "fruit",
+     "tobacco"
+    ],
+    "source": "bijdendijk-cuba",
+    "caveat": "These describe washed export grades, not domestic blends or all Cuban production."
+   },
+   "sources": {
+    "varieties": [
+     "bijdendijk-cuba"
+    ],
+    "processing": [
+     "cuba-trade"
+    ],
+    "regions": [
+     "bijdendijk-cuba",
+     "moka-cuba",
+     "cuba-trade"
+    ]
+   },
+   "status": "full",
+   "gaps": []
+  },
+  {
+   "id": "jamaica",
+   "harvest": {
+    "main": [
+     2,
+     6
+    ],
+    "second": [
+     9,
+     1
+    ],
+    "variesBy": "Two picking cycles are described; farms and elevation determine which dominates.",
+    "edgeMonths": 1,
+    "sources": [
+     "ci-jamaica",
+     "bmj-spec"
+    ],
+    "scope": "Arabica"
+   },
+   "altitudeM": {
+    "min": 900,
+    "max": 1700,
+    "species": "arabica",
+    "scope": "Rounded Blue Mountain trade band; not a national range or legal boundary.",
+    "sources": [
+     "jacoffee-faq"
+    ]
+   },
+   "robustaAltitudeM": null,
+   "production": {
+    "bags60kg": 15000,
+    "season": "2026/27",
+    "kind": "forecast",
+    "arabicaShare": 1,
+    "source": "usda-psd-2026-07",
+    "scope": "National green-bean-equivalent production."
+   },
+   "regions": [
+    {
+     "name": "Blue Mountains / St Andrew",
+     "lat": 18,
+     "lon": -76.7
+    },
+    {
+     "name": "Blue Mountains / St Thomas",
+     "lat": 18,
+     "lon": -76.6
+    },
+    {
+     "name": "Blue Mountains / Portland",
+     "lat": 18.1,
+     "lon": -76.7
+    }
+   ],
+   "varieties": [
+    "Typica",
+    "Bourbon"
+   ],
+   "processing": [
+    "Washed"
+   ],
+   "tendencies": {
+    "notes": [
+     "sweet",
+     "chocolate",
+     "orange",
+     "floral"
+    ],
+    "source": "bmj-spec",
+    "caveat": "These describe Blue Mountain coffees; other Jamaican areas and roasts are not covered by the reputation."
+   },
+   "sources": {
+    "varieties": [
+     "jacra-coffee",
+     "ci-jamaica"
+    ],
+    "processing": [
+     "bmj-spec"
+    ],
+    "regions": [
+     "jacra-coffee"
+    ]
+   },
+   "status": "full",
+   "gaps": []
+  },
+  {
+   "id": "hawaii",
+   "harvest": {
+    "main": [
+     8,
+     12
+    ],
+    "second": null,
+    "variesBy": "Island, rainfall, irrigation and elevation shift picking, with tails outside the central window.",
+    "edgeMonths": 1,
+    "sources": [
+     "ci-hawaii",
+     "ctahr-coffee-2008"
+    ],
+    "scope": "Arabica"
+   },
+   "altitudeM": {
+    "min": 90,
+    "max": 915,
+    "species": "arabica",
+    "scope": "Selected Hawai‘i Island district farm bands; not every Hawaiian island.",
+    "sources": [
+     "shac-regions"
+    ]
+   },
+   "robustaAltitudeM": null,
+   "production": {
+    "bags60kg": 29695,
+    "season": "2025/26",
+    "kind": "estimate",
+    "arabicaShare": null,
+    "source": "nass-may2026",
+    "scope": "Hawaii state, utilized green coffee; not total cherry or US aggregate."
+   },
+   "regions": [
+    {
+     "name": "Kona",
+     "lat": 19.6,
+     "lon": -155.9
+    },
+    {
+     "name": "Kaʻū",
+     "lat": 19.2,
+     "lon": -155.5
+    },
+    {
+     "name": "Kauaʻi / Kalaheo",
+     "lat": 21.9,
+     "lon": -159.5
+    },
+    {
+     "name": "Maui / Kula",
+     "lat": 20.8,
+     "lon": -156.3
+    }
+   ],
+   "varieties": [
+    "Typica",
+    "Bourbon"
+   ],
+   "processing": [
+    "Washed"
+   ],
+   "tendencies": {
+    "notes": [
+     "sweet",
+     "nutty",
+     "mild",
+     "balanced"
+    ],
+    "source": "ci-hawaii",
+    "caveat": "Conventional washed-coffee descriptions vary by island, cultivar and roast."
+   },
+   "sources": {
+    "varieties": [
+     "ci-hawaii",
+     "shac-regions"
+    ],
+    "processing": [
+     "ci-hawaii"
+    ],
+    "regions": [
+     "shac-regions",
+     "ctahr-coffee-2008"
+    ]
+   },
+   "status": "full",
+   "gaps": []
+  },
+  {
+   "id": "indonesia",
+   "harvest": {
+    "main": [
+     4,
+     7
+    ],
+    "second": null,
+    "variesBy": "Lowland Robusta calendar; higher Robusta can run June–September, while Sumatra Arabica has separate spring/autumn peaks.",
+    "edgeMonths": 2,
+    "sources": [
+     "sucafina-handbook-2026",
+     "suca-indonesia"
+    ],
+    "scope": "Lowland Robusta"
+   },
+   "altitudeM": {
+    "min": 1000,
+    "max": 1500,
+    "species": "arabica",
+    "scope": "Main Arabica belt in North Sumatra, Aceh and Java; higher specialty farms exist.",
+    "sources": [
+     "shade-indonesia"
+    ]
+   },
+   "robustaAltitudeM": {
+    "min": 200,
+    "max": 800,
+    "species": "robusta",
+    "scope": "Trade association Robusta growing-conditions band.",
+    "sources": [
+     "aeki-robusta"
+    ]
+   },
+   "production": {
+    "bags60kg": 11380000,
+    "season": "2026/27",
+    "kind": "forecast",
+    "arabicaShare": 0.121265,
+    "source": "usda-psd-2026-07",
+    "scope": "National green-bean-equivalent production."
+   },
+   "regions": [
+    {
+     "name": "Aceh / Gayo",
+     "lat": 4.6,
+     "lon": 96.8
+    },
+    {
+     "name": "North Sumatra",
+     "lat": 2.7,
+     "lon": 98.3
+    },
+    {
+     "name": "East Java",
+     "lat": -7.9,
+     "lon": 113.8
+    },
+    {
+     "name": "Sulawesi / Toraja",
+     "lat": -3,
+     "lon": 119.9
+    },
+    {
+     "name": "Lampung",
+     "lat": -5,
+     "lon": 104.1
+    }
+   ],
+   "varieties": [
+    "Robusta BP selections",
+    "Tim Tim",
+    "Sigararutang",
+    "Andungsari",
+    "S795",
+    "Typica"
+   ],
+   "processing": [
+    "Natural",
+    "Wet-hulled",
+    "Washed"
+   ],
+   "tendencies": {
+    "notes": [
+     "earthy",
+     "herbal",
+     "savory"
+    ],
+    "source": "ci-sumatra",
+    "caveat": "These chiefly concern wet-hulled Sumatran Arabica, not the larger national Robusta crop."
+   },
+   "sources": {
+    "varieties": [
+     "sucafina-handbook-2026",
+     "aeki-robusta"
+    ],
+    "processing": [
+     "sucafina-handbook-2026"
+    ],
+    "regions": [
+     "sucafina-handbook-2026"
+    ]
+   },
+   "status": "full",
+   "gaps": []
+  },
+  {
+   "id": "india",
+   "harvest": {
+    "main": [
+     12,
+     3
+    ],
+    "second": null,
+    "variesBy": "Robusta generally runs December–March; Arabica November–January.",
+    "edgeMonths": 1,
+    "sources": [
+     "sucafina-handbook-2026",
+     "ci-india"
+    ],
+    "scope": "Robusta"
+   },
+   "altitudeM": {
+    "min": 1000,
+    "max": 1500,
+    "species": "arabica",
+    "scope": "Coffee Board growing-conditions band; named regions can extend higher.",
+    "sources": [
+     "coffee-board-india"
+    ]
+   },
+   "robustaAltitudeM": {
+    "min": 500,
+    "max": 1000,
+    "species": "robusta",
+    "scope": "Coffee Board Robusta growing-conditions band.",
+    "sources": [
+     "coffee-board-india"
+    ]
+   },
+   "production": {
+    "bags60kg": 6140000,
+    "season": "2026/27",
+    "kind": "forecast",
+    "arabicaShare": 0.254072,
+    "source": "usda-psd-2026-07",
+    "scope": "National green-bean-equivalent production."
+   },
+   "regions": [
+    {
+     "name": "Kodagu / Coorg",
+     "lat": 12.4,
+     "lon": 75.7
+    },
+    {
+     "name": "Chikmagalur",
+     "lat": 13.3,
+     "lon": 75.8
+    },
+    {
+     "name": "Wayanad",
+     "lat": 11.6,
+     "lon": 76.1
+    },
+    {
+     "name": "Shevaroys / Yercaud",
+     "lat": 11.8,
+     "lon": 78.2
+    }
+   ],
+   "varieties": [
+    "S795",
+    "Cauvery (Catimor)",
+    "Selection 9",
+    "Kents",
+    "Robusta S274",
+    "Robusta CxR"
+   ],
+   "processing": [
+    "Natural",
+    "Washed",
+    "Monsooned"
+   ],
+   "tendencies": {
+    "notes": [
+     "mild",
+     "full-bodied",
+     "aromatic"
+    ],
+    "source": "coffee-board-india",
+    "caveat": "Monsooning produces a distinct profile; these general trade descriptions do not predict every lot."
+   },
+   "sources": {
+    "varieties": [
+     "coffee-board-india"
+    ],
+    "processing": [
+     "sucafina-handbook-2026",
+     "ci-india"
+    ],
+    "regions": [
+     "coffee-board-india"
+    ]
+   },
+   "status": "full",
+   "gaps": []
+  },
+  {
+   "id": "vietnam",
+   "harvest": {
+    "main": [
+     10,
+     2
+    ],
+    "second": null,
+    "variesBy": "Robusta runs October–February; highland Arabica often November–January, northern Arabica October–January.",
+    "edgeMonths": 1,
+    "sources": [
+     "sucafina-handbook-2026",
+     "suca-vietnam"
+    ],
+    "scope": "Robusta"
+   },
+   "altitudeM": {
+    "min": 1200,
+    "max": 2200,
+    "species": "arabica",
+    "scope": "Lâm Đồng Arabica; source's upper edge is above 2,200 m, not a hard cap.",
+    "upperBoundOpen": true,
+    "sources": [
+     "ip-vietnam-lamdong"
+    ]
+   },
+   "robustaAltitudeM": {
+    "min": 700,
+    "max": 850,
+    "species": "robusta",
+    "scope": "Lâm Đồng Robusta GI growing band; not all Vietnamese farms.",
+    "sources": [
+     "ip-vietnam-lamdong"
+    ]
+   },
+   "production": {
+    "bags60kg": 32500000,
+    "season": "2026/27",
+    "kind": "forecast",
+    "arabicaShare": 0.033846,
+    "source": "usda-psd-2026-07",
+    "scope": "National green-bean-equivalent production."
+   },
+   "regions": [
+    {
+     "name": "Đắk Lắk",
+     "lat": 12.7,
+     "lon": 108
+    },
+    {
+     "name": "Lâm Đồng / Đà Lạt",
+     "lat": 11.9,
+     "lon": 108.4
+    },
+    {
+     "name": "Gia Lai",
+     "lat": 14,
+     "lon": 108
+    },
+    {
+     "name": "Sơn La",
+     "lat": 21.3,
+     "lon": 103.9
+    }
+   ],
+   "varieties": [
+    "Robusta clonal selections",
+    "Catimor",
+    "Typica",
+    "Bourbon"
+   ],
+   "processing": [
+    "Natural",
+    "Washed"
+   ],
+   "tendencies": {
+    "notes": [
+     "chocolate",
+     "honey",
+     "caramelized nuts"
+    ],
+    "source": "suca-vietnam-ganh",
+    "caveat": "Selected fine Robusta description; commodity Robusta and northern Arabica can differ greatly."
+   },
+   "sources": {
+    "varieties": [
+     "suca-vietnam",
+     "ip-vietnam-lamdong"
+    ],
+    "processing": [
+     "sucafina-handbook-2026"
+    ],
+    "regions": [
+     "suca-vietnam",
+     "ip-vietnam-lamdong"
+    ]
+   },
+   "status": "full",
+   "gaps": []
+  },
+  {
+   "id": "yemen",
+   "harvest": {
+    "main": [
+     10,
+     3
+    ],
+    "second": null,
+    "variesBy": "Terraced districts and elevations ripen at different times; shipments are especially variable.",
+    "edgeMonths": 1,
+    "sources": [
+     "ci-yemen"
+    ],
+    "scope": "Arabica"
+   },
+   "altitudeM": {
+    "min": 1500,
+    "max": 2500,
+    "species": "arabica",
+    "scope": "Specialty highland sourcing description.",
+    "sources": [
+     "hamdan-yemen"
+    ]
+   },
+   "robustaAltitudeM": null,
+   "production": null,
+   "regions": [
+    {
+     "name": "Haraaz",
+     "lat": 15.1,
+     "lon": 43.7
+    },
+    {
+     "name": "Bani Matar",
+     "lat": 15.3,
+     "lon": 44
+    },
+    {
+     "name": "Sana'a highlands / Sanani",
+     "lat": 15.4,
+     "lon": 44.2
+    }
+   ],
+   "varieties": [
+    "Dawairi",
+    "Jaadi",
+    "Tuffahi",
+    "Udaini"
+   ],
+   "processing": [
+    "Natural"
+   ],
+   "tendencies": {
+    "notes": [
+     "dried fruit",
+     "dark chocolate",
+     "syrupy"
+    ],
+    "source": "hamdan-yemen",
+    "caveat": "These describe traditionally dried highland coffees; local variety names are not uniform genetic categories."
+   },
+   "sources": {
+    "varieties": [
+     "ci-yemen",
+     "hamdan-yemen"
+    ],
+    "processing": [
+     "ci-yemen"
+    ],
+    "regions": [
+     "hamdan-yemen"
+    ]
+   },
+   "status": "partial",
+   "gaps": [
+    "production"
+   ]
+  },
+  {
+   "id": "china",
+   "harvest": {
+    "main": [
+     10,
+     3
+    ],
+    "second": null,
+    "variesBy": "Lower Yunnan sites may start October; much specialty sourcing is concentrated December–March.",
+    "edgeMonths": 2,
+    "sources": [
+     "suca-china",
+     "sucafina-handbook-2026"
+    ],
+    "scope": "Arabica"
+   },
+   "altitudeM": {
+    "min": 800,
+    "max": 1800,
+    "species": "arabica",
+    "scope": "Yunnan band; source says most coffee is within 1,000–1,500 m.",
+    "sources": [
+     "suca-china"
+    ]
+   },
+   "robustaAltitudeM": null,
+   "production": {
+    "bags60kg": 1900000,
+    "season": "2026/27",
+    "kind": "forecast",
+    "arabicaShare": 1,
+    "source": "usda-psd-2026-07",
+    "scope": "China national; not a separately measured Yunnan total."
+   },
+   "regions": [
+    {
+     "name": "Pu'er",
+     "lat": 22.8,
+     "lon": 101
+    },
+    {
+     "name": "Baoshan",
+     "lat": 25.1,
+     "lon": 99.2
+    },
+    {
+     "name": "Lincang",
+     "lat": 23.9,
+     "lon": 100.1
+    },
+    {
+     "name": "Dehong / Mangshi",
+     "lat": 24.5,
+     "lon": 98.6
+    }
+   ],
+   "varieties": [
+    "Catimor",
+    "Typica",
+    "Caturra",
+    "SL34"
+   ],
+   "processing": [
+    "Washed",
+    "Natural"
+   ],
+   "tendencies": {
+    "notes": [
+     "chocolate",
+     "sweet",
+     "dark fruit"
+    ],
+    "source": "suca-china",
+    "caveat": "These describe selected washed Yunnan offerings; other cultivars/processes broaden the range."
+   },
+   "sources": {
+    "varieties": [
+     "suca-china"
+    ],
+    "processing": [
+     "suca-china"
+    ],
+    "regions": [
+     "suca-china"
+    ]
+   },
+   "status": "full",
+   "gaps": []
+  },
+  {
+   "id": "myanmar",
+   "harvest": {
+    "main": [
+     12,
+     3
+    ],
+    "second": null,
+    "variesBy": "Some specialty producers continue into April; Shan smallholders and Mandalay estates differ.",
+    "edgeMonths": 1,
+    "sources": [
+     "suca-myanmar",
+     "nilaa-myanmar"
+    ],
+    "scope": "Arabica"
+   },
+   "altitudeM": {
+    "min": 1300,
+    "max": 1500,
+    "species": "arabica",
+    "scope": "Specialty sourcing highlands, not national extrema.",
+    "sources": [
+     "nilaa-myanmar"
+    ]
+   },
+   "robustaAltitudeM": null,
+   "production": null,
+   "regions": [
+    {
+     "name": "Ywangan / southern Shan",
+     "lat": 21.2,
+     "lon": 96.4
+    },
+    {
+     "name": "Pyin Oo Lwin / Mandalay",
+     "lat": 22,
+     "lon": 96.5
+    },
+    {
+     "name": "Pinlaung / southern Shan",
+     "lat": 20.1,
+     "lon": 96.8
+    }
+   ],
+   "varieties": [
+    "Catuai",
+    "Caturra",
+    "Catimor",
+    "Bourbon",
+    "Typica",
+    "SL34"
+   ],
+   "processing": [
+    "Natural",
+    "Washed"
+   ],
+   "tendencies": {
+    "notes": [
+     "watermelon",
+     "chocolate",
+     "tea"
+    ],
+    "source": "nilaa-myanmar",
+    "caveat": "These describe a natural Ywangan lot; washed Mandalay coffees should not inherit the same promise."
+   },
+   "sources": {
+    "varieties": [
+     "suca-myanmar"
+    ],
+    "processing": [
+     "suca-myanmar",
+     "atlas-myanmar"
+    ],
+    "regions": [
+     "atlas-myanmar"
+    ]
+   },
+   "status": "partial",
+   "gaps": [
+    "production"
+   ]
+  },
+  {
+   "id": "thailand",
+   "harvest": {
+    "main": [
+     11,
+     2
+    ],
+    "second": null,
+    "variesBy": "Northern Arabica around Chiang Mai commonly runs December–March; southern Robusta needs a different calendar.",
+    "edgeMonths": 1,
+    "sources": [
+     "movaci-thailand"
+    ],
+    "scope": "Northern Arabica"
+   },
+   "altitudeM": {
+    "min": 1100,
+    "max": 1600,
+    "species": "arabica",
+    "scope": "Northern Arabica examples, including Thep Sadet and Chiang Rai/Chiang Mai.",
+    "sources": [
+     "thai-moac",
+     "movaci-thailand"
+    ]
+   },
+   "robustaAltitudeM": {
+    "min": 85,
+    "max": 300,
+    "species": "robusta",
+    "scope": "Envelope of two Chumphon GI zones: Tham Sing 85–120 m and Khao Thalu 200–300 m.",
+    "sources": [
+     "thai-moac"
+    ]
+   },
+   "production": {
+    "bags60kg": 900000,
+    "season": "2026/27",
+    "kind": "forecast",
+    "arabicaShare": 0,
+    "source": "usda-psd-2026-07",
+    "scope": "National green-bean-equivalent production."
+   },
+   "regions": [
+    {
+     "name": "Chiang Rai / Doi Chang",
+     "lat": 19.7,
+     "lon": 99.5
+    },
+    {
+     "name": "Chiang Mai / Doi Inthanon",
+     "lat": 18.4,
+     "lon": 98.7
+    },
+    {
+     "name": "Chumphon",
+     "lat": 10.5,
+     "lon": 99.2
+    },
+    {
+     "name": "Ranong",
+     "lat": 10,
+     "lon": 98.6
+    }
+   ],
+   "varieties": [
+    "Catimor",
+    "Catimor F7",
+    "Robusta Chumphon 2",
+    "Local Robusta selections"
+   ],
+   "processing": [
+    "Washed",
+    "Natural",
+    "Honey"
+   ],
+   "tendencies": {
+    "notes": [
+     "stone fruit",
+     "jasmine",
+     "dark chocolate"
+    ],
+    "source": "movaci-thailand",
+    "caveat": "These concern northern specialty Arabica, not southern Robusta."
+   },
+   "sources": {
+    "varieties": [
+     "thai-moac"
+    ],
+    "processing": [
+     "movaci-thailand"
+    ],
+    "regions": [
+     "thai-moac",
+     "movaci-thailand"
+    ]
+   },
+   "status": "partial",
+   "gaps": [
+    "nationalRobustaHarvest",
+    "production.arabicaShare-display"
+   ]
+  },
+  {
+   "id": "papua-new-guinea",
+   "harvest": {
+    "main": [
+     5,
+     9
+    ],
+    "second": [
+     1,
+     2
+    ],
+    "variesBy": "Highland rainfall changes the main crop and small fly crop.",
+    "edgeMonths": 1,
+    "sources": [
+     "ci-papua-new-guinea",
+     "sucafina-handbook-2026"
+    ],
+    "scope": "Arabica"
+   },
+   "altitudeM": {
+    "min": 1000,
+    "max": 2000,
+    "species": "arabica",
+    "scope": "Highland Arabica sourcing band.",
+    "sources": [
+     "sucafina-handbook-2026"
+    ]
+   },
+   "robustaAltitudeM": null,
+   "production": {
+    "bags60kg": 800000,
+    "season": "2026/27",
+    "kind": "forecast",
+    "arabicaShare": 0.9375,
+    "source": "usda-psd-2026-07",
+    "scope": "National green-bean-equivalent production."
+   },
+   "regions": [
+    {
+     "name": "Eastern Highlands",
+     "lat": -6.1,
+     "lon": 145.4
+    },
+    {
+     "name": "Western Highlands",
+     "lat": -5.9,
+     "lon": 144.2
+    },
+    {
+     "name": "Simbu / Chimbu",
+     "lat": -6,
+     "lon": 145
+    }
+   ],
+   "varieties": [
+    "Typica",
+    "Arusha",
+    "Blue Mountain",
+    "Bourbon"
+   ],
+   "processing": [
+    "Washed"
+   ],
+   "tendencies": {
+    "notes": [
+     "fruit",
+     "winey",
+     "balanced"
+    ],
+    "source": "sucafina-handbook-2026",
+    "caveat": "Trade descriptions of selected washed Arabica grades vary by district and post-harvest handling."
+   },
+   "sources": {
+    "varieties": [
+     "ci-papua-new-guinea"
+    ],
+    "processing": [
+     "ci-papua-new-guinea"
+    ],
+    "regions": [
+     "ci-papua-new-guinea",
+     "sucafina-handbook-2026"
+    ]
+   },
+   "status": "full",
+   "gaps": []
+  }
+ ]
+}
