@@ -53,3 +53,39 @@ test('guidance lines are in the agencies\' own terms', () => {
   assert.ok(!/limit/i.test(fda.wording), 'not called a limit');
   assert.ok(CAFFEINE.VERIFY.length > 0);
 });
+
+import { intakeMg, dayCurve, dailyTotal, inBodyAt, encodeDay, decodeDay } from '../index.ts';
+
+test('a day: totals add up, bedtime level is below the peak, ranges stay ordered', () => {
+  const day = [
+    { kind: 'brewed', method: 'v60', cupMl: 355, atMin: 7 * 60 },
+    { kind: 'espresso', shots: 2, atMin: 10 * 60 },
+    { kind: 'brewed', method: 'cold-brew', cupMl: 473, atMin: 15 * 60 },
+  ];
+  const total = dailyTotal(day);
+  const parts = day.map((i) => intakeMg(i).value);
+  assert.ok(Math.abs(total.min - parts.reduce((a, p) => a + p.min, 0)) < 1e-9);
+  const curve = dayCurve(day, 6 * 60, 26 * 60, 10);
+  for (const p of curve) assert.ok(p.min <= p.max + 1e-9);
+  const bed = inBodyAt(day, 23 * 60);
+  const peak = Math.max(...curve.map((p) => p.max));
+  assert.ok(bed.max < peak);
+  assert.ok(bed.min > 0);
+});
+
+test('decaf scales with the cup and stays tiny', () => {
+  const r = intakeMg({ kind: 'decaf', cupMl: 355, atMin: 600 }).value;
+  assert.ok(r.max < 15 && r.min > 5);
+});
+
+test('a cup bigger than one brewer makes still gets an estimate', () => {
+  assert.equal(intakeMg({ kind: 'brewed', method: 'aeropress', cupMl: 473, atMin: 480 }).ok, true);
+});
+
+test('day state round-trips through the link; junk fails', () => {
+  const s = { intakes: [{ kind: 'brewed', method: 'v60', cupMl: 355, atMin: 420 }, { kind: 'espresso', shots: 2, atMin: 630 }, { kind: 'decaf', cupMl: 237, atMin: 1200 }, { kind: 'brewed', method: 'drip-machine', cupMl: 296, bean: 'robusta', atMin: 900 }], halfLifeH: 8, bedMin: 1350, pregnant: true };
+  const d = decodeDay(encodeDay(s));
+  assert.equal(d.ok, true, JSON.stringify(d));
+  assert.deepEqual(d.value, s);
+  for (const q of ['', 'd=', 'd=v60.355', 'd=esp.9@600', 'd=v60.355@600&hl=99', 'd=nope.355@600']) assert.equal(decodeDay(q).ok, false, q);
+});

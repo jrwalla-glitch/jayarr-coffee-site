@@ -1,5 +1,7 @@
 import type { MethodId, Range, Result } from './types.ts';
 import { failure, finite, success } from './units.ts';
+import { buildRecipe } from './brew.ts';
+import { methodById } from './methods.ts';
 
 // Caffeine model for the Caffeine Calculator and anything that quotes caffeine.
 // Ranges, not points: caffeine varies with bean, roast, dose and method. Values marked in
@@ -70,3 +72,87 @@ export const GUIDANCE = [
   { id: 'efsa-single-dose', mg: 200, per: 'dose', who: 'EFSA', wording: 'EFSA found single doses of up to 200 mg raise no safety concerns for healthy adults.' },
   { id: 'acog-pregnancy', mg: 200, per: 'day', who: 'ACOG', wording: 'ACOG advises pregnant people to keep caffeine under 200 mg a day.' },
 ] as const;
+
+// ── A day of drinks (Caffeine Calculator) ──
+
+export type IntakeKind = 'brewed' | 'espresso' | 'decaf';
+export interface Intake {
+  kind: IntakeKind;
+  /** Minutes after midnight (may exceed 1440 for after-midnight drinks). */
+  atMin: number;
+  method?: MethodId;
+  cupMl?: number;
+  shots?: number;
+  bean?: Bean;
+}
+
+export function intakeMg(i: Intake): Result<Range> {
+  if (!finite(i.atMin)) return failure('bad-time', 'atMin', 'Pick a time.');
+  if (i.kind === 'espresso') {
+    if (!finite(i.shots) || i.shots < 1 || i.shots > 6) return failure('bad-shots', 'shots', 'Count 1 to 6 shots.');
+    return success(espressoMg(i.shots));
+  }
+  if (!finite(i.cupMl) || i.cupMl < 30 || i.cupMl > 2000) return failure('bad-cup', 'cupMl', 'Choose a cup size.');
+  if (i.kind === 'decaf') return success({ min: CAFFEINE.decafPer6Oz.min * i.cupMl / 177, max: CAFFEINE.decafPer6Oz.max * i.cupMl / 177 });
+  const method = i.method ?? 'drip-machine';
+  if (!methodById(method) || method === 'espresso') return failure('bad-method', 'method', 'Choose how it was brewed.');
+  const r = buildRecipe({ method, target: { cupMl: i.cupMl } });
+  // A cup bigger than one brewer makes is still a cup of that coffee: estimate from the strength alone.
+  const doseG = r.ok ? r.value.doseG : i.cupMl / 14;
+  return estimateBrewedMg(doseG, method, i.bean ?? 'arabica');
+}
+
+export interface DayPoint { tMin: number; min: number; max: number }
+
+export function dayCurve(intakes: Intake[], fromMin: number, toMin: number, stepMin = 10, halfLifeH: number = CAFFEINE.halfLifeH.typical): DayPoint[] {
+  const lows: { atMin: number; mg: number }[] = [], highs: { atMin: number; mg: number }[] = [];
+  for (const i of intakes) {
+    const r = intakeMg(i);
+    if (!r.ok) continue;
+    lows.push({ atMin: i.atMin, mg: r.value.min }); highs.push({ atMin: i.atMin, mg: r.value.max });
+  }
+  const out: DayPoint[] = [];
+  for (let t = fromMin; t <= toMin; t += stepMin) out.push({ tMin: t, min: caffeineInBody(lows, t, halfLifeH), max: caffeineInBody(highs, t, halfLifeH) });
+  return out;
+}
+
+export function dailyTotal(intakes: Intake[]): Range {
+  return intakes.reduce((acc, i) => { const r = intakeMg(i); return r.ok ? { min: acc.min + r.value.min, max: acc.max + r.value.max } : acc; }, { min: 0, max: 0 });
+}
+
+export function inBodyAt(intakes: Intake[], atMin: number, halfLifeH: number = CAFFEINE.halfLifeH.typical): Range {
+  const p = dayCurve(intakes, atMin, atMin, 1, halfLifeH)[0];
+  return { min: p.min, max: p.max };
+}
+
+// Share: ?d=v60.355@480,esp.2@630,decaf.237@1200&hl=5&bed=1380
+export function encodeDay(state: { intakes: Intake[]; halfLifeH: number; bedMin: number; pregnant?: boolean }): string {
+  const q = new URLSearchParams();
+  q.set('d', state.intakes.map((i) => i.kind === 'espresso' ? `esp.${i.shots}@${Math.round(i.atMin)}`
+    : i.kind === 'decaf' ? `decaf.${Math.round(i.cupMl ?? 0)}@${Math.round(i.atMin)}`
+    : `${i.method}.${Math.round(i.cupMl ?? 0)}${i.bean && i.bean !== 'arabica' ? '.' + i.bean : ''}@${Math.round(i.atMin)}`).join(','));
+  if (state.halfLifeH !== CAFFEINE.halfLifeH.typical) q.set('hl', String(state.halfLifeH));
+  if (state.bedMin !== 1380) q.set('bed', String(state.bedMin));
+  if (state.pregnant) q.set('preg', '1');
+  return q.toString();
+}
+
+export function decodeDay(query: string): Result<{ intakes: Intake[]; halfLifeH: number; bedMin: number; pregnant: boolean }> {
+  const q = new URLSearchParams(query.startsWith('?') ? query.slice(1) : query);
+  const d = q.get('d');
+  if (!d) return failure('empty', 'd', 'No drinks in the link.');
+  const intakes: Intake[] = [];
+  for (const part of d.split(',')) {
+    const m = part.match(/^([a-z0-9-]+)\.(\d+)(?:\.(arabica|robusta|blend))?@(\d+)$/);
+    if (!m) return failure('bad-drink', 'd', 'A drink in the link is not valid.');
+    const [, kind, n, bean, at] = m;
+    const atMin = Number(at);
+    if (kind === 'esp') intakes.push({ kind: 'espresso', shots: Number(n), atMin });
+    else if (kind === 'decaf') intakes.push({ kind: 'decaf', cupMl: Number(n), atMin });
+    else intakes.push({ kind: 'brewed', method: kind as MethodId, cupMl: Number(n), atMin, ...(bean ? { bean: bean as Bean } : {}) });
+  }
+  for (const i of intakes) { const r = intakeMg(i); if (!r.ok) return failure('bad-drink', 'd', r.errors[0].message); }
+  const hl = Number(q.get('hl') ?? CAFFEINE.halfLifeH.typical), bed = Number(q.get('bed') ?? 1380);
+  if (!finite(hl) || hl < 1 || hl > 15 || !finite(bed) || bed < 0 || bed > 2880) return failure('bad-option', 'hl', 'An option in the link is not valid.');
+  return success({ intakes, halfLifeH: hl, bedMin: bed, pregnant: q.get('preg') === '1' });
+}
