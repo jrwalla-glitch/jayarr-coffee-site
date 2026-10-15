@@ -89,3 +89,14 @@ test('only the Sculptor 064S has no cautions listed', () => {
   // The Sculptor 064S is the one exception: the research warning found was for the non-S 064.
   assert.deepEqual(grinders.filter((g) => !g.cautions.length).map((g) => g.id), ['timemore-sculptor-064s']);
 });
+
+test('links in the site\'s brewer ids land on the same method here', async () => {
+  const { groupFromParam } = await import('../grinders.ts');
+  assert.equal(groupFromParam('drip-machine'), 'drip');
+  assert.equal(groupFromParam('v60'), 'pourover');
+  assert.equal(groupFromParam('kalita'), 'pourover');
+  assert.equal(groupFromParam('drip'), 'drip');
+  assert.equal(groupFromParam('french-press'), 'french-press');
+  assert.equal(groupFromParam('turkish'), null);
+  assert.equal(groupFromParam(null), null);
+});
