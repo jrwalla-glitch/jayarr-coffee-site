@@ -59,3 +59,9 @@ test('a filter-level reading on an espresso gets no moves (Opus r2: 2.6% EY sugg
   const r = ok(measuredExtraction({ kind: 'espresso', doseG: 18, liquidG: 36, tdsPct: 1.3 }));
   assert.deepEqual(r.moves, []); assert.ok(r.notes.some((n) => /unusually low/.test(n)));
 });
+
+test('a drink lighter than twice its coffee is not placed on the map (Muse r3)', () => {
+  assert.equal(ok(measuredExtraction({ kind: 'percolation', doseG: 20, liquidG: 15, tdsPct: 1.3 })).placeable, false);
+  assert.equal(ok(measuredExtraction({ kind: 'percolation', doseG: 20, liquidG: 300, tdsPct: 1.3 })).placeable, true);
+  assert.equal(ok(measuredExtraction({ kind: 'espresso', doseG: 18, liquidG: 36, tdsPct: 10 })).placeable, true);
+});

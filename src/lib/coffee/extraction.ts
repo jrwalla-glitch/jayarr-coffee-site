@@ -20,7 +20,7 @@ export interface MeasuredInput {
   diluted?: boolean;
 }
 export interface Chart { ey: [number, number]; tds: [number, number]; eyIdeal: [number, number]; tdsIdeal: [number, number] }
-export interface MeasuredResult { eyPct: number; dissolvedG: number; zone: ZoneId; x: number; y: number; chart: Chart; notes: string[]; strengthJudged: boolean; moves: string[] }
+export interface MeasuredResult { eyPct: number; dissolvedG: number; zone: ZoneId; x: number; y: number; chart: Chart; notes: string[]; strengthJudged: boolean; moves: string[]; /** False when the weights look like an input mix-up: the map shouldn't place it. */ placeable: boolean }
 
 export const CHARTS: Record<'filter' | 'espresso', Chart> = {
   filter: { ey: [14, 26], tds: [0.85, 1.75], eyIdeal: [18, 22], tdsIdeal: [1.15, 1.45] },
@@ -53,7 +53,7 @@ export function measuredExtraction(input: MeasuredInput): Result<MeasuredResult>
   const s = !strengthJudged ? 'ideal' : tdsPct < chart.tdsIdeal[0] ? 'weak' : tdsPct > chart.tdsIdeal[1] ? 'strong' : 'ideal';
   // Readings that look like an input mix-up (a drink lighter than its coffee, or under 10% EY) get no moves.
   const suspect = (kind !== 'espresso' && liquidG < doseG * 2) || eyPct < 10;
-  return success({ eyPct, dissolvedG, zone: `${e}-${s}` as ZoneId, x, y: strengthJudged ? y : 0.5, chart, notes, strengthJudged, moves: suspect ? [] : measuredMoves(kind, e, s) });
+  return success({ eyPct, dissolvedG, zone: `${e}-${s}` as ZoneId, x, y: strengthJudged ? y : 0.5, chart, notes, strengthJudged, moves: suspect ? [] : measuredMoves(kind, e, s), placeable: !(kind !== 'espresso' && liquidG < doseG * 2) });
 }
 
 /** Next moves for a measured cup, in the brewer's own terms (immersion has no bed to even out). */

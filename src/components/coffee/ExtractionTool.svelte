@@ -67,12 +67,14 @@
 
 <div class="xt">
   <div class="stage">
-    {#if mode === 'measured' && mv}
+    {#if mode === 'measured' && mv && !mv.placeable}
+      <ExtractionMap x={0.5} y={0.5} zone="ideal-ideal" empty emptyText="check the weights to place your cup" axes={mv.chart} label="Measured mode: the weights look mixed up, so the cup isn't placed." />
+    {:else if mode === 'measured' && mv}
       <ExtractionMap x={mv.x} y={mv.y} zone={mv.zone} axes={mv.chart} label={mv.strengthJudged ? `Measured: ${mv.eyPct.toFixed(1)}% extraction at ${tdsPct}% TDS, in the ${ZONES[mv.zone].label.toLowerCase()} zone.` : `Measured: ${mv.eyPct.toFixed(1)}% extraction; strength not judged for a diluted drink.`} />
     {:else if mode === 'measured'}
       <ExtractionMap x={0.5} y={0.5} zone="ideal-ideal" empty axes={CHARTS[kind === 'espresso' ? 'espresso' : 'filter']} label="Measured mode: no valid reading yet, so the chart is empty." />
     {:else}
-      <ExtractionMap x={place.x} y={place.y} zone={place.zone} label={`By taste, your cup probably sits in the ${zone.label.toLowerCase()} zone.`} />
+      <ExtractionMap x={place.x} y={place.y} zone={place.zone} label={touched ? `By taste, your cup probably sits in the ${zone.label.toLowerCase()} zone.` : 'Extraction map: move the sliders to describe your cup and place it here.'} />
     {/if}
   </div>
   <div class="panel">
