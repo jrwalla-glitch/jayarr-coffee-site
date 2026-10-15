@@ -273,9 +273,13 @@
     try { await navigator.clipboard.writeText(url); copied = true; setTimeout(() => (copied = false), 2200); } catch { prompt('Copy this link:', url); }
   }
 
+  // Only last night's drinks still counting: say so, rather than "No drinks yet" beside a curve (Muse r5).
+  let carriedOnly = $derived(!sorted.length && mode === 'own' && ownView.carried.length > 0);
   let summary = $derived(sorted.length
     ? `Caffeine in your body across the day. Peak about ${rangeText(peak.min, peak.max)} mg near ${labelAt(peak.tMin)}; about ${rangeText(atBed.min, atBed.max)} mg left at ${clock12(bedMin)}.`
-    : 'No drinks yet.');
+    : carriedOnly
+      ? `Nothing logged today yet; earlier drinks still count${atNow ? `, about ${rangeText(atNow.min, atNow.max)} mg in you now` : ''}, and about ${rangeText(atBed.min, atBed.max)} mg left at ${clock12(bedMin)}.`
+      : 'No drinks yet.');
 </script>
 
 <div class="cd">

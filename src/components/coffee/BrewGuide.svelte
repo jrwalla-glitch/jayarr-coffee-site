@@ -155,11 +155,22 @@
       if (fit.length) target = fit[fit.length - 1].t;
     }
   }
+  // A switch that moves the cup to the other system's marked size says so (Muse r5): the batch never changes silently.
+  let unitNote = $state<string | null>(null);
   function switchUnits(u: Units) {
     if (u === units) return;
     const wasPreset = !customOpen && 'cupMl' in target && allChoices.some((c) => same(c.t, target));
+    const before = 'cupMl' in target ? target.cupMl : null;
     units = u;
-    if (wasPreset && !byDose) target = defaultTarget(method, u);
+    unitNote = null;
+    if (wasPreset && !byDose) {
+      target = defaultTarget(method, u);
+      const after = 'cupMl' in target ? target.cupMl : null;
+      if (before != null && after != null && Math.abs(after - before) > 1) {
+        const show = (ml: number, us: boolean) => (us ? `${r0(mlToFlOz(ml))} fl oz` : `${r0(ml)} ml`);
+        unitNote = `Now ${show(after, u === 'us')}, the usual ${u === 'us' ? 'US' : 'metric'} size; your cup was ${show(before, u !== 'us')} (${show(before, u === 'us')}). Use Custom for an exact amount.`;
+      }
+    }
   }
   // Moka has no strength choice (the pot sets it), so it always starts at its own ratio.
   // A Doctor change belongs to the brewer it was given for, so switching brewer drops it (blind Opus r3).
@@ -354,6 +365,7 @@
           <button type="button" aria-pressed={units === 'us'} onclick={() => switchUnits('us')}>US</button>
           <button type="button" aria-pressed={units === 'metric'} onclick={() => switchUnits('metric')}>Metric</button>
         </div>
+        {#if unitNote}<p class="unitnote" role="status">{unitNote}</p>{/if}
       </fieldset>
     </div>
 
@@ -499,6 +511,7 @@
   .chips button, .seg button { appearance: none; border: 1px solid var(--rule); background: #fff; border-radius: 999px; padding: 7px 12px; min-height: 36px; font: 500 13px/1 var(--cf-mono); color: var(--ink-2); cursor: pointer; }
   .chips button[aria-pressed='true'], .seg button[aria-pressed='true'] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
   .seg { display: inline-flex; flex-wrap: wrap; gap: 4px; }
+  .unitnote { margin: 6px 0 0; font-size: 13px; color: var(--ink-2, #5b4a3d); max-width: 34ch; }
   .seg button { font-family: var(--cf-sans); }
 
   .numbers { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }

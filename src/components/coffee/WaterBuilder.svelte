@@ -10,6 +10,8 @@
   let espresso = $state(false);
   let gallons = $state(true);
   let volume = $state(1); // in gallons or litres per `gallons`
+  // Said when a unit switch moves the batch to the nearest marked jug size (Muse r5).
+  let volNote = $state<string | null>(null);
   let mounted = $state(false);
   let linkProblem = $state(false);
 
@@ -145,9 +147,10 @@
         </div>
         <div class="seg">
           <!-- Switching units converts the batch you were building rather than resetting it. -->
-          <button type="button" aria-pressed={gallons} onclick={() => { if (!gallons) { volume = nearest(volume / 3.785, [0.25, 0.5, 1, 2, 3, 5, 10]); gallons = true; } }}>US</button>
-          <button type="button" aria-pressed={!gallons} onclick={() => { if (gallons) { volume = nearest(volume * 3.785, [0.5, 1, 2, 4, 5, 10, 20, 40]); gallons = false; } }}>Metric</button>
+          <button type="button" aria-pressed={gallons} onclick={() => { if (!gallons) { const was = volume; volume = nearest(volume / 3.785, [0.25, 0.5, 1, 2, 3, 5, 10]); gallons = true; volNote = `Now ${volume} gal, the nearest marked jug size to your ${was} L (${fmt2(was / 3.785)} gal). Type an exact amount if you need one.`; } }}>US</button>
+          <button type="button" aria-pressed={!gallons} onclick={() => { if (gallons) { const was = volume; volume = nearest(volume * 3.785, [0.5, 1, 2, 4, 5, 10, 20, 40]); gallons = false; volNote = `Now ${volume} L, the nearest marked jug size to your ${was} gal (${fmt2(was * 3.785)} L). Type an exact amount if you need one.`; } }}>Metric</button>
         </div>
+        {#if volNote}<p class="note" role="status">{volNote}</p>{/if}
       </div>
     </fieldset>
 
