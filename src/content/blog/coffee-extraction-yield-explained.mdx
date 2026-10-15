@@ -1,214 +1,93 @@
 ---
 title: "Coffee Extraction Yield Explained"
-description: "What extraction yield actually means, how to calculate it, why your coffee tastes sour or bitter, and how to fix it — with or without a refractometer. Includes the SCA brewing control chart, strength vs. yield, and practical adjustment guides."
+description: "Extraction yield is the share of your coffee that dissolves into the cup. Learn to calculate it from dose, drink weight and TDS, what the SCA's 18–22% range means, and how to act on a result."
 pubDate: "Mar 10 2026"
-updatedDate: "Dec 01 2025"
+updatedDate: "Oct 15 2026"
 heroImage: "../../assets/blog/coffee-extraction-yield-explained.jpg"
 category: "Science"
 videoId: "n289-PKF0lo"
 ---
 
-import ReferenceGuide from '../../components/infographics/ReferenceGuide.astro';
-import FAQ from '../../components/FAQ.astro';
-import DeepBrewCallout from '../../components/DeepBrewCallout.astro';
+import AnswerBox from '../../components/AnswerBox.astro';
+import ToolCallout from '../../components/ToolCallout.astro';
 import LiteYouTube from '../../components/LiteYouTube.astro';
 
-Every time you brew coffee, you're running a selective extraction. Hot water contacts ground coffee and dissolves some of the soluble material inside. Not all of it — not even close. Roasted coffee is roughly 28-30% soluble by weight. The remaining 70% is insoluble cellulose that stays behind in the grounds no matter what you do.
+<AnswerBox answer="Extraction yield is the share of your dry coffee that ended up dissolved in the drink: drink weight × TDS ÷ coffee dose. An 18 g espresso dose that gives a 36 g shot at 10% TDS has extracted 20%; a 20 g pour-over that gives 300 g of coffee at 1.3% TDS has extracted 19.5%. The SCA's 2019 brewing chart uses 18 to 22% as its reference range: a guide for comparing brews, not a grade for your cup." />
 
-<LiteYouTube videoId="n289-PKF0lo" title="Coffee Extraction Explained — Why Your Coffee Tastes Wrong" />
+When hot water meets ground coffee, it dissolves part of it. Not all of it: Jonathan Gagné, an astrophysicist who studies brewing, notes that the average extraction can never go above about 30%, because the rest of the bean doesn't dissolve in water. Extraction yield is how much of that you actually got, as a percentage of the coffee you started with.
 
-The question is: how much of that soluble 28-30% did you actually dissolve? That number — expressed as a percentage — is your extraction yield. And it determines, more than almost any other variable, whether your coffee tastes good.
+<LiteYouTube videoId="n289-PKF0lo" title="Coffee Extraction Explained: You Stopped Too Soon" />
 
-## What Extraction Yield Is (And Why It Matters)
+## How to calculate extraction yield
 
-Extraction yield (EY) is the percentage of your coffee dose that ended up dissolved in the water. The Specialty Coffee Association sets the "ideal" range at 18-22%. Below 18%, you haven't dissolved enough of the good stuff. Above 22%, you've pulled out too much of the bad stuff.
+You need three numbers: the coffee dose, the weight of the drink, and its strength as total dissolved solids (TDS), which you read with a coffee refractometer.
 
-That said, coffee scientist Jonathan Gagne argues these boundaries are somewhat arbitrary. Optimal extraction depends on the specific coffee, the roast level, and your grinder. A high-quality grinder producing uniform particles can push past 22% and still taste clean. A cheap grinder with lots of fines and boulders might taste muddled at 20%. The numbers are useful as a starting point, not gospel.
+**Extraction yield (%) = drink weight (g) × TDS (%) ÷ coffee dose (g)**
 
-## The Math: How to Calculate Extraction Yield
+Two worked examples, calculated:
 
-The formula is straightforward:
+- **Espresso:** an 18 g dose gives a 36 g shot at 10% TDS. That's 36 × 10% = 3.6 g of dissolved coffee, and 3.6 ÷ 18 = **20%**.
+- **Pour-over:** 20 g of coffee gives 300 g in the cup at 1.3% TDS. That's 300 × 1.3% = 3.9 g of dissolved coffee, and 3.9 ÷ 20 = **19.5%**.
 
-**EY% = (Brewed Coffee Weight x TDS%) / Coffee Dose**
+A few things keep the number honest:
 
-TDS stands for Total Dissolved Solids — the percentage of your brewed coffee that is dissolved coffee material rather than water. You measure it with a refractometer (more on that later).
+- **Immersion brews** (French press, AeroPress, cold brew): use all the water you added, not the drink weight, because the liquid left in the grounds is as strong as the cup. For example, 30 g of coffee steeped in 500 g of water that reads 1.25% has extracted about 20.8% (calculated: 500 × 1.25% = 6.25 g, ÷ 30). This simple version ignores the dissolved coffee's own weight, so it reads slightly low.
+- **Diluted drinks:** for an immersion brew, take the reading before you dilute it. For a pour-over or espresso you dilute afterwards (an americano, bypass water), take the weight and the reading at the same point, either the shot or the whole drink. Adding water doesn't change how much coffee dissolved.
+- **The sample:** read a cooled, well-mixed sample. The Extraction Map treats a result under about 10% or over about 26% as a likely mix-up in the weights or the reading, and doesn't place it on the map.
 
-Here's a real example. Say you brew a pour-over with:
-- **18g** of coffee (your dose)
-- **300g** of brewed coffee in the cup
-- **1.35% TDS** (measured with a refractometer)
+<ToolCallout tool="extraction" preset={{ mode: 'measured', kind: 'percolation', dose: 20, liquid: 300, tds: 1.3 }} cta="Open the Extraction Map at 20 g, 300 g, 1.3%" context="Opens the Extraction Map's measured mode with the pour-over above: 19.5% extraction, inside the SCA 2019 reference range. Enter your own dose, drink weight and refractometer reading; choose Immersion or Espresso for those brews." />
 
-Plug it in: EY = (300 x 0.0135) / 18 = **22.5%**
+## Strength and extraction are different numbers
 
-That's right at the top of the SCA range. If that cup tastes clean and sweet, you're golden. If it's slightly bitter or astringent, you've crept a touch too far — and now you know exactly where you stand.
+**Strength** is TDS: how concentrated the drink is. **Extraction** is how much of the coffee dissolved. They're linked by the ratio, since TDS works out as extraction × dose ÷ drink weight, so at a fixed ratio a better-extracted cup is also a stronger one. That's why the SCA chart draws each coffee-to-water ratio as a diagonal line.
 
-Without a refractometer, you can't calculate a precise number. But you can still understand what's happening and taste your way to the right zone.
+They can still point different ways. Two calculated examples:
 
-## The Order of Extraction: Why Sour Comes Before Bitter
+- 20 g of coffee giving 200 g of drink at 1.5% TDS has extracted 15%: strong, but below the reference extraction.
+- 18 g giving 400 g at 1.05% TDS has extracted about 23.3%: weak, and above the reference extraction.
 
-This is the single most important concept for understanding extraction. Compounds don't dissolve randomly — they extract in a predictable sequence based on molecular size and solubility:
+The SCA chart names those corners "Strong & Underextracted" and "Weak & Overextracted". As the Extraction Map puts it, grind, water temperature and contact time mostly move extraction, while the coffee-to-water ratio mostly moves strength.
 
-**1. Fruity acids come first.** These are the smallest, most soluble molecules. They dissolve almost immediately — bright, fruity, floral aromatics. On their own, they taste sharp and sour.
+Espresso has no SCA chart. The Extraction Map uses the same 18 to 22% for extraction and treats 8 to 12% TDS as a rule of thumb for strength.
 
-**2. Maillard compounds come next.** As extraction continues, you start pulling nutty, caramel, malty, and smoky flavors. These are the products of the Maillard reaction during roasting — the same chemistry that makes toast and seared meat taste good.
+## What the 18–22% range means
 
-**3. Browning sugars follow.** This is where perceived sweetness lives. Chocolate, vanilla, honey, toffee. Less-caramelized sugars dissolve first, then the deeper caramel compounds. This is the sweet spot — literally.
+The SCA's *Coffee Brewing Control Chart*, revised in March 2019 (Version 3), marks an "SCA Ideal" region of 18 to 22% extraction and 1.15 to 1.45% TDS. The older Golden Cup standard, still printed in the SCA's 2018 *Coffee Standards*, uses the same extraction range with a narrower strength band: 1.15 to 1.35% TDS (11.5 to 13.5 g per litre). The Extraction Map uses the 2019 chart.
 
-**4. Dry distillates come last.** The slowest to extract, the least desirable. Tobacco, carbon, ash, bitterness. Even in small amounts, dry distillates can mask the flavors extracted before them. Too many of them, and the cup turns hollow, harsh, and astringent.
+The chart dates back to the 1950s, and recent research from the UC Davis Coffee Center has found that taste is more complicated than one box:
 
-This sequence is why under-extraction tastes sour and over-extraction tastes bitter. Stop too early, and you've only dissolved the acids. Go too far, and you've pulled out the dry distillates that overwhelm everything else.
+- Frost, Ristenpart and Guinard (2020) brewed one coffee at three roast levels across a grid of strengths and extractions. Trained tasters found that 21 of 30 attributes changed significantly, including sourness, bitterness and sweetness, and that sweetness fell as strength rose.
+- Cotter and colleagues (2021) had 118 mostly college-age black-coffee drinkers rate brews of one medium-roast coffee. They split into two groups whose preferences varied most with strength, and the authors concluded that the chart's single "ideal" should be reconsidered.
+- Guinard and colleagues (2023) combined these studies into new charts that show the tasting trends across strength and extraction, and the two preference groups with their different likes and dislikes.
 
-<ReferenceGuide
-  title="The Extraction Sequence"
-  subtitle="Compounds dissolve in this order — from fastest to slowest"
-  scaleLabel={{ start: "Fastest (under-extracted)", end: "Slowest (over-extracted)" }}
-  items={[
-    { label: "Fruity Acids", description: "Bright, floral, tangy. Citric, malic, lactic acids.", value: "Sour when alone", dotScale: 0.25 },
-    { label: "Maillard Compounds", description: "Nutty, caramel, malty, smoky. Products of roasting.", value: "Depth + complexity", dotScale: 0.5 },
-    { label: "Browning Sugars", description: "Sweet, chocolate, vanilla, honey, toffee.", value: "The sweet spot", dotScale: 0.75 },
-    { label: "Dry Distillates", description: "Bitter, ashy, tobacco, harsh. Avoid over-extracting into this zone.", value: "Bitter + astringent", dotScale: 1.0 },
-  ]}
-  footnote="Stop extraction through stage 3. Push into stage 4 and the cup becomes bitter and hollow."
-/>
+So read 18 to 22% as a reference for comparing brews. A cup outside it isn't a faulty cup if you like it.
 
-## What Under-Extraction Tastes Like
+## Evenness: an average can hide two extremes
 
-If your coffee is under-extracted (roughly below 18% EY), you'll taste:
+Extraction yield is an average over every particle in the bed. In "The Dynamics of Coffee Extraction", Gagné explains that if some grounds extract much more than others, a cup with a normal-looking average can still carry the bitter, astringent taste of the over-extracted part. (He also suggests the under-extracted part adds vegetal, sour notes, but later called that link speculative.)
 
-- **Sour** — sharp, biting acidity without the sweetness to balance it
-- **Salty** — a minerally, almost savory edge
-- **Thin** — watery body, lacking depth
-- **Grassy or vegetal** — raw, undeveloped flavor
-- **Missing sweetness** — the sugars never dissolved
+That's why he expects a grinder with a narrower spread of particle sizes to let a cup reach a higher average extraction, around 22 to 24% in his examples, before it turns bitter, and why he expects the preferred range to depend on the grinder. He presents those numbers as illustrations, not limits. Uneven flow through the bed does the same thing; our guide to [channeling](/blog/fix-channeling-uneven-extraction/) covers it.
 
-The key tell: sourness without sweetness. A well-extracted coffee can be bright and acidic, but it has sweetness underneath. Under-extracted coffee is just sour.
+## Without a refractometer
 
-## What Over-Extraction Tastes Like
+You can brew very good coffee without measuring anything. Under-extracted cups tend to taste sour and hollow, and over-extracted ones bitter and drying, but water, freshness and an uneven bed cause similar tastes, so treat taste as a hypothesis and the refractometer as the number.
 
-If your coffee is over-extracted (roughly above 22% EY), you'll taste:
+These are the next moves the Extraction Map suggests when a measured cup tastes off to you; change one at a time. Without a reading, a sour, thin cup is a reason to try the first row, and a bitter, drying one the second.
 
-- **Bitter** — a persistent, unpleasant bitterness beyond normal coffee bittering
-- **Astringent** — drying, almost tannic, like over-steeped tea
-- **Hollow** — the middle flavors get masked by the harsh dry distillates
-- **Dry** — a sandpapery mouthfeel
-- **Harsh finish** — lingers unpleasantly
+| Your reading | Pour-over or drip | Immersion | Espresso |
+|---|---|---|---|
+| Below the reference extraction | Grind finer, or use hotter water | Grind finer, or steep longer | Grind finer, or pull a longer shot |
+| Above the reference extraction | Grind coarser, or use slightly cooler water | Grind coarser, or steep for less time | Grind coarser, or pull a shorter shot |
+| Below the reference strength | More coffee for the same water | More coffee for the same water | A bigger dose for the same yield |
+| Above the reference strength | More water for the same coffee, or dilute in the cup | More water for the same coffee, or dilute in the cup | A longer ratio, or dilute in the cup |
 
-The key tell: a drying sensation and bitterness that sticks around long after you swallow. It's unmistakable once you know what you're looking for.
+The Map's taste mode places your cup from how it tastes and feels, labelled as a hypothesis. For a symptom-by-symptom walk-through, [Fix My Coffee](/tools/fix-my-coffee/) asks what you tasted and how the brew ran. For the two biggest levers, see our guides to [grind size](/blog/coffee-grind-size-guide-what-grind-for-every-brew-method/) and [water temperature](/blog/whats-the-ideal-coffee-brewing-temperature/).
 
-## Strength vs. Yield: The Critical Distinction
+## Sources
 
-This is where most people get confused. Strength and extraction yield are not the same thing. They measure different things. They can move independently. Getting this distinction straight will change how you think about coffee.
-
-**Strength = TDS%** — how concentrated your brewed coffee is. How much dissolved material is in the cup. A good filter coffee lands around 1.15-1.45% TDS. Espresso is dramatically higher: 8-13% TDS.
-
-**Yield = EY%** — how much material you removed from the grounds. How thoroughly you extracted the coffee. The SCA targets 18-22%.
-
-Here's the critical insight, articulated clearly by Jessica Easto: **you can have strong, under-extracted coffee AND weak, over-extracted coffee.** These seem contradictory, but they're not.
-
-Strong, under-extracted coffee: use a high dose of coffee with very little water and a short brew time. The cup is concentrated (high TDS) but you only dissolved the acids (low EY). Result: intense sourness.
-
-Weak, over-extracted coffee: use a small amount of coffee with way too much water. The cup is dilute (low TDS) but you extracted everything possible from those grounds (high EY). Result: thin, bitter, hollow. This is diner coffee — running a gallon of water through a small basket of grounds that's been sitting on the burner.
-
-Understanding this distinction matters for diagnosis. If your coffee is bitter, the answer isn't necessarily "use less coffee." If it's sour, the answer isn't necessarily "use more." You need to figure out whether the problem is strength or yield, and adjust accordingly.
-
-**How they interact with brewing variables:**
-- Higher water temperature increases both strength and yield simultaneously
-- More water (higher ratio) decreases strength but increases yield
-- Finer grind increases both — more surface area means faster, more complete extraction
-- Longer brew time increases yield; its effect on strength depends on the method
-
-Getting the right [grind size](/blog/coffee-grind-size-guide-what-grind-for-every-brew-method/) is the most direct lever on extraction yield. And [water temperature](/blog/whats-the-ideal-coffee-brewing-temperature/) shapes how aggressively all four stages of extraction proceed.
-
-## The SCA Brewing Control Chart
-
-The Brewing Control Chart — originally developed by MIT chemist E.E. Lockhart in the 1950s — plots TDS (strength) on the Y axis and EY (yield) on the X axis. The "ideal" zone sits in the center: 18-22% EY, 1.15-1.45% TDS.
-
-In 2023, Guinard's research at UC Davis updated the chart based on modern consumer preference testing. Rather than identifying a single new "Gold Cup" zone, the study found **two distinct consumer preference clusters** -- one that preferred lower TDS with moderate extraction, and another that preferred higher extraction yields. This suggests there may not be a single ideal zone that fits all consumers, challenging the one-size-fits-all nature of the original chart. Two other notable findings: the acceptable extraction window is wider than the original chart suggests, and TDS has a bigger effect on consumer preference than extraction yield alone. People are more sensitive to how strong their coffee is than to subtle differences in extraction completeness.
-
-That makes intuitive sense. Most casual coffee drinkers who say they like "strong coffee" or "weak coffee" are talking about TDS, whether they know it or not. Extraction yield determines flavor balance, but strength determines the perceived intensity of the experience.
-
-## Evenness of Extraction: The Hidden Variable
-
-Gagne's most important insight has nothing to do with hitting a target number. It's about uniformity.
-
-If some coffee particles in your brew bed are over-extracted while others are under-extracted, the cup will taste both sour AND bitter simultaneously — even if the average extraction yield falls right in the "ideal" range. You've mixed together sour under-extracted liquid and bitter over-extracted liquid. The math averages out. The taste does not.
-
-**A brew at 20% EY with uneven extraction can taste worse than one at 19% with even extraction.**
-
-This is why grind uniformity matters so much. A grinder that produces lots of fine dust ("fines") alongside large chunks ("boulders") guarantees uneven extraction: the fines over-extract while the boulders under-extract, regardless of your recipe. It's also why technique matters — uneven water distribution in a pour-over creates channels where some grounds get over-extracted and others barely get touched.
-
-The practical takeaway: obsessing over a number is less useful than investing in a [good grinder](/blog/top-5-best-electric-coffee-grinders/) and consistent technique. Both contribute more to a balanced cup than any refractometer reading.
-
-## Refractometers: Should You Buy One?
-
-A refractometer measures TDS by shining light through a thin film of your brewed coffee and calculating the concentration of dissolved solids based on how much the light refracts. Combined with your dose and beverage weight, you can calculate EY precisely.
-
-The main options for home use:
-
-- **VST CoffeeTool** (about $300 and up) — the industry standard. Used in competitions and by professional Q-graders. Highly accurate. Requires a companion app.
-- **Atago PAL-COFFEE** (about $350) — another professional-grade option. Digital, standalone, no app required. Different models for filter vs. espresso.
-- **DiFluid R2 Extract** (about $100) — the budget option that changed the game. Reasonably accurate for home use and dramatically cheaper than the alternatives. This is the device that democratized coffee refractometry.
-
-**How to use one:** Brew your coffee. Take a small sample (a teaspoon or two). Let it cool to room temperature — temperature affects the reading. Place a few drops on the lens. Read the TDS%. Plug it into the formula with your dose and beverage weight. Done.
-
-**Is it worth it?** Honest take: probably not for most people. Unless you're obsessively optimizing recipes, competing, or trying to build a rigorous understanding of cause and effect when dialing in, you don't need one. Most people can taste the difference between 17% and 22% extraction without a number attached to it. The sour-to-bitter spectrum is your built-in refractometer.
-
-Where a refractometer does help: when you change one variable and want to know exactly what happened. Did switching from a 15:1 to a 16:1 ratio change your extraction? By how much? A refractometer gives you a data point instead of a guess. For people who enjoy that kind of systematic approach, the <a href="https://www.amazon.com/s?k=DiFluid+R2+Extract+refractometer&tag=jayarrcoffee-20" rel="sponsored noopener">DiFluid R2 Extract</a> at about $100 is a reasonable investment. For everyone else, taste is enough.
-
-## Practical Adjustments Without a Refractometer
-
-This is the section that actually matters for most people. You don't need to calculate extraction yield to fix your coffee. You need to taste it, identify the problem, and adjust in the right direction.
-
-### If your coffee tastes too sour (under-extracted):
-
-- **Grind finer** — increases surface area, accelerates extraction
-- **Increase water temperature** — hotter water extracts more efficiently
-- **Increase brew time** — give the water more contact time with the grounds
-- **Increase agitation** — stir more, pour more aggressively, create more turbulence
-
-These all push extraction yield higher, pulling more of the sugars and Maillard compounds that balance the initial acids.
-
-### If your coffee tastes too bitter (over-extracted):
-
-- **Grind coarser** — reduces surface area, slows extraction
-- **Decrease water temperature** — cooler water extracts less aggressively
-- **Decrease brew time** — cut the extraction short before dry distillates dominate
-- **Decrease agitation** — pour gently, don't stir, minimize turbulence
-
-These all pull extraction yield lower, stopping before you dissolve the harsh compounds at the end of the sequence.
-
-### If your coffee tastes too weak (low strength):
-
-- **Increase dose** — more coffee per unit of water
-- **Grind finer** — extracts more from the same dose
-
-### If your coffee tastes too strong (high strength):
-
-- **Decrease dose** — less coffee per unit of water
-- **Increase water volume** — dilutes the brew
-
-Notice the pattern: sour/bitter is an extraction yield problem. Weak/strong is a strength (TDS) problem. They require different fixes. If your coffee is sour AND weak, you need to increase both extraction and strength — grinding finer handles both. If it's bitter AND strong, grind coarser and use less coffee. If it's sour AND strong, you have concentrated under-extraction — increase your water volume and brew time. If it's bitter AND weak, you have dilute over-extraction (the diner coffee problem) — use more coffee, less water, and a coarser grind.
-
-For method-specific context on how extraction plays out in practice, see the [ultimate pour-over guide](/blog/ultimate-pour-over-coffee-guide-and-best-v60-technique/) and the [AeroPress guide](/blog/why-and-how-you-should-use-an-aeropress/).
-
-## The Bottom Line
-
-Extraction yield is the lens through which everything about coffee brewing makes sense. The order of extraction explains why sour comes before bitter. The strength-yield distinction explains why "strong" and "good" aren't the same thing. The concept of extraction evenness explains why a $200 grinder matters more than a $100 refractometer.
-
-You don't need to measure your extraction yield to make great coffee. But understanding what it is — and how every variable you control pushes it higher or lower — turns coffee brewing from guesswork into a system. Taste the cup. Identify sour or bitter. Adjust in the right direction. Repeat.
-
-That's extraction yield in practice. No refractometer required.
-
-<DeepBrewCallout tool="extraction" context="Slide between sour and bitter, thin and heavy — see exactly where you are on the extraction curve and get method-specific fixes." />
-
----
-
-<FAQ items={[
-  { question: "What is a good coffee extraction yield?", answer: "The SCA standard is 18-22%, though UC Davis research (Guinard, 2023) found the acceptable window is wider than that. Notably, the study identified two distinct consumer preference clusters rather than one universal zone, suggesting different people genuinely prefer different extraction profiles. The 'right' number depends on your coffee, roast level, and grinder quality. A uniform grinder can produce excellent cups above 22%, while a grinder with lots of fines and boulders can taste muddled at 20%. Use the range as a starting point, not a hard rule." },
-  { question: "What is the difference between coffee strength and extraction yield?", answer: "Strength (TDS%) measures how concentrated your brewed coffee is — how much dissolved coffee material is in the cup. Extraction yield (EY%) measures how much material you removed from the grounds. They move independently. You can have strong, under-extracted coffee (concentrated but sour, from a high dose with short brew time) and weak, over-extracted coffee (dilute but bitter — this is diner coffee made by running too much water through too little grounds)." },
-  { question: "Why does my coffee taste sour and bitter at the same time?", answer: "This usually signals uneven extraction, not a single extraction problem. If your grinder produces a wide range of particle sizes, the small particles (fines) over-extract while the large particles (boulders) under-extract. You end up with sour acids from the boulders and bitter dry distillates from the fines in the same cup. The fix is better grind uniformity — a higher-quality grinder — rather than adjusting brew time or temperature." },
-  { question: "Do I need a refractometer to make better coffee?", answer: "No. Most people can taste the difference between under-extracted (sour, thin, lacking sweetness) and over-extracted (bitter, astringent, harsh) coffee without measuring it. A refractometer is useful if you want precise data when dialing in recipes or isolating the effect of a single variable change. The DiFluid R2 Extract at around $100 is the most accessible option. But for everyday brewing, taste the cup, identify sour or bitter, and adjust grind size, temperature, or brew time accordingly." },
-  { question: "What is the SCA Brewing Control Chart?", answer: "A chart originally developed by MIT chemist E.E. Lockhart in the 1950s that maps coffee strength (TDS%) on the Y axis against extraction yield (EY%) on the X axis. The 'ideal' zone traditionally sat at 18-22% EY and 1.15-1.45% TDS for filter coffee. Guinard's 2023 UC Davis study challenged the single-zone model, finding two distinct consumer preference clusters rather than one universal ideal. The study also found that TDS has a bigger effect on consumer preference than extraction yield alone, and that the acceptable extraction window is wider than the original chart suggests." },
-]} />
-
-*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*
+- Specialty Coffee Association, *Coffee Brewing Control Chart*, revised March 2019, Version 3 (the "SCA Ideal" region and the brew-ratio lines): [SCA chart (PDF)](https://static1.squarespace.com/static/587af1d4db29d69a1a226b95/t/60aece65e4f2134d99f6e646/1622068839009/SCA%2BBrewing%2BChart%2B-%2BRevised%2BMarch%2B2019-US-Letter.pdf)
+- Specialty Coffee Association, *Coffee Standards*, revised 2018, §5.1, "Golden Cup Standard," p. 13
+- S. C. Frost, W. D. Ristenpart and J.-X. Guinard, "Effects of brew strength, brew yield, and roast on the sensory quality of drip brewed coffee," *Journal of Food Science* 85, no. 8 (2020): 2530–2543, abstract: [doi.org/10.1111/1750-3841.15326](https://doi.org/10.1111/1750-3841.15326)
+- A. R. Cotter, M. E. Batali, W. D. Ristenpart and J.-X. Guinard, "Consumer preferences for black coffee are spread over a wide range of brew strengths and extraction yields," *Journal of Food Science* 86, no. 1 (2021): 194–205, abstract: [doi.org/10.1111/1750-3841.15561](https://doi.org/10.1111/1750-3841.15561)
+- J.-X. Guinard, S. Frost, M. Batali, A. Cotter, L. X. Lim and W. D. Ristenpart, "A new Coffee Brewing Control Chart relating sensory properties and consumer liking to brew strength, extraction yield, and brew ratio," *Journal of Food Science* 88, no. 5 (2023): 2168–2177, abstract: [doi.org/10.1111/1750-3841.16531](https://doi.org/10.1111/1750-3841.16531)
+- Jonathan Gagné, "The Dynamics of Coffee Extraction," *Coffee ad Astra*, January 29, 2019, with his January 30 edit and replies in the comments: [coffeeadastra.com](https://coffeeadastra.com/2019/01/29/the-dynamics-of-coffee-extraction/)
