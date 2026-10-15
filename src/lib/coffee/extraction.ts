@@ -8,8 +8,9 @@ import type { ZoneId } from './doctor.ts';
 // because the liquid left in the grounds is as strong as the cup (the standard simple estimate; it
 // ignores the dissolved coffee's own weight, so it reads slightly low).
 // Chart bands: filter after the SCA brewing control chart (EY 18–22 %, TDS 1.15–1.45 %); espresso
-// has no SCA chart, so its strength band (8–12 % TDS) is a common rule of thumb (Rao). Each band is
-// the middle third of the drawn axis so the map's nine zones line up with the numbers.
+// has no SCA chart, so its strength band (8–12 % TDS) is a common rule of thumb, not Rao's: Rao's
+// Espresso Extraction (ch. 13) says most professionals seem to prefer 10–13% (R10, Wave D batches 3–4).
+// Each band is the middle third of the drawn axis so the map's nine zones line up with the numbers.
 
 export type MeasuredKind = 'percolation' | 'immersion' | 'espresso';
 export interface MeasuredInput {
@@ -46,7 +47,7 @@ export function measuredExtraction(input: MeasuredInput): Result<MeasuredResult>
   const chart = CHARTS[kind === 'espresso' ? 'espresso' : 'filter'];
   const notes: string[] = [];
   if (kind === 'immersion') notes.push('Immersion: this uses all the water you added, because the liquid left in the grounds is as strong as your cup. It reads slightly low.');
-  if (kind === 'espresso') notes.push('Espresso has no SCA chart; the strength band here (8–12% TDS) is a common rule of thumb.');
+  if (kind === 'espresso') notes.push('Espresso has no SCA chart; the strength band here (8–12% TDS) is a common rule of thumb. Scott Rao writes that most professionals seem to prefer 10–13% (Espresso Extraction, ch. 13).');
   // With the diluted box ticked, a very low result most likely mixes a shot weight with a diluted-drink reading (Muse r4).
   if (eyPct < 10) notes.push(input.diluted ? 'Under 10% is unusually low. With a diluted drink, the likeliest mix-up is the weight and the reading coming from different points: use the shot\'s weight with the shot\'s reading, or the whole drink\'s weight with its reading.' : 'Under 10% is unusually low: check the reading was taken on a cooled, well-mixed sample.');
   if (eyPct > 26) notes.push('Above about 26% is rarely reached in a cup: check the dose, the weight and the reading.');

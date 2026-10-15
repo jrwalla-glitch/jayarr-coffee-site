@@ -5,6 +5,13 @@ import { measuredExtraction } from '../index.ts';
 const ok = (r) => { assert.equal(r.ok, true, JSON.stringify(r)); return r.value; };
 const near = (a, b, eps = 1e-9) => assert.ok(Math.abs(a - b) <= eps, `${a} vs ${b}`);
 
+test('R10: the espresso band stays 8–12% TDS, credited as a common rule of thumb with Rao\'s 10–13% beside it', () => {
+  const r = ok(measuredExtraction({ kind: 'espresso', doseG: 18, liquidG: 36, tdsPct: 10 }));
+  assert.deepEqual(r.chart.tdsIdeal, [8, 12]);
+  const n = r.notes.find((x) => /SCA chart/.test(x));
+  assert.ok(/8–12% TDS\) is a common rule of thumb/.test(n) && /10–13%/.test(n) && /Espresso Extraction, ch\. 13/.test(n), n);
+});
+
 test('Astra\'s acceptance cases: 18 g → 36 g at 10% is 20%; 20 g → 300 g at 1.3% is 19.5%', () => {
   const esp = ok(measuredExtraction({ kind: 'espresso', doseG: 18, liquidG: 36, tdsPct: 10 }));
   near(esp.eyPct, 20); near(esp.dissolvedG, 3.6); assert.equal(esp.zone, 'ideal-ideal');
