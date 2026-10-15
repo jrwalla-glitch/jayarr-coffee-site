@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import ExtractionMap from './ExtractionMap.svelte';
-  import { LEVERS, ZONES, placeOnMap, suggestLevers, measuredExtraction, CHARTS } from '../../lib/coffee/index.ts';
+  import { LEVERS, ZONES, placeOnMap, suggestLevers, leverMove, measuredExtraction, CHARTS } from '../../lib/coffee/index.ts';
   import type { MeasuredKind } from '../../lib/coffee/index.ts';
 
   // Starts in the middle with no verdict until the reader describes their cup (Muse).
@@ -41,12 +41,13 @@
 
   let place = $derived(placeOnMap({ sourBitter, body }));
   let zone = $derived(ZONES[place.zone]);
-  let suggested = $derived(suggestLevers({ sourBitter, body }));
+  let suggested = $derived(suggestLevers({ sourBitter, body }, espresso));
   let suggestedIds = $derived(new Set(place.zone === 'ideal-ideal' ? [] : suggested.slice(0, 3).map((l) => l.id)));
   const clamp = (v: number) => Math.max(-2, Math.min(2, Math.round(v * 20) / 20));
   function pull(id: string) {
     const l = LEVERS.find((x) => x.id === id)!;
-    sourBitter = clamp(sourBitter + l.dx); body = clamp(body + l.dy); touched = true;
+    const mv = leverMove(l, espresso);
+    sourBitter = clamp(sourBitter + mv.dx); body = clamp(body + mv.dy); touched = true;
     moved = espresso && l.espresso ? l.espresso : l.label;
   }
   // Measured readings are compared with reference ranges, not graded: a point outside the box isn't a fault (Astra R9).
@@ -68,13 +69,16 @@
     if (q.get('mode') === 'measured') {
       mode = 'measured';
       const k = q.get('kind'); if (k === 'percolation' || k === 'immersion' || k === 'espresso') kind = k;
-      const d = Number(q.get('dose')), l = Number(q.get('liquid')), t = Number(q.get('tds'));
-      if (q.has('dose') && Number.isFinite(d)) doseG = d;
-      if (q.has('liquid') && Number.isFinite(l)) liquidG = l;
-      if (q.has('tds') && Number.isFinite(t)) tdsPct = t;
-      if ((['dose', 'liquid', 'tds'] as const).some((k) => q.has(k) && Number.isFinite(Number(q.get(k))))) example = false;
-      // A link whose numbers aren't numbers says so instead of quietly showing an example.
-      linkProblem = (['dose', 'liquid', 'tds'] as const).some((k) => q.has(k) && !Number.isFinite(Number(q.get(k))));
+      // A complete reading is used as given. Anything less (a missing or non-numeric field) shows this
+      // kind's own example, labelled, never another kind's default mixed into the reader's numbers (blind Opus r5).
+      const num = (key: string) => { const v = q.get(key); return v === null || v.trim() === '' ? null : Number.isFinite(Number(v)) ? Number(v) : null; };
+      const d = num('dose'), l = num('liquid'), t = num('tds');
+      const pre = PRESETS[kind];
+      if (d !== null && l !== null && t !== null) { doseG = d; liquidG = l; tdsPct = t; example = false; }
+      else {
+        doseG = pre.doseG; liquidG = pre.liquidG; tdsPct = pre.tdsPct; example = true;
+        linkProblem = ['dose', 'liquid', 'tds'].some((key) => q.has(key));
+      }
       diluted = q.get('diluted') === '1';
     }
     mounted = true;
@@ -119,7 +123,7 @@
         <label class="fld"><span class="lbl">TDS, %</span><input type="number" inputmode="decimal" step="0.01" min="0" bind:value={tdsPct} oninput={() => (example = false)} /></label>
       </div>
       <label class="check"><input type="checkbox" bind:checked={diluted} /> I diluted it on purpose (americano, bypass water)</label>
-      {#if linkProblem}<p class="note">Some numbers in that link weren't valid, so the example values are shown instead.</p>{/if}
+      {#if linkProblem}<p class="note">That link didn't hold a complete, valid reading, so the {kind === 'espresso' ? 'espresso' : kind === 'immersion' ? 'immersion' : 'pour-over'} example is shown instead.</p>{/if}
       {#if example}<p class="note ex">Example reading: enter your own dose, weight and TDS to place your cup.</p>{/if}
       {#if mv}
         <div class="zonecard" class:suspect={!mv.placeable} aria-live="polite">
@@ -168,7 +172,7 @@
       <div class="levers">
         {#each LEVERS as l (l.id)}
           <button type="button" class:hint={suggestedIds.has(l.id)} onclick={() => pull(l.id)}>
-            <svg viewBox="-12 -12 24 24" aria-hidden="true"><line x1="0" y1="0" x2={l.dx * 14} y2={-l.dy * 14} stroke="currentColor" stroke-width="2" stroke-linecap="round" /><circle r="2.4" fill="currentColor" /></svg>
+            <svg viewBox="-12 -12 24 24" aria-hidden="true"><line x1="0" y1="0" x2={leverMove(l, espresso).dx * 14} y2={-leverMove(l, espresso).dy * 14} stroke="currentColor" stroke-width="2" stroke-linecap="round" /><circle r="2.4" fill="currentColor" /></svg>
             {espresso && l.espresso ? l.espresso : l.label}
           </button>
         {/each}

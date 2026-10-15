@@ -32,11 +32,14 @@
   let target = $state<Target>(DEFAULTS.v60);
   let mounted = $state(false);
   let adjust = $state<Adjust | undefined>(undefined);
+  // A temperature change restored from a saved or last brew, not just arrived from the Doctor: said so,
+  // rather than "this time" on every visit (blind Opus r5).
+  let adjustKept = $state(false);
   // The Doctor's change is applied to the recipe itself, so the banner and the numbers agree.
   // A moka pot's or cold brew's water temperature isn't adjustable, so a temperature change claims nothing there.
   let adjustText = $derived(!adjust || !recipe || ((adjust === 'hotter' || adjust === 'cooler') && (method === 'moka' || method === 'cold-brew')) || (adjust === 'ratio' && strength === 'classic') ? '' : adjust === 'finer' ? 'Grind one step finer than last time.' : adjust === 'coarser' ? 'Grind one step coarser than last time.'
     : adjust === 'ratio' ? (method === 'espresso' ? `${strength === 'lighter' ? 'A longer shot' : 'A shorter shot'} this time: 1:${recipe.ratio}, shown below.` : `${strength === 'stronger' ? 'More' : 'Less'} coffee for the same water this time: 1:${recipe.ratio}, shown below.`)
-    : `${adjust === 'hotter' ? 'Hotter water this time' : 'Cooler water this time'}: about ${units === 'us' ? `${r0(cToF(recipe.tempC))}°F` : `${r0(recipe.tempC)}°C`}, shown below.`);
+    : `${adjust === 'hotter' ? (adjustKept ? 'Hotter water, kept from an earlier Coffee Doctor visit' : 'Hotter water this time') : (adjustKept ? 'Cooler water, kept from an earlier Coffee Doctor visit' : 'Cooler water this time')}: about ${units === 'us' ? `${r0(cToF(recipe.tempC))}°F` : `${r0(recipe.tempC)}°C`}, shown below.`);
 
   let m = $derived(METHODS.find((x) => x.id === method)!);
   let byDose = $derived(method === 'espresso' || method === 'moka');
@@ -98,7 +101,7 @@
     if (method === 'moka') return 'Just boiled, into the base';
     if (method === 'drip-machine') return 'Set by the machine';
     if (method === 'espresso') return 'Set on the machine';
-    const base = recipe.tempC >= 95 ? 'Just off the boil' : recipe.tempC >= 90 ? 'Off the boil, rested about 30 seconds' : 'Off the boil, cooled for a minute or two';
+    const base = recipe.tempC >= 95 ? 'Just off the boil' : recipe.tempC >= 90 ? 'Off the boil, rested about 30 seconds' : 'Off the boil, cooled a few minutes (a thermometer helps)';
     // A Doctor temperature change outranks the roast's usual note, so the two never point opposite ways (Opus r4).
     if (adjust === 'hotter' || adjust === 'cooler') return `${base}; ${adjust} this time, from the Coffee Doctor`;
     return roast === 'light' ? `${base}; hotter suits light roasts` : roast === 'dark' ? `${base}; cooler suits dark roasts` : base;
@@ -140,6 +143,17 @@
     const sizes = (u === 'us' ? (id === 'cold-brew' || id === 'drip-machine' ? BATCH_US : CUPS_US).map((v) => flOzToMl(v)) : id === 'cold-brew' || id === 'drip-machine' ? BATCH_METRIC : CUPS_METRIC);
     const fits = sizes.filter((ml) => buildRecipe({ method: id, target: { cupMl: ml }, strength: st, roast }).ok);
     return fits.length ? { cupMl: Math.max(...fits) } : want;
+  }
+  // A preset size that no longer fits at the new strength steps down to the largest that does, as
+  // switching brewer already does, instead of an error box (blind Opus r5: AeroPress 8 oz, Stronger).
+  function pickStrength(s: Strength) {
+    const wasChip = !customOpen && allChoices.some((c) => same(c.t, target));
+    strength = s; ratioOverride = undefined;
+    if (adjust === 'ratio') adjust = undefined;
+    if (wasChip && !buildRecipe({ ...input, target }).ok) {
+      const fit = allChoices.filter((c) => buildRecipe({ ...input, target: c.t }).ok);
+      if (fit.length) target = fit[fit.length - 1].t;
+    }
   }
   function switchUnits(u: Units) {
     if (u === units) return;
@@ -252,6 +266,7 @@
     if (!d.ok) return;
     method = d.value.method; target = d.value.target; strength = d.value.strength ?? 'classic';
     roast = d.value.roast ?? 'medium'; units = d.value.units; ratioOverride = d.value.ratio; adjust = d.value.adjust; customOpen = false;
+    adjustKept = !!adjust;
   }
 
   let linkProblem = $state(false);
@@ -351,7 +366,7 @@
         <legend class="lbl">Strength</legend>
         <div class="seg">
           {#each (['lighter', 'classic', 'stronger'] as Strength[]) as s (s)}
-            <button type="button" aria-pressed={ratioOverride === undefined && strength === s} onclick={() => { strength = s; ratioOverride = undefined; if (adjust === 'ratio') adjust = undefined; }}>{method === 'espresso' ? ESPRESSO_LABEL[s] : STRENGTH_LABEL[s]}</button>
+            <button type="button" aria-pressed={ratioOverride === undefined && strength === s} onclick={() => pickStrength(s)}>{method === 'espresso' ? ESPRESSO_LABEL[s] : STRENGTH_LABEL[s]}</button>
           {/each}
         </div>
       </fieldset>
@@ -360,7 +375,7 @@
         <legend class="lbl">Roast</legend>
         <div class="seg">
           {#each (['light', 'medium', 'dark'] as Roast[]) as r (r)}
-            <button type="button" aria-pressed={roast === r} onclick={() => (roast = r)}>{r[0].toUpperCase() + r.slice(1)}</button>
+            <button type="button" aria-pressed={roast === r} onclick={() => { roast = r; if (adjust === 'hotter' || adjust === 'cooler') adjust = undefined; }}>{r[0].toUpperCase() + r.slice(1)}</button>
           {/each}
         </div>
       </fieldset>

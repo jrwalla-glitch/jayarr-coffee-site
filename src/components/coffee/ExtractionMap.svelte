@@ -110,7 +110,7 @@
   .ax2 { font: 400 11px 'IBM Plex Mono', monospace; fill: #75655a; }
   .num { font: 500 12px 'IBM Plex Mono', monospace; fill: #2a1d15; }
   /* Phones: the map scales down, so its axis text scales up to stay readable. */
-  @media (max-width: 640px) { .num { font-size: 15px; } .ax { font-size: 14px; } }
+  @media (max-width: 640px) { .num { font-size: 15px; } .ax { font-size: 14px; } .ax2 { font-size: 13px; } }
   .dot { transition: transform .6s cubic-bezier(.2, .7, .2, 1); }
   .arrow { stroke-dasharray: 6 4; }
   @media (prefers-reduced-motion: reduce) { .dot { transition: none; } }

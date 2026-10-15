@@ -80,3 +80,7 @@ test('Opus r3: grams compare with grams, the bigger figure first, and water is c
   const w = compareRefs(refById('americano-lavazza'), refById('longblack-lavazza'), 'Americano', 'Long black');
   assert.doesNotMatch(w, /don't publish enough/); assert.match(w, /hot water/);
 });
+
+test('blind Opus r5: the same recipe on both sides says so', () => {
+  assert.match(compareRefs(refById('latte-illy'), refById('latte-illy'), 'Latte', 'Latte'), /same recipe/);
+});

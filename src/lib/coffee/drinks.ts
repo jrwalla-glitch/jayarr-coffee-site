@@ -141,6 +141,7 @@ export function knownVolume(ref: DrinkRef): { ml: number; complete: boolean } {
 
 /** One honest sentence comparing two references, using only amounts both recipes publish. */
 export function compareRefs(a: DrinkRef, b: DrinkRef, nameA: string, nameB: string): string {
+  if (a.id === b.id) return 'These are the same recipe; pick another version to compare.';
   // Two versions of the same drink are told apart by their recipe labels.
   const same = nameA === nameB;
   const A = same ? `${nameA.toLowerCase()} (${a.label})` : nameA.toLowerCase(), B = same ? `${nameB.toLowerCase()} (${b.label})` : nameB.toLowerCase();

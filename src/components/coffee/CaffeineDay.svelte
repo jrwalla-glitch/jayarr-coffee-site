@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { METHODS, GUIDANCE, intakeMg, dayCurve, dailyTotal, inBodyAt, encodeDay, decodeDay, dayMinute, newDayAt, bedMinute, flOzToMl, mlToFlOz, buildRecipe,
-    DEFAULT_SETTINGS, dayWindow, dayStartClock, dayView, instantInDay, placeTypedTime, minutesFromMidnight, bedInstant, clockOf, migrateV1, placeSharedDay, toDiaryMinutes, applyOp, parseStore, emptyStore } from '../../lib/coffee/index.ts';
+    DEFAULT_SETTINGS, dayWindow, dayStartClock, dayView, instantInDay, placeTypedTime, minutesFromMidnight, bedInstant, clockOf, migrateV1, placeSharedDay, toDiaryMinutes, applyOp, parseStore, emptyStore, CARRY_HOURS } from '../../lib/coffee/index.ts';
   import type { Intake, MethodId, LoggedDrink, DiarySettings, DiaryStore, DiaryOp } from '../../lib/coffee/index.ts';
 
   // Your diary is a log of real moments (see diary.ts): "today" is a view over it, so nothing is
@@ -73,7 +73,7 @@
   // Earlier drinks still in your body (last night's late coffee) count in the curve, not the total.
   let curveIntakes = $derived(mode === 'own' ? [...ownView.carried, ...sorted] : sorted);
   // Last night's drinks still in your body, listed so you can see (and fix) what's being counted.
-  let lastNight = $derived(mode === 'own' ? log.filter((x) => x.at < win.start && x.at >= win.start - 12 * 3600e3).sort((a, b) => a.at - b.at) : []);
+  let lastNight = $derived(mode === 'own' ? log.filter((x) => x.at < win.start && x.at >= win.start - CARRY_HOURS * 3600e3).sort((a, b) => b.at - a.at) : []);
   let bedAt = $derived(mode === 'own' ? minutesFromMidnight(win, bedInstant(win, bedMin)) : bedMin);
   let nowAt = $derived(mode === 'own' ? minutesFromMidnight(win, nowMs) : mode === 'example' ? dayMinute(clockOf(nowMs), bedMin) : null);
   // From 6 am, or earlier when the day starts earlier or a drink comes first (Opus r3: 03:10 showed nothing).
@@ -119,7 +119,9 @@
     const oz = r0(mlToFlOz(i.cupMl ?? 0));
     if (i.kind === 'decaf') return `${oz} oz decaf`;
     const m = METHODS.find((mm) => mm.id === i.method);
-    return `${oz} oz ${m?.label.toLowerCase() ?? 'coffee'}${oversize(i) ? ` (more than one ${m?.label.toLowerCase() ?? 'brewer'} makes)` : ''}`;
+    // Brand names keep their capitals: "8 oz V60", "8 oz AeroPress", but "8 oz drip machine" (blind Opus r5).
+    const nm = m ? (/^(Cold|Drip|Moka|Espresso)/.test(m.label) ? m.label.toLowerCase() : m.label) : 'coffee';
+    return `${oz} oz ${nm}${oversize(i) ? ` (more than one ${nm} makes)` : ''}`;
   }
   function newIntake(): Omit<Intake, 'atMin'> {
     return addKind === 'custom' ? { kind: 'custom', mg: addMg } : addKind === 'espresso' ? { kind: 'espresso', shots: addShots, label: addEsp }
@@ -281,7 +283,7 @@
     <div class="ro bed">
       <span class="lbl">{mode === 'shared' ? 'Left at their bedtime' : mode === 'example' ? 'Example: left at bedtime' : 'Left at bedtime'} · {clock12(bedMin)}</span>
       <span class="val">{rangeText(atBed.min, atBed.max)}<small>mg</small></span>
-      <span class="sub">{bedCompare}</span>
+      <span class="sub">{bedCompare}{settings.pregnant && mode !== 'shared' ? ' Late in pregnancy caffeine can clear even more slowly than this.' : ''}</span>
     </div>
     <div class="ro">
       <span class="lbl">{mode === 'example' ? 'Example: in you now' : 'In you now'}</span>
@@ -363,11 +365,11 @@
       </ul>
       {#if rowError}<p class="adderr" role="alert">{rowError}</p>{/if}
       {#if lastNight.length}
-        <p class="carried">Earlier, still counted in the curve:</p>
+        <p class="carried">Earlier (up to two days back), still counted in the curve, most recent first:</p>
         <ul class="carried-list">
           {#each lastNight as x (x.id)}
             {@const mg = intakeMg({ ...x, atMin: 0 } as Intake)}
-            <li><span class="t">{clock12(clockOf(x.at))}</span><span class="what">{describe({ ...x, atMin: 0 } as Intake)}</span><span class="mg">{mg.ok ? rangeText(mg.value.min, mg.value.max) : '—'} mg</span><button type="button" class="x" aria-label={`Remove ${describe({ ...x, atMin: 0 } as Intake)}`} onclick={() => remove(x.id)}>×</button></li>
+            <li><span class="t">{new Date(x.at).toLocaleDateString('en-US', { weekday: 'short' })} {clock12(clockOf(x.at))}</span><span class="what">{describe({ ...x, atMin: 0 } as Intake)}</span><span class="mg">{mg.ok ? rangeText(mg.value.min, mg.value.max) : '—'} mg</span><button type="button" class="x" aria-label={`Remove ${describe({ ...x, atMin: 0 } as Intake)}`} onclick={() => remove(x.id)}>×</button></li>
           {/each}
         </ul>
       {/if}

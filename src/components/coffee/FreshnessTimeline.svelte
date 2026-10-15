@@ -52,7 +52,7 @@
     let q = new URLSearchParams(location.search);
     const fromLink = !!location.search;
     if (!fromLink) { try { const last = localStorage.getItem(SAVE_KEY); if (last) q = new URLSearchParams(last); else example = true; } catch { example = true; } }
-    const rd = q.get('roast'); if (rd && isRealDate(rd)) roastDate = rd; else if (rd !== null && fromLink) { linkProblem = true; badLinkDate = /^\d{4}-\d{2}-\d{2}$/.test(rd) ? rd : ''; }
+    const rd = q.get('roast'); if (rd && isRealDate(rd)) roastDate = rd; else if (rd !== null && fromLink) { linkProblem = true; example = true; badLinkDate = /^\d{4}-\d{2}-\d{2}$/.test(rd) ? rd : ''; }
     if (q.get('use') === 'espresso') use = 'espresso';
     const s = q.get('storage'); if (s === 'sealed-bag' || s === 'opened' || s === 'frozen') storage = s;
     const f = q.get('frozen'); if (f && isRealDate(f)) frozenOn = f;
@@ -70,6 +70,10 @@
     if (storage !== 'opened') q.set('storage', storage);
     if (storage === 'frozen') q.set('frozen', frozenOn);
     if (storage === 'frozen' && thawed) q.set('thawed', thawedOn);
+    // The example bag isn't the reader's: the address stays bare and nothing is saved. A half-typed or
+    // impossible date isn't written into the address either, so a reshare never carries it (blind Opus r5).
+    if (example) { history.replaceState(history.state, '', location.pathname); return; }
+    if (!result.ok) return;
     history.replaceState(history.state, '', `${location.pathname}?${q}`);
     if (skipSave) { skipSave = false; return; }
     // Only a bag that makes sense is kept, so a half-typed date can't come back as "that link's date" (Opus r4).

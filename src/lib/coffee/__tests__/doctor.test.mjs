@@ -292,3 +292,16 @@ test('Muse r4: an unknown roast keeps a bitter cup at a normal time uncertain; b
   const clog = ok(diagnose({ method: 'v60', symptom: 'harsh-mixed', answers: { grinder: 'burr', time: 'slow' } }));
   assert.equal(clog.next.grind, 'coarser');
 });
+
+test('blind Opus r5: espresso yield moves strength the right way; fast cups are not placed "strong"', async () => {
+  const { leverMove } = await import('../index.ts');
+  const by = Object.fromEntries(LEVERS.map((l) => [l.id, l]));
+  assert.ok(leverMove(by.longer, true).dy < 0, 'a longer shot is weaker');
+  assert.ok(leverMove(by.shorter, true).dy > 0, 'a shorter shot is stronger');
+  assert.ok(leverMove(by.longer, false).dy > 0, 'filter: longer contact is a little stronger');
+  // A sour, thin espresso isn't told to pull a longer shot.
+  assert.ok(!suggestLevers({ sourBitter: -1.5, body: -1.5 }, true).slice(0, 2).some((l) => l.id === 'longer'));
+  for (const [method, symptom, answers] of [['v60', 'bitter', { time: 'fast', roast: 'medium' }], ['espresso', 'bitter', { shot: 'fast', roast: 'medium' }], ['french-press', 'bitter', { time: 'fast', roast: 'light' }]]) {
+    assert.ok(!ok(diagnose({ method, symptom, answers })).zone.endsWith('strong'), `${method} ${symptom} fast`);
+  }
+});

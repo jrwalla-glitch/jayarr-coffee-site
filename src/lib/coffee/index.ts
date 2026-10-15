@@ -9,7 +9,7 @@ export { simulate } from './simulate.ts';
 export type { Frame, Simulation } from './simulate.ts';
 export { encodeBrew, decodeBrew } from './share.ts';
 export type { BrewState, Units, Adjust } from './share.ts';
-export { SYMPTOMS, ZONES, LEVERS, nextQuestion, questionsFor, diagnose, placeOnMap, suggestLevers, familyOf, brewLinkFor } from './doctor.ts';
+export { SYMPTOMS, ZONES, LEVERS, nextQuestion, questionsFor, diagnose, placeOnMap, suggestLevers, leverMove, familyOf, brewLinkFor } from './doctor.ts';
 export type { SymptomId, Symptom, Question, QuestionId, DoctorState, Diagnosis, ZoneId, Zone, Lever, Family, Variable } from './doctor.ts';
 export { freshness, stages as freshnessStages, isRealDate } from './freshness.ts';
 export type { FreshUse, Storage, StageId, Stage, FreshnessInput, FreshnessResult } from './freshness.ts';

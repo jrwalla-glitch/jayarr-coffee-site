@@ -147,7 +147,7 @@
       <h3 tabindex="-1" class="cause">{dx.cause}</h3>
       <p class="why">{dx.why}</p>
       <div class="rx">
-        <div class="now"><span class="lbl">{dx.change ? `Change one thing: ${dx.change}` : 'Change this now'}</span><p>{dx.changeNow}</p>{#if dx.hold.length}<p class="hold">Keep the same: {dx.hold.join(', ')}.</p>{:else}<p class="hold">Keep your usual recipe the same, so you can tell whether this was the cause.</p>{/if}</div>
+        <div class="now"><span class="lbl">{dx.change ? `Change one thing: ${dx.change}` : 'Change this now'}</span><p>{dx.changeNow}</p>{#if dx.hold.length}<p class="hold">Keep the same: {dx.hold.join(', ')}.</p>{:else if /^Nothing has to change/.test(dx.changeNow)}<p class="hold">Nothing to test: this is how the coffee tastes.</p>{:else}<p class="hold">Keep your usual recipe the same, so you can tell whether this was the cause.</p>{/if}</div>
         <div><span class="lbl">Next time, try</span><p>{dx.nextExperiment}</p></div>
         {#if dx.ruleOut}<div><span class="lbl">How you'll know</span><p>{dx.ruleOut}</p></div>{/if}
       </div>
