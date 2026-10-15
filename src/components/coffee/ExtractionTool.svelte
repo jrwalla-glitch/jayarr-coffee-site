@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import ExtractionMap from './ExtractionMap.svelte';
-  import { LEVERS, ZONES, placeOnMap, suggestLevers, measuredExtraction } from '../../lib/coffee/index.ts';
+  import { LEVERS, ZONES, placeOnMap, suggestLevers, measuredExtraction, CHARTS } from '../../lib/coffee/index.ts';
   import type { MeasuredKind } from '../../lib/coffee/index.ts';
 
   let sourBitter = $state(-1);
@@ -15,7 +15,8 @@
   let doseG = $state(20);
   let liquidG = $state(300);
   let tdsPct = $state(1.3);
-  let measured = $derived(measuredExtraction({ kind, doseG, liquidG, tdsPct }));
+  let diluted = $state(false);
+  let measured = $derived(measuredExtraction({ kind, doseG, liquidG, tdsPct, diluted }));
   let mv = $derived(measured.ok ? measured.value : null);
   function setKind(k: MeasuredKind) {
     kind = k;
@@ -47,12 +48,13 @@
       if (q.has('dose') && Number.isFinite(d)) doseG = d;
       if (q.has('liquid') && Number.isFinite(l)) liquidG = l;
       if (q.has('tds') && Number.isFinite(t)) tdsPct = t;
+      diluted = q.get('diluted') === '1';
     }
     mounted = true;
   });
   $effect(() => {
     if (!mounted) return;
-    const q = mode === 'measured' ? new URLSearchParams({ mode, kind, dose: String(doseG), liquid: String(liquidG), tds: String(tdsPct) }) : new URLSearchParams({ taste: String(sourBitter), body: String(body) });
+    const q = mode === 'measured' ? new URLSearchParams({ mode, kind, dose: String(doseG), liquid: String(liquidG), tds: String(tdsPct), ...(diluted ? { diluted: '1' } : {}) }) : new URLSearchParams({ taste: String(sourBitter), body: String(body) });
     if (mode === 'taste' && espresso) q.set('espresso', '1');
     history.replaceState(history.state, '', `${location.pathname}?${q}`);
   });
@@ -62,6 +64,8 @@
   <div class="stage">
     {#if mode === 'measured' && mv}
       <ExtractionMap x={mv.x} y={mv.y} zone={mv.zone} axes={mv.chart} label={`Measured: ${mv.eyPct.toFixed(1)}% extraction at ${tdsPct}% TDS, in the ${ZONES[mv.zone].label.toLowerCase()} zone.`} />
+    {:else if mode === 'measured'}
+      <ExtractionMap x={0.5} y={0.5} zone="ideal-ideal" empty axes={CHARTS[kind === 'espresso' ? 'espresso' : 'filter']} label="Measured mode: no valid reading yet, so the chart is empty." />
     {:else}
       <ExtractionMap x={place.x} y={place.y} zone={place.zone} label={`By taste, your cup probably sits in the ${zone.label.toLowerCase()} zone.`} />
     {/if}
@@ -82,6 +86,7 @@
         <label class="fld"><span class="lbl">{kind === 'immersion' ? 'Water added, g' : kind === 'espresso' ? 'Shot weight, g' : 'Drink weight, g'}</span><input type="number" inputmode="decimal" step="0.1" min="1" bind:value={liquidG} /></label>
         <label class="fld"><span class="lbl">TDS, %</span><input type="number" inputmode="decimal" step="0.01" min="0" bind:value={tdsPct} /></label>
       </div>
+      <label class="check"><input type="checkbox" bind:checked={diluted} /> I diluted it on purpose (americano, bypass water)</label>
       {#if mv}
         <div class="zonecard" aria-live="polite">
           <span class="lbl">Extraction yield</span>
@@ -90,8 +95,8 @@
           <p class="calc">{kind === 'immersion' ? 'water added' : kind === 'espresso' ? 'shot weight' : 'drink weight'} {liquidG} g × {tdsPct}% ÷ {doseG} g coffee</p>
         </div>
         {#each mv.notes as nt (nt)}<p class="note">{nt}</p>{/each}
-        {#if mv.zone !== 'ideal-ideal'}<p class="note">Possible next moves: {ZONES[mv.zone].moves.join('; ').toLowerCase()}. Change one at a time and measure again.</p>{/if}
-        <p class="note">Diluted it (an americano, cold brew, bypass water)? Take the weight and the reading at the same point: the concentrate with its own reading, or the whole diluted drink with its reading. The dissolved coffee is the same either way.</p>
+        {#if mv.moves.length}<p class="note">Possible next moves: {mv.moves.join('; ')}. Change one at a time and measure again.</p>{/if}
+        <p class="note">{kind === 'immersion' ? 'Diluting an immersion brew (cold brew concentrate, for example)? Take the reading before you dilute, with the water you brewed with: the grounds hold back some of the dissolved coffee, so a diluted reading reads low.' : 'Diluted it (an americano, bypass water)? Take the weight and the reading at the same point: the shot or brew with its own reading, or the whole diluted drink with its reading. The dissolved coffee is the same either way.'}</p>
       {:else if !measured.ok}
         <p class="err" role="alert">{measured.errors[0].message}</p>
       {/if}
@@ -178,4 +183,6 @@
   .ey small { font-size: 26px; margin-left: 2px; }
   .calc { font: 400 12.5px 'IBM Plex Mono', monospace; color: var(--ink-3); margin: 6px 0 0; }
   .err { color: #9a3b1c; margin: 0; }
+  .check { display: flex; gap: 8px; align-items: center; font-size: 14.5px; }
+  .check input { width: 18px; height: 18px; }
 </style>

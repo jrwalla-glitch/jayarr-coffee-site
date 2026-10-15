@@ -33,3 +33,24 @@ test('junk and impossible readings fail with a reason', () => {
   const r = measuredExtraction({ kind: 'percolation', doseG: 10, liquidG: 300, tdsPct: 1.5 });
   assert.equal(r.ok, false); assert.equal(r.errors[0].code, 'implausible');
 });
+
+test('immersion: a diluted reading is refused with the right method (Opus: the old note gave 12–15% for an 18% cold brew)', () => {
+  const r = measuredExtraction({ kind: 'immersion', doseG: 100, liquidG: 600, tdsPct: 1.5, diluted: true });
+  assert.equal(r.ok, false); assert.equal(r.errors[0].code, 'immersion-diluted');
+  near(ok(measuredExtraction({ kind: 'immersion', doseG: 100, liquidG: 600, tdsPct: 3 })).eyPct, 18);
+});
+
+test('a deliberately diluted americano is judged on extraction only, not called too dilute', () => {
+  const r = ok(measuredExtraction({ kind: 'espresso', doseG: 18, liquidG: 200, tdsPct: 1.8, diluted: true }));
+  near(r.eyPct, 20); assert.equal(r.zone, 'ideal-ideal'); assert.equal(r.strengthJudged, false); assert.deepEqual(r.moves, []);
+});
+
+test('next moves fit the brewer: immersion never gets bed or clogging advice', () => {
+  const r = ok(measuredExtraction({ kind: 'immersion', doseG: 100, liquidG: 600, tdsPct: 2.5 }));
+  assert.ok(r.moves.join(' ').match(/steep longer/)); assert.doesNotMatch(r.moves.join(' '), /bed|clog|coarser/);
+});
+
+test('a drink lighter than its coffee is flagged and gets no moves', () => {
+  const r = ok(measuredExtraction({ kind: 'percolation', doseG: 20, liquidG: 15, tdsPct: 1.3 }));
+  assert.ok(r.notes.some((n) => /Check the weights/.test(n))); assert.deepEqual(r.moves, []);
+});
