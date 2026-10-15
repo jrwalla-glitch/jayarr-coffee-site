@@ -7,11 +7,15 @@ import { DRINKS } from '../../../lib/coffee/index.ts';
 
 const title = 'Types of Coffee Drinks, Drawn to Scale';
 const description = 'Compare espresso drinks side by side, from espresso and cortado to flat white, cappuccino and latte, drawn to one scale from published recipes, with the regional differences that change them.';
+const NAME: Record<string, string> = { espresso: 'espresso', milk: 'milk', frothed: 'frothed milk', foam: 'foam', water: 'hot water', brewed: 'brewed coffee', chocolate: 'chocolate', gelato: 'gelato', cream: 'whipped cream' };
 const fmtLayer = (l: (typeof DRINKS)[number]['refs'][number]['layers'][number]) => {
 	const r = l.ml ?? l.g;
 	const unit = l.ml ? 'ml' : 'g';
-	return r ? `${r[0] === r[1] ? r[0] : `${r[0]}–${r[1]}`} ${unit} ${l.kind === 'frothed' ? 'frothed milk' : l.kind === 'water' ? 'hot water' : l.kind === 'brewed' ? 'brewed coffee' : l.kind}` : `${l.kind === 'frothed' ? 'frothed milk' : l.kind} (amount not published)`;
+	return r ? `${r[0] === r[1] ? r[0] : `${r[0]}–${r[1]}`} ${unit} ${NAME[l.kind] ?? l.kind}` : `${NAME[l.kind] ?? l.kind} (amount not published)`;
 };
+// Shot counts as readable text: "single shot", "three ristretto shots", "no espresso (drip coffee)".
+const shotsText = (s: string) => s === 'single' ? 'single shot' : s === 'double' ? 'double shot' : s === 'not stated' ? 'shots not stated'
+	: s.startsWith('none') ? `no espresso${s.slice(4)}` : s.startsWith('usually ') ? `usually a ${s.slice(8)} shot` : `${s} shots`;
 const allSources = [...new Map(DRINKS.flatMap((d) => d.refs.map((r) => [r.source.url, r.source]))).values()];
 ---
 
@@ -44,14 +48,14 @@ const allSources = [...new Map(DRINKS.flatMap((d) => d.refs.map((r) => [r.source
 							<dt>{d.name}</dt>
 							<dd>
 								<p>{d.definition}</p>
-								<p class="ref">{d.refs[0].label}: {d.refs[0].shots} shot{d.refs[0].shots === 'single' ? '' : 's'}; {d.refs[0].layers.map(fmtLayer).join(', ')}; {d.refs[0].vessel.name.toLowerCase()}{d.refs[0].vessel.capacityMl ? ` (${d.refs[0].vessel.capacityMl[1]} ml)` : ''}. {d.refs.length > 1 ? `Also: ${d.refs.slice(1).map((r) => r.label).join(', ')}.` : ''}</p>
+								<p class="ref">{d.refs[0].label}: {shotsText(d.refs[0].shots)}; {d.refs[0].layers.map(fmtLayer).join(', ')}; {d.refs[0].vessel.name.toLowerCase()}{d.refs[0].vessel.capacityMl ? ` (${d.refs[0].vessel.capacityMl[1]} ml)` : ''}. {d.refs.length > 1 ? `Also: ${d.refs.slice(1).map((r) => r.label).join(', ')}.` : ''}</p>
 							</dd>
 						</div>
 					))}
 				</dl>
 
 				<h2>Latte vs cappuccino vs flat white</h2>
-				<p>All three are espresso with steamed milk; the difference is how much milk and how much foam. In the Italian certification recipe a cappuccino is 25 ml of espresso and about 125 ml of frothed milk in a 150–160 ml cup, with a deep cap of foam. Cimbali's flat white uses a double shot with 125–130 ml of finely textured milk and only about half a centimetre of foam. A latte is the longest of the three; illy's version is a single shot with 120 ml of milk heated without foam, while most cafés add a thin layer. The old "thirds" rule for cappuccino (equal espresso, milk and foam) has no historical basis.</p>
+				<p>All three are espresso with steamed milk; the difference is how much milk and how much foam. In the Italian certification recipe a cappuccino is 25 ml of espresso and about 125 ml of frothed milk in a 150–160 ml cup, with a deep cap of foam. Cimbali's flat white uses a double shot with 125–130 ml of finely textured milk and only about half a centimetre of foam. A latte usually has the most milk of the three: illy's version is a single shot with 120 ml of milk heated without foam, and most cafés serve it larger with a thin layer of foam. The old "thirds" rule for cappuccino (equal espresso, milk and foam) has no historical basis.</p>
 
 				<h2>A cortado depends on where you order it</h2>
 				<p>In Spain a cortado is an espresso "cut" with a little milk: anything from a few drops to equal parts, with about three parts coffee to one part milk common. Specialty cafés often use a double shot. Starbucks' cortado is three ristretto shots with steamed milk in an 8 oz cup. The Gibraltar is a cortado named after the 4½ oz glass it was served in.</p>

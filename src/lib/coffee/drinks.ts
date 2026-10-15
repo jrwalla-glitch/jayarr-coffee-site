@@ -45,7 +45,7 @@ const S = {
   lavazzaRedEye: { name: 'Lavazza USA, Red Eye coffee recipe', url: 'https://www.lavazzausa.com/en/recipes-and-coffee-hacks/red-eye-coffee-recipe' },
   illyMacchiato: { name: 'illy Thailand, Hot Espresso Macchiato', url: 'https://illy.co.th/coffee-recipes/macchiato/' },
   sabora: { name: 'Café Sabora, Café cortado: qué es y cómo se prepara', url: 'https://cafesabora.com/es/caf%C3%A9-cortado-qu%C3%A9-es-y-c%C3%B3mo-se-prepara' },
-  ineffable: { name: 'Ineffable Coffee, Café con leche', url: 'https://ineffablecoffee.com/blogs/aprendizaje-y-cultura-cafetera/cafe-con-leche' },
+  ineffable: { name: 'Ineffable Coffee, espresso-and-milk proportions (café con leche guide)', url: 'https://ineffablecoffee.com/blogs/aprendizaje-y-cultura-cafetera/cafe-con-leche' },
   sbuxCortado: { name: 'Starbucks, Cortado', url: 'https://www.starbucks.com/menu/product/2124649/hot' },
   blueBottle: { name: 'Blue Bottle, The Gibraltar (archived 2025-01-20)', url: 'https://web.archive.org/web/20250120104742/https://blog.bluebottlecoffee.com/posts/gibraltar' },
   libbey: { name: 'Libbey, Gibraltar 4.5 oz glass', url: 'https://shop.libbey.com/products/libbey-gibraltar-duratuff-cortado-glasses-4-5-ounce-set-of-12-durable-restaurant-quality-shot-and-espresso-glassware-dishwasher-safe' },
@@ -161,7 +161,9 @@ export function compareRefs(a: DrinkRef, b: DrinkRef, nameA: string, nameB: stri
   if (sa && sb && sa !== sb) parts.push(`the ${A} uses ${sa === 1 ? 'a single shot' : sa === 2 ? 'a double' : 'three shots'} and the ${B} ${sb === 1 ? 'a single' : sb === 2 ? 'a double' : 'three shots'}`);
   else if (sa && sb && sa === sb) parts.push(`both use ${sa === 1 ? 'a single shot' : sa === 2 ? 'a double shot' : 'three shots'}`);
   const ma = milkMl(a), mb = milkMl(b);
-  if (ma === 0 && milkLayers(b).length) parts.push(`only the ${B} has milk`);
+  // Both have milk but one amount isn't published: say so rather than saying nothing.
+  if ((ma === undefined && milkLayers(b).length) || (mb === undefined && milkLayers(a).length)) parts.push(`both have milk, but the recipes don't both publish how much`);
+  else if (ma === 0 && milkLayers(b).length) parts.push(`only the ${B} has milk`);
   else if (mb === 0 && milkLayers(a).length) parts.push(`only the ${A} has milk`);
   else if (ma !== undefined && mb !== undefined && ma > 0 && mb > 0) {
     // Recipes measure milk differently (cold before heating, or frothed volume with its foam).

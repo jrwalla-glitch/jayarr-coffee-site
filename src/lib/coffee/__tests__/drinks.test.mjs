@@ -40,7 +40,7 @@ test('comparisons say something true or admit they can\'t', () => {
   const c = compareRefs(refById('cortado-sabora'), refById('flat-cimbali'), 'Cortado', 'Flat white');
   assert.match(c, /single shot and the flat white a double/);
   assert.match(c, /flat white has about 13× the milk \(10 ml against 128 ml, measured differently by the two recipes\)/);
-  assert.match(compareRefs(refById('gibraltar-bluebottle'), refById('cortado-sbux'), 'Gibraltar', 'Cortado'), /don't publish enough/);
+  assert.match(compareRefs(refById('gibraltar-bluebottle'), refById('cortado-sbux'), 'Gibraltar', 'Cortado'), /don't both publish how much/);
 });
 
 test('drinks with different extras say what only one of them has', () => {
@@ -66,4 +66,8 @@ test('variable shot counts are not compared, and same-name drinks are told apart
   const cortados = DRINKS.find((d) => d.id === 'cortado').refs;
   const c = compareRefs(cortados[0], cortados[1], 'Cortado', 'Cortado');
   assert.match(c, /cortado \(/); assert.doesNotMatch(c, /the cortado [^(]/);
+});
+
+test('an unpublished milk amount is named, not skipped (Muse: latte vs macchiato said only "Both use a single shot")', () => {
+  assert.match(compareRefs(refById('latte-illy'), refById('macchiato-illy'), 'Latte', 'Macchiato'), /don't both publish how much/);
 });

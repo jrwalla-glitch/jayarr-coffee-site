@@ -35,7 +35,8 @@
     if (showDecafOnly) result = result.filter(p => p.decaf);
     if (showFlavoredOnly) result = result.filter(p => p.flavored);
     result = result.filter(p => {
-      if (p.intensity == null) return true;
+      // Pods with no published intensity only show when the intensity filter is left wide open.
+      if (p.intensity == null) return intensityRange[0] === 1 && intensityRange[1] === 13;
       return p.intensity >= intensityRange[0] && p.intensity <= intensityRange[1];
     });
     if (searchQuery.trim()) {
@@ -86,16 +87,10 @@
     sortBy = 'name';
   }
 
-  function cupSizeLabel(size) {
-    const labels = {
-      alto: 'Alto (414ml)',
-      mug: 'Mug (230ml)',
-      gran_lungo: 'Gran Lungo (150ml)',
-      double_espresso: 'Double Espresso (80ml)',
-      espresso: 'Espresso (40ml)',
-      lungo: 'Lungo (110ml)',
-    };
-    return labels[size] || size;
+  // The badge shows the pod's own volume: a ristretto is an espresso-family pod of 25 ml, not 40.
+  function cupSizeLabel(size, ml) {
+    const labels = { alto: 'Alto', mug: 'Mug', gran_lungo: 'Gran Lungo', double_espresso: 'Double Espresso', espresso: 'Espresso', lungo: 'Lungo' };
+    return `${labels[size] || size}${ml ? ` (${ml}ml)` : ''}`;
   }
 
   // Intensity dots: filled up to the pod's intensity
@@ -361,7 +356,7 @@
               <h3 class="detail-name">{selectedPod.name}</h3>
               <div class="detail-badges">
                 <span class="detail-line-badge">{selectedPod.line === 'vertuo' ? 'Vertuo' : 'Original'}</span>
-                <span class="detail-size-badge">{cupSizeLabel(selectedPod.cup_size)}</span>
+                <span class="detail-size-badge">{cupSizeLabel(selectedPod.cup_size, selectedPod.ml)}</span>
               </div>
               {#if selectedPod.intensity != null}
                 <div class="detail-intensity">
@@ -449,6 +444,10 @@
   /* === Explorer Layout: panel overlays on right, grid stays full width === */
   .explorer-layout {
     position: relative;
+  }
+  /* On wide screens the fixed detail panel sits beside the filters instead of over them (blind Opus r2). */
+  @media (min-width: 1025px) {
+    .explorer-layout--panel-open .explorer-main { padding-right: 380px; box-sizing: border-box; }
   }
   .explorer-main {
     width: 100%;
