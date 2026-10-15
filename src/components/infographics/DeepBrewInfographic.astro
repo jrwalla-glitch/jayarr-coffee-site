@@ -1,8 +1,7 @@
 ---
 /**
- * Dark theme wrapper for infographic components.
- * Maps the shared design tokens so infographic
- * components render correctly on the Deep Brew dark background.
+ * Wrapper for infographic components in Deep Brew research notes. The page's .db-dark theme sets the
+ * shared substance tokens, so the components inherit the warm dark palette with nothing to override here.
  *
  * Usage in MDX:
  *   <DeepBrewInfographic>
@@ -14,17 +13,3 @@
 <div class="db-ig-wrapper">
 	<slot />
 </div>
-
-<style>
-  .db-ig-wrapper {
-    /* Preserve the dark research context with the shared component token names. */
-    --color-ink: #E2E8F0;
-    --color-ink-2: #C0CAD8;
-    --color-ink-3: #A9B5C4;
-    --color-paper: #0B0E14;
-    --color-card: #161B22;
-    --color-rule: #394453;
-    --color-crema-deep: #E8A566;
-    --color-water: #77C6D8;
-  }
-</style>
