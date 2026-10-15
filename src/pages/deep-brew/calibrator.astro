@@ -15,6 +15,7 @@ import grinderData from '../../data/grinders.json';
 const title = 'Grind Calibrator: Your Grinder’s Own Settings, Method by Method';
 const description = 'Pick your grinder and brew method and see the setting or range its maker publishes (for two grinders, a labelled secondary source), on your grinder’s own dial: Baratza, Fellow, Comandante, 1Zpresso, Niche, Breville and more, each with its source.';
 const grinders = grinderData.grinders;
+const longDate = (iso: string) => new Date(`${iso}T12:00:00`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 const secondary = grinders.filter((g) => g.settings.some((s) => s.provenance !== 'maker')).map((g) => g.short);
 ---
 
@@ -51,10 +52,15 @@ const secondary = grinders.filter((g) => g.settings.some((s) => s.provenance !==
 				<p>Hand grinders count clicks or numbers from a zero point, and makers define zero differently: some count from where the handle starts to turn with resistance, others from where the burrs just touch. The calibrator shows each maker's own definition under "Where zero is". If your count starts somewhere else, the published settings will be off by that difference. A few makers also say how far one click moves the burrs (12.5 µm on a JX-Pro, for example). That is the burr movement, not the size of the grounds.</p>
 
 				<h2>The grinders</h2>
-				<p>{grinders.length} grinders, from the makers' own charts and manuals, checked on {grinderData.checked}. {secondary.length ? `For the ${secondary.join(' and ')}, no maker chart could be found, so the settings come from a documented secondary source and are labelled that way.` : ''} {grinderData.excluded.length ? `Not included yet: ${grinderData.excluded.map((e) => e.name).join(', ')}, because no maker chart for that exact model could be verified.` : ''}</p>
-				<ul class="cf-cols">
-					{grinders.map((g) => <li><a href={`/deep-brew/calibrator/?grinder=${g.id}`}>{g.short}</a></li>)}
-				</ul>
+				<p>{grinders.length} grinders, from the makers' own charts and manuals, checked on {longDate(grinderData.checked)}. {secondary.length ? `For the ${secondary.join(' and ')}, no maker chart could be found, so the settings come from a documented secondary source and are labelled that way.` : ''} {grinderData.excluded.length ? `Not included yet: ${grinderData.excluded.map((e) => e.name).join(', ')}, because no maker chart for that exact model could be verified.` : ''}</p>
+				{[['electric', 'Electric grinders'], ['hand', 'Hand grinders']].map(([type, label]) => (
+					<>
+						<h3>{label}</h3>
+						<ul class="cf-cols">
+							{grinders.filter((g) => g.type === type).map((g) => <li><a href={`/deep-brew/calibrator/?grinder=${g.id}`}>{g.short}</a></li>)}
+						</ul>
+					</>
+				))}
 
 				<h2>Sources</h2>
 				<ul class="cf-sources">

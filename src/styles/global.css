@@ -77,6 +77,8 @@
   --t-crema: #C3873A; --t-crema-deep: #E0A45C; --t-water: #7FC3CF; --t-coffee: #C9925F; --t-warn: #F08A6C;
   --t-on-ink: #14100D; --t-on-accent: #14100D; --t-shadow: rgba(0, 0, 0, .55);
   --t-ground: #4A3D33; --t-crema-tint: #6B5236; --t-crema-mid: #A07A4C; --t-hover: rgba(255, 255, 255, .05);
+  /* Extraction map washes: sour (left) to bitter (right), weak (bottom) to strong (top). */
+  --t-map-sour: #3A3423; --t-map-mid: #241C16; --t-map-bitter: #3B2A20; --t-map-weak: #7FC3CF; --t-map-strong: #C9925F;
   /* The shared article components (AnswerBox, ToolCallout, infographics) read the site's substance tokens. */
   --color-ink: #EFE6DA; --color-ink-2: #C8B9A8; --color-ink-3: #A8988A; --color-paper: #14100D; --color-card: #1D1713;
   --color-rule: #3A2F27; --color-water: #7FC3CF; --color-coffee: #C9925F; --color-crema-deep: #E0A45C;
@@ -88,6 +90,16 @@
 html {
   scroll-behavior: smooth;
 }
+
+/* Tool pages' explanatory text (.cf-body). Tailwind's reset removes paragraph and list spacing, which ran every
+   tool page's paragraphs together (Deep Brew gate r1). */
+.cf-body p { margin: 0 0 1em; }
+.cf-body ul, .cf-body ol { margin: 0 0 1.1em; padding-left: 1.3em; }
+.cf-body ul { list-style: disc; }
+.cf-body ol { list-style: decimal; }
+.cf-body li { margin: 0 0 .45em; }
+.cf-body li::marker { color: var(--t-ink-3, #75655a); }
+.cf-body h3 { font: 400 24px/1.2 'Instrument Serif', Georgia, serif; margin: 1.6em 0 .4em; }
 
 body {
   font-family: var(--font-sans);

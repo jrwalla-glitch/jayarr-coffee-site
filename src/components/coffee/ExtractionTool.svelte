@@ -89,6 +89,8 @@
     if (mode === 'taste' && espresso) q.set('espresso', '1');
     history.replaceState(history.state, '', `${location.pathname}${q.toString() ? `?${q}` : ''}`);
   });
+  // Each lever's direction as an arrow of one readable length (Deep Brew gate r1: the raw moves drew tiny arrows).
+  function arrowOf(l: (typeof LEVERS)[number]): [number, number] { const m = leverMove(l, espresso); const n = Math.hypot(m.dx, m.dy) || 1; return [(m.dx / n) * 9, (-m.dy / n) * 9]; }
 </script>
 
 <div class="xt">
@@ -159,7 +161,7 @@
       {#if !touched}
       <span class="lbl">Your cup</span>
       <p class="zl">Describe it with the sliders</p>
-      <p class="zt">The dot starts in the middle; move it to match how your coffee tastes and feels.</p>
+      <p class="zt">Move the sliders to match how your coffee tastes and feels, and your cup appears on the map.</p>
       {:else}
       <span class="lbl">By taste, your cup is probably</span>
       <p class="zl">{zone.label}</p>
@@ -171,8 +173,9 @@
       <span class="lbl">Try a lever and watch the dot move</span>
       <div class="levers">
         {#each LEVERS as l (l.id)}
+          {@const [ax, ay] = arrowOf(l)}
           <button type="button" class:hint={suggestedIds.has(l.id)} onclick={() => pull(l.id)}>
-            <svg viewBox="-12 -12 24 24" aria-hidden="true"><line x1="0" y1="0" x2={leverMove(l, espresso).dx * 14} y2={-leverMove(l, espresso).dy * 14} stroke="currentColor" stroke-width="2" stroke-linecap="round" /><circle r="2.4" fill="currentColor" /></svg>
+            <svg viewBox="-12 -12 24 24" aria-hidden="true"><line x1={-ax * .55} y1={-ay * .55} x2={ax} y2={ay} stroke="currentColor" stroke-width="2.2" stroke-linecap="round" /><path d="M{ax} {ay} L{ax - ax * .45 - ay * .3} {ay - ay * .45 + ax * .3} M{ax} {ay} L{ax - ax * .45 + ay * .3} {ay - ay * .45 - ax * .3}" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none" /></svg>
             {espresso && l.espresso ? l.espresso : l.label}
           </button>
         {/each}
@@ -199,7 +202,12 @@
   .seg button { appearance: none; border: 1px solid var(--rule); background: var(--t-surface, #fff); border-radius: 999px; padding: 8px 13px; min-height: 38px; font: 500 13.5px/1 'IBM Plex Sans', sans-serif; color: var(--ink-2); cursor: pointer; }
   .seg button[aria-pressed='true'] { background: var(--ink); color: var(--t-on-ink, #f3ede3); border-color: var(--ink); }
   .slider { display: block; }
-  input[type='range'] { width: 100%; accent-color: var(--crema-deep); height: 28px; }
+  /* A position on a scale, not an amount: a neutral track with a centre mark and a crema thumb (Deep Brew gate r1). */
+  input[type='range'] { -webkit-appearance: none; appearance: none; width: 100%; height: 28px; background: transparent; cursor: pointer; }
+  input[type='range']::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; background: linear-gradient(90deg, var(--rule) 0 calc(50% - 1px), var(--ink-3) calc(50% - 1px) calc(50% + 1px), var(--rule) calc(50% + 1px)); }
+  input[type='range']::-moz-range-track { height: 4px; border-radius: 2px; background: linear-gradient(90deg, var(--rule) 0 calc(50% - 1px), var(--ink-3) calc(50% - 1px) calc(50% + 1px), var(--rule) calc(50% + 1px)); }
+  input[type='range']::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; margin-top: -8px; border-radius: 50%; background: var(--crema-deep); border: 3px solid var(--t-card, #fbf8f3); box-shadow: 0 0 0 1px var(--crema-deep); }
+  input[type='range']::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--crema-deep); border: 3px solid var(--t-card, #fbf8f3); box-shadow: 0 0 0 1px var(--crema-deep); }
   .ends { display: flex; justify-content: space-between; font-size: 13px; color: var(--ink-3); }
   .ends .now { font: 500 13px 'IBM Plex Mono', monospace; color: var(--ink); text-transform: uppercase; letter-spacing: .08em; }
   .zonecard { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 12px 0; }

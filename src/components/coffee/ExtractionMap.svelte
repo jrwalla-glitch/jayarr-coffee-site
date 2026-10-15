@@ -44,22 +44,22 @@
 
 <svg viewBox="0 0 400 {compact ? 372 : 392}" role="img" aria-label={label || `Extraction map: your cup sits in the ${zone.replace('-', ', ')} zone.`} class="map">
   <defs>
-    <linearGradient id="em-x" x1="0" x2="1"><stop offset="0" stop-color="#f1e7b9" /><stop offset=".5" stop-color="#f6eee0" /><stop offset="1" stop-color="#d9c2a8" /></linearGradient>
-    <linearGradient id="em-y" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#3f8796" stop-opacity=".16" /><stop offset=".5" stop-color="#fff" stop-opacity="0" /><stop offset="1" stop-color="#3b2214" stop-opacity=".2" /></linearGradient>
-    <marker id="em-head" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#8f5d22" /></marker>
+    <linearGradient id="em-x" x1="0" x2="1"><stop offset="0" style="stop-color: var(--t-map-sour, #f1e7b9)" /><stop offset=".5" style="stop-color: var(--t-map-mid, #f6eee0)" /><stop offset="1" style="stop-color: var(--t-map-bitter, #d9c2a8)" /></linearGradient>
+    <linearGradient id="em-y" x1="0" y1="1" x2="0" y2="0"><stop offset="0" style="stop-color: var(--t-map-weak, #3f8796)" stop-opacity=".16" /><stop offset=".5" style="stop-color: var(--t-surface, #fff)" stop-opacity="0" /><stop offset="1" style="stop-color: var(--t-map-strong, #3b2214)" stop-opacity=".2" /></linearGradient>
+    <marker id="em-head" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill: var(--t-crema-deep, #8f5d22)" /></marker>
   </defs>
   <rect x={L} y={T} width={W} height={H} fill="url(#em-x)" rx="10" />
   <rect x={L} y={T} width={W} height={H} fill="url(#em-y)" rx="10" />
   {#each [1, 2] as i (i)}
-    <line x1={L + (W / 3) * i} x2={L + (W / 3) * i} y1={T} y2={B} stroke="#2a1d15" stroke-opacity=".12" />
-    <line x1={L} x2={R} y1={T + (H / 3) * i} y2={T + (H / 3) * i} stroke="#2a1d15" stroke-opacity=".12" />
+    <line x1={L + (W / 3) * i} x2={L + (W / 3) * i} y1={T} y2={B} style="stroke: var(--t-ink, #2a1d15)" stroke-opacity=".12" />
+    <line x1={L} x2={R} y1={T + (H / 3) * i} y2={T + (H / 3) * i} style="stroke: var(--t-ink, #2a1d15)" stroke-opacity=".12" />
   {/each}
-  <rect x={L + W / 3} y={T + H / 3} width={W / 3} height={H / 3} rx="6" fill="#fffdf8" fill-opacity=".7" stroke="#c3873a" stroke-width={inSweet && !empty && !plain ? 2.5 : 1.5} />
+  <rect x={L + W / 3} y={T + H / 3} width={W / 3} height={H / 3} rx="6" style="fill: var(--t-surface-2, #fffdf8); stroke: var(--t-crema, #c3873a)" fill-opacity=".7" stroke-width={inSweet && !empty && !plain ? 2.5 : 1.5} />
   <text x={cx} y={cy + 4} text-anchor="middle" class="sweet">{axes ? 'reference range' : 'sweet spot'}</text>
   {#each rows as r, ri (r)}
     {#each cols as c, ci (c)}
       {#if `${c}-${r}` === zone && !inSweet && !empty && !plain}
-        <rect x={L + (W / 3) * ci + 3} y={T + (H / 3) * ri + 3} width={W / 3 - 6} height={H / 3 - 6} rx="6" fill="none" stroke="#2a1d15" stroke-width="1.5" stroke-dasharray="4 4" />
+        <rect x={L + (W / 3) * ci + 3} y={T + (H / 3) * ri + 3} width={W / 3 - 6} height={H / 3 - 6} rx="6" fill="none" style="stroke: var(--t-ink, #2a1d15)" stroke-width="1.5" stroke-dasharray="4 4" />
       {/if}
     {/each}
   {/each}
@@ -87,28 +87,28 @@
   {#if empty}
     <text x={cx} y={T + 26} text-anchor="middle" class="ax2">{emptyText}</text>
   {:else if extractionOnly}
-    <line x1={px} x2={px} y1={T + 4} y2={B - 4} stroke="#2a1d15" stroke-width="2.5" stroke-dasharray="6 5" />
-    <path d="M{px} {B - 2} l-7 10 h14 z" fill="#2a1d15" />
+    <line x1={px} x2={px} y1={T + 4} y2={B - 4} style="stroke: var(--t-ink, #2a1d15)" stroke-width="2.5" stroke-dasharray="6 5" />
+    <path d="M{px} {B - 2} l-7 10 h14 z" style="fill: var(--t-ink, #2a1d15)" />
     <text x={px < cx ? px + 8 : px - 8} y={T + 22} text-anchor={px < cx ? 'start' : 'end'} class="ax2">diluted: strength not judged</text>
   {:else}
   {#if showArrow && arrow && !inSweet}
-    <line x1={px} y1={py} x2={arrow.x2} y2={arrow.y2} stroke="#8f5d22" stroke-width="2.2" marker-end="url(#em-head)" class="arrow" />
+    <line x1={px} y1={py} x2={arrow.x2} y2={arrow.y2} style="stroke: var(--t-crema-deep, #8f5d22)" stroke-width="2.2" marker-end="url(#em-head)" class="arrow" />
   {/if}
   <g class="dot" style:transform="translate({px}px, {py}px)">
-    {#if uncertain}<circle r="44" fill="#c3873a" fill-opacity=".1" stroke="#8f5d22" stroke-width="1.4" stroke-dasharray="4 5" />{/if}
-    <circle r="16" fill="#c3873a" fill-opacity=".18" />
-    <circle r="8" fill="#2a1d15" />
-    <circle r="3" fill="#f3ede3" />
+    {#if uncertain}<circle r="44" style="fill: var(--t-crema, #c3873a); stroke: var(--t-crema-deep, #8f5d22)" fill-opacity=".1" stroke-width="1.4" stroke-dasharray="4 5" />{/if}
+    <circle r="16" style="fill: var(--t-crema, #c3873a)" fill-opacity=".18" />
+    <circle r="8" style="fill: var(--t-ink, #2a1d15)" />
+    <circle r="3" style="fill: var(--t-on-ink, #f3ede3)" />
   </g>
   {/if}
 </svg>
 
 <style>
   .map { width: 100%; height: auto; display: block; }
-  .sweet { font: 400 15px 'Instrument Serif', Georgia, serif; fill: #8f5d22; letter-spacing: .02em; }
-  .ax { font: 500 11px 'IBM Plex Mono', monospace; letter-spacing: .1em; text-transform: uppercase; fill: #5b4a3d; }
-  .ax2 { font: 400 11px 'IBM Plex Mono', monospace; fill: #75655a; }
-  .num { font: 500 12px 'IBM Plex Mono', monospace; fill: #2a1d15; }
+  .sweet { font: 400 15px 'Instrument Serif', Georgia, serif; fill: var(--t-crema-deep, #8f5d22); letter-spacing: .02em; }
+  .ax { font: 500 11px 'IBM Plex Mono', monospace; letter-spacing: .1em; text-transform: uppercase; fill: var(--t-ink-2, #5b4a3d); }
+  .ax2 { font: 400 11px 'IBM Plex Mono', monospace; fill: var(--t-ink-3, #75655a); }
+  .num { font: 500 12px 'IBM Plex Mono', monospace; fill: var(--t-ink, #2a1d15); }
   /* Phones: the map scales down, so its axis text scales up to stay readable. */
   @media (max-width: 640px) { .num { font-size: 15px; } .ax { font-size: 14px; } .ax2 { font-size: 13px; } }
   .dot { transition: transform .6s cubic-bezier(.2, .7, .2, 1); }

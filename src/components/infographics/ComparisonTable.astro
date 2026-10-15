@@ -24,6 +24,7 @@ const { title, subtitle, columns, rows, rowLabel = '', footnote } = Astro.props;
     <p class="ig-subtitle">{subtitle}</p>
   </header>
 
+  <p class="scroll-hint" aria-hidden="true">Scroll sideways for the whole table →</p>
   <div class="table-wrapper" tabindex="0" role="region" aria-label={`${title} table`}>
     <table>
       <thead>
@@ -74,7 +75,15 @@ const { title, subtitle, columns, rows, rowLabel = '', footnote } = Astro.props;
     .ig-title { font-size: 1.65rem; }
   }
 
-  .table-wrapper { max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  /* Scroll shadows: a soft edge appears only on a side with more table to scroll to (Deep Brew gate r1). */
+  .table-wrapper { max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch;
+    background:
+      linear-gradient(to right, var(--color-card, #FBF8F3) 30%, transparent) left / 40px 100% no-repeat local,
+      linear-gradient(to left, var(--color-card, #FBF8F3) 30%, transparent) right / 40px 100% no-repeat local,
+      radial-gradient(farthest-side at 0 50%, rgba(0, 0, 0, .28), transparent) left / 14px 100% no-repeat scroll,
+      radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, .28), transparent) right / 14px 100% no-repeat scroll; }
+  .scroll-hint { display: none; margin: 0 0 6px; font: 500 11px/1.4 var(--font-mono); letter-spacing: .08em; color: var(--color-ink-3, #75655A); }
+  @media (max-width: 640px) { .scroll-hint { display: block; } }
   .table-wrapper:focus-visible { outline: 2px solid var(--color-crema-deep, #8F5D22); outline-offset: 3px; }
   .table-wrapper table { width: 100%; min-width: 560px; border-collapse: collapse; margin: 0; font-size: .875rem; line-height: 1.5; overflow-wrap: normal; }
   .table-wrapper th { min-width: 7rem; font: 500 11px/1.4 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--color-crema-deep, #8F5D22); padding: .75rem .625rem; text-align: left; border-bottom: 2px solid var(--color-rule, #D9CDBD); }

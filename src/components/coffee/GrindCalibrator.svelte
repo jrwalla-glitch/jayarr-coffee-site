@@ -22,6 +22,8 @@
   let badMethod = $state(false);
   let badSetting = $state(false);
   let mounted = $state(false);
+  // Dates read the same way across the site: October 15, 2026.
+  const longDate = (iso: string) => new Date(`${iso}T12:00:00`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
   let g = $derived(grinderById(grinders, grinderId) ?? grinders[0]);
   let available = $derived(groupsFor(g));
   let missing = $derived(GROUPS.filter((m) => !available.some((x) => x.id === m.id)));
@@ -391,7 +393,7 @@
         </div>
       {/if}
       {#if g.startingPoint?.note}<p class="say">{g.startingPoint.note}</p>{/if}
-      <p class="prov">{who === 'maker' ? `Published by ${brand}` : 'Secondary source'}{#if s.url}{' · '}<a href={s.url} rel="noopener" target="_blank" title={s.source ?? ''}>open the source</a>{/if}{s.checked ? `, checked ${s.checked}` : ''}.</p>
+      <p class="prov">{who === 'maker' ? `Published by ${brand}` : 'Secondary source'}{#if s.url}{' · '}<a href={s.url} rel="noopener" target="_blank" title={s.source ?? ''}>open the source</a>{/if}{s.checked ? `, checked ${longDate(s.checked)}` : ''}.</p>
       {#if g.cautions.length}<div class="cbox"><p class="cauth">Cautions</p><ul class="cautions">{#each g.cautions as c (c)}<li>{c}</li>{/each}</ul></div>
       {:else}<p class="cbox nocaut"><span class="cauth">Cautions</span> None listed here; see the maker's manual.</p>{/if}
       {#if g.zeroNote}
@@ -405,7 +407,7 @@
         <a class="ghost" href="/tools/grind-guide/?method={brew}">How it should look</a>
         <a class="ghost" href="/tools/fix-my-coffee/?method={brew}">Tune it by taste</a>
       </div>
-      {#if g.amazon}<p class="buy"><a href={g.amazon.url} rel="sponsored noopener" target="_blank">{g.short} on Amazon</a>: the exact model, checked {data.checked}. As an Amazon Associate we earn from qualifying purchases.</p>{/if}
+      {#if g.amazon}<p class="buy"><a href={g.amazon.url} rel="sponsored noopener" target="_blank">{g.short} on Amazon</a>: the exact model, checked {longDate(data.checked)}. As an Amazon Associate we earn from qualifying purchases.</p>{/if}
     {:else}
       <p class="none">No verified setting for this method is included here.</p>
     {/if}

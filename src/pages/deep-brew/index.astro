@@ -36,9 +36,8 @@ const SWEEP = 300, DC = 70, DR = 54;
 const dang = (v: number) => -SWEEP / 2 + ((v - d0) / (d1 - d0)) * SWEEP;
 const dpt = (a: number, r: number) => [DC + r * Math.sin((a * Math.PI) / 180), DC - r * Math.cos((a * Math.PI) / 180)];
 const dialTicks = Array.from({ length: d1 - d0 + 1 }, (_, i) => d0 + i).filter((v) => v % 5 === 0 || v === d0);
-// The setting is marked outside the numbers, the way the grinder's index sits outside its dial.
-const marker = dpt(dang(pour.min), 66);
-const markerIn = dpt(dang(pour.min), 57);
+// The dial turns so the setting sits under the index at the top, as the Grind Calibrator draws it.
+const turn = -dang(pour.min);
 
 const notes = (await getCollection('deepbrew')).sort((a, b) => (b.data.updatedDate ?? b.data.pubDate).valueOf() - (a.data.updatedDate ?? a.data.pubDate).valueOf());
 
@@ -101,11 +100,13 @@ const description = 'Three instruments for measuring coffee: mix brewing water t
       <p class="ik"><span>03</span> Grind</p>
       <h2><a href="/deep-brew/calibrator/">Grind Calibrator</a></h2>
       <p class="bring">You bring the name of your grinder.</p>
-      <svg viewBox="0 0 260 150" class="fig" role="img" aria-label="A {encore.short} dial, numbered {d0} to {d1}, set to {pour.min} for pour-over.">
+      <svg viewBox="0 -8 260 158" class="fig" role="img" aria-label="A {encore.short} dial, numbered {d0} to {d1}, set to {pour.min} for pour-over.">
         <g transform="translate(60 4)">
           <circle cx={DC} cy={DC} r="68" class="bezel" />
-          {dialTicks.map((v) => { const [x0, y0] = dpt(dang(v), 58); const [x1, y1] = dpt(dang(v), 64); const [tx, ty] = dpt(dang(v), 44); return <g><line x1={x0} y1={y0} x2={x1} y2={y1} class="tick" /><text x={tx} y={ty + 3.5} text-anchor="middle" class="num">{v}</text></g>; })}
-          <line x1={markerIn[0]} y1={markerIn[1]} x2={marker[0]} y2={marker[1]} class="mkl" /><circle cx={marker[0]} cy={marker[1]} r="5" class="mk" />
+          <g transform={`rotate(${turn} ${DC} ${DC})`}>
+          {dialTicks.map((v) => { const [x0, y0] = dpt(dang(v), 58); const [x1, y1] = dpt(dang(v), 64); const [tx, ty] = dpt(dang(v), 44); return <g><line x1={x0} y1={y0} x2={x1} y2={y1} class:list={['tick', v === pour.min && 'on']} /><text x={tx} y={ty + 3.5} text-anchor="middle" class="num" transform={`rotate(${-turn} ${tx} ${ty})`}>{v}</text></g>; })}
+          </g>
+          <path d={`M${DC - 7} -3 L${DC + 7} -3 L${DC} 9 Z`} class="mk" />
           <circle cx={DC} cy={DC} r="26" class="hub" /><text x={DC} y={DC + 7} text-anchor="middle" class="hubv">{pour.min}</text>
         </g>
       </svg>
@@ -187,8 +188,8 @@ const description = 'Three instruments for measuring coffee: mix brewing water t
   .bezel { fill: #3a2a20; stroke: var(--t-rule, #d9cdbd); }
   .tick { stroke: #f3ede3; stroke-width: 1.5; }
   .num { fill: #f3ede3 !important; font-size: 9px !important; }
-  .mk { fill: #c3873a; stroke: #fbf8f3; stroke-width: 2; }
-  .mkl { stroke: #c3873a; stroke-width: 3; stroke-linecap: round; }
+  .mk { fill: #c3873a; }
+  .tick.on { stroke: #c3873a; stroke-width: 3; }
   .hub { fill: #fbf8f3; }
   .hubv { font: 400 22px 'Instrument Serif', Georgia, serif !important; fill: #2a1d15 !important; }
   .readout { margin: auto 0 0; display: grid; gap: 3px; padding-top: 12px; border-top: 1px dashed var(--t-rule, #d9cdbd); }
@@ -209,7 +210,7 @@ const description = 'Three instruments for measuring coffee: mix brewing water t
   .rss svg path { fill: none; }
   .notes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--t-rule, #d9cdbd); border: 1px solid var(--t-rule, #d9cdbd); border-radius: 14px; overflow: hidden; }
   .notes li { background: var(--t-card, #fbf8f3); }
-  .notes a { display: grid; gap: 4px; padding: 14px 16px 16px; text-decoration: none; color: inherit; height: 100%; box-sizing: border-box; }
+  .notes a { display: grid; align-content: start; gap: 4px; padding: 14px 16px 16px; text-decoration: none; color: inherit; height: 100%; box-sizing: border-box; }
   .notes a:hover { background: var(--t-surface, #fff); }
   .notes a:hover .nt { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
   .cat { color: var(--t-crema-deep, #8f5d22); font-size: 10.5px; }

@@ -14,7 +14,6 @@ import type { MarkdownHeading } from 'astro';
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import FormattedDate from '../components/FormattedDate.astro';
 import { SITE_TITLE } from '../consts';
 
 type Props = CollectionEntry<'deepbrew'>['data'] & { id: string; headings?: MarkdownHeading[]; minutes?: number };
@@ -22,6 +21,9 @@ type Props = CollectionEntry<'deepbrew'>['data'] & { id: string; headings?: Mark
 const { title, description, pubDate, updatedDate, category, id, finding, limitation, headings = [], minutes } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const contents = headings.filter((h) => h.depth === 2);
+// Long dates, as across the site; a hyphen between numbers never breaks a line ("2-12").
+const longDate = (d: Date) => d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+const nb = (t: string) => t.replace(/(\d)-(\d)/g, '$1\u2011$2');
 
 // Three more notes: the same field first, then the most recently updated.
 const related = (await getCollection('deepbrew'))
@@ -60,11 +62,11 @@ const breadcrumbSchema = {
 		<main class="note">
 			<header class="nhead">
 				<nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="/deep-brew/">Deep Brew</a></li><li><a href="/deep-brew/research/">Research</a></li><li aria-current="page">{category}</li></ol></nav>
-				<h1>{title}</h1>
+				<h1>{nb(title)}</h1>
 				<p class="lede">{description}</p>
 				<p class="meta">
-					<span>Published <FormattedDate date={pubDate} /></span>
-					{updatedDate && <span>Updated <FormattedDate date={updatedDate} /></span>}
+					<span>Published <time datetime={pubDate.toISOString()}>{longDate(pubDate)}</time></span>
+					{updatedDate && <span>Updated <time datetime={updatedDate.toISOString()}>{longDate(updatedDate)}</time></span>}
 					{minutes && <span>{minutes} min read</span>}
 				</p>
 				{(finding || limitation) && (
@@ -79,7 +81,7 @@ const breadcrumbSchema = {
 				{contents.length >= 3 && (
 					<nav class="toc" aria-labelledby="toc-h">
 						<p class="lbl" id="toc-h">In this note</p>
-						<ol>{contents.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+						<ol>{contents.map((h) => <li><a href={`#${h.slug}`}>{nb(h.text)}</a></li>)}</ol>
 					</nav>
 				)}
 				<article class="db-prose">
@@ -128,6 +130,8 @@ const breadcrumbSchema = {
 	.db-prose img { max-width: 100%; height: auto; border-radius: 10px; }
 	.db-prose figure { margin: 1.6em 0; }
 	.db-prose figcaption { font-size: 14px; color: var(--t-ink-3, #75655a); margin-top: 8px; }
+	/* A displayed equation: <p class="eq">Q = k·A·ΔP / (μ·L)</p>, with a sentence after it saying what it means. */
+	.db-prose .eq { font: 500 19px/1.5 'IBM Plex Mono', monospace; color: var(--t-ink, #2a1d15); text-align: center; padding: 14px 16px; margin: 1.4em 0; border: 1px solid var(--t-rule, #d9cdbd); border-radius: 12px; background: var(--t-card, #fbf8f3); overflow-x: auto; white-space: nowrap; }
 </style>
 <style>
 	.note { color: var(--t-ink, #2a1d15); }

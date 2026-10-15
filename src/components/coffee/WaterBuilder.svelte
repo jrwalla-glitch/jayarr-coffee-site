@@ -157,7 +157,7 @@
     {#if p}
       <div class="result" aria-live="polite">
         <p class="kick">Your recipe: {p.target.name}</p>
-        {#if p.ghStockMl > 0 || p.khStockMl > 0}<p class="once"><b>Once:</b> make {p.ghStockMl > 0 && p.khStockMl > 0 ? 'two stock bottles' : 'a stock bottle'} (they keep for months, capped, out of the sun). {#if p.ghStockMl > 0} Bottle A: <span class="mono a">{CONCENTRATE_G_PER_L.gh} g</span> Epsom salt in distilled water, made up to 1 L.{/if}{#if p.khStockMl > 0} Bottle B: <span class="mono b">{CONCENTRATE_G_PER_L.kh} g</span> baking soda, made up to 1 L.{/if}</p>{/if}
+        {#if p.ghStockMl > 0 || p.khStockMl > 0}<p class="once"><b>Once:</b> make {p.ghStockMl > 0 && p.khStockMl > 0 ? 'two stock bottles' : 'a stock bottle'} (they keep for months, capped, out of the sun). {#if p.ghStockMl > 0} Bottle A: <span class="mono a">{CONCENTRATE_G_PER_L.gh} g</span> Epsom salt in distilled water, made up to 1 L.{/if}{#if p.khStockMl > 0}{' '}Bottle B: <span class="mono b">{CONCENTRATE_G_PER_L.kh} g</span> baking soda, made up to 1 L.{/if}</p>{/if}
         <ol class="steps">
           {#each steps as st, k (st.key)}<li class:fill={st.fill}><span class="n">{st.fill ? '✓' : k + 1}</span><span>{@html st.html}</span></li>{/each}
         </ol>
@@ -223,7 +223,7 @@
   .steps li { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; font-size: 16px; }
   .steps .n { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--ink); display: grid; place-items: center; font: 500 13px/1 'IBM Plex Mono', monospace; }
   .steps .fill .n { background: var(--water); border-color: var(--water); color: var(--t-on-accent, #fff); }
-  .mono { font-family: 'IBM Plex Mono', monospace; font-weight: 500; }
+  .mono { font-family: 'IBM Plex Mono', monospace; font-weight: 500; white-space: nowrap; }
   .mono.a { color: var(--crema-deep); }
   .mono.b { color: var(--water); }
   .direct, .out { font-size: 14.5px; color: var(--ink-2); margin: 10px 0 0; }
@@ -232,6 +232,8 @@
   button:focus-visible, input:focus-visible { outline: 2px solid var(--crema-deep); outline-offset: 2px; }
   /* Phones: the map scales down, so its words scale up to stay readable (about 9–10 px on screen). */
   @media (max-width: 640px) { .ln { font-size: 17px; } .tk, .gl, .ax { font-size: 16px; } }
+  /* Wide screens: the chart stays in view beside the longer form (Deep Brew gate r1). */
+  @media (min-width: 861px) { .stage { align-self: start; position: sticky; top: 76px; border-right: 0; } .panel { border-left: 1px solid var(--rule); } }
   @media (max-width: 860px) { .wb { grid-template-columns: 1fr; } .stage { border-right: 0; border-bottom: 1px solid var(--rule); } .panel { padding: 18px 16px 20px; } .recipes { grid-template-columns: 1fr; } }
   .vol { flex-direction: row; align-items: center; gap: 6px; }
   .vol input { width: 84px; }

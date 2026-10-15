@@ -9,7 +9,9 @@ import { TOOLS } from '../../../data/tools';
 const title = 'Deep Brew Research: The Science Behind Better Coffee';
 const description = 'Long-form explanations of coffee science, from extraction and espresso physics to roasting chemistry, aroma and climate, each linked to the tools that put it to use.';
 const posts = (await getCollection('deepbrew')).sort((a, b) => a.data.title.localeCompare(b.data.title));
-const deepTools = TOOLS.filter((t) => t.deepBrew);
+// The instruments in the landing page's order: water, extraction, grind.
+const ORDER = ['/deep-brew/water', '/deep-brew/extraction', '/deep-brew/calibrator'];
+const deepTools = TOOLS.filter((t) => t.deepBrew).sort((a, b) => ORDER.findIndex((o) => a.href.startsWith(o)) - ORDER.findIndex((o) => b.href.startsWith(o)));
 ---
 
 <!doctype html>
@@ -29,7 +31,7 @@ const deepTools = TOOLS.filter((t) => t.deepBrew);
 				<a href="/deep-brew/" class="cf-back">← Deep Brew</a>
 				<p class="cf-kicker">Deep Brew · Research</p>
 				<h1>The science behind <em>better coffee</em></h1>
-				<p class="cf-lede">Ten long reads on what actually happens in the grinder, the brewer and the roaster, each with its sources and a tool that puts it to use. <a href="/deep-brew/rss.xml">Follow by RSS</a>.</p>
+				<p class="cf-lede">Ten long reads on what happens in the grinder, the brewer and the roaster, each with its sources. The three instruments below put the science to use. <a href="/deep-brew/rss.xml">Follow by RSS</a>.</p>
 			</section>
 			<section class="groups">
 				{DB_CATEGORIES.map((cat) => {
@@ -69,15 +71,18 @@ const deepTools = TOOLS.filter((t) => t.deepBrew);
 	h1 { font: 400 clamp(40px, 6vw, 68px)/.98 'Instrument Serif', Georgia, serif; margin: 10px 0 12px; }
 	h1 em { font-style: italic; color: var(--t-coffee, #7a4e30); }
 	.cf-lede { font-size: 17px; color: var(--t-ink-2, #5b4a3d); max-width: 62ch; margin: 0; }
-	.cf-lede a { color: var(--t-coffee, #7a4e30); }
-	.groups, .tools { max-width: 1180px; margin: 0 auto; padding: 16px 24px; }
-	.group, .tools { border-top: 1px solid var(--t-rule, #d9cdbd); padding-top: 18px; margin-top: 18px; }
-	h2 { font: 400 32px/1.1 'Instrument Serif', Georgia, serif; margin: 0 0 12px; }
-	ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-	li a { display: grid; gap: 4px; padding: 14px 16px; background: var(--t-card, #fbf8f3); border: 1px solid var(--t-rule, #d9cdbd); border-radius: 12px; text-decoration: none; color: inherit; height: 100%; box-sizing: border-box; }
-	li a:hover { border-color: var(--t-ink-3, #75655a); }
-	.t { font: 400 22px/1.15 'Instrument Serif', Georgia, serif; }
-	.d { font-size: 14px; color: var(--t-ink-2, #5b4a3d); }
-	.tools { padding-bottom: 72px; }
-	@media (max-width: 760px) { ul { grid-template-columns: 1fr; } .cf-intro { padding: 96px 16px 14px; } .groups, .tools { padding: 12px 16px; } }
+	.cf-lede a { color: var(--t-crema-deep, #8f5d22); text-underline-offset: 3px; }
+	.groups, .tools { max-width: 1180px; margin: 0 auto; padding: 8px 24px; }
+	/* One row per note: the title on the left, what it covers on the right, so no field leaves a half-empty grid. */
+	.group, .tools { margin-top: 26px; }
+	h2 { font: 400 32px/1.1 'Instrument Serif', Georgia, serif; margin: 0; padding-top: 18px; border-top: 1px solid var(--t-rule, #d9cdbd); }
+	ul { list-style: none; margin: 10px 0 0; padding: 0; }
+	li a { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); gap: 4px 28px; align-items: baseline; padding: 14px 2px; border-bottom: 1px solid var(--t-rule-2, #e6dccd); text-decoration: none; color: inherit; }
+	li:last-child a { border-bottom: 0; }
+	li a:hover .t { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+	.t { font: 400 23px/1.15 'Instrument Serif', Georgia, serif; color: var(--t-ink, #2a1d15); }
+	.d { font-size: 14.5px; line-height: 1.5; color: var(--t-ink-2, #5b4a3d); }
+	.tools { padding-bottom: 80px; }
+	a:focus-visible { outline: 2px solid var(--t-crema-deep, #8f5d22); outline-offset: 3px; border-radius: 3px; }
+	@media (max-width: 760px) { li a { grid-template-columns: 1fr; } .cf-intro { padding: 96px 16px 14px; } .groups, .tools { padding: 8px 16px; } }
 </style>
