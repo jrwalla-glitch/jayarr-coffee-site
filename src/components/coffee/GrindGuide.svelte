@@ -212,5 +212,5 @@
   .spread .axis { display: flex; justify-content: space-between; font: 400 11.5px 'IBM Plex Mono', monospace; color: var(--ink-3); margin-top: 3px; }
   .spread figcaption { font-size: 12.5px; color: var(--ink-3); margin-top: 6px; }
   button:focus-visible, a:focus-visible { outline: 2px solid var(--crema-deep); outline-offset: 2px; }
-  @media (max-width: 820px) { .gg { grid-template-columns: 1fr; } .loupe-wrap { border-right: 0; border-bottom: 1px solid var(--rule); } .loupe { max-width: 240px; } .name { font-size: 36px; } .too { grid-template-columns: 1fr; } .too div + div { border-left: 0; padding-left: 0; border-top: 1px dashed var(--rule); } .ruler { padding: 12px 10px 16px; } .rrow { grid-template-columns: 84px minmax(0, 1fr) 76px; gap: 8px; } .rv { font-size: 12.5px; } .tk.minor { display: none; } }
+  @media (max-width: 820px) { .gg { grid-template-columns: 1fr; } .loupe-wrap { border-right: 0; border-bottom: 1px solid var(--rule); } .loupe { max-width: 240px; } .name { font-size: 36px; } .too { grid-template-columns: 1fr; } .too div + div { border-left: 0; padding-left: 0; border-top: 1px dashed var(--rule); } .ruler { padding: 12px 10px 16px; } .rrow { grid-template-columns: 94px minmax(0, 1fr) 72px; gap: 8px; } .rl { font-size: 13px; white-space: nowrap; } .rv { font-size: 12.5px; } .tk.minor { display: none; } }
 </style>

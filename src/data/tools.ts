@@ -26,7 +26,7 @@ export const TOOLS: ToolEntry[] = [
   { id: 'grind', name: 'Grind Guide', href: '/tools/grind-guide/', blurb: 'How fine to grind for your brewer', group: 'make' },
   { id: 'calibrator', name: 'Grind Calibrator', href: '/deep-brew/calibrator/', blurb: 'The number to set on your grinder', group: 'make', deepBrew: true },
   { id: 'water', name: 'Water Recipe Builder', href: '/deep-brew/water/', blurb: 'Mix brewing water to a recipe', group: 'make', deepBrew: true },
-  { id: 'drinks', name: 'Coffee Drinks', href: '/tools/drink-builder/', blurb: 'Every espresso drink, drawn to scale', group: 'make' },
+  { id: 'drinks', name: 'Coffee Drinks', href: '/tools/drink-builder/', blurb: 'Every espresso drink, layer by layer, from published recipes', group: 'make' },
   { id: 'doctor', name: 'Fix My Coffee', href: '/tools/fix-my-coffee/', blurb: 'Why it tastes sour, bitter or weak', group: 'fix' },
   { id: 'extraction', name: 'Extraction Map', href: '/deep-brew/extraction/', blurb: 'Where your cup sits between sour and bitter', group: 'fix', deepBrew: true },
   { id: 'caffeine', name: 'Caffeine Calculator', href: '/tools/caffeine/', blurb: 'How much is still in you at bedtime', group: 'know' },
