@@ -172,3 +172,24 @@ export function placeOnMap(taste: { sourBitter: number; body: number }): { zone:
   const s = b <= -0.75 ? 'weak' : b >= 0.75 ? 'strong' : 'ideal';
   return { zone: `${e}-${s}` as ZoneId, x: (sb + 2) / 4, y: (b + 2) / 4 };
 }
+
+// Levers: what each brewing change does on the map, in slider units (−2..2). Qualitative and
+// illustrative: grind, temperature and time move extraction; the ratio moves strength most,
+// and more coffee per water slightly lowers extraction (synthesis §1, Easto, Gagné).
+export interface Lever { id: string; label: string; dx: number; dy: number; espresso?: string }
+export const LEVERS: Lever[] = [
+  { id: 'finer', label: 'Grind finer', dx: 0.6, dy: 0.15 },
+  { id: 'coarser', label: 'Grind coarser', dx: -0.6, dy: -0.15 },
+  { id: 'hotter', label: 'Hotter water', dx: 0.35, dy: 0.05 },
+  { id: 'cooler', label: 'Cooler water', dx: -0.35, dy: -0.05 },
+  { id: 'longer', label: 'Longer contact', dx: 0.4, dy: 0.1, espresso: 'Longer shot (more yield)' },
+  { id: 'shorter', label: 'Shorter contact', dx: -0.4, dy: -0.1, espresso: 'Shorter shot (less yield)' },
+  { id: 'more-coffee', label: 'More coffee, same water', dx: -0.12, dy: 0.6, espresso: 'Bigger dose' },
+  { id: 'more-water', label: 'More water, same coffee', dx: 0.12, dy: -0.6, espresso: 'Smaller dose' },
+];
+
+/** Levers that move a cup at (sourBitter, body) toward the sweet spot, best first. */
+export function suggestLevers(taste: { sourBitter: number; body: number }): Lever[] {
+  const tx = -taste.sourBitter, ty = -taste.body;
+  return LEVERS.map((l) => ({ l, score: l.dx * tx + l.dy * ty })).filter((s) => s.score > 0.05).sort((a, b) => b.score - a.score).map((s) => s.l);
+}

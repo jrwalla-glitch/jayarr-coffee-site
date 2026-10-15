@@ -1,169 +1,81 @@
 ---
-import DeepBrewLayout from '../../layouts/DeepBrewLayout.astro';
-import ExtractionDiagnostic from '../../components/tools/ExtractionDiagnostic.svelte';
+import '@fontsource/instrument-serif/400.css';
+import '@fontsource/instrument-serif/400-italic.css';
+import '@fontsource/ibm-plex-sans/400.css';
+import '@fontsource/ibm-plex-sans/500.css';
+import '@fontsource/ibm-plex-sans/600.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ExtractionTool from '../../components/coffee/ExtractionTool.svelte';
+import { ZONES, SOURCES, EY_BY_METHOD, METHODS } from '../../lib/coffee/index.ts';
+
+const title = 'Extraction Map: Where Your Cup Sits Between Sour and Bitter';
+const description = 'Describe how your coffee tastes and feels, see where it lands on the strength and extraction map, then pull grind, temperature, time and ratio levers to watch it move toward the sweet spot.';
 ---
 
-<DeepBrewLayout
-  title="Extraction Diagnostic | Deep Brew Mode | JayArr Coffee"
-  description="Describe what you taste — sour, bitter, thin, heavy — and get method-specific fixes mapped to extraction science for V60, espresso, French press, and more."
->
-  <Fragment slot="head">
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "Extraction Diagnostic",
-      "url": "https://jayarr.coffee/deep-brew/extraction/",
-      "description": "Describe what you taste — sour, bitter, thin, heavy — and get method-specific fixes mapped to extraction science for V60, espresso, French press, and more.",
-      "applicationCategory": "UtilityApplication",
-      "operatingSystem": "Any",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "JayArr Coffee",
-        "url": "https://jayarr.coffee"
-      }
-    })}></script>
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "HowTo",
-      "name": "How to Diagnose Extraction Problems in Your Coffee",
-      "description": "Describe what you taste and your brew method. Get method-specific fixes mapped to extraction science -- whether your V60, espresso, or French press needs adjustment to grind, temperature, time, or ratio.",
-      "totalTime": "PT3M",
-      "step": [
-        {
-          "@type": "HowToStep",
-          "position": 1,
-          "name": "Select your brew method",
-          "text": "Choose from V60, Chemex, espresso, French press, AeroPress, and other methods. The diagnostic adjusts its recommendations based on the physics of each brewing approach."
-        },
-        {
-          "@type": "HowToStep",
-          "position": 2,
-          "name": "Describe the flavor balance",
-          "text": "Use the extraction yield slider to indicate where your cup falls: sour and underdeveloped (underextracted), balanced and sweet (ideal), or bitter and harsh (overextracted)."
-        },
-        {
-          "@type": "HowToStep",
-          "position": 3,
-          "name": "Describe the body/strength",
-          "text": "Use the TDS slider to indicate whether the cup feels thin and watery (low strength) or heavy and intense (high strength). This is independent of flavor balance."
-        },
-        {
-          "@type": "HowToStep",
-          "position": 4,
-          "name": "Review method-specific fixes",
-          "text": "The diagnostic maps your symptom combination to targeted adjustments for your specific brew method. Each fix explains the underlying science -- why grinding finer affects a V60 differently than an espresso."
-        }
-      ]
-    })}></script>
-  </Fragment>
-  <!-- Hero -->
-  <section class="pt-28 pb-8 md:pt-32 md:pb-12">
-    <div class="max-w-3xl mx-auto px-6 text-center">
-      <a href="/deep-brew/" class="font-db-mono text-xs uppercase tracking-[0.2em] text-db-text-muted/50 hover:text-db-copper transition-colors">
-        &larr; Deep Brew Mode
-      </a>
-      <h1 class="font-db-serif text-3xl md:text-5xl font-bold mt-3 mb-3"
-          style="background: linear-gradient(135deg, var(--color-db-text) 0%, var(--color-db-copper) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-        Extraction Diagnostic
-      </h1>
-      <p class="text-db-text-muted max-w-xl mx-auto leading-relaxed text-sm mb-1">
-        Tell us what you taste. We&rsquo;ll tell you what went wrong &mdash; and exactly how to fix it for your brew method.
-      </p>
-      <p class="font-db-mono text-xs text-db-text-muted/40 tracking-wider">
-        EY% &times; TDS &times; SCA
-      </p>
-    </div>
-  </section>
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} />
+		<script type="application/ld+json" set:html={JSON.stringify({
+			'@context': 'https://schema.org', '@type': 'WebApplication', name: 'Extraction Map', url: 'https://jayarr.coffee/deep-brew/extraction/', description,
+			applicationCategory: 'UtilityApplication', operatingSystem: 'Any', offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, publisher: { '@type': 'Organization', name: 'JayArr Coffee', url: 'https://jayarr.coffee' },
+		})}></script>
+	</head>
+	<body class="cf-page">
+		<Header />
+		<main>
+			<section class="cf-intro">
+				<a href="/tools/" class="cf-back">← All tools</a>
+				<p class="cf-kicker">Deep Brew · Extraction Map</p>
+				<h1>Where does your cup sit <em>between sour and bitter?</em></h1>
+				<p class="cf-lede">Slide to describe the taste and the body. Your cup lands on the brewing control chart, the map baristas use to talk about strength and extraction. Then pull a lever and watch it move.</p>
+			</section>
+			<section class="cf-tool" aria-label="Extraction Map"><ExtractionTool client:load /></section>
 
-  <!-- Tool -->
-  <section class="pb-16 md:pb-24">
-    <div class="max-w-4xl mx-auto px-6">
-      <ExtractionDiagnostic client:load />
-    </div>
-  </section>
+			<article class="cf-body">
+				<h2>Two different dials: strength and extraction</h2>
+				<p><strong>Extraction</strong> is how much of the coffee's soluble material ended up in the water, as a share of the dry grounds. Too little and the cup is sour and hollow; too much and it turns bitter and drying. The Specialty Coffee Association's chart, after E. E. Lockhart's work in the 1950s, puts the sweet spot at about 18–22%.</p>
+				<p><strong>Strength</strong> is how concentrated the cup is, measured as total dissolved solids (TDS). The same chart puts most people's preference for filter coffee around 1.15–1.45%. Strength is set mostly by the ratio of coffee to water.</p>
+				<p>Because they're separate, a cup can be strong and sour, or weak and bitter. That's why the map has two axes and nine zones.</p>
 
-  <!-- Narrative -->
-  <section class="py-16 px-6">
-    <div class="prose mx-auto">
-      <h2>Extraction Yield vs. Strength: The Two Axes of Coffee Quality</h2>
+				<h2>The nine zones</h2>
+				<ul>
+					{Object.values(ZONES).map((z) => <li><strong>{z.label}</strong> tastes {z.tastes.toLowerCase()}. Move: {z.moves.join('; ').toLowerCase()}.</li>)}
+				</ul>
 
-      <p>The extraction diagnostic treats coffee troubleshooting as a two-dimensional problem rather than the one-dimensional approach most guides use. The two axes &mdash; extraction yield (EY%) and strength (TDS%) &mdash; are independent variables that require different fixes, and misdiagnosing which one is off leads to adjustments that make the cup worse.</p>
+				<h2>Typical extraction by brew method</h2>
+				<p>Published measurements put each method in a typical band; the map is centred on the sweet spot rather than any one method.</p>
+				<ul>
+					{METHODS.map((m) => <li>{m.label}: about {EY_BY_METHOD[m.id].min}–{EY_BY_METHOD[m.id].max}%</li>)}
+				</ul>
+				<p>A refractometer is the only way to actually measure TDS and calculate extraction at home. Without one, taste is a good guide, and this map is a way to reason about it, not a reading.</p>
 
-      <p>Extraction yield measures what percentage of the coffee&rsquo;s dry mass was dissolved into the liquid. It determines the flavor balance along the sour-to-bitter spectrum. The SCA&rsquo;s 18&ndash;22% target reflects the chemistry of sequential dissolution: organic acids dissolve first (they&rsquo;re small, polar molecules), then sugars and Maillard products, then the heavy bitter compounds &mdash; chlorogenic acid lactones and phenylindanes. Below 18%, acid compounds dominate and the cup tastes sour or underdeveloped. Above 22%, bitter compounds accumulate faster than pleasant complexity increases.</p>
+				<h2>Sources</h2>
+				<ul class="cf-sources">
+					{['sca-chart', 'gagne', 'rao', 'easto', 'synthesis'].map((id) => SOURCES[id]).map((s) => <li>{s.author}, <cite>{s.title}</cite>{s.year ? ` (${s.year})` : ''}{s.where ? `: ${s.where}` : ''}.</li>)}
+				</ul>
+			</article>
+		</main>
+		<Footer />
+	</body>
+</html>
 
-      <p>Strength, measured as TDS%, is about concentration, not balance. It determines body &mdash; how thin or heavy the cup feels. You can have a perfectly balanced extraction that&rsquo;s too dilute (right EY, low TDS) or a concentrated cup that&rsquo;s badly extracted (high TDS, wrong EY). This is why the diagnostic uses two separate inputs: one for flavor balance and one for body. Each combination maps to a specific adjustment strategy.</p>
-
-      <p>Brewing method changes the fix significantly. Grinding finer is the most impactful extraction lever for pour over because it increases surface area and slows flow through the coffee bed, giving water more contact time with the grounds. For espresso, the same adjustment has amplified effects because fine particles interact with 9 bars of pump pressure, and the relationship between grind size and puck resistance follows Darcy&rsquo;s law &mdash; flow rate through the coffee bed depends on permeability, which changes dramatically with small particle size adjustments. Grinding one click finer in espresso can add 5&ndash;10 seconds to shot time, while the same change in pour over might add 15&ndash;30 seconds. For French press, grind adjustments affect extraction less than steep time because there&rsquo;s no flow rate to modify &mdash; the coffee sits in a fixed volume of water approaching equilibrium.</p>
-
-      <p>Water temperature offers a complementary adjustment that operates through a different mechanism. Higher temperatures increase the diffusion coefficient of soluble compounds, accelerating extraction. But the same extraction yield achieved at different temperatures can taste different because temperature-dependent solubility means different compounds extract at different rates. A cup at 20% EY brewed at 96 degrees Celsius will have a slightly different flavor balance than one at 20% EY brewed at 90 degrees &mdash; the hotter brew extracts proportionally more of the heavier compounds. This is why the diagnostic accounts for method-specific temperature ranges alongside grind recommendations.</p>
-    </div>
-  </section>
-
-  <!-- Methodology -->
-  <section class="py-16 bg-db-surface border-t border-db-border">
-    <div class="max-w-3xl mx-auto px-6">
-      <div class="font-db-mono text-xs tracking-[0.2em] uppercase text-db-copper mb-4">Methodology</div>
-      <h2 class="font-db-serif text-xl md:text-2xl font-semibold text-db-text mb-6">How This Works</h2>
-
-      <div class="space-y-6 text-sm text-db-text-muted leading-relaxed">
-        <div>
-          <h3 class="font-db-serif text-base font-semibold text-db-text mb-1">The Extraction Curve</h3>
-          <p>
-            Coffee extraction is sequential. Organic acids dissolve first (they&rsquo;re small, polar molecules), followed by sugars and Maillard reaction products, then finally the heavier bitter compounds &mdash; CGA lactones and phenylindanes. Every cup is a snapshot of how far along this dissolving curve you went. Too little extraction: sour and underdeveloped. Too much: harsh and bitter. The sweet spot lives in the middle.
-          </p>
-        </div>
-
-        <div>
-          <h3 class="font-db-serif text-base font-semibold text-db-text mb-1">Acids &rarr; Sugars &rarr; Bitters</h3>
-          <p>
-            The three stages aren&rsquo;t equal in volume. Acids make up roughly 10&ndash;15% of soluble mass but dissolve earliest and fastest. Sugars and Maillard products represent the bulk of pleasant flavor (40&ndash;50%) and come next. Bitter compounds dissolve last &mdash; they&rsquo;re large, complex molecules that need more energy (time, heat, surface area) to extract. The goal is to dissolve enough sugars to balance the acids without pulling significant bitters.
-          </p>
-        </div>
-
-        <div>
-          <h3 class="font-db-serif text-base font-semibold text-db-text mb-1">The SCA 18&ndash;22% Standard</h3>
-          <p>
-            The Specialty Coffee Association established the 18&ndash;22% extraction yield range through decades of sensory research. At this range, trained tasters consistently rate coffee highest for flavor quality. Below 18%, acid compounds dominate and the cup tastes sour or underdeveloped. Above 22%, bitter compounds accumulate faster than flavor complexity increases. The &ldquo;Gold Cup&rdquo; standard pairs this with 1.15&ndash;1.35% TDS for filter coffee.
-          </p>
-        </div>
-
-        <div>
-          <h3 class="font-db-serif text-base font-semibold text-db-text mb-1">Strength vs. Extraction</h3>
-          <p>
-            These are independent variables, which is why this tool uses two sliders. Extraction Yield (EY%) measures what percentage of the coffee&rsquo;s mass was dissolved &mdash; it determines flavor balance (sour vs. bitter). Total Dissolved Solids (TDS%) measures the concentration of those dissolved compounds in your cup &mdash; it determines body (thin vs. heavy). You can have high extraction at low strength (bitter and watery) or low extraction at high strength (sour and intense). Fixing your coffee requires identifying which axis is off.
-          </p>
-        </div>
-
-        <div class="pt-4 border-t border-db-border">
-          <span class="font-db-mono text-xs text-db-text-muted/40 tracking-wider uppercase">Sources</span>
-          <p class="mt-2 text-xs text-db-text-muted/50">
-            SCA Brewing Standards (2019). Lockhart, E.E. "The Soluble Solids in Beverage Coffee as an Index to Cup Quality" (Coffee Brewing Institute, 1957). Rao, S. "Everything But Espresso" (2010). Hendon, C. et al. "The Role of Dissolved Cations in Coffee Extraction" (Journal of Agricultural and Food Chemistry, 2014). Specialty Coffee Association of America. "Gold Cup" Brewing Standard.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Related -->
-  <section class="py-12">
-    <div class="max-w-3xl mx-auto px-6 text-center">
-      <span class="font-db-mono text-xs uppercase tracking-widest text-db-copper">Related</span>
-      <div class="flex flex-wrap justify-center gap-3 mt-4">
-        <a href="/deep-brew/water/" class="border border-db-border text-db-text-muted px-5 py-2 text-xs uppercase tracking-widest hover:border-db-copper/50 hover:text-db-text transition-all rounded">
-          Water Recipe Builder
-        </a>
-        <a href="/blog/coffee-extraction-explained/" class="border border-db-border text-db-text-muted px-5 py-2 text-xs uppercase tracking-widest hover:border-db-copper/50 hover:text-db-text transition-all rounded">
-          Extraction Article
-        </a>
-        <a href="/deep-brew/" class="border border-db-border text-db-text-muted px-5 py-2 text-xs uppercase tracking-widest hover:border-db-copper/50 hover:text-db-text transition-all rounded">
-          All Deep Brew Tools
-        </a>
-      </div>
-    </div>
-  </section>
-</DeepBrewLayout>
+<style is:global>.cf-page { background: #f3ede3; }</style>
+<style>
+	main { color: #2a1d15; }
+	.cf-intro { max-width: 1180px; margin: 0 auto; padding: 120px 24px 22px; }
+	.cf-back { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; text-decoration: none; }
+	.cf-kicker { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: #8f5d22; margin: 26px 0 0; }
+	h1 { font: 400 clamp(40px, 6vw, 68px)/.98 'Instrument Serif', Georgia, serif; letter-spacing: -.01em; margin: 10px 0 12px; }
+	h1 em { font-style: italic; color: #7a4e30; }
+	.cf-lede { font: 400 17px/1.5 'IBM Plex Sans', system-ui, sans-serif; color: #5b4a3d; max-width: 62ch; margin: 0; }
+	.cf-tool { max-width: 1180px; margin: 0 auto; padding: 8px 24px 40px; }
+	.cf-body { max-width: 760px; margin: 0 auto; padding: 24px 24px 72px; font: 400 17px/1.7 'IBM Plex Sans', system-ui, sans-serif; }
+	.cf-body h2 { font: 400 34px/1.1 'Instrument Serif', Georgia, serif; margin: 44px 0 12px; }
+	.cf-sources { font-size: 14.5px; color: #5b4a3d; }
+	@media (max-width: 640px) { .cf-intro { padding: 96px 16px 18px; } .cf-tool { padding: 4px 12px 32px; } .cf-body { padding: 16px 16px 56px; } }
+</style>

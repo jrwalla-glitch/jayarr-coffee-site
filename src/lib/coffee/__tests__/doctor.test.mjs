@@ -54,3 +54,22 @@ test('the map: sliders land in the right zone, centre is the sweet spot, junk is
   const j = placeOnMap({ sourBitter: 99, body: NaN });
   assert.equal(j.x, 1); assert.equal(j.y, 0.5);
 });
+
+import { LEVERS, suggestLevers } from '../index.ts';
+
+test('levers move the way the science says, in opposing pairs', () => {
+  const by = Object.fromEntries(LEVERS.map((l) => [l.id, l]));
+  assert.ok(by.finer.dx > 0 && by.coarser.dx < 0 && by.hotter.dx > 0 && by.cooler.dx < 0);
+  assert.ok(by['more-coffee'].dy > 0 && by['more-water'].dy < 0);
+  assert.ok(Math.abs(by['more-coffee'].dy) > Math.abs(by['more-coffee'].dx), 'ratio moves strength more than extraction');
+  for (const [a, b] of [['finer', 'coarser'], ['hotter', 'cooler'], ['longer', 'shorter'], ['more-coffee', 'more-water']]) {
+    assert.equal(by[a].dx, -by[b].dx); assert.equal(by[a].dy, -by[b].dy);
+  }
+});
+
+test('suggestions point toward the sweet spot', () => {
+  assert.equal(suggestLevers({ sourBitter: -1.5, body: 0 })[0].id, 'finer');
+  assert.equal(suggestLevers({ sourBitter: 1.5, body: 0 })[0].id, 'coarser');
+  assert.equal(suggestLevers({ sourBitter: 0, body: -1.5 })[0].id, 'more-coffee');
+  assert.equal(suggestLevers({ sourBitter: 0, body: 0 }).length, 0);
+});
