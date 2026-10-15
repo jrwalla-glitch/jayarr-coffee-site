@@ -36,6 +36,26 @@ export function localInstant(y: number, m: number, d: number, clockMin: number):
   return new Date(y, m, d, Math.floor(clockMin / 60), clockMin % 60).getTime();
 }
 
+/**
+ * A day boundary as one instant. Usually the local clock time itself; when that time doesn't exist
+ * (inside a spring-forward gap), the first real minute after the gap, not the Date constructor's
+ * "shift forward by the gap" (Astra r4: 02:30 became 03:30 and hid a 03:00 drink).
+ */
+export function boundaryInstant(y: number, m: number, d: number, clockMin: number): number {
+  const t = localInstant(y, m, d, clockMin);
+  const want = new Date(y, m, d).getTime();
+  const reached = (x: number) => {
+    const l = new Date(x);
+    const day = new Date(l.getFullYear(), l.getMonth(), l.getDate()).getTime();
+    return day > want || (day === want && l.getHours() * 60 + l.getMinutes() >= clockMin);
+  };
+  const l = new Date(t);
+  if (l.getHours() * 60 + l.getMinutes() === clockMin) return t;
+  let x = t;
+  for (let i = 0; i < 180 && reached(x - 60000); i++) x -= 60000;
+  return x;
+}
+
 export function dayStartClock(s: Pick<DiarySettings, 'bedMin' | 'dayStartMin'>): number {
   return s.dayStartMin ?? newDayAt(s.bedMin);
 }
@@ -44,17 +64,22 @@ export function dayStartClock(s: Pick<DiarySettings, 'bedMin' | 'dayStartMin'>):
 export function dayWindow(now: number, startClock: number): DayWindow {
   const n = new Date(now);
   const y = n.getFullYear(), m = n.getMonth(), d = n.getDate();
-  const todayStart = localInstant(y, m, d, startClock);
+  const todayStart = boundaryInstant(y, m, d, startClock);
   const shift = now >= todayStart ? 0 : -1;
   const day = new Date(y, m, d + shift);
   const Y = day.getFullYear(), M = day.getMonth(), D = day.getDate();
-  return { start: localInstant(Y, M, D, startClock), end: localInstant(Y, M, D + 1, startClock), y: Y, m: M, d: D, midnight: localInstant(Y, M, D, 0) };
+  return { start: boundaryInstant(Y, M, D, startClock), end: boundaryInstant(Y, M, D + 1, startClock), y: Y, m: M, d: D, midnight: boundaryInstant(Y, M, D, 0) };
 }
 
 /** A clock time entered for this diary day, as the instant inside the day (00:30 after an 11 pm bedtime is the next date). */
-export function instantInDay(clockMin: number, w: DayWindow): number {
-  const t = localInstant(w.y, w.m, w.d, clockMin);
-  return t < w.start ? localInstant(w.y, w.m, w.d + 1, clockMin) : t;
+export function instantInDay(clockMin: number, w: DayWindow): number | null {
+  // The time on the day's own date, else on the next date; it must land inside [start, end).
+  // Around a daylight-saving gap there may be no such time, and then there's no answer to guess.
+  for (const k of [0, 1]) {
+    const t = localInstant(w.y, w.m, w.d + k, clockMin);
+    if (t >= w.start && t < w.end) return t;
+  }
+  return null;
 }
 
 /**
@@ -63,8 +88,9 @@ export function instantInDay(clockMin: number, w: DayWindow): number {
  * exception: if that lands more than 12 hours ahead and the same time earlier today was within the
  * last 12 hours, it means earlier (at 05:45, "02:30" is three hours ago, not tonight; Opus r2).
  */
-export function placeTypedTime(clockMin: number, now: number, w: DayWindow): number {
+export function placeTypedTime(clockMin: number, now: number, w: DayWindow): number | null {
   const inDay = instantInDay(clockMin, w);
+  if (inDay === null) return null;
   if (inDay - now <= 12 * 3600e3) return inDay;
   const d = new Date(inDay);
   const earlier = localInstant(d.getFullYear(), d.getMonth(), d.getDate() - 1, clockMin);
@@ -124,7 +150,7 @@ export function migrateV1(v1: unknown, makeId: () => string): DiaryStore | null 
 
 /** A shared day's drinks (diary minutes) placed into this device's current day, by clock time. */
 export function placeSharedDay(intakes: Intake[], w: DayWindow, makeId: () => string): LoggedDrink[] {
-  return intakes.map(({ atMin, ...rest }) => ({ ...rest, id: makeId(), at: instantInDay(((Math.round(atMin) % 1440) + 1440) % 1440, w) }));
+  return intakes.map(({ atMin, ...rest }) => ({ ...rest, id: makeId(), at: instantInDay(((Math.round(atMin) % 1440) + 1440) % 1440, w) ?? w.start }));
 }
 
 /** Today's drinks as a shareable day: diary minutes, with after-midnight times past 1440. */

@@ -19,5 +19,5 @@ export { DRINKS, drinkById, refById, knownVolume, compareRefs } from './drinks.t
 export type { Drink, DrinkRef, Layer, LayerKind } from './drinks.ts';
 export { measuredExtraction, CHARTS } from './extraction.ts';
 export type { MeasuredKind, MeasuredInput, MeasuredResult, Chart } from './extraction.ts';
-export { DEFAULT_SETTINGS, KEEP_DAYS, CARRY_HOURS, localInstant, dayStartClock, dayWindow, instantInDay, placeTypedTime, minutesFromMidnight, bedInstant, clockOf, dayView, pruneLog, migrateV1, placeSharedDay, toDiaryMinutes, applyOp, emptyStore, parseStore } from './diary.ts';
+export { DEFAULT_SETTINGS, KEEP_DAYS, CARRY_HOURS, localInstant, boundaryInstant, dayStartClock, dayWindow, instantInDay, placeTypedTime, minutesFromMidnight, bedInstant, clockOf, dayView, pruneLog, migrateV1, placeSharedDay, toDiaryMinutes, applyOp, emptyStore, parseStore } from './diary.ts';
 export type { LoggedDrink, DiarySettings, DiaryStore, DayWindow, DiaryOp } from './diary.ts';

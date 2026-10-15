@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { dayWindow, instantInDay, placeTypedTime, minutesFromMidnight, dayView, migrateV1, placeSharedDay, toDiaryMinutes, bedInstant, pruneLog, dayStartClock, clockOf } from '../diary.ts';
+import { boundaryInstant, dayWindow, instantInDay, placeTypedTime, minutesFromMidnight, dayView, migrateV1, placeSharedDay, toDiaryMinutes, bedInstant, pruneLog, dayStartClock, clockOf } from '../diary.ts';
 import { inBodyAt } from '../caffeine.ts';
 
 // Run a block in a time zone, then restore it.
@@ -119,4 +119,18 @@ test('Astra r3: an idle or stale tab can neither overwrite nor resurrect drinks'
   assert.deepEqual(parseStore(storage).drinks.map((x) => x.id), ['b'], 'a settings edit leaves drinks alone');
   assert.equal(parseStore('{"v":2,"drinks":[{"id":"x","at":"oops"}]}').drinks.length, 0, 'malformed entries dropped');
   assert.equal(parseStore('not json'), null);
+});
+
+test('Astra r4: a day start inside the spring-forward gap is the first real minute after it, and drinks never land outside the day', () => {
+  for (const [tz, nowIso, dateArgs, startZ] of [['America/New_York', '2026-03-09T01:00:00Z', [2026, 2, 8], '2026-03-08T07:00:00Z'], ['Europe/Berlin', '2026-03-29T19:00:00Z', [2026, 2, 29], '2026-03-29T01:00:00Z']]) inTZ(tz, () => {
+    // Bedtime 22:30 → the day starts at 02:30, which doesn't exist on this night.
+    assert.equal(boundaryInstant(...dateArgs, 150), at(startZ), `${tz}: first minute after the gap`);
+    const now = at(nowIso); // 21:00 local
+    const w = dayWindow(now, 150);
+    const t = placeTypedTime(180, now, w); // a 03:00 drink
+    assert.ok(t !== null && t >= w.start && t < w.end, `${tz}: 03:00 lands inside the day`);
+    // Every clock time of the day either lands inside the day or is refused; never outside.
+    for (let c = 0; c < 1440; c += 5) { const x = instantInDay(c, w); assert.ok(x === null || (x >= w.start && x < w.end), `${tz} ${c}`); }
+  });
+  inTZ('America/New_York', () => assert.equal(boundaryInstant(2026, 9, 15, 180), at('2026-10-15T07:00:00Z'), 'an ordinary day is unchanged'));
 });

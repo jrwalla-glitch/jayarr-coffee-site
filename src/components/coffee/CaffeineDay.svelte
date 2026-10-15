@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { METHODS, GUIDANCE, intakeMg, dayCurve, dailyTotal, inBodyAt, encodeDay, decodeDay, dayMinute, newDayAt, bedMinute, flOzToMl, mlToFlOz, buildRecipe,
-    DEFAULT_SETTINGS, dayWindow, dayStartClock, dayView, instantInDay, placeTypedTime, minutesFromMidnight, bedInstant, clockOf, migrateV1, placeSharedDay, toDiaryMinutes, applyOp, parseStore } from '../../lib/coffee/index.ts';
+    DEFAULT_SETTINGS, dayWindow, dayStartClock, dayView, instantInDay, placeTypedTime, minutesFromMidnight, bedInstant, clockOf, migrateV1, placeSharedDay, toDiaryMinutes, applyOp, parseStore, emptyStore } from '../../lib/coffee/index.ts';
   import type { Intake, MethodId, LoggedDrink, DiarySettings, DiaryStore, DiaryOp } from '../../lib/coffee/index.ts';
 
   // Your diary is a log of real moments (see diary.ts): "today" is a view over it, so nothing is
@@ -128,7 +128,11 @@
     if (!check.ok) { addError = check.errors[0].message; return; }
     addError = '';
     if (mode === 'shared' && shared) shared.intakes = [...shared.intakes, { ...base, atMin: dayMinute(clock, shared.bedMin) } as Intake];
-    else { mode = 'own'; commit({ type: 'add', drink: { ...base, id: newId(), at: placeTypedTime(clock, nowMs, win) } as LoggedDrink }); }
+    else {
+      const at = placeTypedTime(clock, nowMs, win);
+      if (at === null) { addError = 'That time doesn\'t exist today (the clocks changed); pick another.'; return; }
+      mode = 'own'; commit({ type: 'add', drink: { ...base, id: newId(), at } as LoggedDrink });
+    }
     addTime = hhmm(Math.min(22 * 60, clock + 180));
   }
   function remove(key: string) {
@@ -138,7 +142,7 @@
   function retime(key: string, v: string) {
     const clock = toClock(v);
     if (!Number.isFinite(clock)) return;
-    if (mode === 'own') commit({ type: 'retime', id: key, at: placeTypedTime(clock, nowMs, win) });
+    if (mode === 'own') { const at = placeTypedTime(clock, nowMs, win); if (at !== null) commit({ type: 'retime', id: key, at }); }
     else if (mode === 'shared' && shared) shared.intakes = shared.intakes.map((x, k) => (String(k) === key ? { ...x, atMin: dayMinute(clock, shared!.bedMin) } : x));
   }
   function clearDay() {
@@ -176,13 +180,22 @@
     log = st.drinks.filter((x) => intakeMg({ ...x, atMin: 0 } as Intake).ok);
     settings = { ...DEFAULT_SETTINGS, ...st.settings, bedMin: bedMinute(st.settings.bedMin ?? 1380) };
   }
+  // Edits not yet written (storage refused) wait here and are replayed on top of the latest saved
+  // log, so a later edit never drops an earlier unsaved one (Astra r4) and another tab's removals
+  // aren't undone. Without readable storage, the last log we saw is the base.
+  let pending: DiaryOp[] = [];
+  let lastSeen: DiaryStore | null = null;
   function commit(op: DiaryOp) {
+    pending.push(op);
     const run = () => {
       const { store, ok } = readStore();
-      const base: DiaryStore = store ?? { v: 2, drinks: $state.snapshot(log) as LoggedDrink[], settings: $state.snapshot(settings) as DiarySettings };
-      const next = applyOp(base, op, Date.now());
+      if (store) lastSeen = store;
+      const base: DiaryStore = store ?? lastSeen ?? emptyStore();
+      const now = Date.now();
+      const next = pending.reduce((st, o) => applyOp(st, o, now), base);
       let wrote = false;
       if (ok) { try { localStorage.setItem(STORE, JSON.stringify(next)); wrote = true; } catch { /* quota or denial */ } }
+      if (wrote) { pending = []; lastSeen = next; }
       storageOk = wrote;
       adopt(next);
     };
@@ -193,6 +206,7 @@
   function loadOwn() {
     const { store, ok, source } = readStore();
     storageOk = ok;
+    if (store) lastSeen = store;
     if (!store) return;
     adopt(store); hadStore = true;
     if (source === 'v1') commit({ type: 'settings', patch: {} });
