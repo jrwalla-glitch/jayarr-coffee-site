@@ -1,151 +1,76 @@
 ---
-interface Props {
-	tool: 'brew-ratio' | 'caffeine' | 'fix-my-coffee' | 'freshness' | 'grind-guide' | 'drink-builder' | 'espresso-machines' | 'nespresso-pods';
-	context?: string;
-}
+// A tool, in context, inside an article. Names, links and blurbs come from the one tool list
+// (src/data/tools.ts). `preset` opens the tool on the article's own brew, e.g.
+// <ToolCallout tool="brew" preset={{ method: 'v60', dose: 22, ratio: 16 }} context="…" />
+import { toolById } from '../data/tools.ts';
 
-const tools: Record<string, { name: string; path: string; description: string; icon: string }> = {
-	'brew-ratio': {
-		name: 'Brew Ratio Calculator',
-		path: '/tools/brew-ratio/',
-		description: 'Dial in your coffee-to-water ratio for any brew method.',
-		icon: 'M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006 0 0 0-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 0 0 3.7 3.7 48.656 48.656 0 0 0 7.324 0 4.006 4.006 0 0 0 3.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3-3 3',
-	},
-	'caffeine': {
-		name: 'Caffeine Calculator',
-		path: '/tools/caffeine/',
-		description: 'Track your daily caffeine intake against recommended limits.',
-		icon: 'M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 0-6.23.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5',
-	},
-	'fix-my-coffee': {
-		name: 'Fix My Coffee',
-		path: '/tools/fix-my-coffee/',
-		description: 'Diagnose what went wrong and get targeted fixes.',
-		icon: 'M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085',
-	},
-	'freshness': {
-		name: 'Freshness Tracker',
-		path: '/tools/freshness/',
-		description: 'See exactly where your beans are in their flavor lifecycle.',
-		icon: 'M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0z',
-	},
-	'grind-guide': {
-		name: 'Grind Size Guide',
-		path: '/tools/grind-guide/',
-		description: 'Find the right grind size for your brew method.',
-		icon: 'M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75',
-	},
-	'drink-builder': {
-		name: 'Drink Builder',
-		path: '/tools/drink-builder/',
-		description: 'See how espresso drinks are built, layer by layer.',
-		icon: 'M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.395m3.42 3.42a15.995 15.995 0 0 0 4.764-4.648l3.876-5.814a1.151 1.151 0 0 0-1.597-1.597L14.146 6.32a15.996 15.996 0 0 0-4.649 4.763m3.42 3.42a6.776 6.776 0 0 0-3.42-3.42',
-	},
-	'espresso-machines': {
-		name: 'Espresso Machine Guide',
-		path: '/tools/espresso-machines/',
-		description: 'Browse semi-auto, super-auto, and capsule machines side by side.',
-		icon: 'M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 0 0 2.25-2.25V6.75a2.25 2.25 0 0 0-2.25-2.25H6.75A2.25 2.25 0 0 0 4.5 6.75v10.5a2.25 2.25 0 0 0 2.25 2.25Zm.75-12h9v9h-9v-9Z',
-	},
-	'nespresso-pods': {
-		name: 'Nespresso Pod Explorer',
-		path: '/tools/nespresso-pods/',
-		description: 'Filter Nespresso capsules by line, intensity, roast, and flavor.',
-		icon: 'M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5',
-	},
+// The keys articles used before the tool list existed still work.
+const LEGACY: Record<string, string> = {
+	'brew-ratio': 'brew', 'fix-my-coffee': 'doctor', 'grind-guide': 'grind', 'drink-builder': 'drinks',
+	'espresso-machines': 'machines', 'nespresso-pods': 'pods',
 };
 
-const { tool, context } = Astro.props;
-const data = tools[tool];
+interface Props {
+	tool: string;
+	context?: string;
+	preset?: Record<string, string | number>;
+	/** The button's words; by default it says the tool opens with these settings, not "this recipe". */
+	cta?: string;
+}
+
+const { tool, context, preset, cta } = Astro.props;
+const data = toolById(LEGACY[tool] ?? tool);
+if (!data) throw new Error(`ToolCallout: unknown tool "${tool}"`);
+const query = preset ? `?${new URLSearchParams(Object.entries(preset).map(([k, v]) => [k, String(v)])).toString()}` : '';
+const href = `${data.href}${query}`;
 ---
 
 <aside class="tool-callout" aria-label={`Try the ${data.name}`}>
-	<div class="tool-callout-inner">
-		<div class="tool-callout-icon">
-			<svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-				<path d={data.icon} />
-			</svg>
-		</div>
-		<div class="tool-callout-content">
-			<p class="tool-callout-label">Try It Yourself</p>
-			<p class="tool-callout-title">{data.name}</p>
-			<p class="tool-callout-desc">{context || data.description}</p>
-			<a href={data.path} class="tool-callout-link">
-				Open Tool <span aria-hidden="true">&rarr;</span>
-			</a>
-		</div>
-	</div>
+	<p class="tc-kicker">{data.deepBrew ? 'Deep Brew tool' : 'Tool'}</p>
+	<p class="tc-title">{data.name}</p>
+	<p class="tc-desc">{context || `${data.blurb}.`}</p>
+	<a href={href} class="tc-link">{cta ?? (preset ? 'Open it with these settings' : 'Open the tool')} <span aria-hidden="true">→</span></a>
 </aside>
 
 <style>
 	.tool-callout {
 		max-width: 720px;
 		margin: 2rem auto;
-		border: 1px solid rgba(193, 122, 58, 0.25);
-		border-left: 3px solid var(--color-copper, #C17A3A);
-		border-radius: 2px;
-		background: rgba(193, 122, 58, 0.04);
+		padding: 1.1rem 1.35rem 1.2rem;
+		background: var(--color-card, #FBF8F3);
+		border: 1px solid var(--color-rule, #D9CDBD);
+		border-left: 3px solid var(--color-crema-deep, #8F5D22);
+		border-radius: 0 12px 12px 0;
 	}
-
-	.tool-callout-inner {
-		display: flex;
-		gap: 1rem;
-		padding: 1.25rem 1.5rem;
+	.tc-kicker {
+		font: 500 11px/1 var(--font-mono);
+		letter-spacing: .14em;
+		text-transform: uppercase;
+		color: var(--color-crema-deep, #8F5D22);
+		margin: 0 0 .45rem;
 	}
-
-	.tool-callout-icon {
-		flex-shrink: 0;
-		width: 40px;
-		height: 40px;
-		display: flex;
+	.tc-title {
+		font: 400 1.6rem/1.1 var(--font-serif);
+		color: var(--color-ink, #2A1D15);
+		margin: 0 0 .3rem;
+	}
+	.tc-desc {
+		font: 400 1rem/1.55 var(--font-sans);
+		color: var(--color-ink-2, #5B4A3D);
+		margin: 0 0 .75rem;
+	}
+	.tc-link {
+		display: inline-flex;
 		align-items: center;
-		justify-content: center;
-		color: var(--color-copper, #C17A3A);
-	}
-
-	.tool-callout-content {
-		flex: 1;
-		min-width: 0;
-	}
-
-	.tool-callout-label {
-		font-family: 'Inter', system-ui, sans-serif;
-		font-size: 0.6875rem;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
-		color: var(--color-copper, #C17A3A);
-		margin: 0 0 0.25rem;
-	}
-
-	.tool-callout-title {
-		font-family: 'Playfair Display', Georgia, serif;
-		font-size: 1.125rem;
-		font-weight: 700;
-		color: var(--color-charcoal, #1A1A1A);
-		margin: 0 0 0.25rem;
-	}
-
-	.tool-callout-desc {
-		font-family: 'Inter', system-ui, sans-serif;
-		font-size: 0.9375rem;
-		line-height: 1.5;
-		color: var(--color-warm-gray, #6B6560);
-		margin: 0 0 0.5rem;
-	}
-
-	.tool-callout-link {
-		font-family: 'Inter', system-ui, sans-serif;
-		font-size: 0.8125rem;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.08em;
-		color: var(--color-copper, #C17A3A);
+		gap: .35rem;
+		min-height: 44px;
+		padding: 0 1rem;
+		border-radius: 999px;
+		background: var(--color-ink, #2A1D15);
+		color: #F3EDE3;
+		font: 600 14px/1 var(--font-sans);
 		text-decoration: none;
-		transition: color 0.2s;
 	}
-
-	.tool-callout-link:hover {
-		color: var(--color-charcoal, #1A1A1A);
-	}
+	.tc-link:hover { background: var(--color-coffee, #7A4E30); }
+	.tc-link:focus-visible { outline: 2px solid var(--color-crema-deep, #8F5D22); outline-offset: 2px; }
 </style>

@@ -20,8 +20,8 @@ const { title, subtitle, items, scaleLabel, footnote } = Astro.props;
 
 <aside class="infographic-reference" role="complementary" aria-label={title}>
   <header class="ig-header">
-    <span class="ig-brand">JayArr Coffee</span>
-    <h2 class="ig-title">{title}</h2>
+    <span class="ig-brand">Quick reference</span>
+    <p class="ig-title">{title}</p>
     <p class="ig-subtitle">{subtitle}</p>
   </header>
 
@@ -57,164 +57,49 @@ const { title, subtitle, items, scaleLabel, footnote } = Astro.props;
 
   {footnote && <p class="ig-footnote">{footnote}</p>}
 
-  <div class="ig-footer">jayarr.coffee</div>
 </aside>
 
 <style>
+  .ig-divider { display: none; }
   .infographic-reference {
+    box-sizing: border-box;
+    min-width: 0;
     max-width: 720px;
     margin: 2.5rem auto;
-    font-family: 'Inter', system-ui, sans-serif;
-    color: var(--color-charcoal, #1A1A1A);
-    -webkit-font-smoothing: antialiased;
+    padding: 1.6rem;
+    background: var(--color-card, #FBF8F3);
+    border: 1px solid var(--color-rule, #D9CDBD);
+    border-radius: 16px;
+    font-family: var(--font-sans);
+    color: var(--color-ink, #2A1D15);
+    overflow-wrap: anywhere;
   }
-
-  .ig-header {
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-
-  .ig-brand {
-    display: block;
-    font-weight: 600;
-    font-size: 0.8125rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--color-copper, #C17A3A);
-    margin-bottom: 0.75rem;
-  }
-
-  .ig-title {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-weight: 900;
-    font-size: 2.25rem;
-    color: var(--color-charcoal, #1A1A1A);
-    line-height: 1.15;
-    margin: 0 0 0.5rem;
-    letter-spacing: -0.02em;
-  }
-
-  .ig-subtitle {
-    font-size: 1rem;
-    color: var(--color-warm-gray, #6B6560);
-    margin: 0;
-  }
-
-  .scale-bar {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .scale-label {
-    font-weight: 500;
-    font-size: 0.6875rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--color-warm-gray, #6B6560);
-    white-space: nowrap;
-  }
-
-  .scale-track {
-    flex: 1;
-    height: 6px;
-    background: var(--color-cream-dark, #EBE4D8);
-    border-radius: 3px;
-    overflow: hidden;
-  }
-
-  .scale-fill {
-    height: 100%;
-    width: 100%;
-    background: linear-gradient(to right, var(--color-copper, #C17A3A), var(--color-copper-light, #D4944F));
-    border-radius: 3px;
-    opacity: 0.5;
-  }
-
-  .ig-divider {
-    height: 1px;
-    background: var(--color-warm-gray-light, #9B9590);
-    opacity: 0.4;
-    margin-bottom: 0;
-  }
-
-  .guide-row {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1.125rem 0;
-    border-bottom: 1px solid rgba(155, 149, 144, 0.2);
-  }
-
-  .guide-row:last-of-type {
-    border-bottom: none;
-  }
-
-  .dot-container {
-    width: 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .dot {
-    border-radius: 50%;
-    background: var(--color-copper, #C17A3A);
-    opacity: 0.7;
-  }
-
-  .guide-main {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .guide-label {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-weight: 700;
-    font-size: 1.0625rem;
-    color: var(--color-charcoal, #1A1A1A);
-    display: block;
-    margin-bottom: 0.125rem;
-  }
-
-  .guide-desc {
-    font-size: 0.8125rem;
-    color: var(--color-warm-gray, #6B6560);
-  }
-
-  .guide-value {
-    font-weight: 500;
-    font-size: 0.9375rem;
-    color: var(--color-copper, #C17A3A);
-    white-space: nowrap;
-    text-align: right;
-    min-width: 8rem;
-  }
-
-  .ig-footnote {
-    font-size: 0.8125rem;
-    font-style: italic;
-    color: var(--color-warm-gray-light, #9B9590);
-    text-align: center;
-    margin-top: 1.5rem;
-  }
-
-  .ig-footer {
-    text-align: center;
-    padding: 1.25rem 0 0;
-    font-size: 0.75rem;
-    color: var(--color-warm-gray-light, #9B9590);
-  }
-
+  .ig-header { margin-bottom: 1.4rem; padding-bottom: 1.1rem; border-bottom: 1px solid var(--color-rule, #D9CDBD); }
+  .ig-brand { display: block; font: 500 11px/1.4 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--color-crema-deep, #8F5D22); margin-bottom: .6rem; }
+  .ig-title { font: 400 2rem/1.1 var(--font-serif); color: var(--color-ink, #2A1D15); margin: 0 0 .35rem; }
+  .ig-subtitle { font: 400 .875rem/1.5 var(--font-sans); color: var(--color-ink-2, #5B4A3D); margin: 0; }
+  .ig-footnote { font-size: .875rem; line-height: 1.5; color: var(--color-ink-3, #75655A); margin: 1.2rem 0 0; padding-top: .9rem; border-top: 1px dashed var(--color-rule, #D9CDBD); }
   @media (max-width: 480px) {
-    .ig-title {
-      font-size: 1.625rem;
-    }
-    .guide-value {
-      min-width: 5rem;
-      font-size: 0.8125rem;
-    }
+    .infographic-reference { padding: 1.2rem 1.05rem; }
+    .ig-title { font-size: 1.65rem; }
   }
+
+  .scale-bar { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; margin-bottom: 1.2rem; }
+  .scale-label { font: 500 11px/1.4 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--color-ink-3, #75655A); }
+  .scale-track { flex: 1; min-width: 2rem; height: 6px; background: var(--color-paper, #F3EDE3); border-radius: 3px; overflow: hidden; }
+  .scale-fill { height: 100%; width: 100%; background: linear-gradient(to right, var(--color-copper, #C17A3A), var(--color-crema-deep, #8F5D22)); }
+  .guide-row { display: flex; align-items: center; gap: 1rem; padding: 1.1rem 0; border-bottom: 1px solid var(--color-rule, #D9CDBD); }
+  .dot-container { width: 2rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .dot { border-radius: 50%; background: var(--color-copper, #C17A3A); }
+  .guide-main { flex: 1; min-width: 0; }
+  .guide-label { font: 400 1.3rem/1.2 var(--font-serif); color: var(--color-ink, #2A1D15); display: block; margin-bottom: .3rem; }
+  .guide-desc { font-size: .875rem; line-height: 1.5; color: var(--color-ink-2, #5B4A3D); }
+  .guide-value { flex: 0 1 42%; min-width: 0; font: 400 .875rem/1.5 var(--font-mono); color: var(--color-crema-deep, #8F5D22); text-align: right; }
+  @media (max-width: 480px) {
+    .guide-row { flex-wrap: wrap; gap: .5rem .6rem; }
+    .guide-main { flex-basis: 70%; }
+    .guide-value { flex-basis: 100%; text-align: left; }
+    .guide-row:has(.dot-container) .guide-value { padding-left: 2.6rem; }
+  }
+
 </style>

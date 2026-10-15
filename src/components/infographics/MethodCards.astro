@@ -23,8 +23,8 @@ const { title, subtitle, methods, footnote } = Astro.props;
 
 <aside class="infographic-methods" role="complementary" aria-label={title}>
   <header class="ig-header">
-    <span class="ig-brand">JayArr Coffee</span>
-    <h2 class="ig-title">{title}</h2>
+    <span class="ig-brand">Compare</span>
+    <p class="ig-title">{title}</p>
     <p class="ig-subtitle">{subtitle}</p>
   </header>
 
@@ -33,12 +33,12 @@ const { title, subtitle, methods, footnote } = Astro.props;
   <div class="methods-grid">
     {methods.map((method) => (
       <div class="method-card">
-        <h3 class="method-name">{method.name}</h3>
+        <p class="method-name">{method.name}</p>
         <div class="method-metrics">
           {method.metrics.map((metric) => (
             <div class="metric">
               <span class="metric-label">{metric.label}</span>
-              <span class="metric-value" style={metric.color ? `color: ${metric.color}` : ''}>
+              <span class="metric-value" style={metric.color ? `--metric-accent: ${metric.color}` : ''}>
                 {metric.value}
               </span>
             </div>
@@ -53,140 +53,40 @@ const { title, subtitle, methods, footnote } = Astro.props;
 
   {footnote && <p class="ig-footnote">{footnote}</p>}
 
-  <div class="ig-footer">jayarr.coffee</div>
 </aside>
 
 <style>
+  .ig-divider { display: none; }
   .infographic-methods {
+    box-sizing: border-box;
+    min-width: 0;
     max-width: 720px;
     margin: 2.5rem auto;
-    font-family: 'Inter', system-ui, sans-serif;
-    color: var(--color-charcoal, #1A1A1A);
-    -webkit-font-smoothing: antialiased;
+    padding: 1.6rem;
+    background: var(--color-card, #FBF8F3);
+    border: 1px solid var(--color-rule, #D9CDBD);
+    border-radius: 16px;
+    font-family: var(--font-sans);
+    color: var(--color-ink, #2A1D15);
+    overflow-wrap: anywhere;
   }
-
-  .ig-header {
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-
-  .ig-brand {
-    display: block;
-    font-weight: 600;
-    font-size: 0.8125rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--color-copper, #C17A3A);
-    margin-bottom: 0.75rem;
-  }
-
-  .ig-title {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-weight: 900;
-    font-size: 2.25rem;
-    color: var(--color-charcoal, #1A1A1A);
-    line-height: 1.15;
-    margin: 0 0 0.5rem;
-    letter-spacing: -0.02em;
-  }
-
-  .ig-subtitle {
-    font-size: 1rem;
-    color: var(--color-warm-gray, #6B6560);
-    margin: 0;
-  }
-
-  .ig-divider {
-    height: 1px;
-    background: var(--color-warm-gray-light, #9B9590);
-    opacity: 0.4;
-    margin-bottom: 2rem;
-  }
-
-  .methods-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-  }
-
-  .method-card {
-    background: var(--color-cream-dark, #EBE4D8);
-    border-radius: 6px;
-    padding: 1.5rem;
-    text-align: center;
-  }
-
-  .method-name {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-weight: 700;
-    font-size: 1.125rem;
-    color: var(--color-charcoal, #1A1A1A);
-    margin: 0 0 1.25rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 2px solid var(--color-copper, #C17A3A);
-  }
-
-  .method-metrics {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-bottom: 1.25rem;
-  }
-
-  .metric {
-    text-align: center;
-  }
-
-  .metric-label {
-    display: block;
-    font-weight: 500;
-    font-size: 0.625rem;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--color-warm-gray, #6B6560);
-    margin-bottom: 0.25rem;
-  }
-
-  .metric-value {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-weight: 700;
-    font-size: 1.5rem;
-    color: var(--color-copper, #C17A3A);
-  }
-
-  .method-notes {
-    border-top: 1px solid rgba(155, 149, 144, 0.25);
-    padding-top: 0.75rem;
-  }
-
-  .note {
-    font-size: 0.8125rem;
-    color: var(--color-warm-gray, #6B6560);
-    margin: 0.25rem 0;
-    line-height: 1.5;
-  }
-
-  .ig-footnote {
-    font-size: 0.8125rem;
-    font-style: italic;
-    color: var(--color-warm-gray-light, #9B9590);
-    text-align: center;
-    margin-top: 1.5rem;
-  }
-
-  .ig-footer {
-    text-align: center;
-    padding: 1.25rem 0 0;
-    font-size: 0.75rem;
-    color: var(--color-warm-gray-light, #9B9590);
-  }
-
+  .ig-header { margin-bottom: 1.4rem; padding-bottom: 1.1rem; border-bottom: 1px solid var(--color-rule, #D9CDBD); }
+  .ig-brand { display: block; font: 500 11px/1.4 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--color-crema-deep, #8F5D22); margin-bottom: .6rem; }
+  .ig-title { font: 400 2rem/1.1 var(--font-serif); color: var(--color-ink, #2A1D15); margin: 0 0 .35rem; }
+  .ig-subtitle { font: 400 .875rem/1.5 var(--font-sans); color: var(--color-ink-2, #5B4A3D); margin: 0; }
+  .ig-footnote { font-size: .875rem; line-height: 1.5; color: var(--color-ink-3, #75655A); margin: 1.2rem 0 0; padding-top: .9rem; border-top: 1px dashed var(--color-rule, #D9CDBD); }
   @media (max-width: 480px) {
-    .ig-title {
-      font-size: 1.625rem;
-    }
-    .methods-grid {
-      grid-template-columns: 1fr;
-    }
+    .infographic-methods { padding: 1.2rem 1.05rem; }
+    .ig-title { font-size: 1.65rem; }
   }
+
+  .methods-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 1rem; }
+  .method-card { min-width: 0; background: var(--color-paper, #F3EDE3); border: 1px solid var(--color-rule, #D9CDBD); border-radius: 12px; padding: 1.2rem; }
+  .method-name { font: 400 1.5rem/1.15 var(--font-serif); color: var(--color-ink, #2A1D15); margin: 0 0 1rem; padding-bottom: .75rem; border-bottom: 1px solid var(--color-rule, #D9CDBD); }
+  .method-metrics { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.2rem; }
+  .metric-label { display: block; font: 500 11px/1.4 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--color-ink-3, #75655A); margin-bottom: .3rem; }
+  .metric-value { display: inline-block; font: 400 1.125rem/1.4 var(--font-mono); color: var(--color-crema-deep, #8F5D22); border-left: 3px solid var(--metric-accent, var(--color-crema-deep, #8F5D22)); padding-left: .6rem; }
+  .method-notes { border-top: 1px solid var(--color-rule, #D9CDBD); padding-top: .75rem; }
+  .note { font-size: .875rem; color: var(--color-ink-2, #5B4A3D); margin: .3rem 0; line-height: 1.5; }
+
 </style>
