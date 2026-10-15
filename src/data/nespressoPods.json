@@ -359,14 +359,15 @@
       "decaf": true,
       "color_hex": "#8C3B3B",
       "description": "'Ontuoso' means smooth and velvety, which is an accurate description — this gran lungo decaf has a gentler, more rounded texture than most decafs manage to achieve. The malted sweetness is mild, the intensity is low, and the overall effect is a soft, pleasant pour that doesn't demand much from the drinker. A quiet achiever for decaf evenings.",
-      "roast_level": "Light",
+      "roast_level": null,
       "best_for": "Decaf gran lungo for evenings or late afternoon",
       "try_also": "Melozio Decaffeinato",
       "discontinued": true,
       "status": "retired",
       "checked": "2026-10-15",
       "roastiness": null,
-      "source_url": "https://www.nespresso.com/au/en/order/capsules/vertuo/vertuo-decaffeinato-ontuoso-coffee-capsules"
+      "source_url": "https://www.nespresso.com/au/en/order/capsules/vertuo/vertuo-decaffeinato-ontuoso-coffee-capsules",
+      "source_label": "Nespresso Australia's page for this capsule"
     },
     {
       "name": "Double Espresso Scuro",
@@ -426,7 +427,7 @@
       "note": "For Milk",
       "color_hex": "#E9E1D2",
       "description": "Bianco Leggero is engineered from the ground up to disappear gracefully into milk — a soft, all-arabica double espresso with a gentle biscuit sweetness that becomes the backbone of lattes and flat whites rather than fighting them. On its own it's mild and pleasant, but that's not the assignment here. Think of it as the pod that makes your milk drink taste like it came from a proper cafe.",
-      "roast_level": "Light",
+      "roast_level": null,
       "best_for": "Milk drink builders — lattes, flat whites, and cappuccinos",
       "try_also": "Double Espresso Dolce",
       "discontinued": false,
@@ -507,14 +508,15 @@
       "decaf": true,
       "color_hex": "#8B3C3B",
       "description": "Decaf pods often make excuses for themselves, but Decaffeinato Intenso doesn't. The arabica-robusta blend delivers genuine cocoa depth and a faint fruity lift that makes you forget it's decaf — at intensity 7 it punches with enough body to feel satisfying rather than apologetic. A good evening espresso when you want less caffeine.",
-      "roast_level": "Medium",
+      "roast_level": null,
       "best_for": "Evening espresso lovers who want less caffeine",
       "try_also": "Altissio Decaffeinato",
       "discontinued": true,
       "status": "retired",
       "checked": "2026-10-15",
       "roastiness": null,
-      "source_url": "https://www.contact.nespresso.com/faq-3/sg/en"
+      "source_url": "https://www.contact.nespresso.com/faq-3/sg/en",
+      "source_label": "Nespresso Singapore FAQ: the retirement notice"
     },
     {
       "name": "Roasted Hazelnut",
@@ -1047,14 +1049,15 @@
       "decaf": true,
       "color_hex": "#9C7456",
       "description": "Among the most impressive decaf options in the Original line — the floral lift gives it an elegance you don't typically expect from decaf coffee. Stretched across 110ml, those delicate notes have room to develop rather than collapse. Evening coffee drinkers who love lungos will find this a surprisingly satisfying solution.",
-      "roast_level": "Light",
+      "roast_level": null,
       "best_for": "Evening lungo — long cup, floral lift, in decaf",
       "try_also": "Volluto Decaffeinato",
       "discontinued": true,
       "status": "retired",
       "checked": "2026-10-15",
       "roastiness": null,
-      "source_url": "https://www.nespresso.com/recipes/int/en/448LON-long-siesta.html"
+      "source_url": "https://www.nespresso.com/recipes/int/en/448LON-long-siesta.html",
+      "source_label": "A Nespresso recipe page that uses it"
     },
     {
       "name": "India",
@@ -1354,7 +1357,7 @@
       "flavored": true,
       "color_hex": "#F2D6C7",
       "description": "An indulgent flavored pod that nails the maple-pecan combination without tasting artificial. The caramel sweetness of maple syrup weaves through a cereal-forward coffee base, with toasty pecan adding warmth and depth. Works beautifully as a dessert lungo or with steamed milk.",
-      "roast_level": "Medium",
+      "roast_level": null,
       "best_for": "After-dinner treat or sweet morning pick-me-up",
       "try_also": "Caramello",
       "status": "seasonal",
@@ -1373,9 +1376,9 @@
       "aroma": "Cocoa & Roasted",
       "category": "Ispirazione Italiana",
       "color_hex": "#4A2060",
-      "description": "Takes the beloved Arpeggio and dials up the density. Same deep cocoa character but with a thicker, more velvety crema and a more pronounced roast bite. If regular Arpeggio is your go-to but you wish it hit harder, this is the upgrade. Dense enough to cut through milk without losing its identity.",
-      "roast_level": "Medium-Dark",
-      "best_for": "Arpeggio lovers who want more intensity without switching profiles",
+      "description": "Arpeggio's profile with added caffeine. Nespresso lists about 100 mg of caffeine in a 40 ml espresso, against about 65 mg for regular Arpeggio; both are rated intensity 9.",
+      "roast_level": null,
+      "best_for": "Arpeggio drinkers who want more caffeine in the same small cup",
       "try_also": "Ispirazione Firenze Arpeggio",
       "status": "current",
       "checked": "2026-10-15",
@@ -1391,7 +1394,9 @@
         }
       ],
       "source_url": "https://www.nespresso.com/us/en/order/capsules/original/arpeggio-extra-coffee-pods",
-      "discontinued": false
+      "discontinued": false,
+      "note": "Caffeine-enriched: about 100 mg per 40 ml espresso, by Nespresso's US page",
+      "caffeine_boosted": true
     },
     {
       "name": "Rich Chocolate",
@@ -1450,7 +1455,7 @@
       "roast_level": "Light",
       "best_for": "Homemade lattes — built for milk, not for sipping black",
       "try_also": "Bianco Forte",
-      "status": "unlisted",
+      "status": "current",
       "checked": "2026-10-15",
       "roastiness": 1,
       "source_url": "https://www.nespresso.com/us/en/order/capsules/vertuo/bianco-doppio-coffee-pod",
@@ -1829,7 +1834,8 @@
       "checked": "2026-10-15",
       "roastiness": 4,
       "source_url": "https://www.nespresso.com/us/en/order/capsules/original/rio-de-janeiro-espresso-coffee-pods",
-      "discontinued": false
+      "discontinued": false,
+      "note": "Out of stock at Nespresso US when checked, October 15, 2026"
     },
     {
       "name": "Vivida",
@@ -2013,7 +2019,8 @@
       "checked": "2026-10-15",
       "roastiness": null,
       "source_url": "https://www.nespresso.com/us/en/order/capsules/vertuo/starbucks-single-origin-colombia-vertuo-coffee-pods",
-      "discontinued": false
+      "discontinued": false,
+      "note": "Out of stock at Nespresso US when checked, October 15, 2026"
     },
     {
       "name": "Starbucks Blonde Espresso Roast",
@@ -2313,12 +2320,13 @@
       "description": null,
       "roast_level": null,
       "best_for": null,
-      "decaf": false,
+      "decaf": true,
       "status": "current",
       "checked": "2026-10-15",
       "roastiness": 2,
       "source_url": "https://www.nespresso.com/us/en/order/capsules/original/vaniglia-decaffeinato",
-      "discontinued": false
+      "discontinued": false,
+      "flavored": true
     },
     {
       "name": "Kahawa ya Congo",
@@ -2363,7 +2371,7 @@
       "description": null,
       "roast_level": "Medium",
       "best_for": null,
-      "decaf": false,
+      "decaf": true,
       "status": "current",
       "checked": "2026-10-15",
       "roastiness": 3,
@@ -2374,7 +2382,7 @@
       "name": "Miami Espresso",
       "line": "original",
       "cup_size": "espresso",
-      "ml": 25,
+      "ml": 40,
       "intensity": 9,
       "blend": null,
       "aroma": "Cereal",
@@ -2803,7 +2811,7 @@
       "description": null,
       "roast_level": "Medium",
       "best_for": null,
-      "decaf": false,
+      "decaf": true,
       "status": "limited",
       "checked": "2026-10-15",
       "roastiness": 2,
@@ -2850,7 +2858,8 @@
       "checked": "2026-10-15",
       "roastiness": null,
       "source_url": "https://www.nespresso.com/us/en/order/capsules/vertuo/nola-blue-bottle-style-coffee-pod",
-      "discontinued": false
+      "discontinued": false,
+      "flavored": true
     },
     {
       "name": "Active",
