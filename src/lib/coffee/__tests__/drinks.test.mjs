@@ -1,0 +1,40 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { DRINKS, knownVolume, compareRefs, refById } from '../index.ts';
+
+test('every drink has a sourced reference with an https URL and a definition', () => {
+  assert.equal(DRINKS.length, 18);
+  for (const d of DRINKS) {
+    assert.ok(d.definition.length > 20, d.id);
+    assert.ok(d.refs.length >= 1, d.id);
+    for (const r of d.refs) assert.match(r.source.url, /^https:\/\//, r.id);
+  }
+});
+
+test('known volumes never exceed a published vessel capacity (capacity is not fill, but it is a ceiling)', () => {
+  for (const d of DRINKS) for (const r of d.refs) {
+    const v = knownVolume(r);
+    if (r.vessel.capacityMl && v.complete) assert.ok(v.ml <= r.vessel.capacityMl[1] + 0.5, `${r.id}: ${v.ml} > ${r.vessel.capacityMl[1]}`);
+  }
+});
+
+test('ranges are ordered and no layer is both measured and unspecified', () => {
+  for (const d of DRINKS) for (const r of d.refs) for (const l of r.layers) {
+    if (l.ml) assert.ok(l.ml[0] <= l.ml[1], r.id);
+    if (l.g) assert.ok(l.g[0] <= l.g[1], r.id);
+    if (l.unspecified) assert.ok(!l.ml && !l.g, `${r.id} ${l.kind}`);
+    assert.ok(l.ml || l.g || l.unspecified, `${r.id} ${l.kind} has no amount and isn't marked unspecified`);
+  }
+});
+
+test('the INEI cappuccino is 25 ml espresso + about 125 ml frothed milk in a 150–160 ml cup; no thirds', () => {
+  const r = refById('capp-inei');
+  assert.deepEqual(r.layers.map((l) => l.kind), ['espresso', 'frothed']);
+  assert.equal(knownVolume(r).ml, 150);
+});
+
+test('comparisons say something true or admit they can\'t', () => {
+  const s = compareRefs(refById('capp-inei'), refById('espresso-inei'), 'Cappuccino', 'Espresso');
+  assert.match(s, /6× the liquid|espresso has no milk/i);
+  assert.match(compareRefs(refById('gibraltar-bluebottle'), refById('cortado-sbux'), 'Gibraltar', 'Cortado'), /don't publish enough/);
+});
