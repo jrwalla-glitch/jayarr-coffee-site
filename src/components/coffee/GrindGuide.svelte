@@ -13,24 +13,26 @@
   ];
   const rowById = (id: string) => ROWS.find((r) => r.id === id)!;
   const RULER_MAX = 1300;
-  const TOO: Record<string, { fine: string; coarse: string }> = {
-    turkish: { fine: 'Hard to get finer: this is the finest grind there is.', coarse: 'Grounds won\'t stay suspended; thin and sour.' },
-    espresso: { fine: 'Chokes: drips slowly, tastes bitter and harsh.', coarse: 'Gushes in under 20 seconds, tastes sour and thin.' },
-    moka: { fine: 'Sputters early and tastes burnt; can clog the filter.', coarse: 'Weak and sour.' },
-    aeropress: { fine: 'Hard to press, bitter.', coarse: 'Weak and sour; water runs through before you press.' },
-    v60: { fine: 'Slow drawdown past 4 minutes, bitter and dry.', coarse: 'Drains in under 2:30, tastes sour and thin.' },
-    kalita: { fine: 'Slow drawdown, bitter.', coarse: 'Fast drawdown, sour.' },
-    chemex: { fine: 'The thick filter clogs: very slow, bitter.', coarse: 'Drains fast, weak and sour.' },
-    'drip-machine': { fine: 'Basket can overflow; bitter.', coarse: 'Weak and sour.' },
-    'cold-brew': { fine: 'Muddy, hard to filter, bitter.', coarse: 'Weak; needs a longer steep.' },
-    'french-press': { fine: 'Muddy and silty, hard to press, bitter.', coarse: 'Weak and sour.' },
-  };
+  // Common signs, tied to the selected recipe's own target time. Taste is the judge: other things
+  // (water, freshness, pouring) cause the same tastes, so these are hedged and point to the Doctor.
+  const mmss = (sec: number) => (sec >= 3600 ? `${Math.round(sec / 3600)} h` : `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`);
+  function tooText(id: string): { fine: string; coarse: string } {
+    const x = methodById(id as MethodId);
+    if (id === 'turkish') return { fine: 'This is already the finest common grind; it should feel like flour.', coarse: 'Grounds may not stay suspended, and the cup can taste thin.' };
+    if (!x) return { fine: '', coarse: '' };
+    const t = x.timeS;
+    if (id === 'espresso') return { fine: `The shot usually runs longer than about ${t.max} s at the same dose and yield, and can taste bitter or harsh.`, coarse: `The shot usually runs faster than about ${t.min} s, and can taste sour or thin.` };
+    if (id === 'moka') return { fine: 'It can flow slowly or sputter, taste harsh, or clog the filter plate.', coarse: 'Coffee may rush out early and taste weak or sour.' };
+    if (x.family === 'percolation') return { fine: `It usually drains slower than this recipe's ${mmss(t.max)}, and can taste bitter or dry.`, coarse: `It usually drains faster than ${mmss(t.min)}, and can taste sour or thin.` };
+    return { fine: id === 'aeropress' ? 'Pressing gets hard, and the cup can taste bitter.' : 'The cup can turn silty or muddy, harder to press or filter, and sometimes bitter.', coarse: `At the usual ${mmss(t.min)} steep the cup can taste weak or sour.` };
+  }
 
   let method = $state<string>('v60');
   let grinder = $state<'burr' | 'blade'>('burr');
   let mounted = $state(false);
   let m = $derived(rowById(method));
   let mid = $derived((m.grindMicrons.min + m.grindMicrons.max) / 2);
+  let too = $derived(tooText(method));
 
   // Deterministic pseudo-random particles.
   function rng(seed: number) { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
@@ -41,7 +43,7 @@
   }
   // Loupe shows a 3 mm field of view across 240 px (1 µm = 0.08 px).
   const PX_PER_UM = 240 / 3000;
-  let particles = $derived.by(() => {
+  let drawn = $derived.by(() => {
     const rnd = rng(method.length * 7919 + (grinder === 'blade' ? 31 : 0));
     const out: { pts: string; tone: number }[] = [];
     const sizes: number[] = [];
@@ -57,9 +59,18 @@
       const r = (um * PX_PER_UM) / 2;
       out.push({ pts: poly(20 + rnd() * 240, 20 + rnd() * 240, Math.max(0.8, r), rnd), tone: rnd() });
     }
-    return out;
+    return { out, sizes };
   });
-  const xr = (um: number) => 30 + (Math.min(um, RULER_MAX) / RULER_MAX) * 640;
+  let particles = $derived(drawn.out);
+  // Spread of the drawn particles in 100 µm bins (by count, illustrative). Fines: under 100 µm.
+  const BIN = 100, BINS = 16;
+  let hist = $derived.by(() => {
+    const h = Array.from({ length: BINS }, () => 0);
+    for (const um of drawn.sizes) h[Math.min(BINS - 1, Math.floor(um / BIN))]++;
+    const max = Math.max(...h, 1);
+    return h.map((c) => c / max);
+  });
+  let finesShare = $derived(drawn.sizes.filter((u) => u < 100).length / Math.max(1, drawn.sizes.length));
 
   onMount(() => {
     const q = new URLSearchParams(location.search);
@@ -92,7 +103,14 @@
       <line x1="96" x2={96 + 1000 * PX_PER_UM} y1="246" y2="246" stroke="#2a1d15" stroke-width="3" />
       <text x={96 + 500 * PX_PER_UM} y="240" text-anchor="middle" class="sb">1 mm</text>
     </svg>
-    <p class="cap">Magnified about 25×. Illustrative.</p>
+    <p class="cap">Drawn to the 1 mm scale bar. An illustration of a typical spread, not a photo or a measurement.</p>
+    <figure class="spread" aria-label={`Illustrative spread of particle sizes${grinder === 'blade' ? ' from a blade grinder' : ''}: about ${Math.round(finesShare * 100)}% of the drawn particles are fines under 100 micrometres.`}>
+      <div class="bars" aria-hidden="true">
+        {#each hist as hgt, i (i)}<span class="bar" class:fine={i === 0} class:band={i * BIN + BIN > m.grindMicrons.min && i * BIN < m.grindMicrons.max} style:height="{Math.max(2, hgt * 100)}%"></span>{/each}
+      </div>
+      <div class="axis" aria-hidden="true"><span>0 µm</span><span>750</span><span>1500+</span></div>
+      <figcaption>Every grinder makes a spread of sizes, not one size. The range above is where most of the coffee should sit; the dark bar is the fines, which extract fastest. Blade grinders make far more fines and boulders. Illustrative, by count.</figcaption>
+    </figure>
   </div>
 
   <div class="panel">
@@ -109,9 +127,10 @@
     </div>
     {#if grinder === 'blade'}<p class="warn">A blade chops rather than grinds: you get dust and boulders in the same cup, so it extracts unevenly and tastes sour and bitter at once. A burr grinder is the single biggest upgrade.</p>{/if}
     <dl class="too">
-      <div><dt>Too fine</dt><dd>{TOO[method].fine}</dd></div>
-      <div><dt>Too coarse</dt><dd>{TOO[method].coarse}</dd></div>
+      <div><dt>Signs it's too fine</dt><dd>{too.fine}</dd></div>
+      <div><dt>Signs it's too coarse</dt><dd>{too.coarse}</dd></div>
     </dl>
+    <p class="hint">Taste is the judge: water, freshness and pouring cause the same tastes. The <a href={`/tools/fix-my-coffee/${m.brew ? `?method=${method}` : ''}`}>Coffee Doctor</a> helps sort it out.</p>
     <div class="actions">
       <a class="go" href={`/deep-brew/calibrator/?method=${method}`}>Find the setting on your grinder</a>
       {#if m.brew}<a class="ghost" href={`/tools/brew-ratio/?method=${method}${method === 'espresso' ? '&dose=18' : method === 'moka' ? '&dose=15' : '&cup=355'}`}>Brew Guide</a>{:else}<a class="ghost" href="/blog/turkish-coffee-guide/">Turkish coffee guide</a>{/if}
@@ -119,21 +138,21 @@
   </div>
 
   <figure class="ruler">
-    <svg viewBox="0 0 700 {ROWS.length * 26 + 56}" role="img" aria-label="Grind size ranges by brew method on a micrometre scale.">
-      {#each ROWS as mm, i (mm.id)}
-        <g class:on={mm.id === method} class="row" role="button" tabindex="-1" onclick={() => (method = mm.id)} onkeydown={(e) => e.key === 'Enter' && (method = mm.id)}>
-          <text x="0" y={i * 26 + 18} class="rl">{mm.label}</text>
-          <rect x={xr(mm.grindMicrons.min) + 90} y={i * 26 + 7} width={xr(mm.grindMicrons.max) - xr(mm.grindMicrons.min)} height="14" rx="7" />
-        </g>
+    <figcaption class="rh">Grind size by brew method <span>micrometres (µm), typical ranges</span></figcaption>
+    <div class="rows">
+      {#each ROWS as mm (mm.id)}
+        <button type="button" class="rrow" aria-pressed={mm.id === method} onclick={() => (method = mm.id)}>
+          <span class="rl">{mm.label}</span>
+          <span class="track" aria-hidden="true"><span class="fill" style:left="{(mm.grindMicrons.min / RULER_MAX) * 100}%" style:width="{((mm.grindMicrons.max - mm.grindMicrons.min) / RULER_MAX) * 100}%"></span></span>
+          <span class="rv">{mm.grindMicrons.min}–{mm.grindMicrons.max}</span>
+        </button>
       {/each}
-      {#each [0, 250, 500, 750, 1000, 1250] as um (um)}
-        <line x1={xr(um) + 90} x2={xr(um) + 90} y1={ROWS.length * 26 + 4} y2={ROWS.length * 26 + 10} stroke="#2a1d15" />
-        <text x={xr(um) + 90} y={ROWS.length * 26 + 26} text-anchor="middle" class="tick">{um} µm</text>
-      {/each}
-      <line x1={xr(0) + 90} x2={xr(RULER_MAX) + 90} y1={ROWS.length * 26 + 4} y2={ROWS.length * 26 + 4} stroke="#2a1d15" />
-      <text x={xr(0) + 90} y={ROWS.length * 26 + 46} class="tick">finer</text>
-      <text x={xr(RULER_MAX) + 90} y={ROWS.length * 26 + 46} text-anchor="end" class="tick">coarser</text>
-    </svg>
+      <div class="rrow axisrow" aria-hidden="true">
+        <span></span>
+        <span class="track scale">{#each [0, 250, 500, 750, 1000, 1250] as um (um)}<span class="tk" class:minor={um % 500 !== 0} style:left="{(um / RULER_MAX) * 100}%">{um}</span>{/each}</span>
+        <span></span>
+      </div>
+    </div>
   </figure>
 </div>
 
@@ -160,14 +179,33 @@
   .actions { display: flex; gap: 8px; flex-wrap: wrap; }
   .go { background: var(--ink); color: #f3ede3; border-radius: 999px; padding: 13px 20px; font: 600 15px/1 'IBM Plex Sans', sans-serif; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
   .ghost { border: 1px solid var(--rule); background: #fff; color: var(--ink-2); border-radius: 999px; padding: 11px 15px; font: 500 14px/1 'IBM Plex Sans', sans-serif; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
-  .ruler { grid-column: 1 / -1; margin: 0; padding: 16px 22px 14px; border-top: 1px solid var(--rule); }
-  .ruler svg { width: 100%; height: auto; display: block; }
-  .rl { font: 500 12.5px 'IBM Plex Sans', sans-serif; fill: var(--ink-2); }
-  .row { cursor: pointer; }
-  .row rect { fill: #e5d5bf; transition: fill .2s; }
-  .row.on rect { fill: #8f5d22; }
-  .row.on .rl { fill: var(--ink); font-weight: 600; }
-  .tick { font: 400 11px 'IBM Plex Mono', monospace; fill: var(--ink-3); }
+  .ruler { grid-column: 1 / -1; margin: 0; padding: 16px 22px 18px; border-top: 1px solid var(--rule); }
+  .rh { font: 500 11px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px; }
+  .rh span { letter-spacing: .04em; text-transform: none; margin-left: 8px; }
+  .rows { display: grid; gap: 2px; }
+  .rrow { appearance: none; border: 0; background: none; display: grid; grid-template-columns: 110px minmax(0, 1fr) 92px; gap: 12px; align-items: center; padding: 5px 6px; border-radius: 8px; cursor: pointer; text-align: left; color: var(--ink-2); font: inherit; }
+  .rrow:hover { background: rgba(195, 135, 58, .07); }
+  .rrow[aria-pressed='true'] { background: rgba(195, 135, 58, .12); color: var(--ink); }
+  .rl { font: 500 14px 'IBM Plex Sans', sans-serif; }
+  .rrow[aria-pressed='true'] .rl { font-weight: 600; }
+  .track { position: relative; height: 14px; border-radius: 7px; background: #efe6d8; }
+  .fill { position: absolute; top: 0; bottom: 0; border-radius: 7px; background: #d9c09c; }
+  .rrow[aria-pressed='true'] .fill { background: #8f5d22; }
+  .rv { font: 400 13px 'IBM Plex Mono', monospace; color: var(--ink-3); text-align: right; }
+  .axisrow { cursor: default; padding-top: 0; }
+  .axisrow:hover { background: none; }
+  .scale { background: none; height: 18px; border-top: 1px solid var(--ink); border-radius: 0; }
+  .tk { position: absolute; top: 3px; transform: translateX(-50%); font: 400 12px 'IBM Plex Mono', monospace; color: var(--ink-3); }
+  .tk:first-child { transform: none; }
+  .hint { font-size: 13.5px; color: var(--ink-3); margin: 0; }
+  .hint a { color: #7a4e30; }
+  .spread { margin: 14px 0 0; width: 100%; max-width: 340px; }
+  .bars { display: flex; align-items: flex-end; gap: 2px; height: 54px; border-bottom: 1px solid var(--ink); }
+  .bar { flex: 1; background: #d9c09c; border-radius: 2px 2px 0 0; }
+  .bar.band { background: #b48a5c; }
+  .bar.fine { background: #2a1d15; }
+  .spread .axis { display: flex; justify-content: space-between; font: 400 11.5px 'IBM Plex Mono', monospace; color: var(--ink-3); margin-top: 3px; }
+  .spread figcaption { font-size: 12.5px; color: var(--ink-3); margin-top: 6px; }
   button:focus-visible, a:focus-visible { outline: 2px solid var(--crema-deep); outline-offset: 2px; }
-  @media (max-width: 820px) { .gg { grid-template-columns: 1fr; } .loupe-wrap { border-right: 0; border-bottom: 1px solid var(--rule); } .loupe { max-width: 240px; } .name { font-size: 36px; } .too { grid-template-columns: 1fr; } .too div + div { border-left: 0; padding-left: 0; border-top: 1px dashed var(--rule); } .ruler { padding: 12px 8px; } .rl { font-size: 15px; } .tick { font-size: 13px; } }
+  @media (max-width: 820px) { .gg { grid-template-columns: 1fr; } .loupe-wrap { border-right: 0; border-bottom: 1px solid var(--rule); } .loupe { max-width: 240px; } .name { font-size: 36px; } .too { grid-template-columns: 1fr; } .too div + div { border-left: 0; padding-left: 0; border-top: 1px dashed var(--rule); } .ruler { padding: 12px 10px 16px; } .rrow { grid-template-columns: 84px minmax(0, 1fr) 76px; gap: 8px; } .rv { font-size: 12.5px; } .tk.minor { display: none; } }
 </style>
