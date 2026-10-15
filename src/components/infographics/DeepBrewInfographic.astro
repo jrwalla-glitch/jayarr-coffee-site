@@ -1,7 +1,7 @@
 ---
 /**
  * Dark theme wrapper for infographic components.
- * Overrides CSS custom properties so existing light-themed infographic
+ * Maps the shared design tokens so infographic
  * components render correctly on the Deep Brew dark background.
  *
  * Usage in MDX:
@@ -16,14 +16,15 @@
 </div>
 
 <style>
-	.db-ig-wrapper {
-		/* Swap light-theme vars to dark-theme equivalents */
-		--color-charcoal: #E2E8F0;
-		--color-copper: #D27D2D;
-		--color-copper-light: #E89144;
-		--color-warm-gray: #94A3B8;
-		--color-warm-gray-light: #64748B;
-		--color-cream-dark: #161B22;
-		--color-cream: #0B0E14;
-	}
+  .db-ig-wrapper {
+    /* Preserve the dark research context with the shared component token names. */
+    --color-ink: #E2E8F0;
+    --color-ink-2: #C0CAD8;
+    --color-ink-3: #A9B5C4;
+    --color-paper: #0B0E14;
+    --color-card: #161B22;
+    --color-rule: #394453;
+    --color-crema-deep: #E8A566;
+    --color-water: #77C6D8;
+  }
 </style>

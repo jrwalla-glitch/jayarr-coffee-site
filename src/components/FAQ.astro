@@ -29,7 +29,7 @@ const faqSchema = {
 
 <section class="faq-section" aria-label="Frequently Asked Questions">
 	<div class="faq-divider"></div>
-	<h2 class="faq-heading">Frequently Asked Questions</h2>
+	<p class="faq-heading">Frequently Asked Questions</p>
 	<dl class="faq-list">
 		{items.map((item) => (
 			<div class="faq-item">
@@ -42,55 +42,16 @@ const faqSchema = {
 
 
 <style>
-	.faq-section {
-		max-width: 720px;
-		margin: 3rem auto 0;
-	}
-
-	.faq-divider {
-		height: 1px;
-		background: var(--color-charcoal, #1A1A1A);
-		opacity: 0.1;
-		margin-bottom: 2.5rem;
-	}
-
-	.faq-heading {
-		font-family: 'Playfair Display', Georgia, serif;
-		font-weight: 700;
-		font-size: 2rem;
-		color: var(--color-charcoal, #1A1A1A);
-		margin: 0 0 1.5rem;
-		letter-spacing: -0.02em;
-	}
-
-	.faq-list {
-		margin: 0;
-		padding: 0;
-	}
-
-	.faq-item {
-		padding: 1.25rem 0;
-		border-bottom: 1px solid rgba(155, 149, 144, 0.2);
-	}
-
-	.faq-item:last-child {
-		border-bottom: none;
-	}
-
-	.faq-question {
-		font-family: 'Inter', system-ui, sans-serif;
-		font-weight: 600;
-		font-size: 1.0625rem;
-		color: var(--color-charcoal, #1A1A1A);
-		margin: 0 0 0.5rem;
-		line-height: 1.4;
-	}
-
-	.faq-answer {
-		font-family: 'Inter', system-ui, sans-serif;
-		font-size: 1rem;
-		line-height: 1.7;
-		color: var(--color-warm-gray, #6B6560);
-		margin: 0;
-	}
+  .faq-section { box-sizing: border-box; min-width: 0; max-width: 720px; margin: 3rem auto 0; padding: 1.6rem; background: var(--color-card, #FBF8F3); border: 1px solid var(--color-rule, #D9CDBD); border-radius: 16px; font-family: var(--font-sans); color: var(--color-ink, #2A1D15); overflow-wrap: anywhere; }
+  .faq-divider { height: 1px; background: var(--color-rule, #D9CDBD); margin-bottom: 1.2rem; }
+  .faq-heading { font: 400 2rem/1.1 var(--font-serif); color: var(--color-ink, #2A1D15); margin: 0 0 .5rem; }
+  .faq-list { margin: 0; padding: 0; }
+  .faq-item { padding: 1.2rem 0; border-bottom: 1px solid var(--color-rule, #D9CDBD); }
+  .faq-item:last-child { border-bottom: 0; padding-bottom: 0; }
+  .faq-question { font: 600 1.0625rem/1.4 var(--font-sans); color: var(--color-ink, #2A1D15); margin: 0 0 .5rem; }
+  .faq-answer { font: 400 1rem/1.7 var(--font-sans); color: var(--color-ink-2, #5B4A3D); margin: 0; }
+  @media (max-width: 480px) {
+    .faq-section { padding: 1.2rem 1.05rem; }
+    .faq-heading { font-size: 1.65rem; }
+  }
 </style>

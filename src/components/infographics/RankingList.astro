@@ -19,8 +19,8 @@ const { title, subtitle, columns, items, tip } = Astro.props;
 
 <aside class="infographic-ranking" role="complementary" aria-label={title}>
   <header class="ig-header">
-    <span class="ig-brand">JayArr Coffee</span>
-    <h2 class="ig-title">{title}</h2>
+    <span class="ig-brand">At a glance</span>
+    <p class="ig-title">{title}</p>
     <p class="ig-subtitle">{subtitle}</p>
   </header>
 
@@ -53,166 +53,48 @@ const { title, subtitle, columns, items, tip } = Astro.props;
     </div>
   )}
 
-  <div class="ig-footer">jayarr.coffee</div>
 </aside>
 
 <style>
+  .ig-divider { display: none; }
   .infographic-ranking {
+    box-sizing: border-box;
+    min-width: 0;
     max-width: 720px;
     margin: 2.5rem auto;
-    font-family: 'Inter', system-ui, sans-serif;
-    color: var(--color-charcoal, #1A1A1A);
-    -webkit-font-smoothing: antialiased;
+    padding: 1.6rem;
+    background: var(--color-card, #FBF8F3);
+    border: 1px solid var(--color-rule, #D9CDBD);
+    border-radius: 16px;
+    font-family: var(--font-sans);
+    color: var(--color-ink, #2A1D15);
+    overflow-wrap: anywhere;
   }
-
-  .ig-header {
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-
-  .ig-brand {
-    display: block;
-    font-weight: 600;
-    font-size: 0.8125rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--color-copper, #C17A3A);
-    margin-bottom: 0.75rem;
-  }
-
-  .ig-title {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-weight: 900;
-    font-size: 2.25rem;
-    color: var(--color-charcoal, #1A1A1A);
-    line-height: 1.15;
-    margin: 0 0 0.5rem;
-    letter-spacing: -0.02em;
-  }
-
-  .ig-subtitle {
-    font-size: 1rem;
-    color: var(--color-warm-gray, #6B6560);
-    margin: 0;
-  }
-
-  .ig-divider {
-    height: 1px;
-    background: var(--color-warm-gray-light, #9B9590);
-    opacity: 0.4;
-    margin-bottom: 0;
-  }
-
-  .ranking-header {
-    display: none;
-  }
-
-  .ranking-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 1.25rem;
-    padding: 1.25rem 0;
-    border-bottom: 1px solid rgba(155, 149, 144, 0.2);
-  }
-
-  .ranking-row:last-of-type {
-    border-bottom: none;
-  }
-
-  .row-rank {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-weight: 700;
-    font-size: 1.75rem;
-    color: var(--color-copper, #C17A3A);
-    line-height: 1;
-    min-width: 2.5rem;
-    text-align: right;
-    padding-top: 2px;
-  }
-
-  .row-main {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .row-name {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-weight: 700;
-    font-size: 1.125rem;
-    color: var(--color-charcoal, #1A1A1A);
-    display: block;
-    margin-bottom: 0.25rem;
-  }
-
-  .row-highlight {
-    font-size: 0.75rem;
-    font-style: italic;
-    color: var(--color-warm-gray-light, #9B9590);
-  }
-
-  .row-specs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem 1rem;
-    flex: 2;
-    padding-top: 4px;
-  }
-
-  .row-spec {
-    font-size: 0.8125rem;
-    color: var(--color-warm-gray, #6B6560);
-    white-space: nowrap;
-  }
-
-  .row-price {
-    font-weight: 600;
-    font-size: 1rem;
-    color: var(--color-copper, #C17A3A);
-    white-space: nowrap;
-    min-width: 4rem;
-    text-align: right;
-    padding-top: 4px;
-  }
-
-  .ranking-tip {
-    background: var(--color-cream-dark, #EBE4D8);
-    border-radius: 4px;
-    padding: 0.75rem 1.25rem;
-    margin-top: 1.5rem;
-    font-size: 0.8125rem;
-    color: var(--color-warm-gray, #6B6560);
-    text-align: center;
-  }
-
-  .tip-label {
-    font-weight: 600;
-    color: var(--color-copper, #C17A3A);
-  }
-
-  .ig-footer {
-    text-align: center;
-    padding: 1.25rem 0 0;
-    font-size: 0.75rem;
-    color: var(--color-warm-gray-light, #9B9590);
-  }
-
+  .ig-header { margin-bottom: 1.4rem; padding-bottom: 1.1rem; border-bottom: 1px solid var(--color-rule, #D9CDBD); }
+  .ig-brand { display: block; font: 500 11px/1.4 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--color-crema-deep, #8F5D22); margin-bottom: .6rem; }
+  .ig-title { font: 400 2rem/1.1 var(--font-serif); color: var(--color-ink, #2A1D15); margin: 0 0 .35rem; }
+  .ig-subtitle { font: 400 .875rem/1.5 var(--font-sans); color: var(--color-ink-2, #5B4A3D); margin: 0; }
   @media (max-width: 480px) {
-    .ig-title {
-      font-size: 1.625rem;
-    }
-    .ranking-row {
-      flex-wrap: wrap;
-    }
-    .row-specs {
-      flex-basis: 100%;
-      padding-left: 3.75rem;
-    }
-    .row-price {
-      position: absolute;
-      right: 0;
-    }
-    .ranking-row {
-      position: relative;
-    }
+    .infographic-ranking { padding: 1.2rem 1.05rem; }
+    .ig-title { font-size: 1.65rem; }
   }
+
+  .ranking-header { display: none; }
+  .ranking-row { display: grid; grid-template-columns: 2rem minmax(0, 1fr) minmax(0, 1.2fr) minmax(4rem, auto); align-items: start; gap: 1rem; padding: 1.2rem 0; border-bottom: 1px solid var(--color-rule, #D9CDBD); }
+  .row-rank { font: 400 1.4rem/1.2 var(--font-mono); color: var(--color-crema-deep, #8F5D22); }
+  .row-main { min-width: 0; }
+  .row-name { font: 400 1.35rem/1.2 var(--font-serif); color: var(--color-ink, #2A1D15); display: block; margin-bottom: .35rem; }
+  .row-highlight { font-size: .875rem; line-height: 1.5; color: var(--color-ink-3, #75655A); }
+  .row-specs { display: flex; flex-wrap: wrap; gap: .35rem .75rem; min-width: 0; }
+  .row-spec { font-size: .875rem; line-height: 1.5; color: var(--color-ink-2, #5B4A3D); }
+  .row-price { font: 400 .875rem/1.5 var(--font-mono); color: var(--color-crema-deep, #8F5D22); text-align: right; }
+  .ranking-tip { background: var(--color-paper, #F3EDE3); border: 1px solid var(--color-rule, #D9CDBD); border-radius: 12px; padding: 1rem; margin-top: 1.2rem; font-size: .875rem; line-height: 1.6; color: var(--color-ink-2, #5B4A3D); }
+  .tip-label { font: 500 11px/1.4 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--color-crema-deep, #8F5D22); }
+  @media (max-width: 600px) {
+    .ranking-row { grid-template-columns: 1.5rem minmax(0, 1fr) minmax(3rem, auto); gap: .6rem; }
+    .row-rank { font-size: 1.1rem; }
+    .row-specs { grid-column: 2 / -1; grid-row: 2; }
+    .row-price { grid-column: 3; grid-row: 1; }
+  }
+
 </style>
