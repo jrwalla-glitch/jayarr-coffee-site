@@ -11,3 +11,5 @@ export { encodeBrew, decodeBrew } from './share.ts';
 export type { BrewState, Units, Adjust } from './share.ts';
 export { SYMPTOMS, ZONES, LEVERS, nextQuestion, questionsFor, diagnose, placeOnMap, suggestLevers } from './doctor.ts';
 export type { SymptomId, Symptom, Question, QuestionId, DoctorState, Diagnosis, ZoneId, Zone, Lever } from './doctor.ts';
+export { freshness, stages as freshnessStages } from './freshness.ts';
+export type { FreshUse, Storage, StageId, Stage, FreshnessInput, FreshnessResult } from './freshness.ts';

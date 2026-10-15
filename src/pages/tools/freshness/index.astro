@@ -1,116 +1,103 @@
 ---
+import '@fontsource/instrument-serif/400.css';
+import '@fontsource/instrument-serif/400-italic.css';
+import '@fontsource/ibm-plex-sans/400.css';
+import '@fontsource/ibm-plex-sans/500.css';
+import '@fontsource/ibm-plex-sans/600.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
 import BaseHead from '../../../components/BaseHead.astro';
 import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
-import FreshnessTracker from '../../../components/tools/FreshnessTracker.svelte';
+import FreshnessTimeline from '../../../components/coffee/FreshnessTimeline.svelte';
+import { freshnessStages, SOURCES } from '../../../lib/coffee/index.ts';
+
+const title = 'Coffee Freshness: How Long Do Coffee Beans Last?';
+const description = 'Enter the roast date from the bag and see where your beans are: still resting, at their peak, or fading. Peak dates, storage and freezing advice for filter and espresso.';
+const filter = freshnessStages('filter');
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead
-			title="Coffee Freshness Tracker — JayArr Coffee"
-			description="Enter your roast date and see exactly where your beans are in their freshness lifecycle. Know when to brew, when to freeze, and when to buy fresh."
-		/>
+		<BaseHead title={title} description={description} />
 		<script type="application/ld+json" set:html={JSON.stringify({
-			"@context": "https://schema.org",
-			"@type": "WebApplication",
-			"name": "Coffee Freshness Tracker",
-			"url": "https://jayarr.coffee/tools/freshness/",
-			"description": "Enter your roast date and see exactly where your beans are in their freshness lifecycle. Know when to brew, when to freeze, and when to buy fresh.",
-			"applicationCategory": "UtilityApplication",
-			"operatingSystem": "Any",
-			"offers": {
-				"@type": "Offer",
-				"price": "0",
-				"priceCurrency": "USD"
-			},
-			"publisher": {
-				"@type": "Organization",
-				"name": "JayArr Coffee",
-				"url": "https://jayarr.coffee"
-			}
+			'@context': 'https://schema.org', '@type': 'WebApplication', name: 'Coffee Freshness Tracker', url: 'https://jayarr.coffee/tools/freshness/', description,
+			applicationCategory: 'UtilityApplication', operatingSystem: 'Any', offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, publisher: { '@type': 'Organization', name: 'JayArr Coffee', url: 'https://jayarr.coffee' },
 		})}></script>
-		<script type="application/ld+json" set:html={JSON.stringify({
-			"@context": "https://schema.org",
-			"@type": "HowTo",
-			"name": "How to Track Your Coffee Bean Freshness",
-			"description": "Enter your roast date and see exactly where your beans are in their freshness lifecycle \u2014 from too-fresh degassing through peak flavor to declining quality.",
-			"totalTime": "PT1M",
-			"step": [
-						{
-									"@type": "HowToStep",
-									"position": 1,
-									"name": "Enter your roast date",
-									"text": "Find the roast date on your coffee bag (most specialty roasters print it). Enter the date into the tracker."
-						},
-						{
-									"@type": "HowToStep",
-									"position": 2,
-									"name": "See your freshness stage",
-									"text": "The tracker shows which of five stages your beans are in: Too Fresh (days 0-3), Opening Up (days 3-7), Peak Window (days 7-21), Declining (days 21-30), or Stale (30+ days)."
-						},
-						{
-									"@type": "HowToStep",
-									"position": 3,
-									"name": "Follow stage-specific advice",
-									"text": "Each stage includes actionable tips. Peak Window beans should be dialed in and enjoyed. Declining beans benefit from finer grinding. If your beans are past peak, consider freezing your next bag at day 7-10."
-						}
-			]
-})}></script>
 	</head>
-	<body class="bg-cream">
+	<body class="cf-page">
 		<Header />
+		<main>
+			<section class="cf-intro">
+				<a href="/tools/" class="cf-back">← All tools</a>
+				<p class="cf-kicker">Freshness</p>
+				<h1>How fresh are <em>your beans?</em></h1>
+				<p class="cf-lede">Enter the roast date printed on the bag. You'll see whether the coffee is still resting, at its peak or fading, and the dates of its best window.</p>
+			</section>
+			<section class="cf-tool" aria-label="Freshness tracker"><FreshnessTimeline client:load /></section>
 
-		<section class="bg-charcoal pt-32 pb-12 md:pb-16">
-			<div class="max-w-3xl mx-auto px-6 text-center">
-				<a href="/tools/" class="text-xs uppercase tracking-widest text-cream/40 hover:text-copper transition-colors">
-					&larr; All Tools
-				</a>
-				<h1 class="font-serif text-3xl md:text-5xl font-bold text-cream mt-3 mb-3">Freshness Tracker</h1>
-				<p class="text-cream/60 max-w-lg mx-auto leading-relaxed text-sm">
-					Enter your roast date. See where your beans are in their lifecycle — and what to do about it.
-				</p>
-			</div>
-		</section>
-
-		<section class="py-12 md:py-16">
-			<div class="max-w-xl mx-auto px-6">
-				<FreshnessTracker client:load />
-			</div>
-		</section>
-
-
-		<section class="py-16 px-6">
-			<div class="prose mx-auto">
-				<h2>The Three Mechanisms of Coffee Staling</h2>
-				<p>Coffee staling is not a single process but three simultaneous mechanisms, each degrading the cup differently. Understanding all three explains why freshness matters, when to freeze, and why oily beans are a warning sign rather than a quality indicator.</p>
-				<p>The first mechanism is CO2 loss. During roasting, chemical reactions generate enormous amounts of carbon dioxide trapped within the bean’s cellular structure. This CO2 escapes slowly after roasting — rapidly at first, then decelerating. The gas serves two purposes: it contributes to crema formation in espresso, and it acts as a protective blanket that displaces oxygen inside the bean. As CO2 depletes, the bean becomes increasingly vulnerable to oxidation. But too much CO2 is also a problem: beans straight off the roaster (days 0-3) contain so much gas that it disrupts extraction. In espresso, the vigorous outgassing creates back pressure that forces you to grind coarser, which reduces extraction yield. In pour over, excess CO2 produces aggressive, uneven blooms. This is why most specialty roasters rest beans for 48-72 hours before selling.</p>
-				<p>The second mechanism is aroma volatilization. Roasted coffee contains over 800 volatile aromatic compounds that escape at different rates based on their molecular weight and vapor pressure. The lightest, most volatile compounds — floral, fruity, citrus notes — disappear first. The most important single volatile is 2-furfurylthiol, the character-impact compound responsible for the distinctive “roasted coffee” aroma. It has an odor activity value above 2,000 and degrades by 84% within 60 minutes in brewed coffee at serving temperature. Heavier compounds like chocolate, nutty, and caramel notes persist longer. This is why aging coffee doesn’t just become “less good” uniformly — it shifts in character, losing the high notes while retaining the bass.</p>
-				<p>The third mechanism is oil oxidation. Coffee lipids migrate from the interior of the bean to the surface through capillary action. Once on the surface, they’re exposed to oxygen and go rancid. This is why fresh beans have a dry, matte surface while stale beans look glossy and oily. The visual cue is reliable: fresh beans don’t look oily, and oily beans are usually stale. Dark roasts are particularly susceptible because the deeper roast creates more porous, fractured cellular structure that accelerates oil migration.</p>
-				<p>The five enemies of freshness are time, heat, moisture, oxygen, and UV light. Proper storage addresses four of the five: keep beans in an airtight container (oxygen), in a cool place (heat), away from humidity (moisture), and out of direct light (UV). Time is the one you can’t stop — unless you freeze.</p>
-				<p>Freezing works remarkably well. Both Jonathan Gagne and Scott Rao advocate for it, and Rao has found that six-year-old frozen Kenya AA was “really good.” The key is proper sealing: portion into single-dose bags, press out all air, and freeze. Don’t thaw and refreeze. An added benefit: cold beans fracture more uniformly during grinding, potentially improving grind quality. If you’re buying specialty coffee you can’t finish within 2-3 weeks, freezing portions at peak freshness (day 7-10) is the single best preservation strategy available.</p>
-			</div>
-		</section>
-
-		<section class="bg-charcoal py-12">
-			<div class="max-w-3xl mx-auto px-6 text-center">
-				<span class="text-xs uppercase tracking-widest text-copper font-medium">Learn More</span>
-				<h2 class="font-serif text-xl md:text-2xl font-bold text-cream mt-2 mb-6">Related Articles</h2>
-				<div class="flex flex-wrap justify-center gap-4">
-					<a href="/blog/coffee-freshness-roast-to-stale/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						Freshness Science
-					</a>
-					<a href="/blog/single-dose-coffee-freezing-guide/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						Freezing Guide
-					</a>
-					<a href="/blog/how-is-coffee-roasted/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						Roasting Explained
-					</a>
+			<article class="cf-body">
+				<h2>How long do coffee beans last?</h2>
+				<p>Whole beans taste best roughly one to three weeks after roasting, and are worth finishing within about a month. James Hoffmann's rule of thumb is to buy within two weeks of the roast date and use within a month. After that they don't go bad, but the aroma fades and cups turn flat.</p>
+				<div class="cf-table-wrap">
+					<table>
+						<thead><tr><th scope="col">Days since roast</th><th scope="col">Stage</th><th scope="col">What to do</th></tr></thead>
+						<tbody>
+							{filter.map((s) => <tr><td>{s.to === Infinity ? `${s.from}+` : `${s.from}–${s.to}`}</td><th scope="row">{s.label}</th><td>{s.advice}</td></tr>)}
+						</tbody>
+					</table>
 				</div>
-			</div>
-		</section>
+				<p class="cf-note">Filter coffee timings. For espresso, give the beans a few more days of rest; the extra CO₂ in very fresh beans makes shots run unevenly. The boundaries after a month are our guide, not a rule.</p>
 
+				<h2>Why fresh beans need a rest</h2>
+				<p>Roasting fills the beans with carbon dioxide. In the first few days it bubbles out so fast that it pushes water away from the grounds and makes extraction uneven, so a coffee roasted yesterday can taste sharp and thin. A few days' rest lets it settle; after that, aroma compounds slowly escape and oils oxidise, which is why beans peak and then fade. Fresh beans don't look oily; very oily beans are often old or very dark.</p>
+
+				<h2>How to store coffee</h2>
+				<ul>
+					<li><strong>Keep it sealed, cool, dark and dry.</strong> The original bag with the air squeezed out is fine.</li>
+					<li><strong>Never the fridge:</strong> beans pick up smells and moisture condenses on them.</li>
+					<li><strong>Freeze what you won't use in two weeks.</strong> Sealed and frozen, beans keep for months; take out only what you need and don't refreeze.</li>
+					<li><strong>Grind close to brewing.</strong> Ground coffee loses aroma much faster than whole beans, though grinding a batch for drip a few hours ahead is fine.</li>
+				</ul>
+
+				<h2>Related guides</h2>
+				<ul>
+					<li><a href="/blog/coffee-freshness-roast-to-stale/">Coffee freshness from roast to stale</a></li>
+					<li><a href="/blog/how-to-store-coffee-beans/">How to store coffee beans</a></li>
+					<li><a href="/blog/how-to-freeze-coffee-beans/">How to freeze coffee beans</a></li>
+					<li><a href="/blog/bean-resting-for-espresso-freshness-trap/">Resting beans for espresso</a></li>
+				</ul>
+
+				<h2>Sources</h2>
+				<ul class="cf-sources">
+					{['gagne', 'rao', 'hoffmann', 'synthesis'].map((id) => SOURCES[id]).map((s) => <li>{s.author}, <cite>{s.title}</cite>{s.year ? ` (${s.year})` : ''}.</li>)}
+				</ul>
+			</article>
+		</main>
 		<Footer />
 	</body>
 </html>
+
+<style is:global>.cf-page { background: #f3ede3; }</style>
+<style>
+	main { color: #2a1d15; }
+	.cf-intro { max-width: 1180px; margin: 0 auto; padding: 120px 24px 22px; }
+	.cf-back { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; text-decoration: none; }
+	.cf-kicker { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: #8f5d22; margin: 26px 0 0; }
+	h1 { font: 400 clamp(40px, 6vw, 68px)/.98 'Instrument Serif', Georgia, serif; letter-spacing: -.01em; margin: 10px 0 12px; }
+	h1 em { font-style: italic; color: #7a4e30; }
+	.cf-lede { font: 400 17px/1.5 'IBM Plex Sans', system-ui, sans-serif; color: #5b4a3d; max-width: 60ch; margin: 0; }
+	.cf-tool { max-width: 1180px; margin: 0 auto; padding: 8px 24px 40px; }
+	.cf-body { max-width: 760px; margin: 0 auto; padding: 24px 24px 72px; font: 400 17px/1.7 'IBM Plex Sans', system-ui, sans-serif; }
+	.cf-body h2 { font: 400 34px/1.1 'Instrument Serif', Georgia, serif; margin: 44px 0 12px; }
+	.cf-body a { color: #7a4e30; text-underline-offset: 3px; }
+	.cf-table-wrap { overflow-x: auto; border: 1px solid #d9cdbd; border-radius: 12px; background: #fbf8f3; }
+	table { width: 100%; border-collapse: collapse; font-size: 15px; }
+	th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid #e6dccd; vertical-align: top; }
+	thead th { font: 500 11px/1 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; }
+	td:first-child { font-family: 'IBM Plex Mono', monospace; white-space: nowrap; }
+	tr:last-child th, tr:last-child td { border-bottom: 0; }
+	.cf-note, .cf-sources { font-size: 14.5px; color: #5b4a3d; }
+	@media (max-width: 640px) { .cf-intro { padding: 96px 16px 18px; } .cf-tool { padding: 4px 12px 32px; } .cf-body { padding: 16px 16px 56px; } }
+</style>
