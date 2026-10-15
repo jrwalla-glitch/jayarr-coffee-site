@@ -31,7 +31,7 @@ export interface RawPod {
 
 export const LINES: Record<Line, { label: string; short: string; how: string }> = {
   original: { label: 'Original', short: 'Small capsules, pressure-brewed', how: 'Espresso, ristretto and lungo from a pump, like a small espresso machine.' },
-  vertuo: { label: 'Vertuo', short: 'Dome capsules, spun and barcoded', how: 'The machine reads a barcode and spins the capsule; sizes run from espresso to a large mug.' },
+  vertuo: { label: 'Vertuo', short: 'Dome capsules, spun and barcoded', how: 'The machine reads a barcode and spins the capsule; cups run from a 25 ml ristretto to a 355 ml carafe-size pour.' },
 };
 export const ROASTS: Roast[] = ['Light', 'Medium', 'Medium-Dark', 'Dark'];
 
@@ -76,6 +76,20 @@ export const AROMA_FAMILIES: { id: string; label: string; words: RegExp }[] = [
 ];
 export const aromaFamilies = (p: Pick<RawPod, 'aroma'>) => AROMA_FAMILIES.filter((f) => f.words.test(p.aroma)).map((f) => f.id);
 
+/**
+ * The range a capsule belongs to, with Nespresso's near-duplicate labels joined ("Starbucks" and
+ * "Starbucks® by Nespresso"; "Gran Lungo" and "Gran Lungo (5 oz)"), so a filter finds the whole family.
+ */
+const RANGE_JOIN: [RegExp, string][] = [
+  [/^Starbucks/, 'Starbucks'],
+  [/^Master (Origin|Crafted Single Origins)$/, 'Master Origins'],
+  [/^Ristretto & Espresso/, 'Espresso'],
+  [/^Gran Lungo/, 'Gran Lungo'],
+  [/^(XL Coffees|Alto)$/, 'Alto and XL'],
+  [/^(Festive )?Limited Edition$/, 'Limited Edition'],
+];
+export const rangeOf = (p: Pick<RawPod, 'category'>) => RANGE_JOIN.find(([re]) => re.test(p.category))?.[1] ?? p.category;
+
 export interface PodFilters {
   line: Line; query?: string; roast?: Roast | 'all'; family?: string | 'all'; category?: string | 'all';
   decaf?: boolean; flavored?: 'any' | 'only' | 'none';
@@ -88,7 +102,7 @@ export function filterPods(pods: Pod[], f: PodFilters): Pod[] {
     && (f.includeUnlisted || onSale(p))
     && (!f.roast || f.roast === 'all' || p.roast_level === f.roast)
     && (!f.family || f.family === 'all' || aromaFamilies(p).includes(f.family))
-    && (!f.category || f.category === 'all' || p.category === f.category)
+    && (!f.category || f.category === 'all' || rangeOf(p) === f.category)
     && (!f.decaf || p.decaf)
     && (!f.flavored || f.flavored === 'any' || (f.flavored === 'only' ? !!p.flavored : !p.flavored))
     && (!q || [p.name, p.aroma, p.category, p.description, p.best_for].some((s) => s?.toLowerCase().includes(q))));
@@ -128,15 +142,15 @@ export function podFromId(pods: Pod[], id: string): Pod | null {
   const m = /^(original|vertuo):(.+)$/.exec(id);
   return m ? byName(pods, m[1] as Line, m[2]) : null;
 }
-/** Saved flight ids, resolved through renames, deduplicated and capped at three. */
+/** Saved flight ids, resolved through renames, deduplicated and capped at three per system. */
 export function cleanFlight(pods: Pod[], ids: unknown): string[] {
   if (!Array.isArray(ids)) return [];
-  const out: string[] = [];
+  const out: Pod[] = [];
   for (const x of ids) {
     const p = typeof x === 'string' ? podFromId(pods, x) : null;
-    if (p && !out.includes(p.id)) out.push(p.id);
+    if (p && !out.includes(p) && out.filter((q) => q.line === p.line).length < 3) out.push(p);
   }
-  return out.slice(0, 3);
+  return out.map((p) => p.id);
 }
 
 /** "Try also": the suggested pod in the same system, if it's in the catalogue and still made. */

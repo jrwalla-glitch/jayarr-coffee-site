@@ -366,7 +366,8 @@
       "status": "retired",
       "checked": "2026-10-15",
       "roastiness": null,
-      "source_url": "https://www.nespresso.com/au/en/order/capsules/vertuo/vertuo-decaffeinato-ontuoso-coffee-capsules"
+      "source_url": "https://www.nespresso.com/au/en/order/capsules/vertuo/vertuo-decaffeinato-ontuoso-coffee-capsules",
+      "source_label": "Nespresso Australia's page for this capsule"
     },
     {
       "name": "Double Espresso Scuro",
@@ -1055,7 +1056,8 @@
       "status": "retired",
       "checked": "2026-10-15",
       "roastiness": null,
-      "source_url": "https://www.nespresso.com/recipes/int/en/448LON-long-siesta.html"
+      "source_url": "https://www.nespresso.com/recipes/int/en/448LON-long-siesta.html",
+      "source_label": "A Nespresso recipe page that uses it"
     },
     {
       "name": "India",
@@ -1453,7 +1455,7 @@
       "roast_level": "Light",
       "best_for": "Homemade lattes — built for milk, not for sipping black",
       "try_also": "Bianco Forte",
-      "status": "unlisted",
+      "status": "current",
       "checked": "2026-10-15",
       "roastiness": 1,
       "source_url": "https://www.nespresso.com/us/en/order/capsules/vertuo/bianco-doppio-coffee-pod",
@@ -1832,7 +1834,8 @@
       "checked": "2026-10-15",
       "roastiness": 4,
       "source_url": "https://www.nespresso.com/us/en/order/capsules/original/rio-de-janeiro-espresso-coffee-pods",
-      "discontinued": false
+      "discontinued": false,
+      "note": "Out of stock at Nespresso US when checked, October 15, 2026"
     },
     {
       "name": "Vivida",
@@ -2016,7 +2019,8 @@
       "checked": "2026-10-15",
       "roastiness": null,
       "source_url": "https://www.nespresso.com/us/en/order/capsules/vertuo/starbucks-single-origin-colombia-vertuo-coffee-pods",
-      "discontinued": false
+      "discontinued": false,
+      "note": "Out of stock at Nespresso US when checked, October 15, 2026"
     },
     {
       "name": "Starbucks Blonde Espresso Roast",
@@ -2316,12 +2320,13 @@
       "description": null,
       "roast_level": null,
       "best_for": null,
-      "decaf": false,
+      "decaf": true,
       "status": "current",
       "checked": "2026-10-15",
       "roastiness": 2,
       "source_url": "https://www.nespresso.com/us/en/order/capsules/original/vaniglia-decaffeinato",
-      "discontinued": false
+      "discontinued": false,
+      "flavored": true
     },
     {
       "name": "Kahawa ya Congo",
@@ -2366,7 +2371,7 @@
       "description": null,
       "roast_level": "Medium",
       "best_for": null,
-      "decaf": false,
+      "decaf": true,
       "status": "current",
       "checked": "2026-10-15",
       "roastiness": 3,
@@ -2377,7 +2382,7 @@
       "name": "Miami Espresso",
       "line": "original",
       "cup_size": "espresso",
-      "ml": 25,
+      "ml": 40,
       "intensity": 9,
       "blend": null,
       "aroma": "Cereal",
@@ -2806,7 +2811,7 @@
       "description": null,
       "roast_level": "Medium",
       "best_for": null,
-      "decaf": false,
+      "decaf": true,
       "status": "limited",
       "checked": "2026-10-15",
       "roastiness": 2,
@@ -2853,7 +2858,8 @@
       "checked": "2026-10-15",
       "roastiness": null,
       "source_url": "https://www.nespresso.com/us/en/order/capsules/vertuo/nola-blue-bottle-style-coffee-pod",
-      "discontinued": false
+      "discontinued": false,
+      "flavored": true
     },
     {
       "name": "Active",

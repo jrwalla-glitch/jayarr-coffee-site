@@ -114,3 +114,24 @@ test('roast categories the research could not verify stay unknown', () => {
   for (const [line, name] of [['original', 'Maple Pecan'], ['vertuo', 'Decaffeinato Ontuoso'], ['vertuo', 'Bianco Leggero'], ['vertuo', 'Decaffeinato Intenso'], ['original', 'Vivalto Lungo Decaffeinato'], ['original', 'Arpeggio Extra']])
     assert.equal(pods.find((p) => p.line === line && p.name === name).roast_level, null, `${line} ${name}`);
 });
+
+test('decaf and flavour flags follow the capsule names and Nespresso\'s own wording', () => {
+  for (const p of pods.filter((x) => /Decaffeinato|Decaf\b/i.test(x.name))) assert.equal(p.decaf, true, `${p.line} ${p.name}`);
+  assert.equal(pods.find((p) => p.name === 'Vaniglia Decaffeinato').flavored, true);
+});
+
+test('a flight keeps up to three capsules per system, and the other system\'s flight survives', async () => {
+  const { catalog, cleanFlight } = await import('../pods.ts');
+  const all = catalog(pods);
+  const ids = ['original:Colombia', 'original:Volluto', 'original:Cosi', 'original:Napoli', 'vertuo:Colombia'];
+  assert.deepEqual(cleanFlight(all, ids), ['original:Colombia', 'original:Volluto', 'original:Cosi', 'vertuo:Colombia']);
+});
+
+test('near-duplicate Nespresso ranges join into one filter value', async () => {
+  const { rangeOf } = await import('../pods.ts');
+  assert.equal(rangeOf({ category: 'Starbucks® by Nespresso' }), 'Starbucks');
+  assert.equal(rangeOf({ category: 'Starbucks' }), 'Starbucks');
+  assert.equal(rangeOf({ category: 'Gran Lungo (5 oz)' }), 'Gran Lungo');
+  assert.equal(rangeOf({ category: 'Festive Limited Edition' }), 'Limited Edition');
+  assert.equal(rangeOf({ category: 'Barista Creations' }), 'Barista Creations');
+});

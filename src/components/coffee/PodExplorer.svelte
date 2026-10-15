@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { onMount, tick } from 'svelte';
+  import { onMount, tick, untrack } from 'svelte';
   import podData from '../../data/nespressoPods.json';
-  import { catalog, sizeRows, filterPods, wall, tryAlso, similar, podFromParam, cleanFlight, buySearch, blendText, onSale, sizeName, STATUS_NOTE, LINES, ROASTS, AROMA_FAMILIES } from '../../lib/coffee/pods.ts';
+  import { catalog, sizeRows, filterPods, wall, tryAlso, similar, podFromParam, cleanFlight, rangeOf, buySearch, blendText, onSale, sizeName, STATUS_NOTE, LINES, ROASTS, AROMA_FAMILIES } from '../../lib/coffee/pods.ts';
   import type { Line, Pod, Roast, RawPod, SizeRow } from '../../lib/coffee/pods.ts';
 
   // The capsule wall: pick your machine, then every capsule it takes, by cup size and intensity.
   // Picking one pours its cup beside the system's other sizes. Every cup drawing on the page uses
-  // one scale (414 ml, the largest capsule's cup, is the full height), so systems compare honestly.
+  // one scale (the largest capsule's cup, 355 ml, is the full height), so systems compare honestly.
   const pods = catalog(podData.pods as RawPod[]);
   const COLS = 13;
   const LINE_IDS: Line[] = ['original', 'vertuo'];
@@ -43,7 +43,9 @@
   let roastsHere = $derived(ROASTS.filter((r) => all.some((p) => p.roast_level === r)));
   let shownIds = $derived(new Set(shown.map((p) => p.id)));
   let placed = $derived(rows.length ? wall(all, rows) : []);
-  let categories = $derived(line ? [...new Set(pods.filter((p) => p.line === line).map((p) => p.category))].sort() : []);
+  let categories = $derived(line ? [...new Set(pods.filter((p) => p.line === line).map(rangeOf))].sort() : []);
+  // A ?pod= link that matched nothing: said once, instead of silently showing the chooser.
+  let badLink = $state(false);
   let selected = $derived(selectedId ? pods.find((p) => p.id === selectedId) ?? null : null);
   let suggestion = $derived(selected ? tryAlso(pods, selected) : null);
   // No editorial suggestion: the nearest capsule on the same row, labelled as such (design gate r2).
@@ -53,7 +55,12 @@
   let filtering = $derived(!!query.trim() || roast !== 'all' || family !== 'all' || category !== 'all' || decaf || flavored !== 'any');
 
   function choose(l: Line) {
-    if (l !== line) { selectedId = null; category = 'all'; }
+    if (l !== line) {
+      selectedId = null; category = 'all';
+      // A roast the other system doesn't use would leave an empty wall behind a blank select.
+      if (roast !== 'all' && !pods.some((p) => p.line === l && p.roast_level === roast)) roast = 'all';
+    }
+    badLink = false;
     line = l;
     try { localStorage.setItem('jayarr-pods-machine', l); } catch { /* storage unavailable */ }
   }
@@ -80,9 +87,10 @@
     if (flight.includes(p.id)) flight = flight.filter((x) => x !== p.id);
     else {
       const same = flight.filter((id) => pods.find((x) => x.id === id)?.line === p.line);
-      // Three is the most a flight holds: ask for a removal rather than dropping one silently.
+      // Three per system is the most a flight holds: ask for a removal rather than dropping one silently.
+      // The other system's flight is kept for when you switch back.
       if (same.length >= 3) { flightFull = p.name; return; }
-      flight = [...same, p.id];
+      flight = [...flight, p.id];
     }
     flightFull = null;
     try { localStorage.setItem('jayarr-pods-flight', JSON.stringify(flight)); } catch { /* storage unavailable */ }
@@ -91,6 +99,7 @@
   onMount(() => {
     const q = new URLSearchParams(location.search);
     const fromLink = podFromParam(pods, q.get('pod'));
+    if (q.get('pod') && !fromLink) badLink = true;
     const l = q.get('line');
     let saved: string | null = null;
     try { saved = localStorage.getItem('jayarr-pods-machine'); flight = cleanFlight(pods, JSON.parse(localStorage.getItem('jayarr-pods-flight') ?? '[]')); } catch { /* storage unavailable */ }
@@ -110,6 +119,12 @@
     if (selected) q.set('pod', selected.slug);
     history.replaceState(history.state, '', q.toString() ? `${location.pathname}?${q}` : location.pathname);
   });
+  // When a filter change removes the open capsule, close it: the details never show a capsule the wall has dropped.
+  $effect(() => {
+    void [query, roast, family, category, decaf, flavored, includeUnlisted];
+    untrack(() => { if (selectedId && line && !shownIds.has(selectedId)) selectedId = null; });
+  });
+  const fmtDate = (iso?: string) => iso ? new Date(`${iso}T12:00:00`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'October 2026';
   function onKey(e: KeyboardEvent) { if (e.key === 'Escape' && selectedId) closeDetail(); }
 
   const label = (p: Pod) => `${p.name}: ${p.size}, ${p.ml} ml, ${p.intensity ? `intensity ${p.intensity}` : 'no intensity rating'}${STATUS_NOTE[p.status] ? `, ${STATUS_NOTE[p.status].toLowerCase()}` : ''}${flight.includes(p.id) ? ', in your tasting flight' : ''}`;
@@ -170,7 +185,7 @@
   {/if}
 {/snippet}
 
-<!-- One tall glass (414 ml when full), filled to a cup's volume: the page's one scale, in miniature. -->
+<!-- One tall glass (the largest cup when full), filled to a cup's volume: the page's one scale, in miniature. -->
 {#snippet glassAt(ml: number, H: number)}
   {@const h = Math.max(2.5, (ml / ML_TOP) * (H - 2))}
   <svg viewBox="0 0 16 {H + 2}" width="16" height={H + 2} aria-hidden="true" class="glass1">
@@ -188,11 +203,11 @@
   {/if}
 {/snippet}
 
-<!-- The cups a system makes, at the page's one scale: so 414 ml looks ten times 40 ml, on either system. -->
+<!-- The cups a system makes, at the page's one scale: so 355 ml looks nine times 40 ml, on either system. -->
 {#snippet ladder(fill: Pod | null, H: number, rws: SizeRow[], names = true, reference = false)}
   {@const W = 28}
   {@const gap = 18}
-  <!-- Original's cups are small next to Vertuo's: a faint 414 ml outline shows why (design gate). -->
+  <!-- Original's cups are small next to Vertuo's: a faint outline of the largest Vertuo cup shows why (design gate). -->
   {@const ref = reference && Math.max(...rws.map((r) => r.ml)) < ML_TOP}
   {@const cols = rws.length + (ref ? 1 : 0)}
   <svg viewBox="0 0 {cols * (W + gap)} {H + (names ? 32 : 18)}" width={cols * (W + gap)} height={H + (names ? 32 : 18)} class="ladder" role="img" aria-label={fill ? `${fill.name} pours ${fill.ml} ml, drawn beside the other ${LINES[fill.line].label} cup sizes at one scale.` : `${rws.map((r) => `${r.name} ${r.ml} ml`).join(', ')}, drawn at one scale.`}>
@@ -218,6 +233,7 @@
 {/snippet}
 
 <div class="px">
+  {#if badLink}<p class="full badlink" role="status">That capsule link didn't match a capsule we list, so nothing is open.{line ? '' : ' Pick your machine to browse.'}</p>{/if}
   {#if !line}
     <div class="ask">
       <h3>Which machine do you have?</h3>
@@ -228,7 +244,7 @@
             <span class="art">{@render bigCapsule(l, l === 'original' ? '#7a4e30' : '#3b2214', `ask-${l}`, 84)}</span>
             <b>{LINES[l].label}</b>
             <span class="how">{LINES[l].how}</span>
-            <span class="askladder">{@render ladder(null, 72, sizeRows(pods, l), false)}<small>its cup sizes in ml, at one scale</small></span>
+            <span class="askladder">{@render ladder(null, 72, sizeRows(pods, l), true)}<small>its cup sizes in ml, at one scale</small></span>
             <small class="n">{pods.filter((p) => p.line === l && onSale(p)).length} capsules →</small>
           </button>
         {/each}
@@ -335,11 +351,11 @@
               <div>
                 <p class="kick">{LINES[selected.line].label} · {selected.size} · {selected.ml} ml</p>
                 <h3 tabindex="-1" bind:this={headEl}>{selected.name}</h3>
-                {#if selected.category !== selected.size || selected.decaf || selected.flavored}<p class="cat">{[selected.category !== selected.size ? selected.category : '', selected.decaf ? 'Decaf' : '', selected.flavored ? 'Flavoured' : ''].filter(Boolean).join(' · ')}</p>{/if}
+                {#if rangeOf(selected) !== selected.size || selected.decaf || selected.flavored}<p class="cat">{[rangeOf(selected) !== selected.size ? rangeOf(selected) : '', selected.decaf ? 'Decaf' : '', selected.flavored ? 'Flavoured' : ''].filter(Boolean).join(' · ')}</p>{/if}
               </div>
             </div>
             {#if selected.status === 'retired'}<p class="gone-note">Nespresso has discontinued this capsule, so it may be hard to find. Its tasting notes are from our earlier catalogue and weren't rechecked.</p>
-            {:else if selected.status === 'unlisted'}<p class="gone-note">Not in Nespresso's current US range when we checked ({selected.checked ?? 'October 2026'}). It may be gone, or between seasons.</p>
+            {:else if selected.status === 'unlisted'}<p class="gone-note">Not in Nespresso's current US range when we checked on {fmtDate(selected.checked)}. It may be gone, or between seasons.</p>
             {:else if selected.status !== 'current'}<p class="tag-note">{STATUS_NOTE[selected.status]}: on sale for now, while Nespresso has it.</p>{/if}
             {#if selected.note}<p class="tag-note">{selected.note}</p>{/if}
             <div class="meters">
@@ -350,13 +366,14 @@
               </div>
               <div><span class="lbl">Roast</span>
                 {#if selected.roastiness}
-                  <span class="bar roast" role="img" aria-label="Roastiness {selected.roastiness} of 5, by Nespresso">{#each Array.from({ length: 5 }, (_, i) => i) as i (i)}<i class:on={i < selected.roastiness}></i>{/each}</span><span class="mono">{selected.roast_level ?? ''}{selected.roast_level ? ' · ' : ''}{selected.roastiness}<small>/5</small></span>
-                {:else if selected.roast_level}<span class="mono quiet">{selected.roast_level}, by Nespresso's filter</span><span></span>
+                  <span class="bar roast" role="img" aria-label="Roastiness {selected.roastiness} of 5, by Nespresso">{#each Array.from({ length: 5 }, (_, i) => i) as i (i)}<i class:on={i < selected.roastiness}></i>{/each}</span><span class="mono">{selected.roastiness}<small>/5</small></span>
                 {:else}<span class="mono quiet">Not published</span><span></span>{/if}
               </div>
             </div>
             <dl class="facts">
               <div><dt>Aroma</dt><dd>{selected.aroma}</dd></div>
+              <!-- Nespresso's US roast filter is a separate, coarser label from its 1–5 roastiness scale. -->
+              {#if selected.roast_level}<div><dt>Roast filter</dt><dd>{selected.roast_level}, in Nespresso's US filter</dd></div>{/if}
               {#if selected.blend}<div><dt>Beans</dt><dd>{blendText(selected.blend)}</dd></div>{/if}
               {#if alsoBrews(selected).length}<div><dt>Also brews</dt><dd>{alsoBrews(selected).join(', ')}</dd></div>{/if}
             </dl>
@@ -502,6 +519,7 @@
 
   /* The wall turned on its side, for phones. */
   .thead, .trow { display: grid; grid-template-columns: 30px repeat(var(--n), minmax(0, 1fr)); }
+  .wall.tall .thead { position: sticky; top: 60px; z-index: 3; background: var(--card, #fbf8f3); padding-top: 6px; }
   .thead { padding-bottom: 6px; border-bottom: 1px solid var(--rule); text-align: center; align-items: end; }
   .thead .corner { font: 500 10.5px 'IBM Plex Mono', monospace; color: var(--ink-3); text-align: left; }
   .thead .th { display: grid; justify-items: center; gap: 1px; }
@@ -539,6 +557,7 @@
   .detail h3 { font: 400 38px/1.02 'Instrument Serif', Georgia, serif; margin: 4px 0 2px; }
   .cat { margin: 0; color: var(--ink-3); font-size: 14px; }
   .tag-note { margin: 10px 0 0; font-size: 13.5px; color: var(--ink-2); }
+  .badlink { margin: 0 0 12px; }
   .full { margin: 6px 0 4px; padding: 7px 10px; border-radius: 8px; background: #fff3e0; border: 1px solid #e9c48f; font-size: 13.5px; color: var(--ink); }
   h3[tabindex='-1']:focus { outline: none; }
   h3[tabindex='-1']:focus-visible { outline: 2px solid var(--crema-deep); outline-offset: 2px; }
