@@ -80,8 +80,27 @@
     if (am && tm && am !== tm) d.push(`${MILK[am].toLowerCase()} rather than ${MILK[tm].toLowerCase()}`);
     if (!!a.machine.grinder.builtIn !== !!top.machine.grinder.builtIn) d.push(a.machine.grinder.builtIn ? 'grinder built in' : 'separate grinder');
     if (a.machine.heating.simultaneousBrewSteam && !top.machine.heating.simultaneousBrewSteam) d.push('brews and steams at once');
+    // What the difference buys, from the makers' own specs: grind steps, heat-up, tank, portafilter.
+    const gs = (m: Machine) => { const n = String(m.grinder.settings ?? '').match(/\d+/); return m.grinder.builtIn && n ? Number(n[0]) : null; };
+    const ga = gs(a.machine), gt = gs(top.machine);
+    if (ga && gt && ga !== gt) d.push(`${ga} grind settings, not ${gt}`);
+    const ha = a.machine.heating.heatUpSeconds, ht = top.machine.heating.heatUpSeconds;
+    if (ha && (!ht || ha < ht) && ha <= 10) d.push(`ready in about ${ha} seconds, by the maker's figure`);
+    if (a.machine.tankL && top.machine.tankL && a.machine.tankL - top.machine.tankL >= 0.5) d.push(`a bigger tank (${a.machine.tankL} L, not ${top.machine.tankL} L)`);
+    if (a.machine.portafilterMm && top.machine.portafilterMm && a.machine.portafilterMm !== top.machine.portafilterMm) d.push(`a ${a.machine.portafilterMm} mm portafilter, not ${top.machine.portafilterMm} mm`);
     if (a.score > top.score) d.push('a weaker fit on what you asked');
+    if (d.length === 1 && dp > 0) d.push('with no difference in the specs we track');
     return `Against #1: ${d.join('; ')}.`;
+  }
+  // Why a machine isn't drawn: Breville's listed sizes conflict with its own guidance (research/BREVILLE_DIMS_CHECK.md),
+  // or the maker publishes none we could find.
+  function sizeWhy(ms: M[]): string {
+    const names = (xs: M[]) => xs.map((m) => m.name).join(xs.length === 2 ? ' and ' : ', ').replace(/, ([^,]*)$/, ' and $1');
+    const unclear = ms.filter((m) => m.dimsUnclear), none = ms.filter((m) => !m.dimsUnclear);
+    const out: string[] = [];
+    if (unclear.length) out.push(`the sizes ${unclear[0].brand} lists for the ${names(unclear)} conflict with its own clearance guidance, so ${unclear.length === 1 ? 'it isn\'t' : 'they aren\'t'} drawn to scale or tested against a width.`);
+    if (none.length) out.push(`the maker${none.length === 1 ? '' : 's'} of the ${names(none)} publish${none.length === 1 ? 'es' : ''} no size we could find.`);
+    return out.map((t) => t[0].toUpperCase() + t.slice(1)).join(' ');
   }
   // "Breville suggests 16.0 in of clearance under cabinets for all three", grouped by brand and clearance.
   function clearanceText(ms: M[]): string {
@@ -334,10 +353,10 @@
             {/each}
             <g class="bar"><line x1="12" y1={c.H - 10} x2={12 + c.barPx} y2={c.H - 10} /><line x1="12" y1={c.H - 14} x2="12" y2={c.H - 6} /><line x1={12 + c.barPx} y1={c.H - 14} x2={12 + c.barPx} y2={c.H - 6} /><text x={18 + c.barPx} y={c.H - 6} class="barl">{c.barLabel}</text></g>
           </svg>
-          <p class="cap">{counter.compact ? `Numbered as the cards below: ${matches.map((x, i) => `${i + 1} ${x.machine.name}`).join(', ')}. ` : ''}Drawn to one scale from the makers' published sizes, width × height{needs.widthCm ? ', each in the width you gave' : ''}.{matches.some((x) => !x.machine.dims) ? ` Dashed: ${matches.filter((x) => !x.machine.dims).map((x) => x.machine.name).join(' and ')} ${matches.filter((x) => !x.machine.dims).length === 1 ? 'has' : 'have'} no clear published size, so ${matches.filter((x) => !x.machine.dims).length === 1 ? 'it is' : 'they are'} outlined at the height of the clearance the maker suggests, at a nominal width.` : ''}</p>
+          <p class="cap">{counter.compact ? `Numbered as the cards below: ${matches.map((x, i) => `${i + 1} ${x.machine.name}`).join(', ')}. ` : ''}Drawn to one scale from the makers' published sizes, width × height{needs.widthCm ? ', each in the width you gave' : ''}.{matches.some((x) => !x.machine.dims) ? ` Dashed: ${sizeWhy(matches.filter((x) => !x.machine.dims).map((x) => x.machine as M))} Each is outlined at the clearance its maker suggests, at a nominal width.` : ''}</p>
           {:else}
             <!-- nothing with a clear published size: no drawing, and the clearance the makers suggest instead -->
-            <p class="cap nodraw">No drawing to scale: {matches.map((x) => x.machine.name).join(matches.length === 2 ? ' and ' : ', ')} {matches.length === 1 ? 'has' : 'have'} no clear published size.{clearanceText(matches.map((x) => x.machine as M))}</p>
+            <p class="cap nodraw">No drawing to scale: {sizeWhy(matches.map((x) => x.machine as M))}{clearanceText(matches.map((x) => x.machine as M))}</p>
           {/if}
 
           <p class="shared">Prices are what each maker's US site or shop showed on October 15, 2026, and they change. Amazon links go to the exact model; as an Amazon Associate we earn from qualifying purchases.</p>
@@ -348,15 +367,14 @@
                 <p class="ck"><span class="rank">{i + 1}</span>{m.category ? CATEGORY_LABEL[m.category] : ''}</p>
                 <h3>{m.brand} {m.name}</h3>
                 <p class="band">About {band(x.band)}{needsGrinder(m) ? ' with a grinder' : ''}</p>
-                <p class="fine">Machine {m.listPrice.usd ? money(m.listPrice.usd) : ''}{needsGrinder(m) && grinderPrices.length ? `, plus an espresso grinder from about ${money(grinderPrices[0])} to ${money(grinderPrices[grinderPrices.length - 1])}` : ''}.</p>
+                {#if needsGrinder(m) && grinderPrices.length}<p class="fine">Machine {money(m.listPrice.usd!)}, plus an espresso grinder from about {money(grinderPrices[0])} to {money(grinderPrices[grinderPrices.length - 1])}.</p>{/if}
                 <p class="rankn">{rankNote(i)}</p>
                 <ul class="why">{#each [...x.why, ...fitLines(m)] as w (w)}<li>{w}</li>{/each}</ul>
                 <ul class="trade">{#each tradeoffs(x) as t (t)}<li>{t}</li>{/each}</ul>
-                {#if m.dimsUnclear}<p class="unclear">{unclearNote(m)}</p>{/if}
                 <dl class="mini">
                   {#if m.category !== 'capsule'}<div><dt>Heats</dt><dd>{heatLabel(m)}{shortTerm(m) ? ` (${shortTerm(m)})` : ''}</dd></div>{/if}
                   <div><dt>Milk</dt><dd>{m.milk.type ? MILK[m.milk.type] : NE}</dd></div>
-                  <div><dt>Size, W × D × H</dt><dd>{sizeText(m)}</dd></div>
+                  <div><dt>Size, W × D × H</dt><dd>{m.dims ? sizeText(m) : m.dimsUnclear ? `Unclear; allow ${len(m.clearanceCm ?? 0)} ${u} high` : NE}</dd></div>
                 </dl>
                 <div class="acts">
                   {#if m.amazon}<a class="go" href={m.amazon.url} rel="sponsored noopener" target="_blank">See it on Amazon</a>
@@ -417,11 +435,12 @@
     </div>
   {:else}
     <div class="all">
-      <p class="quiet">All {machines.length} machines in this guide, from the makers' published specs, checked October 15, 2026. "Not established" means the maker's materials we checked didn't say. Pick a machine for its dose and care.</p>
-      {#each CATS as cat (cat)}
+      <p class="quiet">All {machines.length} machines in this guide, from the makers' published specs, checked October 15, 2026. Pick a machine for its dose and care.</p>
+      <p class="key"><span class="ne">n/e</span> not established: the maker's materials we checked don't say · <span class="ne">n/a</span> doesn't apply · <span class="ne">unclear</span> the maker's listed size conflicts with its own guidance</p>
+      {#each [...CATS, null] as cat (cat ?? 'none')}
         {@const list = machines.filter((m) => m.category === cat)}
         {#if list.length}
-          <h3 class="cath">{CATEGORY_LABEL[cat]} <span>{list.length}</span></h3>
+          <h3 class="cath">{cat ? CATEGORY_LABEL[cat] : 'Not yet placed'} <span>{list.length}</span></h3>
           <div class="tw"><table>
             <colgroup><col class="c1" /><col class="c2" /><col class="c3" /><col class="c4" /><col class="c5" /></colgroup>
             <thead><tr><th scope="col">Machine</th><th scope="col">Heats</th><th scope="col">Milk</th><th scope="col">W × D × H</th><th scope="col">Price seen</th></tr></thead>
@@ -429,17 +448,16 @@
               {#each list as m (m.id)}
                 <tr>
                   <th scope="row"><button type="button" class="linkish" onclick={() => openOwn(m.id)}>{m.brand} {m.name}</button>{#if m.variant}<small>{m.variant}</small>{/if}{#if statusNote(m)}<small>{statusNote(m)}</small>{/if}</th>
-                  <td class:ne={!m.heating.system}>{m.category === 'capsule' ? '·' : heatLabel(m)}</td>
-                  <td class:ne={!m.milk.type}>{m.milk.type ? MILK[m.milk.type] : NE}</td>
-                  <td class:ne={!m.dims}>{m.dims ? sizeText(m) : m.dimsUnclear ? 'unclear' : NE}{#if m.dimsUnclear}<small>listed {m.dimsUnclear}</small>{/if}</td>
-                  <td class:ne={!m.listPrice.usd}>{m.listPrice.usd ? money(m.listPrice.usd) : NE}</td>
+                  <td class:ne={!m.heating.system}>{m.category === 'capsule' ? 'n/a' : m.heating.system ? heatLabel(m) : 'n/e'}</td>
+                  <td class:ne={!m.milk.type}>{m.milk.type ? MILK[m.milk.type] : 'n/e'}</td>
+                  <td class:ne={!m.dims}>{m.dims ? sizeText(m) : m.dimsUnclear ? 'unclear' : 'n/e'}</td>
+                  <td class:ne={!m.listPrice.usd}>{m.listPrice.usd ? money(m.listPrice.usd) : 'n/e'}</td>
                 </tr>
               {/each}
             </tbody>
           </table></div>
         {/if}
       {/each}
-      {#if machines.some((m) => !m.category)}<p class="quiet">Also researched, without enough published detail to place: {machines.filter((m) => !m.category).map((m) => `${m.brand} ${m.name}`).join(', ')}.</p>{/if}
     </div>
   {/if}
 
@@ -508,7 +526,9 @@
   .kick { font: 500 11.5px/1.3 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--crema-deep); margin: 0 0 8px; }
   .find { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); grid-template-areas: 'ask res'; gap: 18px; align-items: start; }
   .peek { display: none; }
-  .ask { grid-area: ask; background: var(--card); border: 1px solid var(--rule); border-radius: 18px; padding: 18px; display: grid; gap: 16px; }
+  .ask { grid-area: ask; background: var(--card); border: 1px solid var(--rule); border-radius: 18px; padding: 18px; display: grid; gap: 16px; position: sticky; top: 84px; }
+  .key { font-size: 12.5px; color: var(--ink-3); margin: 0 0 6px; }
+  .key .ne { font: 500 11.5px 'IBM Plex Mono', monospace; color: var(--ink-2); }
   .results { grid-area: res; min-width: 0; }
   fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
   .chips { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -517,7 +537,8 @@
   .chips.sm button { min-height: 36px; padding: 6px 11px; font-size: 13px; }
   .effort { display: grid; gap: 6px; }
   .effort button { appearance: none; text-align: left; border: 1px solid var(--rule); background: #fff; border-radius: 12px; padding: 10px 12px; min-height: 44px; cursor: pointer; color: var(--ink); font: inherit; }
-  .effort button[aria-pressed='true'] { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); background: #fffaf2; }
+  .effort button[aria-pressed='true'] { border-color: var(--ink); background: var(--ink); color: #f3ede3; }
+  .effort button[aria-pressed='true'] small { color: #cdbba6; }
   .effort b { display: block; font-weight: 600; font-size: 15px; }
   .effort small { color: var(--ink-3); font-size: 13px; }
   .budget { display: grid; gap: 8px; }
@@ -567,7 +588,6 @@
   h3 { font: 400 28px/1.1 'Instrument Serif', Georgia, serif; margin: 6px 0 4px; }
   .band { margin: 0; font: 500 15px 'IBM Plex Mono', monospace; color: var(--ink); }
   .fine { margin: 4px 0 0; font-size: 12.5px; color: var(--ink-3); }
-  .unclear { margin: 8px 0 0; font-size: 13px; color: var(--ink-3); padding: 8px 10px; border: 1px dashed var(--rule); border-radius: 10px; }
   td small + small, td small { display: block; font: 400 11.5px 'IBM Plex Sans', sans-serif; color: var(--ink-3); }
   .rankn { margin: 10px 0 0; font-size: 14px; color: var(--ink); font-weight: 500; }
   .why, .trade { margin: 8px 0 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 14.5px; }
@@ -642,6 +662,7 @@
   button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--crema-deep); outline-offset: 2px; }
   @media (max-width: 900px) {
     .find { grid-template-columns: 1fr; grid-template-areas: 'peek' 'ask' 'res'; }
+    .ask { position: static; }
     .peek { grid-area: peek; display: grid; grid-template-columns: auto 1fr; grid-template-areas: 'l l' 'n p'; gap: 2px 10px; align-items: baseline; padding: 12px 14px; border-radius: 14px; background: var(--ink); color: #f3ede3; text-decoration: none; }
     .peek .lbl { grid-area: l; color: #cdbba6; margin: 0; }
     .peek b { grid-area: n; font: 400 22px/1.1 'Instrument Serif', Georgia, serif; }
