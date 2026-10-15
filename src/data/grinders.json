@@ -25,7 +25,7 @@
    "stepNote": null,
    "applies": "The original Encore (ZCG485), not the Encore ESP.",
    "rulerNote": null,
-   "zeroNote": "Setting 1 is the finest and 40 the coarsest. Baratza publishes no burr zero or step size.",
+   "zeroNote": "Setting 1 is the finest and 40 the coarsest. The sources we checked give no burr-contact zero and no burr movement per step.",
    "cautions": [
     "Change the setting only while the grinder is running or empty of beans."
    ],
@@ -142,7 +142,7 @@
    "stepNote": null,
    "applies": "The Encore ESP (ZCG495).",
    "rulerNote": null,
-   "zeroNote": "Settings 1 to 20 are fine espresso steps and 21 to 40 wider filter steps. It’s calibrated at the factory; Baratza publishes no step size.",
+   "zeroNote": "Settings 1 to 20 are fine espresso steps and 21 to 40 wider filter steps. It’s calibrated at the factory; the sources we checked give no burr movement per step.",
    "cautions": [
     "Change the setting only while the grinder is running or empty of beans."
    ],
@@ -259,7 +259,7 @@
    "stepNote": null,
    "applies": "The Virtuoso+ (ZCG587).",
    "rulerNote": null,
-   "zeroNote": "Setting 1 is the finest and 40 the coarsest. Baratza publishes no burr zero or step size.",
+   "zeroNote": "Setting 1 is the finest and 40 the coarsest. The sources we checked give no burr-contact zero and no burr movement per step.",
    "cautions": [
     "Change the setting while the grinder is running, or when it is completely empty."
    ],
@@ -376,7 +376,7 @@
    "stepNote": null,
    "applies": "The Smart Grinder Pro BCG820 (US).",
    "rulerNote": null,
-   "zeroNote": "Breville publishes no zero for the dial. Inside, the upper burr has its own setting, 6 from the factory; Breville recommends making only one adjustment at a time.",
+   "zeroNote": "The sources we checked give no zero for the dial. Inside, the upper burr has its own setting, 6 from the factory; Breville recommends making only one adjustment at a time.",
    "cautions": [
     "For espresso with fresh beans, use a single-wall basket with settings 1 to 30; with a dual-wall basket, start at 30 and go finer if needed.",
     "If the grind-size dial feels tight, turn it with the grinder running."
@@ -614,7 +614,7 @@
    "stepNote": null,
    "applies": "DF64 Gen 2 (Turin).",
    "rulerNote": null,
-   "zeroNote": "Turin publishes no zero. A retailer’s guide says the dial’s 0 isn’t true zero: to find it, go finer until the burrs just touch.",
+   "zeroNote": "The Turin page we checked gives no zero value. A retailer, Espresso Outlet, says the dial’s 0 isn’t true zero: to find it, go finer until the burrs just touch.",
    "cautions": [
     "Don't run it at the finest setting or below: the burrs can be damaged (retailer guidance)."
    ],
@@ -942,7 +942,7 @@
    "stepNote": "Each quarter-setting click on the outer ring moves the burrs about 50 µm (so a whole number is about 200 µm). That’s burr movement, not the size of the grounds.",
    "applies": "The Opus 1, not the Opus 2.",
    "rulerNote": null,
-   "zeroNote": "Fellow defines no numeric zero for the Opus 1. Its inner adjustment ring recalibrates the dial as the burrs wear.",
+   "zeroNote": "The Fellow sources we checked don’t define a numeric zero for the Opus 1. Its inner adjustment ring recalibrates the dial as the burrs wear.",
    "cautions": [
     "This chart is for the Opus 1; the Opus 2 calibrates differently."
    ],
@@ -1161,7 +1161,7 @@
    "stepNote": null,
    "applies": "The standard OXO Brew Conical Burr grinder (15 settings), not the model with a scale.",
    "rulerNote": null,
-   "zeroNote": "Setting 1 is the finest and 15 the coarsest, with micro-settings between. OXO publishes no burr zero or step size.",
+   "zeroNote": "Setting 1 is the finest and 15 the coarsest, with micro-settings between. The sources we checked give no burr-contact zero and no burr movement per step.",
    "cautions": [
     "With beans in the hopper, change the setting while the motor is running so it doesn't jam."
    ],
@@ -1353,7 +1353,10 @@
    "applies": null,
    "rulerNote": "1Zpresso’s manual gives about 4.5 turns of travel (405 clicks), but its chart runs to 420, so the ruler’s end is only illustrative.",
    "zeroNote": "Turn the dial counter-clockwise until resistance starts and the handle can’t spin freely: that’s zero. It should line up with 0 on the scale, but can be up to 10 clicks either way.",
-   "cautions": [],
+   "cautions": [
+    "Don’t take apart the central shaft and burr, the burr ring unit or the bearings.",
+    "Don’t clean it with water; use a brush and a blower."
+   ],
    "startingPoint": {
     "status": "not-stated",
     "note": "1Zpresso's chart prints a band for each method, not a single setting.",
@@ -1463,8 +1466,11 @@
    "stepNote": "Each click (a quarter of a number) moves the burrs about 12.5 µm.",
    "applies": "From 1Zpresso’s archived JX-Pro chart; whether it applies to both the gray-dot and red-dot versions isn’t established.",
    "rulerNote": null,
-   "zeroNote": "Zero is where the handle starts to spin with resistance, not the tightest position. If the dial doesn’t read 0 there it can be reset; until then your count may be 2 or more clicks out.",
-   "cautions": [],
+   "zeroNote": "Zero is where the handle starts to spin with resistance, not the tightest position. The printed 0 may be two or more clicks away from that point: count from the physical zero, or follow 1Zpresso’s instructions to align the dial.",
+   "cautions": [
+    "Don’t wash or soak it.",
+    "Don’t take apart the central shaft and burr, the burr ring unit and outer burr, or the bearings in the upper hopper."
+   ],
    "startingPoint": {
     "status": "not-stated",
     "note": "1Zpresso's chart prints a band for each method, not a single setting.",
@@ -1575,7 +1581,10 @@
    "applies": null,
    "rulerNote": null,
    "zeroNote": "Zero is where the handle begins to spin with resistance, not the tightest position: turn the dial counter-clockwise until you feel it. If the pointer isn’t at 0, adjust the knurled nut; it can be 2 or more clicks out.",
-   "cautions": [],
+   "cautions": [
+    "Don’t wash it or clean it with water.",
+    "Don’t take apart the central shaft and inner burr, the burr ring unit and outer burr, the adjustment dial ring or the body bearings."
+   ],
    "startingPoint": {
     "status": "not-stated",
     "note": "1Zpresso's chart prints a band for each method, not a single setting.",
@@ -1688,8 +1697,11 @@
    "stepNote": "Each click (a third of a number) moves the burrs about 25 µm.",
    "applies": "From 1Zpresso’s Q-series chart; which Q2 burr it applies to isn’t established.",
    "rulerNote": null,
-   "zeroNote": "Turn the dial clockwise to the tightest point: the number at the dot is your zero, and it might not be 0.",
-   "cautions": [],
+   "zeroNote": "Turn the dial clockwise gently until the handle no longer spins freely; don’t force it tighter. The number at the dot is your starting point, even if it isn’t 0.",
+   "cautions": [
+    "Don’t wash or soak it.",
+    "Don’t take apart the burr ring unit and outer burr, its screws, or the bearings in the hopper."
+   ],
    "startingPoint": {
     "status": "not-stated",
     "note": "1Zpresso's chart prints a band for each method, not a single setting.",
@@ -1787,8 +1799,10 @@
    "stepNote": "Each click moves the burrs about 22 µm; 10 clicks make a number and 9 numbers a turn.",
    "applies": "The ZP6 Special only.",
    "rulerNote": null,
-   "zeroNote": "Turn the dial counter-clockwise all the way to 0, so the gap is fully closed. If the red dot passes 0, back it off slightly and recalibrate.",
-   "cautions": [],
+   "zeroNote": "Turn the dial counter-clockwise until the handle begins to turn with resistance; don’t force it tighter. The pointer should line up with 0; if it doesn’t, follow 1Zpresso’s calibration instructions.",
+   "cautions": [
+    "Don’t wash it or clean it with water, and store it somewhere dry."
+   ],
    "startingPoint": {
     "status": "not-stated",
     "note": "1Zpresso's chart prints a band for each method, not a single setting.",

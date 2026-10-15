@@ -95,6 +95,15 @@ export function headline(g: Grinder, s: Setting): string {
   return `Start between ${fmt(s.min!)} and ${fmt(s.max)}${unit}`;
 }
 
+/** The headline in the grinder's own count from zero ("Start between 32 and 44 numbers from zero"), matching the ruler. */
+export const countHeadline = (g: Grinder, s: Setting) => headline({ ...g, perTurn: null }, s);
+
+/** The same setting as the hand turns it, for the line under a count headline ("3 full turns + 2 numbers to 4 full turns + 4 numbers"). */
+export function turnsLine(g: Grinder, s: Setting): string | null {
+  if (g.kind !== 'turns' || !g.perTurn || s.min == null) return null;
+  return headline(g, s).replace(/^Start (at )?/, '').replace(/^between (.+) and (.+)$/, '$1 to $2');
+}
+
 export function grinderById(list: Grinder[], id: string | null): Grinder | null {
   return id ? list.find((g) => g.id === id) ?? null : null;
 }

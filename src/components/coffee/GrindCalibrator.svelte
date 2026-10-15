@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import data from '../../data/grinders.json';
-  import { GROUPS, settingsFor, groupsFor, rangeText, headline, grinderById } from '../../lib/coffee/grinders.ts';
+  import { GROUPS, settingsFor, groupsFor, rangeText, headline, countHeadline, turnsLine, grinderById } from '../../lib/coffee/grinders.ts';
   import type { Grinder, Group, Setting } from '../../lib/coffee/grinders.ts';
 
   // Your grinder's own control, drawn and turned to the maker's starting setting for your brew.
@@ -58,10 +58,10 @@
   const isSingle = (r: Setting) => r.start != null || (r.min != null && r.max === r.min && !r.openTop);
   let single = $derived(!!s && isSingle(s));
   // A published low end that sits inside the maker's "don't grind here" zone reads as "above" it (the C2).
-  const lowText = (r: Setting) => (g.avoid && r.min != null && r.min <= g.avoid[1] ? `>${r.min}` : `${r.min}`);
+  const lowText = (r: Setting) => (g.avoid && r.min != null && r.min <= g.avoid[1] ? `above ${r.min}` : `${r.min}`);
 
   // ── Numbered dial: a 300° scale; top centre is the grinder's index mark ──
-  const SWEEP = 300, C = 160;
+  const SWEEP = 300, C = 160, CAP = (6 / 120) * (180 / Math.PI);
   const ang = (v: number, sc: [number, number]) => -SWEEP / 2 + ((v - sc[0]) / (sc[1] - sc[0])) * SWEEP;
   const pt = (a: number, r: number, cx = C, cy = C) => [cx + r * Math.sin((a * Math.PI) / 180), cy - r * Math.cos((a * Math.PI) / 180)];
   function arc(a0: number, a1: number, r: number, cx = C, cy = C) {
@@ -87,9 +87,16 @@
     const span = bandTo - s.min;
     const a0 = ((s.min % g.perTurn) / g.perTurn) * 360, a1 = a0 + (span / g.perTurn) * 360;
     const ends = [a0, a1].map((a) => [...pt(a, 93, 160, 122), ...pt(a, 111, 160, 122)]);
+    // Each end is labelled in the ruler's own count, outside the bezel; two ends close together share one label.
+    const label = (a: number, text: string) => {
+      const [x, y] = pt(a, 122, 160, 122);
+      return { x, y: y + 4, text, anchor: x > 172 ? 'start' : x < 148 ? 'end' : 'middle' };
+    };
+    const gap = Math.abs(((a1 - a0) % 360 + 360) % 360);
+    const labels = gap < 30 || gap > 330 ? [label(a0, `from ${s.min} · to ${bandTo}`)] : [label(a0, `from ${s.min}`), label(a1, `to ${bandTo}`)];
     // A range of a turn or more can't be one arc: mark where it starts and ends, and give its span in turns.
-    if (span >= g.perTurn) return { full: true, d: '', ends, turns: Math.round((span / g.perTurn) * 10) / 10 };
-    return { full: false, d: arc(a0, a1, 102, 160, 122), ends, turns: 0 };
+    if (span >= g.perTurn) return { full: true, d: '', ends, labels, turns: Math.round((span / g.perTurn) * 10) / 10 };
+    return { full: false, d: arc(a0, a1, 102, 160, 122), ends, labels, turns: 0 };
   });
   // The ruler shows whole turns to just past the coarsest published setting, or a round number without turn data.
   let rulerMax = $derived.by(() => {
@@ -109,8 +116,8 @@
   let knobCap = $derived(
     !g.perTurn ? `Count ${g.unit} from zero on the ruler.`
     : single ? `The knob is turned to ${rest} within the turn; the ruler counts all ${target} ${g.unit} from zero.`
-    : knobArc?.full ? `The two marks are where the range starts and ends within a turn; it spans ${knobArc.turns} turns, so count them on the ruler.`
-    : `The knob shows one turn of ${g.perTurn} ${g.unit}; the shaded arc is where the range falls in it.`
+    : knobArc?.full ? `The knob shows one turn of ${g.perTurn} ${g.unit}. This range is longer than a turn: from the first mark, all the way round and on to the second.`
+    : `The knob shows one turn of ${g.perTurn} ${g.unit}; the arc is where the range falls in it.`
   );
 
   // ── Named steps (Hario, Capresso): one continuous strip from fine to coarse ──
@@ -133,9 +140,17 @@
   let mapScale = $derived<[number, number] | null>(g.kind === 'dial' && g.scale ? (g.scale as [number, number]) : g.kind === 'turns' ? [0, rulerMax] : null);
   const pc = (v: number) => (mapScale ? ((v - mapScale[0]) / (mapScale[1] - mapScale[0])) * 100 : 0);
   const mapEnd = (r: Setting) => (r.openTop ? mapScale?.[1] ?? r.min! : r.max ?? r.min!);
+  // Rows in order along the scale, so the map reads fine to coarse; as-written text keeps the source's order.
+  let mapRows = $derived.by(() => {
+    const at = (r: Setting) => (r.min != null ? [r.min, mapEnd(r)] : r.categories && g.categories ? [g.categories.indexOf(r.categories[0]), Math.max(...r.categories.map((c) => g.categories!.indexOf(c)))] : null);
+    return g.kind === 'text' ? g.settings : [...g.settings].sort((a, b) => { const x = at(a)!, y = at(b)!; return x[0] - y[0] || x[1] - y[1]; });
+  });
+  // Capresso prints its steps in capitals; shown as words, like Hario's.
+  const nice = (t: string) => t.replace(/\b[A-Z]{2,}\b/g, (w) => w[0] + w.slice(1).toLowerCase());
   function mapVal(r: Setting): string {
     if (r.published) return r.published;
-    if (r.categories) return r.headline ? `${r.categories[0]} (or ${r.categories.slice(1).join(', ')})` : r.categories.join(' to ');
+    // A maker's condition stays with its alternative: "FINE (EXTRA FINE for some pump machines)".
+    if (r.categories) return nice(r.headline ? r.headline.replace(/^Start (at|between) /, '') : r.categories.join(' to '));
     if (r.min == null) return '';
     if (r.start != null) return r.max != null && r.max !== r.min ? `${r.start}, in ${r.min}–${r.max}` : `${r.start}`;
     if (r.openTop) return `${r.min} and coarser`;
@@ -146,7 +161,7 @@
   // The secondary source's notation: it defines "1+4"; it leaves plain decimals such as 3.5 undefined.
   let textNotes = $derived(!s?.published ? [] : [
     ...(s.published.includes('+') ? ['The source defines “1+4” as one full turn plus mark 4.'] : []),
-    ...(/(^|[^+\d.])\d+\.\d/.test(s.published) ? ["It doesn't explain plain numbers such as 3.5, so they're left exactly as printed."] : []),
+    ...(/(^|[^+\d.])\d+\.\d/.test(s.published) ? [`${s.published.includes('+') ? 'It' : 'The source'} doesn't explain plain numbers such as 3.5, so they're left exactly as printed.`] : []),
   ]);
 </script>
 
@@ -174,7 +189,7 @@
           <button type="button" aria-pressed={group === m.id} disabled={!has} onclick={() => pickGroup(m.id)}>{m.label}</button>
         {/each}
       </div>
-      {#if missing.length}<p class="why">Crossed out: no published {g.short} setting for {missing.length === 1 ? 'this method' : 'these'} turned up in the sources we checked.</p>{/if}
+      {#if missing.length}<p class="why">Crossed out: no verified setting is included here for {missing.length === 1 ? 'this method' : 'these methods'}.</p>{/if}
     </div>
   </div>
 
@@ -186,7 +201,10 @@
         <g class="ring" style:transform="rotate({ringTurn}deg)">
           <circle cx={C} cy={C} r="138" class="ringface" />
           {#if bandTo != null && s.min != null && bandTo > s.min}
-            <path d={arc(ang(s.min, g.scale), ang(bandTo, g.scale), 120)} class="band" class:openband={s.openTop} />
+            {@const a0 = ang(s.min, g.scale)}
+            {@const a1 = ang(bandTo, g.scale)}
+            <!-- the round caps sit inside the band's ends, so it stops exactly at the published values -->
+            <path d={a1 - a0 > 2 * CAP ? arc(a0 + CAP, a1 - CAP, 120) : arc(a0, a1, 120)} class="band" class:short={a1 - a0 <= 2 * CAP} />
           {/if}
           {#each ticks(g.scale) as t (t.v)}
             {@const a = ang(t.v, g.scale)}
@@ -207,7 +225,7 @@
       <p class="cap">Lower numbers grind finer. {single ? 'The dial is turned so the setting sits under the mark.' : `The band is the range the ${who} prints.`}</p>
     {:else if s && g.kind === 'turns' && s.min != null}
       {#if g.perTurn}
-      <svg viewBox="0 0 320 236" class="knob" role="img" aria-label="{g.short} adjustment knob, one turn of {g.perTurn} {g.unit}: {headline(g, s)}{single ? ', with the knob turned to that position within the turn' : knobArc?.full ? `, with marks where the range starts and ends; it spans ${knobArc.turns} turns` : ', with the range shaded on the knob’s one-turn scale'}.">
+      <svg viewBox="-34 -14 388 262" class="knob" role="img" aria-label="{g.short} adjustment knob, one turn of {g.perTurn} {g.unit}: {headline(g, s)}{single ? ', with the knob turned to that position within the turn' : knobArc?.full ? `, with marks where the range starts and ends; it spans ${knobArc.turns} turns` : ', with the range shaded on the knob’s one-turn scale'}.">
         <circle cx="160" cy="122" r="108" class="bezel" />
         <g class="ring" style:transform="rotate({knobTurn}deg)" style:transform-origin="160px 122px">
           <circle cx="160" cy="122" r="96" class="ringface" />
@@ -221,7 +239,10 @@
             {/each}
         </g>
         {#if knobArc && !knobArc.full}<path d={knobArc.d} class="karc" />{/if}
-        {#if knobArc}{#each knobArc.ends as [x0, y0, x1, y1], i (i)}<line x1={x0} y1={y0} x2={x1} y2={y1} class="kend" class:bold={knobArc.full} />{/each}{/if}
+        {#if knobArc}
+          {#each knobArc.ends as [x0, y0, x1, y1], i (i)}<line x1={x0} y1={y0} x2={x1} y2={y1} class="kend" class:bold={knobArc.full} />{/each}
+          {#each knobArc.labels as l, i (i)}<text x={l.x} y={l.y} text-anchor={l.anchor} class="endv">{l.text}</text>{/each}
+        {/if}
         {#if single}<path d="M150 2 L170 2 L160 20 Z" class="index" />{/if}
         <circle cx="160" cy="122" r="48" class="hub" />
         {#if g.perTurn && single}
@@ -251,7 +272,7 @@
           <rect x={x0} y="48" width={x1 - x0} height="12" rx="1" class="bandr" />
           <path d="M{x0 + 6} 42 L{x0} 42 L{x0} 66 L{x0 + 6} 66" class="brk" />
           <path d="M{x1 - 6} 42 L{x1} 42 L{x1} 66 L{x1 - 6} 66" class="brk" />
-          {#if x1 - x0 >= 34}
+          {#if x1 - x0 >= (lowText(s).length + String(bandTo).length) * 3.6 + 14}
             <text x={x0} y="35" text-anchor="middle" class="endv">{lowText(s)}</text>
             <text x={x1} y="35" text-anchor={x1 > 296 ? 'end' : 'middle'} class="endv">{bandTo}</text>
           {:else}
@@ -284,7 +305,7 @@
         {/if}
         <path d="M{NX + namedOn.lo * sw + 2} 46 L{NX + namedOn.lo * sw + 2} 38 L{NX + (namedOn.hi + 1) * sw - 2} 38 L{NX + (namedOn.hi + 1) * sw - 2} 46" class="brk" />
         <text x={NX + ((namedOn.lo + namedOn.hi + 1) * sw) / 2} y="28" text-anchor="middle" class="endv">{namedOn.hi > namedOn.lo ? "maker's range" : "maker's step"}</text>
-        {#each g.categories as c, i (c)}<text x={NX + (i + 0.5) * sw} y="99" text-anchor="middle" class="cat" class:on={namedOn.all.includes(i)}>{c}</text>{/each}
+        {#each g.categories as c, i (c)}<text x={NX + (i + 0.5) * sw} y="99" text-anchor="middle" class="cat" class:on={namedOn.all.includes(i)}>{nice(c)}</text>{/each}
         <text x={NX} y="118" class="fine">← finer</text>
         <text x={NX + NW} y="118" text-anchor="end" class="fine">coarser →</text>
       </svg>
@@ -299,14 +320,13 @@
   </div>
 
   <div class="map">
-    <p class="mapk">Every setting the {who} {who === 'maker' ? 'publishes' : 'lists'}<span>{mapUnit}</span></p>
+    <p class="mapk">The {who}'s settings included here<span>{mapUnit}</span></p>
     <ul>
-      {#each g.settings as r (r.key)}
+      {#each mapRows as r (r.key)}
         <li><button type="button" class="mrow" class:cur={r === s} aria-pressed={r === s} onclick={() => pickRow(r)}>
-          <span class="ml">{r.label}</span><span class="mv">{mapVal(r)}</span>
+          <span class="ml">{r.label}</span><span class="mv">{#if r.categories && r.headline}{mapVal(r).split(' (')[0]}<small>{mapVal(r).split(' (').slice(1).join(' (').replace(/\)$/, '')}</small>{:else}{mapVal(r)}{/if}</span>
           {#if mapScale && r.min != null}
             <span class="mt" aria-hidden="true">
-              {#if g.avoid}<i class="mavoid" style:left="{pc(g.avoid[0])}%" style:width="{pc(g.avoid[1]) - pc(g.avoid[0])}%"></i>{/if}
               {#if mapEnd(r) > r.min}<i class="mband" class:openband={r.openTop} style:left="{pc(r.min)}%" style:width="{Math.max(1.5, pc(mapEnd(r)) - pc(r.min))}%"></i>{/if}
               {#if isSingle(r)}<i class="mdot" style:left="{pc(r.start ?? r.min)}%"></i>{/if}
             </span>
@@ -324,9 +344,9 @@
   <div class="answer" aria-live="polite">
     {#if s}
       <p class="kick">{g.short} · {s.label}{s.makerLabel ? ` (the maker's “${s.makerLabel}”)` : ''}</p>
-      <h3>{headline(g, s).replace(/\b[A-Z]{2,}\b/g, (w) => w[0] + w.slice(1).toLowerCase())}</h3>
+      <h3>{nice(g.kind === 'turns' && g.perTurn ? countHeadline(g, s) : headline(g, s))}</h3>
       {#if s.note}<p class="snote">{s.note}</p>{/if}
-      {#if g.kind === 'turns' && g.perTurn}<p class="trans">On the maker's count that's {rangeText(s)} {g.unit} from zero, at {g.perTurn} {g.unit} per turn{g.sub ? ` (${g.sub})` : ''}.</p>{/if}
+      {#if turnsLine(g, s)}<p class="turnsl"><span>On the grinder</span>{turnsLine(g, s)}<em>{g.perTurn} {g.unit} per turn{g.sub ? `, ${g.sub}` : ''}</em></p>{/if}
       {#if s.start == null && s.max !== s.min && g.kind !== 'text' && !s.headline}<p class="trans">The {who} prints a range, not one setting: start anywhere in it, then adjust by taste.</p>{/if}
       {#if others.length}
         <div class="more"><p class="morek">Also listed for {GROUPS.find((x) => x.id === group)!.label.toLowerCase()}</p>
@@ -336,9 +356,9 @@
       {#if g.startingPoint?.note}<p class="say">{g.startingPoint.note}</p>{/if}
       <p class="prov">{who === 'maker' ? `Published by ${brand}` : 'Secondary source'}{#if s.url}{' · '}<a href={s.url} rel="noopener" target="_blank" title={s.source ?? ''}>open the source</a>{/if}{s.checked ? `, checked ${s.checked}` : ''}.</p>
       {#if g.cautions.length}<div class="cbox"><p class="cauth">Cautions</p><ul class="cautions">{#each g.cautions as c (c)}<li>{c}</li>{/each}</ul></div>
-      {:else}<p class="cbox nocaut"><span class="cauth">Cautions</span> None in the sources we checked.</p>{/if}
+      {:else}<p class="cbox nocaut"><span class="cauth">Cautions</span> None listed here; see the maker's manual.</p>{/if}
       {#if g.kind !== 'named' && g.kind !== 'text'}
-        <details class="zero" open={g.kind === 'turns'}><summary>Where zero is, and what one step does</summary>
+        <details class="zero" open={g.kind === 'turns'}><summary>{g.kind === 'turns' ? 'Where zero is, and what one step does' : 'How the dial is numbered'}</summary>
           <p>{g.zeroNote}</p>
           {#if g.stepNote}<p>{g.stepNote}</p>{:else if g.stepMicrons}<p>The maker says each click moves the burrs about {g.stepMicrons} µm. That's the burr movement, not the size of the grounds.</p>{/if}
         </details>
@@ -350,7 +370,7 @@
       </div>
       {#if g.amazon}<p class="buy"><a href={g.amazon.url} rel="sponsored noopener" target="_blank">{g.short} on Amazon</a>: the exact model, checked {data.checked}. As an Amazon Associate we earn from qualifying purchases.</p>{/if}
     {:else}
-      <p class="none">No published {g.short} setting for this method turned up in the sources we checked.</p>
+      <p class="none">No verified setting for this method is included here.</p>
     {/if}
   </div>
 </div>
@@ -362,7 +382,7 @@
     color: var(--ink); font: 16px/1.5 'IBM Plex Sans', system-ui, sans-serif; box-shadow: 0 30px 60px -40px rgba(60, 35, 15, .35); }
   .pick { grid-area: pick; padding: 22px 24px 0; display: flex; flex-direction: column; gap: 14px; }
   .left { grid-area: stage; border-right: 1px solid var(--rule); background: radial-gradient(120% 60% at 50% 6%, #fffdf9 0%, #f1e7d9 85%); display: flex; flex-direction: column; min-width: 0; }
-  .stage { padding: 32px 22px 18px; display: flex; flex-direction: column; align-items: center; }
+  .stage { padding: 32px 22px 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1 0 auto; }
   .answer { grid-area: answer; padding: 16px 24px 24px; display: flex; flex-direction: column; min-width: 0; }
   .dial, .knob { width: 100%; max-width: 340px; height: auto; }
   .ruler { width: 100%; max-width: 420px; height: auto; margin-top: 12px; }
@@ -380,7 +400,7 @@
   .num.small { fill: #5b4a3d; font-size: 11px; }
   .fine { font: 500 10.5px 'IBM Plex Mono', monospace; fill: #75655a; letter-spacing: .04em; }
   .band { fill: none; stroke: #c3873a; stroke-width: 12; stroke-linecap: round; opacity: .9; }
-  .band.openband { stroke-dasharray: 10 4; }
+  .band.short { stroke-linecap: butt; }
   .karc { fill: none; stroke: #c3873a; stroke-width: 8; }
   .kend { stroke: #f3d7a8; stroke-width: 2.5; }
   .kend.bold { stroke: #c3873a; stroke-width: 5; stroke-linecap: round; }
@@ -431,11 +451,9 @@
   .mt { grid-area: mt; position: relative; height: 14px; display: block; }
   .mt::before { content: ''; position: absolute; left: 0; right: 0; top: 6px; height: 2px; background: #ddd0bf; border-radius: 1px; }
   .mt i { position: absolute; display: block; }
-  .mavoid { top: 1px; height: 12px; background: rgba(176, 74, 42, .2); }
   .mband { top: 3px; height: 8px; border-radius: 1px; background: #d7b98f; }
   .mrow.cur .mband { background: #c3873a; }
-  .mband.openband { background: repeating-linear-gradient(90deg, #d7b98f 0 6px, transparent 6px 8px); }
-  .mrow.cur .mband.openband { background: repeating-linear-gradient(90deg, #c3873a 0 6px, transparent 6px 8px); }
+  .mband.openband { clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 50%, calc(100% - 6px) 100%, 0 100%); }
   .mdot { top: 2px; width: 10px; height: 10px; margin-left: -5px; border-radius: 50%; background: #fbf8f3; border: 2.5px solid #b08a5a; box-sizing: border-box; }
   .mrow.cur .mdot { border-color: #c3873a; }
   .mt.segs { display: flex; gap: 2px; }
@@ -457,6 +475,10 @@
   .kick { font: 500 11.5px/1.3 'IBM Plex Mono', monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--crema-deep); margin: 0; }
   h3 { font: 400 34px/1.05 'Instrument Serif', Georgia, serif; margin: 6px 0 4px; }
   .trans { margin: 6px 0 0; color: var(--ink-2); font-size: 15px; }
+  .turnsl { margin: 4px 0 2px; font: 500 15px/1.4 'IBM Plex Mono', monospace; color: var(--ink); }
+  .turnsl span { display: block; font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); }
+  .turnsl em { display: block; font: 400 13.5px 'IBM Plex Sans', sans-serif; font-style: normal; color: var(--ink-3); }
+  .mv small { display: block; font: 400 11px/1.25 'IBM Plex Sans', sans-serif; color: var(--ink-3); }
   .snote { margin: 8px 0 0; padding: 8px 12px; border-radius: 8px; background: #f6efe5; color: var(--ink); font-size: 14.5px; }
   .applies { margin: -6px 0 0; font-size: 13px; color: var(--ink-3); }
   .more { margin: 10px 0 0; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
@@ -494,7 +516,11 @@
     .answer { padding: 0 16px 20px; }
     .answer > :first-child { border-top: 0; }
     h3 { font-size: 30px; }
-    .num.small { font-size: 12px; }
+    .num.small { font-size: 13px; }
+    .fine, .turnlbl { font-size: 12px; }
+    .endv { font-size: 13.5px; }
+    .hubk { font-size: 12.5px; }
+    .legend { font-size: 13px; }
     .pub { font-size: 40px; }
   }
   @media (prefers-reduced-motion: reduce) { .ring, .num.up { transition: none; } }

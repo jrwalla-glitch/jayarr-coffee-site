@@ -71,3 +71,21 @@ test('a source with a V60 row and a generic pour-over row labels them apart', ()
 test('every grinder offers at least one method', () => {
   for (const g of grinders) assert.ok(groupsFor(g).length > 0, g.id);
 });
+
+test('turn-counted headlines lead with the count the ruler shows; the turns follow on their own line', async () => {
+  const { countHeadline, turnsLine } = await import('../grinders.ts');
+  const g = (id) => grinderById(grinders, id);
+  assert.equal(countHeadline(g('1zpresso-jx-pro'), row('1zpresso-jx-pro', 'pour-over')), 'Start between 32 and 44 numbers from zero');
+  assert.equal(turnsLine(g('1zpresso-jx-pro'), row('1zpresso-jx-pro', 'pour-over')), '3 full turns + 2 numbers to 4 full turns + 4 numbers');
+  assert.equal(countHeadline(g('kingrinder-k6'), row('kingrinder-k6', 'pour-over')), 'Start at 100 clicks from zero');
+  assert.equal(turnsLine(g('kingrinder-k6'), row('kingrinder-k6', 'pour-over')), '1 full turn + 40 clicks');
+  assert.equal(turnsLine(g('1zpresso-j-max'), row('1zpresso-j-max', 'french-press')), '4 full turns, then up to 60 clicks more');
+  assert.equal(turnsLine(g('1zpresso-k-ultra'), row('1zpresso-k-ultra', 'french-press')), '9 to 10 numbers on the first turn');
+  // Grinders with no published turn size keep their click count and get no turns line.
+  assert.equal(turnsLine(g('comandante-c40-mk4-standard'), row('comandante-c40-mk4-standard', 'espresso')), null);
+});
+
+test('only the Sculptor 064S has no cautions listed', () => {
+  // The Sculptor 064S is the one exception: the research warning found was for the non-S 064.
+  assert.deepEqual(grinders.filter((g) => !g.cautions.length).map((g) => g.id), ['timemore-sculptor-064s']);
+});
