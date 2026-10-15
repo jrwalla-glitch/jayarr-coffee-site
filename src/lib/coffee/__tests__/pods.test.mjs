@@ -47,6 +47,11 @@ test('filters, suggestions and links never cross systems; retired and unlisted p
     assert.ok(filterPods(all, { line, includeUnlisted: true }).length > filterPods(all, { line }).length, line);
   }
   for (const p of all) { const t = tryAlso(all, p); if (t) { assert.equal(t.line, p.line); assert.ok(onSale(t)); } }
+  // Like for like (Muse WB1 P-1): "Try also" never crosses decaf or caffeine-boosted status.
+  for (const p of all) { const t = tryAlso(all, p); if (t) { assert.equal(!!t.decaf, !!p.decaf, `${p.name} → ${t.name}`); assert.equal(!!t.caffeine_boosted, !!p.caffeine_boosted, `${p.name} → ${t.name}`); } }
+  assert.equal(tryAlso(all, all.find((p) => p.line === 'vertuo' && /Melozio Decaffeinato/.test(p.name))), null);
+  // Every current capsule belongs to at least one aroma family (Muse WB1 P-4), so no Aroma filter drops one silently.
+  assert.deepEqual(all.filter((p) => onSale(p) && !aromaFamilies(p).length).map((p) => p.name), []);
   assert.equal(podFromParam(all, 'vertuo-colombia').line, 'vertuo');
   assert.equal(podFromParam(all, 'original-colombia').line, 'original');
   assert.equal(podFromParam(all, 'nope'), null);

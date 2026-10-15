@@ -41,7 +41,7 @@
    "status": "maker method guidance with model-specific qualifications",
    "amazon": {
     "asin": "B007F183LK",
-    "url": "https://www.amazon.com/dp/B007F183LK"
+    "url": "https://www.amazon.com/dp/B007F183LK?tag=jayarrcoffee-20"
    },
    "settings": [
     {
@@ -158,7 +158,7 @@
    "status": "maker method guidance with model-specific qualifications",
    "amazon": {
     "asin": "B0BW272XCV",
-    "url": "https://www.amazon.com/dp/B0BW272XCV"
+    "url": "https://www.amazon.com/dp/B0BW272XCV?tag=jayarrcoffee-20"
    },
    "settings": [
     {
@@ -276,7 +276,7 @@
    "status": "maker method guidance with model-specific qualifications",
    "amazon": {
     "asin": "B07QMY8GLX",
-    "url": "https://www.amazon.com/dp/B07QMY8GLX"
+    "url": "https://www.amazon.com/dp/B07QMY8GLX?tag=jayarrcoffee-20"
    },
    "settings": [
     {
@@ -394,7 +394,7 @@
    "status": "maker method guidance with model-specific qualifications",
    "amazon": {
     "asin": "B00OXGXW8O",
-    "url": "https://www.amazon.com/dp/B00OXGXW8O"
+    "url": "https://www.amazon.com/dp/B00OXGXW8O?tag=jayarrcoffee-20"
    },
    "settings": [
     {
@@ -513,7 +513,7 @@
    "status": "maker named categories only, no numeric click mapping",
    "amazon": {
     "asin": "B001QTVXCS",
-    "url": "https://www.amazon.com/dp/B001QTVXCS"
+    "url": "https://www.amazon.com/dp/B001QTVXCS?tag=jayarrcoffee-20"
    },
    "settings": [
     {
@@ -654,6 +654,7 @@
      "source": "Honest Coffee Guide table",
      "url": "https://honestcoffeeguide.com/turin-df64-gen-2-grind-settings/",
      "checked": "2026-10-15",
+     "note": "These are the secondary source’s dial numbers, and it doesn’t say where its 0 is: find your grinder’s own zero first.",
      "min": 23,
      "max": 53,
      "start": null
@@ -666,6 +667,7 @@
      "source": "Honest Coffee Guide table",
      "url": "https://honestcoffeeguide.com/turin-df64-gen-2-grind-settings/",
      "checked": "2026-10-15",
+     "note": "These are the secondary source’s dial numbers, and it doesn’t say where its 0 is: find your grinder’s own zero first.",
      "min": 15,
      "max": 80,
      "start": null
@@ -678,6 +680,7 @@
      "source": "Honest Coffee Guide table",
      "url": "https://honestcoffeeguide.com/turin-df64-gen-2-grind-settings/",
      "checked": "2026-10-15",
+     "note": "These are the secondary source’s dial numbers, and it doesn’t say where its 0 is: find your grinder’s own zero first.",
      "min": 19,
      "max": 49,
      "start": null
@@ -690,6 +693,7 @@
      "source": "Honest Coffee Guide table (generic pour over, not V60 only)",
      "url": "https://honestcoffeeguide.com/turin-df64-gen-2-grind-settings/",
      "checked": "2026-10-15",
+     "note": "These are the secondary source’s dial numbers, and it doesn’t say where its 0 is: find your grinder’s own zero first.",
      "min": 24,
      "max": 77,
      "start": null
@@ -702,6 +706,7 @@
      "source": "Honest Coffee Guide table (\"Filter Coffee Machine\")",
      "url": "https://honestcoffeeguide.com/turin-df64-gen-2-grind-settings/",
      "checked": "2026-10-15",
+     "note": "These are the secondary source’s dial numbers, and it doesn’t say where its 0 is: find your grinder’s own zero first.",
      "min": 13,
      "max": 74,
      "start": null
@@ -714,6 +719,7 @@
      "source": "Honest Coffee Guide table",
      "url": "https://honestcoffeeguide.com/turin-df64-gen-2-grind-settings/",
      "checked": "2026-10-15",
+     "note": "These are the secondary source’s dial numbers, and it doesn’t say where its 0 is: find your grinder’s own zero first.",
      "min": 53,
      "max": 90,
      "start": null
@@ -726,6 +732,7 @@
      "source": "Honest Coffee Guide table",
      "url": "https://honestcoffeeguide.com/turin-df64-gen-2-grind-settings/",
      "checked": "2026-10-15",
+     "note": "These are the secondary source’s dial numbers, and it doesn’t say where its 0 is: find your grinder’s own zero first.",
      "min": 65,
      "max": 90,
      "start": null
@@ -890,7 +897,7 @@
    "status": "partial: exact maker recipe starts only; ambiguous arc ranges omitted",
    "amazon": {
     "asin": "B0BLRMCM9Y",
-    "url": "https://www.amazon.com/dp/B0BLRMCM9Y"
+    "url": "https://www.amazon.com/dp/B0BLRMCM9Y?tag=jayarrcoffee-20"
    },
    "settings": [
     {
@@ -960,7 +967,7 @@
    "status": "maker method guidance with model-specific qualifications",
    "amazon": {
     "asin": "B0BV92JN6Y",
-    "url": "https://www.amazon.com/dp/B0BV92JN6Y"
+    "url": "https://www.amazon.com/dp/B0BV92JN6Y?tag=jayarrcoffee-20"
    },
    "settings": [
     {
@@ -1179,7 +1186,7 @@
    "status": "maker method guidance with model-specific qualifications",
    "amazon": {
     "asin": "B07CSKGLMM",
-    "url": "https://www.amazon.com/dp/B07CSKGLMM"
+    "url": "https://www.amazon.com/dp/B07CSKGLMM?tag=jayarrcoffee-20"
    },
    "settings": [
     {
@@ -1599,7 +1606,7 @@
    "status": "maker method guidance with model-specific qualifications",
    "amazon": {
     "asin": "B0CC4LXF1Z",
-    "url": "https://www.amazon.com/dp/B0CC4LXF1Z"
+    "url": "https://www.amazon.com/dp/B0CC4LXF1Z?tag=jayarrcoffee-20"
    },
    "settings": [
     {
@@ -1976,7 +1983,7 @@
    "status": "maker named categories only, no click mapping",
    "amazon": {
     "asin": "B01MXJI90S",
-    "url": "https://www.amazon.com/dp/B01MXJI90S"
+    "url": "https://www.amazon.com/dp/B01MXJI90S?tag=jayarrcoffee-20"
    },
    "settings": [
     {
@@ -2074,7 +2081,7 @@
    "status": "maker method guidance with model-specific qualifications",
    "amazon": {
     "asin": "B0GKFDZ725",
-    "url": "https://www.amazon.com/dp/B0GKFDZ725"
+    "url": "https://www.amazon.com/dp/B0GKFDZ725?tag=jayarrcoffee-20"
    },
    "settings": [
     {

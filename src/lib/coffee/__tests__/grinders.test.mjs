@@ -58,7 +58,7 @@ test('dials: a maker start, a range, an open top', () => {
 });
 
 test('the Eureka is shown exactly as its source writes it', () => {
-  assert.equal(say('eureka-mignon-specialita', 'espresso'), 'As published: 0 to 3.5');
+  assert.equal(say('eureka-mignon-specialita', 'espresso'), 'The source lists 0 to 3.5');
 });
 
 test('a source with a V60 row and a generic pour-over row labels them apart', () => {
