@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { METHODS, GUIDANCE, intakeMg, dayCurve, dailyTotal, inBodyAt, encodeDay, decodeDay, dayMinute, newDayAt, bedMinute, flOzToMl, mlToFlOz, buildRecipe,
+  import { METHODS, CAFFEINE, GUIDANCE, intakeMg, dayCurve, dailyTotal, inBodyAt, encodeDay, decodeDay, dayMinute, newDayAt, bedMinute, flOzToMl, mlToFlOz, buildRecipe,
     DEFAULT_SETTINGS, dayWindow, dayStartClock, dayView, instantInDay, placeTypedTime, minutesFromMidnight, bedInstant, clockOf, migrateV1, placeSharedDay, toDiaryMinutes, applyOp, parseStore, emptyStore, CARRY_HOURS } from '../../lib/coffee/index.ts';
   import type { Intake, MethodId, LoggedDrink, DiarySettings, DiaryStore, DiaryOp } from '../../lib/coffee/index.ts';
 
@@ -16,10 +16,11 @@
     { label: 'Latte or cappuccino (double)', shots: 2 }, { label: 'Americano (double)', shots: 2 },
     { label: 'Triple shot', shots: 3 },
   ];
+  // Primary figures, not a 1.5–10 h range no source supports (R4; see CAFFEINE.halfLifeH).
   const HALF_LIVES = [
-    { h: 3, label: 'Faster', note: 'Smokers, for example, clear caffeine faster.' },
-    { h: 5, label: 'Typical', note: 'The average adult half-life is about 5 hours (range about 1.5 to 10).' },
-    { h: 8, label: 'Slower', note: 'Pregnancy and oral contraceptives slow it down; in late pregnancy it can be up to three times longer.' },
+    { h: CAFFEINE.halfLifeH.faster, label: 'Faster', note: 'Smokers, for example, clear caffeine faster.' },
+    { h: CAFFEINE.halfLifeH.typical, label: 'Typical', note: 'A middle setting. Studies put the average at 2.5–4.5 hours in adult men (IOM, 2001) and 3.4 hours, range 2–5 (Knutti, 1981); a 2025 sleep trial says “typically 3–6 hours.” Five hours is at the slow end, so bedtime figures lean high.' },
+    { h: CAFFEINE.halfLifeH.slower, label: 'Slower', note: 'Oral contraceptives can double the half-life (IOM, 2001). In one study it rose from 3 hours to 10.5 hours in the last four weeks of pregnancy, about 3½ times as long (Knutti, 1982).' },
   ];
   const EXAMPLE: Intake[] = [
     { kind: 'brewed', method: 'drip-machine', cupMl: flOzToMl(12), atMin: 7 * 60 + 30 },
@@ -302,7 +303,7 @@
         <span class="fill hi" style:width="{Math.min(100, (total.max / (guidance.mg * 1.5)) * 100)}%"></span>
         <span class="mark" style:left="{(1 / 1.5) * 100}%"></span>
       </div>
-      <span class="sub">{settings.pregnant && mode !== 'shared' ? `ACOG advises under ${guidance.mg} mg a day in pregnancy; talk to your clinician about your own case` : `${guidance.who} reference: ${guidance.mg} mg a day for healthy adults; a population guide, not a personal limit`}</span>
+      <span class="sub">{settings.pregnant && mode !== 'shared' ? `ACOG: “moderate caffeine consumption (less than ${guidance.mg} mg per day)”; ask your clinician about your own case` : `${guidance.who} reference: ${guidance.mg} mg a day for most adults; a population guide, not a personal limit`}</span>
     </div>
   </div>
 

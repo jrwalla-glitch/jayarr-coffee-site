@@ -34,8 +34,8 @@ const waveLabel: Record<City["wave"], string> = {
 
 <aside class="infographic-city-cards" role="complementary" aria-label={title}>
   <header class="ig-header">
-    <span class="ig-brand">JayArr Coffee</span>
-    <h2 class="ig-title">{title}</h2>
+    <span class="ig-brand">At a glance</span>
+    <p class="ig-title">{title}</p>
     <p class="ig-subtitle">{subtitle}</p>
   </header>
 
@@ -80,255 +80,61 @@ const waveLabel: Record<City["wave"], string> = {
     </div>
   )}
 
-  <div class="ig-footer">jayarr.coffee</div>
 </aside>
 
 <style>
+  .ig-divider { display: none; }
   .infographic-city-cards {
+    box-sizing: border-box;
+    min-width: 0;
     max-width: 720px;
     margin: 2.5rem auto;
-    font-family: 'Inter', system-ui, sans-serif;
-    color: var(--color-charcoal, #1A1A1A);
-    -webkit-font-smoothing: antialiased;
+    padding: 1.6rem;
+    background: var(--color-card, #FBF8F3);
+    border: 1px solid var(--color-rule, #D9CDBD);
+    border-radius: 16px;
+    font-family: var(--font-sans);
+    color: var(--color-ink, #2A1D15);
+    overflow-wrap: anywhere;
   }
-
-  .ig-header {
-    text-align: center;
-    margin-bottom: 2.5rem;
-  }
-
-  .ig-brand {
-    display: block;
-    font-weight: 600;
-    font-size: 0.8125rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--color-copper, #C17A3A);
-    margin-bottom: 0.75rem;
-  }
-
-  .ig-title {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-weight: 900;
-    font-size: 2.5rem;
-    color: var(--color-charcoal, #1A1A1A);
-    line-height: 1.15;
-    margin: 0 0 0.75rem;
-    letter-spacing: -0.02em;
-  }
-
-  .ig-subtitle {
-    font-size: 1rem;
-    color: var(--color-warm-gray, #6B6560);
-    margin: 0;
-  }
-
-  .ig-divider {
-    height: 1px;
-    background: var(--color-warm-gray-light, #9B9590);
-    opacity: 0.4;
-    margin-bottom: 1.5rem;
-  }
-
-  .city-card {
-    display: flex;
-    align-items: flex-start;
-    gap: 1.5rem;
-    padding: 1.75rem 0;
-    border-bottom: 1px solid rgba(155, 149, 144, 0.25);
-  }
-
-  .city-card:last-of-type {
-    border-bottom: none;
-  }
-
-  .rank-number {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-weight: 700;
-    font-size: 3rem;
-    color: var(--color-copper, #C17A3A);
-    line-height: 1;
-    min-width: 4rem;
-    text-align: right;
-    padding-top: 2px;
-  }
-
-  .city-content {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .city-top-row {
-    display: flex;
-    align-items: baseline;
-    gap: 1rem;
-    margin-bottom: 0.25rem;
-    flex-wrap: wrap;
-  }
-
-  .city-name-wrap {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .wave-dot {
-    display: inline-block;
-    width: 0.625rem;
-    height: 0.625rem;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  .wave-second {
-    background: #9B9590;
-  }
-
-  .wave-specialty {
-    background: #D4A24E;
-  }
-
-  .wave-third {
-    background: var(--color-copper, #C17A3A);
-  }
-
-  .wave-fourth {
-    background: #4F7942;
-  }
-
-  .city-name {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-weight: 700;
-    font-size: 1.625rem;
-    color: var(--color-charcoal, #1A1A1A);
-    line-height: 1.2;
-  }
-
-  .scene-founded {
-    font-weight: 500;
-    font-size: 0.8125rem;
-    color: var(--color-copper, #C17A3A);
-    white-space: nowrap;
-  }
-
-  .city-country {
-    font-weight: 500;
-    font-size: 0.75rem;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--color-warm-gray, #6B6560);
-    margin-bottom: 1.25rem;
-  }
-
-  .section-label {
-    font-weight: 600;
-    font-size: 0.6875rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--color-warm-gray, #6B6560);
-    margin-bottom: 0.625rem;
-  }
-
-  .anchor-roaster {
-    font-size: 0.875rem;
-    color: var(--color-charcoal, #1A1A1A);
-    margin-bottom: 1.25rem;
-    line-height: 1.45;
-  }
-
-  .style-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1.25rem;
-  }
-
-  .tag {
-    font-weight: 500;
-    font-size: 0.8125rem;
-    color: var(--color-charcoal, #1A1A1A);
-    padding: 0.375rem 1rem;
-    border-radius: 4px;
-    border: 1px solid var(--color-copper, #C17A3A);
-    background: var(--color-cream, #F5F0E8);
-  }
-
-  .best-for {
-    font-size: 0.875rem;
-    color: var(--color-warm-gray, #6B6560);
-    margin-bottom: 0.625rem;
-    line-height: 1.45;
-  }
-
-  .city-note {
-    font-style: italic;
-    font-size: 0.8125rem;
-    color: var(--color-warm-gray-light, #9B9590);
-    line-height: 1.45;
-  }
-
-  .stats-bar {
-    background: var(--color-cream-dark, #EBE4D8);
-    border-top: 2px solid var(--color-copper, #C17A3A);
-    margin-top: 2rem;
-    padding: 1.5rem 0;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-  }
-
-  .stat {
-    text-align: center;
-  }
-
-  .stat-value {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-weight: 700;
-    font-size: 1.75rem;
-    color: var(--color-charcoal, #1A1A1A);
-    line-height: 1.2;
-  }
-
-  .stat-label {
-    font-weight: 500;
-    font-size: 0.625rem;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--color-warm-gray, #6B6560);
-    margin-top: 0.25rem;
-  }
-
-  .stat-divider {
-    width: 1px;
-    height: 2.5rem;
-    background: var(--color-warm-gray-light, #9B9590);
-    opacity: 0.4;
-  }
-
-  .ig-footer {
-    text-align: center;
-    padding: 1.25rem 0 0;
-    font-size: 0.75rem;
-    color: var(--color-warm-gray-light, #9B9590);
-  }
-
+  .ig-header { margin-bottom: 1.4rem; padding-bottom: 1.1rem; border-bottom: 1px solid var(--color-rule, #D9CDBD); }
+  .ig-brand { display: block; font: 500 11px/1.4 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--color-crema-deep, #8F5D22); margin-bottom: .6rem; }
+  .ig-title { font: 400 2rem/1.1 var(--font-serif); color: var(--color-ink, #2A1D15); margin: 0 0 .35rem; }
+  .ig-subtitle { font: 400 .875rem/1.5 var(--font-sans); color: var(--color-ink-2, #5B4A3D); margin: 0; }
   @media (max-width: 480px) {
-    .rank-number {
-      font-size: 2rem;
-      min-width: 2.5rem;
-    }
-    .ig-title {
-      font-size: 1.75rem;
-    }
-    .city-name {
-      font-size: 1.25rem;
-    }
-    .stats-bar {
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-    .stat-divider {
-      display: none;
-    }
+    .infographic-city-cards { padding: 1.2rem 1.05rem; }
+    .ig-title { font-size: 1.65rem; }
   }
+
+  .city-card { display: flex; align-items: flex-start; gap: 1.2rem; padding: 1.4rem 0; border-bottom: 1px solid var(--color-rule, #D9CDBD); }
+  .rank-number { flex: 0 0 3rem; font: 400 1.8rem/1 var(--font-mono); color: var(--color-crema-deep, #8F5D22); padding-top: .2rem; }
+  .city-content { flex: 1; min-width: 0; }
+  .city-top-row { display: flex; align-items: baseline; gap: .4rem 1rem; flex-wrap: wrap; margin-bottom: .35rem; }
+  .city-name { font: 400 1.6rem/1.15 var(--font-serif); color: var(--color-ink, #2A1D15); }
+  .scene-founded { font: 400 .75rem/1.5 var(--font-mono); color: var(--color-crema-deep, #8F5D22); }
+  .city-country, .section-label, .stat-label { font: 500 11px/1.4 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--color-ink-3, #75655A); }
+  .city-country { margin-bottom: 1rem; }
+  .section-label { margin-bottom: .4rem; }
+  .style-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1rem; }
+  .tag { font-size: .8125rem; line-height: 1.5; color: var(--color-ink, #2A1D15); padding: .3rem .7rem; border-radius: 12px; border: 1px solid var(--color-rule, #D9CDBD); background: var(--color-paper, #F3EDE3); max-width: 100%; }
+  .best-for, .anchor-roaster { font-size: .875rem; line-height: 1.6; color: var(--color-ink-2, #5B4A3D); margin-bottom: .75rem; }
+  .city-note { font-size: .875rem; line-height: 1.5; color: var(--color-ink-3, #75655A); }
+  .stats-bar { background: var(--color-paper, #F3EDE3); border: 1px solid var(--color-rule, #D9CDBD); border-radius: 12px; margin-top: 1.4rem; padding: 1.2rem; display: flex; flex-wrap: wrap; justify-content: space-around; gap: 1rem; }
+  .stat { flex: 1 1 7rem; min-width: 0; text-align: center; }
+  .stat-value { font: 400 1.5rem/1.3 var(--font-mono); color: var(--color-ink, #2A1D15); }
+  .stat-label { margin-top: .4rem; }
+  .stat-divider { display: none; }
+  @media (max-width: 480px) {
+    .city-card { gap: .7rem; }
+    .rank-number { flex-basis: 2rem; font-size: 1.2rem; }
+    .city-name { font-size: 1.35rem; }
+  }
+
+  .city-name-wrap { display: inline-flex; align-items: center; gap: .5rem; min-width: 0; }
+  .wave-dot { display: inline-block; width: .625rem; height: .625rem; border-radius: 50%; flex-shrink: 0; }
+  .wave-second { background: var(--color-ink-3, #75655A); }
+  .wave-specialty { background: var(--color-crema-deep, #8F5D22); }
+  .wave-third { background: var(--color-copper, #C17A3A); }
+  .wave-fourth { background: var(--color-water, #2F7484); }
+
 </style>

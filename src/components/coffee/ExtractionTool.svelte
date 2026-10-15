@@ -85,7 +85,9 @@
   });
   $effect(() => {
     if (!mounted) return;
-    const q = mode === 'measured' ? new URLSearchParams(Object.fromEntries(Object.entries({ mode, kind, dose: doseG, liquid: liquidG, tds: tdsPct, ...(diluted ? { diluted: '1' } : {}) }).filter(([, v]) => v !== null && v !== undefined && v !== '' && !(typeof v === 'number' && !Number.isFinite(v))).map(([k, v]) => [k, String(v)]))) : new URLSearchParams(touched ? { taste: String(sourBitter), body: String(body) } : {});
+    // The example reading isn't the reader's: its numbers stay out of the address, so a reload or a
+    // shared link opens the same labeled example, never unlabeled numbers (Wave D batch 3; as Freshness, 482b1cb).
+    const q = mode === 'measured' ? new URLSearchParams(Object.fromEntries(Object.entries({ mode, kind, ...(example ? {} : { dose: doseG, liquid: liquidG, tds: tdsPct }), ...(diluted ? { diluted: '1' } : {}) }).filter(([, v]) => v !== null && v !== undefined && v !== '' && !(typeof v === 'number' && !Number.isFinite(v))).map(([k, v]) => [k, String(v)]))) : new URLSearchParams(touched ? { taste: String(sourBitter), body: String(body) } : {});
     if (mode === 'taste' && espresso) q.set('espresso', '1');
     history.replaceState(history.state, '', `${location.pathname}${q.toString() ? `?${q}` : ''}`);
   });
@@ -101,7 +103,7 @@
       <ExtractionMap x={0.5} y={0.5} zone="ideal-ideal" empty axes={CHARTS[kind === 'espresso' ? 'espresso' : 'filter']} label="Measured mode: no valid reading yet, so the chart is empty." />
     {/if}
     {#if mode === 'measured'}
-      <p class="refcap">{kind === 'espresso' ? 'Reference: 18–22% extraction; 8–12% TDS is a rule of thumb (espresso has no SCA chart). A reference, not a rating of your coffee.' : 'SCA 2019 reference range: 18–22% extraction · 1.15–1.45% TDS. A brewing reference, not a rating of your coffee.'}</p>
+      <p class="refcap">{kind === 'espresso' ? 'Reference: 18–22% extraction; 8–12% TDS is a common rule of thumb (espresso has no SCA chart; Scott Rao writes that most professionals seem to prefer 10–13%). A reference, not a rating of your coffee.' : 'SCA 2019 reference range: 18–22% extraction · 1.15–1.45% TDS. A brewing reference, not a rating of your coffee.'}</p>
     {:else}
       <ExtractionMap x={place.x} y={place.y} zone={place.zone} empty={!touched} emptyText="move the sliders to place your cup" label={touched ? `By taste, your cup probably sits in the ${zone.label.toLowerCase()} zone.` : 'Extraction map: move the sliders to describe your cup and place it here.'} />
     {/if}

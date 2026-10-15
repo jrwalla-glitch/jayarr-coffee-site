@@ -1,8 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { CAFFEINE, GUIDANCE, caffeineCurve, caffeineInBody, espressoMg, estimateBrewedMg, buildRecipe } from '../index.ts';
+import { CAFFEINE, GUIDANCE, SOURCES, caffeineCurve, caffeineInBody, espressoMg, estimateBrewedMg, buildRecipe, flOzToMl } from '../index.ts';
 
 const ok = (r) => { assert.equal(r.ok, true, JSON.stringify(r)); return r.value; };
+const near = (a, b, eps = 1e-9) => assert.ok(Math.abs(a - b) <= eps, `${a} vs ${b}`);
 
 test('a homemade 8 oz pour-over lands in the published range for a cup', () => {
   const recipe = ok(buildRecipe({ method: 'v60', target: { cupMl: 237 } }));
@@ -22,6 +23,23 @@ test('espresso is counted by shots, about 63 mg each', () => {
   const two = espressoMg(2);
   assert.ok(two.min <= 126 && two.max >= 126);
   assert.equal(estimateBrewedMg(18, 'espresso').ok, false);
+});
+
+test('R1: the 63 mg shot is sourced to USDA FoodData Central 171891, not Newcastle 2018', () => {
+  assert.ok(CAFFEINE.sourceIds.includes('usda-fdc-espresso') && !CAFFEINE.sourceIds.includes('newcastle-2018'));
+  assert.equal(SOURCES['newcastle-2018'], undefined);
+  assert.match(SOURCES['usda-fdc-espresso'].title, /171891/);
+  // 212 mg per 100 g × 29.6 g (1 fl oz) = 62.75 mg: the engine's typical shot, unchanged.
+  assert.equal(Math.round(212 * 29.6 / 100), CAFFEINE.espressoShotMg.typical);
+});
+
+test('R4: half-life settings are 3, 5 and 8 h, sourced to primary figures; no unsourced 1.5–10 h range', () => {
+  assert.deepEqual(CAFFEINE.halfLifeH, { typical: 5, faster: 3, slower: 8 });
+  assert.equal(CAFFEINE.halfLifeH.min, undefined); assert.equal(CAFFEINE.halfLifeH.max, undefined);
+  for (const id of ['iom-2001', 'knutti-1981', 'knutti-1982', 'gardiner-2025']) { assert.ok(CAFFEINE.sourceIds.includes(id), id); assert.ok(SOURCES[id], id); }
+  // Typical sits inside Gardiner 2025's "typically 3–6 hours"; Knutti 1982's late-pregnancy rise, 3 h → 10.5 h, is 3.5 times.
+  assert.ok(CAFFEINE.halfLifeH.typical >= 3 && CAFFEINE.halfLifeH.typical <= 6);
+  assert.equal(10.5 / 3, 3.5);
 });
 
 test('body curve: rises to a peak near 45 minutes, then halves every half-life', () => {
@@ -52,6 +70,17 @@ test('guidance lines are in the agencies\' own terms', () => {
   assert.equal(fda.mg, 400);
   assert.ok(!/limit/i.test(fda.wording), 'not called a limit');
   assert.ok(CAFFEINE.VERIFY.length > 0);
+});
+
+test('R5: the FDA and ACOG lines quote the current pages word for word, not the old or paraphrased text', () => {
+  const fda = GUIDANCE.find((g) => g.id === 'fda-adult-daily'), acog = GUIDANCE.find((g) => g.id === 'acog-pregnancy');
+  // FDA "Spilling the Beans", content current as of 8/28/2024.
+  assert.ok(fda.wording.includes('“For most adults, the FDA has cited 400 milligrams a day — that\'s about two to three 12-fluid-ounce cups of coffee — as an amount not generally associated with negative effects.”'), fda.wording);
+  assert.ok(!/healthy adults|dangerous/.test(fda.wording), 'not the older FDA text');
+  // ACOG Committee Opinion 462, abstract.
+  assert.ok(acog.wording.includes('“Moderate caffeine consumption (less than 200 mg per day) does not appear to be a major contributing factor in miscarriage or preterm birth.'), acog.wording);
+  assert.ok(!/advises|keep caffeine under/.test(acog.wording), 'not paraphrased as advice');
+  assert.equal(acog.mg, 200);
 });
 
 import { intakeMg, dayCurve, dailyTotal, inBodyAt, encodeDay, decodeDay, dayMinute, diaryDayKey, newDayAt, bedMinute } from '../index.ts';
@@ -180,4 +209,25 @@ test('AeroPress caffeine counts only the water in the chamber (Astra r3: 264 mL 
   near(r.min, 120.091304, 0.01); near(r.max, 219.722609, 0.01);
   const small = intakeMg({ kind: 'brewed', method: 'aeropress', cupMl: 216, atMin: 600 }).value;
   near(small.min, 102.482609, 0.01); near(small.max, 187.505217, 0.01);
+});
+
+test('AeroPress, 8 oz: the estimate follows the Brew Guide\'s 230 g chamber (110–200 mg), so the page table and the diary agree', () => {
+  const cup = flOzToMl(8);
+  const r = ok(buildRecipe({ method: 'aeropress', target: { cupMl: cup } }));
+  const chamber = r.steps.find((s) => s.kind === 'pour').toG;
+  assert.equal(chamber, 230, 'the recipe pours 230 g into the chamber and tops up the rest');
+  const diary = ok(intakeMg({ kind: 'brewed', method: 'aeropress', cupMl: cup, atMin: 0 }));
+  const capped = ok(estimateBrewedMg(r.doseG, 'aeropress', 'arabica', r.ratio, chamber));
+  near(diary.min, capped.min, 1e-9); near(diary.max, capped.max, 1e-9);
+  const r5 = (x) => Math.round(x / 5) * 5;
+  assert.equal(`${r5(diary.min)}–${r5(diary.max)}`, '110–200');
+  // Ignoring the chamber (all 276 g counted as brewing water) overstates it: the old table's 115–210.
+  const uncapped = ok(estimateBrewedMg(r.doseG, 'aeropress'));
+  assert.equal(`${r5(uncapped.min)}–${r5(uncapped.max)}`, '115–210');
+  // Every other brewer in the table already agreed: same dose, all its water in contact.
+  for (const id of ['v60', 'chemex', 'kalita', 'french-press', 'drip-machine']) {
+    const rr = ok(buildRecipe({ method: id, target: { cupMl: cup } }));
+    const a = ok(estimateBrewedMg(rr.doseG, id)), b = ok(intakeMg({ kind: 'brewed', method: id, cupMl: cup, atMin: 0 }));
+    near(a.min, b.min, 1e-9); near(a.max, b.max, 1e-9);
+  }
 });

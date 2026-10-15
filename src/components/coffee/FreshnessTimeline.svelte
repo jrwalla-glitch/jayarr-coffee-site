@@ -32,13 +32,15 @@
   let R = $derived(W - 20);
   let x = $derived((d: number) => L + (Math.min(d, DAYS) / DAYS) * (R - L));
   const FILL: Record<StageId, string> = { resting: '#d6e7ea', opening: '#f3e3c6', peak: '#e7c08a', good: '#f1dcbb', fading: '#e6dacb', stale: '#ddd6cc' };
-  // Illustrative curves: CO2 leaving the beans, and aroma (rising after the rest, then fading).
+  // Illustrative curves: CO2 leaving the beans, and how the cup usually tastes (better once the beans have
+  // rested and degassed, then flatter as they stale). Not aroma: the measured odorants fall from day one
+  // (Holscher & Steinhart 1992; Vitzthum 1999), so the curve isn't labeled as aroma (Wave D research r2).
   const co2 = (d: number) => Math.exp(-d / 6);
-  const aroma = (d: number) => (1 - Math.exp(-d / 3)) * Math.exp(-Math.max(0, d - 14) / 30);
+  const cup = (d: number) => (1 - Math.exp(-d / 3)) * Math.exp(-Math.max(0, d - 14) / 30);
   const y = (v: number) => BASE - v * (BASE - TOP);
   let path = $derived((f: (d: number) => number) => Array.from({ length: 121 }, (_, i) => i / 2).map((d, i) => `${i ? 'L' : 'M'}${x(d)} ${y(f(d))}`).join(' '));
   let CO2_PATH = $derived(path(co2));
-  let AROMA_PATH = $derived(path(aroma));
+  let CUP_PATH = $derived(path(cup));
   let ticks = $derived(W < 600 ? [0, 7, 21, 30, 60] : [0, 7, 14, 21, 30, 45, 60]);
   let here = $derived(r ? Math.max(0, r.effectiveDays) : 0);
   // Dates outside this year carry the year, so a past window can't read as an upcoming one (blind Opus r2).
@@ -53,6 +55,8 @@
     const fromLink = !!location.search;
     if (!fromLink) { try { const last = localStorage.getItem(SAVE_KEY); if (last) q = new URLSearchParams(last); else example = true; } catch { example = true; } }
     const rd = q.get('roast'); if (rd && isRealDate(rd)) roastDate = rd; else if (rd !== null && fromLink) { linkProblem = true; example = true; badLinkDate = /^\d{4}-\d{2}-\d{2}$/.test(rd) ? rd : ''; }
+    // An article's link sets storage or use but no roast date: the bag shown is an example, and says so (Wave D batch 2).
+    else if (rd === null && fromLink) example = true;
     if (q.get('use') === 'espresso') use = 'espresso';
     const s = q.get('storage'); if (s === 'sealed-bag' || s === 'opened' || s === 'frozen') storage = s;
     const f = q.get('frozen'); if (f && isRealDate(f)) frozenOn = f;
@@ -129,9 +133,9 @@
         {/each}
       {/if}
       <path d={CO2_PATH} fill="none" stroke="#3f8796" stroke-width="2" stroke-dasharray="5 4" />
-      <path d={AROMA_PATH} fill="none" stroke="#2a1d15" stroke-width="2.2" />
+      <path d={CUP_PATH} fill="none" stroke="#2a1d15" stroke-width="2.2" />
       <text x={x(1.2)} y={y(co2(1.2)) - 8} class="curve teal">CO₂ in the beans</text>
-      <text x={x(26)} y={y(aroma(26)) - 10} class="curve">aroma</text>
+      <text x={x(26)} y={y(cup(26)) - 10} class="curve">how it tastes</text>
       {#each ticks as d (d)}
         <line x1={x(d)} x2={x(d)} y1={BASE} y2={BASE + 6} stroke="#2a1d15" />
         <text x={x(d)} y={BASE + 44} text-anchor="middle" class="tick">{d === 60 ? '60+' : d === 0 ? 'roast' : `day ${d}`}</text>
@@ -152,7 +156,7 @@
         </g>
       {/if}
     </svg>
-    <figcaption>The curves are illustrative: CO₂ leaves the beans quickly at first; aroma rises as the coffee rests, peaks, then fades. Days in the freezer are left out.</figcaption>
+    <figcaption>The curves are illustrative: CO₂ leaves the beans quickly at first, and the cup usually tastes better once the beans have rested and degassed, then flatter as they go stale. Days in the freezer are left out.</figcaption>
   </figure>
 
   {#if r}

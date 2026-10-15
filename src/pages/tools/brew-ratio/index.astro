@@ -14,8 +14,11 @@ import { METHODS, SOURCES, cToF } from '../../../lib/coffee/index.ts';
 
 const title = 'Coffee Ratio Calculator and Brew Guide';
 const description = 'Pick your brewer and your mug and get the coffee, water, temperature, grind and every timed pour, then brew along. Ratios for V60, Chemex, French press, AeroPress, cold brew and espresso.';
+// A moka pot's basket and valve set its strength, so the guide offers no range there: it says 1:10 and
+// "The pot sets a moka's strength" (Wave D batch 4: the table printed 1:9–1:11).
 const ratioText = (m: (typeof METHODS)[number]) => m.id === 'espresso'
   ? `1:${m.ratio.stronger}–1:${m.ratio.lighter} (yield)`
+  : m.id === 'moka' ? `1:${m.ratio.classic} (the pot sets it)`
   : `1:${m.ratio.stronger}–1:${m.ratio.lighter}`;
 const tempText = (m: (typeof METHODS)[number]) => m.id === 'cold-brew' ? 'cold or room temp'
   : m.id === 'moka' ? 'just boiled' : `${Math.round(cToF(m.tempC.min))}–${Math.round(cToF(m.tempC.max))}°F`;

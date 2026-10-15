@@ -209,7 +209,10 @@ h1, h2, h3, h4, h5, h6 {
   all: unset;
 }
 
-/* Table styling */
+/* Long bare URLs (source lists) wrap instead of widening the page on phones. */
+.prose { overflow-wrap: break-word; }
+
+/* Table styling: the site's labels and rules; on phones a wide table scrolls in place, never the page. */
 .prose table {
   width: 100%;
   border-collapse: collapse;
@@ -219,22 +222,22 @@ h1, h2, h3, h4, h5, h6 {
 
 .prose th {
   text-align: left;
-  padding: 0.75rem 1rem;
-  border-bottom: 2px solid var(--color-copper);
-  font-weight: 600;
-  font-size: 0.85rem;
+  padding: 0.7rem 0.9rem;
+  border-bottom: 1.5px solid var(--color-ink);
+  font: 500 11px/1.3 var(--font-mono);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--color-warm-gray);
+  letter-spacing: 0.14em;
+  color: var(--color-ink-3);
 }
 
 .prose td {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--color-cream-dark);
+  padding: 0.7rem 0.9rem;
+  border-bottom: 1px solid var(--color-rule);
+  vertical-align: top;
 }
 
-.prose tbody tr:hover {
-  background-color: var(--color-cream-dark);
+@media (max-width: 640px) {
+  .prose table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 }
 
 /* Horizontal rule */
