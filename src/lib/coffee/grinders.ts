@@ -68,12 +68,25 @@ export function headline(g: Grinder, s: Setting): string {
   if (s.headline) return s.headline;
   if (s.published) return `As published: ${s.published}`;
   if (s.categories) return s.categories.length === 1 ? `Start at ${s.categories[0]}` : `Start between ${s.categories.join(' and ')}`;
-  // Turn-counted grinders with a published turn size read in turns, the way you count them on the grinder.
+  // Turn-counted grinders with a published turn size read in turns, the way the hand counts them:
+  // full turns first, then the clicks or numbers past them, always with the unit.
   if (g.kind === 'turns' && g.perTurn && s.min != null) {
-    if (s.start != null) return `Start at ${turnsText(s.start, g)}`;
-    if (s.max == null || s.max === s.min) return `Start at ${turnsText(s.min, g)}`;
-    if (s.max < g.perTurn) return `Start between ${fmt(s.min)} and ${fmt(s.max)} on the first turn`;
-    return `Start between ${turnsText(s.min, g)} and ${turnsText(s.max, g)}`;
+    const pt = g.perTurn, u = g.unit;
+    const turns = (n: number) => `${n} full turn${n === 1 ? '' : 's'}`;
+    const at = (v: number) => {
+      const n = Math.floor(v / pt + 1e-9), r = Math.round((v - n * pt) * 100) / 100;
+      return n === 0 ? `${fmt(r)} ${u} on the first turn` : r === 0 ? turns(n) : `${turns(n)} + ${fmt(r)} ${u}`;
+    };
+    if (s.start != null) return `Start at ${at(s.start)}`;
+    if (s.max == null || s.max === s.min) return `Start at ${at(s.min)}`;
+    if (s.max <= pt) return `Start between ${fmt(s.min)} and ${fmt(s.max)} ${u} on the first turn`;
+    // Both ends within one turn (its end included): the full turns, then the span past them.
+    const n = Math.floor(s.min / pt + 1e-9);
+    if (s.max <= (n + 1) * pt) {
+      const a = Math.round((s.min - n * pt) * 100) / 100, b = Math.round((s.max - n * pt) * 100) / 100;
+      return a === 0 ? `Start at ${turns(n)}, then up to ${fmt(b)} ${u} more` : `Start ${turns(n)} in, then ${fmt(a)} to ${fmt(b)} ${u} more`;
+    }
+    return `Start between ${at(s.min)} and ${at(s.max)}`;
   }
   const unit = g.kind === 'turns' ? ` ${g.unit} from zero` : '';
   if (s.start != null) return `Start at ${fmt(s.start)}${unit}`;
