@@ -130,7 +130,7 @@
       <button type="button" aria-pressed={grinder === 'burr'} onclick={() => (grinder = 'burr')}>Burr grinder</button>
       <button type="button" aria-pressed={grinder === 'blade'} onclick={() => (grinder = 'blade')}>Blade grinder</button>
     </div>
-    {#if grinder === 'blade'}<p class="warn">A blade chops rather than grinds: you get dust and boulders in the same cup, so it extracts unevenly and tastes sour and bitter at once. A burr grinder is the single biggest upgrade.</p>{/if}
+    {#if grinder === 'blade'}<p class="warn">A blade chops rather than grinds, so it gives a wide spread of sizes, from dust to large chunks. A spread that wide can extract unevenly: the dust extracts fast and the chunks slowly. A burr grinder gives a more even grind.</p>{/if}
     <dl class="too">
       <div><dt>Signs it's too fine</dt><dd>{too.fine}</dd></div>
       <div><dt>Signs it's too coarse</dt><dd>{too.coarse}</dd></div>
