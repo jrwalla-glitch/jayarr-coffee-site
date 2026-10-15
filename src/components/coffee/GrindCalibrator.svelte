@@ -16,6 +16,8 @@
   let pickKey = $state<string | null>(null);
   // A method a link asked for that this grinder has no included setting for: said, never swapped silently.
   let askedFor = $state<Group | null>(null);
+  // A ?grinder= link that names no grinder we include: said, not silently replaced.
+  let badGrinder = $state(false);
   let mounted = $state(false);
   let g = $derived(grinderById(grinders, grinderId) ?? grinders[0]);
   let available = $derived(groupsFor(g));
@@ -32,6 +34,7 @@
     grinderId = id;
     pickKey = null;
     askedFor = null;
+    badGrinder = false;
     const gg = grinderById(grinders, id);
     // Keep the method if this grinder's maker publishes it; otherwise the first one it does.
     if (gg && !settingsFor(gg, group).length) group = groupsFor(gg)[0]?.id ?? group;
@@ -45,6 +48,7 @@
     try { saved = localStorage.getItem('jayarr-grinder'); } catch { /* storage unavailable */ }
     const id = q.get('grinder') ?? saved;
     if (id && grinderById(grinders, id)) grinderId = id;
+    else if (q.get('grinder')) badGrinder = true;
     const m = groupFromParam(q.get('method'));
     if (m && settingsFor(g, m).length) group = m;
     else {
@@ -171,10 +175,11 @@
     return g.avoid && r.min <= g.avoid[1] ? `above ${r.min}, to ${r.max}` : `${r.min}–${r.max}`;
   }
   let mapUnit = $derived(g.kind === 'dial' && g.scale ? `on its ${g.scale[0]}–${g.scale[1]} dial` : g.kind === 'turns' ? `${g.unit} from zero` : g.kind === 'named' ? 'fine to coarse' : 'as written');
-  // The secondary source's notation: it defines "1+4"; it leaves plain decimals such as 3.5 undefined.
+  // The secondary source's notation, from its own chart: a rotation and a mark ("1+4"); plain numbers
+  // (0 to 5, then 1+0) are marks on the first rotation.
   let textNotes = $derived(!s?.published ? [] : [
-    ...(s.published.includes('+') ? ['The source defines “1+4” as one full turn plus mark 4.'] : []),
-    ...(/(^|[^+\d.])\d+\.\d/.test(s.published) ? [`${s.published.includes('+') ? 'It' : 'The source'} doesn't explain plain numbers such as 3.5, so they're left exactly as printed.`] : []),
+    ...(s.published.includes('+') ? ['The source writes a rotation and a mark: “1+4” is one full rotation from zero, then on to mark 4.'] : []),
+    ...(/(^|[^+\d])\d+(\.\d)?(\s|$)/.test(s.published) ? ['A plain number such as 3.5 is a mark on the first rotation: on the source\'s chart, 0 to 5 come before 1+0.'] : []),
   ]);
 </script>
 
@@ -356,13 +361,14 @@
   </div>
 
   <div class="answer" aria-live="polite">
+    {#if badGrinder}<p class="asked">That link named a grinder this guide doesn't include, so this shows the {g.short}. Pick yours above.</p>{/if}
     {#if askedFor && s}<p class="asked">The {g.short} has no included setting for {GROUPS.find((x) => x.id === askedFor)!.label.toLowerCase()}, so this shows {GROUPS.find((x) => x.id === group)!.label.toLowerCase()} instead. Pick another grinder to see {GROUPS.find((x) => x.id === askedFor)!.label.toLowerCase()}.</p>{/if}
     {#if s}
       <p class="kick">{g.short} · {s.label}{s.makerLabel ? ` (the maker's “${s.makerLabel}”)` : ''}</p>
       <h3>{nice(g.kind === 'turns' && g.perTurn ? countHeadline(g, s) : headline(g, s))}</h3>
       {#if s.note}<p class="snote">{s.note}</p>{/if}
       {#if turnsLine(g, s)}<p class="turnsl"><span>On the grinder</span>{turnsLine(g, s)}<em>{g.perTurn} {g.unit} per turn{g.sub ? `, ${g.sub}` : ''}</em></p>{/if}
-      {#if s.start == null && s.max !== s.min && g.kind !== 'text' && !s.headline}<p class="trans">The {who} prints a range, not one setting: start anywhere in it, then adjust by taste.</p>{/if}
+      {#if ((g.kind === 'named' && (s.categories?.length ?? 0) > 1) || (g.kind !== 'named' && s.start == null && s.max !== s.min)) && g.kind !== 'text' && !s.headline}<p class="trans">The {who} prints a range, not one setting: start anywhere in it, then adjust by taste.</p>{/if}
       {#if others.length}
         <div class="more"><p class="morek">Also listed for {GROUPS.find((x) => x.id === group)!.label.toLowerCase()}</p>
           {#each others as r (r.key)}<button type="button" class="alt" onclick={() => pickRow(r)}><b>{r.label}</b> {mapVal(r)} →</button>{/each}
@@ -372,8 +378,8 @@
       <p class="prov">{who === 'maker' ? `Published by ${brand}` : 'Secondary source'}{#if s.url}{' · '}<a href={s.url} rel="noopener" target="_blank" title={s.source ?? ''}>open the source</a>{/if}{s.checked ? `, checked ${s.checked}` : ''}.</p>
       {#if g.cautions.length}<div class="cbox"><p class="cauth">Cautions</p><ul class="cautions">{#each g.cautions as c (c)}<li>{c}</li>{/each}</ul></div>
       {:else}<p class="cbox nocaut"><span class="cauth">Cautions</span> None listed here; see the maker's manual.</p>{/if}
-      {#if g.kind !== 'named' && g.kind !== 'text'}
-        <details class="zero" open={g.kind === 'turns'}><summary>{g.kind === 'turns' ? 'Where zero is, and what one step does' : 'How the dial is numbered'}</summary>
+      {#if g.kind !== 'named'}
+        <details class="zero" open={g.kind === 'turns' || g.kind === 'text'}><summary>{g.kind === 'turns' ? 'Where zero is, and what one step does' : g.kind === 'text' ? 'Where zero is' : 'How the dial is numbered'}</summary>
           <p>{g.zeroNote}</p>
           {#if g.stepNote}<p>{g.stepNote}</p>{:else if g.stepMicrons}<p>The maker says each click moves the burrs about {g.stepMicrons} µm. That's the burr movement, not the size of the grounds.</p>{/if}
         </details>

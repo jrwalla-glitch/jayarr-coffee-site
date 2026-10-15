@@ -169,6 +169,7 @@
      "source": "Encore ESP Operations Manual v1.0 p.5",
      "url": "https://breville-production-aem-assets.s3.us-west-2.amazonaws.com/ZCG495/Encore+ESP+Documents/manual-encoreesp-v1-0-en-010923.pdf",
      "checked": "2026-10-15",
+     "note": "Baratza bases this on a medium roast and an 18 g dose: go higher for a darker roast or a bigger dose, lower for a lighter roast or a smaller one.",
      "min": 15,
      "max": 15,
      "start": 15
@@ -561,6 +562,7 @@
      "source": "Capresso manual section 5",
      "url": "https://www.capresso.com/media/wysiwyg/capresso_565-560_infinity-grinder_IB.pdf",
      "checked": "2026-10-15",
+     "note": "Capresso says to go somewhat coarser with a gold-tone filter, and to try finer with paper.",
      "categories": [
       "MEDIUM"
      ]
@@ -750,7 +752,7 @@
    "stepNote": null,
    "applies": null,
    "rulerNote": null,
-   "zeroNote": "No zero convention in Eureka manual. Eureka page describes lower-burr repositioning and maintenance without losing setting.",
+   "zeroNote": "Eureka’s manual gives no zero point. The source counts rotations from its own zero, the finest setting it lists (Turkish coffee), without tying it to a mark on the grinder, so treat its numbers as a guide to adjust from by taste.",
    "cautions": [
     "Turn the knob only while the motor is running; the manual warns the grinder could stop otherwise."
    ],
@@ -912,7 +914,7 @@
      "source": "Fellow how-to brew guide, Measure and grind coffee",
      "url": "https://fellowproducts.com/pages/how-to-cold-brew",
      "checked": "2026-10-15",
-     "note": "This is the start in Fellow’s cold-brew recipe (70 g of coffee to 700 g of water, 16 hours); Fellow says not to go finer than 7.",
+     "note": "This is the start in Fellow’s cold-brew recipe for its Clara French press (70 g of coffee to 700 g of water, 16 hours); for that recipe Fellow says not to go finer than 7.",
      "min": 10,
      "max": 10,
      "start": 10
