@@ -1,128 +1,91 @@
 ---
+import '@fontsource/instrument-serif/400.css';
+import '@fontsource/instrument-serif/400-italic.css';
+import '@fontsource/ibm-plex-sans/400.css';
+import '@fontsource/ibm-plex-sans/500.css';
+import '@fontsource/ibm-plex-sans/600.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
 import BaseHead from '../../../components/BaseHead.astro';
 import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
-import FixMyCoffee from '../../../components/tools/FixMyCoffee.svelte';
+import CoffeeDoctor from '../../../components/coffee/CoffeeDoctor.svelte';
+import { SYMPTOMS, SOURCES } from '../../../lib/coffee/index.ts';
+
+const title = 'Fix My Coffee: Why It Tastes Sour, Bitter or Weak';
+const description = 'Tell the Coffee Doctor how you brewed and what tastes wrong. Two or three quick questions find the likely cause and give you one change to make in your next brew.';
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead
-			title="Fix My Coffee — JayArr Coffee"
-			description="Diagnose and fix common coffee brewing problems. Sour, bitter, weak, or muddy — find the science-backed fix for what went wrong."
-		/>
+		<BaseHead title={title} description={description} />
 		<script type="application/ld+json" set:html={JSON.stringify({
-			"@context": "https://schema.org",
-			"@type": "WebApplication",
-			"name": "Fix My Coffee Diagnostic",
-			"url": "https://jayarr.coffee/tools/fix-my-coffee/",
-			"description": "Diagnose and fix common coffee brewing problems. Sour, bitter, weak, or muddy — find the science-backed fix for what went wrong.",
-			"applicationCategory": "UtilityApplication",
-			"operatingSystem": "Any",
-			"offers": {
-				"@type": "Offer",
-				"price": "0",
-				"priceCurrency": "USD"
-			},
-			"publisher": {
-				"@type": "Organization",
-				"name": "JayArr Coffee",
-				"url": "https://jayarr.coffee"
-			}
+			'@context': 'https://schema.org', '@type': 'WebApplication', name: 'Fix My Coffee (Coffee Doctor)',
+			url: 'https://jayarr.coffee/tools/fix-my-coffee/', description, applicationCategory: 'UtilityApplication', operatingSystem: 'Any',
+			offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, publisher: { '@type': 'Organization', name: 'JayArr Coffee', url: 'https://jayarr.coffee' },
 		})}></script>
-		<script type="application/ld+json" set:html={JSON.stringify({
-			"@context": "https://schema.org",
-			"@type": "HowTo",
-			"name": "How to Diagnose and Fix Bad Coffee",
-			"description": "Select the symptom you're tasting \u2014 sour, bitter, weak, muddy, or a combination \u2014 and get science-backed fixes ranked by impact.",
-			"totalTime": "PT2M",
-			"step": [
-						{
-									"@type": "HowToStep",
-									"position": 1,
-									"name": "Identify your symptom",
-									"text": "Taste your coffee and identify the primary problem: Sour/Acidic (underextraction), Bitter/Harsh (overextraction), Weak/Watery (low concentration), Muddy/Heavy (too many dissolved solids), or the compound symptom Sour AND Bitter (uneven extraction)."
-						},
-						{
-									"@type": "HowToStep",
-									"position": 2,
-									"name": "Read the diagnosis",
-									"text": "Each symptom maps to a specific extraction problem. Sour means extraction yield is below 18% \u2014 only fruit acids dissolved. Bitter means extraction exceeded 22% \u2014 dry distillates are overwhelming the cup."
-						},
-						{
-									"@type": "HowToStep",
-									"position": 3,
-									"name": "Apply fixes in order of impact",
-									"text": "Fixes are ranked by effectiveness. For sour coffee: grind finer first (biggest impact), then increase water temperature, then extend brew time. Change one variable at a time and re-taste."
-						},
-						{
-									"@type": "HowToStep",
-									"position": 4,
-									"name": "Iterate until balanced",
-									"text": "A well-extracted cup (18-22% EY) should taste sweet with balanced acidity, no harsh bitterness, and a clean finish. Each variable adjustment shifts extraction by about 0.5 percentage points."
-						}
-			]
-})}></script>
 	</head>
-	<body class="bg-cream">
+	<body class="cf-page">
 		<Header />
+		<main>
+			<section class="cf-intro">
+				<a href="/tools/" class="cf-back">← All tools</a>
+				<p class="cf-kicker">Fix My Coffee · the Coffee Doctor</p>
+				<h1>Why does my coffee taste <em>sour, bitter or weak?</em></h1>
+				<p class="cf-lede">Tell the Doctor how you brewed it and what tastes wrong. A couple of quick questions tell the causes apart, and you get one change to make next time.</p>
+			</section>
+			<section class="cf-tool" aria-label="Coffee Doctor"><CoffeeDoctor client:load /></section>
 
-		<section class="bg-charcoal pt-32 pb-12 md:pb-16">
-			<div class="max-w-3xl mx-auto px-6 text-center">
-				<a href="/tools/" class="text-xs uppercase tracking-widest text-cream/40 hover:text-copper transition-colors">
-					&larr; All Tools
-				</a>
-				<h1 class="font-serif text-3xl md:text-5xl font-bold text-cream mt-3 mb-3">Fix My Coffee</h1>
-				<p class="text-cream/60 max-w-lg mx-auto leading-relaxed text-sm">
-					Something off with your brew? Pick a symptom and get science-backed fixes — in order of impact.
-				</p>
-			</div>
-		</section>
+			<article class="cf-body">
+				<h2>Sour or bitter: which way to go</h2>
+				<p>Coffee gives up its flavours in an order. Acids dissolve first, then the sugars and browned, caramel-like compounds, and last the bitter, drying ones. A <strong>sour</strong> cup usually stopped too early (under-extracted): grind finer or use hotter water. A <strong>bitter</strong> cup usually went too far (over-extracted): grind coarser or use cooler water. Change one thing at a time, and change it a little.</p>
+				<p>The brew time is the best clue. If a V60 finishes in two minutes instead of three to four, or an espresso shot runs in fifteen seconds instead of twenty-five to thirty, the grind is almost certainly too coarse.</p>
 
-		<section class="py-12 md:py-16">
-			<div class="max-w-xl mx-auto px-6">
-				<FixMyCoffee client:load />
-			</div>
-		</section>
+				<h2>Weak is a different problem</h2>
+				<p>Strength is how much coffee is dissolved in the cup; extraction is how much was pulled out of the grounds. A cup can be well extracted and still weak, because there simply wasn't enough coffee for the water. Weak means use more coffee for the same water, not a finer grind. The <a href="/tools/brew-ratio/">Brew Guide</a> gives you the grams for your cup.</p>
 
+				<h2>When it tastes sour and bitter at once</h2>
+				<p>That usually means uneven extraction: some grounds over-extracted while others were bypassed. Blade grinders cause it by making dust and boulders together, and so does water channelling through a pour-over bed or an espresso puck. Even out the grind and the bed before chasing the dial.</p>
 
-		<section class="py-16 px-6">
-			<div class="prose mx-auto">
-				<h2>The Extraction Science Behind Your Coffee Problems</h2>
-				<p>Coffee extraction follows a predictable chemical sequence. Compounds dissolve in order of molecular size and polarity: fruit acids first, then Maillard reaction products (nutty, caramel, malty flavors), then browning sugars, and finally the heavy, bitter dry distillates. Every cup is a snapshot of how far along this dissolving curve you went. Too little extraction and only the acids have dissolved — the cup tastes sour and thin. Too much and the dry distillates overwhelm everything — the cup tastes bitter, ashy, and harsh.</p>
-				<p>The SCA’s 18-22% extraction yield target reflects decades of sensory research. At this range, trained tasters consistently rate coffee highest for overall flavor quality. But hitting the right average extraction doesn’t guarantee a good cup. This is perhaps the most important concept in coffee science, and the one this diagnostic tool is built around: evenness of extraction matters as much as total extraction.</p>
-				<p>If some particles in your coffee bed are overextracted while others are underextracted, the cup will taste both sour and bitter simultaneously, even if the average extraction yield falls squarely within the ideal range. As Jonathan Gagne puts it, a brew at 20% EY with even extraction can taste better than one at 19% with uneven extraction. This is why the “sour AND bitter” symptom exists — it signals channeling, uneven grinding, or poor water distribution rather than a simple too-much or too-little problem.</p>
-				<p>Strength and extraction are independent axes. Extraction yield (EY%) measures what percentage of the coffee’s dry mass was dissolved and determines flavor balance — the sour-to-bitter spectrum. Total dissolved solids (TDS%) measures the concentration of those compounds in your cup and determines body — the thin-to-heavy spectrum. You can have high extraction at low strength (bitter and watery, like percolator coffee that dripped too long) or low extraction at high strength (sour and intense, like a choked espresso). Fixing your coffee requires identifying which axis is off.</p>
-				<p>The five brewing variables you control — grind size, water temperature, brew time, ratio, and agitation — all affect extraction differently. Grind size has the largest impact because it controls surface area, which directly governs the Noyes-Whitney dissolution equation. Water temperature affects the diffusion coefficient: higher temps extract faster but also pull more bitter compounds. Same extraction yield at different temperatures produces different flavor because temperature-dependent solubility means different compounds extract at different rates. Brew time is straightforward — longer contact means more extraction. Ratio affects both strength and extraction: more water dilutes the cup but also drives extraction higher as each particle contacts fresher water. Agitation (stirring, pouring technique) affects evenness rather than total extraction.</p>
-				<p>The key to effective troubleshooting is changing one variable at a time. Each single variable change shifts extraction yield by roughly 0.5 percentage points. This means stacking multiple small improvements — better tamper fit, sharper burrs, correct water chemistry, proper preinfusion — can add up to 2-2.5 percentage points of total extraction improvement. A barista who optimizes five variables independently gains more than one who tries to fix everything at once.</p>
-			</div>
-		</section>
+				<h2>What the Doctor asks about</h2>
+				<ul>
+					{SYMPTOMS.map((s) => <li><strong>{s.label}</strong>: {s.tagline.toLowerCase()}.</li>)}
+				</ul>
+				<p>Want to see where your cup sits between sour and bitter, weak and strong? Try the <a href="/deep-brew/extraction/">Extraction Map</a>.</p>
 
-		<section class="bg-charcoal py-12">
-			<div class="max-w-3xl mx-auto px-6 text-center">
-				<span class="text-xs uppercase tracking-widest text-copper font-medium">Learn More</span>
-				<h2 class="font-serif text-xl md:text-2xl font-bold text-cream mt-2 mb-6">Related Articles</h2>
-				<div class="flex flex-wrap justify-center gap-4">
-					<a href="/blog/coffee-extraction-yield-explained/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						Extraction Science
-					</a>
-					<a href="/blog/coffee-grind-size-guide-what-grind-for-every-brew-method/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						Grind Size Guide
-					</a>
-					<a href="/blog/why-water-matters-more-than-your-coffee-beans/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						Water Science
-					</a>
-					<a href="/blog/coffee-strength-vs-extraction/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						Strength vs Extraction
-					</a>
-					<a href="/blog/fix-channeling-uneven-extraction/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						Fix Channeling
-					</a>
-				</div>
-			</div>
-		</section>
+				<h2>Related guides</h2>
+				<ul>
+					<li><a href="/blog/coffee-extraction-yield-explained/">Extraction yield explained</a></li>
+					<li><a href="/blog/why-coffee-tastes-bitter-how-to-fix/">Why coffee tastes bitter</a></li>
+					<li><a href="/blog/how-to-dial-in-espresso/">How to dial in espresso</a></li>
+					<li><a href="/blog/fix-channeling-uneven-extraction/">Fixing channeling and uneven extraction</a></li>
+					<li><a href="/tools/grind-guide/">Grind Guide</a></li>
+				</ul>
 
+				<h2>Sources</h2>
+				<ul class="cf-sources">
+					{['gagne', 'rao', 'sca-chart', 'synthesis'].map((id) => SOURCES[id]).map((s) => <li>{s.author}, <cite>{s.title}</cite>{s.year ? ` (${s.year})` : ''}{s.where ? `: ${s.where}` : ''}.</li>)}
+				</ul>
+			</article>
+		</main>
 		<Footer />
 	</body>
 </html>
+
+<style is:global>.cf-page { background: #f3ede3; }</style>
+<style>
+	main { color: #2a1d15; }
+	.cf-intro { max-width: 1180px; margin: 0 auto; padding: 120px 24px 22px; }
+	.cf-back { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; text-decoration: none; }
+	.cf-kicker { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: #8f5d22; margin: 26px 0 0; }
+	h1 { font: 400 clamp(40px, 6vw, 68px)/.98 'Instrument Serif', Georgia, serif; letter-spacing: -.01em; margin: 10px 0 12px; }
+	h1 em { font-style: italic; color: #7a4e30; }
+	.cf-lede { font: 400 17px/1.5 'IBM Plex Sans', system-ui, sans-serif; color: #5b4a3d; max-width: 60ch; margin: 0; }
+	.cf-tool { max-width: 1180px; margin: 0 auto; padding: 8px 24px 40px; }
+	.cf-body { max-width: 760px; margin: 0 auto; padding: 24px 24px 72px; font: 400 17px/1.7 'IBM Plex Sans', system-ui, sans-serif; }
+	.cf-body h2 { font: 400 34px/1.1 'Instrument Serif', Georgia, serif; margin: 44px 0 12px; }
+	.cf-body a { color: #7a4e30; text-underline-offset: 3px; }
+	.cf-sources { font-size: 14.5px; color: #5b4a3d; }
+	@media (max-width: 640px) { .cf-intro { padding: 96px 16px 18px; } .cf-tool { padding: 4px 12px 32px; } .cf-body { padding: 16px 16px 56px; } }
+</style>

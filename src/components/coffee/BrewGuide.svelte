@@ -5,7 +5,7 @@
     METHODS, buildRecipe, simulate, encodeBrew, decodeBrew,
     cToF, mlToFlOz, flOzToMl, approxTablespoons,
   } from '../../lib/coffee/index.ts';
-  import type { MethodId, Roast, Strength, Units, RecipeInput, Frame } from '../../lib/coffee/index.ts';
+  import type { MethodId, Roast, Strength, Units, RecipeInput, Frame, Adjust } from '../../lib/coffee/index.ts';
 
   type Target = { cupMl: number } | { doseG: number } | { waterG: number };
 
@@ -31,6 +31,11 @@
   let ratioOverride = $state<number | undefined>(undefined);
   let target = $state<Target>(DEFAULTS.v60);
   let mounted = $state(false);
+  let adjust = $state<Adjust | undefined>(undefined);
+  const ADJUST_TEXT: Record<Adjust, string> = {
+    finer: 'Grind one step finer than last time.', coarser: 'Grind one step coarser than last time.',
+    hotter: 'Use water right off the boil this time.', cooler: 'Let the water cool for about a minute off the boil.',
+  };
 
   let m = $derived(METHODS.find((x) => x.id === method)!);
   let byDose = $derived(method === 'espresso' || method === 'moka');
@@ -113,7 +118,7 @@
     const d = decodeBrew(location.search);
     if (d.ok) {
       method = d.value.method; target = d.value.target; strength = d.value.strength ?? 'classic';
-      roast = d.value.roast ?? 'medium'; units = d.value.units; ratioOverride = d.value.ratio;
+      roast = d.value.roast ?? 'medium'; units = d.value.units; ratioOverride = d.value.ratio; adjust = d.value.adjust;
     } else if (navigator.language && !/^en-US/i.test(navigator.language) && !location.search) {
       units = 'metric'; if ('cupMl' in target) target = { cupMl: 350 };
     }
@@ -122,7 +127,7 @@
   });
   $effect(() => {
     if (!mounted) return;
-    const q = encodeBrew({ ...input, units });
+    const q = encodeBrew({ ...input, units, ...(adjust ? { adjust } : {}) });
     history.replaceState(history.state, '', `${location.pathname}?${q}`);
   });
 
@@ -228,6 +233,9 @@
         {/each}
       </div>
     {:else if recipe}
+      {#if adjust}
+        <div class="adjust" role="status"><span class="chip">From the Coffee Doctor</span><span>{ADJUST_TEXT[adjust]}</span><button type="button" class="x" aria-label="Dismiss" onclick={() => (adjust = undefined)}>×</button></div>
+      {/if}
       <div class="numbers">
         <div class="coffee"><span class="k">Coffee</span><span class="v">{recipe.doseG < 20 ? recipe.doseG.toFixed(1) : r0(recipe.doseG)}<small>g</small></span><span class="sub">about {r0(approxTablespoons(recipe.doseG, 'whole'))} tbsp beans</span></div>
         {#if method === 'espresso'}
@@ -339,6 +347,8 @@
   .grind { display: flex; gap: 12px; align-items: baseline; font-size: 14px; color: var(--ink-2); margin: 0; }
   .grind b { color: var(--ink); font-weight: 600; }
   .chip { font: 500 11px/1 var(--cf-mono); text-transform: uppercase; letter-spacing: .1em; border: 1px solid var(--rule); border-radius: 6px; padding: 5px 7px; background: #fff; }
+  .adjust { display: flex; gap: 10px; align-items: center; background: #fff8ec; border: 1px solid #e3c79f; border-radius: 10px; padding: 9px 10px 9px 12px; font-size: 14.5px; }
+  .adjust .x { margin-left: auto; width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--rule); background: #fff; cursor: pointer; font-size: 16px; }
   .warn { margin: 0; font-size: 13.5px; color: var(--crema-deep); background: rgba(195, 135, 58, .08); border-left: 2px solid var(--crema); padding: 8px 12px; }
   .problem { border: 1px solid #c9a27a; background: #fbf1e6; border-radius: 10px; padding: 12px 14px; }
   .problem p { margin: 0 0 8px; }

@@ -5,7 +5,10 @@ import { failure, finite, success } from './units.ts';
 // Brew Guide state ↔ URL query. Readable keys so shared links explain themselves:
 //   ?method=v60&cup=355&strength=classic&roast=medium&units=us
 export type Units = 'us' | 'metric';
-export interface BrewState extends RecipeInput { units: Units }
+export type Adjust = 'finer' | 'coarser' | 'hotter' | 'cooler';
+/** `adjust` carries a change from the Coffee Doctor into the next brew. */
+export interface BrewState extends RecipeInput { units: Units; adjust?: Adjust }
+const ADJUSTS: Adjust[] = ['finer', 'coarser', 'hotter', 'cooler'];
 
 const STRENGTHS: Strength[] = ['lighter', 'classic', 'stronger'];
 const ROASTS: Roast[] = ['light', 'medium', 'dark'];
@@ -21,6 +24,7 @@ export function encodeBrew(state: BrewState): string {
   else if (state.strength && state.strength !== 'classic') q.set('strength', state.strength);
   if (state.roast && state.roast !== 'medium') q.set('roast', state.roast);
   if (state.units !== 'us') q.set('units', state.units);
+  if (state.adjust) q.set('adjust', state.adjust);
   return q.toString();
 }
 
@@ -36,6 +40,7 @@ export function decodeBrew(query: string): Result<BrewState> {
   const strength = (q.get('strength') ?? 'classic') as Strength;
   const roast = (q.get('roast') ?? 'medium') as Roast;
   const units = (q.get('units') ?? 'us') as Units;
-  if (!STRENGTHS.includes(strength) || !ROASTS.includes(roast) || (units !== 'us' && units !== 'metric')) return failure('bad-option', 'options', 'An option in the link is not recognised.');
-  return success({ method, target, strength, roast, units, ...(ratio !== undefined ? { ratio } : {}) });
+  const adjust = q.get('adjust') as Adjust | null;
+  if (!STRENGTHS.includes(strength) || !ROASTS.includes(roast) || (units !== 'us' && units !== 'metric') || (adjust !== null && !ADJUSTS.includes(adjust))) return failure('bad-option', 'options', 'An option in the link is not recognised.');
+  return success({ method, target, strength, roast, units, ...(ratio !== undefined ? { ratio } : {}), ...(adjust ? { adjust } : {}) });
 }

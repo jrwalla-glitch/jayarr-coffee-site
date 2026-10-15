@@ -1,0 +1,82 @@
+<script lang="ts">
+  // The brewing control chart as a map: extraction left→right (sour→bitter), strength
+  // bottom→top (weak→strong). Qualitative: taste places the cup, it doesn't measure it.
+  import type { ZoneId } from '../../lib/coffee/index.ts';
+
+  interface Props {
+    /** 0..1 across (extraction) and up (strength). */
+    x: number;
+    y: number;
+    zone: ZoneId;
+    showArrow?: boolean;
+    label?: string;
+    compact?: boolean;
+  }
+  let { x, y, zone, showArrow = true, label = '', compact = false }: Props = $props();
+
+  const L = 64, R = 384, T = 18, B = 338;
+  const W = R - L, H = B - T;
+  let px = $derived(L + Math.max(0.04, Math.min(0.96, x)) * W);
+  let py = $derived(B - Math.max(0.04, Math.min(0.96, y)) * H);
+  const cx = L + W / 2, cy = T + H / 2;
+  let inSweet = $derived(zone === 'ideal-ideal');
+  // arrow stops at the edge of the sweet-spot cell
+  let arrow = $derived.by(() => {
+    const dx = cx - px, dy = cy - py, len = Math.hypot(dx, dy);
+    if (len < 30) return null;
+    const stop = Math.min(len - 8, len - (W / 6) * 0.9);
+    return { x2: px + (dx / len) * stop, y2: py + (dy / len) * stop };
+  });
+  const cols = ['under', 'ideal', 'over'], rows = ['strong', 'ideal', 'weak'];
+</script>
+
+<svg viewBox="0 0 400 {compact ? 372 : 392}" role="img" aria-label={label || `Extraction map: your cup sits in the ${zone.replace('-', ', ')} zone.`} class="map">
+  <defs>
+    <linearGradient id="em-x" x1="0" x2="1"><stop offset="0" stop-color="#f1e7b9" /><stop offset=".5" stop-color="#f6eee0" /><stop offset="1" stop-color="#d9c2a8" /></linearGradient>
+    <linearGradient id="em-y" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#3f8796" stop-opacity=".16" /><stop offset=".5" stop-color="#fff" stop-opacity="0" /><stop offset="1" stop-color="#3b2214" stop-opacity=".2" /></linearGradient>
+    <marker id="em-head" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#8f5d22" /></marker>
+  </defs>
+  <rect x={L} y={T} width={W} height={H} fill="url(#em-x)" rx="10" />
+  <rect x={L} y={T} width={W} height={H} fill="url(#em-y)" rx="10" />
+  {#each [1, 2] as i (i)}
+    <line x1={L + (W / 3) * i} x2={L + (W / 3) * i} y1={T} y2={B} stroke="#2a1d15" stroke-opacity=".12" />
+    <line x1={L} x2={R} y1={T + (H / 3) * i} y2={T + (H / 3) * i} stroke="#2a1d15" stroke-opacity=".12" />
+  {/each}
+  <rect x={L + W / 3} y={T + H / 3} width={W / 3} height={H / 3} rx="6" fill="#fffdf8" fill-opacity=".7" stroke="#c3873a" stroke-width={inSweet ? 2.5 : 1.5} />
+  <text x={cx} y={cy + 4} text-anchor="middle" class="sweet">sweet spot</text>
+  {#each rows as r, ri (r)}
+    {#each cols as c, ci (c)}
+      {#if `${c}-${r}` === zone && !inSweet}
+        <rect x={L + (W / 3) * ci + 3} y={T + (H / 3) * ri + 3} width={W / 3 - 6} height={H / 3 - 6} rx="6" fill="none" stroke="#2a1d15" stroke-width="1.5" stroke-dasharray="4 4" />
+      {/if}
+    {/each}
+  {/each}
+
+  <!-- axes -->
+  <text x={L} y={B + 22} class="ax">sour</text>
+  <text x={cx} y={B + 22} text-anchor="middle" class="ax">extraction</text>
+  <text x={R} y={B + 22} text-anchor="end" class="ax">bitter</text>
+  {#if !compact}<text x={cx} y={B + 42} text-anchor="middle" class="ax2">under-extracted ← → over-extracted</text>{/if}
+  <text transform="translate({L - 16} {B}) rotate(-90)" class="ax">weak</text>
+  <text transform="translate({L - 16} {cy}) rotate(-90)" text-anchor="middle" class="ax">strength</text>
+  <text transform="translate({L - 16} {T}) rotate(-90)" text-anchor="end" class="ax">strong</text>
+
+  {#if showArrow && arrow && !inSweet}
+    <line x1={px} y1={py} x2={arrow.x2} y2={arrow.y2} stroke="#8f5d22" stroke-width="2.2" marker-end="url(#em-head)" class="arrow" />
+  {/if}
+  <g class="dot" style:transform="translate({px}px, {py}px)">
+    <circle r="16" fill="#c3873a" fill-opacity=".18" />
+    <circle r="8" fill="#2a1d15" />
+    <circle r="3" fill="#f3ede3" />
+  </g>
+</svg>
+
+<style>
+  .map { width: 100%; height: auto; display: block; }
+  .sweet { font: 400 15px 'Instrument Serif', Georgia, serif; fill: #8f5d22; letter-spacing: .02em; }
+  .ax { font: 500 11px 'IBM Plex Mono', monospace; letter-spacing: .1em; text-transform: uppercase; fill: #5b4a3d; }
+  .ax2 { font: 400 11px 'IBM Plex Mono', monospace; fill: #75655a; }
+  .dot { transition: transform .6s cubic-bezier(.2, .7, .2, 1); }
+  .arrow { stroke-dasharray: 6 4; }
+  @media (prefers-reduced-motion: reduce) { .dot { transition: none; } }
+</style>
