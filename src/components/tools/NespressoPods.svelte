@@ -300,6 +300,7 @@
 
             <!-- Pod info -->
             <span class="pod-name">{pod.name}</span>
+            {#if pod.discontinued}<span class="pod-gone">Discontinued</span>{/if}
             <span class="pod-meta">{pod.category}</span>
 
             <!-- Intensity dots -->
@@ -421,7 +422,9 @@
               </div>
             {/if}
 
-            {#if selectedPod.amazon_url}
+            {#if selectedPod.discontinued}
+              <p class="discontinued-note">Nespresso has discontinued this pod, so it may be hard to find.</p>
+            {:else if selectedPod.amazon_url}
               <a href={selectedPod.amazon_url} target="_blank" rel="noopener" class="amazon-link">
                 View on Amazon &rarr;
               </a>
@@ -970,4 +973,7 @@
   @media (max-width: 480px) {
     .pod-grid { grid-template-columns: repeat(2, 1fr); }
   }
+  /* Discontinued pods are labelled and get no buy link (blind Opus r3). */
+  .pod-gone { display: block; font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; color: #E2B07A; margin-top: 2px; }
+  .discontinued-note { margin: 0.8rem 0 0; font-size: 0.85rem; color: #E2B07A; }
 </style>

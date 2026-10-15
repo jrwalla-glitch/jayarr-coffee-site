@@ -11,6 +11,7 @@
   let gallons = $state(true);
   let volume = $state(1); // in gallons or litres per `gallons`
   let mounted = $state(false);
+  let linkProblem = $state(false);
 
   let volumeL = $derived(gallons ? volume * 3.785 : volume);
   let plan = $derived(planWater({ targetId, volumeL, espresso, ...(base === 'tested' ? { base: { gh, kh } } : {}) }));
@@ -52,6 +53,7 @@
     const t = q.get('target'); if (t && WATER_RECIPES.some((r) => r.id === t)) targetId = t;
     const g = Number(q.get('gh')), k = Number(q.get('kh'));
     if (q.has('gh') && q.has('kh') && Number.isFinite(g) && Number.isFinite(k)) { base = 'tested'; gh = g; kh = k; }
+    else if (q.has('gh') || q.has('kh')) linkProblem = true;
     espresso = q.get('espresso') === '1';
     if (q.get('units') === 'metric') { gallons = false; volume = 4; }
     mounted = true;
@@ -103,6 +105,7 @@
         <button type="button" aria-pressed={base === 'tested'} onclick={() => (base = 'tested')}>I have test results</button>
         <button type="button" aria-pressed={base === 'unknown'} onclick={() => (base = 'unknown')}>I don't know my water</button>
       </div>
+      {#if linkProblem}<p class="note">That link's GH and KH weren't both numbers, so this starts from distilled water.</p>{/if}
       {#if base === 'tested'}
         <div class="row">
           <label class="fld"><span>GH (ppm)</span><input type="number" min="0" max="1000" bind:value={gh} /></label>
@@ -161,7 +164,7 @@
         <p class="note">Use plain Epsom salt (magnesium sulfate heptahydrate, unscented, food or USP grade) and ordinary baking soda (sodium bicarbonate). Two salts match a recipe's hardness and alkalinity, not every mineral in a branded product.</p>
       </div>
     {:else if !plan.ok}
-      <p class="err">{plan.errors[0].message}</p>
+      <p class="err">{plan.errors[0].code === 'bad-volume' && gallons ? 'Choose a batch between about 0.03 and 10.5 gallons.' : plan.errors[0].message}</p>
     {/if}
   </div>
 </div>
@@ -217,7 +220,7 @@
   .err { color: #9a3b1c; }
   button:focus-visible, input:focus-visible { outline: 2px solid var(--crema-deep); outline-offset: 2px; }
   /* Phones: the map scales down, so its words scale up to stay readable (about 9–10 px on screen). */
-  @media (max-width: 640px) { .ln { font-size: 16px; } .tk, .gl, .ax { font-size: 14px; } }
+  @media (max-width: 640px) { .ln { font-size: 17px; } .tk, .gl, .ax { font-size: 16px; } }
   @media (max-width: 860px) { .wb { grid-template-columns: 1fr; } .stage { border-right: 0; border-bottom: 1px solid var(--rule); } .panel { padding: 18px 16px 20px; } .recipes { grid-template-columns: 1fr; } }
   .vol { flex-direction: row; align-items: center; gap: 6px; }
   .vol input { width: 84px; }

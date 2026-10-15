@@ -51,6 +51,9 @@
     const f = q.get('frozen'); if (f && /^\d{4}-\d{2}-\d{2}$/.test(f)) frozenOn = f;
     const th = q.get('thawed'); if (th && /^\d{4}-\d{2}-\d{2}$/.test(th)) { thawed = true; thawedOn = th; }
     mounted = true;
+    // "Today" moves on in an open tab, so a bag roasted today can be picked after midnight (Opus r3).
+    const tick = setInterval(() => { const t = isoLocal(new Date()); if (t !== today) today = t; }, 60000);
+    return () => clearInterval(tick);
   });
   $effect(() => {
     if (!mounted) return;
@@ -93,9 +96,9 @@
       {#if r}
         <span class="lbl">Day {r.daysSinceRoast}{r.effectiveDays !== r.daysSinceRoast ? ` (${r.effectiveDays} counting)` : ''}</span>
         <span class="stage">{r.stage.label}</span>
-        <span class="sub">Usually best {fmt(r.peakFrom)} – {fmt(r.peakTo)} · best used by about {fmt(r.useBy)}</span>
+        <span class="sub">{r.peakTo < today ? `Its usual best window has passed (${fmt(r.peakFrom)} – ${fmt(r.peakTo)})` : `Usually best ${fmt(r.peakFrom)} – ${fmt(r.peakTo)} · best used by about ${fmt(r.useBy)}`}</span>
       {:else if dateInvalid}
-        <span class="err">That date doesn't exist: check the day and month on the bag.</span>
+        <span class="err">Enter a complete, real date: check the day, month and year on the bag.</span>
       {:else if !result.ok}
         <span class="err">{result.errors[0].message}</span>
       {/if}

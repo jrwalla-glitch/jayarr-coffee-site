@@ -18,8 +18,10 @@
     emptyText?: string;
     /** Taste and time disagree: draw the cup as a fuzzy estimate rather than a point. */
     uncertain?: boolean;
+    /** Strength isn't judged (a diluted drink): no zone or sweet-spot emphasis. */
+    plain?: boolean;
   }
-  let { x, y, zone, showArrow = true, label = '', compact = false, axes, empty = false, emptyText = 'enter a valid reading to place your cup', uncertain = false }: Props = $props();
+  let { x, y, zone, showArrow = true, label = '', compact = false, axes, empty = false, emptyText = 'enter a valid reading to place your cup', uncertain = false, plain = false }: Props = $props();
   const n = (v: number) => (Number.isInteger(v) ? String(v) : v.toFixed(2).replace(/0$/, ''));
 
   const L = 64, R = 384, T = 18, B = 338;
@@ -50,11 +52,11 @@
     <line x1={L + (W / 3) * i} x2={L + (W / 3) * i} y1={T} y2={B} stroke="#2a1d15" stroke-opacity=".12" />
     <line x1={L} x2={R} y1={T + (H / 3) * i} y2={T + (H / 3) * i} stroke="#2a1d15" stroke-opacity=".12" />
   {/each}
-  <rect x={L + W / 3} y={T + H / 3} width={W / 3} height={H / 3} rx="6" fill="#fffdf8" fill-opacity=".7" stroke="#c3873a" stroke-width={inSweet && !empty ? 2.5 : 1.5} />
+  <rect x={L + W / 3} y={T + H / 3} width={W / 3} height={H / 3} rx="6" fill="#fffdf8" fill-opacity=".7" stroke="#c3873a" stroke-width={inSweet && !empty && !plain ? 2.5 : 1.5} />
   <text x={cx} y={cy + 4} text-anchor="middle" class="sweet">sweet spot</text>
   {#each rows as r, ri (r)}
     {#each cols as c, ci (c)}
-      {#if `${c}-${r}` === zone && !inSweet && !empty}
+      {#if `${c}-${r}` === zone && !inSweet && !empty && !plain}
         <rect x={L + (W / 3) * ci + 3} y={T + (H / 3) * ri + 3} width={W / 3 - 6} height={H / 3 - 6} rx="6" fill="none" stroke="#2a1d15" stroke-width="1.5" stroke-dasharray="4 4" />
       {/if}
     {/each}
@@ -101,6 +103,8 @@
   .ax { font: 500 11px 'IBM Plex Mono', monospace; letter-spacing: .1em; text-transform: uppercase; fill: #5b4a3d; }
   .ax2 { font: 400 11px 'IBM Plex Mono', monospace; fill: #75655a; }
   .num { font: 500 12px 'IBM Plex Mono', monospace; fill: #2a1d15; }
+  /* Phones: the map scales down, so its axis text scales up to stay readable. */
+  @media (max-width: 640px) { .num { font-size: 15px; } .ax { font-size: 14px; } }
   .dot { transition: transform .6s cubic-bezier(.2, .7, .2, 1); }
   .arrow { stroke-dasharray: 6 4; }
   @media (prefers-reduced-motion: reduce) { .dot { transition: none; } }

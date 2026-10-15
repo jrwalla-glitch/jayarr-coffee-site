@@ -148,11 +148,14 @@ export function compareRefs(a: DrinkRef, b: DrinkRef, nameA: string, nameB: stri
   // Milk in any form counts as milk, foam included: a macchiato's spoon of foam is milk.
   const MILKY = ['milk', 'frothed', 'foam'];
   const milkLayers = (r: DrinkRef) => r.layers.filter((l) => MILKY.includes(l.kind));
-  const milkMl = (r: DrinkRef) => {
+  // Milk amount and its unit: some recipes publish grams, some millilitres (blind Opus r3: grams
+  // were read as "not published"). Amounts are compared only in the same unit.
+  const milkAmt = (r: DrinkRef): { v: number; unit: 'ml' | 'g' } | 0 | undefined => {
     const ls = milkLayers(r);
     if (ls.length === 0) return 0;
-    if (ls.some((l) => !l.ml)) return undefined;
-    return ls.reduce((t, l) => t + (mid(l.ml) ?? 0), 0);
+    if (ls.every((l) => l.ml)) return { v: ls.reduce((t, l) => t + (mid(l.ml) ?? 0), 0), unit: 'ml' };
+    if (ls.every((l) => l.g)) return { v: ls.reduce((t, l) => t + (mid(l.g) ?? 0), 0), unit: 'g' };
+    return undefined;
   };
   const parts: string[] = [];
   // Only a single, definite count is compared: "1 (Tall) or 2 (Grande)" and "usually double" vary.
@@ -160,19 +163,29 @@ export function compareRefs(a: DrinkRef, b: DrinkRef, nameA: string, nameB: stri
   const sa = shots(a), sb = shots(b);
   if (sa && sb && sa !== sb) parts.push(`the ${A} uses ${sa === 1 ? 'a single shot' : sa === 2 ? 'a double' : 'three shots'} and the ${B} ${sb === 1 ? 'a single' : sb === 2 ? 'a double' : 'three shots'}`);
   else if (sa && sb && sa === sb) parts.push(`both use ${sa === 1 ? 'a single shot' : sa === 2 ? 'a double shot' : 'three shots'}`);
-  const ma = milkMl(a), mb = milkMl(b);
+  const ma = milkAmt(a), mb = milkAmt(b);
   // Both have milk but one amount isn't published: say so rather than saying nothing.
   if ((ma === undefined && milkLayers(b).length) || (mb === undefined && milkLayers(a).length)) parts.push(`both have milk, but the recipes don't both publish how much`);
   else if (ma === 0 && milkLayers(b).length) parts.push(`only the ${B} has milk`);
   else if (mb === 0 && milkLayers(a).length) parts.push(`only the ${A} has milk`);
-  else if (ma !== undefined && mb !== undefined && ma > 0 && mb > 0) {
+  else if (ma && mb && ma.unit !== mb.unit) parts.push(`both have milk, but one recipe weighs it and the other measures its volume`);
+  else if (ma && mb) {
     // Recipes measure milk differently (cold before heating, or frothed volume with its foam).
     const kinds = (r: DrinkRef) => [...new Set(milkLayers(r).map((l) => l.kind))].join();
     const mixed = kinds(a) !== kinds(b) ? ', measured differently by the two recipes' : '';
-    const [big, bigV, smallV] = ma > mb ? [A, ma, mb] : [B, mb, ma];
-    const ratio = bigV / smallV;
-    if (ratio < 1.25) parts.push(`both use about the same amount of milk (about ${Math.round(smallV)} and ${Math.round(bigV)} ml${mixed})`);
-    else parts.push(`the ${big} has about ${ratio < 3 ? ratio.toFixed(1) : Math.round(ratio)}× the milk (${Math.round(smallV)} ml against ${Math.round(bigV)} ml${mixed})`);
+    const [big, bigV, smallV] = ma.v > mb.v ? [A, ma.v, mb.v] : [B, mb.v, ma.v];
+    const ratio = bigV / smallV, u = ma.unit;
+    if (ratio < 1.25) parts.push(`both use about the same amount of milk (about ${Math.round(smallV)} and ${Math.round(bigV)} ${u}${mixed})`);
+    else parts.push(`the ${big} has about ${ratio < 3 ? ratio.toFixed(1) : Math.round(ratio)}× the milk (${Math.round(bigV)} ${u} against ${Math.round(smallV)} ${u}${mixed})`);
+  }
+  // Water or brewed coffee in both: compare the published amounts (americano vs long black).
+  for (const [k, name] of [['water', 'hot water'], ['brewed', 'brewed coffee']] as const) {
+    const la = a.layers.find((l) => l.kind === k)?.ml, lb = b.layers.find((l) => l.kind === k)?.ml;
+    if (la && lb) {
+      const va = mid(la)!, vb = mid(lb)!;
+      if (Math.abs(va - vb) / Math.min(va, vb) < 0.25) parts.push(`both use about the same ${name} (about ${Math.round(Math.min(va, vb))} and ${Math.round(Math.max(va, vb))} ml)`);
+      else parts.push(`the ${va > vb ? A : B} uses more ${name} (about ${Math.round(Math.max(va, vb))} ml against ${Math.round(Math.min(va, vb))} ml)`);
+    }
   }
   const EXTRA: Record<string, string> = { water: 'hot water', brewed: 'brewed coffee', gelato: 'gelato', chocolate: 'chocolate', cream: 'whipped cream' };
   for (const [r, other, N] of [[a, b, A], [b, a, B]] as const) {

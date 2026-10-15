@@ -16,21 +16,22 @@ export const DRY_MIN_G = 0.2;
 // Each mL of stock in a litre of finished water adds this many ppm (exact, from the stock strengths).
 export const PPM_PER_ML_PER_L = { gh: CONCENTRATE_G_PER_L.gh / MG_EPSOM_PER_PPM_GH, kh: CONCENTRATE_G_PER_L.kh / MG_BICARB_PER_PPM_KH };
 
-export interface WaterRecipe { id: string; name: string; gh: number; kh: number; tds: string; profile: string; bestFor: string }
+// No TDS figures: the old strings disagreed with the two-salt mixes (blind Opus r3), and GH + KH isn't TDS.
+export interface WaterRecipe { id: string; name: string; gh: number; kh: number; profile: string; bestFor: string }
 
 // Hardness and alkalinity targets from the synthesis's recipe comparison (§2). Two salts reproduce
 // a recipe's GH and KH, not every mineral in a branded product: Third Wave Water, for example,
 // also uses calcium citrate and sodium chloride. TWW Dark Roast (no published GH) and RPavlis
 // (potassium bicarbonate) are omitted from this two-bottle tool.
 export const WATER_RECIPES: WaterRecipe[] = [
-  { id: 'sca', name: 'SCA standard', gh: 68, kh: 40, tds: '~150 ppm', profile: 'Balanced benchmark', bestFor: 'Cupping, a neutral reference' },
-  { id: 'melbourne', name: 'Melbourne', gh: 24, kh: 12, tds: '~50 ppm', profile: 'Very soft, delicate', bestFor: 'Light-roast filter' },
-  { id: 'holy', name: 'Holy Water', gh: 62, kh: 23, tds: '~80 ppm', profile: 'Clean, sweet, clear', bestFor: 'Light-roast pour-over' },
-  { id: 'bh4', name: 'Barista Hustle #4', gh: 80, kh: 40, tds: '~100–120 ppm', profile: 'Clean, bright, balanced', bestFor: 'Light-to-medium filter' },
-  { id: 'rao', name: 'Rao/Perger (simplified)', gh: 76, kh: 50, tds: '~120–130 ppm', profile: 'Balanced, rounder', bestFor: 'All-purpose, filter and espresso' },
-  { id: 'hendon', name: 'Hendon', gh: 100, kh: 31, tds: '~130 ppm', profile: 'Bright, complex', bestFor: 'Origin-focused pour-over' },
-  { id: 'tww-classic', name: 'Third Wave Water Classic (GH/KH only)', gh: 150, kh: 40, tds: '~150 ppm', profile: 'Intense acidity and clarity', bestFor: 'Light roasts' },
-  { id: 'tww-espresso', name: 'Third Wave Water Espresso (GH/KH only)', gh: 135, kh: 80, tds: '~150 ppm', profile: 'Smoother, more buffered', bestFor: 'Espresso' },
+  { id: 'sca', name: 'SCA standard', gh: 68, kh: 40, profile: 'Balanced benchmark', bestFor: 'Cupping, a neutral reference' },
+  { id: 'melbourne', name: 'Melbourne', gh: 24, kh: 12, profile: 'Very soft, delicate', bestFor: 'Light-roast filter' },
+  { id: 'holy', name: 'Holy Water', gh: 62, kh: 23, profile: 'Clean, sweet, clear', bestFor: 'Light-roast pour-over' },
+  { id: 'bh4', name: 'Barista Hustle #4', gh: 80, kh: 40, profile: 'Clean, bright, balanced', bestFor: 'Light-to-medium filter' },
+  { id: 'rao', name: 'Rao/Perger (simplified)', gh: 76, kh: 50, profile: 'Balanced, rounder', bestFor: 'All-purpose, filter and espresso' },
+  { id: 'hendon', name: 'Hendon', gh: 100, kh: 31, profile: 'Bright, complex', bestFor: 'Origin-focused pour-over' },
+  { id: 'tww-classic', name: 'Third Wave Water Classic (GH/KH only)', gh: 150, kh: 40, profile: 'Intense acidity and clarity', bestFor: 'Light roasts' },
+  { id: 'tww-espresso', name: 'Third Wave Water Espresso (GH/KH only)', gh: 135, kh: 80, profile: 'Smoother, more buffered', bestFor: 'Espresso' },
 ];
 
 export interface WaterPlan {

@@ -59,7 +59,7 @@
   });
   $effect(() => {
     if (!mounted) return;
-    const q = mode === 'measured' ? new URLSearchParams({ mode, kind, dose: String(doseG), liquid: String(liquidG), tds: String(tdsPct), ...(diluted ? { diluted: '1' } : {}) }) : new URLSearchParams(touched ? { taste: String(sourBitter), body: String(body) } : {});
+    const q = mode === 'measured' ? new URLSearchParams(Object.fromEntries(Object.entries({ mode, kind, dose: doseG, liquid: liquidG, tds: tdsPct, ...(diluted ? { diluted: '1' } : {}) }).filter(([, v]) => v !== null && v !== undefined && v !== '' && !(typeof v === 'number' && !Number.isFinite(v))).map(([k, v]) => [k, String(v)]))) : new URLSearchParams(touched ? { taste: String(sourBitter), body: String(body) } : {});
     if (mode === 'taste' && espresso) q.set('espresso', '1');
     history.replaceState(history.state, '', `${location.pathname}${q.toString() ? `?${q}` : ''}`);
   });
@@ -70,11 +70,11 @@
     {#if mode === 'measured' && mv && !mv.placeable}
       <ExtractionMap x={0.5} y={0.5} zone="ideal-ideal" empty emptyText="check the weights to place your cup" axes={mv.chart} label="Measured mode: the weights look mixed up, so the cup isn't placed." />
     {:else if mode === 'measured' && mv}
-      <ExtractionMap x={mv.x} y={mv.y} zone={mv.zone} axes={mv.chart} label={mv.strengthJudged ? `Measured: ${mv.eyPct.toFixed(1)}% extraction at ${tdsPct}% TDS, in the ${ZONES[mv.zone].label.toLowerCase()} zone.` : `Measured: ${mv.eyPct.toFixed(1)}% extraction; strength not judged for a diluted drink.`} />
+      <ExtractionMap x={mv.x} y={mv.y} zone={mv.zone} axes={mv.chart} plain={!mv.strengthJudged} label={mv.strengthJudged ? `Measured: ${mv.eyPct.toFixed(1)}% extraction at ${tdsPct}% TDS, in the ${ZONES[mv.zone].label.toLowerCase()} zone.` : `Measured: ${mv.eyPct.toFixed(1)}% extraction; strength not judged for a diluted drink.`} />
     {:else if mode === 'measured'}
       <ExtractionMap x={0.5} y={0.5} zone="ideal-ideal" empty axes={CHARTS[kind === 'espresso' ? 'espresso' : 'filter']} label="Measured mode: no valid reading yet, so the chart is empty." />
     {:else}
-      <ExtractionMap x={place.x} y={place.y} zone={place.zone} label={touched ? `By taste, your cup probably sits in the ${zone.label.toLowerCase()} zone.` : 'Extraction map: move the sliders to describe your cup and place it here.'} />
+      <ExtractionMap x={place.x} y={place.y} zone={place.zone} empty={!touched} emptyText="move the sliders to place your cup" label={touched ? `By taste, your cup probably sits in the ${zone.label.toLowerCase()} zone.` : 'Extraction map: move the sliders to describe your cup and place it here.'} />
     {/if}
   </div>
   <div class="panel">
@@ -90,7 +90,7 @@
       </div>
       <div class="inputs">
         <label class="fld"><span class="lbl">Coffee, g</span><input type="number" inputmode="decimal" step="0.1" min="1" bind:value={doseG} /></label>
-        <label class="fld"><span class="lbl">{kind === 'immersion' ? 'Water added, g' : kind === 'espresso' ? 'Shot weight, g' : 'Drink weight, g'}</span><input type="number" inputmode="decimal" step="0.1" min="1" bind:value={liquidG} /></label>
+        <label class="fld"><span class="lbl">{kind === 'immersion' ? 'Water added, g' : kind === 'espresso' && !diluted ? 'Shot weight, g' : 'Drink weight, g'}</span><input type="number" inputmode="decimal" step="0.1" min="1" bind:value={liquidG} /></label>
         <label class="fld"><span class="lbl">TDS, %</span><input type="number" inputmode="decimal" step="0.01" min="0" bind:value={tdsPct} /></label>
       </div>
       <label class="check"><input type="checkbox" bind:checked={diluted} /> I diluted it on purpose (americano, bypass water)</label>
@@ -100,7 +100,7 @@
           <span class="lbl">Extraction yield</span>
           <p class="ey">{mv.eyPct.toFixed(1)}<small>%</small></p>
           <p class="zt">{mv.dissolvedG.toFixed(2)} g of coffee dissolved from {doseG} g · {mv.strengthJudged ? ZONES[mv.zone].label : `${mv.zone.startsWith('under') ? 'Under-extracted' : mv.zone.startsWith('over') ? 'Over-extracted' : 'Extraction in the usual range'}; strength not judged for a diluted drink`}</p>
-          <p class="calc">{kind === 'immersion' ? 'water added' : kind === 'espresso' ? 'shot weight' : 'drink weight'} {liquidG} g × {tdsPct}% ÷ {doseG} g coffee</p>
+          <p class="calc">{kind === 'immersion' ? 'water added' : kind === 'espresso' && !diluted ? 'shot weight' : 'drink weight'} {liquidG} g × {tdsPct}% ÷ {doseG} g coffee</p>
         </div>
         {#each mv.notes as nt (nt)}<p class="note">{nt}</p>{/each}
         {#if mv.moves.length}<p class="note">Possible next moves: {mv.moves.join('; ')}. Change one at a time and measure again.</p>{/if}

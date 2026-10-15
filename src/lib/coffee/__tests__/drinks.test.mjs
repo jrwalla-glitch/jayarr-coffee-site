@@ -39,7 +39,7 @@ test('comparisons say something true or admit they can\'t', () => {
   assert.match(s, /6× the size/);
   const c = compareRefs(refById('cortado-sabora'), refById('flat-cimbali'), 'Cortado', 'Flat white');
   assert.match(c, /single shot and the flat white a double/);
-  assert.match(c, /flat white has about 13× the milk \(10 ml against 128 ml, measured differently by the two recipes\)/);
+  assert.match(c, /flat white has about 13× the milk \(128 ml against 10 ml, measured differently by the two recipes\)/);
   assert.match(compareRefs(refById('gibraltar-bluebottle'), refById('cortado-sbux'), 'Gibraltar', 'Cortado'), /don't both publish how much/);
 });
 
@@ -70,4 +70,11 @@ test('variable shot counts are not compared, and same-name drinks are told apart
 
 test('an unpublished milk amount is named, not skipped (Muse: latte vs macchiato said only "Both use a single shot")', () => {
   assert.match(compareRefs(refById('latte-illy'), refById('macchiato-illy'), 'Latte', 'Macchiato'), /don't both publish how much/);
+});
+
+test('Opus r3: grams compare with grams, the bigger figure first, and water is compared', () => {
+  const g = compareRefs(refById('cortado-ineffable'), refById('latte-ineffable'), 'Cortado', 'Latte');
+  assert.doesNotMatch(g, /don't both publish/); assert.match(g, /\d+ g against \d+ g/);
+  const w = compareRefs(refById('americano-lavazza'), refById('longblack-lavazza'), 'Americano', 'Long black');
+  assert.doesNotMatch(w, /don't publish enough/); assert.match(w, /hot water/);
 });
