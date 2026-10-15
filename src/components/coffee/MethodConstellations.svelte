@@ -34,7 +34,7 @@
   const mid = (m: AtlasMethod) => Math.sqrt(m.timeS[0] * m.timeS[1]);
   // Star size is body: the less a filter holds back, the bigger the star.
   const size = (m: AtlasMethod) => 5 + FILTER[m.filter].order * 1.35;
-  const pushed = (m: AtlasMethod) => m.force === 'hand' || m.force === 'vapour' || m.force === 'steam' || m.force === 'pump';
+  const pushed = (m: AtlasMethod) => m.force === 'hand' || m.force === 'vapor' || m.force === 'steam' || m.force === 'pump';
 
   interface Group { key: string; label: string; line: string; ids: AtlasId[] }
   function groupsFor(axis: Axis): Group[] {
@@ -49,11 +49,11 @@
   interface Placed { x: number; y: number; lx: number; ly: number; anchor: 'start' | 'middle' | 'end' }
   interface Hub { x: number; y: number; label: string; sub: string; lx: number; ly: number; anchor: string; first?: AtlasId }
   interface Layout { w: number; h: number; pos: Record<string, Placed>; hubs: Hub[]; chains: AtlasId[][]; x0?: number; x1?: number }
-  const HEAD: Record<string, string> = { 'steep-drain': 'Steep, then drain', 'thick-paper': 'Thick paper', none: 'Steeped', hand: 'Hand', vapour: 'Vapour', steam: 'Steam', pump: 'Pump' };
+  const HEAD: Record<string, string> = { 'steep-drain': 'Steep, then drain', 'thick-paper': 'Thick paper', none: 'Steeped', hand: 'Hand', vapor: 'Vapor', steam: 'Steam', pump: 'Pump' };
   const SUB: Record<string, string> = {
     percolation: 'water runs through the bed', 'steep-drain': 'steeps, then drains through it', immersion: 'steeps in all the water',
     'thick-paper': 'the clearest cup', paper: 'a clear cup', cloth: 'some oils pass', metal: 'oils and fines pass',
-    none: 'nothing pushes', gravity: 'the water\'s own weight', hand: 'a plunger', vapour: 'vapour, then a vacuum', steam: 'about 1.5 bar', pump: 'about 9 bar',
+    none: 'nothing pushes', gravity: 'the water\'s own weight', hand: 'a plunger', vapor: 'vapor, then a vacuum', steam: 'about 1.5 bar', pump: 'about 9 bar',
   };
   const headOf = (axis: Axis, g: Group) => (axis === 'filter' && g.key === 'none' ? 'No filter' : HEAD[g.key] ?? g.label);
   const subOf = (axis: Axis, g: Group) => (axis === 'filter' && g.key === 'none' ? 'grounds settle in the cup' : SUB[g.key] ?? '');

@@ -12,7 +12,7 @@ import type { MethodId } from './types.ts';
 export type AtlasId = 'v60' | 'chemex' | 'kalita' | 'drip-machine' | 'phin' | 'french-press' | 'clever' | 'cold-brew' | 'siphon' | 'turkish' | 'espresso' | 'moka' | 'aeropress';
 export type Contact = 'percolation' | 'immersion' | 'steep-drain';
 export type FilterKind = 'thick-paper' | 'paper' | 'cloth' | 'metal' | 'none';
-export type Force = 'gravity' | 'none' | 'hand' | 'vapour' | 'steam' | 'pump';
+export type Force = 'gravity' | 'none' | 'hand' | 'vapor' | 'steam' | 'pump';
 
 export const CONTACT: Record<Contact, { label: string; line: string }> = {
   percolation: { label: 'Percolation', line: 'Water runs through a bed of coffee and out the bottom.' },
@@ -34,7 +34,7 @@ export const FORCE: Record<Force, { label: string; line: string; order: number }
   none: { label: 'None: it steeps', line: 'Nothing pushes the water through the coffee: it steeps, then the grounds are separated.', order: 0 },
   gravity: { label: 'Gravity', line: 'The water\'s own weight pulls it through the bed.', order: 1 },
   hand: { label: 'Hand pressure', line: 'You press a plunger to push the brew through the bed and filter.', order: 2 },
-  vapour: { label: 'Vapour and vacuum', line: 'Heated vapour pushes the water up; as it cools, a vacuum pulls the brew back down.', order: 3 },
+  vapor: { label: 'Vapor and vacuum', line: 'Heated vapor pushes the water up; as it cools, a vacuum pulls the brew back down.', order: 3 },
   steam: { label: 'Steam, about 1.5 bar', line: 'Steam in the sealed boiler pushes the water up through the coffee at about 1.5 bar.', order: 4 },
   pump: { label: 'Pump, about 9 bar', line: 'An electric pump pushes water through a tamped puck at around 9 bar.', order: 5 },
 };
@@ -156,8 +156,8 @@ export const ATLAS: AtlasMethod[] = [
     sourceIds: ['synthesis'],
   },
   {
-    id: 'siphon', label: 'Siphon', the: 'the siphon', line: 'Vapour pushes water up into the coffee; a vacuum pulls the brew back down.',
-    contact: 'steep-drain', filter: 'cloth', force: 'vapour', attention: 3,
+    id: 'siphon', label: 'Siphon', the: 'the siphon', line: 'Vapor pushes water up into the coffee; a vacuum pulls the brew back down.',
+    contact: 'steep-drain', filter: 'cloth', force: 'vapor', attention: 3,
     timeS: [120, 180], ratio: { classic: 15, range: [15, 15] }, grind: 'Medium-fine', temp: '195–200°F (90–93°C)',
     recipeBy: 'our siphon guide: 20 g of coffee and 300 g of water, a 60–90 second steep and a 60–90 second drawdown',
     brewGuide: null,
@@ -192,8 +192,11 @@ export const atlasById = (id: string) => ATLAS.find((m) => m.id === id);
 /** The Brew Guide link for a method, or null if the guide doesn't cover it. */
 export function brewGuideHref(m: AtlasMethod): string | null {
   if (!m.brewGuide) return null;
-  // A standard cup, so the link opens a complete recipe: a 12 oz mug, or an 18 g double shot.
-  return m.brewGuide === 'espresso' ? `/tools/brew-ratio/?method=espresso&dose=18` : `/tools/brew-ratio/?method=${m.brewGuide}&cup=355`;
+  // A standard cup, so the link opens a complete recipe: a 12 oz mug, an 8 oz cup for the AeroPress
+  // (one press holds about 22 g), an 18 g double shot, or a 17 g moka basket (Hoffmann's recipe).
+  if (m.brewGuide === 'espresso') return `/tools/brew-ratio/?method=espresso&dose=18`;
+  if (m.brewGuide === 'moka') return `/tools/brew-ratio/?method=moka&dose=17`;
+  return `/tools/brew-ratio/?method=${m.brewGuide}&cup=${m.brewGuide === 'aeropress' ? 240 : 355}`;
 }
 
 const mmss = (s: number) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`;
@@ -226,10 +229,10 @@ export function differences(a: AtlasMethod, b: AtlasMethod): Axis[] {
 
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const FORCE_PHRASE: Record<Force, string> = {
-  none: '', gravity: 'by gravity', hand: 'by hand', vapour: 'by vapour, then a vacuum', steam: 'by steam (about 1.5 bar)', pump: 'by a pump (about 9 bar)',
+  none: '', gravity: 'by gravity', hand: 'by hand', vapor: 'by vapor, then a vacuum', steam: 'by steam (about 1.5 bar)', pump: 'by a pump (about 9 bar)',
 };
 const FORCE_DO: Record<Force, string> = {
-  none: 'just steeps', gravity: 'lets gravity pull the water through', hand: 'presses the brew through by hand', vapour: 'moves the water with vapour and a vacuum', steam: 'pushes the water with steam (about 1.5 bar)', pump: 'pushes the water with a pump (about 9 bar)',
+  none: 'just steeps', gravity: 'lets gravity pull the water through', hand: 'presses the brew through by hand', vapor: 'moves the water with vapor and a vacuum', steam: 'pushes the water with steam (about 1.5 bar)', pump: 'pushes the water with a pump (about 9 bar)',
 };
 const FILTER_PHRASE: Record<FilterKind, string> = {
   'thick-paper': 'thick paper', paper: 'paper', cloth: 'cloth', metal: 'metal', none: 'nothing',
@@ -239,9 +242,9 @@ const FILTER_PHRASE: Record<FilterKind, string> = {
 export function describe(m: AtlasMethod): string {
   const t = timeText(m);
   if (m.contact === 'percolation') return `${cap(m.the)} sends water through a bed of coffee ${FORCE_PHRASE[m.force]} and out through ${FILTER_PHRASE[m.filter]}, in about ${t}.`;
-  if (m.force === 'vapour') return `In ${m.the}, vapour pushes the water up into the coffee to steep, then a vacuum pulls the brew back down through ${FILTER_PHRASE[m.filter]}, in about ${t}.`;
+  if (m.force === 'vapor') return `In ${m.the}, vapor pushes the water up into the coffee to steep, then a vacuum pulls the brew back down through ${FILTER_PHRASE[m.filter]}, in about ${t}.`;
   if (m.contact === 'steep-drain') {
-    const out = m.force === 'hand' ? 'you press the brew through the bed and out through' : m.force === 'vapour' ? 'vapour pushes the water up into the coffee and a vacuum pulls the brew back down through' : 'the brew drains through the bed and out through';
+    const out = m.force === 'hand' ? 'you press the brew through the bed and out through' : m.force === 'vapor' ? 'vapor pushes the water up into the coffee and a vacuum pulls the brew back down through' : 'the brew drains through the bed and out through';
     return `${cap(m.the)} steeps the coffee, then ${out} ${FILTER_PHRASE[m.filter]}, in about ${t}.`;
   }
   return m.filter === 'none'
@@ -268,7 +271,7 @@ export function differenceSentence(a: AtlasMethod, b: AtlasMethod): string {
     parts.push(`${fast.the} takes ${timeText(fast)}, ${slow.the} ${timeText(slow)}`);
   }
   if (parts.length === 1 && d.includes('force') && d.includes('contact')) {
-    const pushed = [a, b].filter((m) => m.force === 'hand' || m.force === 'steam' || m.force === 'pump' || m.force === 'vapour');
+    const pushed = [a, b].filter((m) => m.force === 'hand' || m.force === 'steam' || m.force === 'pump' || m.force === 'vapor');
     if (pushed.length === 1) parts.push(`only ${pushed[0].the} ${FORCE_DO[pushed[0].force]}`);
     else if (pushed.length === 2) parts.push(`${a.the} ${FORCE_DO[a.force]} while ${b.the} ${FORCE_DO[b.force]}`);
   }

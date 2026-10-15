@@ -43,6 +43,32 @@
   const fmtG = (g: number) => { const v = Math.round(g * 10) / 10; return g >= 100 ? String(Math.round(g)) : Number.isInteger(v) ? String(v) : v.toFixed(1); };
   const sym = (id: string) => SYMPTOMS.find((s) => s.id === id)!;
 
+  // ── The drawn row under the numbers: the cup at its size, the ratio as cells, the grind to scale ──
+  let ratioN = $derived(r ? Math.round(r.ratio) : 16);
+  let ratioText = $derived(r ? (Number.isInteger(Math.round(r.ratio * 10) / 10) ? String(Math.round(r.ratio)) : (Math.round(r.ratio * 10) / 10).toFixed(1)) : '16');
+  let cells = $derived(Array.from({ length: ratioN + 1 }, (_, i) => ({ x: (i % 9) * 11, y: Math.floor(i / 9) * 11, coffee: i === 0 })));
+  let cellRows = $derived(Math.ceil((ratioN + 1) / 9));
+  // A mug's height grows with its size: 8 oz to 16 oz.
+  let mugH = $derived(30 + 34 * Math.min(1, Math.max(0, (oz - 8) / 8)));
+  // Grind: particles drawn to a 1 mm scale bar (40 units), at the middle of the recipe's range.
+  let grindD = $derived(r ? ((r.grind.microns.min + r.grind.microns.max) / 2 / 1000) * 40 : 20);
+  function particles(d: number) {
+    const out: { x: number; y: number; pts: string }[] = [];
+    const step = d * 1.35, cols = Math.max(1, Math.floor(84 / step)), rows = Math.max(1, Math.min(3, Math.floor(52 / step)));
+    let k = 0;
+    for (let j = 0; j < rows; j++) for (let i = 0; i < cols && out.length < 10; i++, k++) {
+      const x = 50 - ((cols - 1) * step) / 2 + i * step + (j % 2 ? step * 0.25 : 0), y = 58 - d / 2 - j * step;
+      const pts = Array.from({ length: 7 }, (_, q) => { const a = (q / 7) * Math.PI * 2, rr = (d / 2) * (0.78 + 0.3 * Math.abs(Math.sin(k * 3.7 + q * 1.9))); return `${(x + Math.cos(a) * rr).toFixed(1)},${(y + Math.sin(a) * rr).toFixed(1)}`; }).join(' ');
+      out.push({ x, y, pts });
+    }
+    return out;
+  }
+  let grindShort = $derived(r ? r.grind.label.replace(/\s*\(.*\)$/, '') : '');
+
+  // ── The Fix door's picture: a small extraction map, the taste marked, an arrow to the usual fix ──
+  const MAP_AT: Record<string, [number, number]> = { sour: [86, 66], bitter: [234, 66], weak: [160, 118], strong: [160, 16], flat: [160, 66] };
+  const MAP_FIX: Record<string, string> = { sour: 'grind finer?', bitter: 'grind coarser?', weak: 'more coffee?', strong: 'less coffee?', flat: 'check the beans and water' };
+
   onMount(() => {
     try { const d = sessionStorage.getItem('jayarr-home-door') as Door | null; if (d && DOORS.some((x) => x.id === d)) door = d; } catch { /* no storage */ }
   });
@@ -66,7 +92,7 @@
       {#if method !== 'espresso' && method !== 'moka'}
         <p class="q">Your mug</p>
         <div class="chips">
-          {#each CUPS as c (c)}<button type="button" class="chip mono" aria-pressed={oz === c} onclick={() => (oz = c)}>{c} oz</button>{/each}
+          {#each CUPS as c (c)}<button type="button" class="chip" aria-pressed={oz === c} onclick={() => (oz = c)}>{c} oz</button>{/each}
         </div>
       {/if}
       {#if r}
@@ -80,8 +106,41 @@
             <div><dt>Water</dt><dd class="water">{Math.round(r.waterG ?? 0)}<small>g</small></dd></div>
           {/if}
           <div><dt>Water temp</dt><dd>{method === 'cold-brew' ? 'Cold' : method === 'moka' ? 'Boiled' : `${Math.round(cToF(r.tempC))}°F`}</dd></div>
-          <div><dt>Grind</dt><dd class="small">{r.grind.label}</dd></div>
         </dl>
+        <div class="figs" aria-hidden="true">
+          <figure>
+            <svg viewBox="0 0 100 84">
+              <line x1="6" x2="94" y1="80" y2="80" class="ground" />
+              {#if method === 'espresso' || method === 'moka'}
+                <path d="M34 62 H66 V70 a8 8 0 0 1 -8 8 H42 a8 8 0 0 1 -8 -8 Z" class="cup" /><path d="M66 64 h3 a4 4 0 0 1 0 8 h-3" class="line" />
+                <rect x="35" y="63.5" width="30" height="4" class="crema" />
+              {:else if method === 'cold-brew'}
+                <rect x="32" y="22" width="36" height="56" rx="4" class="glass" /><rect x="34" y="34" width="32" height="42" rx="2" class="brew" /><rect x="30" y="16" width="40" height="7" rx="2" class="lid" />
+              {:else}
+                <path d="M{50 - 22} {78 - mugH} H{50 + 22} V{70} a8 8 0 0 1 -8 8 H{50 - 14} a8 8 0 0 1 -8 -8 Z" class="cup" />
+                <path d="M{50 + 22} {78 - mugH + 8} h5 a8 8 0 0 1 0 16 h-5" class="line" />
+                <path d="M{50 - 21} {78 - mugH * 0.84} H{50 + 21} V{70} a7 7 0 0 1 -7 7 H{50 - 14} a7 7 0 0 1 -7 -7 Z" class="brew" />
+              {/if}
+            </svg>
+            <figcaption>{method === 'espresso' ? 'A double shot' : method === 'cold-brew' ? 'A jar of concentrate' : method === 'moka' ? 'One pot' : `A ${oz} oz mug`}</figcaption>
+          </figure>
+          <figure>
+            <svg viewBox="0 0 100 84">
+              <g transform="translate({50 - (Math.min(9, ratioN + 1) * 11 - 2) / 2} {78 - (cellRows * 11 - 2)})">
+                {#each cells as c, i (i)}<rect x={c.x} y={c.y} width="9" height="9" rx="1.5" class={c.coffee ? 'cc' : 'cw'} />{/each}
+              </g>
+            </svg>
+            <figcaption><b class="k-c">1</b> coffee to <b class="k-w">{ratioText}</b> {method === 'espresso' ? 'in the cup' : 'water'}</figcaption>
+          </figure>
+          <figure>
+            <svg viewBox="0 0 100 84">
+              {#each particles(grindD) as p, i (i)}<polygon points={p.pts} class="grain" />{/each}
+              <line x1="30" x2="70" y1="76" y2="76" class="scale" /><line x1="30" x2="30" y1="73" y2="79" class="scale" /><line x1="70" x2="70" y1="73" y2="79" class="scale" />
+              <text x="50" y="71" text-anchor="middle" class="mm">1 mm</text>
+            </svg>
+            <figcaption>{grindShort}, like {r.grind.texture}</figcaption>
+          </figure>
+        </div>
         <p class="note">{method === 'espresso' ? 'A double shot: 18 g in, 36 g out, in 25–30 seconds.' : method === 'cold-brew' ? 'A concentrate: dilute it about one to one to serve.' : method === 'moka' ? 'The pot sets the amounts: coffee level in the basket, water to just below the valve. The Brew Guide sizes it to your pot.' : 'At 1:16, the classic strength. The Brew Guide times every pour.'}</p>
       {/if}
       <a class="go" href={href}>Brew it step by step →</a>
@@ -95,6 +154,25 @@
         <button type="button" class="chip" aria-pressed={fixMethod === 'v60'} onclick={() => (fixMethod = 'v60')}>Filter or press</button>
         <button type="button" class="chip" aria-pressed={fixMethod === 'espresso'} onclick={() => { fixMethod = 'espresso'; if (!sym(symptom).espresso) symptom = 'sour'; }}>Espresso</button>
       </div>
+      {@const [mx, my] = MAP_AT[symptom]}
+      <svg class="xmap" viewBox="0 0 320 136" aria-hidden="true">
+        <rect x="24" y="4" width="272" height="124" rx="6" class="field" />
+        <rect x="128" y="44" width="64" height="44" rx="4" class="ideal" /><text x="160" y="70" text-anchor="middle" class="ax">balanced</text>
+        <text x="30" y="70" class="ax">sour</text><text x="290" y="70" text-anchor="end" class="ax">bitter</text>
+        <text x="160" y="16" text-anchor="middle" class="ax" opacity={symptom === 'strong' ? 0 : 1}>strong</text><text x="160" y="124" text-anchor="middle" class="ax" opacity={symptom === 'weak' ? 0 : 1}>weak</text>
+        {#if symptom === 'flat'}
+          <circle cx={mx} cy={my} r="26" class="ring" />
+          <text x={mx + 34} y={my - 22} class="fixlab">{MAP_FIX[symptom]}</text>
+        {:else}
+          {@const vert = symptom === 'weak' || symptom === 'strong'}
+          {@const tx = symptom === 'sour' ? 124 : symptom === 'bitter' ? 196 : 160}
+          {@const ty = symptom === 'weak' ? 92 : symptom === 'strong' ? 40 : 66}
+          <line x1={mx} y1={my} x2={tx} y2={ty} class="arrow" marker-end="url(#hs-arr)" />
+          <text x={vert ? mx + 12 : mx} y={vert ? (my + ty) / 2 + 5 : my + 26} text-anchor={vert ? 'start' : 'middle'} class="fixlab">{MAP_FIX[symptom]}</text>
+        {/if}
+        <circle cx={mx} cy={my} r="7" class="mark" />
+        <defs><marker id="hs-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 1 L9 5 L0 9 Z" fill="#8f5d22" /></marker></defs>
+      </svg>
       <p class="likely"><b>{sym(symptom).tagline}.</b> {LIKELY[symptom]}</p>
       <p class="note">Fix My Coffee asks two or three questions about your brew, then gives you one change to try and keeps everything else the same.</p>
       <a class="go" href="/tools/fix-my-coffee/?method={fixMethod}&symptom={symptom}">Find the one change →</a>
@@ -126,10 +204,9 @@
   .q:not(:first-child) { margin-top: 14px; }
   .chips { display: flex; flex-wrap: wrap; gap: 6px; }
   .chip { appearance: none; border: 1px solid var(--rule); background: #fff; color: var(--ink); border-radius: 999px; padding: 7px 13px; min-height: 38px; font: 500 14.5px 'IBM Plex Sans', sans-serif; cursor: pointer; }
-  .chip.mono { font-family: 'IBM Plex Mono', monospace; font-size: 14px; }
   .chip[aria-pressed='true'] { background: var(--ink); border-color: var(--ink); color: #f3ede3; }
   .chip:hover { border-color: var(--ink-3); }
-  .nums { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 16px 0 6px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .nums { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 16px 0 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
   .nums div { padding: 9px 10px 9px 0; }
   .nums div + div { border-left: 1px solid var(--rule); padding-left: 10px; }
   .nums dt { font: 500 10.5px 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); }
@@ -138,8 +215,33 @@
   .nums dd.small { font: 500 15px/1.25 'IBM Plex Sans', sans-serif; padding-top: 6px; }
   .nums .coffee { color: #7a4e30; }
   .nums .water { color: #2f7484; }
-  .note { font-size: 14px; color: var(--ink-2); margin: 6px 0 12px; }
-  .likely { margin: 14px 0 6px; font-size: 15.5px; }
+  .note { font-size: 14px; color: var(--ink-2); margin: 6px 0 12px; text-wrap: pretty; }
+  .figs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 10px 0 2px; }
+  .figs figure { margin: 0; text-align: center; }
+  .figs svg { display: block; width: 100%; max-width: 132px; height: auto; margin: 0 auto; }
+  .figs figcaption { font: 500 12px/1.3 'IBM Plex Mono', monospace; color: var(--ink-2); margin-top: 2px; text-wrap: balance; }
+  .figs .ground { stroke: #cdbfac; stroke-width: 1.2; }
+  .figs .cup, .figs .glass { fill: #fffdf9; stroke: var(--ink); stroke-width: 1.6; }
+  .figs .line { fill: none; stroke: var(--ink); stroke-width: 1.6; }
+  .figs .brew { fill: #6b4128; }
+  .figs .crema { fill: #c3873a; }
+  .figs .lid { fill: #c9b9a2; stroke: var(--ink); stroke-width: 1.2; }
+  .figs .cc { fill: #7a4e30; }
+  .figs .cw { fill: #7fb3bd; }
+  .figs .grain { fill: #8a5a36; stroke: #4a2d1a; stroke-width: .6; }
+  .figs .scale { stroke: var(--ink-3); stroke-width: 1; }
+  .figs .mm { font: 500 8px 'IBM Plex Mono', monospace; fill: var(--ink-3); }
+  .figs b { font-weight: 600; }
+  .k-c { color: #7a4e30; } .k-w { color: #2f7484; }
+  .xmap { display: block; width: 100%; max-width: 420px; height: auto; margin: 14px 0 0; }
+  .xmap .field { fill: #f6efe4; stroke: var(--rule); }
+  .xmap .ideal { fill: #e7efe0; stroke: #8aa070; stroke-dasharray: 3 3; }
+  .xmap .ax { font: 500 10px 'IBM Plex Mono', monospace; letter-spacing: .06em; fill: var(--ink-3); }
+  .xmap .mark { fill: #c3873a; stroke: var(--ink); stroke-width: 1.5; }
+  .xmap .ring { fill: none; stroke: #c3873a; stroke-width: 1.5; stroke-dasharray: 4 3; }
+  .xmap .arrow { stroke: #8f5d22; stroke-width: 2; }
+  .xmap .fixlab { font: italic 400 15px 'Instrument Serif', Georgia, serif; fill: #6b3a12; paint-order: stroke; stroke: #f6efe4; stroke-width: 4px; }
+  .likely { margin: 10px 0 6px; font-size: 15.5px; text-wrap: pretty; }
   .go { display: inline-block; background: var(--ink); color: #f3ede3; text-decoration: none; border-radius: 999px; padding: 11px 20px; font: 600 15px 'IBM Plex Sans', sans-serif; }
   .go:hover { background: #3b2a1f; }
   .pick { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
@@ -154,10 +256,9 @@
     .doors button:nth-child(3) { border-left: 0; }
     .doors button:nth-child(n + 3) { border-top: 1px solid var(--rule); }
     .panel { padding: 14px 14px 16px; min-height: 0; }
-    .nums { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .nums div:nth-child(3) { border-left: 0; padding-left: 0; }
-    .nums div:nth-child(n + 3) { border-top: 1px solid var(--rule); }
-    .nums dd { font-size: 26px; }
+    .nums div + div { padding-left: 8px; }
+    .nums dd { font-size: 24px; }
+    .figs figcaption { font-size: 11px; }
     .pick a { grid-template-columns: 96px 1fr; }
     .pick b { font-size: 20px; }
   }

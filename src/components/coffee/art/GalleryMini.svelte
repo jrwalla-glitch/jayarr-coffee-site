@@ -14,7 +14,8 @@
   // Origins: the atlas's own map, simplified, at 0.3 scale and centred in the frame; harvest dots on top.
   const MAP_Y = (180 - 367 * 0.3) / 2;
   const dot = (lat: number, lon: number) => { const [x, y] = project(lat, lon); return [x * 0.3, y * 0.3 + MAP_Y]; };
-  const LETTERED: Record<string, string> = { sweet: 'caramel', floral: 'jasmine', fruity: 'blueberry', 'nutty-cocoa': 'cocoa', 'sour-fermented': 'lemon' };
+  // Every petal named by its family, as on the plate.
+  const LETTERED: Record<string, string> = { roasted: 'roasted', spices: 'spices', 'nutty-cocoa': 'nutty & cocoa', sweet: 'sweet', floral: 'floral', fruity: 'fruity', 'sour-fermented': 'sour', green: 'green' };
 
   // Constellations: the contact families as three small constellations, each hung from a hub star.
   const GROUPS: Contact[] = ['percolation', 'steep-drain', 'immersion'];
@@ -37,24 +38,25 @@
               <filter id="eg-grain-{pid}" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="5" result="n" /><feColorMatrix type="saturate" values="0" in="n" result="g" /><feComponentTransfer in="g" result="f"><feFuncR type="linear" slope=".12" intercept=".44" /><feFuncG type="linear" slope=".12" intercept=".44" /><feFuncB type="linear" slope=".12" intercept=".44" /></feComponentTransfer><feBlend in="SourceGraphic" in2="f" mode="soft-light" /></filter>
               <radialGradient id="eg-vig-{pid}" cx=".5" cy=".5" r=".7"><stop offset=".6" stop-color="#5a5040" stop-opacity="0" /><stop offset="1" stop-color="#5a5040" stop-opacity=".25" /></radialGradient>
             </defs>
-            <rect width="300" height="180" fill="#ccd0cc" filter="url(#eg-grain-{pid})" />
-            <rect width="300" height="180" fill="#f1e2c4" opacity=".2" />
+            <rect width="300" height="180" fill="#b4c0c2" filter="url(#eg-grain-{pid})" />
+            <rect width="300" height="180" fill="#f1e2c4" opacity=".14" />
             {#each [116.6, 183.5, 250.4] as y (y)}<line x1="0" x2="300" y1={y * 0.3 + MAP_Y} y2={y * 0.3 + MAP_Y} stroke="#8b9ba8" stroke-width=".4" stroke-dasharray="3 4" opacity=".55" />{/each}
             <g transform="translate(0 {MAP_Y}) scale(.3)">
-              <path d={world.land} fill="#e4ddd0" stroke="#b3a68f" stroke-width="1.2" stroke-opacity=".55" />
-              {#each Object.values(world.coffee) as d, k (k)}<path d={d} fill="#ddc9a8" stroke="#b3a68f" stroke-width="1.2" stroke-opacity=".55" />{/each}
+              <path d={world.land} fill="#efe7d6" stroke="#9c8c70" stroke-width="1.3" stroke-opacity=".6" />
+              {#each Object.values(world.coffee) as d, k (k)}<path d={d} fill="#d6ad6e" stroke="#8a6a3e" stroke-width="1.3" stroke-opacity=".6" />{/each}
             </g>
             {#each ORIGINS as o (o.id)}
               {@const [x, y] = dot(o.lat, o.lon)}
               {@const on = now.some((n) => n.id === o.id)}
-              <circle cx={x} cy={y} r={on ? 2.4 : 1.7} fill={on ? '#9a5420' : '#fbf6ee'} stroke="#2a1d15" stroke-width=".55" class:pulse={on} style="animation-delay: {(x % 7) * 0.3}s" />
+              <circle cx={x} cy={y} r={on ? 3.3 : 2.1} fill={on ? '#8a3f12' : '#fbf6ee'} stroke="#2a1d15" stroke-width={on ? 0.7 : 0.6} class:pulse={on} style="animation-delay: {(x % 7) * 0.3}s" />
             {/each}
-            <g transform="translate(274 26)" opacity=".6"><circle r="9" fill="none" stroke="#5b4a3d" stroke-width=".5" /><polygon points="0,-8 -1.3,-2.4 0,-3.2 1.3,-2.4" fill="#2a1d15" /><polygon points="0,8 -1.3,2.4 0,3.2 1.3,2.4" fill="#a6896a" /></g>
+            <g transform="translate(26 150)" opacity=".6"><circle r="9" fill="none" stroke="#5b4a3d" stroke-width=".5" /><polygon points="0,-8 -1.3,-2.4 0,-3.2 1.3,-2.4" fill="#2a1d15" /><polygon points="0,8 -1.3,2.4 0,3.2 1.3,2.4" fill="#a6896a" /></g>
             <rect width="300" height="180" fill="url(#eg-vig-{pid})" />
           </svg>
         {:else if id === 'methods'}
           <svg viewBox="0 0 300 180" class="art" aria-hidden="true">
-            <defs><linearGradient id="eg-sky-{pid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1525" /><stop offset=".6" stop-color="#12213a" /><stop offset="1" stop-color="#1a2a3d" /></linearGradient></defs>
+            <defs><linearGradient id="eg-sky-{pid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1525" /><stop offset=".6" stop-color="#12213a" /><stop offset="1" stop-color="#1a2a3d" /></linearGradient>
+              <marker id="eg-arrow-{pid}" viewBox="0 0 6 6" refX="3" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L3 6 L6 0" fill="none" stroke="#8d9bb3" stroke-width="1" /></marker></defs>
             <rect width="300" height="180" fill="url(#eg-sky-{pid})" />
             {#each field as f, k (k)}<circle cx={f.x} cy={f.y} r={f.r} fill="#c8d0e0" opacity=".45" class="tw" style="animation-delay: {k * 0.37}s" />{/each}
             {#each GROUPS as g, gi (g)}
@@ -63,12 +65,15 @@
               <polyline points={[`${hx},34`, ...ss.map((s) => `${s.x},${s.y}`)].join(' ')} fill="none" stroke="#c9a84e" stroke-width=".8" opacity=".6" class="chain" />
               <circle cx={hx} cy="34" r="7" fill="#d4a44c" opacity=".12" /><circle cx={hx} cy="34" r="3.2" fill="none" stroke="#e8b85c" stroke-width="1.1" />
               <path d="M{hx - 6} 34 H{hx + 6} M{hx} 28 V40" stroke="#d4a44c" stroke-width=".5" opacity=".6" />
-              <text x={hx} y="20" text-anchor="middle" class="hub">{CONTACT[g].label.toUpperCase()}</text>
+              {#if names}<text x={hx} y="20" text-anchor="middle" class="hub">{CONTACT[g].label.toUpperCase()}</text>{/if}
               {#each ss as s (s.id)}
                 <circle cx={s.x} cy={s.y} r="5" fill="#e8c36a" opacity=".12" /><circle cx={s.x} cy={s.y} r="2.2" fill="#e8c36a" />
                 {#if names && (s.id === 'v60' || s.id === 'french-press')}<text x={s.x + 5} y={s.y + 2.5} class="sname">{s.id === 'v60' ? 'V60' : 'French press'}</text>{/if}
               {/each}
             {/each}
+            {#if names}
+              <g class="edge"><text x="292" y="66" text-anchor="end">quick</text><path d="M286 72 V150" stroke="#8d9bb3" stroke-width=".6" marker-end="url(#eg-arrow-{pid})" /><text x="292" y="164" text-anchor="end">slow</text></g>
+            {/if}
           </svg>
         {:else}
           <svg viewBox="0 0 300 180" class="art" aria-hidden="true">
@@ -80,8 +85,9 @@
             </defs>
             <rect width="300" height="180" fill="#dde4d6" />
             <path d="M150 108 C 147 130, 153 156, 149 180" fill="none" stroke="#6f7a52" stroke-width="1.8" opacity=".85" />
-            <g transform="translate(150 150) rotate(-62)"><path d={petal(30, 10)} fill="#b9b5a6" opacity=".75" filter="url(#eg-soft-{pid})" /></g>
-            <g transform="translate(151 165) rotate(62)"><path d={petal(30, 10)} fill="#b9b5a6" opacity=".75" filter="url(#eg-soft-{pid})" /></g>
+            {#each [[150, 150, -62], [151, 165, 62]] as [lx, ly, la] (la)}
+              <g transform="translate({lx} {ly}) rotate({la})"><path d={petal(30, 10)} fill="#8f977a" opacity=".8" /><path d={petal(30, 10)} fill="none" stroke="#4f5b3a" stroke-width=".7" stroke-opacity=".7" /><path d="M0 -9 L0 -27" stroke="#4f5b3a" stroke-width=".6" opacity=".7" /></g>
+            {/each}
             <g transform="translate(150 98) scale(1.28) translate(-150 -84)">
               {#each FAMILIES as f, k (f.id)}
                 <g transform="translate(150 84) rotate({ANG[k]})" class="petal" style="animation-delay: {k * 0.12}s"><path d={petal(62, 21)} fill="url(#eg-{f.id}-{pid})" filter="url(#eg-soft-{pid})" /><path d={petal(62, 21)} fill="none" stroke="#2a1d15" stroke-opacity=".18" stroke-width=".6" /></g>
@@ -100,9 +106,10 @@
 
 <style>
   .art { display: block; width: 100%; height: auto; }
-  .hub { font: 600 6.5px 'IBM Plex Mono', monospace; letter-spacing: .2em; fill: #d4a44c; }
+  .hub { font: 600 8px 'IBM Plex Mono', monospace; letter-spacing: .16em; fill: #e2b45a; }
+  .edge text { font: 500 7.5px 'IBM Plex Mono', monospace; letter-spacing: .08em; fill: #a9b5c9; }
   .sname { font: 600 7px 'IBM Plex Sans', sans-serif; fill: #e8dccb; }
-  .lettered { font: italic 400 9.5px 'Instrument Serif', Georgia, serif; fill: #3d4a36; }
+  .lettered { font: italic 400 11.5px 'Instrument Serif', Georgia, serif; fill: #2a2a1f; }
   .pulse { transform-box: fill-box; transform-origin: center; }
   :global(.lit) .pulse { animation: pulse 2.2s ease-in-out infinite; }
   @keyframes pulse { 50% { transform: scale(1.6); } }

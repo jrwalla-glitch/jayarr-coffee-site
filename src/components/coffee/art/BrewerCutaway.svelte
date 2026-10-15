@@ -23,7 +23,7 @@
     'french-press': 'Grounds steep loose in the water for minutes, then a metal mesh is pressed down to hold them below the brew.',
     clever: 'Water and grounds steep together in a paper-lined cone until it is set on a cup, which opens a valve so the brew drains through the paper.',
     'cold-brew': 'Coarse grounds sit in cold water for 12 to 24 hours while the coffee slowly spreads into the water, with no flow at all.',
-    siphon: 'Vapour pressure in the heated lower globe pushes the water up into the grounds, and when the heat goes off the cooling globe pulls the brew back down through the filter.',
+    siphon: 'Vapor pressure in the heated lower globe pushes the water up into the grounds, and when the heat goes off the cooling globe pulls the brew back down through the filter.',
     turkish: 'Very fine coffee is heated with water in a cezve until the foam rises, then poured unfiltered so the grounds settle in the cup.',
     espresso: 'A pump forces hot water at about 9 bar through a tamped puck of fine coffee, and two thin streams fall into the cup.',
     moka: 'Steam pressure in the heated boiler pushes the water up the funnel, through the grounds and up the central column into the top chamber.',
@@ -503,7 +503,7 @@
     {#if !compact}
       {@render co('grounds', 4, 52, 'start', 46, 49, 64, 49)}
       {@render co('cloth\nfilter', 114, 89, 'start', 112, 92, 96, 93)}
-      {@render co('vapour\npressure', 4, 138, 'start', 52, 145, 64, 149)}
+      {@render co('vapor\npressure', 4, 138, 'start', 52, 145, 64, 149)}
       {@render co('heat', 4, 193, 'start', 26, 190, 77, 190)}
     {/if}
   {:else if method === 'espresso'}
@@ -767,7 +767,7 @@
   @keyframes tk-foam { 0% { transform: scaleY(.18); } 55%, 90% { transform: scaleY(1); } 100% { transform: scaleY(.18); } }
   @keyframes tk-pour { 0%, 56% { opacity: 0; } 61%, 87% { opacity: 1; } 92%, 100% { opacity: 0; } }
   @keyframes tk-cup { 0%, 60% { transform: scaleY(.35); } 90%, 95% { transform: scaleY(1); } 100% { transform: scaleY(.35); } }
-  /* Siphon, 7 s: vapour pushes the water up (0–30 %), steep (30–60 %), heat off and the vacuum draws the brew down (60–92 %) */
+  /* Siphon, 7 s: vapor pushes the water up (0–30 %), steep (30–60 %), heat off and the vacuum draws the brew down (60–92 %) */
   @keyframes sp-lw { 0% { transform: scaleY(5.2); } 30%, 94% { transform: scaleY(1); } 100% { transform: scaleY(5.2); } }
   @keyframes sp-uw { 0% { transform: scaleY(.02); opacity: 1; } 30% { transform: scaleY(1); } 38% { opacity: 1; } 42%, 100% { transform: scaleY(1); opacity: 0; } }
   @keyframes sp-us { 0%, 28% { opacity: 0; transform: scaleY(1); } 38%, 60% { opacity: 1; transform: scaleY(1); } 90% { opacity: 1; transform: scaleY(.1); } 96%, 100% { opacity: 0; transform: scaleY(.1); } }

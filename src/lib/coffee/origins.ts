@@ -55,7 +55,7 @@ const META: OriginMeta[] = [
   { id: 'burundi', name: 'Burundi', continent: 'africa', lat: -3.3, lon: 29.9, page: '/explore/origins/burundi/', articles: [] },
   { id: 'tanzania', name: 'Tanzania', continent: 'africa', lat: -4.5, lon: 36.0, page: '/explore/origins/tanzania/', articles: [a('stone-street-tanzania-peaberry-grind-and-brew', 'Stone Street Tanzania peaberry review')] },
   { id: 'malawi', name: 'Malawi', continent: 'africa', lat: -11.4, lon: 33.9, articles: [a('malawi-coffee-africas-hidden-gem', 'Malawi coffee: Africa\'s hidden gem')] },
-  { id: 'yemen', name: 'Yemen', continent: 'asia-pacific', lat: 15.3, lon: 43.9, articles: [a('yemen-coffee-guide-mocha-origin', 'Yemeni coffee and the port of Mocha')] },
+  { id: 'yemen', name: 'Yemen', continent: 'africa', lat: 15.3, lon: 43.9, articles: [a('yemen-coffee-guide-mocha-origin', 'Yemeni coffee and the port of Mocha')] },
   { id: 'brazil', name: 'Brazil', continent: 'americas', lat: -19.8, lon: -45.4, page: '/explore/origins/brazil/', articles: [a('is-brazilian-coffee-any-good', 'Is Brazilian coffee any good?'), a('brazilian-coffee-kingdom-history', 'Brazil\'s coffee kingdom: a history')] },
   { id: 'colombia', name: 'Colombia', continent: 'americas', lat: 4.6, lon: -75.6, page: '/explore/origins/colombia/', articles: [a('single-origin-colombian-coffee-what-flavor-notes-to-expect', 'Colombian coffee: what flavor notes to expect'), a('6-colombian-coffees-reviewed-best-and-worst', 'Six Colombian coffees reviewed'), a('juan-valdez-fnc-colombia-history', 'Juan Valdez and the FNC')] },
   { id: 'ecuador', name: 'Ecuador', continent: 'americas', lat: -1.6, lon: -78.6, page: '/explore/origins/ecuador/', articles: [] },

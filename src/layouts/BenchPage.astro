@@ -60,10 +60,16 @@ const { title, description, kicker, lede, back, schema = [], breadcrumbs = true,
   .bp-kicker { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: #8f5d22; margin: 24px 0 0; }
   .bp-intro h1 { font: 400 clamp(40px, 6vw, 68px)/.98 'Instrument Serif', Georgia, serif; letter-spacing: -.01em; margin: 10px 0 12px; color: #2a1d15; }
   .bp-intro h1 em { font-style: italic; color: #7a4e30; }
-  .bp-lede { font: 400 17px/1.5 'IBM Plex Sans', system-ui, sans-serif; color: #5b4a3d; max-width: 62ch; margin: 0; }
+  .bp-lede { font: 400 17px/1.5 'IBM Plex Sans', system-ui, sans-serif; color: #5b4a3d; max-width: 62ch; margin: 0; text-wrap: balance; }
   .bp-tool { max-width: 1180px; margin: 0 auto; padding: 8px 24px 40px; }
   .bp-body { max-width: 760px; margin: 0 auto; padding: 24px 24px 72px; font: 400 17px/1.7 'IBM Plex Sans', system-ui, sans-serif; color: #2a1d15; }
   .bp-body h2 { font: 400 34px/1.1 'Instrument Serif', Georgia, serif; margin: 44px 0 12px; letter-spacing: 0; }
+  .bp-body > h2:first-child { margin-top: 8px; }
+  .bp-body p { margin: 0 0 16px; }
+  /* Off the gallery, the notes below a tool start on the tool's own left edge, under a rule. */
+  .bp-page:not(.bp-gallery) .bp-body { max-width: 1180px; padding-top: 0; }
+  .bp-page:not(.bp-gallery) .bp-body > * { max-width: 760px; }
+  .bp-page:not(.bp-gallery) .bp-body::before { content: ''; display: block; border-top: 1px solid #d9cdbd; margin-bottom: 18px; }
   .bp-body h3 { font: 600 17px/1.3 'IBM Plex Sans', sans-serif; margin: 26px 0 6px; }
   .bp-body a { color: #7a4e30; text-decoration-thickness: 1px; text-underline-offset: 3px; }
   .bp-body a:hover { color: #8f5d22; }
@@ -80,7 +86,7 @@ const { title, description, kicker, lede, back, schema = [], breadcrumbs = true,
   .bp-gallery .bp-intro .bp-back { display: inline-block; }
   /* A real frame: a dark moulding with a gilt lip, then the mat, then the picture. */
   .gp-frame {
-    position: relative; background: var(--mat, #e8e1d4); padding: var(--matpad, 14px);
+    position: relative; background: var(--mat, #e8e1d4); background-clip: padding-box; padding: var(--matpad, 14px);
     border: 11px solid transparent; border-radius: 2px;
     border-image: linear-gradient(145deg, #4a3526 0%, #22170f 22%, #3b2a1d 48%, #1d140e 70%, #4a3526 100%) 1;
     box-shadow: 0 1px 0 1px rgba(0, 0, 0, .35), 0 26px 46px -24px rgba(42, 29, 21, .6), 0 8px 14px -10px rgba(42, 29, 21, .45),
@@ -104,7 +110,7 @@ const { title, description, kicker, lede, back, schema = [], breadcrumbs = true,
   }
   @media (max-width: 640px) {
     .bp-intro { padding: 92px 16px 16px; }
-    .bp-tool { padding: 4px 12px 32px; }
+    .bp-tool { padding: 4px 16px 32px; }
     .bp-body { padding: 16px 16px 56px; }
   }
 </style>
