@@ -108,12 +108,36 @@ export function intakeMg(i: Intake): Result<Range> {
   return estimateBrewedMg(doseForCup(m, i.cupMl, m.ratio.classic), method, i.bean ?? 'arabica');
 }
 
-/** The diary's day runs from 6 am to 6 am: a drink or bedtime before 6 am belongs to the night before. */
-export const DAY_START_MIN = 6 * 60;
-/** Clock minutes (0–1439) to diary minutes, so 00:30 after a late evening is 1470, not 30. */
-export function dayMinute(clockMin: number): number {
+/**
+ * When the diary's new day starts: four hours after bedtime. A drink between midnight and then is
+ * a late one from the night before (00:30 with an 11 pm bedtime is still tonight); a drink after it
+ * starts the new day (an early riser's 05:30 coffee is this morning's). Bedtime is in diary minutes,
+ * so 1 am is 1500. Returns clock minutes (0–1439).
+ */
+export function newDayAt(bedMin: number = DEFAULT_BED_MIN): number {
+  return (((Math.round(bedMin) + 240) % 1440) + 1440) % 1440;
+}
+export const DEFAULT_BED_MIN = 23 * 60;
+/** Clock minutes to diary minutes: before the new-day time, a time belongs to the night before (00:30 → 1470). */
+export function dayMinute(clockMin: number, bedMin: number = DEFAULT_BED_MIN): number {
   const m = ((Math.round(clockMin) % 1440) + 1440) % 1440;
-  return m < DAY_START_MIN ? m + 1440 : m;
+  return m < newDayAt(bedMin) ? m + 1440 : m;
+}
+/** A bedtime as diary minutes: anything before noon is after midnight (1 am → 1500). */
+export function bedMinute(clockOrDiaryMin: number): number {
+  const m = ((Math.round(clockOrDiaryMin) % 1440) + 1440) % 1440;
+  return m < 12 * 60 ? m + 1440 : m;
+}
+
+/**
+ * Which diary a moment belongs to: the local calendar date, moved back a day before the new-day
+ * time. Uses the local clock, never elapsed hours, so daylight-saving changes can't shift it.
+ * Format matches existing saves: yyyy-m-d.
+ */
+export function diaryDayKey(now: Date, bedMin: number = DEFAULT_BED_MIN): string {
+  const before = now.getHours() * 60 + now.getMinutes() < newDayAt(bedMin);
+  const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - (before ? 1 : 0));
+  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
 }
 
 export interface DayPoint { tMin: number; min: number; max: number }
@@ -157,13 +181,17 @@ export function decodeDay(query: string): Result<{ intakes: Intake[]; halfLifeH:
   const d = q.get('d');
   if (!d) return failure('empty', 'd', 'No drinks in the link.');
   const intakes: Intake[] = [];
+  const bed0 = Number(q.get('bed') ?? DEFAULT_BED_MIN);
+  if (!finite(bed0) || bed0 < 0 || bed0 > 2880) return failure('bad-option', 'bed', 'An option in the link is not valid.');
+  const bedForLink = bedMinute(bed0);
   for (const part of d.split(',')) {
     const m = part.match(/^([a-z0-9-]+)\.(\d+)(?:\.(arabica|robusta|blend))?@(\d+)$/);
     if (!m) return failure('bad-drink', 'd', 'A drink in the link is not valid.');
     const [, kind, n, bean, at] = m;
     // Older links wrote after-midnight drinks as 0–359; they belong to the end of the day.
     const n0 = Number(at);
-    const atMin = n0 < DAY_START_MIN ? n0 + 1440 : n0;
+    // Times under 1440 are clock times (older links); place them by the link's own bedtime.
+    const atMin = n0 < 1440 ? dayMinute(n0, bedForLink) : n0;
     if (n0 > 2880) return failure('bad-drink', 'd', 'A drink in the link is not valid.');
     if (kind === 'esp') intakes.push({ kind: 'espresso', shots: Number(n), atMin });
     else if (kind === 'mg') intakes.push({ kind: 'custom', mg: Number(n), atMin });
@@ -171,7 +199,7 @@ export function decodeDay(query: string): Result<{ intakes: Intake[]; halfLifeH:
     else intakes.push({ kind: 'brewed', method: kind as MethodId, cupMl: Number(n), atMin, ...(bean ? { bean: bean as Bean } : {}) });
   }
   for (const i of intakes) { const r = intakeMg(i); if (!r.ok) return failure('bad-drink', 'd', r.errors[0].message); }
-  const hl = Number(q.get('hl') ?? CAFFEINE.halfLifeH.typical), bed0 = Number(q.get('bed') ?? 1380), bed = bed0 < DAY_START_MIN ? bed0 + 1440 : bed0;
+  const hl = Number(q.get('hl') ?? CAFFEINE.halfLifeH.typical), bed = bedForLink;
   if (!finite(hl) || hl < 1 || hl > 15 || !finite(bed) || bed < 0 || bed > 2880) return failure('bad-option', 'hl', 'An option in the link is not valid.');
   return success({ intakes, halfLifeH: hl, bedMin: bed });
 }

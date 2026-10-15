@@ -1,9 +1,9 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { METHODS, GUIDANCE, CAFFEINE, intakeMg, dayCurve, dailyTotal, inBodyAt, encodeDay, decodeDay, dayMinute, flOzToMl, mlToFlOz } from '../../lib/coffee/index.ts';
+  import { METHODS, GUIDANCE, CAFFEINE, intakeMg, dayCurve, dailyTotal, inBodyAt, encodeDay, decodeDay, dayMinute, diaryDayKey, newDayAt, bedMinute, flOzToMl, mlToFlOz } from '../../lib/coffee/index.ts';
   import type { Intake, MethodId } from '../../lib/coffee/index.ts';
 
-  const FROM = 6 * 60, TO = 26 * 60; // 6 am to 2 am
+  // The chart runs from 6 am (or the first drink) to 2 am (or past bedtime).
   const BREWERS = METHODS.filter((m) => m.id !== 'espresso');
   const SIZES_OZ = [6, 8, 12, 16, 20];
   const ESPRESSO_DRINKS = [
@@ -28,8 +28,8 @@
   let mounted = $state(false);
   let example = $state(true);
   const STORE = 'jayarr-caffeine-day-v1';
-  // The diary day starts at 6 am, so a 1 am coffee still belongs to yesterday's diary.
-  const todayKey = () => { const d = new Date(Date.now() - 6 * 3600e3); return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`; };
+  // The diary day starts at 6 am local time, so a 1 am coffee still belongs to yesterday's diary.
+  const todayKey = () => diaryDayKey(new Date(), bedMin);
 
   // add-drink form
   let addKind = $state<'brewed' | 'espresso' | 'decaf' | 'custom'>('brewed');
@@ -41,7 +41,7 @@
   let addTime = $state('09:00');
 
   // Diary minutes: the day runs 6 am to 6 am, so 00:30 after a late evening is 1470, not 30.
-  const toMin = (hhmm: string) => { const [h, m] = hhmm.split(':').map(Number); return dayMinute(h * 60 + m); };
+  const toMin = (hhmm: string) => { const [h, m] = hhmm.split(':').map(Number); return dayMinute(h * 60 + m, bedMin); };
   const hhmm = (min: number) => { const m = ((min % 1440) + 1440) % 1440; return `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`; };
   const clock12 = (min: number) => { const m = ((min % 1440) + 1440) % 1440; const h = Math.floor(m / 60), mm = m % 60; return `${((h + 11) % 12) + 1}${mm ? ':' + String(mm).padStart(2, '0') : ''} ${h < 12 ? 'am' : 'pm'}`; };
   const r0 = (n: number) => Math.round(n);
@@ -50,13 +50,22 @@
   // Keep each drink's index into `intakes`: $state proxies break identity checks (indexOf/===).
   let rows = $derived(intakes.map((i, idx) => ({ i, idx })).sort((a, b) => a.i.atMin - b.i.atMin));
   let sorted = $derived(rows.map((r) => r.i));
+  let FROM = $derived(Math.min(6 * 60, ...sorted.map((i) => Math.floor((i.atMin - 30) / 60) * 60)));
+  let TO = $derived(Math.max(26 * 60, Math.ceil((Math.max(bedMin, ...sorted.map((i) => i.atMin)) + 60) / 60) * 60));
+  let cutoff = $derived(newDayAt(bedMin));
+  // A shared link is shown without touching your own diary until you choose to keep it.
+  let viewingShared = $state(false);
+  let hlBeforePregnancy = $state<number | null>(null);
   let curve = $derived(dayCurve(sorted, FROM, TO, 5, halfLifeH));
   let total = $derived(dailyTotal(sorted));
   let atBed = $derived(inBodyAt(sorted, bedMin, halfLifeH));
   let atNow = $derived(nowMin !== null && nowMin >= FROM && nowMin <= TO ? inBodyAt(sorted, nowMin, halfLifeH) : null);
   let peak = $derived(curve.reduce((a, p) => (p.max > a.max ? p : a), { tMin: FROM, min: 0, max: 0 }));
   let guidance = $derived(pregnant ? GUIDANCE.find((g) => g.id === 'acog-pregnancy')! : GUIDANCE.find((g) => g.id === 'fda-adult-daily')!);
-  let overDaily = $derived(total.max > guidance.mg);
+  // Colour follows the middle estimate; a range that only reaches the reference at its top is flagged as "could be".
+  let overDaily = $derived((total.min + total.max) / 2 > guidance.mg);
+  let mightExceed = $derived(!overDaily && total.max > guidance.mg);
+  let addError = $state('');
   // Plain-language comparison for the bedtime number (midpoint): tea ≈ 47 mg per 8 oz, espresso ≈ 63 mg a shot (synthesis §15, §16).
   let bedCompare = $derived.by(() => { const m = (atBed.min + atBed.max) / 2; return m < 20 ? 'Close to nothing left.' : m < 50 ? 'About a cup of black tea’s worth still in you.' : m < 90 ? 'About a shot of espresso’s worth still in you.' : 'Like a cup of coffee at bedtime.'; });
 
@@ -74,7 +83,7 @@
     ' ' + [...curve].reverse().map((p) => `L${x(p.tMin)} ${y(p.min)}`).join(' ') + ' Z'
   );
   let mid = $derived(curve.map((p, i) => `${i ? 'L' : 'M'}${x(p.tMin)} ${y((p.min + p.max) / 2)}`).join(' '));
-  let ticks = $derived(narrow ? [FROM, FROM + 360, FROM + 720, FROM + 1080] : Array.from({ length: 11 }, (_, i) => FROM + i * 120));
+  let ticks = $derived(Array.from({ length: Math.floor((TO - FROM) / (narrow ? 360 : 120)) + 1 }, (_, i) => FROM + i * (narrow ? 360 : 120)));
   let yTicks = $derived(Array.from({ length: yMax / 50 + 1 }, (_, i) => i * 50).filter((v) => yMax <= 300 || v % 100 === 0));
 
   function describe(i: Intake) {
@@ -90,7 +99,9 @@
       : addKind === 'espresso' ? { kind: 'espresso', shots: addShots, atMin }
       : addKind === 'decaf' ? { kind: 'decaf', cupMl: flOzToMl(addOz), atMin }
       : { kind: 'brewed', method: addMethod, cupMl: flOzToMl(addOz), atMin };
-    if (!intakeMg(i).ok) return;
+    const check = intakeMg(i);
+    if (!check.ok) { addError = check.errors[0].message; return; }
+    addError = '';
     if (example) { intakes = []; example = false; }
     intakes = [...intakes, i];
     addTime = hhmm(Math.min(22 * 60, atMin + 180));
@@ -98,31 +109,49 @@
   function remove(idx: number) { intakes = intakes.filter((_, k) => k !== idx); }
   function retime(idx: number, v: string) { const t = toMin(v); if (Number.isFinite(t)) intakes = intakes.map((x, k) => (k === idx ? { ...x, atMin: t } : x)); }
 
+  // Your own diary from this device: settings always, today's drinks only if they're from today.
+  function loadSaved(withDrinks: boolean) {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORE) ?? 'null');
+      if (!saved) return;
+      pregnant = !!saved.pregnant;
+      if (!withDrinks) return;
+      halfLifeH = saved.halfLifeH ?? 5; bedMin = bedMinute(saved.bedMin ?? 1380);
+      // Re-place each saved time by today's rule (older saves used a fixed 6 am line).
+      if (saved.day === todayKey() && Array.isArray(saved.intakes)) { intakes = saved.intakes.map((x: Intake) => ({ ...x, atMin: dayMinute(x.atMin, bedMin) })).filter((x: Intake) => intakeMg(x).ok); example = false; }
+      else { intakes = []; example = false; }
+    } catch { /* storage unavailable: keep the example day */ }
+  }
+  function backToMine() { viewingShared = false; example = true; loadSaved(true); }
+  function keepShared() { viewingShared = false; }
+  function setBed(b: number) {
+    bedMin = b;
+    intakes = intakes.map((x) => ({ ...x, atMin: dayMinute(x.atMin, b) }));
+  }
+  function togglePregnant(on: boolean) {
+    if (on && halfLifeH < 8) { hlBeforePregnancy = halfLifeH; halfLifeH = 8; }
+    if (!on && hlBeforePregnancy !== null) { halfLifeH = hlBeforePregnancy; hlBeforePregnancy = null; }
+  }
+
   onMount(() => {
-    // A shared link loads once and is then cleared from the address bar; your own diary lives on this device only.
+    // A shared link is shown as someone else's day: it never overwrites the diary on this device
+    // unless you choose to keep it, and the address bar is cleared after loading.
     const d = decodeDay(location.search);
     if (d.ok) {
-      intakes = d.value.intakes; halfLifeH = d.value.halfLifeH; bedMin = d.value.bedMin; example = false;
+      loadSaved(false);
+      intakes = d.value.intakes; halfLifeH = d.value.halfLifeH; bedMin = d.value.bedMin; example = false; viewingShared = true;
       history.replaceState(history.state, '', location.pathname);
     } else {
-      try {
-        const saved = JSON.parse(localStorage.getItem(STORE) ?? 'null');
-        if (saved) {
-          halfLifeH = saved.halfLifeH ?? 5; bedMin = dayMinute(saved.bedMin ?? 1380); pregnant = !!saved.pregnant;
-          // Older saves stored after-midnight times as 0–359; move them to the end of the day.
-          if (saved.day === todayKey() && Array.isArray(saved.intakes)) { intakes = saved.intakes.map((x: Intake) => ({ ...x, atMin: dayMinute(x.atMin) })).filter((x: Intake) => intakeMg(x).ok); example = false; }
-          else { intakes = []; example = false; }
-        }
-      } catch { /* storage unavailable: keep the example day */ }
+      loadSaved(true);
     }
-    const n = new Date(); nowMin = dayMinute(n.getHours() * 60 + n.getMinutes());
-    const timer = setInterval(() => { const d2 = new Date(); nowMin = dayMinute(d2.getHours() * 60 + d2.getMinutes()); }, 60000);
+    const n = new Date(); nowMin = dayMinute(n.getHours() * 60 + n.getMinutes(), bedMin);
+    const timer = setInterval(() => { const d2 = new Date(); nowMin = dayMinute(d2.getHours() * 60 + d2.getMinutes(), bedMin); }, 60000);
     mounted = true;
     return () => clearInterval(timer);
   });
   $effect(() => {
     const snapshot = JSON.stringify({ day: todayKey(), intakes, halfLifeH, bedMin, pregnant });
-    if (!mounted || example) return;
+    if (!mounted || example || viewingShared) return;
     try { localStorage.setItem(STORE, snapshot); } catch { /* private mode: nothing saved */ }
   });
   let copied = $state(false);
@@ -148,9 +177,9 @@
     <div class="ro">
       <span class="lbl">In you now</span>
       <span class="val small">{atNow ? rangeText(atNow.min, atNow.max) : '—'}<small>mg</small></span>
-      <span class="sub">{atNow ? `at ${clock12(nowMin ?? 0)}` : 'outside 6 am – 2 am'}</span>
+      <span class="sub">{atNow ? `at ${clock12(nowMin ?? 0)}` : `outside ${clock12(FROM)} – ${clock12(TO)}`}</span>
     </div>
-    <div class="ro total" class:over={overDaily}>
+    <div class="ro total" class:over={overDaily} class:might={mightExceed}>
       <span class="lbl">Today’s total</span>
       <span class="val small">{rangeText(total.min, total.max)}<small>mg</small></span>
       <div class="meter" aria-hidden="true">
@@ -202,6 +231,12 @@
   <div class="cols">
     <section class="list" aria-label="Your drinks today">
       <h3>Your drinks today</h3>
+      {#if viewingShared}
+        <div class="shared" role="status">
+          <p>You're looking at a shared day. Your own diary on this device hasn't changed.</p>
+          <div class="actions"><button type="button" class="ghost" onclick={backToMine}>Back to my day</button><button type="button" class="ghost" onclick={keepShared}>Make this my day</button></div>
+        </div>
+      {/if}
       {#if example}<p class="example">This is an example day. Add a drink to start your own; it stays on this device.</p>{/if}
       {#if sorted.length === 0}<p class="empty">Add your first coffee of the day.</p>{/if}
       <ul>
@@ -250,6 +285,7 @@
       <div class="row">
         <label class="fld"><span class="lbl">At</span><input type="time" bind:value={addTime} /></label>
         <button type="button" class="go" onclick={add}>Add</button>
+        {#if addError}<p class="adderr" role="alert">{addError}</p>{/if}
       </div>
 
       <h3 class="settings">You</h3>
@@ -259,12 +295,13 @@
       <p class="note">{HALF_LIVES.find((h) => h.h === halfLifeH)?.note}</p>
       <div class="row">
         <label class="fld"><span class="lbl">Bedtime</span>
-          <select value={String(bedMin)} onchange={(e) => (bedMin = Number((e.currentTarget as HTMLSelectElement).value))}>
-            {#each [20, 21, 22, 22.5, 23, 23.5, 24, 25] as h (h)}<option value={String(h * 60)}>{clock12(h * 60)}</option>{/each}
+          <select value={String(bedMin)} onchange={(e) => setBed(Number((e.currentTarget as HTMLSelectElement).value))}>
+            {#each [20, 21, 22, 22.5, 23, 23.5, 24, 24.5, 25, 26] as h (h)}<option value={String(h * 60)}>{clock12(h * 60)}</option>{/each}
           </select>
         </label>
-        <label class="check"><input type="checkbox" bind:checked={pregnant} onchange={() => { if (pregnant && halfLifeH < 8) halfLifeH = 8; }} /> Pregnant</label>
+        <label class="check"><input type="checkbox" bind:checked={pregnant} onchange={() => togglePregnant(pregnant)} /> Pregnant</label>
       </div>
+      <p class="note">Drinks between midnight and {clock12(cutoff)} count as last night's, before bed; from {clock12(cutoff)} a new day starts. The pregnancy setting stays on this device and never goes into a link.</p>
       <p class="note">{guidance.wording}</p>
     </section>
   </div>
@@ -292,6 +329,8 @@
   .fill.lo { background: var(--crema); z-index: 1; }
   .mark { position: absolute; top: -2px; bottom: -2px; width: 2px; background: var(--ink); z-index: 2; }
   .total.over .val { color: #9a3b1c; }
+  .total.might .val { color: #8f5d22; }
+  .adderr { color: #9a3b1c; font-size: 14px; margin: 6px 0 0; width: 100%; }
 
   .chart { margin: 0; padding: 14px 16px 8px; }
   .chart svg { width: 100%; height: auto; display: block; }
@@ -342,4 +381,6 @@
     .chart { padding: 10px 4px 4px; }
   }
   .mg .basis { display: block; font: 400 10.5px/1.2 'IBM Plex Mono', monospace; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3, #75655a); }
+  .shared { background: #eef4f5; border: 1px solid #c6dade; border-radius: 10px; padding: 10px 12px; margin: 0 0 10px; font-size: 14px; }
+  .shared p { margin: 0 0 8px; }
 </style>

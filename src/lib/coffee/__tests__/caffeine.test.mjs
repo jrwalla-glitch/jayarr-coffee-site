@@ -54,7 +54,7 @@ test('guidance lines are in the agencies\' own terms', () => {
   assert.ok(CAFFEINE.VERIFY.length > 0);
 });
 
-import { intakeMg, dayCurve, dailyTotal, inBodyAt, encodeDay, decodeDay, dayMinute } from '../index.ts';
+import { intakeMg, dayCurve, dailyTotal, inBodyAt, encodeDay, decodeDay, dayMinute, diaryDayKey, newDayAt, bedMinute } from '../index.ts';
 
 test('a day: totals add up, bedtime level is below the peak, ranges stay ordered', () => {
   const day = [
@@ -92,12 +92,21 @@ test('a cup bigger than one brewer makes still gets an estimate, with no jump at
   }
 });
 
-test('the diary day runs 6 am to 6 am: a 00:30 drink and a 1 am bedtime come after the evening', () => {
-  assert.equal(dayMinute(30), 1470); assert.equal(dayMinute(60), 1500); assert.equal(dayMinute(6 * 60), 360); assert.equal(dayMinute(23 * 60), 1380);
+test('a new diary day starts four hours after bedtime: late drinks stay tonight, early ones are this morning', () => {
+  // Default 11 pm bedtime → the new day starts at 3 am.
+  assert.equal(newDayAt(), 180);
+  assert.equal(dayMinute(30), 1470); assert.equal(dayMinute(60), 1500); assert.equal(dayMinute(23 * 60), 1380);
   assert.equal(dayMinute(1470), 1470);
-  // Astra's probe: 100 mg at 00:30, bedtime 01:00 → about 87.5 mg left (illustrative model), not 3.4 mg.
-  const day = [{ kind: 'custom', mg: 100, atMin: dayMinute(30) }];
-  const left = inBodyAt(day, dayMinute(60));
+  // Opus blind review: an early riser's 05:30 coffee was moved to the next morning and read 0 mg all day.
+  assert.equal(dayMinute(330), 330);
+  const early = [{ kind: 'custom', mg: 100, atMin: dayMinute(330) }];
+  assert.ok(inBodyAt(early, 15 * 60).min > 20, 'still in you at 3 pm');
+  // A 1 am bedtime moves the line to 5 am: 04:30 is still the night before.
+  assert.equal(newDayAt(1500), 300); assert.equal(dayMinute(270, 1500), 1710); assert.equal(dayMinute(330, 1500), 330);
+  assert.equal(bedMinute(60), 1500); assert.equal(bedMinute(1500), 1500); assert.equal(bedMinute(22 * 60), 1320);
+  // Astra's probe still holds: 100 mg at 00:30, bedtime 01:00 → about 87.5 mg left (illustrative model).
+  const day = [{ kind: 'custom', mg: 100, atMin: dayMinute(30, 1500) }];
+  const left = inBodyAt(day, 1500);
   assert.ok(Math.abs(left.min - 87.52) < 0.05, String(left.min));
 });
 
@@ -109,6 +118,8 @@ test('share links carry no pregnancy setting, and old links\' preg=1 is ignored'
   // An older link that wrote a 00:30 drink as minute 30 lands at the end of the day.
   const old = decodeDay('d=esp.1@30&bed=60').value;
   assert.equal(old.intakes[0].atMin, 1470); assert.equal(old.bedMin, 1500);
+  assert.equal(decodeDay('d=esp.1@330').value.intakes[0].atMin, 330, 'an early-morning drink in a link stays in the morning');
+  assert.equal(decodeDay('d=esp.1@600&bed=abc').ok, false);
 });
 
 test('day state round-trips through the link; junk fails', () => {
@@ -123,4 +134,25 @@ test('a known label amount counts exactly, not as a range', () => {
   const r = intakeMg({ kind: 'custom', mg: 155, atMin: 600 }).value;
   assert.equal(r.min, 155); assert.equal(r.max, 155);
   assert.equal(intakeMg({ kind: 'custom', mg: -1, atMin: 600 }).ok, false);
+});
+
+test('the diary key follows the local clock across both daylight-saving nights (Astra: fall-back ended it an hour early)', () => {
+  const tz = process.env.TZ;
+  try {
+    process.env.TZ = 'America/New_York';
+    // 11 pm bedtime → new day at 3 am local. Fall back, 2026-11-01.
+    assert.equal(diaryDayKey(new Date('2026-11-01T07:30:00Z')), '2026-10-31', '02:30 EST');
+    assert.equal(diaryDayKey(new Date('2026-11-01T08:00:00Z')), '2026-11-1', '03:00 EST');
+    // Spring forward, 2026-03-08.
+    assert.equal(diaryDayKey(new Date('2026-03-08T06:30:00Z')), '2026-3-7', '01:30 EST');
+    assert.equal(diaryDayKey(new Date('2026-03-08T07:00:00Z')), '2026-3-8', '03:00 EDT');
+    // A 1 am bedtime keeps the night's diary until 5 am.
+    assert.equal(diaryDayKey(new Date('2026-10-16T08:30:00Z'), 1500), '2026-10-15', '04:30 EDT');
+    assert.equal(diaryDayKey(new Date('2026-10-16T09:00:00Z'), 1500), '2026-10-16', '05:00 EDT');
+    process.env.TZ = 'Europe/London';
+    assert.equal(diaryDayKey(new Date('2026-10-25T02:30:00Z')), '2026-10-24', 'UK 02:30 GMT');
+    assert.equal(diaryDayKey(new Date('2026-10-25T03:00:00Z')), '2026-10-25');
+  } finally {
+    if (tz === undefined) delete process.env.TZ; else process.env.TZ = tz;
+  }
 });
