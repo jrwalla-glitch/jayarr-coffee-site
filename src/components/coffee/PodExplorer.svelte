@@ -25,6 +25,8 @@
   let panelEl = $state<HTMLElement | null>(null);
   // Filters start open on wide screens and folded on phones, so the wall is the first thing you see there.
   let filtersOpen = $state(true);
+  // Phones get the wall turned on its side (see the template).
+  let narrow = $state(false);
 
   let rows = $derived(line ? sizeRows(pods, line) : []);
   let all = $derived(line ? pods.filter((p) => p.line === line && (includeDiscontinued || !p.discontinued)) : []);
@@ -64,7 +66,9 @@
     if (fromLink) { line = fromLink.line; selectedId = fromLink.id; if (fromLink.discontinued) includeDiscontinued = true; }
     else if (l === 'original' || l === 'vertuo') line = l;
     else if (saved === 'original' || saved === 'vertuo') line = saved;
-    filtersOpen = !matchMedia('(max-width: 640px)').matches;
+    const mq = matchMedia('(max-width: 640px)');
+    filtersOpen = !mq.matches; narrow = mq.matches;
+    mq.addEventListener('change', (e) => { narrow = e.matches; });
     mounted = true;
   });
   $effect(() => {
@@ -129,6 +133,14 @@
       <path d="M 42,30 Q 50,15 62,10 Q 72,8 82,14 Q 72,9 62,8 Q 50,10 44,20 Q 38,32 42,30 Z" fill="rgba(255,255,255,0.4)" />
       <path d="M 28,55 Q 34,40 44,30 Q 48,26 52,28 Q 42,34 34,48 Q 28,60 30,65 Z" fill="rgba(255,255,255,0.1)" />
     </svg>
+  {/if}
+{/snippet}
+
+{#snippet wallPod(x: { pod: Pod })}
+  {#if shownIds.has(x.pod.id)}
+    <button type="button" class="pod" class:sel={selectedId === x.pod.id} class:gone={x.pod.discontinued} class:inflight={flight.includes(x.pod.id)} aria-pressed={selectedId === x.pod.id} aria-label={label(x.pod)} title={x.pod.name} onclick={() => pick(x.pod)}>{@render capsule(line!, x.pod.color_hex, 28)}</button>
+  {:else}
+    <span class="pod ghost" aria-hidden="true">{@render capsule(line!, '#d9cdbd', 28)}</span>
   {/if}
 {/snippet}
 
@@ -206,7 +218,24 @@
 
     <div class="body">
       <div class="stage">
-        {#if view === 'wall'}
+        {#if view === 'wall' && narrow}
+          <div class="wall tall" role="group" aria-label="{LINES[line].label} capsules by intensity and cup size">
+            <div class="thead" style:--n={rows.length} aria-hidden="true">
+              <span class="corner">int.</span>
+              {#each rows as r (r.key)}<span><b>{r.name === 'Double Espresso' ? 'Double' : r.name === 'Gran Lungo' ? 'Gran L.' : r.name}</b><small>{r.ml} ml</small></span>{/each}
+            </div>
+            {#each Array.from({ length: COLS + 1 }, (_, c) => c) as c (c)}
+              {@const here = placed.filter((x) => x.col === c)}
+              <div class="trow" class:empty={here.length === 0} class:nr={c === 0} style:--n={rows.length} role="group" aria-label={c === 0 ? 'Not rated' : `Intensity ${c}`}>
+                <span class="tl" aria-hidden="true">{c === 0 ? 'n/r' : c}</span>
+                {#each rows as r, ri (r.key)}
+                  <div class="cell">{#each here.filter((x) => x.row === ri) as x (x.pod.id)}{@render wallPod(x)}{/each}</div>
+                {/each}
+              </div>
+            {/each}
+            <p class="axis tallaxis" aria-hidden="true">Intensity runs down, mild to intense (Nespresso's 1–13: roast and body, not caffeine); <b>n/r</b> = not rated.</p>
+          </div>
+        {:else if view === 'wall'}
           <div class="wall" role="group" aria-label="{LINES[line].label} capsules by cup size and intensity">
             <div class="head" aria-hidden="true">
               <span class="corner">cup</span><span class="nr">n/r</span>
@@ -217,13 +246,7 @@
                 <div class="rl" aria-hidden="true"><span><b>{r.name}</b><small>{r.ml} ml</small></span></div>
                 {#each Array.from({ length: COLS + 1 }, (_, c) => c) as c (c)}
                   <div class="cell" class:nr={c === 0}>
-                    {#each placed.filter((x) => x.row === ri && x.col === c) as x (x.pod.id)}
-                      {#if shownIds.has(x.pod.id)}
-                        <button type="button" class="pod" class:sel={selectedId === x.pod.id} class:gone={x.pod.discontinued} class:inflight={flight.includes(x.pod.id)} aria-pressed={selectedId === x.pod.id} aria-label={label(x.pod)} title={x.pod.name} onclick={() => pick(x.pod)}>{@render capsule(line, x.pod.color_hex, 28)}</button>
-                      {:else}
-                        <span class="pod ghost" aria-hidden="true">{@render capsule(line, "#d9cdbd", 28)}</span>
-                      {/if}
-                    {/each}
+                    {#each placed.filter((x) => x.row === ri && x.col === c) as x (x.pod.id)}{@render wallPod(x)}{/each}
                   </div>
                 {/each}
               </div>
@@ -294,7 +317,7 @@
         {:else}
           <div class="howto">
             <span class="lbl">Reading the wall</span>
-            <p>Each row is a cup size, smallest at the top. Columns run from mild to intense on Nespresso's 1–13 scale; <b>n/r</b> holds capsules Nespresso doesn't rate. Pick a capsule to see what it pours.</p>
+            <p>{#if narrow}Each column is a cup size, smallest on the left; intensity runs down the rows, from mild to intense on Nespresso's 1–13 scale.{:else}Each row is a cup size, smallest at the top. Columns run from mild to intense on Nespresso's 1–13 scale.{/if} <b>n/r</b> holds capsules Nespresso doesn't rate. Pick a capsule to see what it pours.</p>
             {@render ladder(null)}
           </div>
         {/if}
@@ -388,6 +411,19 @@
   .pod.gone :global(.cap) { opacity: .55; }
   .pod.inflight { box-shadow: inset 0 -2px 0 var(--crema); }
   .pod.ghost { cursor: default; opacity: .7; }
+  .thead, .trow { display: grid; grid-template-columns: 34px repeat(var(--n), minmax(0, 1fr)); }
+  .thead { padding-bottom: 6px; border-bottom: 1px solid var(--rule); text-align: center; }
+  .thead .corner { font: 500 10.5px 'IBM Plex Mono', monospace; color: var(--ink-3); text-align: left; align-self: end; }
+  .thead b { display: block; font: 600 12px/1.15 'IBM Plex Sans', sans-serif; }
+  .thead small { display: block; font: 500 11px 'IBM Plex Mono', monospace; color: var(--ink-3); }
+  .trow { border-bottom: 1px dashed var(--rule); min-height: 34px; }
+  .trow.empty { min-height: 16px; }
+  .trow.nr { background: repeating-linear-gradient(135deg, transparent 0 5px, rgba(117, 101, 90, .06) 5px 6px); }
+  .tl { font: 500 12px 'IBM Plex Mono', monospace; color: var(--ink-3); align-self: center; }
+  /* Two capsules side by side in a 5-column phone cell (about 58 px at 360 px wide). */
+  .tall .pod { width: 29px; height: 28px; }
+  .tall .pod :global(.cap) { width: 25px; }
+  .axis.tallaxis { display: block; margin: 8px 0 0; font-size: 11.5px; line-height: 1.4; }
   .axis { display: flex; justify-content: space-between; gap: 8px; margin: 8px 0 0 var(--lab); font: 400 11.5px 'IBM Plex Mono', monospace; color: var(--ink-3); }
   .axis span:nth-child(2) { text-align: center; }
 
