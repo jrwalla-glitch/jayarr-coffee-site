@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import data from '../../data/grinders.json';
-  import { GROUPS, settingsFor, groupsFor, rangeText, headline, grinderById } from '../../lib/coffee/grinders.ts';
+  import { GROUPS, settingsFor, groupsFor, rangeText, headline, countHeadline, turnsLine, grinderById } from '../../lib/coffee/grinders.ts';
   import type { Grinder, Group, Setting } from '../../lib/coffee/grinders.ts';
 
   // Your grinder's own control, drawn and turned to the maker's starting setting for your brew.
@@ -149,7 +149,8 @@
   const nice = (t: string) => t.replace(/\b[A-Z]{2,}\b/g, (w) => w[0] + w.slice(1).toLowerCase());
   function mapVal(r: Setting): string {
     if (r.published) return r.published;
-    if (r.categories) return nice(r.headline ? `${r.categories[0]} (or ${r.categories.slice(1).join(', ')})` : r.categories.join(' to '));
+    // A maker's condition stays with its alternative: "FINE (EXTRA FINE for some pump machines)".
+    if (r.categories) return nice(r.headline ? r.headline.replace(/^Start (at|between) /, '') : r.categories.join(' to '));
     if (r.min == null) return '';
     if (r.start != null) return r.max != null && r.max !== r.min ? `${r.start}, in ${r.min}–${r.max}` : `${r.start}`;
     if (r.openTop) return `${r.min} and coarser`;
@@ -188,7 +189,7 @@
           <button type="button" aria-pressed={group === m.id} disabled={!has} onclick={() => pickGroup(m.id)}>{m.label}</button>
         {/each}
       </div>
-      {#if missing.length}<p class="why">Crossed out: no published {g.short} setting for {missing.length === 1 ? 'this method' : 'these'} turned up in the sources we checked.</p>{/if}
+      {#if missing.length}<p class="why">Crossed out: no verified setting is included here for {missing.length === 1 ? 'this method' : 'these methods'}.</p>{/if}
     </div>
   </div>
 
@@ -319,11 +320,11 @@
   </div>
 
   <div class="map">
-    <p class="mapk">Every setting the {who} {who === 'maker' ? 'publishes' : 'lists'}<span>{mapUnit}</span></p>
+    <p class="mapk">The {who}'s settings included here<span>{mapUnit}</span></p>
     <ul>
       {#each mapRows as r (r.key)}
         <li><button type="button" class="mrow" class:cur={r === s} aria-pressed={r === s} onclick={() => pickRow(r)}>
-          <span class="ml">{r.label}</span><span class="mv">{mapVal(r)}</span>
+          <span class="ml">{r.label}</span><span class="mv">{#if r.categories && r.headline}{mapVal(r).split(' (')[0]}<small>{mapVal(r).split(' (').slice(1).join(' (').replace(/\)$/, '')}</small>{:else}{mapVal(r)}{/if}</span>
           {#if mapScale && r.min != null}
             <span class="mt" aria-hidden="true">
               {#if mapEnd(r) > r.min}<i class="mband" class:openband={r.openTop} style:left="{pc(r.min)}%" style:width="{Math.max(1.5, pc(mapEnd(r)) - pc(r.min))}%"></i>{/if}
@@ -343,9 +344,9 @@
   <div class="answer" aria-live="polite">
     {#if s}
       <p class="kick">{g.short} · {s.label}{s.makerLabel ? ` (the maker's “${s.makerLabel}”)` : ''}</p>
-      <h3>{nice(headline(g, s))}</h3>
+      <h3>{nice(g.kind === 'turns' && g.perTurn ? countHeadline(g, s) : headline(g, s))}</h3>
       {#if s.note}<p class="snote">{s.note}</p>{/if}
-      {#if g.kind === 'turns' && g.perTurn}<p class="trans">On the maker's count that's {rangeText(s)} {g.unit} from zero, at {g.perTurn} {g.unit} per turn{g.sub ? ` (${g.sub})` : ''}.</p>{/if}
+      {#if turnsLine(g, s)}<p class="turnsl"><span>On the grinder</span>{turnsLine(g, s)}<em>{g.perTurn} {g.unit} per turn{g.sub ? `, ${g.sub}` : ''}</em></p>{/if}
       {#if s.start == null && s.max !== s.min && g.kind !== 'text' && !s.headline}<p class="trans">The {who} prints a range, not one setting: start anywhere in it, then adjust by taste.</p>{/if}
       {#if others.length}
         <div class="more"><p class="morek">Also listed for {GROUPS.find((x) => x.id === group)!.label.toLowerCase()}</p>
@@ -355,7 +356,7 @@
       {#if g.startingPoint?.note}<p class="say">{g.startingPoint.note}</p>{/if}
       <p class="prov">{who === 'maker' ? `Published by ${brand}` : 'Secondary source'}{#if s.url}{' · '}<a href={s.url} rel="noopener" target="_blank" title={s.source ?? ''}>open the source</a>{/if}{s.checked ? `, checked ${s.checked}` : ''}.</p>
       {#if g.cautions.length}<div class="cbox"><p class="cauth">Cautions</p><ul class="cautions">{#each g.cautions as c (c)}<li>{c}</li>{/each}</ul></div>
-      {:else}<p class="cbox nocaut"><span class="cauth">Cautions</span> None in the sources we checked.</p>{/if}
+      {:else}<p class="cbox nocaut"><span class="cauth">Cautions</span> None listed here; see the maker's manual.</p>{/if}
       {#if g.kind !== 'named' && g.kind !== 'text'}
         <details class="zero" open={g.kind === 'turns'}><summary>{g.kind === 'turns' ? 'Where zero is, and what one step does' : 'How the dial is numbered'}</summary>
           <p>{g.zeroNote}</p>
@@ -369,7 +370,7 @@
       </div>
       {#if g.amazon}<p class="buy"><a href={g.amazon.url} rel="sponsored noopener" target="_blank">{g.short} on Amazon</a>: the exact model, checked {data.checked}. As an Amazon Associate we earn from qualifying purchases.</p>{/if}
     {:else}
-      <p class="none">No published {g.short} setting for this method turned up in the sources we checked.</p>
+      <p class="none">No verified setting for this method is included here.</p>
     {/if}
   </div>
 </div>
@@ -474,6 +475,10 @@
   .kick { font: 500 11.5px/1.3 'IBM Plex Mono', monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--crema-deep); margin: 0; }
   h3 { font: 400 34px/1.05 'Instrument Serif', Georgia, serif; margin: 6px 0 4px; }
   .trans { margin: 6px 0 0; color: var(--ink-2); font-size: 15px; }
+  .turnsl { margin: 4px 0 2px; font: 500 15px/1.4 'IBM Plex Mono', monospace; color: var(--ink); }
+  .turnsl span { display: block; font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); }
+  .turnsl em { display: block; font: 400 13.5px 'IBM Plex Sans', sans-serif; font-style: normal; color: var(--ink-3); }
+  .mv small { display: block; font: 400 11px/1.25 'IBM Plex Sans', sans-serif; color: var(--ink-3); }
   .snote { margin: 8px 0 0; padding: 8px 12px; border-radius: 8px; background: #f6efe5; color: var(--ink); font-size: 14.5px; }
   .applies { margin: -6px 0 0; font-size: 13px; color: var(--ink-3); }
   .more { margin: 10px 0 0; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
