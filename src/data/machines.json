@@ -6,6 +6,8 @@
    "id": "breville-bambino-bes450",
    "brand": "Breville",
    "name": "Bambino",
+   "variant": null,
+   "code": "BES450",
    "fullName": "Bambino",
    "models": [
     "BES450"
@@ -45,11 +47,7 @@
    },
    "tankL": 1.4,
    "plumbable": null,
-   "dims": {
-    "w": 30.2,
-    "d": 15.5,
-    "h": 34.3
-   },
+   "dims": null,
    "weightKg": 4.725,
    "watts": 1560,
    "recipe": {
@@ -237,7 +235,10 @@
      "checked": "2026-10-15"
     }
    ],
-   "axisFlag": true,
+   "axisFlag": false,
+   "dimsUnclear": "11.9 × 6.1 × 13.5 in",
+   "clearanceCm": 30.5,
+   "clearanceUrl": "https://www.williams-sonoma.com/netstorage/pdf/breville-comparison-chart.pdf",
    "owner": {
     "dose": "Breville gives 18 g as the ideal dose for the 54 mm portafilter.",
     "recipe": "The extraction guide gives 8–11 g for 1 Cup or 16–19 g for 2 Cup.",
@@ -257,6 +258,8 @@
    "id": "breville-bambino-plus-bes500",
    "brand": "Breville",
    "name": "Bambino Plus",
+   "variant": null,
+   "code": "BES500",
    "fullName": "Bambino Plus",
    "models": [
     "BES500"
@@ -296,11 +299,7 @@
    },
    "tankL": 1.9,
    "plumbable": null,
-   "dims": {
-    "w": 30.2,
-    "d": 18.8,
-    "h": 36.3
-   },
+   "dims": null,
    "weightKg": 4.95,
    "watts": 1560,
    "recipe": {
@@ -488,7 +487,10 @@
      "checked": "2026-10-15"
     }
    ],
-   "axisFlag": true,
+   "axisFlag": false,
+   "dimsUnclear": "11.9 × 7.4 × 14.3 in",
+   "clearanceCm": 30.5,
+   "clearanceUrl": "https://www.williams-sonoma.com/netstorage/pdf/breville-comparison-chart.pdf",
    "owner": {
     "dose": "Breville gives an 18 g dose for the 54 mm portafilter.",
     "recipe": "The extraction guide gives 8–11 g for 1 Cup or 16–19 g for 2 Cup.",
@@ -508,6 +510,8 @@
    "id": "breville-barista-express-bes870",
    "brand": "Breville",
    "name": "Barista Express",
+   "variant": null,
+   "code": "BES870",
    "fullName": "Barista Express",
    "models": [
     "BES870"
@@ -547,11 +551,7 @@
    },
    "tankL": 2,
    "plumbable": null,
-   "dims": {
-    "w": 40.4,
-    "d": 33.3,
-    "h": 31.5
-   },
+   "dims": null,
    "weightKg": 10.018,
    "watts": 1600,
    "recipe": {
@@ -770,6 +770,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": "15.9 × 13.1 × 12.4 in",
+   "clearanceCm": 40.6,
+   "clearanceUrl": "https://www.williams-sonoma.com/netstorage/pdf/breville-comparison-chart.pdf",
    "owner": {
     "dose": null,
     "recipe": "The extraction guide gives 8–11 g for 1 CUP or 16–19 g for 2 CUP, with a 25–30 second shot.",
@@ -789,6 +792,8 @@
    "id": "breville-barista-express-impress-bes876",
    "brand": "Breville",
    "name": "Barista Express Impress",
+   "variant": null,
+   "code": "BES876",
    "fullName": "Barista Express Impress",
    "models": [
     "BES876"
@@ -828,11 +833,7 @@
    },
    "tankL": 2,
    "plumbable": null,
-   "dims": {
-    "w": 42.2,
-    "d": 36.6,
-    "h": 31.0
-   },
+   "dims": null,
    "weightKg": 10.25,
    "watts": 1750,
    "recipe": {
@@ -1052,6 +1053,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": "16.6 × 14.4 × 12.2 in",
+   "clearanceCm": 40.6,
+   "clearanceUrl": "https://www.williams-sonoma.com/netstorage/pdf/breville-comparison-chart.pdf",
    "owner": {
     "dose": null,
     "recipe": "The extraction guide gives 8–11 g for 1 CUP or 16–19 g for 2 CUP, with a 25–30 second shot.",
@@ -1071,6 +1075,8 @@
    "id": "breville-barista-pro-bes878",
    "brand": "Breville",
    "name": "Barista Pro",
+   "variant": null,
+   "code": "BES878",
    "fullName": "Barista Pro",
    "models": [
     "BES878BSS1BUS1"
@@ -1107,11 +1113,7 @@
    },
    "tankL": 2,
    "plumbable": null,
-   "dims": {
-    "w": 40.9,
-    "d": 35.0,
-    "h": 33.3
-   },
+   "dims": null,
    "weightKg": 9.488,
    "watts": 1680,
    "recipe": {
@@ -1420,6 +1422,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": "16.1 × 13.8 × 13.1 in",
+   "clearanceCm": 40.6,
+   "clearanceUrl": "https://www.crateandbarrel.com/assets/VendorBonus/Breville_Espresso_Aug24.pdf",
    "owner": {
     "dose": null,
     "recipe": "The dose guidance is 16–19 g for the 2-cup basket.",
@@ -1440,6 +1445,8 @@
    "id": "breville-barista-touch-bes880",
    "brand": "Breville",
    "name": "Barista Touch",
+   "variant": null,
+   "code": "BES880",
    "fullName": "Barista Touch",
    "models": [
     "BES880BSS1BUS1"
@@ -1476,11 +1483,7 @@
    },
    "tankL": 2,
    "plumbable": null,
-   "dims": {
-    "w": 39.9,
-    "d": 32,
-    "h": 31.5
-   },
+   "dims": null,
    "weightKg": 9.888,
    "watts": 1680,
    "recipe": {
@@ -1779,6 +1782,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": "15.7 × 12.6 × 12.4 in",
+   "clearanceCm": 40.6,
+   "clearanceUrl": "https://www.williams-sonoma.com/netstorage/pdf/breville-comparison-chart.pdf",
    "owner": {
     "dose": null,
     "recipe": "The 2-cup basket guidance is 16–19 g; Breville separately gives an ideal dose of 18 g. Shot volumes are programmable.",
@@ -1799,6 +1805,8 @@
    "id": "breville-oracle-bes980",
    "brand": "Breville",
    "name": "Oracle",
+   "variant": null,
+   "code": "BES980",
    "fullName": "Oracle (original BES980)",
    "models": [
     "BES980XL"
@@ -1844,11 +1852,7 @@
    },
    "tankL": 2.5,
    "plumbable": null,
-   "dims": {
-    "w": 45.7,
-    "d": 40.6,
-    "h": 36.6
-   },
+   "dims": null,
    "weightKg": 16.12,
    "watts": 1800,
    "recipe": {
@@ -2137,6 +2141,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": "18 × 16 × 14.4 in",
+   "clearanceCm": 45.7,
+   "clearanceUrl": "https://www.crateandbarrel.com/assets/VendorBonus/Breville_Espresso_Aug24.pdf",
    "owner": {
     "dose": "The machine automatically grinds, doses, and tamps 22 g into the 58 mm portafilter.",
     "recipe": "Breville gives a 22 g dose separately from the 25–30 second balanced-shot guide. Defaults are 25 seconds for 1 CUP, 30 seconds for 2 CUP, and 200°F (93°C) for brewing.",
@@ -2157,6 +2164,8 @@
    "id": "breville-dual-boiler-bes920",
    "brand": "Breville",
    "name": "Dual Boiler",
+   "variant": null,
+   "code": "BES920",
    "fullName": "Dual Boiler",
    "models": [
     "BES920XL"
@@ -2495,6 +2504,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": 40.6,
+   "clearanceUrl": "https://www.crateandbarrel.com/assets/VendorBonus/Breville_Espresso_Aug24.pdf",
    "owner": {
     "dose": "Breville gives 22 g as the ideal dose for the 58 mm portafilter.",
     "recipe": "Breville gives a 22 g dose separately from the 25–30 second balanced-shot guide. Defaults are 25 seconds for 1 CUP, 30 seconds for 2 CUP, and 200°F (93°C) for brewing.",
@@ -2514,7 +2526,9 @@
   {
    "id": "delonghi-dinamica-ecam35025",
    "brand": "De'Longhi",
-   "name": "Dinamica Automatic Coffee & Espresso Machine with Iced Coffee + Adjustable Milk Frother",
+   "name": "Dinamica",
+   "variant": null,
+   "code": "ECAM35025SB",
    "fullName": "Dinamica Automatic Coffee & Espresso Machine with Iced Coffee + Adjustable Milk Frother",
    "models": [
     "ECAM35025SB"
@@ -2663,6 +2677,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": null,
    "dimsPublished": {
     "w": 9.45,
@@ -2675,6 +2692,8 @@
    "id": "delonghi-stilosa-ec260",
    "brand": "De'Longhi",
    "name": "Stilosa",
+   "variant": null,
+   "code": "EC260BK",
    "fullName": "Stilosa Espresso Machine",
    "models": [
     "EC260BK"
@@ -2807,6 +2826,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": null,
     "recipe": null,
@@ -2820,7 +2842,9 @@
   {
    "id": "delonghi-eletta-explore-ecam45086",
    "brand": "De'Longhi",
-   "name": "Eletta Explore Fully Automatic",
+   "name": "Eletta Explore",
+   "variant": null,
+   "code": "ECAM45086S",
    "fullName": "Eletta Explore Fully Automatic Espresso Machine",
    "models": [
     "ECAM45086S EX:4"
@@ -2955,13 +2979,18 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": null,
    "dimsPublished": null
   },
   {
    "id": "delonghi-magnifica-s-ecam22110",
    "brand": "De'Longhi",
-   "name": "MAGNIFICA XS",
+   "name": "Magnifica XS",
+   "variant": null,
+   "code": "ECAM22110B",
    "fullName": "MAGNIFICA XS",
    "models": [
     "ECAM22110B"
@@ -3106,6 +3135,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": null,
    "dimsPublished": {
     "w": 238,
@@ -3118,6 +3150,8 @@
    "id": "delonghi-dedica-ec685m",
    "brand": "De'Longhi",
    "name": "Dedica DeLuxe",
+   "variant": null,
+   "code": "EC685M",
    "fullName": "Dedica DeLuxe",
    "models": [
     "EC685M"
@@ -3197,6 +3231,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": null,
    "dimsPublished": null
   },
@@ -3204,6 +3241,8 @@
    "id": "delonghi-dedica-duo-ec890",
    "brand": "De'Longhi",
    "name": "Dedica Duo",
+   "variant": null,
+   "code": "EC890M",
    "fullName": "Dedica Duo Espresso Machine",
    "models": [
     "EC890M",
@@ -3242,8 +3281,8 @@
    "tankL": 1.1,
    "plumbable": null,
    "dims": {
-    "w": 14.7,
-    "d": 32.8,
+    "w": 14.9,
+    "d": 33.0,
     "h": 30.5
    },
    "weightKg": 4.2,
@@ -3366,6 +3405,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": null,
     "recipe": null,
@@ -3384,7 +3426,9 @@
   {
    "id": "philips-3200-latte-go-ep3241",
    "brand": "Philips",
-   "name": "Series 3200 Fully automatic espresso machines",
+   "name": "3200 LatteGo",
+   "variant": null,
+   "code": "EP3241/54",
    "fullName": "Series 3200 Fully automatic espresso machines",
    "models": [
     "EP3241/54"
@@ -3528,6 +3572,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": null,
     "recipe": null,
@@ -3547,6 +3594,8 @@
    "id": "gaggia-classic-pro-2019",
    "brand": "Gaggia",
    "name": "Classic Pro",
+   "variant": null,
+   "code": null,
    "fullName": "Classic Pro (2019 generation, requested)",
    "models": [
     "Classic Pro (Amazon title RI9380/47 Classic Pro)"
@@ -3627,6 +3676,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": null,
    "dimsPublished": null
   },
@@ -3634,6 +3686,8 @@
    "id": "gaggia-classic-e24",
    "brand": "Gaggia",
    "name": "Classic E24",
+   "variant": null,
+   "code": "RI9380/46",
    "fullName": "Classic E24 (extra row; importer-named Classic Pro E24)",
    "models": [
     "Classic E24 (US/Canada manual code 6420-010-43466)",
@@ -3761,6 +3815,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": null,
     "recipe": null,
@@ -3775,6 +3832,8 @@
    "id": "gaggia-classic-evo-pro",
    "brand": "Gaggia",
    "name": "Classic Evo Pro",
+   "variant": null,
+   "code": null,
    "fullName": "Classic Evo Pro",
    "models": [
     "Classic Evo Pro (Amazon RI9380/48 Polar White)",
@@ -3878,6 +3937,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": null,
     "recipe": null,
@@ -3892,6 +3954,8 @@
    "id": "rancilio-silvia-current",
    "brand": "Rancilio",
    "name": "Silvia",
+   "variant": null,
+   "code": null,
    "fullName": "Silvia (current Home Line listing)",
    "models": [
     "Silvia (NA manual title: SILVIA and SILVIA E)"
@@ -4056,6 +4120,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": null,
     "recipe": null,
@@ -4075,6 +4142,8 @@
    "id": "rancilio-silvia-pro-x",
    "brand": "Rancilio",
    "name": "Silvia Pro X",
+   "variant": null,
+   "code": null,
    "fullName": "Silvia Pro X",
    "models": [
     "Silvia Pro X (1GR)"
@@ -4269,6 +4338,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": null,
     "recipe": null,
@@ -4288,6 +4360,8 @@
    "id": "lelit-bianca-pl162t",
    "brand": "Lelit",
    "name": "Bianca",
+   "variant": null,
+   "code": "PL162T-120",
    "fullName": "Bianca (V3 unresolved)",
    "models": [
     "PL162T-120 (US maker page name \"Bianca PL162T-120\")",
@@ -4476,6 +4550,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": null,
     "recipe": null,
@@ -4495,6 +4572,8 @@
    "id": "lelit-elizabeth-pl92t",
    "brand": "Lelit",
    "name": "Elizabeth",
+   "variant": null,
+   "code": "PL92T",
    "fullName": "Elizabeth",
    "models": [
     "PL92T (EU/global maker page)",
@@ -4650,6 +4729,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": null,
     "recipe": null,
@@ -4669,6 +4751,8 @@
    "id": "profitec-go-original",
    "brand": "Profitec",
    "name": "GO",
+   "variant": "first edition",
+   "code": "CM500001-00",
    "fullName": "GO (original generation, archived maker page)",
    "models": [
     "GO",
@@ -4921,6 +5005,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": null,
     "recipe": null,
@@ -4940,6 +5027,8 @@
    "id": "profitec-go-2-0",
    "brand": "Profitec",
    "name": "GO 2.0",
+   "variant": null,
+   "code": "CM500014-00",
    "fullName": "GO 2.0",
    "models": [
     "GO 2.0",
@@ -5210,6 +5299,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": null,
     "recipe": null,
@@ -5229,6 +5321,8 @@
    "id": "profitec-pro-400",
    "brand": "Profitec",
    "name": "PRO 400",
+   "variant": null,
+   "code": "CM500004-00",
    "fullName": "PRO 400",
    "models": [
     "PRO 400",
@@ -5522,6 +5616,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": null,
     "recipe": "The dark-roast example uses 16.5 g and prints a 45 g yield, but its printed 1:2.5 ratio implies 41.25 g. After flushing, switch I gives about 90°C, II about 94°C, and III about 98°C; the separate boiler presets are 120°C, 124°C, and 128°C.",
@@ -5539,8 +5636,10 @@
   },
   {
    "id": "rocket-appartamento",
-   "brand": "Rocket Espresso Milano",
+   "brand": "Rocket",
    "name": "Appartamento",
+   "variant": null,
+   "code": null,
    "fullName": "Appartamento (original generation, pre-TCA; maker-page latest version)",
    "models": [
     "APPARTAMENTO"
@@ -5693,6 +5792,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": null,
    "dimsPublished": {
     "w": 274,
@@ -5703,8 +5805,10 @@
   },
   {
    "id": "rocket-appartamento-tca",
-   "brand": "Rocket Espresso Milano",
+   "brand": "Rocket",
    "name": "Appartamento TCA",
+   "variant": null,
+   "code": null,
    "fullName": "Appartamento TCA",
    "models": [
     "APPARTAMENTO TCA"
@@ -5902,6 +6006,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": null,
     "recipe": null,
@@ -5921,6 +6028,8 @@
    "id": "ascaso-steel-duo-pid",
    "brand": "Ascaso",
    "name": "Steel DUO PID",
+   "variant": null,
+   "code": null,
    "fullName": "Steel DUO PID (2026 maker range, Duo PID column)",
    "models": [
     "STEEL DUO PID"
@@ -6189,6 +6298,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": null,
     "recipe": null,
@@ -6206,8 +6318,10 @@
   },
   {
    "id": "flair-58-plus-2",
-   "brand": "Flair Espresso",
-   "name": "Flair 58 Plus 2",
+   "brand": "Flair",
+   "name": "58 Plus 2",
+   "variant": null,
+   "code": null,
    "fullName": "Flair 58 Plus 2",
    "models": [
     "Flair 58 Plus 2",
@@ -6387,6 +6501,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": null,
     "recipe": "Flair gives a standard dose of 16–20 g with the included baskets.",
@@ -6408,8 +6525,10 @@
   },
   {
    "id": "flair-58-original",
-   "brand": "Flair Espresso",
-   "name": "Flair 58",
+   "brand": "Flair",
+   "name": "58",
+   "variant": null,
+   "code": null,
    "fullName": "Flair 58 (original, base model)",
    "models": [
     "Flair 58"
@@ -6516,6 +6635,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": "The low-flow basket accommodates 16–22 g.",
     "recipe": null,
@@ -6530,6 +6652,8 @@
    "id": "jura-e8-gen4-nac",
    "brand": "JURA",
    "name": "E8",
+   "variant": "2023 model (NAC)",
+   "code": null,
    "fullName": "E8 (Gen 4, NAC)",
    "models": [
     "15646 E8 Chrome (NAC) 2023",
@@ -6747,6 +6871,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": "The brewing unit has a variable 5–16 g dose. Coffee strength has 10 levels.",
     "recipe": null,
@@ -6761,6 +6888,8 @@
    "id": "jura-e8-nad",
    "brand": "JURA",
    "name": "E8",
+   "variant": "2025 model (NAD)",
+   "code": null,
    "fullName": "E8 (NAD, 27 specialities)",
    "models": [
     "15722 E8 Midnight Silver (NAD) 2025",
@@ -7000,6 +7129,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": "The brewing unit has a variable 5–16 g dose. Coffee strength has 10 levels.",
     "recipe": null,
@@ -7020,6 +7152,8 @@
    "id": "jura-e6-nac-2022",
    "brand": "JURA",
    "name": "E6",
+   "variant": null,
+   "code": null,
    "fullName": "E6 (NAC, 2022)",
    "models": [
     "15465 E6 Platinum (NAC) 2022",
@@ -7263,6 +7397,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": "The brewing unit has a variable 5–16 g dose. Coffee strength has 10 individually programmable levels.",
     "recipe": null,
@@ -7283,6 +7420,8 @@
    "id": "jura-e4-naa-2022",
    "brand": "JURA",
    "name": "E4",
+   "variant": null,
+   "code": null,
    "fullName": "E4 (NAA, 2022)",
    "models": [
     "15466 E4 Piano Black (NAA) 2022",
@@ -7505,6 +7644,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": "The brewing unit has a variable 5–16 g dose. Coffee strength has 3 levels on the symbol display.",
     "recipe": null,
@@ -7525,6 +7667,8 @@
    "id": "jura-ena8-nac-2022",
    "brand": "JURA",
    "name": "ENA 8",
+   "variant": null,
+   "code": null,
    "fullName": "ENA 8 (NAC, 2022)",
    "models": [
     "15495 ENA 8 Full Nordic White (NAC) 2022",
@@ -7773,6 +7917,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": "The brewing unit has a variable 6–10 g dose. Coffee strength has 10 levels.",
     "recipe": null,
@@ -7793,6 +7940,8 @@
    "id": "jura-ena4-nab-2022",
    "brand": "JURA",
    "name": "ENA 4",
+   "variant": null,
+   "code": null,
    "fullName": "ENA 4 (NAB, 2022)",
    "models": [
     "15519 ENA 4 Full Nordic White (NAB) 2022",
@@ -8016,6 +8165,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": "The brewing unit has a variable 6–10 g dose. Coffee strength has 3 levels on the symbol display.",
     "recipe": null,
@@ -8036,6 +8188,8 @@
    "id": "jura-s8-nab-2023",
    "brand": "JURA",
    "name": "S8",
+   "variant": null,
+   "code": null,
    "fullName": "S8 (NAB, 2023 Chrome / Dark Inox 2024)",
    "models": [
     "15653 S8 Chrome (NAB) 2023",
@@ -8274,6 +8428,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": "The brewing unit has a variable 5–16 g dose. Coffee strength has 10 levels, and grind consistency has 7 levels.",
     "recipe": null,
@@ -8294,6 +8451,8 @@
    "id": "jura-j8-naa",
    "brand": "JURA",
    "name": "J8",
+   "variant": null,
+   "code": null,
    "fullName": "J8 (NAA, Midnight Silver)",
    "models": [
     "15555 J8 Midnight Silver (NAA)"
@@ -8531,6 +8690,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": "The brewing unit has a variable 5–16 g dose. Coffee strength has 10 levels.",
     "recipe": null,
@@ -8551,6 +8713,8 @@
    "id": "jura-j8-twin-naa",
    "brand": "JURA",
    "name": "J8 twin",
+   "variant": null,
+   "code": null,
    "fullName": "J8 twin (NAA, Diamond White / Black)",
    "models": [
     "15657 J8 twin Diamond White (NAA) 2024",
@@ -8789,6 +8953,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": "The variable dose is 5–16 g per grinder, with two grinders. Coffee strength has 8 levels per extraction.",
     "recipe": null,
@@ -8809,6 +8976,8 @@
    "id": "jura-z10-nab-2026",
    "brand": "JURA",
    "name": "Z10",
+   "variant": "2026 model (NAB)",
+   "code": null,
    "fullName": "Z10 (NAB, Light Brew / Cold Extraction, 51 specialities)",
    "models": [
     "15702 Z10 Aluminium Black (NAB)",
@@ -9049,6 +9218,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": "The brewing unit has a variable 5–16 g dose. Coffee strength has 10 levels.",
     "recipe": null,
@@ -9069,6 +9241,8 @@
    "id": "jura-z10-naa-2021",
    "brand": "JURA",
    "name": "Z10",
+   "variant": "2021 model (NAA)",
+   "code": null,
    "fullName": "Z10 (NAA, 2021 generation)",
    "models": [
     "15361 Z10 Aluminium White (NAA) 2021",
@@ -9302,6 +9476,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": "Coffee strength has 10 levels.",
     "recipe": null,
@@ -9322,6 +9499,8 @@
    "id": "nespresso-vertuo-next",
    "brand": "Nespresso",
    "name": "Vertuo Next",
+   "variant": null,
+   "code": "BNV520",
    "fullName": "Vertuo Next",
    "models": [
     "Breville BNV520 (Navy Blue; Breville US page; manual GCV1/GDV1 hosted for BNV520)",
@@ -9358,9 +9537,9 @@
    "tankL": 1.1,
    "plumbable": null,
    "dims": {
-    "w": 14.0,
+    "w": 14.2,
     "d": 42.9,
-    "h": 31.5
+    "h": 31.4
    },
    "weightKg": 4,
    "watts": 1500,
@@ -9447,6 +9626,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": null,
    "dimsPublished": {
     "w": 5.5,
@@ -9459,6 +9641,8 @@
    "id": "nespresso-vertuoplus",
    "brand": "Nespresso",
    "name": "VertuoPlus",
+   "variant": null,
+   "code": "BNV420BLK1BUC1",
    "fullName": "VertuoPlus",
    "models": [
     "Breville BNV420BLK1BUC1 (Black; Breville US page)"
@@ -9563,6 +9747,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": null,
    "dimsPublished": {
     "w": 5.6,
@@ -9575,6 +9762,8 @@
    "id": "nespresso-vertuo-creatista",
    "brand": "Nespresso",
    "name": "Vertuo Creatista",
+   "variant": null,
+   "code": "BVE850BSS",
    "fullName": "Vertuo Creatista",
    "models": [
     "Breville BVE850BSS (Brushed Stainless Steel; Breville US page)"
@@ -9714,6 +9903,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": {
     "dose": null,
     "recipe": null,
@@ -9733,6 +9925,8 @@
    "id": "nespresso-lattissima-one",
    "brand": "Nespresso",
    "name": "Lattissima One",
+   "variant": null,
+   "code": "EN510W",
    "fullName": "Lattissima One",
    "models": [
     "De'Longhi EN510W (Silky White)",
@@ -9848,6 +10042,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": null,
    "dimsPublished": {
     "w": 6.1,
@@ -9860,6 +10057,8 @@
    "id": "nespresso-citiz",
    "brand": "Nespresso",
    "name": "CitiZ",
+   "variant": null,
+   "code": null,
    "fullName": "CitiZ",
    "models": [
     "Nespresso US \"CitiZ White\" standalone listing (partner model not established)"
@@ -9955,13 +10154,18 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": null,
    "dimsPublished": null
   },
   {
    "id": "nespresso-pixie-silver-redesign",
    "brand": "Nespresso",
-   "name": "Pixie Silver Redesign",
+   "name": "Pixie",
+   "variant": "Nespresso’s listing",
+   "code": null,
    "fullName": "Pixie Silver Redesign (current Nespresso US listing)",
    "models": [
     "Nespresso US \"Pixie Silver Redesign\" (model string not stated)"
@@ -10066,6 +10270,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": null,
    "dimsPublished": {
     "w": 4.65,
@@ -10078,6 +10285,8 @@
    "id": "delonghi-pixie-en124s",
    "brand": "Nespresso",
    "name": "Pixie",
+   "variant": "De’Longhi EN124S",
+   "code": "EN124S",
    "fullName": "Pixie (De'Longhi EN124S, US manual UM_PIXIE_DELONGHI_US)",
    "models": [
     "De'Longhi EN124S (Nespresso Pixie, Aluminum, Silver; De'Longhi US page)"
@@ -10188,6 +10397,9 @@
     }
    ],
    "axisFlag": false,
+   "dimsUnclear": null,
+   "clearanceCm": null,
+   "clearanceUrl": null,
    "owner": null,
    "dimsPublished": null
   }

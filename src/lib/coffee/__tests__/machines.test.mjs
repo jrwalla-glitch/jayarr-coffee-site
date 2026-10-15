@@ -27,6 +27,13 @@ test('counter space is a hard limit; unknown dimensions never count as fitting',
   assert.equal(fitsCounter(fleet[4], { widthCm: 25 }), false);
   assert.equal(fitsCounter({ ...fleet[0], dims: null }, { widthCm: 25 }), null);
   assert.equal(fitsCounter(fleet[0], {}), true);
+  // A printed size whose axes are unclear: height is tested against the maker's suggested clearance, width can't be.
+  const unclear = { ...fleet[0], dims: null, dimsUnclear: '15.9 × 13.1 × 12.4 in', clearanceCm: 40.6 };
+  assert.equal(fitsCounter(unclear, { heightCm: 38 }), false);
+  assert.equal(fitsCounter(unclear, { heightCm: 43 }), true);
+  assert.equal(fitsCounter(unclear, { widthCm: 60 }), null);
+  // Where the maker suggests more clearance than the body's height, the clearance decides.
+  assert.equal(fitsCounter({ ...fleet[4], clearanceCm: 40.6 }, { heightCm: 40 }), false);
 });
 
 test('push-button milk drinkers get a super-automatic first; discontinued and unpriced machines never appear', () => {
@@ -56,9 +63,14 @@ test('on the real data: recommendations are current, priced and fully described,
       if (milk !== 'none') assert.ok(x.machine.milk.type, `${x.machine.id} milk`);
     }
   }
-  // A narrow counter still finds the Bambino, whose maker-listed width looks like its depth.
+  // Breville's printed sizes are unclear (research/BREVILLE_DIMS_CHECK.md): a width rules them out, and 15 in
+  // cabinets rule out the Barista Express, whose maker suggests 16 in of clearance.
   const narrow = chooseMachines(data.machines, data.grinders, { milk: 'some', cups: 1, budget: 700, effort: 'hands-on', widthCm: 20 });
-  assert.ok(narrow.some((x) => x.machine.id === 'breville-bambino-bes450'));
+  assert.ok(narrow.every((x) => x.machine.dims));
+  const low = chooseMachines(data.machines, data.grinders, { milk: 'some', cups: 3, budget: 1500, effort: 'guided', heightCm: 15 * 2.54 }, 50);
+  assert.ok(!low.some((x) => x.machine.id === 'breville-barista-express-bes870'));
+  const tall = chooseMachines(data.machines, data.grinders, { milk: 'some', cups: 3, budget: 1500, effort: 'guided', heightCm: 17 * 2.54 }, 50);
+  assert.ok(tall.some((x) => x.machine.id === 'breville-barista-express-bes870'));
 });
 
 test('milk in most drinks never gets a machine without a milk system', async () => {

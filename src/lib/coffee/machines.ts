@@ -31,9 +31,13 @@ export interface Machine {
   amazon?: { asin: string | null; url: string | null; title?: string | null; checked?: string | null } | null;
   sources?: { field: string; url: string; checked: string }[];
   notes?: string | null;
-  /** The maker's published width and depth look swapped (the research kept them as published). */
+  /** No longer set: superseded by dimsUnclear (kept so older data still type-checks). */
   axisFlag?: boolean;
   dimsPublished?: { w: number; d: number; h: number; unit: string } | null;
+  /** The maker's printed size where its axes conflict with the maker's own guidance; dims is then null. */
+  dimsUnclear?: string | null;
+  /** The countertop clearance the maker suggests, in centimetres, and where it says so. */
+  clearanceCm?: number | null; clearanceUrl?: string | null;
 }
 export interface GrinderPrice { id: string; name: string; usd: number | null; checked?: string | null; url?: string | null }
 
@@ -66,13 +70,19 @@ export function setupBand(m: Machine, grinders: GrinderPrice[]): { low: number; 
   return { low: m.listPrice.usd + p[0], high: m.listPrice.usd + p[p.length - 1] };
 }
 
-/** Does it fit the space given (width and height under the cabinets)? Unknown dimensions never "fit". */
+/** The height to test against the cabinets: the body, or the maker's suggested clearance where that is more. */
+export const neededHeight = (m: Machine) => (m.dims || m.clearanceCm ? Math.max(m.dims?.h ?? 0, m.clearanceCm ?? 0) : null);
+
+/**
+ * Does it fit the space given (width and height under the cabinets)? Unknown dimensions never "fit".
+ * Height uses the maker's suggested clearance where it publishes one, so a machine whose printed size is
+ * unclear can still be checked against cabinets; its width can't, so a width rules it out.
+ */
 export function fitsCounter(m: Machine, n: Pick<Needs, 'widthCm' | 'heightCm'>): boolean | null {
   if (!n.widthCm && !n.heightCm) return true;
-  if (!m.dims) return null;
-  // Where the maker's width and depth look swapped, test the narrower side, and say so on the card.
-  const w = m.axisFlag ? Math.min(m.dims.w, m.dims.d) : m.dims.w;
-  return (!n.widthCm || w <= n.widthCm) && (!n.heightCm || m.dims.h <= n.heightCm);
+  if (n.widthCm) { if (!m.dims) return null; if (m.dims.w > n.widthCm) return false; }
+  if (n.heightCm) { const h = neededHeight(m); if (h == null) return null; if (h > n.heightCm) return false; }
+  return true;
 }
 
 const EFFORT_OK: Record<Needs['effort'], Category[]> = {

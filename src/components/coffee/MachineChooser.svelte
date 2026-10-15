@@ -1,13 +1,13 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import data from '../../data/machines.json';
-  import { chooseMachines, setupBand, fitsCounter, needsGrinder, bandText, CATEGORY_LABEL } from '../../lib/coffee/machines.ts';
-  import type { Machine, GrinderPrice, Needs, Category, Heating } from '../../lib/coffee/machines.ts';
+  import { chooseMachines, needsGrinder, neededHeight, CATEGORY_LABEL } from '../../lib/coffee/machines.ts';
+  import type { Machine, GrinderPrice, Needs, Category, Heating, Match } from '../../lib/coffee/machines.ts';
 
   // Choose a machine for your counter, budget (grinder included), milk and effort; then, if you own
   // one, what its maker says about dose, temperature and care. Every spec is the maker's, dated.
   type Owner = { dose?: string | null; recipe?: string | null; baskets?: string | null; temperature?: string | null; descale?: string | null; clean?: string | null };
-  type M = Machine & { fullName?: string; owner?: Owner | null };
+  type M = Machine & { fullName?: string; variant?: string | null; code?: string | null; owner?: Owner | null };
   const machines = data.machines as unknown as M[];
   const grinders = data.grinders as unknown as GrinderPrice[];
   const byId = (id: string | null) => (id ? machines.find((m) => m.id === id) ?? null : null);
@@ -22,6 +22,7 @@
   let heightIn = $state<number | null>(null);
   let ownId = $state<string>('breville-bambino-bes450');
   let mounted = $state(false);
+  let narrow = $state(false);
 
   const toCm = (v: number | null) => (v == null || !Number.isFinite(v) || v <= 0 ? null : unitsIn ? v * 2.54 : v);
   let needs = $derived<Needs>({ milk, cups, effort, budget, widthCm: toCm(widthIn), heightCm: toCm(heightIn) });
@@ -30,26 +31,71 @@
   let nearest = $derived(matches.length ? null : chooseMachines(machines, grinders, { ...needs, budget: Infinity }, 1)[0] ?? null);
   let own = $derived(byId(ownId) ?? machines[0]);
 
-  const HEAT: Record<Heating, string> = { thermoblock: 'Thermoblock', 'single-boiler': 'Single boiler', 'heat-exchanger': 'Heat exchanger', 'dual-boiler': 'Dual boiler', none: 'No boiler' };
-  const HEAT_KEY: Record<string, string> = { thermoblock: 'thermoblock', 'single-boiler': 'singleBoiler', 'heat-exchanger': 'heatExchanger', 'dual-boiler': 'dualBoiler' };
+  const HEAT: Record<Heating, string> = { thermoblock: 'Thermoblock', 'single-boiler': 'Single boiler', 'heat-exchanger': 'Heat exchanger', 'dual-boiler': 'Dual boiler', none: 'No boiler (lever)' };
+  const HEATS: string[] = ['thermoblock', 'single-boiler', 'heat-exchanger', 'dual-boiler'];
   const MILK: Record<string, string> = { none: 'No milk system', 'manual-wand': 'Manual steam wand', panarello: 'Frothing wand', 'auto-wand': 'Automatic steam wand', carafe: 'Automatic milk system' };
-  const heatLabel = (m: M) => (m.heating.system ? HEAT[m.heating.system] : 'Not established');
+  const NE = 'not established';
+  const heatLabel = (m: M) => (m.heating.system ? HEAT[m.heating.system] : NE);
   // The maker's own name for its heater, without the research's parenthetical detail ("ThermoJet", "Thermocoil").
   const shortTerm = (m: M) => {
-    const t = (m.heating.makerTerm ?? '').replace(/\s*\(.*$/, '').replace(/®|™/g, '').replace(/\s*heating system/i, '').trim();
+    const t = (m.heating.makerTerm ?? '').replace(/\s*\(.*$/, '').replace(/®|™/g, '').replace(/\s*(heating )?system$/i, '').trim();
     return m.heating.system && t && !/^(dual boiler|single boiler|heat exchanger|thermoblock|system with heat exchanger)$/i.test(t) ? t : '';
   };
-  const fmtDate = (iso?: string | null) => (iso ? new Date(`${iso}T12:00:00`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '');
   const money = (v: number) => `$${Math.round(v).toLocaleString('en-US')}`;
+  // Bands are "about": rounded to $10 below $600 and $50 above, so they don't look more exact than prices are.
+  const r = (v: number) => (v < 600 ? Math.round(v / 10) * 10 : Math.round(v / 50) * 50);
+  const band = (b: { low: number; high: number } | null) => (!b ? null : r(b.low) === r(b.high) ? money(r(b.low)) : `${money(r(b.low))}–${money(r(b.high))}`);
   const grinderPrices = grinders.map((g) => g.usd).filter((n): n is number => n != null).sort((a, b) => a - b);
-  const sizeText = (m: M) => (m.dims ? (unitsIn ? `${(m.dims.w / 2.54).toFixed(1)} × ${(m.dims.d / 2.54).toFixed(1)} × ${(m.dims.h / 2.54).toFixed(1)} in` : `${m.dims.w} × ${m.dims.d} × ${m.dims.h} cm`) : 'Size not established');
+  const u = $derived(unitsIn ? 'in' : 'cm');
+  const len = (cm: number) => (unitsIn ? `${(cm / 2.54).toFixed(1)}` : `${Math.round(cm * 10) / 10}`);
+  const sizeText = (m: M) => (m.dims ? `${len(m.dims.w)} × ${len(m.dims.d)} × ${len(m.dims.h)} ${u}` : m.dimsUnclear ? 'Unclear' : NE);
+  // Unknown widths are drawn at a nominal 28 cm, dashed, and say so.
+  const drawW = (m: M) => (m.dims ? m.dims.w : 28);
+  // Breville's printed size conflicts with its own guidance (research/BREVILLE_DIMS_CHECK.md): said plainly.
+  const unclearNote = (m: M) => `${m.brand}'s listed size (${m.dimsUnclear}, as W × D × H) conflicts with its own clearance guidance, so it isn't drawn to scale or tested against a width.${m.clearanceCm ? ` ${m.brand} suggests ${len(m.clearanceCm)} ${u} of clearance under cabinets.` : ''}`;
+  const fullName = (m: M) => `${m.brand} ${m.name}${m.variant ? `, ${m.variant}` : ''}`;
   const statusNote = (m: M) => (m.status === 'discontinued' ? 'Discontinued by the maker' : m.status === 'unconfirmed' ? 'Not confirmed as a current US model' : m.status === 'replaced' ? 'Replaced by a newer model' : '');
   const brands = [...new Set(machines.map((m) => m.brand))].sort();
-  // Model codes only (BES450, EC260), not the research's notes about them.
-  const modelCodes = (m: M) => m.models.filter((c) => /^[A-Z0-9][A-Z0-9.\-]{1,14}$/i.test(c) && /\d/.test(c)).join(', ');
-  // Phones get a narrower counter so the machines and their labels stay readable.
-  let narrow = $state(false);
   const CATS: Category[] = ['capsule', 'super-auto', 'semi-auto-grinder', 'semi-auto', 'manual-lever'];
+  const makesEspressoByHand = (m: M) => m.category === 'semi-auto' || m.category === 'semi-auto-grinder' || m.category === 'manual-lever';
+
+  // ── Cards: why each ranks where it does, a trade-off on every card, and the counter fit ──
+  const CATEGORY_TRADE: Record<Category, string> = {
+    capsule: 'Capsules only: you can\'t choose your own beans or grind.',
+    'super-auto': 'Less control over each shot than a machine you run by hand.',
+    'semi-auto-grinder': 'The grinder is part of the machine, so you can\'t swap it for a better one later.',
+    'semi-auto': 'Needs a separate grinder, and practice to pull good shots.',
+    'manual-lever': 'Every shot is pressed by hand, and there is no steam for milk.',
+  };
+  function tradeoffs(x: Match): string[] {
+    return x.tradeoffs.length ? x.tradeoffs : x.machine.category ? [CATEGORY_TRADE[x.machine.category]] : [];
+  }
+  function rankNote(i: number): string {
+    const a = matches[i], top = matches[0];
+    if (i === 0) return matches.length > 1 && a.score === matches[1].score ? 'First: it meets what you asked for the least money among the close matches.' : 'First: the closest match to what you asked.';
+    const d: string[] = [];
+    const dp = r(a.band!.low) - r(top.band!.low);
+    d.push(dp > 0 ? `${money(dp)} more` : dp < 0 ? `${money(-dp)} less` : 'about the same money');
+    const am = a.machine.milk.type, tm = top.machine.milk.type;
+    if (am && tm && am !== tm) d.push(`${MILK[am].toLowerCase()} rather than ${MILK[tm].toLowerCase()}`);
+    if (!!a.machine.grinder.builtIn !== !!top.machine.grinder.builtIn) d.push(a.machine.grinder.builtIn ? 'grinder built in' : 'separate grinder');
+    if (a.machine.heating.simultaneousBrewSteam && !top.machine.heating.simultaneousBrewSteam) d.push('brews and steams at once');
+    if (a.score > top.score) d.push('a weaker fit on what you asked');
+    return `Against #1: ${d.join('; ')}.`;
+  }
+  // "Breville suggests 16.0 in of clearance under cabinets for all three", grouped by brand and clearance.
+  function clearanceText(ms: M[]): string {
+    const groups = new Map<string, M[]>();
+    for (const m of ms) if (m.clearanceCm) { const k = `${m.brand}|${m.clearanceCm}`; groups.set(k, [...(groups.get(k) ?? []), m]); }
+    return [...groups.values()].map((g) => ` ${g[0].brand} suggests ${len(g[0].clearanceCm!)} ${u} of clearance under cabinets for ${g.length === ms.length ? (ms.length === 1 ? 'it' : ms.length === 2 ? 'both' : `all ${ms.length === 3 ? 'three' : ms.length}`) : `the ${g.map((m) => m.name).join(' and ')}`}.`).join('');
+  }
+  function fitLines(m: M): string[] {
+    const out: string[] = [];
+    if (needs.heightCm && m.clearanceCm && (!m.dims || m.clearanceCm > m.dims.h)) out.push(`Fits under your ${heightIn} ${u} cabinets: ${m.brand} suggests ${len(m.clearanceCm)} ${u} of clearance.`);
+    else if (needs.heightCm && m.dims) out.push(`Leaves ${len(needs.heightCm - m.dims.h)} ${u} under your cabinets.`);
+    if (needs.widthCm && m.dims) out.push(`Fits your ${widthIn} ${u} of width, with ${len(needs.widthCm - m.dims.w)} ${u} to spare.`);
+    return out;
+  }
 
   onMount(() => {
     const q = new URLSearchParams(location.search);
@@ -80,18 +126,31 @@
   });
   function openOwn(id: string) { ownId = id; mode = 'own'; scrollTo({ top: (document.querySelector('.mc') as HTMLElement | null)?.offsetTop ?? 0, behavior: 'smooth' }); }
 
-  // ── The counter: matches side by side at one scale, beside your cabinets ──
+  // ── The counter: matches side by side at one scale, with your counter width and cabinets ──
   let CW = $derived(narrow ? 360 : 640);
-  const CH = 300, FLOOR = 250;
   let counter = $derived.by(() => {
     const items = matches.map((x) => x.machine);
-    const dims = items.map((m) => m.dims ?? { w: 28, d: 40, h: 34 });
-    const totalW = dims.reduce((a, d) => a + d.w, 0) + 18 * Math.max(0, items.length - 1);
-    const tallest = Math.max(50, ...dims.map((d) => d.h), needs.heightCm ?? 0);
-    const scale = Math.min((CW - 80) / Math.max(totalW, 60), (FLOOR - 30) / tallest);
-    let x = (CW - totalW * scale) / 2;
-    const placed = items.map((m, i) => { const d = dims[i]; const r = { m, x, w: d.w * scale, h: d.h * scale, known: !!m.dims }; x += d.w * scale + 18 * scale; return r; });
-    return { placed, scale };
+    // An unclear size is drawn at the clearance its maker suggests, dashed; an unknown one at a nominal 34 cm.
+    const ws = items.map(drawW), hs = items.map((m) => (m.dims ? m.dims.h : m.clearanceCm ?? 34));
+    const slot = (i: number) => Math.max(ws[i], needs.widthCm ?? 0);
+    const gap = 10;
+    const totalW = items.reduce((a, _, i) => a + slot(i), 0) + gap * Math.max(0, items.length - 1);
+    const tallest = Math.max(...hs, needs.heightCm ?? 0, 20);
+    const s = Math.min((CW - 48) / Math.max(totalW, 40), (narrow ? 150 : 190) / tallest);
+    const TOP = needs.heightCm ? 36 : 24;
+    const FLOOR = TOP + tallest * s;
+    let x = (CW - totalW * s) / 2;
+    const placed = items.map((m, i) => {
+      const sx = x, sw = slot(i) * s;
+      x += sw + gap * s;
+      return { m, slotX: sx, slotW: sw, x: sx + (sw - ws[i] * s) / 2, w: ws[i] * s, h: hs[i] * s, known: !!m.dims };
+    });
+    // A scale bar the reader can trust: 4 in or 10 cm.
+    const barCm = unitsIn ? 4 * 2.54 : 10;
+    // When a label would run into its neighbour, each machine is labelled by its rank only; the cards carry the names.
+    const labelW = (m: M) => Math.max((m.name.length + 2) * 7.2, (m.dims ? `${len(m.dims.w)} wide × ${len(m.dims.h)} tall` : `size unclear · needs ${len(m.clearanceCm ?? 0)} in`).length * 6.4);
+    const compact = placed.some((q) => q.slotW + gap * s < labelW(q.m));
+    return { placed, s, FLOOR, compact, H: FLOOR + (needs.widthCm ? 88 : 56), barPx: barCm * s, barLabel: unitsIn ? '4 in' : '10 cm' };
   });
 
   // ── Heating explainer: step through how each system brews and steams ──
@@ -130,63 +189,85 @@
       ['heat', 'Each boiler keeps its own temperature, so there is no switching between them.'],
     ],
   };
+  const TOGETHER: Record<string, [boolean, string]> = {
+    thermoblock: [false, 'One heater switches between brewing and steaming, so they happen one after the other.'],
+    'single-boiler': [false, 'One boiler changes temperature between brewing and steaming, so they happen one after the other.'],
+    'heat-exchanger': [true, 'Brew water runs through its own circuit inside the steam boiler, so both can run at once.'],
+    'dual-boiler': [true, 'Each boiler keeps its own temperature; both run at once where the maker says so.'],
+  };
   let seq = $derived(SEQ[heatTab] ?? []);
-  let steps = $derived(seq.map(([, t]) => t));
   let ph = $derived<Phase>(seq[step]?.[0] ?? 'heat');
   function play() {
     if (playing) { stop(); return; }
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { step = (step + 1) % steps.length; return; }
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { step = (step + 1) % seq.length; return; }
     playing = true; step = 0;
-    timer = setInterval(() => { if (step >= steps.length - 1) stop(); else step += 1; }, 2600);
+    timer = setInterval(() => { if (step >= seq.length - 1) stop(); else step += 1; }, 2600);
   }
   function stop() { playing = false; if (timer) clearInterval(timer); timer = null; }
   function pickHeat(k: string) { stop(); heatTab = k; step = 0; }
-  // In "I own one", the explainer follows your machine's heating system.
-  $effect(() => { if (mode === 'own' && own.heating.system && HEAT_KEY[own.heating.system] && heatTab !== own.heating.system) { stop(); heatTab = own.heating.system; step = 0; } });
-  const SIMUL: Record<string, string> = {
-    thermoblock: 'One after the other: one heater switches between brew and steam.',
-    'single-boiler': 'One after the other: one boiler has to change temperature in between.',
-    'heat-exchanger': 'At the same time, by design: brew water runs through its own circuit.',
-    'dual-boiler': 'At the same time where the maker says so: each boiler keeps its own temperature.',
-  };
+  // The explainer follows what's on screen: your machine in "I own one", the top match in "Find".
+  let followed = '';
+  $effect(() => {
+    const m = mode === 'own' ? own : mode === 'find' ? matches.find((x) => x.machine.heating.system && HEATS.includes(x.machine.heating.system))?.machine : null;
+    const key = m ? `${mode}:${m.id}` : '';
+    if (m?.heating.system && HEATS.includes(m.heating.system) && key !== followed) { followed = key; stop(); heatTab = m.heating.system; step = 0; }
+  });
 </script>
 
-{#snippet machineShape(m: M, x: number, w: number, h: number, known: boolean)}
-  {@const y = FLOOR - h}
+{#snippet machineShape(m: M, x: number, w: number, h: number, known: boolean, floor: number)}
+  {@const y = floor - h}
   <g class="mach" class:unknown={!known}>
-    {#if m.category === 'capsule'}
-      <rect x={x} y={y} width={w} height={h} rx={Math.min(10, w / 5)} class="body" />
-      <rect x={x + w * 0.2} y={y + h * 0.62} width={w * 0.6} height={h * 0.06} rx="2" class="detail" />
-      <circle cx={x + w / 2} cy={y + h * 0.2} r={Math.min(w, h) * 0.12} class="detail" />
+    {#if !known}
+      <!-- size unclear or unpublished: an outline only, never a shape that claims proportions -->
+      <rect x={x} y={y} width={w} height={h} rx="6" class="body" />
+      <text x={x + w / 2} y={y + h / 2 + 6} text-anchor="middle" class="qmark">?</text>
+    {:else if m.category === 'capsule'}
+      <!-- slim body, a lid for the capsule, a cup on the tray -->
+      <rect x={x} y={y + h * 0.08} width={w} height={h * 0.92} rx={Math.min(8, w / 4)} class="body" />
+      <rect x={x + w * 0.08} y={y} width={w * 0.84} height={h * 0.14} rx={Math.min(6, w / 5)} class="body lid" />
+      <rect x={x + w * 0.3} y={y + h * 0.4} width={w * 0.4} height={h * 0.06} rx="1.5" class="spout" />
+      <rect x={x + w * 0.12} y={y + h * 0.86} width={w * 0.76} height={h * 0.05} rx="1.5" class="tray" />
     {:else if m.category === 'super-auto'}
-      <rect x={x} y={y} width={w} height={h} rx="8" class="body" />
-      <rect x={x + w * 0.22} y={y + h * 0.12} width={w * 0.56} height={h * 0.14} rx="3" class="screen" />
-      <rect x={x + w * 0.38} y={y + h * 0.42} width={w * 0.24} height={h * 0.08} rx="2" class="detail" />
-      <rect x={x + w * 0.15} y={y + h * 0.86} width={w * 0.7} height={h * 0.06} rx="2" class="detail" />
+      <!-- tall body, bean lid, screen, spout over the cup, drip tray -->
+      <rect x={x} y={y} width={w} height={h} rx="6" class="body" />
+      <rect x={x + w * 0.08} y={y - 3} width={w * 0.36} height="6" rx="3" class="body lid" />
+      <rect x={x + w * 0.18} y={y + h * 0.12} width={w * 0.64} height={h * 0.13} rx="3" class="screen" />
+      <rect x={x + w * 0.4} y={y + h * 0.36} width={w * 0.2} height={h * 0.09} rx="2" class="spout" />
+      <rect x={x + w * 0.1} y={y + h * 0.86} width={w * 0.8} height={h * 0.05} rx="2" class="tray" />
     {:else if m.category === 'manual-lever'}
-      <rect x={x + w * 0.1} y={y + h * 0.82} width={w * 0.8} height={h * 0.18} rx="4" class="body" />
-      <rect x={x + w * 0.42} y={y + h * 0.15} width={w * 0.16} height={h * 0.67} rx="3" class="body" />
-      <line x1={x + w * 0.5} y1={y + h * 0.18} x2={x + w * 0.95} y2={y} class="lever" />
+      <!-- base, column and lever: no boiler, no wand -->
+      <rect x={x + w * 0.08} y={y + h * 0.84} width={w * 0.84} height={h * 0.16} rx="4" class="body" />
+      <rect x={x + w * 0.44} y={y + h * 0.12} width={w * 0.12} height={h * 0.72} rx="3" class="body" />
+      <rect x={x + w * 0.3} y={y + h * 0.42} width={w * 0.4} height={h * 0.1} rx="3" class="body" />
+      <line x1={x + w * 0.5} y1={y + h * 0.16} x2={x + w * 0.98} y2={y + h * 0.02} class="lever" />
     {:else}
-      <rect x={x} y={y} width={w} height={h} rx="7" class="body" />
-      <rect x={x + w * 0.3} y={y + h * 0.36} width={w * 0.4} height={h * 0.07} rx="2" class="detail" />
-      <line x1={x + w * 0.5} y1={y + h * 0.43} x2={x + w * 0.5 + w * 0.42} y2={y + h * 0.47} class="handle" />
-      <rect x={x + w * 0.1} y={y + h * 0.88} width={w * 0.8} height={h * 0.05} rx="2" class="detail" />
-      {#if m.milk.type && m.milk.type !== 'none'}<line x1={x + w * 0.9} y1={y + h * 0.3} x2={x + w * 1.0} y2={y + h * 0.66} class="wand" />{/if}
-      {#if m.category === 'semi-auto-grinder'}<path d="M{x + w * 0.12} {y} L{x + w * 0.3} {y - h * 0.22} L{x + w * 0.48} {y} Z" class="hopper" />{/if}
+      <!-- boxy body, group head with portafilter handle, wand, drip tray; a hopper if the grinder is built in -->
+      {@const top = m.category === 'semi-auto-grinder' ? h * 0.22 : 0}
+      <!-- a built-in grinder's hopper sits inside the published height, on top of the body -->
+      {#if top}<path d="M{x + w * 0.1} {y + top} L{x + w * 0.16} {y} L{x + w * 0.42} {y} L{x + w * 0.48} {y + top} Z" class="hopper" />{/if}
+      <rect x={x} y={y + top} width={w} height={h - top} rx="6" class="body" />
+      <rect x={x + w * 0.32} y={y + h * 0.4} width={w * 0.3} height={h * 0.07} rx="2" class="spout" />
+      <line x1={x + w * 0.47} y1={y + h * 0.47} x2={x + w * 0.47 + w * 0.4} y2={y + h * 0.51} class="handle" />
+      <rect x={x + w * 0.1} y={y + h * 0.86} width={w * 0.8} height={h * 0.05} rx="2" class="tray" />
+      {#if m.milk.type && m.milk.type !== 'none'}<line x1={x + w * 0.92} y1={y + top + h * 0.12} x2={x + w * 1.04} y2={y + h * 0.66} class="wand" />{/if}
+      {#if m.heating.system === 'dual-boiler' || m.heating.system === 'heat-exchanger'}<circle cx={x + w * 0.82} cy={y + top + h * 0.12} r={Math.min(w, h) * 0.07} class="gauge" />{/if}
     {/if}
   </g>
 {/snippet}
 
 <div class="mc">
   <div class="modes" role="tablist" aria-label="What you want to do">
-    <button type="button" role="tab" aria-selected={mode === 'find'} onclick={() => (mode = 'find')}>Find a machine</button>
+    <button type="button" role="tab" aria-selected={mode === 'find'} onclick={() => (mode = 'find')}>Find one</button>
     <button type="button" role="tab" aria-selected={mode === 'own'} onclick={() => (mode = 'own')}>I own one</button>
-    <button type="button" role="tab" aria-selected={mode === 'all'} onclick={() => (mode = 'all')}>Every machine</button>
+    <button type="button" role="tab" aria-selected={mode === 'all'} onclick={() => (mode = 'all')}>All {machines.length}</button>
   </div>
 
   {#if mode === 'find'}
     <div class="find">
+      <!-- On a phone the answer comes first, in one line, before the questions. -->
+      {#if matches.length}<a class="peek" href="#chooser-results"><span class="lbl">Best fit</span><b>{matches[0].machine.brand} {matches[0].machine.name}</b><span>about {band(matches[0].band)}{needsGrinder(matches[0].machine) ? ' with a grinder' : ''} ↓</span></a>
+      {:else}<a class="peek" href="#chooser-results"><span class="lbl">Nothing fits yet</span><span>See what would ↓</span></a>{/if}
+
       <form class="ask" onsubmit={(e) => e.preventDefault()} aria-label="Your routine">
         <fieldset><legend class="lbl">Milk in your drinks</legend>
           <div class="chips">
@@ -214,52 +295,75 @@
         </fieldset>
         <fieldset><legend class="lbl">Your counter <span class="opt">(optional)</span></legend>
           <div class="space">
-            <label><span>Width you have</span><input type="number" inputmode="decimal" min="1" step="0.5" bind:value={widthIn} placeholder="any" /><span class="u">{unitsIn ? 'in' : 'cm'}</span></label>
-            <label><span>Height under cabinets</span><input type="number" inputmode="decimal" min="1" step="0.5" bind:value={heightIn} placeholder="any" /><span class="u">{unitsIn ? 'in' : 'cm'}</span></label>
+            <label><span>Width you have</span><span class="inp"><input type="number" inputmode="decimal" min="1" step="0.5" bind:value={widthIn} placeholder="any" /><i>{u}</i></span></label>
+            <label><span>Height under cabinets</span><span class="inp"><input type="number" inputmode="decimal" min="1" step="0.5" bind:value={heightIn} placeholder="any" /><i>{u}</i></span></label>
             <div class="seg" role="group" aria-label="Units"><button type="button" aria-pressed={unitsIn} onclick={() => { if (!unitsIn) { widthIn = widthIn ? Math.round((widthIn / 2.54) * 2) / 2 : null; heightIn = heightIn ? Math.round((heightIn / 2.54) * 2) / 2 : null; unitsIn = true; } }}>in</button><button type="button" aria-pressed={!unitsIn} onclick={() => { if (unitsIn) { widthIn = widthIn ? Math.round(widthIn * 2.54) : null; heightIn = heightIn ? Math.round(heightIn * 2.54) : null; unitsIn = false; } }}>cm</button></div>
           </div>
         </fieldset>
       </form>
 
-      <section class="results" aria-live="polite" aria-label="Machines that fit">
+      <section class="results" id="chooser-results" aria-live="polite" aria-label="Machines that fit">
         {#if matches.length}
+          {@const sized = matches.filter((x) => x.machine.dims)}
           <p class="kick">{matches.length === 1 ? 'One machine fits' : `${matches.length === 2 ? 'Two' : 'Three'} machines fit`}, best first</p>
-          <svg viewBox="0 0 {CW} {CH}" class="counter" role="img" aria-label="Your shortlist on a counter, drawn to one scale: {matches.map((x) => `${x.machine.brand} ${x.machine.name}, ${sizeText(x.machine)}`).join('; ')}{needs.heightCm ? `, under cabinets ${heightIn} ${unitsIn ? 'inches' : 'cm'} high` : ''}.">
-            <rect x="0" y={FLOOR} width={CW} height={CH - FLOOR} class="top" />
-            <line x1="0" y1={FLOOR} x2={CW} y2={FLOOR} class="edge" />
+          {@const c = counter}
+          {#if sized.length}
+          <svg viewBox="0 0 {CW} {c.H}" class="counter" role="img" aria-label="Your shortlist on a counter, drawn to one scale: {matches.map((x) => x.machine.dims ? `${x.machine.brand} ${x.machine.name}, ${len(x.machine.dims.w)} ${u} wide and ${len(x.machine.dims.h)} ${u} tall` : `${x.machine.brand} ${x.machine.name}, size unclear`).join('; ')}{needs.heightCm ? `, under cabinets ${heightIn} ${u} high` : ''}{needs.widthCm ? `, in ${widthIn} ${u} of width` : ''}.">
+            <rect x="0" y={c.FLOOR} width={CW} height={c.H - c.FLOOR} class="top" />
+            <line x1="0" y1={c.FLOOR} x2={CW} y2={c.FLOOR} class="edge" />
             {#if needs.heightCm}
-              {@const cy = FLOOR - needs.heightCm * counter.scale}
-              {#if cy > 6}<rect x="0" y="0" width={CW} height={cy} class="cab" /><line x1="0" y1={cy} x2={CW} y2={cy} class="cabline" /><text x={CW - 12} y={cy - 7} text-anchor="end" class="cablbl">Under your cabinets · {heightIn} {unitsIn ? 'in' : 'cm'}</text>{/if}
+              {@const cy = c.FLOOR - needs.heightCm * c.s}
+              <rect x="0" y="0" width={CW} height={cy} class="cab" /><line x1="0" y1={cy} x2={CW} y2={cy} class="cabline" />
+              <text x={CW - 10} y="13" text-anchor="end" class="cablbl">Under your cabinets · {heightIn} {u}</text>
             {/if}
-            {#each counter.placed as p, i (p.m.id)}
-              {@render machineShape(p.m, p.x, p.w, p.h, p.known)}
-              <text x={p.x + p.w / 2} y={FLOOR + 20} text-anchor="middle" class="mlbl"><tspan class="rank">{i + 1}</tspan> {p.m.name}</text>
-              <text x={p.x + p.w / 2} y={FLOOR + 36} text-anchor="middle" class="mdim">{p.known ? sizeText(p.m).replace(/ × [\d.]+ (in|cm)$/, '') : 'size not established'}</text>
+            {#each c.placed as p, i (p.m.id)}
+              {#if needs.widthCm}
+                <!-- the width you have, at the same scale -->
+                <path d="M{p.slotX} {c.FLOOR + 50} l0 -6 L{p.slotX + p.slotW} {c.FLOOR + 44} l0 6" class="slot" />
+                <text x={p.slotX + p.slotW / 2} y={c.FLOOR + 63} text-anchor="middle" class="slotl">your {widthIn} {u}</text>
+              {/if}
+              {@render machineShape(p.m, p.x, p.w, p.h, p.known, c.FLOOR)}
+              {#if needs.heightCm && neededHeight(p.m)}
+                <!-- the room left under the cabinets, read in the cabinet band right above each machine -->
+                {@const cy = c.FLOOR - needs.heightCm * c.s}
+                <line x1={p.x + p.w / 2} y1={c.FLOOR - p.h} x2={p.x + p.w / 2} y2={cy} class="gapl" />
+                <text x={p.x + p.w / 2} y={cy - 6} text-anchor="middle" class="clear">{len(needs.heightCm - (p.m.dims?.h ?? p.m.clearanceCm!))} {u}{c.compact ? '' : ' to spare'}</text>
+              {/if}
+              <text x={p.x + p.w / 2} y={c.FLOOR + 17} text-anchor="middle" class="mlbl"><tspan class="rank" class:solo={c.compact}>{i + 1}</tspan>{c.compact ? '' : ` ${p.m.name}`}</text>
+              <text x={p.x + p.w / 2} y={c.FLOOR + 32} text-anchor="middle" class="mdim">{p.known ? (c.compact ? `${len(drawW(p.m))} × ${len(p.m.dims!.h)}` : `${len(drawW(p.m))} wide × ${len(p.m.dims!.h)} tall`) : p.m.clearanceCm ? (c.compact ? `needs ${len(p.m.clearanceCm)} ${u}` : `size unclear · needs ${len(p.m.clearanceCm)} ${u}`) : (c.compact ? 'size n/e' : 'size not established')}</text>
             {/each}
+            <g class="bar"><line x1="12" y1={c.H - 10} x2={12 + c.barPx} y2={c.H - 10} /><line x1="12" y1={c.H - 14} x2="12" y2={c.H - 6} /><line x1={12 + c.barPx} y1={c.H - 14} x2={12 + c.barPx} y2={c.H - 6} /><text x={18 + c.barPx} y={c.H - 6} class="barl">{c.barLabel}</text></g>
           </svg>
-          <p class="cap">Drawn to one scale from the makers' published sizes (width × height){matches.some((x) => x.machine.axisFlag) ? '. Breville lists the Bambino as wider than it is deep, which looks swapped, so its narrower side is tested against your width' : ''}.</p>
+          <p class="cap">{counter.compact ? `Numbered as the cards below: ${matches.map((x, i) => `${i + 1} ${x.machine.name}`).join(', ')}. ` : ''}Drawn to one scale from the makers' published sizes, width × height{needs.widthCm ? ', each in the width you gave' : ''}.{matches.some((x) => !x.machine.dims) ? ` Dashed: ${matches.filter((x) => !x.machine.dims).map((x) => x.machine.name).join(' and ')} ${matches.filter((x) => !x.machine.dims).length === 1 ? 'has' : 'have'} no clear published size, so ${matches.filter((x) => !x.machine.dims).length === 1 ? 'it is' : 'they are'} outlined at the height of the clearance the maker suggests, at a nominal width.` : ''}</p>
+          {:else}
+            <!-- nothing with a clear published size: no drawing, and the clearance the makers suggest instead -->
+            <p class="cap nodraw">No drawing to scale: {matches.map((x) => x.machine.name).join(matches.length === 2 ? ' and ' : ', ')} {matches.length === 1 ? 'has' : 'have'} no clear published size.{clearanceText(matches.map((x) => x.machine as M))}</p>
+          {/if}
 
+          <p class="shared">Prices are what each maker's US site or shop showed on October 15, 2026, and they change. Amazon links go to the exact model; as an Amazon Associate we earn from qualifying purchases.</p>
           <ol class="cards">
             {#each matches as x, i (x.machine.id)}
               {@const m = x.machine as M}
               <li class="card">
                 <p class="ck"><span class="rank">{i + 1}</span>{m.category ? CATEGORY_LABEL[m.category] : ''}</p>
                 <h3>{m.brand} {m.name}</h3>
-                <p class="band">{x.band ? (needsGrinder(m) ? `About ${bandText(x.band)} with a grinder` : `About ${bandText(x.band)}`) : 'Budget fit unknown'}</p>
-                <p class="fine">{m.listPrice.usd ? `The machine: ${money(m.listPrice.usd)}, the ${m.listPrice.kind ?? 'price seen'} on ${fmtDate(m.listPrice.checked)}.` : ''}{needsGrinder(m) && grinderPrices.length ? ` An espresso grinder adds about ${money(grinderPrices[0])}–${money(grinderPrices[grinderPrices.length - 1])}.` : ''} Prices change; check before you buy.</p>
-                {#if x.why.length}<ul class="why">{#each x.why as w (w)}<li>{w}</li>{/each}</ul>{/if}
-                {#if x.tradeoffs.length}<ul class="trade">{#each x.tradeoffs as t (t)}<li>{t}</li>{/each}</ul>{/if}
+                <p class="band">About {band(x.band)}{needsGrinder(m) ? ' with a grinder' : ''}</p>
+                <p class="fine">Machine {m.listPrice.usd ? money(m.listPrice.usd) : ''}{needsGrinder(m) && grinderPrices.length ? `, plus an espresso grinder from about ${money(grinderPrices[0])} to ${money(grinderPrices[grinderPrices.length - 1])}` : ''}.</p>
+                <p class="rankn">{rankNote(i)}</p>
+                <ul class="why">{#each [...x.why, ...fitLines(m)] as w (w)}<li>{w}</li>{/each}</ul>
+                <ul class="trade">{#each tradeoffs(x) as t (t)}<li>{t}</li>{/each}</ul>
+                {#if m.dimsUnclear}<p class="unclear">{unclearNote(m)}</p>{/if}
                 <dl class="mini">
-                  <div><dt>Heats</dt><dd>{heatLabel(m)}{shortTerm(m) ? ` (${m.brand}'s ${shortTerm(m)})` : ''}</dd></div>
-                  <div><dt>Milk</dt><dd>{m.milk.type ? MILK[m.milk.type] : 'Not established'}</dd></div>
-                  <div><dt>Size</dt><dd>{sizeText(m)}</dd></div>
+                  {#if m.category !== 'capsule'}<div><dt>Heats</dt><dd>{heatLabel(m)}{shortTerm(m) ? ` (${shortTerm(m)})` : ''}</dd></div>{/if}
+                  <div><dt>Milk</dt><dd>{m.milk.type ? MILK[m.milk.type] : NE}</dd></div>
+                  <div><dt>Size, W × D × H</dt><dd>{sizeText(m)}</dd></div>
                 </dl>
                 <div class="acts">
-                  {#if m.heating.system && HEAT_KEY[m.heating.system]}<button type="button" class="ghost" onclick={() => { pickHeat(m.heating.system!); document.getElementById('how-it-heats')?.scrollIntoView({ behavior: 'smooth' }); }}>How it brews and steams</button>{/if}
-                  <button type="button" class="ghost" onclick={() => openOwn(m.id)}>Its dose and care</button>
-                  {#if m.amazon}<a class="go" href={m.amazon.url} rel="sponsored noopener" target="_blank">See it on Amazon</a>{/if}
+                  {#if m.amazon}<a class="go" href={m.amazon.url} rel="sponsored noopener" target="_blank">See it on Amazon</a>
+                  {:else if m.listPrice.url}<a class="go" href={m.listPrice.url} rel="noopener" target="_blank">The maker's page ↗</a>{/if}
+                  <button type="button" class="ghost" onclick={() => openOwn(m.id)}>Dose and care</button>
+                  {#if m.heating.system && HEATS.includes(m.heating.system)}<button type="button" class="ghost" onclick={() => { pickHeat(m.heating.system!); document.getElementById('how-it-heats')?.scrollIntoView({ behavior: 'smooth' }); }}>How it brews and steams</button>{/if}
                 </div>
-                {#if m.amazon}<p class="disc">The Amazon link is to this exact model, checked {fmtDate(m.amazon.checked)}. As an Amazon Associate we earn from qualifying purchases.</p>{/if}
               </li>
             {/each}
           </ol>
@@ -267,45 +371,44 @@
           <div class="none">
             <p class="kick">Nothing fits all of that</p>
             {#if nearest}
-              <p>The closest current machine for your routine{needs.widthCm || needs.heightCm ? ' and counter' : ''} is the <b>{nearest.machine.brand} {nearest.machine.name}</b>, at about {bandText(nearest.band!)}{needsGrinder(nearest.machine) ? ' with a grinder' : ''}. <button type="button" class="linkish" onclick={() => (budget = Math.min(5000, Math.ceil(nearest!.band!.low / 50) * 50))}>Set the budget to {money(Math.ceil(nearest.band!.low / 50) * 50)}</button></p>
+              <p>No current machine meets your routine{needs.widthCm || needs.heightCm ? ' and counter' : ''} at {money(budget)}. The closest is the <b>{nearest.machine.brand} {nearest.machine.name}</b>, at about {band(nearest.band)}{needsGrinder(nearest.machine) ? ' with a grinder' : ''}.</p>
+              <button type="button" class="go" onclick={() => (budget = Math.min(5000, Math.ceil(nearest!.band!.low / 50) * 50))}>Set the budget to {money(Math.ceil(nearest.band!.low / 50) * 50)}</button>
             {:else}
               <p>No current machine with a published size fits that counter. Try clearing the width or height.</p>
             {/if}
           </div>
         {/if}
-        <p class="method">Only current machines with a dated price and a known milk system are suggested; {machines.filter((m) => m.status === 'current' && !(m.category && m.listPrice.usd && m.milk.type)).length} more are in <button type="button" class="linkish" onclick={() => (mode = 'all')}>Every machine</button>, with what's missing.</p>
+        <p class="method">Only current machines with a dated price and a known milk system are suggested.{needs.widthCm ? ` With a width given, the ${machines.filter((m) => m.status === 'current' && m.category && m.listPrice.usd && m.milk.type && !m.dims).length} of those without a clear published size are left out.` : ''} {machines.filter((m) => m.status === 'current' && !(m.category && m.listPrice.usd && m.milk.type)).length} more current machines are in <button type="button" class="linkish" onclick={() => (mode = 'all')}>All {machines.length}</button>, with what's missing.</p>
       </section>
     </div>
   {:else if mode === 'own'}
     <div class="own">
       <label class="pickm"><span class="lbl">Your machine</span>
         <select bind:value={ownId}>
-          {#each brands as b (b)}<optgroup label={b}>{#each machines.filter((m) => m.brand === b) as m (m.id)}<option value={m.id}>{m.name}{modelCodes(m) ? ` (${modelCodes(m)})` : ''}</option>{/each}</optgroup>{/each}
+          {#each brands as b (b)}<optgroup label={b}>{#each machines.filter((m) => m.brand === b) as m (m.id)}<option value={m.id}>{m.brand} {m.name}{m.variant ? `, ${m.variant}` : ''}{m.code ? ` · ${m.code}` : ''}</option>{/each}</optgroup>{/each}
         </select>
       </label>
       <div class="ownbody">
         <div class="ownhead">
           <p class="ck">{own.category ? CATEGORY_LABEL[own.category] : 'Category not established'}{statusNote(own) ? ` · ${statusNote(own)}` : ''}</p>
-          <h3>{own.brand} {own.name}</h3>
+          <h3>{fullName(own)}</h3>
           <dl class="specs">
-            <div><dt>Heats</dt><dd>{heatLabel(own)}{own.heating.makerTerm ? ` · ${own.heating.makerTerm}` : ''}</dd></div>
+            {#if own.category !== 'capsule'}<div><dt>Heats</dt><dd>{heatLabel(own)}{shortTerm(own) ? ` (${shortTerm(own)})` : ''}</dd></div>{/if}
             {#if own.portafilterMm}<div><dt>Portafilter</dt><dd>{own.portafilterMm} mm</dd></div>{/if}
-            {#if own.owner?.baskets ?? own.baskets?.length}<div><dt>Baskets</dt><dd>{own.owner?.baskets ?? own.baskets?.join(', ')}</dd></div>{/if}
-            {#if own.owner?.dose}<div><dt>Dose</dt><dd>{own.owner.dose}</dd></div>{/if}
-            {#if own.owner?.temperature}<div><dt>Temperature</dt><dd>{own.owner.temperature}</dd></div>{/if}
-            <div><dt>Milk</dt><dd>{own.milk.type ? MILK[own.milk.type] : 'Not established'}{own.milk.makerTerm ? ` · ${own.milk.makerTerm}` : ''}</dd></div>
+            {#if own.owner?.baskets}<div><dt>Baskets</dt><dd>{own.owner.baskets}</dd></div>{/if}
+            <div><dt>Milk</dt><dd>{own.milk.type ? MILK[own.milk.type] : NE}</dd></div>
             {#if own.tankL}<div><dt>Water tank</dt><dd>{own.tankL} L</dd></div>{/if}
-            <div><dt>Size</dt><dd>{sizeText(own)}{own.axisFlag ? ' (as the maker lists it; width and depth may be swapped)' : ''}</dd></div>
+            <div><dt>Size, W × D × H</dt><dd>{own.dimsUnclear ? unclearNote(own) : sizeText(own)}</dd></div>
           </dl>
         </div>
         <div class="care">
-          {#if own.owner?.recipe}<div class="note"><p class="lbl">The maker's starting recipe</p><p>{own.owner.recipe}</p></div>{/if}
-          {#if own.owner?.descale}<div class="note"><p class="lbl">Descaling</p><p>{own.owner.descale}</p></div>{/if}
+          <div class="note"><p class="lbl">Dose and recipe</p><p>{own.owner?.recipe ?? own.owner?.dose ?? (makesEspressoByHand(own) ? 'The maker\'s materials we checked give no dose. Our Brew Guide starts espresso at 18 g of coffee for 36 g in the cup.' : 'Set by the machine: there is no dose to weigh.')}</p>{#if own.owner?.recipe && own.owner?.dose}<p>{own.owner.dose}</p>{/if}</div>
+          <div class="note"><p class="lbl">Temperature</p><p>{own.owner?.temperature ?? 'The maker\'s materials we checked give no brew temperature.'}</p></div>
+          <div class="note"><p class="lbl">Descaling</p><p>{own.owner?.descale ?? 'The maker\'s materials we checked give no descaling interval; the manual has the procedure.'}</p></div>
           {#if own.owner?.clean}<div class="note"><p class="lbl">Cleaning</p><p>{own.owner.clean}</p></div>{/if}
-          {#if !own.owner?.recipe && !own.owner?.descale && !own.owner?.clean}<p class="quiet">The research found no dose, recipe or care details to show for this model{own.care?.manualUrl ? '; the manual below has them' : ''}.</p>{/if}
           <div class="acts">
             {#if own.care?.manualUrl}<a class="go" href={own.care.manualUrl} rel="noopener" target="_blank">The maker's manual ↗</a>{/if}
-            {#if own.category !== 'capsule' && own.category !== 'super-auto'}<a class="ghost" href="/tools/brew-ratio/?method=espresso&dose=18">Brew an espresso in the Brew Guide</a>{/if}
+            {#if makesEspressoByHand(own)}<a class="ghost" href="/tools/brew-ratio/?method=espresso&dose=18">Brew an espresso in the Brew Guide</a>{/if}
             <a class="ghost" href="/tools/fix-my-coffee/?method=espresso">Fix a shot</a>
           </div>
           <p class="fine">From the maker's own pages and manual, checked October 15, 2026. Machine water and descaling follow the maker's specification.</p>
@@ -314,19 +417,22 @@
     </div>
   {:else}
     <div class="all">
-      <p class="quiet">All {machines.length} machines in this guide, from the makers' published specs, checked October 15, 2026. Pick one for its dose and care.</p>
-      {#each CATS as c (c)}
-        {@const list = machines.filter((m) => m.category === c)}
+      <p class="quiet">All {machines.length} machines in this guide, from the makers' published specs, checked October 15, 2026. "Not established" means the maker's materials we checked didn't say. Pick a machine for its dose and care.</p>
+      {#each CATS as cat (cat)}
+        {@const list = machines.filter((m) => m.category === cat)}
         {#if list.length}
-          <h3 class="cath">{CATEGORY_LABEL[c]} <span>{list.length}</span></h3>
+          <h3 class="cath">{CATEGORY_LABEL[cat]} <span>{list.length}</span></h3>
           <div class="tw"><table>
-            <thead><tr><th scope="col">Machine</th><th scope="col">Heats</th><th scope="col">Milk</th><th scope="col">Size</th><th scope="col">Price seen</th></tr></thead>
+            <colgroup><col class="c1" /><col class="c2" /><col class="c3" /><col class="c4" /><col class="c5" /></colgroup>
+            <thead><tr><th scope="col">Machine</th><th scope="col">Heats</th><th scope="col">Milk</th><th scope="col">W × D × H</th><th scope="col">Price seen</th></tr></thead>
             <tbody>
               {#each list as m (m.id)}
                 <tr>
-                  <th scope="row"><button type="button" class="linkish" onclick={() => openOwn(m.id)}>{m.brand} {m.name}</button>{#if statusNote(m)}<small>{statusNote(m)}</small>{/if}</th>
-                  <td>{heatLabel(m)}</td><td>{m.milk.type ? MILK[m.milk.type] : '—'}</td><td class="nw">{m.dims ? sizeText(m) : '—'}</td>
-                  <td class="nw">{m.listPrice.usd ? money(m.listPrice.usd) : 'Not verified'}</td>
+                  <th scope="row"><button type="button" class="linkish" onclick={() => openOwn(m.id)}>{m.brand} {m.name}</button>{#if m.variant}<small>{m.variant}</small>{/if}{#if statusNote(m)}<small>{statusNote(m)}</small>{/if}</th>
+                  <td class:ne={!m.heating.system}>{m.category === 'capsule' ? '·' : heatLabel(m)}</td>
+                  <td class:ne={!m.milk.type}>{m.milk.type ? MILK[m.milk.type] : NE}</td>
+                  <td class:ne={!m.dims}>{m.dims ? sizeText(m) : m.dimsUnclear ? 'unclear' : NE}{#if m.dimsUnclear}<small>listed {m.dimsUnclear}</small>{/if}</td>
+                  <td class:ne={!m.listPrice.usd}>{m.listPrice.usd ? money(m.listPrice.usd) : NE}</td>
                 </tr>
               {/each}
             </tbody>
@@ -340,34 +446,50 @@
   <section class="heat" id="how-it-heats" aria-label="How each heating system brews and steams">
     <p class="kick">How it brews and steams</p>
     <div class="htabs" role="tablist" aria-label="Heating system">
-      {#each Object.keys(HEAT_KEY) as k (k)}<button type="button" role="tab" aria-selected={heatTab === k} onclick={() => pickHeat(k)}>{HEAT[k as Heating]}</button>{/each}
+      {#each HEATS as k (k)}<button type="button" role="tab" aria-selected={heatTab === k} onclick={() => pickHeat(k)}>{HEAT[k as Heating]}</button>{/each}
     </div>
     <div class="hbody">
-      <svg viewBox="0 0 360 200" class="schem" role="img" aria-label="{HEAT[heatTab as Heating]}: {SIMUL[heatTab]} Now: {steps[step] ?? ''}" data-phase={ph}>
+      <svg viewBox="0 0 360 230" class="schem" role="img" aria-label="{HEAT[heatTab as Heating]}: {TOGETHER[heatTab][1]} Now: {seq[step]?.[1] ?? ''}" data-phase={ph}>
+        <!-- can it brew and steam at the same time: readable in a still -->
+        <text x="14" y="20" class="badgek">Brew + steam together</text>
+        <text x="14" y="42" class="badgev" class:yes={TOGETHER[heatTab][0]}>{TOGETHER[heatTab][0] ? 'Yes' : 'No, one after the other'}</text>
         <!-- tank -->
-        <rect x="14" y="70" width="46" height="80" rx="6" class="tank" /><text x="37" y="166" text-anchor="middle" class="sl">Tank</text>
+        <rect x="14" y="96" width="40" height="76" rx="6" class="tank" /><text x="34" y="188" text-anchor="middle" class="sl">Tank</text>
         {#if heatTab === 'dual-boiler'}
-          <rect x="110" y="30" width="80" height="54" rx="10" class="heater brewh" /><text x="150" y="61" text-anchor="middle" class="hl">Brew boiler</text>
-          <rect x="110" y="112" width="80" height="54" rx="10" class="heater steamh" /><text x="150" y="143" text-anchor="middle" class="hl">Steam boiler</text>
-          <path d="M60 100 C 85 100, 90 57, 110 57" class="pipe pbrew" /><path d="M60 120 C 85 120, 90 139, 110 139" class="pipe psteam" />
-          <path d="M190 57 L 262 57 L 262 76" class="pipe pbrew" /><path d="M190 139 L 300 139 L 300 110" class="pipe psteam" />
+          <rect x="96" y="64" width="98" height="52" rx="12" class="heater" /><text x="145" y="94" text-anchor="middle" class="hl">Brew boiler</text>
+          <rect x="96" y="140" width="98" height="52" rx="12" class="heater" /><text x="145" y="170" text-anchor="middle" class="hl">Steam boiler</text>
+          <path d="M54 120 C 74 120, 76 90, 96 90" class="pipe pbrew" /><path d="M54 150 C 74 150, 76 166, 96 166" class="pipe psteam" />
+          <path d="M194 90 C 218 90, 222 62, 246 62 L 262 62 L 262 70" class="pipe pbrew" />
+          <path d="M194 166 L 300 166 L 300 152" class="pipe psteam" />
+        {:else if heatTab === 'heat-exchanger'}
+          <rect x="92" y="76" width="110" height="112" rx="16" class="heater" /><text x="147" y="100" text-anchor="middle" class="hl">Steam boiler</text>
+          <!-- the heat exchanger: fresh brew water in its own tube through the boiler -->
+          <path d="M54 140 L 98 140 C 122 140, 118 120, 140 124 C 162 128, 158 150, 180 146 C 196 143, 196 120, 200 112" class="pipe pbrew hxpath" />
+          <text x="147" y="204" text-anchor="middle" class="sl">brew water's own tube</text>
+          <path d="M200 112 C 220 112, 222 62, 246 62 L 262 62 L 262 70" class="pipe pbrew" />
+          <path d="M202 168 L 300 168 L 300 152" class="pipe psteam" />
         {:else}
-          <rect x="105" y="62" width="92" height="76" rx={heatTab === 'thermoblock' ? 6 : 14} class="heater" class:hx={heatTab === 'heat-exchanger'} />
-          <text x="151" y="98" text-anchor="middle" class="hl">{heatTab === 'thermoblock' ? 'Thermoblock' : heatTab === 'heat-exchanger' ? 'Boiler' : 'Boiler'}</text>
-          {#if heatTab === 'heat-exchanger'}<path d="M120 122 C 140 108, 160 136, 182 116" class="hxtube" /><text x="151" y="132" text-anchor="middle" class="sl">heat exchanger</text>{/if}
-          <path d="M60 110 L 105 110" class="pipe pboth" />
-          <path d="M197 82 L 262 82 L 262 76" class="pipe pbrew" /><path d="M197 118 L 300 118 L 300 110" class="pipe psteam" />
+          <rect x="96" y="90" width="100" height="80" rx={heatTab === 'thermoblock' ? 6 : 16} class="heater" />
+          <text x="146" y="128" text-anchor="middle" class="hl">{heatTab === 'thermoblock' ? 'Thermoblock' : 'Boiler'}</text>
+          <text x="146" y="146" text-anchor="middle" class="hlsm">one heater</text>
+          <path d="M54 134 L 96 134" class="pipe pin" />
+          <path d="M196 104 C 220 104, 222 62, 246 62 L 262 62 L 262 70" class="pipe pbrew" />
+          <path d="M196 156 L 300 156 L 300 152" class="pipe psteam" />
+          <!-- the switch between brew and steam -->
+          <g class="switch"><circle cx="214" cy="130" r="11" /><text x="214" y="134" text-anchor="middle">⇅</text></g>
         {/if}
-        <!-- group head and cup -->
-        <rect x="244" y="60" width="36" height="16" rx="3" class="group" /><text x="262" y="52" text-anchor="middle" class="sl">Group</text>
-        <path d="M252 140 L 272 140 L 270 160 L 254 160 Z" class="cup" /><line x1="262" y1="78" x2="262" y2="138" class="flow fbrew" />
-        <!-- steam wand -->
-        <line x1="300" y1="110" x2="330" y2="160" class="wandl" /><text x="332" y="104" text-anchor="end" class="sl">Wand</text>
-        <path d="M322 168 q6 -10 12 0 q6 -10 12 0" class="flow fsteam" />
+        <!-- group head over the cup -->
+        <rect x="240" y="70" width="44" height="14" rx="3" class="group" /><text x="290" y="81" class="sl">Group</text>
+        <line x1="262" y1="86" x2="262" y2="112" class="flow fbrew" />
+        <path d="M250 114 L 274 114 L 271 136 L 253 136 Z" class="cup" />
+        <!-- steam wand into a milk jug -->
+        <line x1="300" y1="152" x2="322" y2="194" class="wandl" /><text x="342" y="146" text-anchor="end" class="sl">Wand</text>
+        <path d="M312 198 L 340 198 L 337 222 L 315 222 Z" class="jug" />
+        <path d="M318 196 q5 -9 10 0 q5 -9 10 0" class="flow fsteam" />
       </svg>
       <div class="steps">
-        <p class="simul"><b>Brew and steam:</b> {SIMUL[heatTab]}</p>
-        <ol>{#each steps as s, i (i)}<li class:on={i === step}><button type="button" class="stepbtn" onclick={() => { stop(); step = i; }} aria-current={i === step ? 'step' : undefined}>{s}</button></li>{/each}</ol>
+        <p class="simul">{TOGETHER[heatTab][1]}</p>
+        <ol>{#each seq as [, s], i (i)}<li class:on={i === step}><button type="button" class="stepbtn" onclick={() => { stop(); step = i; }} aria-current={i === step ? 'step' : undefined}>{s}</button></li>{/each}</ol>
         <div class="acts"><button type="button" class="go" onclick={play}>{playing ? 'Pause' : step > 0 ? 'Play from the start' : 'Play the sequence'}</button></div>
         <p class="fine">A schematic of the system, not of any one machine: follow your own manual for timings and controls. No fixed waits are given because the makers don't publish universal ones.</p>
       </div>
@@ -379,13 +501,15 @@
   .mc { --card: #fbf8f3; --ink: #2a1d15; --ink-2: #5b4a3d; --ink-3: #75655a; --rule: #d9cdbd; --crema: #c3873a; --crema-deep: #8f5d22; --water: #2f7484;
     color: var(--ink); font: 16px/1.5 'IBM Plex Sans', system-ui, sans-serif; }
   .modes { display: inline-flex; gap: 4px; padding: 4px; border: 1px solid var(--rule); border-radius: 999px; background: #fff; margin-bottom: 16px; }
-  .modes button { appearance: none; border: 0; background: none; border-radius: 999px; padding: 9px 16px; min-height: 40px; font: 500 14px 'IBM Plex Sans', sans-serif; color: var(--ink-2); cursor: pointer; }
+  .modes button { appearance: none; border: 0; background: none; border-radius: 999px; padding: 9px 16px; min-height: 40px; font: 500 14px 'IBM Plex Sans', sans-serif; color: var(--ink-2); cursor: pointer; white-space: nowrap; }
   .modes button[aria-selected='true'] { background: var(--ink); color: #f3ede3; }
   .lbl { font: 500 11px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); display: block; margin: 0 0 8px; }
   .opt { text-transform: none; letter-spacing: 0; }
   .kick { font: 500 11.5px/1.3 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--crema-deep); margin: 0 0 8px; }
-  .find { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 18px; align-items: start; }
-  .ask { background: var(--card); border: 1px solid var(--rule); border-radius: 18px; padding: 18px; display: grid; gap: 16px; }
+  .find { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); grid-template-areas: 'ask res'; gap: 18px; align-items: start; }
+  .peek { display: none; }
+  .ask { grid-area: ask; background: var(--card); border: 1px solid var(--rule); border-radius: 18px; padding: 18px; display: grid; gap: 16px; }
+  .results { grid-area: res; min-width: 0; }
   fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
   .chips { display: flex; flex-wrap: wrap; gap: 6px; }
   .chips button, .seg button { appearance: none; border: 1px solid var(--rule); background: #fff; border-radius: 999px; padding: 8px 13px; min-height: 40px; font: 500 13.5px 'IBM Plex Sans', sans-serif; color: var(--ink-2); cursor: pointer; }
@@ -399,33 +523,43 @@
   .budget { display: grid; gap: 8px; }
   .bval { font: 400 34px/1 'Instrument Serif', Georgia, serif; }
   .budget input[type=range] { width: 100%; accent-color: var(--crema-deep); min-height: 32px; }
-  .space { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; }
-  .space label { display: grid; gap: 4px; font-size: 13px; color: var(--ink-2); }
-  .space label > span:first-child { font-size: 12.5px; }
-  .space input { width: 88px; font: 500 15px 'IBM Plex Mono', monospace; padding: 8px 10px; border: 1px solid var(--rule); border-radius: 10px; min-height: 42px; }
-  .space .u { position: relative; margin-left: 6px; font: 500 12px 'IBM Plex Mono', monospace; color: var(--ink-3); }
-  .space label { grid-template-columns: auto auto; grid-template-areas: 'l l' 'i u'; align-items: center; }
-  .space label > span:first-child { grid-area: l; }
+  .space { display: flex; flex-wrap: wrap; gap: 10px 12px; align-items: end; }
+  .space label { display: grid; gap: 4px; font-size: 12.5px; color: var(--ink-2); }
+  .inp { display: inline-flex; align-items: center; gap: 6px; }
+  .inp input { width: 84px; font: 500 15px 'IBM Plex Mono', monospace; padding: 8px 10px; border: 1px solid var(--rule); border-radius: 10px; min-height: 42px; }
+  .inp i { font: 500 12px 'IBM Plex Mono', monospace; font-style: normal; color: var(--ink-3); }
   .seg { display: inline-flex; gap: 4px; }
-  .results { min-width: 0; }
   .counter { width: 100%; height: auto; background: linear-gradient(#fffdf9, #f1e7d9); border: 1px solid var(--rule); border-radius: 16px; }
   .top { fill: #e6d6bf; }
   .edge { stroke: #b59a77; stroke-width: 2; }
-  .cab { fill: #3a2a20; opacity: .08; }
+  .cab { fill: #3a2a20; opacity: .1; }
   .cabline { stroke: #3a2a20; stroke-width: 2; stroke-dasharray: 6 4; }
-  .cablbl { font: 500 11px 'IBM Plex Mono', monospace; fill: var(--ink-2); }
+  .cablbl, .clear { font: 500 11px 'IBM Plex Mono', monospace; fill: var(--ink-2); }
+  .clear { fill: #2f7484; }
+  .gapl { stroke: #2f7484; stroke-width: 1.2; stroke-dasharray: 2 3; }
+  .slot { fill: none; stroke: #2f7484; stroke-width: 1.5; }
+  .slotl { font: 500 10.5px 'IBM Plex Mono', monospace; fill: #2f7484; }
   .mach .body { fill: #2a1d15; }
-  .mach.unknown .body { fill: none; stroke: #75655a; stroke-dasharray: 5 4; stroke-width: 1.5; }
-  .mach .detail { fill: #f3ede3; opacity: .35; }
-  .mach .screen { fill: #2f7484; opacity: .7; }
+  .mach .lid { fill: #3a2a20; }
+  .mach.unknown .body { fill: rgba(117, 101, 90, .06); stroke: #75655a; stroke-dasharray: 5 4; stroke-width: 1.5; }
+  .qmark { font: 400 26px 'Instrument Serif', Georgia, serif; fill: #75655a; }
+  .mach .spout { fill: #75655a; }
+  .mach .tray { fill: #9c8f82; }
+  .mach .screen { fill: #2f7484; opacity: .75; }
   .mach .handle { stroke: #2a1d15; stroke-width: 5; stroke-linecap: round; }
   .mach .wand { stroke: #9c8f82; stroke-width: 3; stroke-linecap: round; }
   .mach .lever { stroke: #2a1d15; stroke-width: 6; stroke-linecap: round; }
-  .mach .hopper { fill: #5b4a3d; opacity: .7; }
+  .mach .hopper { fill: #5b4a3d; }
+  .mach .gauge { fill: #f3ede3; stroke: #9c8f82; stroke-width: 1; }
   .mlbl { font: 400 15px 'Instrument Serif', Georgia, serif; fill: var(--ink); }
   .mlbl .rank { font: 500 11px 'IBM Plex Mono', monospace; fill: var(--crema-deep); }
+  .mlbl .rank.solo { font-size: 14px; }
   .mdim { font: 500 10.5px 'IBM Plex Mono', monospace; fill: var(--ink-3); }
-  .cap { margin: 8px 0 14px; font-size: 13px; color: var(--ink-3); }
+  .bar line { stroke: var(--ink-2); stroke-width: 1.5; }
+  .barl { font: 500 10.5px 'IBM Plex Mono', monospace; fill: var(--ink-2); }
+  .cap { margin: 8px 0 10px; font-size: 13px; color: var(--ink-3); }
+  .cap.nodraw { margin-top: 0; padding: 12px 14px; border: 1px dashed var(--rule); border-radius: 14px; background: #fffdf9; }
+  .shared { margin: 0 0 10px; font-size: 12.5px; color: var(--ink-3); }
   .cards { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
   .card { background: #fff; border: 1px solid var(--rule); border-radius: 16px; padding: 16px 18px; }
   .ck { margin: 0; font: 500 11px 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); display: flex; align-items: center; gap: 8px; }
@@ -433,7 +567,10 @@
   h3 { font: 400 28px/1.1 'Instrument Serif', Georgia, serif; margin: 6px 0 4px; }
   .band { margin: 0; font: 500 15px 'IBM Plex Mono', monospace; color: var(--ink); }
   .fine { margin: 4px 0 0; font-size: 12.5px; color: var(--ink-3); }
-  .why, .trade { margin: 10px 0 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 14.5px; }
+  .unclear { margin: 8px 0 0; font-size: 13px; color: var(--ink-3); padding: 8px 10px; border: 1px dashed var(--rule); border-radius: 10px; }
+  td small + small, td small { display: block; font: 400 11.5px 'IBM Plex Sans', sans-serif; color: var(--ink-3); }
+  .rankn { margin: 10px 0 0; font-size: 14px; color: var(--ink); font-weight: 500; }
+  .why, .trade { margin: 8px 0 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 14.5px; }
   .why li, .trade li { padding-left: 22px; position: relative; color: var(--ink-2); }
   .why li::before { content: '✓'; position: absolute; left: 2px; color: #2f7484; font-weight: 600; }
   .trade li::before { content: '–'; position: absolute; left: 4px; color: #a0522d; font-weight: 600; }
@@ -443,63 +580,77 @@
   .acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
   .go { background: var(--ink); color: #f3ede3; border: 0; border-radius: 999px; padding: 10px 16px; font: 600 14px/1.2 'IBM Plex Sans', sans-serif; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; cursor: pointer; }
   .ghost { border: 1px solid var(--rule); background: #fff; color: var(--ink-2); border-radius: 999px; padding: 9px 13px; font: 500 14px/1.2 'IBM Plex Sans', sans-serif; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; cursor: pointer; }
-  .disc { margin: 8px 0 0; font-size: 12px; color: var(--ink-3); }
-  .none { background: #fff8ec; border: 1px solid #e9c48f; border-radius: 14px; padding: 14px 16px; }
+  .none { background: #fff8ec; border: 1px solid #e9c48f; border-radius: 14px; padding: 14px 16px; display: grid; gap: 10px; justify-items: start; }
   .none p { margin: 0; }
-  .linkish { appearance: none; border: 0; background: none; padding: 0; color: var(--crema-deep); text-decoration: underline; text-underline-offset: 3px; font: inherit; cursor: pointer; }
+  .linkish { appearance: none; border: 0; background: none; padding: 0; color: var(--crema-deep); text-decoration: underline; text-underline-offset: 3px; font: inherit; cursor: pointer; text-align: left; }
   .method { margin: 12px 0 0; font-size: 13px; color: var(--ink-3); }
   .own { display: grid; gap: 14px; }
-  .pickm select { width: 100%; max-width: 520px; appearance: none; font: 500 16px 'IBM Plex Sans', sans-serif; padding: 10px 36px 10px 12px; border: 1px solid var(--rule); border-radius: 10px; color: var(--ink); min-height: 46px; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%235b4a3d' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 14px center; }
-  .ownbody { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+  .pickm select { width: 100%; max-width: 560px; appearance: none; font: 500 16px 'IBM Plex Sans', sans-serif; padding: 10px 36px 10px 12px; border: 1px solid var(--rule); border-radius: 10px; color: var(--ink); min-height: 46px; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%235b4a3d' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 14px center; }
+  .ownbody { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 16px; }
   .ownhead, .care { background: #fff; border: 1px solid var(--rule); border-radius: 16px; padding: 16px 18px; }
   .specs { display: grid; gap: 10px; margin: 12px 0 0; }
   .note { padding: 10px 12px; border-left: 3px solid var(--crema); background: #fff8ec; border-radius: 0 10px 10px 0; margin-bottom: 10px; }
   .note p { margin: 0; font-size: 14.5px; color: var(--ink-2); }
+  .note p + p { margin-top: 4px; }
   .note .lbl { margin-bottom: 4px; }
   .quiet { color: var(--ink-3); font-size: 14px; margin: 0 0 10px; }
   .cath { font: 400 24px 'Instrument Serif', Georgia, serif; margin: 18px 0 6px; }
   .cath span { font: 500 12px 'IBM Plex Mono', monospace; color: var(--ink-3); }
   .tw { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; table-layout: fixed; min-width: 640px; }
+  .c1 { width: 30%; } .c2 { width: 16%; } .c3 { width: 20%; } .c4 { width: 20%; } .c5 { width: 14%; }
   th, td { text-align: left; padding: 8px 8px; border-bottom: 1px solid #e6dccd; vertical-align: top; }
-  thead th { font: 500 10.5px 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); }
+  thead th { font: 500 10.5px 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; }
+  tbody th { font-weight: 500; }
   tbody th small { display: block; font-weight: 400; color: var(--ink-3); font-size: 12px; }
-  .nw { white-space: nowrap; }
+  td.ne { font: 400 12.5px 'IBM Plex Mono', monospace; color: var(--ink-3); }
   .heat { margin-top: 28px; background: var(--card); border: 1px solid var(--rule); border-radius: 18px; padding: 18px; }
   .htabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
   .htabs button { appearance: none; border: 1px solid var(--rule); background: #fff; border-radius: 999px; padding: 8px 13px; min-height: 40px; font: 500 13.5px 'IBM Plex Sans', sans-serif; color: var(--ink-2); cursor: pointer; }
   .htabs button[aria-selected='true'] { background: var(--ink); color: #f3ede3; border-color: var(--ink); }
   .hbody { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start; }
   .schem { width: 100%; height: auto; background: #fff; border: 1px solid var(--rule); border-radius: 14px; }
+  .badgek { font: 500 10px 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; fill: var(--ink-3); }
+  .badgev { font: 400 19px 'Instrument Serif', Georgia, serif; fill: #a0522d; }
+  .badgev.yes { fill: #2f7484; }
   .tank { fill: #dbeef1; stroke: #2f7484; stroke-width: 1.5; }
-  .heater { fill: #3a2a20; }
-  .heater.hx { fill: #3a2a20; }
-  .hxtube { fill: none; stroke: #7fc3cf; stroke-width: 3; }
+  .heater { fill: #3a2a20; transition: filter .4s; }
   .hl { font: 500 11px 'IBM Plex Mono', monospace; fill: #f3ede3; }
+  .hlsm { font: 400 9.5px 'IBM Plex Mono', monospace; fill: #cdbba6; }
   .sl { font: 500 10.5px 'IBM Plex Mono', monospace; fill: var(--ink-3); }
   .pipe { fill: none; stroke: #cdbba6; stroke-width: 4; stroke-linecap: round; transition: stroke .4s; }
+  .hxpath { stroke-width: 3.5; }
+  .switch circle { fill: #fff; stroke: #75655a; stroke-width: 1.5; }
+  .switch text { font: 600 12px 'IBM Plex Sans', sans-serif; fill: var(--ink-2); }
   .group { fill: #5b4a3d; }
-  .cup { fill: #fbf8f3; stroke: #5b4a3d; stroke-width: 1.5; }
+  .cup, .jug { fill: #fbf8f3; stroke: #5b4a3d; stroke-width: 1.5; }
   .wandl { stroke: #9c8f82; stroke-width: 4; stroke-linecap: round; }
   .flow { fill: none; stroke-width: 3; opacity: 0; transition: opacity .4s; }
   .fbrew { stroke: #7a4e30; stroke-dasharray: 4 5; }
   .fsteam { stroke: #9c8f82; }
   .schem[data-phase='heat'] .heater, .schem[data-phase='wait'] .heater { filter: drop-shadow(0 0 6px #c3873a); }
-  .schem[data-phase='brew'] .pbrew, .schem[data-phase='both'] .pbrew { stroke: #7a4e30; }
-  .schem[data-phase='steam'] .psteam, .schem[data-phase='both'] .psteam { stroke: #9c8f82; }
-  .schem[data-phase='brew'] .pboth, .schem[data-phase='steam'] .pboth, .schem[data-phase='both'] .pboth { stroke: #2f7484; }
+  .schem[data-phase='brew'] .pbrew, .schem[data-phase='both'] .pbrew { stroke: #2f7484; }
+  .schem[data-phase='steam'] .psteam, .schem[data-phase='both'] .psteam { stroke: #9c8f82; stroke-width: 5; }
+  .schem[data-phase='brew'] .pin, .schem[data-phase='steam'] .pin, .schem[data-phase='both'] .pin { stroke: #2f7484; }
   .schem[data-phase='brew'] .fbrew, .schem[data-phase='both'] .fbrew { opacity: 1; animation: drip 1s linear infinite; }
   .schem[data-phase='steam'] .fsteam, .schem[data-phase='both'] .fsteam { opacity: 1; }
   @keyframes drip { to { stroke-dashoffset: -18; } }
-  .steps .simul { margin: 0 0 8px; font-size: 14.5px; }
+  .steps .simul { margin: 0 0 8px; font-size: 15px; color: var(--ink); }
   .steps ol { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
   .steps li.on .stepbtn { color: var(--ink); font-weight: 600; }
   .stepbtn { appearance: none; border: 0; background: none; padding: 4px 0; text-align: left; font: 400 14px/1.45 'IBM Plex Sans', sans-serif; color: var(--ink-3); cursor: pointer; min-height: 32px; }
   button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--crema-deep); outline-offset: 2px; }
   @media (max-width: 900px) {
-    .find, .ownbody, .hbody { grid-template-columns: 1fr; }
+    .find { grid-template-columns: 1fr; grid-template-areas: 'peek' 'ask' 'res'; }
+    .peek { grid-area: peek; display: grid; grid-template-columns: auto 1fr; grid-template-areas: 'l l' 'n p'; gap: 2px 10px; align-items: baseline; padding: 12px 14px; border-radius: 14px; background: var(--ink); color: #f3ede3; text-decoration: none; }
+    .peek .lbl { grid-area: l; color: #cdbba6; margin: 0; }
+    .peek b { grid-area: n; font: 400 22px/1.1 'Instrument Serif', Georgia, serif; }
+    .peek span:last-child { grid-area: p; font: 500 13px 'IBM Plex Mono', monospace; text-align: right; }
+    .ownbody, .hbody { grid-template-columns: 1fr; }
     .mini { grid-template-columns: 1fr 1fr; }
     h3 { font-size: 25px; }
+    .mlbl { font-size: 14px; }
   }
-  @media (prefers-reduced-motion: reduce) { .schem .fbrew { animation: none; } .pipe, .flow { transition: none; } }
+  @media (max-width: 420px) { .modes button { padding: 9px 12px; } }
+  @media (prefers-reduced-motion: reduce) { .schem .fbrew { animation: none; } .pipe, .flow, .heater { transition: none; } }
 </style>
