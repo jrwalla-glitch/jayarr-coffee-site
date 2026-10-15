@@ -92,7 +92,7 @@
 
 <div class="gg">
   <div class="loupe-wrap">
-    <svg class="loupe" viewBox="0 0 280 280" role="img" aria-label={`Magnified grounds for ${m.label}: ${m.grindLabel.toLowerCase()}, about ${m.grindMicrons.min} to ${m.grindMicrons.max} micrometres${grinder === 'blade' ? ', from a blade grinder with dust and large chunks mixed in' : ''}.`}>
+    <svg class="loupe" viewBox="0 0 280 280" role="img" aria-label={`Magnified grounds for ${m.label}: ${m.grindLabel.toLowerCase()}, about ${m.grindMicrons.min} to ${m.grindMicrons.max} micrometers${grinder === 'blade' ? ', from a blade grinder with dust and large chunks mixed in' : ''}.`}>
       <defs><clipPath id="gg-lens"><circle cx="140" cy="140" r="122" /></clipPath>
         <radialGradient id="gg-glass" cx=".35" cy=".3" r=".9"><stop offset="0" stop-color="#fff" stop-opacity=".55" /><stop offset=".5" stop-color="#fff" stop-opacity="0" /></radialGradient></defs>
       <circle cx="140" cy="140" r="122" fill="#efe4d3" />
@@ -109,7 +109,7 @@
       <text x={96 + 500 * PX_PER_UM} y="240" text-anchor="middle" class="sb">1 mm</text>
     </svg>
     <p class="cap">Drawn to the 1 mm scale bar. An illustration of a typical spread, not a photo or a measurement.</p>
-    <figure class="spread" aria-label={`Illustrative spread of particle sizes${grinder === 'blade' ? ' from a blade grinder: many more fines under 100 micrometres, and some large chunks' : ': most particles near the range, with a small share of fines under 100 micrometres'}.`}>
+    <figure class="spread" aria-label={`Illustrative spread of particle sizes${grinder === 'blade' ? ' from a blade grinder: many more fines under 100 micrometers, and some large chunks' : ': most particles near the range, with a small share of fines under 100 micrometers'}.`}>
       <div class="bars" aria-hidden="true">
         {#each hist as hgt, i (i)}<span class="bar" class:fine={i === 0} class:band={i * BIN + BIN > m.grindMicrons.min && i * BIN < m.grindMicrons.max} style:height="{Math.max(2, hgt * 100)}%"></span>{/each}
       </div>
@@ -130,7 +130,7 @@
       <button type="button" aria-pressed={grinder === 'burr'} onclick={() => (grinder = 'burr')}>Burr grinder</button>
       <button type="button" aria-pressed={grinder === 'blade'} onclick={() => (grinder = 'blade')}>Blade grinder</button>
     </div>
-    {#if grinder === 'blade'}<p class="warn">A blade chops rather than grinds: you get dust and boulders in the same cup, so it extracts unevenly and tastes sour and bitter at once. A burr grinder is the single biggest upgrade.</p>{/if}
+    {#if grinder === 'blade'}<p class="warn">A blade chops rather than grinds, so it gives a wide spread of sizes, from dust to large chunks. A spread that wide can extract unevenly: the dust extracts fast and the chunks slowly. A burr grinder gives a more even grind.</p>{/if}
     <dl class="too">
       <div><dt>Signs it's too fine</dt><dd>{too.fine}</dd></div>
       <div><dt>Signs it's too coarse</dt><dd>{too.coarse}</dd></div>
@@ -143,7 +143,7 @@
   </div>
 
   <figure class="ruler">
-    <figcaption class="rh">Grind size by brew method <span>micrometres (µm), typical ranges</span></figcaption>
+    <figcaption class="rh">Grind size by brew method <span>micrometers (µm), typical ranges</span></figcaption>
     <div class="rows">
       {#each ROWS as mm (mm.id)}
         <button type="button" class="rrow" aria-pressed={mm.id === method} onclick={() => (method = mm.id)}>

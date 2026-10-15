@@ -305,3 +305,14 @@ test('blind Opus r5: espresso yield moves strength the right way; fast cups are 
     assert.ok(!ok(diagnose({ method, symptom, answers })).zone.endsWith('strong'), `${method} ${symptom} fast`);
   }
 });
+
+test('"Runs too fast" and the shot-time question use the same threshold (25 s, the Brew Guide\'s 25–30 s shot)', () => {
+  const gushing = SYMPTOMS.find((s) => s.id === 'gushing');
+  const q = nextQuestion({ method: 'espresso', symptom: 'bitter', answers: {} });
+  assert.equal(q.id, 'shot');
+  const fast = q.options.find((o) => o.id === 'fast').label;
+  const sec = (t) => Number(t.match(/under (\d+) seconds/i)?.[1]);
+  assert.equal(sec(gushing.tagline), 25, gushing.tagline);
+  assert.equal(sec(gushing.tagline), sec(fast), `${gushing.tagline} vs ${fast}`);
+  assert.equal(METHODS.find((m) => m.id === 'espresso').timeS.min, 25);
+});

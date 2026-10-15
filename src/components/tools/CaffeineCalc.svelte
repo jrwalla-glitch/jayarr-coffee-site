@@ -1,7 +1,7 @@
 <script>
   // Caffeine data sourced from COFFEE_KNOWLEDGE_SYNTHESIS.md
-  // Newcastle University 2018 HPLC analysis, Gloess et al. 2013
-  // FDA limit: 400mg/day healthy adults | ACOG pregnancy limit: 200mg/day
+  // Espresso 63 mg: USDA FoodData Central SR Legacy 171891 (212 mg per 100 g × 29.6 g per fl oz, calculated)
+  // FDA reference: 400 mg/day for most adults | ACOG Committee Opinion 462: under 200 mg/day is "moderate" (quoted below, R5)
   const drinks = [
     { id: 'pour-over', name: 'Pour Over', serving: '8 oz', mg: 100, note: 'V60, Chemex, Kalita' },
     { id: 'drip', name: 'Drip Coffee', serving: '8 oz', mg: 95, note: 'Auto drip machine' },
@@ -68,9 +68,9 @@
         </div>
       </div>
       <div class="limit-labels">
-        <span class="limit-note">FDA daily limit: 400 mg</span>
+        <span class="limit-note">FDA reference: 400 mg a day for most adults</span>
         {#if overLimit}
-          <span class="limit-warning">Over recommended limit</span>
+          <span class="limit-warning">Above the FDA reference</span>
         {/if}
       </div>
     </div>
@@ -119,12 +119,12 @@
     <span class="section-label">Good to know</span>
     <div class="notes-grid">
       <div class="note-card">
-        <h4 class="note-title">Half-life: ~5 hours</h4>
-        <p class="note-text">Caffeine's half-life averages 5 hours but ranges 1.5–10 hours depending on genetics. A 3pm coffee means ~half is still active at 8pm.</p>
+        <h4 class="note-title">Half-life: a few hours</h4>
+        <p class="note-text">Studies put the average half-life at 2.5–4.5 hours in adult men (IOM, 2001) and 3.4 hours, range 2–5 (Knutti, 1981); a 2025 sleep trial says “typically 3–6 hours.” At 5 hours, a middle setting, about half of a 3 pm coffee is still in you at 8 pm.</p>
       </div>
       <div class="note-card">
-        <h4 class="note-title">Pregnancy: 200 mg max</h4>
-        <p class="note-text">ACOG recommends no more than 200 mg/day during pregnancy. Caffeine crosses the placenta and its half-life extends up to 3x in the third trimester. <a href="/blog/how-is-coffee-decaffeinated/" class="note-link">Decaf options &rarr;</a></p>
+        <h4 class="note-title">Pregnancy</h4>
+        <p class="note-text">ACOG says, “Moderate caffeine consumption (less than 200 mg per day) does not appear to be a major contributing factor in miscarriage or preterm birth.” Ask your clinician about your own case. In one study the half-life rose from 3 hours to 10.5 hours in the last four weeks of pregnancy, about 3½ times as long (Knutti, 1982). <a href="/blog/how-is-coffee-decaffeinated/" class="note-link">Decaf options &rarr;</a></p>
       </div>
       <div class="note-card">
         <h4 class="note-title">Fast vs slow metabolizers</h4>

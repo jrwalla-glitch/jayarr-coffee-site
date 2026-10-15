@@ -17,7 +17,15 @@ export const DRY_MIN_G = 0.2;
 export const PPM_PER_ML_PER_L = { gh: CONCENTRATE_G_PER_L.gh / MG_EPSOM_PER_PPM_GH, kh: CONCENTRATE_G_PER_L.kh / MG_BICARB_PER_PPM_KH };
 
 // No TDS figures: the old strings disagreed with the two-salt mixes (blind Opus r3), and GH + KH isn't TDS.
-export interface WaterRecipe { id: string; name: string; gh: number; kh: number; profile: string; bestFor: string }
+export interface WaterRecipe {
+  id: string; name: string; gh: number; kh: number; profile: string; bestFor: string;
+  /** The GH is the Builder's estimate, not a maker's figure: the maker publishes alkalinity only (R7, Wave D batch 1). */
+  ghEstimated?: boolean;
+  /** No published original could be traced: the numbers are the Builder's target, not a credited recipe (R7). */
+  untraced?: boolean;
+  /** Said wherever the recipe is offered, when its numbers aren't a published recipe's own. */
+  provenance?: string;
+}
 
 // Hardness and alkalinity targets from the synthesis's recipe comparison (§2). Two salts reproduce
 // a recipe's GH and KH, not every mineral in a branded product: Third Wave Water, for example,
@@ -26,13 +34,17 @@ export interface WaterRecipe { id: string; name: string; gh: number; kh: number;
 export const WATER_RECIPES: WaterRecipe[] = [
   { id: 'sca', name: 'SCA standard', gh: 68, kh: 40, profile: 'Balanced benchmark', bestFor: 'Cupping, a neutral reference' },
   { id: 'melbourne', name: 'Melbourne', gh: 24, kh: 12, profile: 'Very soft, delicate', bestFor: 'Light-roast filter' },
-  { id: 'holy', name: 'Holy Water', gh: 62, kh: 23, profile: 'Clean, sweet, clear', bestFor: 'Light-roast pour-over' },
+  { id: 'holy', name: 'Holy Water', gh: 62, kh: 23, profile: 'Clean, sweet, clear', bestFor: 'Light-roast pour-over', untraced: true, provenance: 'We couldn\'t trace Holy Water to a published original, so its 62 GH and 23 KH are the Builder\'s target, not a credited recipe.' },
   { id: 'bh4', name: 'Barista Hustle #4', gh: 80, kh: 40, profile: 'Clean, bright, balanced', bestFor: 'Light-to-medium filter' },
   { id: 'rao', name: 'Rao/Perger (simplified)', gh: 76, kh: 50, profile: 'Balanced, rounder', bestFor: 'All-purpose, filter and espresso' },
   { id: 'hendon', name: 'Hendon', gh: 100, kh: 31, profile: 'Bright, complex', bestFor: 'Origin-focused pour-over' },
-  { id: 'tww-classic', name: 'Third Wave Water Classic (GH/KH only)', gh: 150, kh: 40, profile: 'Intense acidity and clarity', bestFor: 'Light roasts' },
-  { id: 'tww-espresso', name: 'Third Wave Water Espresso (GH/KH only)', gh: 135, kh: 80, profile: 'Smoother, more buffered', bestFor: 'Espresso' },
+  { id: 'tww-classic', name: 'Third Wave Water Classic (GH/KH only)', gh: 150, kh: 40, profile: 'Intense acidity and clarity', bestFor: 'Light roasts', ghEstimated: true, provenance: 'Third Wave Water publishes alkalinity (about 40) but not hardness, so GH 150 is the Builder\'s estimate, not a maker figure.' },
+  { id: 'tww-espresso', name: 'Third Wave Water Espresso (GH/KH only)', gh: 135, kh: 80, profile: 'Smoother, more buffered', bestFor: 'Espresso', ghEstimated: true, provenance: 'Third Wave Water publishes alkalinity (about 80) but not hardness, so GH 135 is the Builder\'s estimate, not a maker figure.' },
 ];
+
+/** A recipe's numbers as its labels show them: "GH 150 (the Builder's estimate) · KH 40". */
+export const recipeNumbers = (r: WaterRecipe) =>
+  `GH ${r.gh}${r.ghEstimated ? " (the Builder's estimate)" : ''} · KH ${r.kh}${r.untraced ? " (the Builder's target; original not traced)" : ''}`;
 
 export interface WaterPlan {
   target: WaterRecipe;
@@ -65,7 +77,7 @@ export function planWater(input: { targetId: string; volumeL: number; base?: { g
   const target = WATER_RECIPES.find((r) => r.id === input.targetId);
   if (!target) return failure('unknown-recipe', 'targetId', 'Choose a recipe.');
   const V = input.volumeL;
-  if (!finite(V) || V < 0.1 || V > 40) return failure('bad-volume', 'volumeL', 'Choose a batch between 0.1 and 40 litres.');
+  if (!finite(V) || V < 0.1 || V > 40) return failure('bad-volume', 'volumeL', 'Choose a batch between 0.1 and 40 liters.');
   const base = input.base ?? { gh: 0, kh: 0 };
   if (!finite(base.gh) || !finite(base.kh) || base.gh < 0 || base.kh < 0 || base.gh > 1000 || base.kh > 1000) return failure('bad-base', 'base', 'Enter GH and KH between 0 and 1000 ppm.');
   const Tg = target.gh, Tk = target.kh, pg = PPM_PER_ML_PER_L.gh, pk = PPM_PER_ML_PER_L.kh;
@@ -88,7 +100,7 @@ export function planWater(input: { targetId: string; volumeL: number; base?: { g
     const what = [base.gh > Tg ? 'harder' : '', base.kh > Tk ? 'more alkaline' : ''].filter(Boolean).join(' and ');
     notes.push(`Your water is ${what} than this recipe, so part of the jug is distilled water.`);
   }
-  if (ghStockMl > 1000 || khStockMl > 1000) notes.push(`This batch uses more than a litre of ${ghStockMl > 1000 && khStockMl > 1000 ? 'each stock' : ghStockMl > 1000 ? 'bottle A' : 'bottle B'}, so make two bottles' worth (or more) before you start.`);
+  if (ghStockMl > 1000 || khStockMl > 1000) notes.push(`This batch uses more than a liter of ${ghStockMl > 1000 && khStockMl > 1000 ? 'each stock' : ghStockMl > 1000 ? 'bottle A' : 'bottle B'}, so make two bottles' worth (or more) before you start.`);
   if (input.espresso) notes.push('For an espresso machine, check the maker\'s water specification (hardness, alkalinity and chloride) first; harder water scales boilers faster. Epsom salt and baking soda add no chloride.');
   // Dry route: as much of your water as the targets allow (no room needed for stock bottles), then
   // salts for what's missing. Weighing below DRY_MIN_G on a 0.01 g scale is too imprecise.

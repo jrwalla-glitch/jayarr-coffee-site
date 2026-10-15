@@ -8,7 +8,10 @@ import { methodById } from './methods.ts';
 // VERIFY need an independent primary source before ship (fact-check queue).
 
 export const CAFFEINE = {
-  /** Single espresso shot (about 1 oz), synthesis §15 and §20 #35 (Newcastle 2018). */
+  /**
+   * Single espresso shot (about 1 oz). Typical 63 mg: USDA FoodData Central SR Legacy 171891, espresso
+   * at 212 mg per 100 g, is 62.8 mg in 1 fl oz (29.6 g), calculated (R1). The 60–75 range is synthesis §15, §20 #35.
+   */
   espressoShotMg: { min: 60, max: 75, typical: 63 },
   /** Caffeine as a fraction of roasted coffee mass. */
   beanFraction: { arabica: { min: 0.009, max: 0.013 }, robusta: { min: 0.017, max: 0.025 } },
@@ -22,8 +25,14 @@ export const CAFFEINE = {
     'cold-brew': { min: 0.6, max: 0.9 },
   },
   decafPer6Oz: { min: 3, max: 6 },
-  halfLifeH: { typical: 5, min: 1.5, max: 10 },
-  sourceIds: ['synthesis', 'newcastle-2018'],
+  /**
+   * The calculator's three half-life settings (R4). Primary averages: 2.5–4.5 h in adult men (IOM 2001),
+   * 3.4 h, range 2–5 (Knutti 1981), "typically 3–6 hours" (Gardiner 2025). Typical 5 h is the middle
+   * setting, at the slow end of those, so bedtime figures lean high. The old "1.5–10 h" range had no
+   * primary source and is gone. Late pregnancy: 3 h rising to 10.5 h, about 3½ times (Knutti 1982).
+   */
+  halfLifeH: { typical: 5, faster: 3, slower: 8 },
+  sourceIds: ['synthesis', 'usda-fdc-espresso', 'iom-2001', 'knutti-1981', 'knutti-1982', 'gardiner-2025'],
   VERIFY: ['beanFraction (arabica/robusta, roasted basis)', 'extractionFraction by method', 'absorption rate used by the curve'],
 } as const;
 
@@ -82,11 +91,15 @@ export function caffeineCurve(intakes: { atMin: number; mg: number }[], fromMin:
   return out;
 }
 
-/** Agency guidance, in the agencies' own terms. Wording to be checked against the primary pages. */
+/**
+ * Agency guidance, quoted in the agencies' own words (R5). A population guide, never a personal limit.
+ * FDA: "Spilling the Beans: How Much Caffeine is Too Much?", content current as of 8/28/2024 (its
+ * footnote mark after "milligrams" left out). ACOG: Committee Opinion 462 (2010, reaffirmed), abstract.
+ */
 export const GUIDANCE = [
-  { id: 'fda-adult-daily', mg: 400, per: 'day', who: 'FDA', wording: 'For healthy adults, the FDA has cited 400 mg a day as an amount not generally associated with dangerous, negative effects.' },
+  { id: 'fda-adult-daily', mg: 400, per: 'day', who: 'FDA', wording: 'The FDA says, “For most adults, the FDA has cited 400 milligrams a day — that\'s about two to three 12-fluid-ounce cups of coffee — as an amount not generally associated with negative effects.”' },
   { id: 'efsa-single-dose', mg: 200, per: 'dose', who: 'EFSA', wording: 'EFSA found single doses of up to 200 mg raise no safety concerns for healthy adults.' },
-  { id: 'acog-pregnancy', mg: 200, per: 'day', who: 'ACOG', wording: 'ACOG advises pregnant people to keep caffeine under 200 mg a day.' },
+  { id: 'acog-pregnancy', mg: 200, per: 'day', who: 'ACOG', wording: 'ACOG (Committee Opinion 462) says, “Moderate caffeine consumption (less than 200 mg per day) does not appear to be a major contributing factor in miscarriage or preterm birth. The relationship of caffeine to growth restriction remains undetermined.”' },
 ] as const;
 
 // ── A day of drinks (Caffeine Calculator) ──

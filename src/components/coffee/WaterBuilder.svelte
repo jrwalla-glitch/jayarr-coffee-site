@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { WATER_RECIPES, planWater, nearestRecipe, CONCENTRATE_G_PER_L } from '../../lib/coffee/index.ts';
+  import { WATER_RECIPES, planWater, nearestRecipe, recipeNumbers, CONCENTRATE_G_PER_L } from '../../lib/coffee/index.ts';
 
   type Base = 'distilled' | 'tested' | 'unknown';
   let base = $state<Base>('distilled');
@@ -81,7 +81,7 @@
   <figure class="stage">
     <svg viewBox="0 0 490 350" role="img" aria-label={`Water map: hardness across, alkalinity up. Target ${p?.target.name ?? ''}${base === 'tested' ? `; your water at GH ${gh}, KH ${kh}` : ''}.`}>
       <rect x={L} y={T} width={R - L} height={B - T} rx="8" fill="#f2f6f6" />
-      <!-- GH:KH 2:1 and 3:1 guides (Gagné) -->
+      <!-- GH:KH 2:1 and 3:1 guide lines: reading aids, not taken from a source (Gagné's water post draws a 1:1 line; Wave D batch 1) -->
       <line x1={mx(0)} y1={my(0)} x2={mx(180)} y2={my(90)} class="guide" />
       <line x1={mx(0)} y1={my(0)} x2={mx(180)} y2={my(60)} class="guide" />
       <text x={mx(176)} y={my(90) - 6} text-anchor="end" class="gl">GH:KH 2:1</text>
@@ -103,7 +103,7 @@
         <text x={mx(gh)} y={my(kh) - 20} text-anchor={mx(gh) < L + 50 ? 'start' : mx(gh) > R - 50 ? 'end' : 'middle'} class="ln strong">your water{gh > GMAX || kh > KMAX ? ' (off the chart)' : ''}</text>
       {/if}
     </svg>
-    <figcaption>Hardness (calcium and magnesium) helps pull flavour out; alkalinity (bicarbonate) buffers acidity. The dashed lines mark hardness two and three times the alkalinity, a common starting range; recipes sit on both sides of it.</figcaption>
+    <figcaption>Hardness (calcium and magnesium) helps pull flavor out; alkalinity (bicarbonate) buffers acidity. The dashed lines mark hardness two and three times the alkalinity, as guides for reading the map; recipes sit on both sides of them.</figcaption>
   </figure>
 
   <div class="panel">
@@ -132,7 +132,7 @@
       <div class="recipes">
         {#each WATER_RECIPES as r (r.id)}
           <button type="button" aria-pressed={r.id === targetId} onclick={() => (targetId = r.id)}>
-            <span class="rn">{r.name}</span><span class="rp">{r.profile}</span><span class="rv">GH {r.gh} · KH {r.kh}</span>
+            <span class="rn">{r.name}</span><span class="rp">{r.profile}</span><span class="rv">{recipeNumbers(r)}</span>
           </button>
         {/each}
       </div>
@@ -143,7 +143,7 @@
       <div class="row">
         <div class="seg">
           {#each (gallons ? [1, 2, 5] : [1, 2, 4, 10]) as v (v)}<button type="button" aria-pressed={volume === v} onclick={() => (volume = v)}>{v} {gallons ? (v === 1 ? 'gallon' : 'gallons') : 'L'}</button>{/each}
-          <label class="fld vol"><span class="sr">Custom batch, {gallons ? 'gallons' : 'litres'}</span><input type="number" inputmode="decimal" min="0.1" step="0.1" value={volume} oninput={(e) => { const v = Number((e.currentTarget as HTMLInputElement).value); volume = Number.isFinite(v) ? v : NaN; }} /><span class="unit">{gallons ? 'gal' : 'L'}</span></label>
+          <label class="fld vol"><span class="sr">Custom batch, {gallons ? 'gallons' : 'liters'}</span><input type="number" inputmode="decimal" min="0.1" step="0.1" value={volume} oninput={(e) => { const v = Number((e.currentTarget as HTMLInputElement).value); volume = Number.isFinite(v) ? v : NaN; }} /><span class="unit">{gallons ? 'gal' : 'L'}</span></label>
         </div>
         <div class="seg">
           <!-- Switching units converts the batch you were building rather than resetting it. -->
@@ -171,6 +171,7 @@
           <p class="direct">Weighing the dry salts directly isn't practical for this batch: {p.dry.minBatchL <= 40 ? `the amounts are under 0.2 g, too small for a 0.01 g scale to measure accurately. From about ${vol(Math.ceil(p.dry.minBatchL * 10) / 10)} they're big enough.` : 'the amounts are a few milligrams. Use the stock bottles.'}</p>
         {/if}
         <p class="out">Result: GH {Math.round(p.gh)} · KH {Math.round(p.kh)} ppm as CaCO₃. {p.target.bestFor}.</p>
+        {#if p.target.provenance}<p class="note">{p.target.provenance}</p>{/if}
         {#each p.notes as n (n)}<p class="note">{n}</p>{/each}
         <p class="note">Use plain Epsom salt (magnesium sulfate heptahydrate, unscented, food or USP grade) and ordinary baking soda (sodium bicarbonate). Two salts match a recipe's hardness and alkalinity, not every mineral in a branded product. All the hardness they add is magnesium, from the Epsom salt, so the numbers match a recipe's GH, not its calcium{targetId === 'sca' ? ': the SCA\'s 68 is a calcium-hardness figure' : ''}.</p>
       </div>

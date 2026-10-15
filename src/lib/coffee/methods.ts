@@ -16,7 +16,7 @@ export const METHODS: Method[] = [
     steps: [
       { kind: 'prep', atS: 0, text: 'Rinse the paper filter with hot water and tip the rinse out. Add the coffee, shake it level, tare the scale.', cue: 'Flat bed, scale at zero.' },
       { kind: 'bloom', atS: 0, untilS: 45, toG: 60, text: 'Start the timer and pour just enough to wet every ground.', cue: 'The bed swells and bubbles; no dry patches.' },
-      { kind: 'pour', atS: 45, untilS: 150, toG: 400, text: 'Pour slowly in small circles at the centre, without stopping. Make one lap near the edge as you pass the third and two-thirds marks.', cue: 'Reach the total by 2:30.' },
+      { kind: 'pour', atS: 45, untilS: 150, toG: 400, text: 'Pour slowly in small circles at the center, without stopping. Make one lap near the edge as you pass the third and two-thirds marks.', cue: 'Reach the total by 2:30.' },
       { kind: 'drawdown', atS: 150, untilS: 210, text: 'Let it drain.', cue: 'Done around 3:00–4:00. Much faster: grind finer next time. Much slower: coarser.' },
     ],
     capacity: { minDoseG: 10, maxDoseG: 32 },
@@ -54,7 +54,7 @@ export const METHODS: Method[] = [
     steps: [
       { kind: 'prep', atS: 0, text: 'Rinse the filter without pouring on its walls, add the coffee, tare.', cue: 'Keep water off the fluted walls.' },
       { kind: 'bloom', atS: 0, untilS: 35, toG: 50, text: 'Start the timer and bloom.', cue: 'Every ground wet.' },
-      { kind: 'pour', atS: 35, untilS: 45, toG: 150, text: 'First pulse, in small circles at the centre.', cue: 'Stay off the walls.' },
+      { kind: 'pour', atS: 35, untilS: 45, toG: 150, text: 'First pulse, in small circles at the center.', cue: 'Stay off the walls.' },
       { kind: 'pour', atS: 65, untilS: 75, toG: 200, text: 'Pulse.', cue: 'Pour when the level has dropped a little.' },
       { kind: 'pour', atS: 90, untilS: 100, toG: 250, text: 'Pulse.', cue: '' },
       { kind: 'pour', atS: 115, untilS: 125, toG: 300, text: 'Pulse.', cue: '' },
@@ -159,7 +159,9 @@ export const METHODS: Method[] = [
     timeS: { min: 25, max: 30 },
     grindMicrons: { min: 200, max: 300 }, grindLabel: 'Fine', texture: 'powdered sugar',
     retentionGPerG: 0,
-    base: { doseG: 18, waterG: 36, by: "Scott Rao's espresso parameters" },
+    // 18 g → 36 g in 25–30 s at 91–95 °C sits inside Rao's normale ranges (Espresso Extraction ch. 1:
+    // 14–22 g, 1.5–2.0× the dose, 25–40 s, 91–95 °C) but is narrower, so it isn't credited as his recipe.
+    base: { doseG: 18, waterG: 36, by: "a recipe within Scott Rao's published ranges" },
     steps: [
       { kind: 'prep', atS: 0, text: 'Grind, dose into the basket, level it and tamp flat.', cue: 'Level puck, no gaps at the edge.' },
       { kind: 'pull', atS: 0, untilS: 28, toG: 36, text: 'Start the shot and the timer together. Stop at the yield.', cue: 'Aim for 25–30 seconds. Faster: grind finer. Slower: coarser.' },

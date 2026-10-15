@@ -5,6 +5,13 @@ import { measuredExtraction } from '../index.ts';
 const ok = (r) => { assert.equal(r.ok, true, JSON.stringify(r)); return r.value; };
 const near = (a, b, eps = 1e-9) => assert.ok(Math.abs(a - b) <= eps, `${a} vs ${b}`);
 
+test('R10: the espresso band stays 8–12% TDS, credited as a common rule of thumb with Rao\'s 10–13% beside it', () => {
+  const r = ok(measuredExtraction({ kind: 'espresso', doseG: 18, liquidG: 36, tdsPct: 10 }));
+  assert.deepEqual(r.chart.tdsIdeal, [8, 12]);
+  const n = r.notes.find((x) => /SCA chart/.test(x));
+  assert.ok(/8–12% TDS\) is a common rule of thumb/.test(n) && /10–13%/.test(n) && /Espresso Extraction, ch\. 13/.test(n), n);
+});
+
 test('Astra\'s acceptance cases: 18 g → 36 g at 10% is 20%; 20 g → 300 g at 1.3% is 19.5%', () => {
   const esp = ok(measuredExtraction({ kind: 'espresso', doseG: 18, liquidG: 36, tdsPct: 10 }));
   near(esp.eyPct, 20); near(esp.dissolvedG, 3.6); assert.equal(esp.zone, 'ideal-ideal');
@@ -86,4 +93,16 @@ test('Opus r4: an americano entered as a shot asks about dilution instead of adv
   assert.equal(r.placeable, false); assert.deepEqual(r.moves, []); assert.match(r.notes.join(' '), /diluted/);
   assert.equal(ok(measuredExtraction({ kind: 'espresso', doseG: 18, liquidG: 236, tdsPct: 1.5, diluted: true })).placeable, true);
   assert.equal(ok(measuredExtraction({ kind: 'espresso', doseG: 18, liquidG: 54, tdsPct: 7 })).placeable, true, 'a 1:3 shot is fine');
+});
+
+test('an immersion reading in the cold brew range says so, so filter-chart moves don\'t read as cold brew instructions (Wave D batch 4)', () => {
+  const NOTE = 'If this is cold brew, 15–20% extraction is typical for it.';
+  const cb = ok(measuredExtraction({ kind: 'immersion', doseG: 96, liquidG: 600, tdsPct: 2.5 }));
+  near(cb.eyPct, 15.625);
+  assert.ok(cb.notes.includes(NOTE), cb.notes.join(' | '));
+  assert.ok(cb.moves.includes('grind finer or steep longer'), 'the chart\'s moves are still offered, as possible moves');
+  assert.ok(ok(measuredExtraction({ kind: 'immersion', doseG: 100, liquidG: 500, tdsPct: 4 })).notes.includes(NOTE), 'exactly 20.0% is in range');
+  assert.ok(!ok(measuredExtraction({ kind: 'percolation', doseG: 96, liquidG: 600, tdsPct: 2.5 })).notes.includes(NOTE), 'not for pour-over');
+  assert.ok(!ok(measuredExtraction({ kind: 'immersion', doseG: 30, liquidG: 500, tdsPct: 1.25 })).notes.includes(NOTE), 'not above the range (20.8%)');
+  assert.ok(!ok(measuredExtraction({ kind: 'immersion', doseG: 100, liquidG: 600, tdsPct: 2.3 })).notes.includes(NOTE), 'not below it (13.8%)');
 });

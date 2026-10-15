@@ -13,7 +13,7 @@ export { SYMPTOMS, ZONES, LEVERS, nextQuestion, questionsFor, diagnose, placeOnM
 export type { SymptomId, Symptom, Question, QuestionId, DoctorState, Diagnosis, ZoneId, Zone, Lever, Family, Variable } from './doctor.ts';
 export { freshness, stages as freshnessStages, isRealDate } from './freshness.ts';
 export type { FreshUse, Storage, StageId, Stage, FreshnessInput, FreshnessResult } from './freshness.ts';
-export { WATER_RECIPES, planWater, nearestRecipe, MG_EPSOM_PER_PPM_GH, MG_BICARB_PER_PPM_KH, CONCENTRATE_G_PER_L, PPM_PER_ML_PER_L } from './water.ts';
+export { WATER_RECIPES, planWater, nearestRecipe, recipeNumbers, MG_EPSOM_PER_PPM_GH, MG_BICARB_PER_PPM_KH, CONCENTRATE_G_PER_L, PPM_PER_ML_PER_L } from './water.ts';
 export type { WaterRecipe, WaterPlan } from './water.ts';
 export { DRINKS, drinkById, refById, knownVolume, compareRefs } from './drinks.ts';
 export type { Drink, DrinkRef, Layer, LayerKind } from './drinks.ts';

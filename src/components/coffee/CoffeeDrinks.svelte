@@ -197,7 +197,7 @@
       {/each}
     </svg>
     {#if narrow}
-      <ul class="key" aria-label="Colour key">
+      <ul class="key" aria-label="Color key">
         {#each keyKinds as k (k)}<li><span class="sw" style:background={FILL[k]}></span>{NAME[k]}</li>{/each}
         {#if hasUnknown}<li><span class="sw hatch"></span>amount not published</li>{/if}
       </ul>
