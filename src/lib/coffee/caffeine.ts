@@ -12,7 +12,10 @@ export const CAFFEINE = {
   espressoShotMg: { min: 60, max: 75, typical: 63 },
   /** Caffeine as a fraction of roasted coffee mass. */
   beanFraction: { arabica: { min: 0.009, max: 0.013 }, robusta: { min: 0.017, max: 0.025 } },
-  /** Share of the caffeine in the grounds that ends up in the cup. */
+  /**
+   * Share of the caffeine in the grounds that dissolves into the brew water. For immersion brews
+   * the grounds then keep some of that water, as strong as the cup, so the cup gets less (below).
+   */
   extractionFraction: {
     percolation: { min: 0.75, max: 0.95 },
     immersion: { min: 0.75, max: 0.95 },
@@ -26,8 +29,12 @@ export const CAFFEINE = {
 
 export type Bean = 'arabica' | 'robusta' | 'blend';
 
-/** Homemade brewed coffee from its dose (grams of coffee used for this drink). */
-export function estimateBrewedMg(doseG: number, method: MethodId, bean: Bean = 'arabica'): Result<Range> {
+/**
+ * Homemade brewed coffee from its dose (grams of coffee used for this drink). Immersion brews lose
+ * the caffeine in the liquid the grounds keep (about 2 g per g, as strong as the cup): the cup gets
+ * 1 − retention ÷ ratio of what dissolved. At cold brew's 1:6.25 that is about 68% (Muse, Wave A r2).
+ */
+export function estimateBrewedMg(doseG: number, method: MethodId, bean: Bean = 'arabica', ratio?: number): Result<Range> {
   if (!finite(doseG) || doseG <= 0 || doseG > 300) return failure('bad-dose', 'doseG', 'Enter the coffee you used, in grams.');
   if (method === 'espresso') return failure('use-shots', 'method', 'For espresso, count shots instead.');
   const b = bean === 'blend'
@@ -36,8 +43,10 @@ export function estimateBrewedMg(doseG: number, method: MethodId, bean: Bean = '
   const ex = method === 'cold-brew' ? CAFFEINE.extractionFraction['cold-brew']
     : (method === 'french-press' || method === 'aeropress') ? CAFFEINE.extractionFraction.immersion
     : CAFFEINE.extractionFraction.percolation;
-  // grams of coffee × caffeine fraction × share extracted, in milligrams
-  return success({ min: doseG * b.min * ex.min * 1000, max: doseG * b.max * ex.max * 1000 });
+  const m = methodById(method);
+  const served = m && m.family === 'immersion' ? 1 - m.retentionGPerG / (ratio ?? m.ratio.classic) : 1;
+  // grams of coffee × caffeine fraction × share dissolved × share that reaches the cup, in milligrams
+  return success({ min: doseG * b.min * ex.min * served * 1000, max: doseG * b.max * ex.max * served * 1000 });
 }
 
 export function espressoMg(shots: number): Range {
@@ -105,7 +114,7 @@ export function intakeMg(i: Intake): Result<Range> {
   if (!m || method === 'espresso') return failure('bad-method', 'method', 'Choose how it was brewed.');
   // The Brew Guide's own arithmetic at the classic ratio, without the brewer's size limit, so the
   // estimate grows smoothly with the cup (a cup bigger than one brewer makes is still that coffee).
-  return estimateBrewedMg(doseForCup(m, i.cupMl, m.ratio.classic), method, i.bean ?? 'arabica');
+  return estimateBrewedMg(doseForCup(m, i.cupMl, m.ratio.classic), method, i.bean ?? 'arabica', m.ratio.classic);
 }
 
 /**
@@ -164,14 +173,16 @@ export function inBodyAt(intakes: Intake[], atMin: number, halfLifeH: number = C
 }
 
 // Share: ?d=v60.355@480,esp.2@630,decaf.237@1200&hl=5&bed=1380
-// Health details never go into a link: there is no pregnancy field, and old links' preg= is ignored.
+// Health details never go into a link: no pregnancy field and no half-life. Old links' preg= is ignored; an old hl= is still read.
 export function encodeDay(state: { intakes: Intake[]; halfLifeH: number; bedMin: number }): string {
   const q = new URLSearchParams();
   q.set('d', state.intakes.map((i) => i.kind === 'espresso' ? `esp.${i.shots}@${Math.round(i.atMin)}`
     : i.kind === 'custom' ? `mg.${Math.round(i.mg ?? 0)}@${Math.round(i.atMin)}`
     : i.kind === 'decaf' ? `decaf.${Math.round(i.cupMl ?? 0)}@${Math.round(i.atMin)}`
     : `${i.method}.${Math.round(i.cupMl ?? 0)}${i.bean && i.bean !== 'arabica' ? '.' + i.bean : ''}@${Math.round(i.atMin)}`).join(','));
-  if (state.halfLifeH !== CAFFEINE.halfLifeH.typical) q.set('hl', String(state.halfLifeH));
+  // No half-life either: a slow one can reveal pregnancy by inference (blind Opus r2). The
+  // recipient sees the day at the typical 5 h and can choose their own.
+  void state.halfLifeH;
   if (state.bedMin !== 1380) q.set('bed', String(state.bedMin));
   return q.toString();
 }
@@ -190,8 +201,9 @@ export function decodeDay(query: string): Result<{ intakes: Intake[]; halfLifeH:
     const [, kind, n, bean, at] = m;
     // Older links wrote after-midnight drinks as 0–359; they belong to the end of the day.
     const n0 = Number(at);
-    // Times under 1440 are clock times (older links); place them by the link's own bedtime.
-    const atMin = n0 < 1440 ? dayMinute(n0, bedForLink) : n0;
+    // Place every time by its clock reading and the link's own bedtime, so older links written
+    // under a different day rule (05:30 as 1770) land where they belong.
+    const atMin = dayMinute(n0 % 1440, bedForLink);
     if (n0 > 2880) return failure('bad-drink', 'd', 'A drink in the link is not valid.');
     if (kind === 'esp') intakes.push({ kind: 'espresso', shots: Number(n), atMin });
     else if (kind === 'mg') intakes.push({ kind: 'custom', mg: Number(n), atMin });

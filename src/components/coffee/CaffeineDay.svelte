@@ -1,9 +1,12 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { METHODS, GUIDANCE, CAFFEINE, intakeMg, dayCurve, dailyTotal, inBodyAt, encodeDay, decodeDay, dayMinute, diaryDayKey, newDayAt, bedMinute, flOzToMl, mlToFlOz } from '../../lib/coffee/index.ts';
-  import type { Intake, MethodId } from '../../lib/coffee/index.ts';
+  import { METHODS, GUIDANCE, intakeMg, dayCurve, dailyTotal, inBodyAt, encodeDay, decodeDay, dayMinute, newDayAt, bedMinute, flOzToMl, mlToFlOz, buildRecipe,
+    DEFAULT_SETTINGS, dayWindow, dayStartClock, dayView, instantInDay, instantNearest, minutesFromMidnight, bedInstant, clockOf, pruneLog, migrateV1, placeSharedDay, toDiaryMinutes } from '../../lib/coffee/index.ts';
+  import type { Intake, MethodId, LoggedDrink, DiarySettings } from '../../lib/coffee/index.ts';
 
-  // The chart runs from 6 am (or the first drink) to 2 am (or past bedtime).
+  // Your diary is a log of real moments (see diary.ts): "today" is a view over it, so nothing is
+  // thrown away to make a day fit, and daylight-saving nights can't move a drink. A shared link is
+  // a separate, temporary day that never touches the log unless you keep it.
   const BREWERS = METHODS.filter((m) => m.id !== 'espresso');
   const SIZES_OZ = [6, 8, 12, 16, 20];
   const ESPRESSO_DRINKS = [
@@ -16,20 +19,21 @@
     { h: 5, label: 'Typical', note: 'The average adult half-life is about 5 hours (range about 1.5 to 10).' },
     { h: 8, label: 'Slower', note: 'Pregnancy and oral contraceptives slow it down; in late pregnancy it can be up to three times longer.' },
   ];
-
-  let intakes = $state<Intake[]>([
+  const EXAMPLE: Intake[] = [
     { kind: 'brewed', method: 'drip-machine', cupMl: flOzToMl(12), atMin: 7 * 60 + 30 },
     { kind: 'espresso', shots: 2, atMin: 14 * 60 },
-  ]);
-  let halfLifeH = $state(5);
-  let bedMin = $state(23 * 60);
-  let pregnant = $state(false);
-  let nowMin = $state<number | null>(null);
+  ];
+  const STORE = 'jayarr-caffeine-log-v2';
+  const STORE_V1 = 'jayarr-caffeine-day-v1';
+  const newId = () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+
+  let mode = $state<'example' | 'own' | 'shared'>('example');
+  let settings = $state<DiarySettings>({ ...DEFAULT_SETTINGS });
+  let log = $state<LoggedDrink[]>([]);
+  let shared = $state<{ intakes: Intake[]; halfLifeH: number; bedMin: number } | null>(null);
+  let nowMs = $state(Date.now());
   let mounted = $state(false);
-  let example = $state(true);
-  const STORE = 'jayarr-caffeine-day-v1';
-  // The diary day starts at 6 am local time, so a 1 am coffee still belongs to yesterday's diary.
-  const todayKey = () => diaryDayKey(new Date(), bedMin);
+  let hlBeforePregnancy = $state<number | null>(null);
 
   // add-drink form
   let addKind = $state<'brewed' | 'espresso' | 'decaf' | 'custom'>('brewed');
@@ -39,33 +43,44 @@
   let addShots = $state(2);
   let addEsp = $state('Double espresso');
   let addTime = $state('09:00');
+  let addError = $state('');
 
-  // Diary minutes: the day runs 6 am to 6 am, so 00:30 after a late evening is 1470, not 30.
-  const toMin = (hhmm: string) => { const [h, m] = hhmm.split(':').map(Number); return dayMinute(h * 60 + m, bedMin); };
-  const hhmm = (min: number) => { const m = ((min % 1440) + 1440) % 1440; return `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`; };
-  const clock12 = (min: number) => { const m = ((min % 1440) + 1440) % 1440; const h = Math.floor(m / 60), mm = m % 60; return `${((h + 11) % 12) + 1}${mm ? ':' + String(mm).padStart(2, '0') : ''} ${h < 12 ? 'am' : 'pm'}`; };
+  const toClock = (hhmm: string) => { const [h, m] = hhmm.split(':').map(Number); return h * 60 + m; };
+  const hhmm = (min: number) => { const m = ((Math.round(min) % 1440) + 1440) % 1440; return `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`; };
+  const clock12 = (min: number) => { const m = ((Math.round(min) % 1440) + 1440) % 1440; const h = Math.floor(m / 60), mm = m % 60; return `${((h + 11) % 12) + 1}${mm ? ':' + String(mm).padStart(2, '0') : ''} ${h < 12 ? 'am' : 'pm'}`; };
   const r0 = (n: number) => Math.round(n);
   const rangeText = (lo: number, hi: number) => (r0(lo) === r0(hi) ? `${r0(lo)}` : `${r0(lo)}–${r0(hi)}`);
 
-  // Keep each drink's index into `intakes`: $state proxies break identity checks (indexOf/===).
-  let rows = $derived(intakes.map((i, idx) => ({ i, idx })).sort((a, b) => a.i.atMin - b.i.atMin));
+  let halfLifeH = $derived(mode === 'shared' && shared ? shared.halfLifeH : settings.halfLifeH);
+  let bedMin = $derived(mode === 'shared' && shared ? shared.bedMin : settings.bedMin);
+  let startClock = $derived(dayStartClock({ bedMin, dayStartMin: mode === 'shared' ? null : settings.dayStartMin }));
+  let win = $derived(dayWindow(nowMs, dayStartClock(settings)));
+  let ownView = $derived(dayView(log, win));
+
+  // Rows for the list: own drinks keep their ids and real clock times; example and shared days are abstract.
+  let rows = $derived(mode === 'own'
+    ? ownView.today.map((x) => ({ key: x.id, i: x as Intake, clock: clockOf(x.at) }))
+    : (mode === 'shared' && shared ? shared.intakes : EXAMPLE).map((i, k) => ({ key: String(k), i, clock: ((Math.round(i.atMin) % 1440) + 1440) % 1440 })).sort((a, b) => a.i.atMin - b.i.atMin));
   let sorted = $derived(rows.map((r) => r.i));
+  // Earlier drinks still in your body (last night's late coffee) count in the curve, not the total.
+  let curveIntakes = $derived(mode === 'own' ? [...ownView.carried, ...sorted] : sorted);
+  // Last night's drinks still in your body, listed so you can see (and fix) what's being counted.
+  let lastNight = $derived(mode === 'own' ? log.filter((x) => x.at < win.start && x.at >= win.start - 12 * 3600e3).sort((a, b) => a.at - b.at) : []);
+  let bedAt = $derived(mode === 'own' ? minutesFromMidnight(win, bedInstant(win, bedMin)) : bedMin);
+  let nowAt = $derived(mode === 'own' ? minutesFromMidnight(win, nowMs) : mode === 'example' ? dayMinute(clockOf(nowMs), bedMin) : null);
   let FROM = $derived(Math.min(6 * 60, ...sorted.map((i) => Math.floor((i.atMin - 30) / 60) * 60)));
-  let TO = $derived(Math.max(26 * 60, Math.ceil((Math.max(bedMin, ...sorted.map((i) => i.atMin)) + 60) / 60) * 60));
-  let cutoff = $derived(newDayAt(bedMin));
-  // A shared link is shown without touching your own diary until you choose to keep it.
-  let viewingShared = $state(false);
-  let hlBeforePregnancy = $state<number | null>(null);
-  let curve = $derived(dayCurve(sorted, FROM, TO, 5, halfLifeH));
+  let TO = $derived(Math.max(26 * 60, Math.ceil((Math.max(bedAt, ...sorted.map((i) => i.atMin)) + 60) / 60) * 60));
+  // Axis labels from real instants on your own day, so a 23- or 25-hour day is labelled correctly.
+  const labelAt = (t: number) => (mode === 'own' ? clock12(clockOf(win.midnight + t * 60000)) : clock12(t));
+  let curve = $derived(dayCurve(curveIntakes, FROM, TO, 5, halfLifeH));
   let total = $derived(dailyTotal(sorted));
-  let atBed = $derived(inBodyAt(sorted, bedMin, halfLifeH));
-  let atNow = $derived(nowMin !== null && nowMin >= FROM && nowMin <= TO ? inBodyAt(sorted, nowMin, halfLifeH) : null);
+  let atBed = $derived(inBodyAt(curveIntakes, bedAt, halfLifeH));
+  let atNow = $derived(nowAt !== null && nowAt >= FROM && nowAt <= TO ? inBodyAt(curveIntakes, nowAt, halfLifeH) : null);
   let peak = $derived(curve.reduce((a, p) => (p.max > a.max ? p : a), { tMin: FROM, min: 0, max: 0 }));
-  let guidance = $derived(pregnant ? GUIDANCE.find((g) => g.id === 'acog-pregnancy')! : GUIDANCE.find((g) => g.id === 'fda-adult-daily')!);
+  let guidance = $derived(settings.pregnant ? GUIDANCE.find((g) => g.id === 'acog-pregnancy')! : GUIDANCE.find((g) => g.id === 'fda-adult-daily')!);
   // Colour follows the middle estimate; a range that only reaches the reference at its top is flagged as "could be".
   let overDaily = $derived((total.min + total.max) / 2 > guidance.mg);
   let mightExceed = $derived(!overDaily && total.max > guidance.mg);
-  let addError = $state('');
   // Plain-language comparison for the bedtime number (midpoint): tea ≈ 47 mg per 8 oz, espresso ≈ 63 mg a shot (synthesis §15, §16).
   let bedCompare = $derived.by(() => { const m = (atBed.min + atBed.max) / 2; return m < 20 ? 'Close to nothing left.' : m < 50 ? 'About a cup of black tea’s worth still in you.' : m < 90 ? 'About a shot of espresso’s worth still in you.' : 'Like a cup of coffee at bedtime.'; });
 
@@ -86,108 +101,132 @@
   let ticks = $derived(Array.from({ length: Math.floor((TO - FROM) / (narrow ? 360 : 120)) + 1 }, (_, i) => FROM + i * (narrow ? 360 : 120)));
   let yTicks = $derived(Array.from({ length: yMax / 50 + 1 }, (_, i) => i * 50).filter((v) => yMax <= 300 || v % 100 === 0));
 
+  // A cup bigger than one brewer makes is counted, and said to be more than one brew's worth.
+  function oversize(i: Intake) { if (i.kind !== 'brewed' || !i.method || !i.cupMl) return false; const r = buildRecipe({ method: i.method, target: { cupMl: i.cupMl } }); return !r.ok && r.errors[0].code === 'over-capacity'; }
   function describe(i: Intake) {
     if (i.kind === 'espresso') return i.shots === 1 ? 'Single espresso' : `${i.shots} espresso shots`;
     if (i.kind === 'custom') return 'Drink with a known amount';
     const oz = r0(mlToFlOz(i.cupMl ?? 0));
     if (i.kind === 'decaf') return `${oz} oz decaf`;
-    return `${oz} oz ${METHODS.find((m) => m.id === i.method)?.label.toLowerCase() ?? 'coffee'}`;
+    const m = METHODS.find((mm) => mm.id === i.method);
+    return `${oz} oz ${m?.label.toLowerCase() ?? 'coffee'}${oversize(i) ? ` (more than one ${m?.label.toLowerCase() ?? 'brewer'} makes)` : ''}`;
+  }
+  function newIntake(): Omit<Intake, 'atMin'> {
+    return addKind === 'custom' ? { kind: 'custom', mg: addMg } : addKind === 'espresso' ? { kind: 'espresso', shots: addShots }
+      : addKind === 'decaf' ? { kind: 'decaf', cupMl: flOzToMl(addOz) } : { kind: 'brewed', method: addMethod, cupMl: flOzToMl(addOz) };
   }
   function add() {
-    const atMin = toMin(addTime);
-    const i: Intake = addKind === 'custom' ? { kind: 'custom', mg: addMg, atMin }
-      : addKind === 'espresso' ? { kind: 'espresso', shots: addShots, atMin }
-      : addKind === 'decaf' ? { kind: 'decaf', cupMl: flOzToMl(addOz), atMin }
-      : { kind: 'brewed', method: addMethod, cupMl: flOzToMl(addOz), atMin };
-    const check = intakeMg(i);
+    const base = newIntake(), clock = toClock(addTime);
+    const check = intakeMg({ ...base, atMin: 0 } as Intake);
     if (!check.ok) { addError = check.errors[0].message; return; }
     addError = '';
-    if (example) { intakes = []; example = false; }
-    intakes = [...intakes, i];
-    addTime = hhmm(Math.min(22 * 60, atMin + 180));
+    if (mode === 'shared' && shared) shared.intakes = [...shared.intakes, { ...base, atMin: dayMinute(clock, shared.bedMin) } as Intake];
+    else { mode = 'own'; log = [...log, { ...base, id: newId(), at: instantNearest(clock, nowMs) } as LoggedDrink]; }
+    addTime = hhmm(Math.min(22 * 60, clock + 180));
   }
-  function remove(idx: number) { intakes = intakes.filter((_, k) => k !== idx); }
-  function retime(idx: number, v: string) { const t = toMin(v); if (Number.isFinite(t)) intakes = intakes.map((x, k) => (k === idx ? { ...x, atMin: t } : x)); }
+  function remove(key: string) {
+    if (mode === 'own') log = log.filter((x) => x.id !== key);
+    else if (mode === 'shared' && shared) shared.intakes = shared.intakes.filter((_, k) => String(k) !== key);
+  }
+  function retime(key: string, v: string) {
+    const clock = toClock(v);
+    if (!Number.isFinite(clock)) return;
+    if (mode === 'own') log = log.map((x) => (x.id === key ? { ...x, at: instantNearest(clock, nowMs) } : x));
+    else if (mode === 'shared' && shared) shared.intakes = shared.intakes.map((x, k) => (String(k) === key ? { ...x, atMin: dayMinute(clock, shared!.bedMin) } : x));
+  }
+  function clearDay() {
+    if (mode === 'shared' && shared) shared.intakes = [];
+    else { mode = 'own'; log = log.filter((x) => !(x.at >= win.start && x.at < win.end)); }
+  }
+  // Bedtime regroups the view; it never rewrites when a drink was drunk.
+  function setBed(b: number) {
+    if (mode === 'shared' && shared) { shared.bedMin = b; shared.intakes = shared.intakes.map((x) => ({ ...x, atMin: dayMinute(x.atMin, b) })); }
+    else settings.bedMin = b;
+  }
+  function setHalfLife(h: number) { if (mode === 'shared' && shared) shared.halfLifeH = h; else settings.halfLifeH = h; }
+  function togglePregnant(on: boolean) {
+    if (mode === 'shared') return;
+    if (on && settings.halfLifeH < 8) { hlBeforePregnancy = settings.halfLifeH; settings.halfLifeH = 8; }
+    if (!on && hlBeforePregnancy !== null) { settings.halfLifeH = hlBeforePregnancy; hlBeforePregnancy = null; }
+  }
 
-  // Your own diary from this device: settings always, today's drinks only if they're from today.
-  function loadSaved(withDrinks: boolean) {
+  // Load your diary: the v2 log, or a v1 save migrated drink by drink (never compared to "today" first).
+  let hadStore = false;
+  function loadOwn() {
     try {
-      const saved = JSON.parse(localStorage.getItem(STORE) ?? 'null');
-      if (!saved) return;
-      pregnant = !!saved.pregnant;
-      if (!withDrinks) return;
-      halfLifeH = saved.halfLifeH ?? 5; bedMin = bedMinute(saved.bedMin ?? 1380);
-      // Re-place each saved time by today's rule (older saves used a fixed 6 am line).
-      if (saved.day === todayKey() && Array.isArray(saved.intakes)) { intakes = saved.intakes.map((x: Intake) => ({ ...x, atMin: dayMinute(x.atMin, bedMin) })).filter((x: Intake) => intakeMg(x).ok); example = false; }
-      else { intakes = []; example = false; }
+      const raw = localStorage.getItem(STORE);
+      if (raw) {
+        const st = JSON.parse(raw);
+        if (st?.v === 2 && Array.isArray(st.drinks)) { log = st.drinks.filter((x: LoggedDrink) => Number.isFinite(x.at) && intakeMg({ ...x, atMin: 0 } as Intake).ok); settings = { ...DEFAULT_SETTINGS, ...st.settings, bedMin: bedMinute(st.settings?.bedMin ?? 1380) }; hadStore = true; return; }
+      }
+      const v1 = migrateV1(JSON.parse(localStorage.getItem(STORE_V1) ?? 'null'), newId);
+      if (v1) { log = v1.drinks.filter((x) => intakeMg({ ...x, atMin: 0 } as Intake).ok); settings = v1.settings; hadStore = true; }
     } catch { /* storage unavailable: keep the example day */ }
   }
-  function backToMine() { viewingShared = false; example = true; loadSaved(true); }
-  function keepShared() { viewingShared = false; }
-  function setBed(b: number) {
-    bedMin = b;
-    intakes = intakes.map((x) => ({ ...x, atMin: dayMinute(x.atMin, b) }));
-  }
-  function togglePregnant(on: boolean) {
-    if (on && halfLifeH < 8) { hlBeforePregnancy = halfLifeH; halfLifeH = 8; }
-    if (!on && hlBeforePregnancy !== null) { halfLifeH = hlBeforePregnancy; hlBeforePregnancy = null; }
+  function backToMine() { shared = null; mode = hadStore || log.length ? 'own' : 'example'; }
+  // "Make this my day": the shared drinks replace today's in your log, placed by their clock times.
+  function keepShared() {
+    if (!shared) return;
+    const next = { ...settings, halfLifeH: shared.halfLifeH, bedMin: shared.bedMin };
+    const w = dayWindow(Date.now(), dayStartClock(next));
+    log = [...log.filter((x) => !(x.at >= w.start && x.at < w.end)), ...placeSharedDay(shared.intakes, w, newId)];
+    settings = next; shared = null; mode = 'own';
   }
 
   onMount(() => {
-    // A shared link is shown as someone else's day: it never overwrites the diary on this device
-    // unless you choose to keep it, and the address bar is cleared after loading.
+    loadOwn();
+    nowMs = Date.now();
     const d = decodeDay(location.search);
     if (d.ok) {
-      loadSaved(false);
-      intakes = d.value.intakes; halfLifeH = d.value.halfLifeH; bedMin = d.value.bedMin; example = false; viewingShared = true;
+      // A shared link is someone else's day: shown on its own, and the address bar is cleared.
+      shared = { intakes: d.value.intakes, halfLifeH: d.value.halfLifeH, bedMin: d.value.bedMin };
+      mode = 'shared';
       history.replaceState(history.state, '', location.pathname);
-    } else {
-      loadSaved(true);
-    }
-    const n = new Date(); nowMin = dayMinute(n.getHours() * 60 + n.getMinutes(), bedMin);
-    const timer = setInterval(() => { const d2 = new Date(); nowMin = dayMinute(d2.getHours() * 60 + d2.getMinutes(), bedMin); }, 60000);
+    } else if (hadStore) mode = 'own';
+    const timer = setInterval(() => (nowMs = Date.now()), 30000);
     mounted = true;
     return () => clearInterval(timer);
   });
   $effect(() => {
-    const snapshot = JSON.stringify({ day: todayKey(), intakes, halfLifeH, bedMin, pregnant });
-    if (!mounted || example || viewingShared) return;
+    const snapshot = JSON.stringify({ v: 2, drinks: pruneLog(log, nowMs), settings });
+    if (!mounted || mode !== 'own') return;
     try { localStorage.setItem(STORE, snapshot); } catch { /* private mode: nothing saved */ }
   });
+
   let copied = $state(false);
   // Builds a link only when asked. It never includes the pregnancy setting.
   async function share() {
-    const url = `${location.origin}${location.pathname}?${encodeDay({ intakes: sorted, halfLifeH, bedMin })}`;
+    const intakes = mode === 'own' ? ownView.today.map((x, k) => ({ ...x, atMin: toDiaryMinutes(ownView.today, win)[k] })) : sorted;
+    const url = `${location.origin}${location.pathname}?${encodeDay({ intakes, halfLifeH, bedMin })}`;
     try { await navigator.clipboard.writeText(url); copied = true; setTimeout(() => (copied = false), 2200); } catch { prompt('Copy this link:', url); }
   }
-  function clearDay() { intakes = []; example = false; }
 
   let summary = $derived(sorted.length
-    ? `Caffeine in your body across the day. Peak about ${rangeText(peak.min, peak.max)} mg near ${clock12(peak.tMin)}; about ${rangeText(atBed.min, atBed.max)} mg left at ${clock12(bedMin)}.`
+    ? `Caffeine in your body across the day. Peak about ${rangeText(peak.min, peak.max)} mg near ${labelAt(peak.tMin)}; about ${rangeText(atBed.min, atBed.max)} mg left at ${clock12(bedMin)}.`
     : 'No drinks yet.');
 </script>
 
 <div class="cd">
   <div class="readouts">
     <div class="ro bed">
-      <span class="lbl">Left at bedtime · {clock12(bedMin)}</span>
+      <span class="lbl">{mode === 'shared' ? 'Left at their bedtime' : 'Left at bedtime'} · {clock12(bedMin)}</span>
       <span class="val">{rangeText(atBed.min, atBed.max)}<small>mg</small></span>
       <span class="sub">{bedCompare}</span>
     </div>
     <div class="ro">
       <span class="lbl">In you now</span>
       <span class="val small">{atNow ? rangeText(atNow.min, atNow.max) : '—'}<small>mg</small></span>
-      <span class="sub">{atNow ? `at ${clock12(nowMin ?? 0)}` : `outside ${clock12(FROM)} – ${clock12(TO)}`}</span>
+      <span class="sub">{atNow ? `at ${clock12(clockOf(nowMs))}` : mode === 'shared' ? 'not shown for a shared day' : `outside ${labelAt(FROM)} – ${labelAt(TO)}`}</span>
     </div>
     <div class="ro total" class:over={overDaily} class:might={mightExceed}>
-      <span class="lbl">Today’s total</span>
+      <span class="lbl">{mode === 'shared' ? 'Their total' : 'Today’s total'}</span>
       <span class="val small">{rangeText(total.min, total.max)}<small>mg</small></span>
       <div class="meter" aria-hidden="true">
         <span class="fill lo" style:width="{Math.min(100, (total.min / (guidance.mg * 1.5)) * 100)}%"></span>
         <span class="fill hi" style:width="{Math.min(100, (total.max / (guidance.mg * 1.5)) * 100)}%"></span>
         <span class="mark" style:left="{(1 / 1.5) * 100}%"></span>
       </div>
-      <span class="sub">{guidance.who} reference: {guidance.mg} mg a day{pregnant ? ' in pregnancy' : ' for healthy adults'}; a population guide, not a personal limit</span>
+      <span class="sub">{guidance.who} reference: {guidance.mg} mg a day{settings.pregnant ? ' in pregnancy' : ' for healthy adults'}; a population guide, not a personal limit</span>
     </div>
   </div>
 
@@ -201,17 +240,17 @@
         <text x={PADL - 8} y={y(v) + 4} text-anchor="end" class="axis">{v}</text>
       {/each}
       {#each ticks as tk (tk)}
-        <text x={x(tk)} y={BASE + 40} text-anchor="middle" class="axis">{clock12(tk)}</text>
+        <text x={x(tk)} y={BASE + 40} text-anchor="middle" class="axis">{labelAt(tk)}</text>
       {/each}
       <path d={band} fill="url(#cd-band)" />
       <path d={mid} fill="none" stroke="#2a1d15" stroke-width="1.6" />
       <!-- bedtime -->
-      <line x1={x(bedMin)} x2={x(bedMin)} y1={TOP - 8} y2={BASE} class="bedline" />
-      <circle cx={x(bedMin)} cy={TOP - 10} r="7" fill="#2a1d15" /><circle cx={x(bedMin) + 3} cy={TOP - 12} r="6" fill="#fbf8f3" />
-      <text x={x(bedMin) - 12} y={TOP - 6} text-anchor="end" class="axis strong">bedtime</text>
-      {#if nowMin !== null && nowMin >= FROM && nowMin <= TO}
-        <line x1={x(nowMin)} x2={x(nowMin)} y1={TOP} y2={BASE} class="nowline" />
-        <text x={x(nowMin) + 6} y={TOP + 12} class="axis">now</text>
+      <line x1={x(bedAt)} x2={x(bedAt)} y1={TOP - 8} y2={BASE} class="bedline" />
+      <circle cx={x(bedAt)} cy={TOP - 10} r="7" fill="#2a1d15" /><circle cx={x(bedAt) + 3} cy={TOP - 12} r="6" fill="#fbf8f3" />
+      <text x={x(bedAt) - 12} y={TOP - 6} text-anchor="end" class="axis strong">bedtime</text>
+      {#if nowAt !== null && nowAt >= FROM && nowAt <= TO}
+        <line x1={x(nowAt)} x2={x(nowAt)} y1={TOP} y2={BASE} class="nowline" />
+        <text x={x(nowAt) + 6} y={TOP + 12} class="axis">now</text>
       {/if}
       <!-- counter with cups -->
       <line x1={PADL} x2={W - PADR} y1={BASE} y2={BASE} stroke="#2a1d15" stroke-width="1.4" />
@@ -231,26 +270,35 @@
   <div class="cols">
     <section class="list" aria-label="Your drinks today">
       <h3>Your drinks today</h3>
-      {#if viewingShared}
+      {#if mode === 'shared'}
         <div class="shared" role="status">
           <p>You're looking at a shared day. Your own diary on this device hasn't changed.</p>
           <div class="actions"><button type="button" class="ghost" onclick={backToMine}>Back to my day</button><button type="button" class="ghost" onclick={keepShared}>Make this my day</button></div>
         </div>
       {/if}
-      {#if example}<p class="example">This is an example day. Add a drink to start your own; it stays on this device.</p>{/if}
+      {#if mode === 'example'}<p class="example">This is an example day. Add a drink to start your own; it stays on this device.</p>{/if}
       {#if sorted.length === 0}<p class="empty">Add your first coffee of the day.</p>{/if}
       <ul>
-        {#each rows as row (row.idx)}
+        {#each rows as row (row.key)}
           {@const i = row.i}
           {@const mg = intakeMg(i)}
           <li>
-            <input type="time" value={hhmm(i.atMin)} aria-label={`Time of ${describe(i)}`} onchange={(e) => retime(row.idx, (e.currentTarget as HTMLInputElement).value)} />
+            <input type="time" value={hhmm(row.clock)} aria-label={`Time of ${describe(i)}`} disabled={mode === 'example'} onchange={(e) => retime(row.key, (e.currentTarget as HTMLInputElement).value)} />
             <span class="what">{describe(i)}</span>
             <span class="mg">{mg.ok ? rangeText(mg.value.min, mg.value.max) : '—'} mg<small class="basis">{i.kind === 'custom' ? 'label' : 'estimate'}</small></span>
-            <button type="button" class="x" aria-label={`Remove ${describe(i)}`} onclick={() => remove(row.idx)}>×</button>
+            <button type="button" class="x" aria-label={`Remove ${describe(i)}`} onclick={() => remove(row.key)} disabled={mode === 'example'}>×</button>
           </li>
         {/each}
       </ul>
+      {#if lastNight.length}
+        <p class="carried">Earlier, still counted in the curve:</p>
+        <ul class="carried-list">
+          {#each lastNight as x (x.id)}
+            {@const mg = intakeMg({ ...x, atMin: 0 } as Intake)}
+            <li><span class="t">{clock12(clockOf(x.at))}</span><span class="what">{describe({ ...x, atMin: 0 } as Intake)}</span><span class="mg">{mg.ok ? rangeText(mg.value.min, mg.value.max) : '—'} mg</span><button type="button" class="x" aria-label={`Remove ${describe({ ...x, atMin: 0 } as Intake)}`} onclick={() => remove(x.id)}>×</button></li>
+          {/each}
+        </ul>
+      {/if}
       <div class="actions">
         <button type="button" class="ghost" onclick={share}>{copied ? 'Link copied' : 'Share this day'}</button>
         {#if sorted.length}<button type="button" class="ghost" onclick={clearDay}>Clear</button>{/if}
@@ -281,6 +329,8 @@
         <div class="chips" role="group" aria-label="Cup size">
           {#each SIZES_OZ as oz (oz)}<button type="button" aria-pressed={addOz === oz} onclick={() => (addOz = oz)}>{oz} oz</button>{/each}
         </div>
+        {#if addKind === 'brewed' && addMethod === 'moka'}<p class="note">Count the moka coffee itself, before any water or milk goes in; a small pot makes only a few ounces.</p>{/if}
+        {#if addKind === 'brewed' && addMethod === 'cold-brew'}<p class="note">The size you drink, with the concentrate diluted one to one.</p>{/if}
       {/if}
       <div class="row">
         <label class="fld"><span class="lbl">At</span><input type="time" bind:value={addTime} /></label>
@@ -290,7 +340,7 @@
 
       <h3 class="settings">You</h3>
       <div class="seg" role="group" aria-label="How fast you clear caffeine">
-        {#each HALF_LIVES as hl (hl.h)}<button type="button" aria-pressed={halfLifeH === hl.h} onclick={() => (halfLifeH = hl.h)}>{hl.label} ({hl.h} h)</button>{/each}
+        {#each HALF_LIVES as hl (hl.h)}<button type="button" aria-pressed={halfLifeH === hl.h} onclick={() => setHalfLife(hl.h)}>{hl.label} ({hl.h} h)</button>{/each}
       </div>
       <p class="note">{HALF_LIVES.find((h) => h.h === halfLifeH)?.note}</p>
       <div class="row">
@@ -299,9 +349,17 @@
             {#each [20, 21, 22, 22.5, 23, 23.5, 24, 24.5, 25, 26] as h (h)}<option value={String(h * 60)}>{clock12(h * 60)}</option>{/each}
           </select>
         </label>
-        <label class="check"><input type="checkbox" bind:checked={pregnant} onchange={() => togglePregnant(pregnant)} /> Pregnant</label>
+        {#if mode !== 'shared'}
+          <label class="fld"><span class="lbl">My day starts</span>
+            <select value={settings.dayStartMin === null ? 'auto' : String(settings.dayStartMin)} onchange={(e) => { const v = (e.currentTarget as HTMLSelectElement).value; settings.dayStartMin = v === 'auto' ? null : Number(v); }}>
+              <option value="auto">{clock12(newDayAt(settings.bedMin))} (4 h after bedtime)</option>
+              {#each [3, 4, 5, 6, 7] as h (h)}<option value={String(h * 60)}>{clock12(h * 60)}</option>{/each}
+            </select>
+          </label>
+        {/if}
+        <label class="check"><input type="checkbox" bind:checked={settings.pregnant} onchange={() => togglePregnant(settings.pregnant)} /> Pregnant</label>
       </div>
-      <p class="note">Drinks between midnight and {clock12(cutoff)} count as last night's, before bed; from {clock12(cutoff)} a new day starts. The pregnancy setting stays on this device and never goes into a link.</p>
+      <p class="note">Drinks between midnight and {clock12(startClock)} count as last night's, before bed; from {clock12(startClock)} a new day starts. Earlier drinks still in your body count in the curve but not in today's total. The pregnancy setting stays on this device and never goes into a link.</p>
       <p class="note">{guidance.wording}</p>
     </section>
   </div>
@@ -383,4 +441,8 @@
   .mg .basis { display: block; font: 400 10.5px/1.2 'IBM Plex Mono', monospace; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3, #75655a); }
   .shared { background: #eef4f5; border: 1px solid #c6dade; border-radius: 10px; padding: 10px 12px; margin: 0 0 10px; font-size: 14px; }
   .shared p { margin: 0 0 8px; }
+  .carried { font-size: 13px; color: var(--ink-3, #75655a); margin: 10px 0 4px; }
+  .carried-list { list-style: none; margin: 0 0 6px; padding: 0; display: grid; gap: 4px; }
+  .carried-list li { display: grid; grid-template-columns: 62px 1fr auto 32px; gap: 8px; align-items: center; font-size: 14px; color: var(--ink-2, #5b4a3d); opacity: .85; }
+  .carried-list .t { font: 400 13px 'IBM Plex Mono', monospace; }
 </style>

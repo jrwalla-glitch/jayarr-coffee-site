@@ -119,6 +119,7 @@ test('share links carry no pregnancy setting, and old links\' preg=1 is ignored'
   const old = decodeDay('d=esp.1@30&bed=60').value;
   assert.equal(old.intakes[0].atMin, 1470); assert.equal(old.bedMin, 1500);
   assert.equal(decodeDay('d=esp.1@330').value.intakes[0].atMin, 330, 'an early-morning drink in a link stays in the morning');
+  assert.equal(decodeDay('d=mg.100@1770&bed=1380').value.intakes[0].atMin, 330, 'Astra: an older 1770 (05:30) link lands in the morning');
   assert.equal(decodeDay('d=esp.1@600&bed=abc').ok, false);
 });
 
@@ -126,7 +127,10 @@ test('day state round-trips through the link; junk fails', () => {
   const s = { intakes: [{ kind: 'brewed', method: 'v60', cupMl: 355, atMin: 420 }, { kind: 'espresso', shots: 2, atMin: 630 }, { kind: 'decaf', cupMl: 237, atMin: 1200 }, { kind: 'brewed', method: 'drip-machine', cupMl: 296, bean: 'robusta', atMin: 900 }, { kind: 'custom', mg: 200, atMin: 960 }], halfLifeH: 8, bedMin: 1350 };
   const d = decodeDay(encodeDay(s));
   assert.equal(d.ok, true, JSON.stringify(d));
-  assert.deepEqual(d.value, s);
+  // Everything but the half-life round-trips; links never carry it (it can hint at pregnancy).
+  assert.deepEqual(d.value, { ...s, halfLifeH: 5 });
+  assert.doesNotMatch(encodeDay(s), /hl=/);
+  assert.equal(decodeDay('d=esp.1@600&hl=8').value.halfLifeH, 8, 'older links with hl still open');
   for (const q of ['', 'd=', 'd=v60.355', 'd=esp.9@600', 'd=v60.355@600&hl=99', 'd=nope.355@600']) assert.equal(decodeDay(q).ok, false, q);
 });
 
@@ -155,4 +159,16 @@ test('the diary key follows the local clock across both daylight-saving nights (
   } finally {
     if (tz === undefined) delete process.env.TZ; else process.env.TZ = tz;
   }
+});
+
+test('immersion caffeine leaves out the liquid the grounds keep (Muse: 12 oz cold brew read 225–488 mg)', () => {
+  const near = (a, b, eps) => assert.ok(Math.abs(a - b) <= eps, `${a} vs ${b}`);
+  const cb = intakeMg({ kind: 'brewed', method: 'cold-brew', cupMl: 355, atMin: 600 }).value;
+  near(cb.min, 153, 3); near(cb.max, 332, 4);
+  // French press keeps 2/15 of what dissolved; a V60 (percolation) is unchanged by this rule.
+  const fp = intakeMg({ kind: 'brewed', method: 'french-press', cupMl: 355, atMin: 600 }).value;
+  const dose = 355 / (15 - 2);
+  near(fp.min, dose * 0.009 * 0.75 * (1 - 2 / 15) * 1000, 1e-6);
+  const v60 = intakeMg({ kind: 'brewed', method: 'v60', cupMl: 355, atMin: 600 }).value;
+  near(v60.min, (355 / (16 - 2)) * 0.009 * 0.75 * 1000, 1e-6);
 });
