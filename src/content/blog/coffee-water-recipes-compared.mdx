@@ -13,7 +13,7 @@ import ComparisonTable from '../../components/infographics/ComparisonTable.astro
 import ToolCallout from '../../components/ToolCallout.astro';
 import LiteYouTube from '../../components/LiteYouTube.astro';
 
-<AnswerBox answer="The SCA's water standard targets 68 ppm hardness and 40 ppm alkalinity, and you can mix it, or any of the eight recipes below, from distilled water with Barista Hustle's two stock bottles: about 1 mL of each per ppm, in a litre. Two salts copy a recipe's hardness and alkalinity, not all its minerals, so a two-salt Rao/Perger or Third Wave Water is an approximation of the original. For an espresso machine, follow its maker's water specification first." />
+<AnswerBox answer="The SCA's water standard targets a calcium hardness of 68 ppm and alkalinity of 40 ppm, and you can mix it, or any of the eight recipes below, from distilled water with Barista Hustle's two stock bottles: about 1 mL of each per ppm, in a litre. Two salts copy a recipe's hardness and alkalinity, not all its minerals, so a two-salt Rao/Perger or Third Wave Water is an approximation of the original. For an espresso machine, follow its maker's water specification first." />
 
 Coffee water recipes differ mainly in two numbers: **hardness** (GH, mostly calcium and magnesium) and **alkalinity** (KH, mostly bicarbonate, which buffers the coffee's acids). This page compares the eight recipes in our Water Recipe Builder, says where each one comes from and what it is really made of, and shows how to mix them. For why water matters at all, start with [why water matters more than your coffee beans](/blog/why-water-matters-more-than-your-coffee-beans/).
 
@@ -49,14 +49,14 @@ Hardness and alkalinity are both given in ppm (mg/L) as calcium carbonate, the u
 
 **Rao/Perger: the original and the simplified version.** These are two different waters:
 
-- **The original** uses five salts: Epsom salt, magnesium chloride, calcium chloride, baking soda and potassium bicarbonate, as Jonathan Gagné publishes it on *Coffee ad Astra*. From his weights and dilution, it works out at about 87 GH and 40 KH (calculated). Scott Rao's own drop recipe for "Rao/Perger", which he credits to Dan Eils, targets 90 GH and 42 KH.
+- **The original** uses five salts: Epsom salt, magnesium chloride, calcium chloride, baking soda and potassium bicarbonate, as Jonathan Gagné publishes it on *Coffee ad Astra*, adapted to his standard concentrate. From his weights and dilution, it works out at about 87 GH and 40 KH (calculated). Scott Rao's own drop recipe for "Rao/Perger", which he credits to Dan Eils, targets 90 GH and 42 KH.
 - **The simplified version** is Barista Hustle's two-salt "Rao Water", at 76 GH and 50 KH, which Barista Hustle describes as close to Scott Rao's recommended water chemistry; Gagné lists it as "Simplified Rao 2008". It has less hardness and more alkalinity than the original, and all its hardness is magnesium, with no calcium or chloride.
 
 The Builder makes the simplified version, which is why it's labelled that way.
 
 **Holy Water.** The Builder targets 62 GH and 23 KH. We couldn't trace this recipe to a published original, so treat these numbers as the Builder's target rather than a credited recipe.
 
-**Third Wave Water.** These are ready-made mineral sticks for distilled water. As published by the maker, the Classic profile contains magnesium sulfate, calcium citrate and sodium chloride, with about 40 mg/L alkalinity and about 150 mg/L dissolved solids; the Espresso Machine profile swaps the salt for potassium bicarbonate and has about 80 mg/L alkalinity. Gagné measured the Classic's alkalinity at 43 ± 5 ppm and found its hardness much higher than the other recipes he compared. In his tasting its acidity was "a bit overwhelming", and he preferred Rao/Perger. The maker also sells a Dark Roast profile at about 135 to 140 mg/L alkalinity, which the Builder doesn't include.
+**Third Wave Water.** These are ready-made mineral sticks for distilled water. As published by the maker, the Classic profile contains magnesium sulfate, calcium citrate and sodium chloride, with about 40 mg/L alkalinity and about 150 mg/L dissolved solids; the Espresso Machine profile swaps the sodium chloride for potassium bicarbonate and has about 80 mg/L alkalinity. Gagné measured the Classic's alkalinity at 43 ± 5 ppm and found its hardness much higher than the other recipes he compared. In his tasting its acidity was "a bit overwhelming", and he preferred Rao/Perger. The maker also sells a Dark Roast profile at about 135 to 140 mg/L alkalinity, which the Builder doesn't include.
 
 **RPavlis, a ninth recipe.** This one isn't in the Builder, because it uses neither of the Builder's salts: it's 100 mg/L of potassium bicarbonate in distilled water, named after the Home-Barista member Robert Pavlis. That gives about 50 KH and no hardness at all (calculated).
 
@@ -64,7 +64,7 @@ The Builder makes the simplified version, which is why it's labelled that way.
 
 **Alkalinity buffers the coffee's acids.** As the Builder puts it, too little and the cup can taste sharp; too much and it can taste flat. Rao found the effect isn't linear: in one test of four recipes with the same coffee, the cups at 10 and 70 KH tasted better to him than those at 30 and 50.
 
-**Hardness helps extract the coffee, but the details are less settled than they sound.** Hendon and the Colonna-Dashwoods' 2014 paper used computer modelling to estimate how strongly sodium, magnesium and calcium bind to coffee acids, caffeine and eugenol; it explains why minerals could matter, but it isn't a tasting study. Gagné writes that magnesium and calcium are believed to extract slightly different flavours, but that lab tests didn't yet back it up. A 2024 laboratory study found that at the concentrations usually found in drinking water, these salts changed the coffee's extracted acids only a little; ten times more made a clearer difference.
+**Hardness minerals are treated as the extracting agents, but the details are less settled than they sound.** Hendon and the Colonna-Dashwoods' 2014 paper used computer modelling to estimate how strongly sodium, magnesium and calcium bind to coffee acids, caffeine and eugenol; it explains why minerals could matter, but it isn't a tasting study. Gagné writes that magnesium and calcium are believed to extract slightly different flavours, but that lab tests didn't yet back it up. A 2024 laboratory study found that at the concentrations usually found in drinking water, these salts changed the coffee's extracted acids only a little; ten times more made a clearer difference.
 
 So use the recipes as starting points and taste. The Builder's map draws guide lines where hardness is two and three times the alkalinity; the eight recipes sit on both sides of them.
 
@@ -85,17 +85,17 @@ If you'd rather add potassium than sodium, 2.00 g of potassium bicarbonate gives
 
 ## Bottled and tap water
 
-A bottled water's label or website lists its minerals in mg/L. To compare it with these recipes, convert them: GH as calcium carbonate is about 2.5 × calcium + 4.1 × magnesium, and KH is about 0.82 × bicarbonate (calculated from the molar masses). For tap water, your water utility's annual report or an aquarium GH/KH test kit gives the numbers. Enter them in the Builder's "I have test results" to see which recipe your water is closest to and how to adjust it.
+If a bottled water lists its minerals in mg/L, you can compare it with these recipes by converting them: GH as calcium carbonate is about 2.5 × calcium + 4.1 × magnesium, and KH is about 0.82 × bicarbonate (calculated from the molar masses). For tap water, your water utility's annual report or an aquarium GH/KH test kit gives the numbers; Barista Hustle prefers measuring it yourself, because a city's water can vary from one area to another. Enter them in the Builder's "I have test results" to see which recipe your water is closest to and how to adjust it.
 
 ## Espresso machines
 
 Water in an espresso machine is a question for the machine's maker first: check its water specification. Barista Hustle's own warning is plain: don't put remineralised water in your espresso machine unless you're very sure what you're doing, because descaling one is much harder than descaling a kettle.
 
-Chloride is the other concern. The original Rao/Perger contains calcium and magnesium chloride, and Third Wave Water Classic contains sodium chloride; the maker says its Espresso Machine profile avoids chlorides for the boiler's sake. Epsom salt and baking soda add none. None of this makes a recipe right for a particular machine; its maker's specification does.
+Chloride is another consideration. The original Rao/Perger contains calcium and magnesium chloride, and Third Wave Water Classic contains sodium chloride; Third Wave Water says its Espresso Machine profile avoids chlorides to protect the boiler. Epsom salt and baking soda add none. None of this makes a recipe right for a particular machine; its maker's specification does.
 
 ## Sources
 
-- Barista Hustle, "DIY Water Recipes Redux," 2019, concentrate recipes and recipes 1 to 6 (Melbourne, WOC Budapest, SCA, Barista Hustle, Rao Water, Hendon Water) and the espresso-machine warning: [baristahustle.com](https://www.baristahustle.com/diy-water-recipes-redux/)
+- Barista Hustle, "DIY Water Recipes Redux," 2019, concentrate recipes and recipes 1 to 6 (Melbourne, WOC Budapest, SCA, Barista Hustle, Rao Water, Hendon Water) and the espresso-machine warning and the staff reply on measuring tap water (June 28, 2023): [baristahustle.com](https://www.baristahustle.com/diy-water-recipes-redux/)
 - Specialty Coffee Association, *Coffee Standards*, revised 2018, §4.1, "Water for Brewing Standards," p. 12
 - Jonathan Gagné, "Water for Coffee Extraction," *Coffee ad Astra*, 2018, updated 2019: the Rao/Perger, Simplified Rao 2008 and Third Wave Water entries, the concentrate and dilution instructions, and the notes on calcium and magnesium: [coffeeadastra.com](https://coffeeadastra.com/2018/12/16/water-for-coffee-extraction/)
 - Scott Rao, "Lotus Water Drops: How to use them, and a great hack to find the best water for your coffee," December 1, 2022 (the Rao/Perger drop recipe and the KH test): [scottrao.com](https://www.scottrao.com/blog/lotus-water-drops)
