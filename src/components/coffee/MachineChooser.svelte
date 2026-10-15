@@ -341,12 +341,14 @@
       <section class="results" id="chooser-results" aria-live="polite" aria-label="Machines that fit">
         {#if matches.length}
           {@const sized = matches.filter((x) => x.machine.dims)}
-          {@const count = matches.length === 1 ? 'one' : matches.length === 2 ? 'two' : 'three'}
-          <p class="kick">{matches[0].misses.length ? `Nothing meets everything you asked: the ${count} closest, closest first` : `${count.charAt(0).toUpperCase() + count.slice(1)} ${matches.length === 1 ? 'machine fits' : 'machines fit'}, closest first`}</p>
+          {@const words = ['', 'one', 'two', 'three']}
+          {@const full = matches.filter((x) => !x.misses.length).length}
+          <!-- Only full matches are said to fit; the rest are named as the closest after them (gate r3). -->
+          <p class="kick">{full === 0 ? `Nothing meets everything you asked: the ${words[matches.length]} closest, closest first` : full === matches.length ? `${words[full].charAt(0).toUpperCase() + words[full].slice(1)} ${full === 1 ? 'machine fits' : 'machines fit'}, closest first` : `${words[full].charAt(0).toUpperCase() + words[full].slice(1)} ${full === 1 ? 'machine fits' : 'machines fit'}; then the closest ${matches.length - full === 1 ? 'alternative' : 'alternatives'}`}</p>
           {#if hiddenByWidth.length}
             <div class="widthnote">
               <p>Left out because you gave a width: the {hiddenByWidth.map((m) => m.name).join(hiddenByWidth.length === 2 ? ' and ' : ', ').replace(/, ([^,]*)$/, ' and $1')}, which would otherwise be among your matches. {hiddenByWidth[0].brand}'s published sizes for {hiddenByWidth.length === 1 ? 'it' : 'them'} conflict with its own guidance, so we can't check {hiddenByWidth.length === 1 ? 'it' : 'them'} against your {widthIn} {u}.</p>
-              <button type="button" class="ghost" onclick={() => (widthIn = null)}>Show them without the width</button>
+              <button type="button" class="ghost" onclick={() => (widthIn = null)}>Show {hiddenByWidth.length === 1 ? 'it' : 'them'} without the width</button>
             </div>
           {/if}
           {@const c = counter}
