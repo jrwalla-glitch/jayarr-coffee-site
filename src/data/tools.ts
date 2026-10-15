@@ -33,9 +33,9 @@ export const TOOLS: ToolEntry[] = [
   { id: 'freshness', name: 'Freshness', href: '/tools/freshness/', blurb: 'Where your beans are, from roast to stale', group: 'know' },
   { id: 'machines', name: 'Espresso Machines', href: '/tools/espresso-machines/', blurb: 'The right machine for how you drink', group: 'choose' },
   { id: 'pods', name: 'Nespresso Pods', href: '/tools/nespresso-pods/', blurb: 'Pods that fit your machine and your taste', group: 'choose' },
-  { id: 'origins', name: 'Origins Atlas', href: '/explore/origins/', blurb: 'Where coffee grows and what it tastes like', group: 'explore' },
-  { id: 'flavors', name: 'Flavor Bloom', href: '/explore/flavors/', blurb: 'Find coffees by the notes you like', group: 'explore' },
-  { id: 'methods', name: 'Brewing Constellations', href: '/explore/methods/', blurb: 'Every brewing method, mapped', group: 'explore' },
+  { id: 'origins', name: 'Origins Atlas', href: '/explore/origins/', blurb: 'When and where coffee is harvested, and how it\'s described', group: 'explore' },
+  { id: 'flavors', name: 'Flavor Bloom', href: '/explore/flavors/', blurb: 'Learn to taste a note, and how often roasters use it', group: 'explore' },
+  { id: 'methods', name: 'Brewing Constellations', href: '/explore/methods/', blurb: 'Thirteen brewers, and how they really differ', group: 'explore' },
 ];
 
 export const toolById = (id: string) => TOOLS.find((t) => t.id === id);
