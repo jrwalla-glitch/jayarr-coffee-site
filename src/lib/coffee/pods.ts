@@ -31,7 +31,7 @@ export interface RawPod {
 
 export const LINES: Record<Line, { label: string; short: string; how: string }> = {
   original: { label: 'Original', short: 'Small capsules, pressure-brewed', how: 'Espresso, ristretto and lungo from a pump, like a small espresso machine.' },
-  vertuo: { label: 'Vertuo', short: 'Dome capsules, spun and barcoded', how: 'The machine reads a barcode and spins the capsule; cups run from a 25 ml ristretto to a 355 ml carafe-size pour.' },
+  vertuo: { label: 'Vertuo', short: 'Dome capsules, spun and barcoded', how: 'The machine reads a barcode and spins the capsule; cups run from a 25 ml ristretto to a 355 ml Alto pour.' },
 };
 export const ROASTS: Roast[] = ['Light', 'Medium', 'Medium-Dark', 'Dark'];
 
@@ -67,12 +67,14 @@ export function sizeRows(pods: Pod[], line: Line): SizeRow[] {
  * These group the published notes; they aren't our tasting.
  */
 export const AROMA_FAMILIES: { id: string; label: string; words: RegExp }[] = [
-  { id: 'fruity', label: 'Fruity or floral', words: /fruit|floral|berr|citrus|wine|winey|fruity/i },
+  { id: 'fruity', label: 'Fruity or floral', words: /fruit|floral|berr|citrus|wine|winey|fruity|apple/i },
   { id: 'cereal', label: 'Cereal, biscuit or malt', words: /cereal|biscuit|malt|bread|toast|grain/i },
   { id: 'cocoa', label: 'Cocoa or chocolate', words: /cocoa|chocolate/i },
   { id: 'sweet', label: 'Caramel, sweet or nutty', words: /caramel|sugar|sweet|vanilla|hazelnut|nut|honey|toffee|maple|pecan/i },
-  { id: 'roasted', label: 'Roasted or smoky', words: /roast|smok|burnt|intense/i },
-  { id: 'woody', label: 'Woody, spicy or earthy', words: /wood|spic|earth|leather|pepper|oak/i },
+  { id: 'roasted', label: 'Roasted or smoky', words: /roast|smok|burnt|intense|chicory/i },
+  { id: 'woody', label: 'Woody, spicy or earthy', words: /wood|spic|earth|leather|pepper|oak|cinnamon/i },
+  // Nespresso describes some capsules only by texture ("Round & Smooth", "Velvety & Rich").
+  { id: 'smooth', label: 'Smooth, round or creamy', words: /smooth|round|velvet|butter|cream/i },
 ];
 export const aromaFamilies = (p: Pick<RawPod, 'aroma'>) => AROMA_FAMILIES.filter((f) => f.words.test(p.aroma)).map((f) => f.id);
 
@@ -157,7 +159,9 @@ export function cleanFlight(pods: Pod[], ids: unknown): string[] {
 export function tryAlso(pods: Pod[], pod: Pod): Pod | null {
   if (!pod.try_also) return null;
   const p = byName(pods, pod.line, pod.try_also);
-  return p && p.id !== pod.id && onSale(p) ? p : null;
+  // The same like-for-like rule as "Similar": a decaf capsule never points to a caffeinated one, or the reverse.
+  if (!p || p.id === pod.id || !onSale(p) || !!p.decaf !== !!pod.decaf || !!p.caffeine_boosted !== !!pod.caffeine_boosted) return null;
+  return p;
 }
 
 /**

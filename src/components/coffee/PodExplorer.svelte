@@ -64,9 +64,17 @@
     line = l;
     try { localStorage.setItem('jayarr-pods-machine', l); } catch { /* storage unavailable */ }
   }
+  // Set when a suggestion or the flight opens a capsule the filters had hidden: the filters clear, and we say so.
+  let cleared = $state<string | null>(null);
   async function pick(p: Pod) {
     const active = document.activeElement;
     if (active instanceof HTMLElement && !panelEl?.contains(active)) opener = active;
+    cleared = null;
+    if (selectedId !== p.id && p.line === line && !shownIds.has(p.id)) {
+      // The wall and the detail never disagree: clear what hides it rather than open a capsule the wall has dropped.
+      if (filtering) { clearFilters(); cleared = p.name; }
+      if (!onSale(p)) includeUnlisted = true;
+    }
     selectedId = selectedId === p.id ? null : p.id;
     flightFull = null;
     // On a phone the panel sits below the wall: bring the answer into view, and keyboard focus with it.
@@ -346,6 +354,7 @@
         {#if selected}
           <div class="detail">
             <button type="button" class="x" aria-label="Close {selected.name}" onclick={closeDetail}>×</button>
+            {#if cleared}<p class="tag-note cleared" role="status">Your filters hid {cleared}, so they're cleared to show it.</p>{/if}
             <div class="dhead">
               <div class="bigcap">{@render bigCapsule(selected.line, selected.color_hex, 'detail', 84)}</div>
               <div>
@@ -364,10 +373,10 @@
                   <span class="bar" role="img" aria-label="Intensity {selected.intensity} of 13">{#each Array.from({ length: 13 }, (_, i) => i) as i (i)}<i class:on={i < selected.intensity}></i>{/each}</span><span class="mono">{selected.intensity}<small>/13</small></span>
                 {:else}<span class="mono quiet">Not rated by Nespresso</span>{/if}
               </div>
-              <div><span class="lbl">Roast</span>
+              <div><span class="lbl">Roastiness, 1–5</span>
                 {#if selected.roastiness}
                   <span class="bar roast" role="img" aria-label="Roastiness {selected.roastiness} of 5, by Nespresso">{#each Array.from({ length: 5 }, (_, i) => i) as i (i)}<i class:on={i < selected.roastiness}></i>{/each}</span><span class="mono">{selected.roastiness}<small>/5</small></span>
-                {:else}<span class="mono quiet">Not published</span><span></span>{/if}
+                {:else}<span class="mono quiet">Not rated on this scale</span><span></span>{/if}
               </div>
             </div>
             <dl class="facts">
@@ -393,7 +402,7 @@
               <button type="button" class="pill" aria-pressed={flight.includes(selected.id)} onclick={() => toggleFlight(selected!)}>{flight.includes(selected.id) ? 'In your flight ✓' : 'Add to a tasting flight'}</button>
             </div>
             {#if onSale(selected)}<p class="disc">The button opens an Amazon search for this {LINES[selected.line].label} capsule; as an Amazon Associate we earn from qualifying purchases.</p>{/if}
-            {#if selected.source_url}<p class="disc"><a class="src" href={selected.source_url} rel="noopener" target="_blank">{selected.source_label ?? "Nespresso's page for this capsule"} ↗</a>{selected.checked ? `, checked ${selected.checked}` : ''}</p>{/if}
+            {#if selected.source_url}<p class="disc"><a class="src" href={selected.source_url} rel="noopener" target="_blank">{selected.source_label ?? "Nespresso's page for this capsule"} ↗</a>{selected.checked ? `, ${onSale(selected) ? 'checked' : 'status checked'} ${fmtDate(selected.checked)}` : ''}</p>{/if}
           </div>
         {:else}
           <div class="howto">
@@ -525,11 +534,11 @@
   .thead .th { display: grid; justify-items: center; gap: 1px; }
   .thead b { display: block; font: 600 11.5px/1.15 'IBM Plex Sans', sans-serif; }
   .thead small { display: block; font: 500 11px 'IBM Plex Mono', monospace; color: var(--ink-3); white-space: nowrap; }
-  .trow { border-bottom: 1px dashed var(--rule); min-height: 34px; }
+  .trow { border-bottom: 1px dashed var(--rule); min-height: 42px; }
   .trow.empty { min-height: 24px; }
   .tl { font: 500 12px 'IBM Plex Mono', monospace; color: var(--ink-3); align-self: center; }
   /* Two capsules side by side in a 5-column phone cell (about 58 px at 360 px wide). */
-  .tall .pod { width: 29px; height: 28px; }
+  .tall .pod { width: 29px; height: 38px; }
   .tall .pod :global(.cap) { width: 25px; }
   .axis.tallaxis { display: block; margin: 8px 0 0; font-size: 11.5px; line-height: 1.45; }
 
@@ -611,7 +620,7 @@
   .fl .rl2 { margin-top: -2px; }
   .fl .mini { width: 100%; max-width: 110px; height: 7px; gap: 1px; margin-top: 2px; }
   .flglass { display: grid; place-items: end center; height: 64px; margin-top: 4px; }
-  .rm { position: absolute; top: 4px; right: 4px; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--rule); background: #fff; cursor: pointer; color: var(--ink-3); z-index: 1; }
+  .rm { position: absolute; top: 2px; right: 2px; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--rule); background: #fff; cursor: pointer; color: var(--ink-3); z-index: 1; }
   .data { margin: 14px 2px 0; font-size: 12.5px; color: var(--ink-3); }
   button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--crema-deep); outline-offset: 2px; }
 
