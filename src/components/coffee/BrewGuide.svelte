@@ -204,12 +204,14 @@
   // ── saved recipes, on this device only ──
   const SAVE_KEY = 'jayarr-brew-guide-v1';
   let saved = $state<{ name: string; q: string }[]>([]);
-  let savedNow = $derived(saved.some((x) => x.q === encodeBrew({ ...input, units })));
-  function persist() { try { localStorage.setItem(SAVE_KEY, JSON.stringify({ saved, last: encodeBrew({ ...input, units }) })); } catch { /* storage unavailable */ } }
+  // The full state, Doctor adjustment included, so Save and resume keep it (Astra r3).
+  let fullState = $derived({ ...input, units, ...(adjust ? { adjust } : {}) });
+  let savedNow = $derived(saved.some((x) => x.q === encodeBrew(fullState)));
+  function persist() { try { localStorage.setItem(SAVE_KEY, JSON.stringify({ saved, last: encodeBrew(fullState) })); } catch { /* storage unavailable */ } }
   function saveRecipe() {
     if (!recipe) return;
     const amount = method === 'espresso' ? `${fmtG(recipe.doseG)} g in, ${r0(recipe.yieldG ?? 0)} g out` : byDose || 'doseG' in target ? `${fmtG(recipe.doseG)} g coffee` : cupText;
-    saved = [{ name: `${m.label} · ${amount} · 1:${recipe.ratio}`, q: encodeBrew({ ...input, units }) }, ...saved].slice(0, 8);
+    saved = [{ name: `${m.label} · ${amount} · 1:${recipe.ratio}`, q: encodeBrew(fullState) }, ...saved].slice(0, 8);
     persist();
   }
   function removeSaved(k: number) { saved = saved.filter((_, i) => i !== k); persist(); }
@@ -217,7 +219,7 @@
     const d = decodeBrew(q);
     if (!d.ok) return;
     method = d.value.method; target = d.value.target; strength = d.value.strength ?? 'classic';
-    roast = d.value.roast ?? 'medium'; units = d.value.units; ratioOverride = d.value.ratio; customOpen = false;
+    roast = d.value.roast ?? 'medium'; units = d.value.units; ratioOverride = d.value.ratio; adjust = d.value.adjust; customOpen = false;
   }
 
   let linkProblem = $state(false);
@@ -341,7 +343,7 @@
       </div>
     {:else if recipe}
       {#if adjust}
-        <div class="adjust" role="status"><span class="chip">From the Coffee Doctor</span><span>{adjustText}</span><button type="button" class="x" aria-label="Dismiss" onclick={() => (adjust = undefined)}>×</button></div>
+        <div class="adjust" role="status"><span class="chip">From the Coffee Doctor</span><span>{adjustText} <span class="adjust-note">Shown on a standard {m.label} recipe: keep your own amounts, change only this.</span></span><button type="button" class="x" aria-label="Dismiss" onclick={() => (adjust = undefined)}>×</button></div>
       {/if}
       <div class="numbers">
         <div class="coffee"><span class="k">Coffee</span><span class="v">{fmtG(recipe.doseG)}<small>g</small></span><span class="sub">about {r0(approxTablespoons(recipe.doseG, 'whole'))} tbsp beans</span></div>
@@ -479,6 +481,7 @@
   .grind b { color: var(--ink); font-weight: 600; }
   .chip { font: 500 11px/1 var(--cf-mono); text-transform: uppercase; letter-spacing: .1em; border: 1px solid var(--rule); border-radius: 6px; padding: 5px 7px; background: #fff; }
   .adjust { display: flex; gap: 10px; align-items: center; background: #fff8ec; border: 1px solid #e3c79f; border-radius: 10px; padding: 9px 10px 9px 12px; font-size: 14.5px; }
+  .adjust-note { display: block; font-size: 13px; color: var(--ink-3, #75655a); margin-top: 2px; }
   .adjust .x { margin-left: auto; width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--rule); background: #fff; cursor: pointer; font-size: 16px; }
   .warn { margin: 0; font-size: 13.5px; color: var(--crema-deep); background: rgba(195, 135, 58, .08); border-left: 2px solid var(--crema); padding: 8px 12px; }
   .problem { border: 1px solid #c9a27a; background: #fbf1e6; border-radius: 10px; padding: 12px 14px; }

@@ -50,8 +50,6 @@
     const q = new URLSearchParams({ method });
     if (method === 'espresso' || method === 'moka') q.set('dose', method === 'espresso' ? '18' : '15'); else q.set('cup', method === 'cold-brew' || method === 'drip-machine' ? '946' : method === 'aeropress' ? '237' : '355');
     if (dx.next.strength) q.set('strength', dx.next.strength);
-    // The roast travels too, so the Brew Guide's temperature starts from the same coffee.
-    if (answers.roast === 'light' || answers.roast === 'dark') q.set('roast', answers.roast);
     const adj = dx.next.grind ?? dx.next.temp;
     if (adj) q.set('adjust', adj);
     return `/tools/brew-ratio/?${q}`;

@@ -31,6 +31,11 @@ function grindFor(m: Method, roast: Roast): Range {
   return { ...m.grindMicrons };
 }
 
+/** The temperature a Doctor hand-off sets: hotter = top of the method's range; cooler = about 90 °C, or the method's own minimum if that's lower (AeroPress). */
+export function adjustedTempC(m: Method, adjust: 'hotter' | 'cooler'): number {
+  return adjust === 'hotter' ? m.tempC.max : Math.min(m.tempC.min, 90);
+}
+
 export function estimateStrength(methodId: Recipe['method'], doseG: number, beverageG: number): StrengthEstimate {
   const ey = EY_BY_METHOD[methodId];
   return {
@@ -163,7 +168,7 @@ export function buildRecipe(input: RecipeInput): Result<Recipe> {
     yieldG,
     cupMl,
     ratio,
-    tempC: input.tempAdjust === 'hotter' ? m.tempC.max : input.tempAdjust === 'cooler' ? Math.min(m.tempC.min, 90) : tempFor(m, roast),
+    tempC: input.tempAdjust ? adjustedTempC(m, input.tempAdjust) : tempFor(m, roast),
     timeS: { ...m.timeS },
     steps,
     grind: { microns: grindFor(m, roast), label: m.grindLabel, texture: m.texture },

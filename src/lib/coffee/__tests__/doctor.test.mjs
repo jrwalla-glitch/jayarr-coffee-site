@@ -192,3 +192,18 @@ test('immersion steep advice uses the recipe\'s own steep (Opus r2: AeroPress 0:
   assert.match(ok(diagnose({ method: 'cold-brew', symptom: 'bitter', answers: { time: 'slow', roast: 'medium' } })).changeNow, /12 h/);
   assert.match(nextQuestion({ method: 'aeropress', symptom: 'sour', answers: {} }).text, /0:30/);
 });
+
+import { adjustedTempC, methodById } from '../index.ts';
+test('Astra r3: the Doctor\'s temperature is the one its hand-off applies (AeroPress cooler is 80 °C, not 90)', () => {
+  for (const m of METHODS) for (const sy of SYMPTOMS) {
+    const applies = m.id === 'espresso' ? sy.espresso : sy.filter; if (!applies) continue;
+    for (const answers of allPaths(m.id, sy.id)) {
+      const d = ok(diagnose({ method: m.id, symptom: sy.id, answers }));
+      if (!d.next.temp) continue;
+      const want = adjustedTempC(methodById(m.id), d.next.temp);
+      const said = text(d).match(/about (\d+) °C/);
+      if (said) assert.equal(Number(said[1]), want, `${m.id}/${sy.id}/${JSON.stringify(answers)}`);
+    }
+  }
+  assert.match(ok(diagnose({ method: 'aeropress', symptom: 'bitter', answers: { time: 'fast', roast: 'dark' } })).changeNow, /about 80 °C/);
+});
