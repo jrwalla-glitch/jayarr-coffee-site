@@ -10,20 +10,23 @@ import BaseHead from '../../../components/BaseHead.astro';
 import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
 import CaffeineDay from '../../../components/coffee/CaffeineDay.svelte';
-import { METHODS, CAFFEINE, GUIDANCE, SOURCES, buildRecipe, estimateBrewedMg, espressoMg, flOzToMl } from '../../../lib/coffee/index.ts';
+import { METHODS, CAFFEINE, GUIDANCE, SOURCES, buildRecipe, intakeMg, espressoMg, flOzToMl } from '../../../lib/coffee/index.ts';
 
 const title = 'Caffeine Calculator: How Much Is Still in You at Bedtime';
 const description = 'Add the coffees you drink and see your caffeine total for the day and how much is still in your body at bedtime, with caffeine by brew method, espresso shot and cup size.';
 
-// Caffeine in an 8 oz cup by method, at the Brew Guide's classic ratio (arabica).
+// Caffeine in an 8 oz cup by method, at the Brew Guide's classic ratio (arabica): the same estimate the
+// calculator gives that cup (intakeMg), so the table and the diary agree. For AeroPress that means the
+// Brew Guide's chamber of about 230 g with the rest topped up after pressing; the old call ignored the
+// chamber and read 115–210 mg against the diary's 110–200 (Wave D batch 5).
 const eightOz = flOzToMl(8);
+const cupMg = (method: (typeof METHODS)[number]['id'], cupMl: number) => { const mg = intakeMg({ kind: 'brewed', method, cupMl, atMin: 0 }); return mg.ok ? mg.value : null; };
 const rows = METHODS.filter((m) => !['espresso', 'moka', 'cold-brew'].includes(m.id)).map((m) => {
 	const r = buildRecipe({ method: m.id, target: { cupMl: eightOz } });
 	const dose = r.ok ? r.value.doseG : eightOz / 14;
-	const mg = estimateBrewedMg(dose, m.id);
-	return { label: m.label, dose, mg: mg.ok ? mg.value : null };
+	return { label: m.label, dose, mg: cupMg(m.id, eightOz) };
 });
-const cold = (() => { const r = buildRecipe({ method: 'cold-brew', target: { cupMl: flOzToMl(16) } }); const mg = r.ok ? estimateBrewedMg(r.value.doseG, 'cold-brew') : null; return mg && mg.ok ? mg.value : null; })();
+const cold = cupMg('cold-brew', flOzToMl(16));
 const single = espressoMg(1), double = espressoMg(2);
 const fmt = (r: { min: number; max: number } | null) => (r ? `${Math.round(r.min / 5) * 5}–${Math.round(r.max / 5) * 5} mg` : '—');
 const fda = GUIDANCE.find((g) => g.id === 'fda-adult-daily')!;

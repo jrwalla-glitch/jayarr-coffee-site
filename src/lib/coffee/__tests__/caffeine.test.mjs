@@ -1,8 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { CAFFEINE, GUIDANCE, SOURCES, caffeineCurve, caffeineInBody, espressoMg, estimateBrewedMg, buildRecipe } from '../index.ts';
+import { CAFFEINE, GUIDANCE, SOURCES, caffeineCurve, caffeineInBody, espressoMg, estimateBrewedMg, buildRecipe, flOzToMl } from '../index.ts';
 
 const ok = (r) => { assert.equal(r.ok, true, JSON.stringify(r)); return r.value; };
+const near = (a, b, eps = 1e-9) => assert.ok(Math.abs(a - b) <= eps, `${a} vs ${b}`);
 
 test('a homemade 8 oz pour-over lands in the published range for a cup', () => {
   const recipe = ok(buildRecipe({ method: 'v60', target: { cupMl: 237 } }));
@@ -208,4 +209,25 @@ test('AeroPress caffeine counts only the water in the chamber (Astra r3: 264 mL 
   near(r.min, 120.091304, 0.01); near(r.max, 219.722609, 0.01);
   const small = intakeMg({ kind: 'brewed', method: 'aeropress', cupMl: 216, atMin: 600 }).value;
   near(small.min, 102.482609, 0.01); near(small.max, 187.505217, 0.01);
+});
+
+test('AeroPress, 8 oz: the estimate follows the Brew Guide\'s 230 g chamber (110–200 mg), so the page table and the diary agree', () => {
+  const cup = flOzToMl(8);
+  const r = ok(buildRecipe({ method: 'aeropress', target: { cupMl: cup } }));
+  const chamber = r.steps.find((s) => s.kind === 'pour').toG;
+  assert.equal(chamber, 230, 'the recipe pours 230 g into the chamber and tops up the rest');
+  const diary = ok(intakeMg({ kind: 'brewed', method: 'aeropress', cupMl: cup, atMin: 0 }));
+  const capped = ok(estimateBrewedMg(r.doseG, 'aeropress', 'arabica', r.ratio, chamber));
+  near(diary.min, capped.min, 1e-9); near(diary.max, capped.max, 1e-9);
+  const r5 = (x) => Math.round(x / 5) * 5;
+  assert.equal(`${r5(diary.min)}–${r5(diary.max)}`, '110–200');
+  // Ignoring the chamber (all 276 g counted as brewing water) overstates it: the old table's 115–210.
+  const uncapped = ok(estimateBrewedMg(r.doseG, 'aeropress'));
+  assert.equal(`${r5(uncapped.min)}–${r5(uncapped.max)}`, '115–210');
+  // Every other brewer in the table already agreed: same dose, all its water in contact.
+  for (const id of ['v60', 'chemex', 'kalita', 'french-press', 'drip-machine']) {
+    const rr = ok(buildRecipe({ method: id, target: { cupMl: cup } }));
+    const a = ok(estimateBrewedMg(rr.doseG, id)), b = ok(intakeMg({ kind: 'brewed', method: id, cupMl: cup, atMin: 0 }));
+    near(a.min, b.min, 1e-9); near(a.max, b.max, 1e-9);
+  }
 });
