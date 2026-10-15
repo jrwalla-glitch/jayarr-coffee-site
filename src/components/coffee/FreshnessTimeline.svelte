@@ -40,8 +40,11 @@
   // Dates outside this year carry the year, so a past window can't read as an upcoming one (blind Opus r2).
   let fmt = (s: string) => { const d = new Date(s + 'T12:00:00'); return d.toLocaleDateString(undefined, d.getFullYear() === new Date(today + 'T12:00:00').getFullYear() ? { month: 'short', day: 'numeric' } : { month: 'short', day: 'numeric', year: 'numeric' }); };
 
+  // Your last bag stays on this device, so a plain reload brings it back (Muse r3); a link wins.
+  const SAVE_KEY = 'jayarr-freshness-v1';
   onMount(() => {
-    const q = new URLSearchParams(location.search);
+    let q = new URLSearchParams(location.search);
+    if (!location.search) { try { const last = localStorage.getItem(SAVE_KEY); if (last) q = new URLSearchParams(last); } catch { /* storage unavailable */ } }
     const rd = q.get('roast'); if (rd && /^\d{4}-\d{2}-\d{2}$/.test(rd)) roastDate = rd; else if (rd !== null) linkProblem = true;
     if (q.get('use') === 'espresso') use = 'espresso';
     const s = q.get('storage'); if (s === 'sealed-bag' || s === 'opened' || s === 'frozen') storage = s;
@@ -57,6 +60,7 @@
     if (storage === 'frozen') q.set('frozen', frozenOn);
     if (storage === 'frozen' && thawed) q.set('thawed', thawedOn);
     history.replaceState(history.state, '', `${location.pathname}?${q}`);
+    try { localStorage.setItem(SAVE_KEY, q.toString()); } catch { /* storage unavailable */ }
   });
 </script>
 

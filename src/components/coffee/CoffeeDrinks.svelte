@@ -202,7 +202,7 @@
         {#if hasUnknown}<li><span class="sw hatch"></span>amount not published</li>{/if}
       </ul>
     {/if}
-    <figcaption>Schematic layers drawn to one scale. Shaded bands show a range; hatched layers mean the recipe doesn't publish that amount; a dashed outline means it doesn't give the cup size.{A.byMass || B.byMass ? ' Recipes measured by weight are drawn in proportion to the weights.' : ''}</figcaption>
+    <figcaption>Schematic layers drawn to one scale. Shaded bands show a range; hatched layers mean the recipe doesn't publish that amount, so their heights are placeholders, not to scale; a dashed outline means it doesn't give the cup size.{A.byMass || B.byMass ? ' Recipes measured by weight are drawn in proportion to the weights.' : ''}</figcaption>
   </figure>
 
   <div class="diff"><span class="k">The difference</span><p>{sentence}</p></div>
