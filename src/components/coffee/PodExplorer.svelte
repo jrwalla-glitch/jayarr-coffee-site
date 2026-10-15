@@ -13,6 +13,8 @@
   // The largest cup any capsule makes is the full height of every drawing.
   const ML_TOP = Math.max(...pods.map((p) => p.ml));
   const shortSize = (n: string) => (n === 'Double Espresso' ? 'Double' : n === 'Gran Lungo' ? 'Gran Lungo' : n);
+  // The phone wall fits up to seven cup columns of about 47 px: short heads, with the exact ml beneath (WB2 Opus).
+  const TALL_HEAD: Record<string, string> = { Ristretto: 'Ristr.', Espresso: 'Espr.', 'Double Espresso': 'Double', 'Gran Lungo': 'Gran L.', Lungo: 'Lungo', Mug: 'Mug', Alto: 'Alto' };
 
   let line = $state<Line | null>(null);
   let selectedId = $state<string | null>(null);
@@ -299,7 +301,7 @@
           <div class="wall tall" role="group" aria-label="{LINES[line].label} capsules by intensity and cup size">
             <div class="thead" style:--n={rows.length} aria-hidden="true">
               <span class="corner">int.</span>
-              {#each rows as r (r.key)}<span class="th">{@render glassAt(r.ml, 22)}<b>{r.name === 'Gran Lungo' ? 'Gran L.' : shortSize(r.name)}</b><small>{r.ml}&nbsp;ml</small></span>{/each}
+              {#each rows as r (r.key)}<span class="th">{@render glassAt(r.ml, 22)}<b>{TALL_HEAD[r.name] ?? r.name}</b><small>{r.ml}&nbsp;ml</small></span>{/each}
             </div>
             {#each Array.from({ length: COLS + 1 }, (_, c) => c) as c (c)}
               {@const here = placed.filter((x) => x.col === c)}
@@ -338,7 +340,7 @@
               <tbody>
                 {#each [...shown].sort((a, b) => a.ml - b.ml || (a.intensity ?? 0) - (b.intensity ?? 0) || a.name.localeCompare(b.name)) as p (p.id)}
                   <tr class:sel={selectedId === p.id}>
-                    <th scope="row"><button type="button" class="lname" aria-pressed={selectedId === p.id} onclick={() => pick(p)}>{@render capsule(line, p.color_hex, 20)}<span>{p.name}{#if STATUS_NOTE[p.status]}<em> ({STATUS_NOTE[p.status].toLowerCase()})</em>{/if}</span></button></th>
+                    <th scope="row"><button type="button" class="lname" aria-pressed={selectedId === p.id} onclick={() => pick(p)}>{@render capsule(line, p.color_hex, 20)}<span>{p.name}{#if STATUS_NOTE[p.status]}{' '}<em>({STATUS_NOTE[p.status].toLowerCase()})</em>{/if}</span></button></th>
                     <td class="nw">{shortSize(p.size)} · {p.ml}&nbsp;ml</td><td class="num">{p.intensity ?? 'n/r'}</td><td class="nw">{p.roast_level ?? '—'}</td><td>{p.aroma}</td>
                   </tr>
                 {/each}
@@ -395,7 +397,7 @@
             {#if suggestion}
               <p class="try"><span class="lbl">Try also</span><button type="button" class="trybtn" onclick={() => pick(suggestion!)}>{@render capsule(suggestion.line, suggestion.color_hex, 20)}{suggestion.name}<small>{suggestion.size} · {suggestion.ml} ml</small></button></p>
             {:else if near}
-              <p class="try"><span class="lbl">Similar on the wall</span><button type="button" class="trybtn" onclick={() => pick(near!)}>{@render capsule(near.line, near.color_hex, 20)}{near.name}<small>{near.intensity ? `intensity ${near.intensity}` : 'not rated'} · {near.aroma}</small></button><small class="quiet nearwhy">Same cup size, the closest intensity and aroma.</small></p>
+              <p class="try"><span class="lbl">Similar on the wall</span><button type="button" class="trybtn" onclick={() => pick(near!)}>{@render capsule(near.line, near.color_hex, 20)}{near.name}<small>{near.intensity ? `intensity ${near.intensity}` : 'not rated'} · {near.aroma}</small></button><small class="quiet nearwhy">{selected.intensity ? 'Same cup size, the closest intensity and aroma.' : 'Same cup size and aroma family (Nespresso doesn\'t rate this one for intensity).'}</small></p>
             {/if}
             <div class="actions">
               {#if onSale(selected)}<a class="go" href={buySearch(selected)} rel="sponsored noopener" target="_blank">Search Amazon for {LINES[selected.line].label} {selected.name} →</a>{/if}
@@ -532,8 +534,8 @@
   .thead { padding-bottom: 6px; border-bottom: 1px solid var(--rule); text-align: center; align-items: end; }
   .thead .corner { font: 500 10.5px 'IBM Plex Mono', monospace; color: var(--ink-3); text-align: left; }
   .thead .th { display: grid; justify-items: center; gap: 1px; }
-  .thead b { display: block; font: 600 11.5px/1.15 'IBM Plex Sans', sans-serif; }
-  .thead small { display: block; font: 500 11px 'IBM Plex Mono', monospace; color: var(--ink-3); white-space: nowrap; }
+  .thead b { display: block; font: 600 11px/1.15 'IBM Plex Sans', sans-serif; white-space: nowrap; }
+  .thead small { display: block; font: 500 10px 'IBM Plex Mono', monospace; color: var(--ink-3); white-space: nowrap; }
   .trow { border-bottom: 1px dashed var(--rule); min-height: 42px; }
   .trow.empty { min-height: 24px; }
   .tl { font: 500 12px 'IBM Plex Mono', monospace; color: var(--ink-3); align-self: center; }

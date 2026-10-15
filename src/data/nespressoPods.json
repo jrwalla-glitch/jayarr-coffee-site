@@ -34,7 +34,7 @@
       "aroma": "Toasted Cereal, Caramel & Honey",
       "category": "Alto",
       "color_hex": "#CFA346",
-      "description": "A gentle giant — 355 ml of soft, sweet coffee that leans into caramel and toasted grain without ever getting heavy. Pure Arabica at a low intensity means the flavors are delicate and forgiving, which makes it an ideal choice for slow mornings or anyone who wants a big mug that doesn't push back. Easy, pleasant, no surprises.",
+      "description": "A gentle giant — 355 ml of soft, sweet coffee that leans into caramel and toasted grain without ever getting heavy. At a low intensity the flavors are delicate and forgiving, which makes it an ideal choice for slow mornings or anyone who wants a big mug that doesn't push back. Easy, pleasant, no surprises.",
       "roast_level": "Light",
       "best_for": "Easy weekend mornings — sweet, gentle, and genuinely crowd-pleasing",
       "try_also": "Melozio",
@@ -113,9 +113,9 @@
       "intensity": 7,
       "blend": "A/R",
       "aroma": "Roasted, Spicy & Woody",
-      "category": "Mug",
+      "category": "Master Origins",
       "color_hex": "#72A84E",
-      "description": "A single-origin Mexican coffee that leans into its rustic side. 'Wild roasted' hints at a slightly untamed, earthy roast character — think less polished European blend, more campfire morning. Pure Arabica at a medium intensity means the terroir can actually show through. A good choice if you want a sense of place in your cup.",
+      "description": "A single-origin Mexican coffee that leans into its rustic side. 'Wild roasted' hints at a slightly untamed, earthy roast character — think less polished European blend, more campfire morning. Nespresso describes it as Arabica with some double-washed Robusta. A good choice if you want a sense of place in your cup.",
       "roast_level": "Medium",
       "best_for": "Single-origin curious drinkers who want something with a sense of place",
       "try_also": "Stormio",
@@ -153,7 +153,7 @@
       "intensity": 5,
       "blend": "A",
       "aroma": "Red Berries & Candied Apple",
-      "category": "Mug",
+      "category": "Master Origins",
       "color_hex": "#A17778",
       "description": "A Vertuo Mug pod (230 ml) of Colombian coffee with fruity notes, intensity 5. It brews a full mug, not an espresso, so it suits drinking black or with a splash of milk.",
       "roast_level": "Light",
@@ -982,7 +982,8 @@
       "source_url": "https://www.nespresso.com/us/en/order/capsules/original/ispirazione-ristretto-italiano-decaffeinato-coffee-capsule",
       "discontinued": false,
       "aliases": [
-        "Ispirazione Ristretto Italiana Decaffeinato"
+        "Ispirazione Ristretto Italiana Decaffeinato",
+        "Ispirazione Ristretto Italiano Decaffeinato"
       ]
     },
     {
@@ -1014,7 +1015,10 @@
         }
       ],
       "source_url": "https://www.nespresso.com/us/en/order/capsules/original/ispirazione-firenze-decaffeinato-coffee-capsule",
-      "discontinued": false
+      "discontinued": false,
+      "aliases": [
+        "Ispirazione Firenze Arpeggio Decaffeinato"
+      ]
     },
     {
       "name": "Volluto Decaffeinato",
@@ -1052,8 +1056,8 @@
       "roast_level": null,
       "best_for": "Evening lungo — long cup, floral lift, in decaf",
       "try_also": "Volluto Decaffeinato",
-      "discontinued": true,
-      "status": "retired",
+      "discontinued": false,
+      "status": "unlisted",
       "checked": "2026-10-15",
       "roastiness": null,
       "source_url": "https://www.nespresso.com/recipes/int/en/448LON-long-siesta.html",
@@ -1425,7 +1429,7 @@
       "cup_size": "double_espresso",
       "ml": 80,
       "intensity": null,
-      "blend": "A",
+      "blend": "A/R",
       "aroma": "Whiskey Flavor & Fruit",
       "category": "Barista Creations",
       "color_hex": "#8B6530",
@@ -1560,7 +1564,9 @@
       "checked": "2026-10-15",
       "roastiness": 4,
       "source_url": "https://www.nespresso.com/us/en/order/capsules/vertuo/stormio-boost-vertuo-coffee-pods",
-      "discontinued": false
+      "discontinued": false,
+      "caffeine_boosted": true,
+      "note": "Caffeine-enriched: Nespresso adds caffeine extract to this Arabica blend (about 200 mg a mug, against about 165 mg for Stormio, by Nespresso's figures)."
     },
     {
       "name": "Melozio Boost",
@@ -1580,7 +1586,9 @@
       "checked": "2026-10-15",
       "roastiness": 3,
       "source_url": "https://www.nespresso.com/us/en/order/capsules/vertuo/melozio-boost-vertuo-coffee-pods",
-      "discontinued": false
+      "discontinued": false,
+      "caffeine_boosted": true,
+      "note": "Caffeine-enriched: Nespresso describes it as Melozio with added caffeine."
     },
     {
       "name": "Melozio Decaffeinato",

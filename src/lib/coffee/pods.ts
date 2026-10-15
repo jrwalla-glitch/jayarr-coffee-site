@@ -84,6 +84,8 @@ export const aromaFamilies = (p: Pick<RawPod, 'aroma'>) => AROMA_FAMILIES.filter
  */
 const RANGE_JOIN: [RegExp, string][] = [
   [/^Starbucks/, 'Starbucks'],
+  // Nespresso's Reviving Origins range appears under both names in its catalogue (WB2 Opus).
+  [/^(Reviving )?Origins$/, 'Reviving Origins'],
   [/^Master (Origin|Crafted Single Origins)$/, 'Master Origins'],
   [/^Ristretto & Espresso/, 'Espresso'],
   [/^Gran Lungo/, 'Gran Lungo'],
@@ -160,7 +162,7 @@ export function tryAlso(pods: Pod[], pod: Pod): Pod | null {
   if (!pod.try_also) return null;
   const p = byName(pods, pod.line, pod.try_also);
   // The same like-for-like rule as "Similar": a decaf capsule never points to a caffeinated one, or the reverse.
-  if (!p || p.id === pod.id || !onSale(p) || !!p.decaf !== !!pod.decaf || !!p.caffeine_boosted !== !!pod.caffeine_boosted) return null;
+  if (!p || p.id === pod.id || !onSale(p) || !!p.decaf !== !!pod.decaf || !!p.caffeine_boosted !== !!pod.caffeine_boosted || !!p.flavored !== !!pod.flavored) return null;
   return p;
 }
 
@@ -174,8 +176,16 @@ export function similar(pods: Pod[], pod: Pod): Pod | null {
   // Like for like: decaf stays decaf, and a caffeine-enriched capsule is never offered as a near twin.
   const pool = pods.filter((p) => p.id !== pod.id && p.line === pod.line && p.size === pod.size && p.ml === pod.ml && onSale(p)
     && !!p.flavored === !!pod.flavored && !!p.decaf === !!pod.decaf && !!p.caffeine_boosted === !!pod.caffeine_boosted);
-  const score = (p: Pod) => Math.abs((p.intensity ?? 0) - (pod.intensity ?? 0)) + (aromaFamilies(p).some((f) => fam.has(f)) ? 0 : 1.5);
-  return pool.sort((a, b) => score(a) - score(b) || a.name.localeCompare(b.name))[0] ?? null;
+  const shares = (p: Pod) => aromaFamilies(p).some((f) => fam.has(f));
+  // An unrated capsule has no intensity to be close to: it needs a shared aroma family, preferring its own range.
+  // A rated one is matched only against rated capsules, so "closest intensity" is true (WB2 Opus).
+  if (pod.intensity == null) {
+    const near = pool.filter(shares).sort((a, b) => Number(rangeOf(b) === rangeOf(pod)) - Number(rangeOf(a) === rangeOf(pod)) || a.name.localeCompare(b.name));
+    return near[0] ?? null;
+  }
+  const rated = pool.filter((p) => p.intensity != null);
+  const score = (p: Pod) => Math.abs(p.intensity! - pod.intensity!) + (shares(p) ? 0 : 1.5) + (rangeOf(p) === rangeOf(pod) ? 0 : 0.5);
+  return rated.sort((a, b) => score(a) - score(b) || a.name.localeCompare(b.name))[0] ?? null;
 }
 
 /** A pod from a link: by slug (current or earlier name), else by "line:name" through renames. */
