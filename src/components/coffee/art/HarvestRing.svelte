@@ -1,7 +1,7 @@
 <svelte:options namespace="svg" />
 <script lang="ts">
   // A year as a ring: January at the top, clockwise. Solid copper is the main harvest, the paler
-  // arc a second crop, hatching the uncertain edges the sources disagree on. Drawn as its own
+  // arc a second crop, hatching a month or two either side as a buffer (picking can start early or run late). Drawn as its own
   // <svg>, so it nests inside a map as easily as it sits in a page.
   import { harvestState, MONTHS } from '../../../lib/coffee/origins.ts';
   import type { OriginFacts } from '../../../lib/coffee/origins.ts';

@@ -55,7 +55,7 @@ test('the tasting card compares by note, then family, and its link round-trips w
   assert.ok(c.near.includes('strawberry'));
   assert.ok(c.yoursOnly.includes('chocolate'));
   const q = encodeCard({ pins: ['strawberry', 'jasmine'], bag: 'raspberry' });
-  assert.deepEqual(decodeCard(q), { pins: ['strawberry', 'jasmine'], bag: 'raspberry', dropped: 0 });
+  assert.deepEqual(decodeCard(q), { pins: ['strawberry', 'jasmine'], bag: 'raspberry', dropped: 0, unknown: 0, overLimit: 0 });
   const d = decodeCard('?pins=blueberry,not-a-note,jasmine,blueberry,lemon,orange');
   assert.equal(d.pins.length, MAX_PINS);
   assert.ok(!d.pins.includes('not-a-note'));
@@ -141,4 +141,32 @@ test('altitude bands read low to high, and every cited source id exists', () => 
     for (const id of ids) assert.ok(originSources[id], `${o.id}: unknown source ${id}`);
   }
   for (const m of ATLAS) for (const id of m.sourceIds) assert.ok(EXPLORE_SOURCES[id], `${m.id}: unknown source ${id}`);
+});
+
+// ── Review round 1 (Astra) regressions ──
+test('each note counts only its own words: generic family words count toward no note', () => {
+  assert.deepEqual(notesInText('floral'), []);
+  assert.deepEqual(notesInText('red fruit'), []);
+  assert.ok(!notesInText('whipped cream').includes('vanilla'));
+  assert.ok(!notesInText('green tea').includes('black-tea'));
+  assert.deepEqual(notesInText('elderflower').map((id) => noteById(id).label), ['Other flowers']);
+  assert.deepEqual(notesInText('juicy berries').map((id) => noteById(id).label), ['Mixed berries']);
+  for (const n of ALL_NOTES) for (const w of n.words) assert.ok(notesInText(w).includes(n.id), `${n.id}: "${w}" doesn't match its own note`);
+});
+
+test('a card link tells unknown notes from notes over the limit', () => {
+  const over = decodeCard('?pins=blueberry,jasmine,caramel,lemon');
+  assert.equal(over.unknown, 0); assert.equal(over.overLimit, 1);
+  const bad = decodeCard('?pins=blueberry,not-a-note');
+  assert.equal(bad.unknown, 1); assert.equal(bad.overLimit, 0);
+});
+
+test('the Clever Dripper is four minutes plus its drain; time differences of half again count', () => {
+  const clever = ATLAS.find((m) => m.id === 'clever');
+  assert.equal(timeText(clever), '4:30–4:45');
+  const v60 = ATLAS.find((m) => m.id === 'v60'), drip = ATLAS.find((m) => m.id === 'drip-machine'), chemex = ATLAS.find((m) => m.id === 'chemex');
+  assert.ok(differences(v60, drip).includes('time'));
+  assert.ok(!differences(v60, chemex).includes('time'));
+  const kalita = ATLAS.find((m) => m.id === 'kalita');
+  assert.match(differenceSentence(v60, kalita), /times overlap/);
 });

@@ -36,6 +36,10 @@
   let symptom = $state('sour');
   let fixMethod = $state<'v60' | 'espresso'>('v60');
 
+  // Only the mug sizes this brewer can make in one go are offered (one AeroPress holds about 22 g).
+  const fits = (m: MethodId, c: number) => buildRecipe({ method: m, target: { cupMl: flOzToMl(c) }, strength: 'classic', roast: 'medium' }).ok;
+  let cups = $derived(method === 'espresso' || method === 'moka' ? [] : CUPS.filter((c) => fits(method, c)));
+  $effect(() => { if (cups.length && !cups.includes(oz)) oz = cups.filter((c) => c <= oz).at(-1) ?? cups[0]; });
   let target = $derived(method === 'espresso' ? { doseG: 18 } : method === 'moka' ? { doseG: 15 } : { cupMl: flOzToMl(oz) });
   let res = $derived(buildRecipe({ method, target, strength: 'classic', roast: 'medium' }));
   let r = $derived(res.ok ? res.value : null);
@@ -85,7 +89,8 @@
       {#if method !== 'espresso' && method !== 'moka'}
         <p class="q">Your mug</p>
         <div class="chips">
-          {#each CUPS as c (c)}<button type="button" class="chip" aria-pressed={oz === c} onclick={() => (oz = c)}>{c} oz</button>{/each}
+          {#each cups as c (c)}<button type="button" class="chip" aria-pressed={oz === c} onclick={() => (oz = c)}>{c} oz</button>{/each}
+          {#if cups.length < CUPS.length}<span class="cupnote">{method === 'aeropress' ? 'One press makes about 8 oz; for a bigger mug, make two.' : `A ${BREWERS.find((b) => b.id === method)?.label} this size tops out at ${cups.at(-1)} oz.`}</span>{/if}
         </div>
       {/if}
       {#if r}
@@ -135,7 +140,7 @@
             <figcaption>{grindShort}, like {r.grind.texture}</figcaption>
           </figure>
         </div>
-        <p class="note">{method === 'espresso' ? 'A double shot: 18 g in, 36 g out, in 25–30 seconds.' : method === 'cold-brew' ? 'A concentrate: dilute it about one to one to serve.' : method === 'moka' ? 'The pot sets the amounts: coffee level in the basket, water to just below the valve. The Brew Guide sizes it to your pot.' : 'At 1:16, the classic strength. The Brew Guide times every pour.'}</p>
+        <p class="note">{method === 'espresso' ? 'A double shot: 18 g in, 36 g out, in 25–30 seconds.' : method === 'cold-brew' ? 'A concentrate: dilute it about one to one to serve.' : method === 'moka' ? 'The pot sets the amounts: coffee level in the basket, water to just below the valve. The Brew Guide sizes it to your pot.' : `At 1:${ratioText}, the Brew Guide's classic strength for ${BREWERS.find((b) => b.id === method)?.label}. It times every pour.`}</p>
       {/if}
       <a class="go" href={href}>Brew it step by step →</a>
     {:else if door === 'fix'}
@@ -201,6 +206,7 @@
   .chip { appearance: none; border: 1px solid var(--rule); background: #fff; color: var(--ink); border-radius: 999px; padding: 7px 13px; min-height: 38px; font: 500 14.5px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; cursor: pointer; }
   .chip[aria-pressed='true'] { background: var(--ink); border-color: var(--ink); color: #f3ede3; }
   .chip:hover { border-color: var(--ink-3); }
+  .cupnote { align-self: center; font-size: 13px; color: var(--ink-3); }
   .nums { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 16px 0 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
   .nums div { padding: 9px 10px 9px 0; }
   .nums div + div { border-left: 1px solid var(--rule); padding-left: 10px; }

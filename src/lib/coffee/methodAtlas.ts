@@ -77,7 +77,7 @@ const fromEngine = (id: MethodId) => {
     grind: m.grindLabel,
     temp: id === 'cold-brew' ? 'Cold or room temperature' : id === 'moka' ? 'Just-boiled water in the base' : `${Math.round(m.tempC.min * 9 / 5 + 32)}–${Math.round(m.tempC.max * 9 / 5 + 32)}°F (${m.tempC.min}–${m.tempC.max}°C)`,
     timeS: [m.timeS.min, m.timeS.max] as [number, number],
-    recipeBy: m.base?.by ? `the Brew Guide's recipe, after ${m.base.by}` : 'the Brew Guide\'s recipe',
+    recipeBy: m.base?.by ? `the Brew Guide's starting recipe (it credits ${m.base.by})` : 'the Brew Guide\'s starting recipe',
     brewGuide: id,
   };
 };
@@ -124,7 +124,7 @@ export const ATLAS: AtlasMethod[] = [
   {
     id: 'french-press', label: 'French press', the: 'the French press', line: 'Coffee steeps in all the water; a metal mesh holds the grounds back.',
     contact: 'immersion', filter: 'metal', force: 'none', attention: 1,
-    timeNote: 'Jessica Easto\'s recipe; 4-minute recipes are common too',
+    timeNote: 'the Brew Guide\'s long steep; 4-minute recipes are common too',
     ...fromEngine('french-press'),
     guide: { slug: 'how-to-use-a-french-press-the-most-amazing-coffee-youve-ever-had', title: 'How to use a French press' },
     sourceIds: ['easto', 'synthesis'],
@@ -149,7 +149,7 @@ export const ATLAS: AtlasMethod[] = [
   {
     id: 'clever', label: 'Clever Dripper', the: 'the Clever Dripper', line: 'A cone with a valve: it steeps like a press, then drains through paper.',
     contact: 'steep-drain', filter: 'paper', force: 'gravity', attention: 1,
-    timeS: [240, 285], ratio: { classic: 15, range: [15, 16] }, grind: 'Medium-coarse', temp: '200–205°F (93–96°C)',
+    timeS: [270, 285], ratio: { classic: 15, range: [15, 16] }, grind: 'Medium-coarse', temp: '200–205°F (93–96°C)',
     recipeBy: 'our Clever Dripper guide: 20 g of coffee and 300 g of water, 4 minutes, then a 30–45 second drain',
     brewGuide: null,
     guide: { slug: 'the-clever-dripper-better-coffee-than-pour-over', title: 'The Clever Dripper' },
@@ -221,9 +221,10 @@ export function differences(a: AtlasMethod, b: AtlasMethod): Axis[] {
   if (a.contact !== b.contact) out.push('contact');
   if (a.filter !== b.filter) out.push('filter');
   if (a.force !== b.force) out.push('force');
-  // Time differs when the ranges don't overlap or one is at least twice the other.
+  // Time differs when one typically runs at least half as long again as the other (by the middle
+  // of each range, on a log scale), so 3–4 minutes against 4–8 counts and 3–4 against 3:30–4:30 doesn't.
   const mid = (m: AtlasMethod) => Math.sqrt(m.timeS[0] * m.timeS[1]);
-  if (Math.max(mid(a), mid(b)) / Math.min(mid(a), mid(b)) >= 2) out.push('time');
+  if (Math.max(mid(a), mid(b)) / Math.min(mid(a), mid(b)) >= 1.5) out.push('time');
   return out;
 }
 
@@ -255,7 +256,7 @@ export function describe(m: AtlasMethod): string {
 /** The headline difference for a comparison: at most two clauses, the rest is in the table. */
 export function differenceSentence(a: AtlasMethod, b: AtlasMethod): string {
   const d = differences(a, b);
-  if (!d.length) return `${cap(a.the)} and ${b.the} work the same way on every axis here; they differ in the brewer's shape and how fast it drains.`;
+  if (!d.length) return `${cap(a.the)} and ${b.the} work the same way on contact, filter and force, and their times overlap (${timeText(a)} and ${timeText(b)}); they differ in the brewer's shape and how fast it drains.`;
   const parts: string[] = [];
   if (d.includes('contact')) {
     const verb = (m: AtlasMethod) => m.contact === 'percolation' ? 'runs water through the coffee' : m.contact === 'immersion' ? 'steeps it in all the water' : 'steeps it, then drains it through the bed';

@@ -426,7 +426,7 @@
               <tr><th scope="row">Grind</th><td>{A.grind}</td><td>{B.grind}</td></tr>
             </tbody>
           </table>
-          <p class="quiet small">Highlighted rows are the axes that differ. Contact time is a typical range for each recipe.{#each [A, B].filter((m) => m.timeNote) as m (m.id)}{' '}* {m.label}: {m.timeNote}.{/each}</p>
+          <p class="quiet small">Highlighted rows are the axes that differ; time counts when one typically runs at least half as long again as the other. Contact time is a typical range for each recipe.{#each [A, B].filter((m) => m.timeNote) as m (m.id)}{' '}* {m.label}: {m.timeNote}.{/each}</p>
           <div class="actions">
             {#each [A, B] as m (m.id)}
               {#if brewGuideHref(m)}<a class="ghost" href={brewGuideHref(m)}>Brew the {m.label} →</a>{:else}<a class="ghost" href="/blog/{m.guide.slug}/">{m.label} guide →</a>{/if}

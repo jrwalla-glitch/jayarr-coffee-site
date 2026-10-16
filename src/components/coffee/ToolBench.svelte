@@ -66,7 +66,7 @@
       }
     }
     const grinder = get('jayarr-grinder');
-    if (grinder) out.push({ href: '/deep-brew/calibrator/', label: 'Your grinder', detail: pretty(grinder), icon: 'dial' });
+    if (grinder) out.push({ href: `/deep-brew/calibrator/?grinder=${encodeURIComponent(grinder)}`, label: 'Your grinder', detail: pretty(grinder), icon: 'dial' });
     const line = get('jayarr-pods-machine');
     if (line === 'original' || line === 'vertuo') {
       let n = 0; try { n = (JSON.parse(get('jayarr-pods-flight') ?? '[]') as unknown[]).length; } catch { /* ignore */ }
@@ -75,7 +75,8 @@
     try {
       const card = JSON.parse(get('jayarr-tasting-card-v1') ?? 'null');
       const pins = (card?.current?.pins ?? []).map((p: string) => noteById(p)?.label).filter(Boolean);
-      if (pins.length) out.push({ href: `/explore/flavors/?pins=${card.current.pins.join(',')}`, label: 'Your tasting card', detail: pins.join(', '), icon: 'flower' });
+      // No pins in the link: the Bloom reopens your own card, bag notes included, from this device.
+      if (pins.length) out.push({ href: '/explore/flavors/', label: 'Your tasting card', detail: pins.join(', '), icon: 'flower' });
     } catch { /* ignore */ }
     // The caffeine diary is health data: say it's there, never what's in it.
     if (get('jayarr-caffeine-log-v2')) out.push({ href: '/tools/caffeine/', label: 'Your caffeine day', detail: 'Kept on this device', icon: 'night' });

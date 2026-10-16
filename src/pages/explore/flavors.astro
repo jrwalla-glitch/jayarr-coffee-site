@@ -13,6 +13,7 @@ const lots = originHubs.flatMap((h) => h.beans.map((b) => ({ o: h.origin_slug.re
 const origins = ORIGINS.map((o) => ({ id: o.id, name: o.name, page: o.page }));
 const cited = ['sca-wcr-wheel', 'wcr-lexicon', 'sca-cva', 'easto', 'synthesis', 'roaster-lots-2026'].map((id) => EXPLORE_SOURCES[id]);
 const noteCount = ALL_NOTES.length;
+const offCount = OFF_GROUPS.reduce((t, g) => t + g.notes.length, 0);
 ---
 
 <BenchPage
@@ -53,10 +54,10 @@ const noteCount = ALL_NOTES.length;
     <p>Taste the same cup again as it cools. The SCA's cupping protocol has tasters return to each cup several times from about 70 °C down, because what you notice changes.</p>
 
     <h2>Off notes</h2>
-    <p>The leaves on the stem hold the wheel's "other" notes: papery, musty, phenolic and rubbery tastes, and the raw-potato defect found in some East African lots. If you can pick one out, something went wrong on the farm, in processing, in storage or with age. A roast can mask a flaw but won't remove it.</p>
+    <p>The leaves on the stem hold the wheel's "other" notes: papery, musty, phenolic and rubbery tastes, and the raw-potato defect found in some East African lots. Faint, a few (earthy, woody) can be part of a coffee's character; strong or persistent, they usually point to a problem on the farm, in processing, in storage or with age. Roasting doesn't fix a defect, though a darker roast can hide some of it.</p>
 
     <h2>Every note on the bloom</h2>
-    <p class="bp-note">{noteCount} notes in eight families, plus the off notes. Notes marked * aren't on the wheel itself: they're words roasters use often, placed in the nearest group.</p>
+    <p class="bp-note">{noteCount} notes: {noteCount - offCount} in eight families and {offCount} off notes. Notes marked * aren't printed on the wheel in this form: they're words roasters use often, or the wheel's notes combined, placed in the nearest group. Each note counts only its own words, listed on its card.</p>
     {FAMILIES.map((f) => (
       <>
         <h3>{f.label}</h3>

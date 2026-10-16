@@ -59,7 +59,7 @@ function family(id: FamilyId, label: string, colour: string, blurb: string, brin
 export const FAMILIES: Family[] = [
   family('roasted', 'Roasted', '#46301f',
     'The flavors roasting itself creates: cereal and malt early, then tobacco, smoke and burnt as a roast goes darker.',
-    'Darker roasts and longer roast development. WCR\'s lexicon calls this the category most affected by roast level.',
+    'Darker roasts and longer roast development tend to bring more of it.',
     ['wcr-lexicon'],
     [
       ['cereal', 'Cereal', [
@@ -73,7 +73,7 @@ export const FAMILIES: Family[] = [
         n('acrid', 'Acrid', 'Sharp, scorched, over-roasted.', 'a burnt edge of toast', ['acrid', 'burnt', 'charred']),
       ]],
       ['tobacco', 'Tobacco', [
-        n('tobacco', 'Tobacco', 'Dried leaf, sweet and a little earthy.', 'dried tea leaves or a fresh cigar\'s wrapper smell', ['tobacco', 'pipe tobacco', 'leather']),
+        n('tobacco', 'Tobacco', 'Dried leaf, sweet and a little earthy.', 'dried tea leaves or a fresh cigar\'s wrapper smell', ['tobacco', 'pipe tobacco']),
       ]],
     ]),
   family('spices', 'Spices', '#b4532a',
@@ -87,7 +87,7 @@ export const FAMILIES: Family[] = [
         n('nutmeg', 'Nutmeg', 'Warm, nutty, a little piney.', 'freshly grated nutmeg', ['nutmeg']),
         n('anise', 'Anise', 'Licorice-like and sweet.', 'a fennel seed or star anise', ['anise', 'licorice', 'liquorice']),
         n('cardamom', 'Cardamom', 'Bright, resinous, citrus-and-pine spice.', 'a cracked green cardamom pod', ['cardamom'], extraWord),
-        n('baking-spice', 'Baking spice', 'Warm mixed spice, like a spice cookie.', 'a pinch of mixed spice or pumpkin-pie spice', ['baking spice', 'brown spice', 'allspice', 'gingersnap', 'snickerdoodle cookie', 'spice', 'spiced'], extraWord),
+        n('baking-spice', 'Baking spice', 'Warm mixed spice, like a spice cookie.', 'a pinch of mixed spice or pumpkin-pie spice', ['baking spice', 'brown spice', 'allspice', 'gingersnap', 'snickerdoodle cookie'], extraWord),
       ]],
       ['pepper', 'Pepper', [
         n('pepper', 'Pepper', 'Black-pepper bite at the back of the nose.', 'freshly cracked black pepper', ['pepper', 'peppery']),
@@ -98,24 +98,24 @@ export const FAMILIES: Family[] = [
     ]),
   family('nutty-cocoa', 'Nutty & cocoa', '#9a6238',
     'Roasted nuts and chocolate: the most familiar coffee flavors, and the base of many blends.',
-    'Very common in coffee, and especially in medium roasts, where roasting has developed nut and cocoa aromas without burying them.',
+    'Very common in coffee. Roasting develops nut and cocoa aromas; very dark roasts can push them toward bitter and burnt.',
     ['wcr-lexicon'],
     [
       ['cocoa', 'Cocoa', [
         n('chocolate', 'Chocolate', 'Cocoa with the round fat of cocoa butter.', 'a square of milk chocolate', ['chocolate', 'milk chocolate', 'chocolate chip cookie', 'white chocolate']),
         n('dark-chocolate', 'Dark chocolate', 'Intense cocoa, drier and more bitter.', 'a square of 85–90% dark chocolate', ['dark chocolate', 'bittersweet chocolate']),
-        n('cocoa', 'Cocoa powder', 'Dusty, brown, slightly bitter cocoa.', 'unsweetened cocoa powder', ['cocoa', 'cocoa powder', 'cacao', 'cacao nib', 'cocoa nibs', 'cacao dusting']),
+        n('cocoa', 'Cocoa powder', 'Dusty, brown, slightly bitter cocoa.', 'unsweetened cocoa powder', ['cocoa', 'cocoa powder', 'cacao', 'cacao nib', 'cocoa nibs', 'cacao dusting'], { wheel: false }),
       ]],
       ['nutty', 'Nutty', [
         n('almond', 'Almond', 'Sweet, woody, a hint of marzipan.', 'a toasted almond', ['almond', 'almonds', 'roasted almond', 'marzipan', 'almond cake']),
         n('hazelnut', 'Hazelnut', 'Woody, sweet, buttery.', 'a roasted hazelnut', ['hazelnut', 'hazelnuts', 'roasted hazelnut', 'praline', 'nutella']),
         n('peanut', 'Peanut', 'Oily, roasted, a little beany.', 'a dry-roasted peanut', ['peanut', 'peanuts']),
-        n('pecan', 'Pecan & walnut', 'Rich, buttery nuts with a tannic skin.', 'a pecan or walnut half', ['pecan', 'walnut', 'macadamia', 'cashew', 'chestnut', 'nutty', 'nut'], extraWord),
+        n('pecan', 'Pecan & other nuts', 'Rich, buttery nuts with a tannic skin.', 'a pecan or walnut half', ['pecan', 'walnut', 'macadamia', 'cashew', 'chestnut'], extraWord),
       ]],
     ]),
   family('sweet', 'Sweet', '#d79a33',
     'Brown sugar, caramel, honey and vanilla: sweetness you smell as much as taste.',
-    'Roasting turns the bean\'s sugars into caramel-like aromas; light to medium roasts carry the most perceived sweetness, and almost no sugar is left by a medium roast (synthesis, flavor chemistry).',
+    'Roasting turns the bean\'s sugars into caramel-like aromas. Light to medium roasts usually taste sweeter; darker roasts trade sweetness for bitterness.',
     ['synthesis', 'wcr-lexicon'],
     [
       ['brown-sugar', 'Brown sugar', [
@@ -123,30 +123,31 @@ export const FAMILIES: Family[] = [
         n('brown-sugar', 'Brown sugar', 'Moist, deep sugar with a molasses note.', 'a pinch of dark brown sugar', ['brown sugar', 'raw sugar', 'cane sugar', 'panela', 'sugar cane', 'sugarcane', 'demerara', 'turbinado', 'golden syrup']),
         n('molasses', 'Molasses', 'Dark, thick, slightly bitter sugar.', 'a drop of molasses', ['molasses', 'treacle']),
         n('maple', 'Maple syrup', 'Woody, round sweetness.', 'a spoon of real maple syrup', ['maple', 'maple syrup']),
-        n('honey', 'Honey', 'Floral, waxy sweetness.', 'a spoon of mild honey', ['honey', 'honeyed', 'orange blossom honey', 'floral honey', 'manuka honey', 'honeycomb', 'agave', 'nougat']),
+        n('honey', 'Honey', 'Floral, waxy sweetness.', 'a spoon of mild honey', ['honey', 'honeyed', 'orange blossom honey', 'floral honey', 'manuka honey', 'honeycomb']),
       ]],
       ['vanilla', 'Vanilla', [
-        n('vanilla', 'Vanilla', 'Sweet, creamy, a little woody.', 'a drop of vanilla extract in milk', ['vanilla', 'vanilla custard', 'custard', 'marshmallow', 'cream', 'whipped cream', 'fresh cream', 'tonka bean']),
+        n('vanilla', 'Vanilla', 'Sweet, creamy, a little woody.', 'a drop of vanilla extract in milk', ['vanilla', 'vanilla custard']),
       ]],
     ]),
   family('floral', 'Floral', '#9c6b98',
     'Flowers and tea: delicate aromas that sit high in the nose.',
-    'Lighter roasts. Floral aromas are among the most delicate in coffee and are prized in light roasts and in washed East African coffees.',
+    'Usually lighter roasts. Floral aromas are delicate, fade as a roast darkens, and are prized in washed East African coffees.',
     ['wcr-lexicon'],
     [
       ['floral', 'Floral', [
         n('jasmine', 'Jasmine', 'Sweet, heady white flowers.', 'jasmine tea, smelled dry', ['jasmine', 'jasmine tea']),
-        n('rose', 'Rose', 'Sweet, perfumed petals.', 'a drop of rosewater', ['rose', 'floral rose', 'violet']),
+        n('rose', 'Rose', 'Sweet, perfumed petals.', 'a drop of rosewater', ['rose', 'floral rose']),
         n('chamomile', 'Chamomile', 'Gentle, honeyed, hay-like flowers.', 'a chamomile tea bag', ['chamomile']),
-        n('orange-blossom', 'Orange blossom', 'Citrus flowers: sweet and bright.', 'orange-blossom water', ['orange blossom', 'neroli', 'honeysuckle', 'elderflower', 'magnolia blossom', 'gardenia', 'hibiscus', 'florals', 'floral', 'delicate florals', 'lavender'], extraWord),
+        n('orange-blossom', 'Orange blossom', 'Citrus flowers: sweet and bright.', 'orange-blossom water', ['orange blossom', 'neroli'], extraWord),
+        n('flowers-other', 'Other flowers', 'Honeysuckle, lavender, elderflower: flowers other than these.', 'a sprig of lavender or an elderflower cordial, smelled', ['honeysuckle', 'elderflower', 'magnolia blossom', 'gardenia', 'lavender', 'violet', 'hibiscus'], extraWord),
       ]],
       ['black-tea', 'Black tea', [
-        n('black-tea', 'Black tea', 'Brisk, dry, a little tannic, like a plain cup of tea.', 'a plain black tea bag, brewed', ['black tea', 'tea', 'earl grey', 'earl grey tea', 'darjeeling', 'white tea', 'green tea', 'oolong tea', 'oolong', 'rooibos', 'tea-like', 'green ice tea']),
+        n('black-tea', 'Black tea', 'Brisk, dry, a little tannic, like a plain cup of tea.', 'a plain black tea bag, brewed', ['black tea', 'earl grey', 'earl grey tea', 'darjeeling', 'assam']),
       ]],
     ]),
   family('fruity', 'Fruity', '#b23d4a',
-    'Berries, citrus, stone fruit and dried fruit: the notes most often printed on specialty bags.',
-    'Lighter roasts: roasting breaks down the acids behind fruit-like brightness, so light roasts taste brighter. Processing matters too; see what roasters\' words show for each note.',
+    'Berries, citrus, stone fruit and dried fruit: notes printed on many specialty bags.',
+    'Usually lighter roasts, which keep more of the acidity behind fruit-like brightness. Processing matters too; see what roasters\' words show for each note.',
     ['easto'],
     [
       ['berry', 'Berry', [
@@ -154,23 +155,25 @@ export const FAMILIES: Family[] = [
         n('strawberry', 'Strawberry', 'Sweet, candied red berry.', 'a ripe strawberry, crushed', ['strawberry', 'strawberries', 'ripe strawberry', 'strawberry candy', 'strawberry shortcake']),
         n('raspberry', 'Raspberry', 'Bright, tart red berry.', 'a few raspberries', ['raspberry', 'raspberry aroma']),
         n('blackberry', 'Blackberry', 'Dark, tart-sweet berry with seeds.', 'a blackberry or blackberry jam', ['blackberry', 'blackberry jam', 'boysenberry', 'mulberry']),
-        n('blackcurrant', 'Blackcurrant', 'Tart, dark, slightly green berry: a hallmark word for Kenyan coffees.', 'blackcurrant jam or cordial', ['blackcurrant', 'black currant', 'currant', 'redcurrant', 'cassis'], extraWord),
-        n('cranberry', 'Cranberry', 'Sharp, dry red berry.', 'a dried or fresh cranberry', ['cranberry', 'red berries', 'berry', 'berries', 'juicy berries', 'red fruit', 'red fruits', 'forest fruits', 'seabuckthorn berry', 'cloudberry'], extraWord),
+        n('blackcurrant', 'Blackcurrant', 'Tart, dark, slightly green berry: a hallmark word for Kenyan coffees.', 'blackcurrant jam or cordial', ['blackcurrant', 'black currant', 'currant', 'cassis'], extraWord),
+        n('cranberry', 'Cranberry', 'Sharp, dry red berry.', 'a dried or fresh cranberry', ['cranberry'], extraWord),
+        n('berries-mixed', 'Mixed berries', 'Berries without one fruit in front.', 'a spoon of mixed-berry jam', ['berry', 'berries', 'red berries', 'juicy berries', 'mixed berries', 'forest fruits', 'cloudberry', 'seabuckthorn berry', 'redcurrant'], extraWord),
       ]],
       ['dried-fruit', 'Dried fruit', [
         n('raisin', 'Raisin', 'Dark, sweet dried grape.', 'a few raisins, chewed', ['raisin', 'raisins', 'golden raisin', 'sultana']),
         n('prune', 'Prune', 'Deep, sweet, slightly bitter dried plum.', 'a prune', ['prune']),
-        n('fig', 'Fig & date', 'Jammy, seedy, honeyed dried fruit.', 'a dried fig or a date', ['fig', 'date', 'dates', 'dried fruit', 'dried cherry', 'dried apricot', 'dried mango'], extraWord),
+        n('fig', 'Fig & date', 'Jammy, seedy, honeyed dried fruit.', 'a dried fig or a date', ['fig', 'date', 'dates'], extraWord),
+        n('dried-other', 'Other dried fruit', 'Dried apricot, cherry or mango: chewy, concentrated fruit.', 'a dried apricot', ['dried fruit', 'dried cherry', 'dried apricot', 'dried mango'], extraWord),
       ]],
       ['other-fruit', 'Other fruit', [
         n('cherry', 'Cherry', 'Sweet red fruit with a slight almond bitterness.', 'a cherry, or cherry jam', ['cherry', 'cherries', 'ripe cherries', 'black cherry', 'red cherry', 'rainier cherry', 'cherry jam', 'cherry candy', 'cherry cola']),
-        n('stone-fruit', 'Peach & apricot', 'Soft, juicy, perfumed stone fruit.', 'a ripe peach or apricot', ['peach', 'peaches', 'apricot', 'nectarine', 'white peach', 'stewed peach', 'stone fruit', 'stonefruit']),
-        n('plum', 'Plum', 'Dark, juicy fruit with a tart skin.', 'a ripe plum', ['plum', 'plums', 'stewed plum', 'rhubarb', 'persimmon'], extraWord),
+        n('stone-fruit', 'Peach & apricot', 'Soft, juicy, perfumed stone fruit.', 'a ripe peach or apricot', ['peach', 'peaches', 'apricot', 'nectarine', 'white peach', 'stewed peach', 'stone fruit', 'stonefruit'], extraWord),
+        n('plum', 'Plum', 'Dark, juicy fruit with a tart skin.', 'a ripe plum', ['plum', 'plums', 'stewed plum'], extraWord),
         n('apple', 'Apple', 'Crisp, juicy, from green to red.', 'a slice of red or green apple', ['apple', 'apples', 'red apple', 'green apple', 'cooked apple', 'fuji apple', 'honeycrisp apples']),
         n('pear', 'Pear', 'Soft, floral, grainy-sweet.', 'a ripe pear', ['pear', 'bosc pear']),
         n('grape', 'Grape', 'Sweet, juicy, sometimes winey.', 'a few red or white grapes', ['grape', 'grapes', 'grapey', 'red grape', 'white grape', 'green grape', 'green grapes', 'concord grape', 'grape soda']),
         n('pineapple', 'Pineapple', 'Tropical, sweet and sharp.', 'a piece of fresh pineapple', ['pineapple', 'caramelised pineapple']),
-        n('tropical', 'Mango & tropical', 'Lush, ripe tropical fruit.', 'a slice of ripe mango', ['mango', 'ripe mango', 'tropical fruit', 'papaya', 'guava', 'passionfruit', 'passion fruit', 'lychee', 'dragon fruit', 'kiwi', 'banana', 'sweet plantain', 'star fruit', 'starfruit'], extraWord),
+        n('tropical', 'Mango & tropical', 'Lush, ripe tropical fruit.', 'a slice of ripe mango', ['mango', 'ripe mango', 'tropical fruit', 'papaya', 'guava', 'passionfruit', 'passion fruit', 'lychee', 'dragon fruit', 'banana', 'sweet plantain', 'star fruit', 'starfruit'], extraWord),
         n('melon', 'Melon', 'Light, watery, fresh sweetness.', 'honeydew or watermelon', ['melon', 'watermelon', 'honeydew', 'honeydew melon', 'cantaloupe', 'canteloupe'], extraWord),
         n('pomegranate', 'Pomegranate', 'Tart, juicy, a little astringent.', 'a spoon of pomegranate seeds', ['pomegranate']),
         n('coconut', 'Coconut', 'Sweet, woody, oily.', 'unsweetened coconut flakes', ['coconut']),
@@ -178,27 +181,27 @@ export const FAMILIES: Family[] = [
       ['citrus', 'Citrus fruit', [
         n('lemon', 'Lemon', 'Sharp, clean, peely sourness.', 'a strip of lemon zest', ['lemon', 'meyer lemon', 'lemon zest', 'grilled lemon', 'candied lemon', 'lemon candy', 'sweet lemon', 'limoncello', 'pink lemonade']),
         n('lime', 'Lime', 'Sour, green, a little bitter.', 'a strip of lime zest', ['lime', 'lime zest', 'key lime', 'kaffir lime', 'candied lime']),
-        n('orange', 'Orange', 'Sweet, juicy, floral citrus.', 'a segment of orange', ['orange', 'blood orange', 'tangerine', 'mandarin', 'mandarin orange', 'clementine', 'sweet orange', 'orange zest', 'yuzu', 'marmalade']),
+        n('orange', 'Orange', 'Sweet, juicy, floral citrus.', 'a segment of orange', ['orange', 'blood orange', 'tangerine', 'mandarin', 'mandarin orange', 'clementine', 'sweet orange', 'orange zest', 'marmalade']),
         n('grapefruit', 'Grapefruit', 'Sour with a bitter peel edge.', 'a strip of grapefruit peel', ['grapefruit', 'ruby grapefruit', 'pomelo']),
         n('bergamot', 'Bergamot', 'Perfumed citrus, the scent of Earl Grey.', 'an Earl Grey tea bag', ['bergamot'], extraWord),
-        n('citrus', 'Mixed citrus', 'Bright citrus without one fruit in front.', 'a mix of orange and lemon zest', ['citrus', 'complex citrus', 'ripe citrus', 'citrus oil', 'lemon citrus', 'candied peel'], extraWord),
+        n('citrus', 'Mixed citrus', 'Bright citrus without one fruit in front.', 'a mix of orange and lemon zest', ['citrus', 'complex citrus', 'ripe citrus', 'citrus oil', 'lemon citrus', 'candied peel', 'yuzu'], extraWord),
       ]],
     ]),
   family('sour-fermented', 'Sour & fermented', '#b9b23e',
     'Acids you taste on the tongue, and the boozy, winey notes of fermentation. Pleasant in balance, a flaw when they dominate.',
-    'Light roasts keep more acid. Natural and anaerobic processing add winey and boozy notes; vinegar-like or cheesy sourness usually means over-fermentation or a defect.',
+    'Light roasts keep more acid. Natural and anaerobic processing can add winey and boozy notes; vinegar-like or cheesy sourness often points to over-fermentation or a defect.',
     ['easto', 'wcr-lexicon'],
     [
       ['sour', 'Sour', [
-        n('citric', 'Citric acid', 'Clean, lemony sourness on the tongue.', 'a pinch of citric acid in a glass of water', ['citric', 'sparkling acidity', 'bright acidity'], { tryIt: 'Dissolve a small pinch of citric acid (or a squeeze of lemon) in a glass of water and sip. Then sip the coffee and notice where the sourness lands on your tongue.' }),
-        n('malic', 'Malic acid', 'Rounder, apple-like sourness.', 'a bite of green apple', ['malic', 'tart'], { tryIt: 'Bite a tart green apple and notice the sourness at the sides of your tongue, then compare the coffee.' }),
+        n('citric', 'Citric acid', 'Clean, lemony sourness on the tongue.', 'a pinch of citric acid in a glass of water', ['citric'], { tryIt: 'Dissolve a small pinch of citric acid (or a squeeze of lemon) in a glass of water and sip. Then sip the coffee and notice where the sourness lands on your tongue.' }),
+        n('malic', 'Malic acid', 'Rounder, apple-like sourness.', 'a bite of green apple', ['malic'], { tryIt: 'Bite a tart green apple and notice the sourness at the sides of your tongue, then compare the coffee.' }),
         n('acetic', 'Acetic acid', 'Vinegar-like sharpness. Small amounts read as bright; more is a flaw.', 'a drop of white vinegar in water (smell it)', ['vinegar', 'acetic'], { flaw: true }),
         n('sour-aromatics', 'Sour aromatics', 'A sour, sharp smell: often over-fermentation.', 'sauerkraut brine, smelled', ['sour'], { flaw: true }),
       ]],
       ['fermented', 'Alcohol & fermented', [
-        n('winey', 'Winey', 'Like red wine: fruity, sharp, a little boozy.', 'a sip of red wine, or red grape juice', ['winey', 'wine', 'wine-like', 'berries and wine', 'chardonnay', 'martini']),
-        n('whiskey', 'Whiskey', 'Warm, boozy, oak-barrel sweetness.', 'a sniff of whiskey or rum', ['whiskey', 'whisky', 'rum', 'boozy', 'liqueur']),
-        n('fermented', 'Fermented', 'Yeasty, sweet-sour, like stout or kombucha.', 'a sniff of stout or kombucha', ['fermented', 'funky', 'fruit punch']),
+        n('winey', 'Winey', 'Like red wine: fruity, sharp, a little boozy.', 'a sip of red wine, or red grape juice', ['winey', 'wine', 'wine-like', 'berries and wine', 'chardonnay']),
+        n('whiskey', 'Whiskey', 'Warm, boozy, oak-barrel sweetness.', 'a sniff of whiskey or rum', ['whiskey', 'whisky', 'boozy']),
+        n('fermented', 'Fermented', 'Yeasty, sweet-sour, like stout or kombucha.', 'a sniff of stout or kombucha', ['fermented', 'funky']),
         n('overripe', 'Overripe', 'Fruit just past its best: sweet, damp, slightly musty.', 'a very ripe banana', ['overripe', 'over-ripe'], { flaw: true }),
       ]],
     ]),
@@ -214,7 +217,7 @@ export const FAMILIES: Family[] = [
         n('peapod', 'Peapod', 'Sweet, beany, fresh pea.', 'a raw pea pod', ['peapod', 'pea', 'green pea'], { flaw: true }),
         n('under-ripe', 'Under-ripe', 'Sharp green fruit, like an unripe plum.', 'grapefruit pith', ['underripe', 'under-ripe', 'unripe'], { flaw: true }),
       ]],
-      ['raw', 'Raw & beany', [
+      ['raw', 'Olive oil, raw & beany', [
         n('olive-oil', 'Olive oil', 'Green, buttery, peppery oil.', 'a sniff of extra virgin olive oil', ['olive oil', 'olive']),
         n('raw', 'Raw', 'Uncooked, like raw nuts or raw grain.', 'a raw almond', ['raw'], { flaw: true }),
         n('beany', 'Beany', 'Like raw beans: often an under-developed roast.', 'dry raw beans, smelled', ['beany'], { flaw: true }),
@@ -411,9 +414,11 @@ export function encodeCard(card: Pick<TastingCard, 'pins' | 'bag'>): string {
   if (card.bag.trim()) q.set('bag', card.bag.trim().slice(0, 160));
   return q.toString();
 }
-export function decodeCard(query: string): { pins: string[]; bag: string; dropped: number } {
+export function decodeCard(query: string): { pins: string[]; bag: string; dropped: number; unknown: number; overLimit: number } {
   const q = new URLSearchParams(query.startsWith('?') ? query.slice(1) : query);
   const raw = (q.get('pins') ?? '').split(',').map((s) => s.trim()).filter(Boolean);
-  const pins = [...new Set(raw.filter((id) => !!noteById(id)))].slice(0, MAX_PINS);
-  return { pins, bag: (q.get('bag') ?? '').slice(0, 160), dropped: raw.length - pins.length };
+  const known = [...new Set(raw.filter((id) => !!noteById(id)))];
+  const pins = known.slice(0, MAX_PINS);
+  const unknown = raw.filter((id) => !noteById(id)).length;
+  return { pins, bag: (q.get('bag') ?? '').slice(0, 160), dropped: raw.length - pins.length, unknown, overLimit: known.length - pins.length };
 }

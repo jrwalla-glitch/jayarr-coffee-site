@@ -95,7 +95,7 @@
     const o = q.get('o'), v = q.get('vs'), m = Number(q.get('month'));
     if (o && originById(o)) { selId = o; if (narrow) region = originById(o)!.continent; }
     if (selId && v && v !== selId && originById(v)) vsId = v;
-    if (m >= 1 && m <= 12) month = m;
+    if (Number.isInteger(m) && m >= 1 && m <= 12) month = m;
     vb.set(target(), { duration: 0 });
     mounted = true;
   });
@@ -196,7 +196,7 @@
       <AltitudeBand arabica={o.altitudeM} robusta={o.robustaAltitudeM} name={o.name} height={compact ? 150 : 166} />
     </div>
     {#if !compact}
-      <ul class="rkey" aria-label="Ring key"><li><span class="k main"></span>Main harvest</li>{#if o.harvest.second}<li><span class="k second"></span>Second crop</li>{/if}<li><span class="k edge"></span>Edge months: sources differ</li><li>The hand points to {MONTHS_LONG[month - 1]}</li></ul>
+      <ul class="rkey" aria-label="Ring key"><li><span class="k main"></span>Main harvest</li>{#if o.harvest.second}<li><span class="k second"></span>Second crop</li>{/if}<li><span class="k edge"></span>Edge months: can start early or run late</li><li>The hand points to {MONTHS_LONG[month - 1]}</li></ul>
     {/if}
     <dl class="facts">
       <div><dt>Harvest</dt><dd>{harvestText(o)}{#if o.harvest.scope && !compact && !/^This is /.test(o.harvest.variesBy ?? '')}<span class="sub">{scopeText(o.harvest.scope)}</span>{/if}{#if o.harvest.variesBy && !compact}<span class="sub">{o.harvest.variesBy.replace(/^This is (\w+);\s*/, "This calendar is $1's; ")}</span>{/if}</dd></div>
@@ -340,7 +340,7 @@
         <div class="mapkey" aria-hidden="true">
           <span class="kt">Key</span>
           <span><span class="dot on"></span> Harvesting in {MONTHS_LONG[month - 1]}</span>
-          <span><span class="dot edge"></span> Maybe (an edge month: sources differ)</span>
+          <span><span class="dot edge"></span> Maybe (an edge month: picking can start early or run late)</span>
           <span><span class="dot off"></span> Not harvesting</span>
           <span class="kring">{#if zoom > 2}<span class="ringk"></span> {narrow ? 'Ring: 12 months, Jan at top' : 'Ring: its 12-month harvest calendar, January at the top'}{:else}Pick an origin to zoom in and see its year as a ring{/if}</span>
         </div>
@@ -449,7 +449,7 @@
           {/each}
         </div>
         <div class="cmpfoot">
-          <ul class="rkey" aria-label="Ring key"><li><span class="k main"></span>Main harvest</li><li><span class="k second"></span>Second crop</li><li><span class="k edge"></span>Edge months: sources differ</li><li>The hand points to {MONTHS_LONG[month - 1]}</li></ul>
+          <ul class="rkey" aria-label="Ring key"><li><span class="k main"></span>Main harvest</li><li><span class="k second"></span>Second crop</li><li><span class="k edge"></span>Edge months: can start early or run late</li><li>The hand points to {MONTHS_LONG[month - 1]}</li></ul>
           <p class="small quiet">Both altitude bands are drawn on the same scale.</p>
           <button type="button" class="linkish" onclick={() => { const t = selId; selId = vsId; vsId = t; }}>Swap the two</button>
         </div>
