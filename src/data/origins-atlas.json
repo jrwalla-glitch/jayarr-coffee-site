@@ -376,16 +376,16 @@
    "harvest": {
     "main": [
      5,
-     9
+     11
     ],
     "second": null,
-    "variesBy": "Southern Arabica runs May–September; northern Arabica June/July–October/November; Robusta has a separate calendar.",
-    "edgeMonths": 1,
+    "variesBy": "Southern arabica runs May–September and northern arabica July–November; robusta follows a separate calendar.",
+    "edgeMonths": 0,
     "sources": [
      "ci-tanzania",
      "sucafina-handbook-2026"
     ],
-    "scope": "Southern Arabica"
+    "scope": "arabica, south and north together"
    },
    "altitudeM": {
     "min": 1000,
@@ -1347,11 +1347,12 @@
    },
    "altitudeM": {
     "min": 400,
-    "max": 1600,
+    "max": 2000,
     "species": "arabica",
-    "scope": "Country sourcing band, not volcano summit heights.",
+    "scope": "Combined published growing bands: Sucafina 400–1,600 m; Mercanta's Alotepeque–Metapán coffee-growing zone 1,000–2,000 m; not national extrema.",
     "sources": [
-     "sucafina-handbook-2026"
+     "sucafina-handbook-2026",
+     "mercanta-el-salvador"
     ]
    },
    "robustaAltitudeM": null,
@@ -2045,17 +2046,18 @@
    "id": "indonesia",
    "harvest": {
     "main": [
-     4,
-     7
+     10,
+     6
     ],
     "second": null,
-    "variesBy": "Lowland Robusta calendar; higher Robusta can run June–September, while Sumatra Arabica has separate spring/autumn peaks.",
-    "edgeMonths": 2,
+    "variesBy": "Picking varies within Sumatra, with peaks in spring and late in the year; small fly crops can fall outside these months. Robusta and the other islands keep different calendars; lowland robusta runs about April–July.",
+    "edgeMonths": 0,
     "sources": [
-     "sucafina-handbook-2026",
-     "suca-indonesia"
+     "ci-sumatra",
+     "suca-indonesia",
+     "sucafina-handbook-2026"
     ],
-    "scope": "Lowland Robusta"
+    "scope": "arabica from Sumatra"
    },
    "altitudeM": {
     "min": 1000,
@@ -2602,15 +2604,15 @@
    "harvest": {
     "main": [
      11,
-     2
+     3
     ],
     "second": null,
-    "variesBy": "Northern Arabica around Chiang Mai commonly runs December–March; southern Robusta needs a different calendar.",
-    "edgeMonths": 1,
+    "variesBy": "Chiang Rai runs November–February and Chiang Mai December–March; southern robusta needs a different calendar.",
+    "edgeMonths": 0,
     "sources": [
      "movaci-thailand"
     ],
-    "scope": "Northern Arabica"
+    "scope": "northern arabica, Chiang Rai and Chiang Mai together"
    },
    "altitudeM": {
     "min": 1100,

@@ -175,6 +175,7 @@ export const ATLAS: AtlasMethod[] = [
     id: 'moka', label: 'Moka pot', the: 'the moka pot', line: 'Steam pressure in the base pushes water up through the coffee.',
     contact: 'percolation', filter: 'metal', force: 'steam', attention: 2,
     ...fromEngine('moka'),
+    timeNote: 'time on the stove, from heat to sputter; the coffee itself flows for the last part of it',
     guide: { slug: 'moka-pot-brewing-guide', title: 'Moka pot brewing guide' },
     sourceIds: ['hoffmann', 'synthesis'],
   },
@@ -196,7 +197,8 @@ export function brewGuideHref(m: AtlasMethod): string | null {
   // (one press holds about 22 g), an 18 g double shot, or a 17 g moka basket (Hoffmann's recipe).
   if (m.brewGuide === 'espresso') return `/tools/brew-ratio/?method=espresso&dose=18`;
   if (m.brewGuide === 'moka') return `/tools/brew-ratio/?method=moka&dose=17`;
-  return `/tools/brew-ratio/?method=${m.brewGuide}&cup=${m.brewGuide === 'aeropress' ? 240 : 355}`;
+  // The Brew Guide's own mug sizes (8 and 12 US fl oz), so its size chip lights up.
+  return `/tools/brew-ratio/?method=${m.brewGuide}&cup=${m.brewGuide === 'aeropress' ? 236.6 : 354.9}`;
 }
 
 const mmss = (s: number) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`;
@@ -221,10 +223,11 @@ export function differences(a: AtlasMethod, b: AtlasMethod): Axis[] {
   if (a.contact !== b.contact) out.push('contact');
   if (a.filter !== b.filter) out.push('filter');
   if (a.force !== b.force) out.push('force');
-  // Time differs when one typically runs at least half as long again as the other (by the middle
-  // of each range, on a log scale), so 3–4 minutes against 4–8 counts and 3–4 against 3:30–4:30 doesn't.
+  // Time differs when the ranges don't overlap, or one typically runs at least half as long again as
+  // the other (by the middle of each range), so 3–4 minutes against 4–8 counts and 3–4 against 3:30–4:30 doesn't.
   const mid = (m: AtlasMethod) => Math.sqrt(m.timeS[0] * m.timeS[1]);
-  if (Math.max(mid(a), mid(b)) / Math.min(mid(a), mid(b)) >= 1.5) out.push('time');
+  const apart = a.timeS[1] < b.timeS[0] || b.timeS[1] < a.timeS[0];
+  if (apart || Math.max(mid(a), mid(b)) / Math.min(mid(a), mid(b)) >= 1.5) out.push('time');
   return out;
 }
 
@@ -259,7 +262,11 @@ export function differenceSentence(a: AtlasMethod, b: AtlasMethod): string {
   if (!d.length) return `${cap(a.the)} and ${b.the} work the same way on contact, filter and force, and their times overlap (${timeText(a)} and ${timeText(b)}); they differ in the brewer's shape and how fast it drains.`;
   const parts: string[] = [];
   if (d.includes('contact')) {
-    const verb = (m: AtlasMethod) => m.contact === 'percolation' ? 'runs water through the coffee' : m.contact === 'immersion' ? 'steeps it in all the water' : 'steeps it, then drains it through the bed';
+    const verb = (m: AtlasMethod) => m.contact === 'percolation' ? 'runs water through the coffee'
+      : m.contact === 'immersion' ? 'steeps the coffee in all the water'
+      : m.force === 'hand' ? 'steeps the coffee, then presses the brew through it'
+      : m.force === 'vapor' ? 'steeps the coffee, then pulls the brew back down through a filter'
+      : 'steeps the coffee, then drains the brew through it';
     parts.push(`${a.the} ${verb(a)}; ${b.the} ${verb(b)}`);
   } else if (d.includes('force')) {
     parts.push(`${a.the} ${FORCE_DO[a.force]}; ${b.the} ${FORCE_DO[b.force]}`);

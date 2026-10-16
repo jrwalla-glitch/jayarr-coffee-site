@@ -7,7 +7,10 @@
   // piece, hung under a picture light with a brass plate and a short wall label (DECISIONS #16).
   let month = $state(10);
   let lit = $state<string | null>(null);
-  onMount(() => { month = new Date().getMonth() + 1; });
+  // The page is built ahead of time, so the month is the reader's: until it's known (or with
+  // JavaScript off) the month lines keep their space but stay hidden.
+  let mounted = $state(false);
+  onMount(() => { month = new Date().getMonth() + 1; mounted = true; });
   // The best-known origins first: by production, largest to smallest.
   let now = $derived([...harvestingIn(month)].sort((a, b) => (b.production?.bags60kg ?? 0) - (a.production?.bags60kg ?? 0)));
   const nb = (s: string) => s.replace(/ /g, '\u00a0');
@@ -36,8 +39,8 @@
         <div class="label">
           {#if p.id === 'origins'}
             <p>When and where each origin is harvested, how high it grows and how its coffees are described.</p>
-            <p class="key" aria-hidden="true"><span class="dot on"></span>harvesting in {MONTHS_LONG[month - 1]} <span class="dot off"></span>not this month</p>
-            <p class="now"><span>In {MONTHS_LONG[month - 1]}:</span> {now.slice(0, 4).map((o) => nb(o.name)).join(', ')}{now.length > 4 ? ` and ${now.length - 4} more` : ''} are harvesting.</p>
+            <p class="key" aria-hidden="true" class:pending={!mounted}><span class="dot on"></span>harvesting in {MONTHS_LONG[month - 1]} <span class="dot off"></span>not this month</p>
+            <p class="now" class:pending={!mounted}><span>In {MONTHS_LONG[month - 1]}:</span> {now.slice(0, 4).map((o) => nb(o.name)).join(', ')}{now.length > 4 ? ` and ${now.length - 4} more` : ''} are harvesting.</p>
             <p class="now"><a href="/explore/origins/">See who's harvesting now →</a></p>
           {:else if p.id === 'methods'}
             <p>Thirteen brewers as stars. Rearrange the sky by filter, pressure or time to see how they really differ.</p>
@@ -89,6 +92,7 @@
   .dot.off { width: 7px; height: 7px; background: #fbf6ee; margin-left: 8px; }
   .label p { margin: 0 0 6px; }
   .now { font-size: 14px; }
+  .pending { visibility: hidden; }
   .now span { font: 500 11px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .1em; text-transform: uppercase; color: #8f5d22; }
   .now a, .label a { color: #7a4e30; font-weight: 600; text-underline-offset: 3px; }
 

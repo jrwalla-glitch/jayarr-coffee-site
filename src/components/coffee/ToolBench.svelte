@@ -62,7 +62,9 @@
         const st = q.get('storage'); const storage = (st === 'sealed-bag' || st === 'frozen' ? st : 'opened') as Storage;
         const f = storage === 'frozen' ? null : freshness({ roastDate: roast, today: todayIso(), use, storage });
         const where = f?.ok ? ` · day ${f.value.daysSinceRoast}, ${f.value.stage.label.toLowerCase()}` : '';
-        out.push({ href: `/tools/freshness/?${fresh}`, label: 'Your bag', detail: `Roasted ${day}${where}`, icon: 'bag' });
+        // A date the tool itself rejects (one in the future) is flagged, not quoted as a reading.
+        if (roast > todayIso()) out.push({ href: `/tools/freshness/?${fresh}`, label: 'Your bag', detail: `Roasted ${day}? That date is in the future`, icon: 'bag' });
+        else if (!f || f.ok) out.push({ href: `/tools/freshness/?${fresh}`, label: 'Your bag', detail: `Roasted ${day}${where}`, icon: 'bag' });
       }
     }
     const grinder = get('jayarr-grinder');
@@ -122,7 +124,7 @@
 {#snippet card(t: (typeof TOOLS)[number], feature = false)}
   <a class="tcard" class:feature class:lit={live === t.id || seen.has(t.id)} href={t.href} data-tool={t.id}
     onmouseenter={() => (live = t.id)} onmouseleave={() => (live = null)} onfocus={() => (live = t.id)} onblur={() => (live = null)}>
-    <span class="mini"><ToolMini id={t.id as MiniId} live={live === t.id || seen.has(t.id)} />{#if t.deepBrew}<span class="tag">Deep Brew</span>{/if}</span>
+    <span class="mini"><span class="art" aria-hidden="true"><ToolMini id={t.id as MiniId} live={live === t.id || seen.has(t.id)} /></span>{#if t.deepBrew}<span class="tag">Deep Brew</span>{/if}</span>
     <span class="tname">{t.name}</span>
     <span class="tblurb">{t.blurb}</span>
   </a>
@@ -237,6 +239,7 @@
   .tcard:focus-visible { outline: 3px solid var(--crema-deep); outline-offset: 3px; }
   .mini { position: relative; display: block; background: radial-gradient(120% 90% at 50% 0%, #fffdf9, #f4ece0); border-radius: 10px; padding: 4px 6px; margin-bottom: 6px; }
   .mini :global(svg) { width: 100%; height: auto; display: block; }
+  .art { display: contents; }
   .feature .mini { flex: 1; display: flex; align-items: center; padding: 10px 18px; }
   .tag { position: absolute; top: 8px; right: 8px; font: 500 10px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .12em; text-transform: uppercase; color: #efe6da; background: #2a2019; border-radius: 999px; padding: 3px 8px; }
   .tname { font: 400 25px/1.1 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; }

@@ -2,14 +2,15 @@
 import BenchPage from '../../layouts/BenchPage.astro';
 import FlavorBloom from '../../components/coffee/FlavorBloom.svelte';
 import originHubs from '../../data/origin-hubs.json';
-import { FAMILIES, OFF_GROUPS, ALL_NOTES } from '../../lib/coffee/flavors.ts';
+import { FAMILIES, OFF_GROUPS, ALL_NOTES, inSample } from '../../lib/coffee/flavors.ts';
 import { ORIGINS } from '../../lib/coffee/origins.ts';
 import { EXPLORE_SOURCES } from '../../lib/coffee/explore-sources.ts';
 
 const title = 'Coffee Flavor Bloom: Tasting Notes, Explained';
 const description = 'Pick a tasting note like blueberry, jasmine or caramel to learn what it tastes like, how to train your nose on it, and which origins and processes roasters use the word for.';
 // Roasters' lot descriptions (winter 2026 catalogs): only the fields the bloom counts.
-const lots = originHubs.flatMap((h) => h.beans.map((b) => ({ o: h.origin_slug.replace(/_/g, '-'), p: b.processing, r: b.roast_level, notes: b.flavor_notes })));
+// Lots with a description, single origins only (inSample).
+const lots = originHubs.flatMap((h) => h.beans.filter((b) => inSample(b.name, b.flavor_notes)).map((b) => ({ o: h.origin_slug.replace(/_/g, '-'), p: b.processing, r: b.roast_level, notes: b.flavor_notes })));
 const origins = ORIGINS.map((o) => ({ id: o.id, name: o.name, page: o.page }));
 const cited = ['sca-wcr-wheel', 'wcr-lexicon', 'sca-cva', 'easto', 'synthesis', 'roaster-lots-2026'].map((id) => EXPLORE_SOURCES[id]);
 const noteCount = ALL_NOTES.length;

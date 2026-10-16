@@ -10,24 +10,28 @@
   let month = $state<number | null>(null);
   onMount(() => { month = new Date().getMonth() + 1; });
   let st = $derived(month ? harvestState({ harvest }, month) : null);
+  // Which calendar the ring draws, when it isn't simply the country's arabica (Huila for Colombia).
+  const scope = harvest.scope && !/^(arabica|robusta)$/i.test(harvest.scope) ? harvest.scope.replace(/ illustrative calendar/i, '').replace(/^\w/, (c) => c.toUpperCase()) : '';
 </script>
 
 <div class="hn">
   <HarvestRing harvest={harvest} month={month} labels size={size} label="{name} harvest calendar" />
   <p class="now" aria-live="polite">
     {#if month && st}
-      {#if st === 'main'}<b>Harvesting now</b> ({MONTHS_LONG[month - 1]}, main crop){:else if st === 'second'}<b>Harvesting now</b> ({MONTHS_LONG[month - 1]}, second crop){:else if st === 'edge'}<b>Maybe</b>: {MONTHS_LONG[month - 1]} is at the uncertain edge{:else}<b>Not harvesting</b> in {MONTHS_LONG[month - 1]}{/if}
+      {#if st === 'main'}<b>Harvesting now</b> ({MONTHS_LONG[month - 1]}, main crop){:else if st === 'second'}<b>Harvesting now</b> ({MONTHS_LONG[month - 1]}, second crop){:else if st === 'edge'}<b>Maybe</b>: {MONTHS_LONG[month - 1]} is at the uncertain edge{:else}<b>Outside its harvest</b> in {MONTHS_LONG[month - 1]}{/if}
     {/if}
   </p>
   <ul class="key" aria-label="Ring key">
     <li><span class="k main"></span>Main harvest</li>
     {#if harvest.second}<li><span class="k second"></span>Second crop</li>{/if}
-    <li><span class="k edge"></span>Edge months: can start early or run late</li>
+    {#if harvest.edgeMonths}<li><span class="k edge"></span>Edge months: can start early or run late</li>{/if}
   </ul>
+  {#if scope}<p class="sc">Calendar shown: {scope}</p>{/if}
 </div>
 
 <style>
   .hn { display: grid; justify-items: center; gap: 4px; }
+  .sc { margin: 0; font-size: .82rem; color: var(--color-ink-3); text-align: center; max-width: 30ch; }
   .now { margin: 0; min-height: 1.4em; font: 400 14px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; color: #5b4a3d; text-align: center; }
   .now b { color: #2a1d15; }
   .key { list-style: none; margin: 0; padding: 0; display: flex; gap: 4px 12px; flex-wrap: wrap; justify-content: center; font: 400 12.5px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; color: #5b4a3d; }

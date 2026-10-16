@@ -30,8 +30,15 @@
   let month = $state(10);
   let selId = $state<string | null>(null);
   let vsId = $state<string | null>(null);
-  let hover = $state<string | null>(null);
+  // What the pointer is over: the nearest marker within reach, else the country under it.
+  let hoverCountry = $state<string | null>(null);
+  let hoverMarker = $state<string | null>(null);
+  const hover = $derived(hoverMarker ?? hoverCountry);
+  let mapSvg = $state<SVGSVGElement | null>(null);
   let query = $state('');
+  let thisMonth = 10, monthFromLink: number | null = null;
+  // Search ignores accents and case, so "Tarrazu" finds Tarrazú and "Narino" finds Nariño.
+  const fold = (t: string) => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
   let narrow = $state(false);
   let region = $state<Continent>('americas');
   let mounted = $state(false);
@@ -48,7 +55,10 @@
   let mapW = $state(1200);
   // Map units per screen pixel: markers and labels keep their size on screen at any zoom.
   let upp = $derived(vb.current[2] / Math.max(200, mapW));
-  let shown = $derived(ORIGINS.filter((o) => !query.trim() || o.name.toLowerCase().includes(query.trim().toLowerCase()) || o.regions.some((r) => r.name.toLowerCase().includes(query.trim().toLowerCase()))));
+  let shown = $derived.by(() => {
+    const t = fold(query.trim());
+    return ORIGINS.filter((o) => !t || fold(o.name).includes(t) || o.regions.some((r) => fold(r.name).includes(t)));
+  });
 
   function target(): number[] {
     const aspect = narrow ? 1.45 : FULL[2] / FULL[3];
@@ -83,7 +93,9 @@
     if (opener) (document.querySelector(`[data-origin="${opener}"]`) as HTMLElement | null)?.focus();
   }
   function keyAct(e: KeyboardEvent, fn: () => void) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(); } }
-  function onKey(e: KeyboardEvent) { if (e.key === 'Escape' && (selId || picking)) close(); }
+  // A chooser belongs to the view it was opened on.
+  $effect(() => { void [region, selId, vsId]; which = null; });
+  function onKey(e: KeyboardEvent) { if (e.key === 'Escape' && which) { which = null; return; } if (e.key === 'Escape' && (selId || picking)) close(); }
 
   onMount(() => {
     reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -92,10 +104,12 @@
     mq.addEventListener('change', (e) => { narrow = e.matches; });
     month = new Date().getMonth() + 1;
     const q = new URLSearchParams(location.search);
-    const o = q.get('o'), v = q.get('vs'), m = Number(q.get('month'));
+    const slug = (x: string | null) => x?.trim().toLowerCase().replace(/_/g, '-') ?? null;
+    const o = slug(q.get('o')), v = slug(q.get('vs')), m = Number(q.get('month'));
     if (o && originById(o)) { selId = o; if (narrow) region = originById(o)!.continent; }
     if (selId && v && v !== selId && originById(v)) vsId = v;
-    if (Number.isInteger(m) && m >= 1 && m <= 12) month = m;
+    if (Number.isInteger(m) && m >= 1 && m <= 12) { month = m; monthFromLink = m; }
+    thisMonth = new Date().getMonth() + 1;
     vb.set(target(), { duration: 0 });
     mounted = true;
   });
@@ -104,6 +118,8 @@
     const q = new URLSearchParams();
     if (selId) q.set('o', selId);
     if (selId && vsId) q.set('vs', vsId);
+    // The month goes in the link once it differs from today's, or when the link brought one.
+    if (month !== thisMonth || monthFromLink === month) q.set('month', String(month));
     history.replaceState(history.state, '', q.toString() ? `${location.pathname}?${q}` : location.pathname);
   });
 
@@ -164,6 +180,12 @@
       const order = pts.filter((p) => !label.has(p.o.id) && inView(p) && !(solo && chosen(p.o.id))).sort((a, b) => Number(live(b.o)) - Number(live(a.o)));
       for (const p of order) { const sp = tryPlace(p.sx, p.sy, p.o.name, 14, radius(p.o.id)); if (sp) label.set(p.o.id, sp); }
     }
+    // Where dots crowd (Rwanda and Burundi), a name could sit nearer a neighbour's dot than its own,
+    // so crowded or far-placed names get a leader line back to their own dot.
+    for (const [id, sp] of label) {
+      const p = pts.find((q) => q.o.id === id)!;
+      if (pts.some((q) => q !== p && Math.hypot(q.sx - p.sx, q.sy - p.sy) < 24)) sp.lead = true;
+    }
     return { ring, label, regionLabel };
   });
 
@@ -174,6 +196,39 @@
     return `The calendar shown: ${sc.replace(/ illustrative calendar/i, '').replace(/^\w/, (c) => c.toLowerCase())}.`.replace('calendar shown: huila', "calendar shown: Huila's");
   }
   const altScope = (sc: string) => sc.replace(/;?\s*not national extrema\.?/i, '; not the highest or lowest farms.').replace(/not national extrema/i, "not the country's highest or lowest farms");
+  // Markers sit close together (Rwanda and Burundi, Costa Rica and Panama), so a click or tap opens
+  // the nearest one within reach of the pointer rather than whichever hit area is drawn on top. A
+  // tap uses where the finger landed (the browser may nudge the click toward a nearby target), and
+  // when two dots are about equally close it asks which one was meant.
+  function markersNear(cx: number, cy: number, reachPx: number) {
+    const m = mapSvg?.getScreenCTM();
+    if (!m) return [];
+    const pt = new DOMPoint(cx, cy).matrixTransform(m.inverse());
+    return ORIGINS.map((o) => { const [x, y] = project(o.lat, o.lon); return { id: o.id, d: Math.hypot(x - pt.x, y - pt.y) / upp }; })
+      .filter((c) => c.d <= reachPx).sort((a, b) => a.d - b.d);
+  }
+  const nearestMarker = (e: MouseEvent) => markersNear(e.clientX, e.clientY, 16)[0]?.id ?? null;
+  let downAt: { x: number; y: number; touch: boolean; t: number } | null = null;
+  let which = $state<{ ids: string[]; left: number; top: number } | null>(null);
+  let mapBox = $state<HTMLElement | null>(null);
+  function mapDown(e: PointerEvent) { downAt = { x: e.clientX, y: e.clientY, touch: e.pointerType === 'touch', t: performance.now() }; }
+  function mapClick(e: MouseEvent) {
+    const raw = downAt && performance.now() - downAt.t < 1200 ? downAt : null;
+    const touch = raw?.touch ?? (e as PointerEvent).pointerType === 'touch';
+    const x = raw?.x ?? e.clientX, y = raw?.y ?? e.clientY;
+    const near = markersNear(x, y, touch ? 22 : 16);
+    if ((e.target as Element).closest?.('.olab') && !(touch && near.length && near[0].d <= 8)) { which = null; return; }
+    if (!near.length) { which = null; return; }
+    e.stopPropagation();
+    const tied = touch ? near.filter((c) => c.d <= near[0].d + 10).slice(0, 4) : [];
+    if (tied.length > 1 && mapBox) {
+      const r = mapBox.getBoundingClientRect();
+      which = { ids: tied.map((c) => c.id), left: Math.min(Math.max(6, x - r.left - 75), r.width - 156), top: Math.max(6, Math.min(y - r.top + 16, r.height - 36 * tied.length - 34)) };
+      return;
+    }
+    which = null;
+    choose(near[0].id);
+  }
   const stateOf = (o: Origin) => harvestState(o, month);
   const live = (o: Origin) => { const s = stateOf(o); return s === 'main' || s === 'second'; };
   // Country fills stay quiet: a whole country isn't a growing region. Only the chosen ones are rust;
@@ -196,7 +251,7 @@
       <AltitudeBand arabica={o.altitudeM} robusta={o.robustaAltitudeM} name={o.name} height={compact ? 150 : 166} />
     </div>
     {#if !compact}
-      <ul class="rkey" aria-label="Ring key"><li><span class="k main"></span>Main harvest</li>{#if o.harvest.second}<li><span class="k second"></span>Second crop</li>{/if}<li><span class="k edge"></span>Edge months: can start early or run late</li><li>The hand points to {MONTHS_LONG[month - 1]}</li></ul>
+      <ul class="rkey" aria-label="Ring key"><li><span class="k main"></span>Main harvest</li>{#if o.harvest.second}<li><span class="k second"></span>Second crop</li>{/if}{#if o.harvest.edgeMonths}<li><span class="k edge"></span>Edge months: can start early or run late</li>{/if}<li>The hand points to {MONTHS_LONG[month - 1]}</li></ul>
     {/if}
     <dl class="facts">
       <div><dt>Harvest</dt><dd>{harvestText(o)}{#if o.harvest.scope && !compact && !/^This is /.test(o.harvest.variesBy ?? '')}<span class="sub">{scopeText(o.harvest.scope)}</span>{/if}{#if o.harvest.variesBy && !compact}<span class="sub">{o.harvest.variesBy.replace(/^This is (\w+);\s*/, "This calendar is $1's; ")}</span>{/if}</dd></div>
@@ -234,8 +289,10 @@
   <div class="body">
     <div class="stage">
       <div class="gp-frame" style="--mat: #e8e1d4; --matpad: 14px; --matpad-phone: 7px">
-        <div bind:clientWidth={mapW}>
-        <svg class="map" viewBox={vb.current.join(' ')} preserveAspectRatio="xMidYMid meet" role="group" aria-label="Map of coffee origins. {harvesting.length} are harvesting in {MONTHS_LONG[month - 1]}.">
+        <div class="mapbox" bind:clientWidth={mapW} bind:this={mapBox}>
+        <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions (each marker is its own keyboard button; this only routes pointer clicks to the nearest one) -->
+        <svg class="map" class:near={!!hoverMarker} bind:this={mapSvg} onclickcapture={mapClick} onpointerdown={mapDown} onpointermove={(e) => (hoverMarker = e.pointerType === 'touch' ? null : nearestMarker(e))} onpointerleave={() => (hoverMarker = null)}
+          viewBox={vb.current.join(' ')} preserveAspectRatio="xMidYMid meet" role="group" aria-label="Map of coffee origins. {harvesting.length} are harvesting in {MONTHS_LONG[month - 1]}.">
           <defs>
             <filter id="oa-grain" x="0" y="0" width="100%" height="100%">
               <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" seed="2" result="n" />
@@ -256,7 +313,7 @@
           {#each countryPaths as c (c.id)}
             {@const isCoffee = COFFEE.has(c.id)}
             <path d={c.path} fill={fillFor(c.id)} stroke="#a89878" stroke-width={0.7 * upp} stroke-opacity=".7" class:cp={isCoffee}
-              onclick={isCoffee ? () => choose(c.id) : undefined} onmouseenter={isCoffee ? () => (hover = c.id) : undefined} onmouseleave={isCoffee ? () => (hover = null) : undefined} />
+              onclick={isCoffee ? () => choose(c.id) : undefined} onmouseenter={isCoffee ? () => (hoverCountry = c.id) : undefined} onmouseleave={isCoffee ? () => (hoverCountry = null) : undefined} />
           {/each}
           <g class="mapnotes" style="font-size: {9.5 * upp}px">
             <text x={narrow ? vb.current[0] + vb.current[2] - 10 * upp : vb.current[0] + 10 * upp} y={TROPIC_CANCER_Y - 4 * upp} text-anchor={narrow ? 'end' : 'start'} class="tl">TROPIC OF CANCER</text>
@@ -295,10 +352,11 @@
             {@const isSel = sel?.id === o.id || vs?.id === o.id}
             {@const st = stateOf(o)}
             {@const showRing = marks.ring.has(o.id)}
+            {@const lsp = marks.label.get(o.id)}
             <g class="marker" class:sel={isSel} data-origin={o.id} role="button" tabindex="0"
               aria-label="{o.name}: harvest {harvestText(o)}{st === 'main' || st === 'second' ? `, harvesting in ${MONTHS_LONG[month - 1]}` : ''}"
-              aria-pressed={isSel} onclick={() => choose(o.id)} onkeydown={(e) => keyAct(e, () => choose(o.id))}
-              onmouseenter={() => (hover = o.id)} onmouseleave={() => (hover = null)}>
+              aria-pressed={isSel} onclick={() => choose(o.id)} onkeydown={(e) => keyAct(e, () => choose(o.id))}>
+              {#if lsp?.lead}<line x1={mx} y1={my} x2={mx + lsp.dx * upp * 0.86} y2={my + (lsp.dy - (lsp.anchor === 'middle' && lsp.dy < 0 ? 0 : 4)) * upp * 0.86} stroke="#2a1d15" stroke-width={0.8 * upp} opacity=".5" />{/if}
               {#if showRing}
                 <HarvestRing harvest={o.harvest} month={month} size={30 * upp} x={mx} y={my} faint={!live(o)} />
               {:else if isSel}
@@ -312,7 +370,6 @@
                   <circle cx={mx} cy={my} r={(st === 'off' ? 4.4 : 6) * upp} fill={st === 'off' ? '#fbf6ee' : '#9a5420'} stroke="#2a1d15" stroke-width={(st === 'off' ? 1.1 : 1.3) * upp} />
                 {/if}
               {/if}
-              <circle cx={mx} cy={my} r={16 * upp} fill="transparent" />
               {#if marks.label.has(o.id)}
                 {@const sp = marks.label.get(o.id)!}
                 <text x={mx + sp.dx * upp} y={my + sp.dy * upp} text-anchor={sp.anchor} class="olab" class:on={isSel} style="font-size: {(isSel ? 17 : 14) * upp}px; stroke-width: {3 * upp}px">{o.name}</text>
@@ -321,6 +378,12 @@
           {/each}
           <rect x="-50" y="-50" width="1100" height="470" fill="url(#oa-vignette)" pointer-events="none" />
         </svg>
+        {#if which}
+          <div class="which" style="left: {which.left}px; top: {which.top}px" role="group" aria-label="Which origin?">
+            <p>Which one?</p>
+            {#each which.ids as id (id)}<button type="button" onclick={() => { which = null; choose(id); }}>{originById(id)?.name}</button>{/each}
+          </div>
+        {/if}
         </div>
         {#if sel && !vs && !narrow}
           <div class="tag" role="region" aria-label="{sel.name} at a glance">
@@ -341,7 +404,7 @@
           <span class="kt">Key</span>
           <span><span class="dot on"></span> Harvesting in {MONTHS_LONG[month - 1]}</span>
           <span><span class="dot edge"></span> Maybe (an edge month: picking can start early or run late)</span>
-          <span><span class="dot off"></span> Not harvesting</span>
+          <span><span class="dot off"></span> Outside its harvest period</span>
           <span class="kring">{#if zoom > 2}<span class="ringk"></span> {narrow ? 'Ring: 12 months, Jan at top' : 'Ring: its 12-month harvest calendar, January at the top'}{:else}Pick an origin to zoom in and see its year as a ring{/if}</span>
         </div>
       </div>
@@ -497,6 +560,7 @@
   .cp { cursor: pointer; transition: fill .3s; }
   .cp:hover { fill: #b9773c; }
   .marker { cursor: pointer; outline: none; }
+  .map.near { cursor: pointer; }
   .marker:focus-visible circle:first-of-type, .marker:focus-visible :global(.hring) { filter: drop-shadow(0 0 2px #2a1d15); }
   .olab { font-family: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; fill: #2a1d15; paint-order: stroke; stroke: #f3eee4; stroke-linejoin: round; letter-spacing: .02em; pointer-events: none; }
   .olab.on { font-weight: 400; fill: #6b3a12; }
@@ -505,6 +569,11 @@
   .mapkey { display: flex; flex-wrap: wrap; gap: 4px 20px; align-items: center; padding: 10px 8px 2px; font-size: 13px; color: var(--ink-2); }
   .mapkey > span { display: inline-flex; align-items: center; gap: 7px; }
   .mapkey .kt { font: 400 15px 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; color: #8f5d22; text-transform: uppercase; letter-spacing: .08em; }
+  .mapbox { position: relative; }
+  .which { position: absolute; z-index: 3; width: 150px; background: #fbf8f3; border: 1px solid #c17a3a; border-radius: 3px; box-shadow: 0 10px 24px -14px rgba(42, 29, 21, .6); padding: 6px; display: grid; gap: 4px; }
+  .which p { margin: 0 4px 2px; font: 500 11px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .08em; text-transform: uppercase; color: #8f5d22; }
+  .which button { appearance: none; border: 1px solid var(--rule, #d9cbb8); background: #fff; border-radius: 3px; padding: 7px 10px; text-align: left; font: 600 14px/1.2 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; color: var(--ink, #2a1d15); cursor: pointer; }
+  .which button:focus-visible { outline: 3px solid rgba(143, 93, 34, .6); outline-offset: 1px; }
   .tag { position: absolute; top: 30px; right: 30px; width: 330px; background: #fbf8f3; border: 1px solid #c17a3a; border-radius: 3px; box-shadow: 0 14px 30px -18px rgba(42, 29, 21, .6); padding: 12px 14px 12px; animation: tagin .45s cubic-bezier(.2, .7, .2, 1) both; }
   @keyframes tagin { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
   .tag .x { width: 32px; height: 32px; top: 8px; right: 8px; font-size: 17px; }

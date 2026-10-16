@@ -60,7 +60,7 @@
   // How many of the sample's lots name each note: buds on the plate grow with it.
   const COUNTS: Record<string, number> = (() => {
     const c: Record<string, number> = {};
-    for (const l of lots) for (const id of new Set(l.notes.flatMap((t) => notesInText(t)))) c[id] = (c[id] ?? 0) + 1;
+    for (const l of lots) for (const id of new Set(l.notes.flatMap((t) => notesInText(t, { roaster: true })))) c[id] = (c[id] ?? 0) + 1;
     return c;
   })();
   // A bud's area is proportional to its count, so a note named five times as often has five times the bud.
@@ -79,7 +79,7 @@
     return labels.length && !(labels.length === 1 && labels[0].toLowerCase() === t.toLowerCase()) ? [`“${t}” as ${labels.join(' and ')}`] : [];
   }));
   let bagUnmatched = $derived(bagPhrases.filter((t) => !notesInText(t).length));
-  let thinOrigins = $derived(note && ev?.thin ? [...new Set(lots.filter((l) => l.notes.some((t) => notesInText(t).includes(note.id))).map((l) => originName(l.o)))] : []);
+  let thinOrigins = $derived(note && ev?.thin ? [...new Set(lots.filter((l) => l.notes.some((t) => notesInText(t, { roaster: true }).includes(note.id))).map((l) => originName(l.o)))] : []);
   let originName = (id: string) => origins.find((o) => o.id === id)?.name ?? id;
   let originPage = (id: string) => origins.find((o) => o.id === id)?.page;
   const colourOf = (id: FamilyId | 'off') => (id === 'off' ? OFF_COLOUR : familyById(id)!.colour);
@@ -99,6 +99,13 @@
   // A teardrop petal pointing up from the core, in local coordinates.
   function petal(len: number, w: number, from = CORE - 4) {
     return `M0 ${-from} C ${w} ${-from - len * 0.28}, ${w * 1.08} ${-len * 0.78}, 0 ${-len} C ${-w * 1.08} ${-len * 0.78}, ${-w} ${-from - len * 0.28}, 0 ${-from} Z`;
+  }
+  // Petals overlap their neighbours, so taps land on a fixed sector per family instead: half the gap
+  // to each neighbour, and the whole bulge on the outer side of the two end petals.
+  function hitSector(id: FamilyId) {
+    const lo = id === 'roasted' ? -34 : -20, hi = id === 'green' ? 34 : 20, r0 = CORE, r1 = R + 8;
+    const pt = (a: number, r: number) => `${(r * Math.sin(rad(a))).toFixed(1)} ${(-r * Math.cos(rad(a))).toFixed(1)}`;
+    return `M${pt(lo, r0)} L${pt(lo, r1)} A${r1} ${r1} 0 0 1 ${pt(hi, r1)} L${pt(hi, r0)} A${r0} ${r0} 0 0 0 ${pt(lo, r0)} Z`;
   }
   // The open family's groups spray out from its tip, like a flower spike.
   const GROUP_SHORT: Record<string, string> = { fermented: 'Fermented', 'green-veg': 'Green', 'brown-spice': 'Brown spice', 'citrus': 'Citrus' };
@@ -156,7 +163,7 @@
   }
   function saveCard() {
     if (!pins.length) return;
-    const made = new Date().toISOString().slice(0, 10);
+    const d = new Date(), made = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     saved = [{ pins: [...pins], bag: bag.trim(), made }, ...saved.filter((c) => c.pins.join() !== pins.join() || c.bag !== bag.trim())].slice(0, 12);
     persist();
   }
@@ -178,7 +185,7 @@
     let fromLink = false;
     if (q.get('pins') || q.get('bag')) {
       const d = decodeCard(location.search);
-      pins = d.pins; bag = d.bag; fromLink = true;
+      pins = d.pins; bag = d.bag; fromLink = true; linkCard = encodeCard(d);
       const why = [d.unknown ? `${d.unknown === 1 ? 'one note' : `${d.unknown} notes`} didn't match our list` : '', d.overLimit ? `a card holds ${MAX_PINS} notes, so the first ${MAX_PINS} were kept` : ''].filter(Boolean);
       if (why.length) linkNote = `From that link: ${why.join('; ')}.`.replace(/: o/, ': O');
     }
@@ -201,9 +208,13 @@
     if (firstSave) { firstSave = false; return; }
     persist();
   });
+  // A shared card stays in the address bar (so a reload keeps it) until you change the card.
+  let linkCard: string | null = null;
   $effect(() => {
     if (!mounted) return;
-    const q = new URLSearchParams();
+    const card = encodeCard({ pins, bag });
+    if (linkCard !== null && card !== linkCard) linkCard = null;
+    const q = new URLSearchParams(linkCard ?? '');
     if (noteId) q.set('note', noteId);
     else if (familyId) q.set('family', familyId);
     history.replaceState(history.state, '', q.toString() ? `${location.pathname}?${q}` : location.pathname);
@@ -455,6 +466,7 @@
           {#if !mini}
             <path d="M0 {-CORE} L0 {-R + 14}" stroke="#2a1d15" stroke-width=".8" opacity=".28" />
             <path d="M0 {-R * 0.42} Q 12 {-R * 0.55} 18 {-R * 0.7} M0 {-R * 0.42} Q -12 {-R * 0.55} -18 {-R * 0.7}" fill="none" stroke="#2a1d15" stroke-width=".8" opacity=".2" />
+            <path class="hit" d={hitSector(f.id)} fill="transparent" />
           {/if}
         </g>
       {/each}
@@ -782,6 +794,13 @@
           {#if bagUnmatched.length}<p class="quiet small mapping">Not on the wheel yet: {bagUnmatched.map((t) => `“${t}”`).join(', ')}.</p>{/if}
           <p class="quiet small">Tasting notes are hints, not a test: a note in the same family counts as close.</p>
         </div>
+      {:else if cmp.bagNotes.length}
+        <div class="cmp" aria-live="polite">
+          <p><b>The bag's notes on the wheel</b> {#each cmp.bagNotes as x, i (x)}{i > 0 ? ', ' : ''}<button type="button" class="inl" onclick={() => openNote(x)}>{noteById(x)?.label}</button>{/each}{' '}<span class="quiet">(open one to try its exercise)</span></p>
+          {#if bagReadAs.length}<p class="quiet small mapping">We read {bagReadAs.join('; ')}.</p>{/if}
+          {#if bagUnmatched.length}<p class="quiet small mapping">Not on the wheel yet: {bagUnmatched.map((t) => `“${t}”`).join(', ')}.</p>{/if}
+          <p class="quiet small">Add the notes you taste to compare them with the bag.</p>
+        </div>
       {:else if bag.trim() && !cmp.bagNotes.length}
         <p class="quiet small">None of those words match a note on the wheel yet. Try the main fruit or sweet word on the bag.</p>
       {/if}
@@ -857,6 +876,7 @@
   .budkey .kc { font: 500 11px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; color: var(--ink-2); margin: 0 6px 1px 1px; }
 
   .petal, .leaf { cursor: pointer; outline: none; }
+  .petal path:not(.hit) { pointer-events: none; }
   .petal .shape, .leaf path { transition: fill-opacity .3s, stroke-width .2s; }
   .petal { transition: opacity .3s; }
   .petal:hover .shape { fill-opacity: .95; }

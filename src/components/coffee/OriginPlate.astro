@@ -18,7 +18,7 @@ const SEAS: Record<string, { name: string; lat: number; lon: number }[]> = {
   honduras: [{ name: 'Caribbean Sea', lat: 16.7, lon: -85 }],
   indonesia: [{ name: 'Indian Ocean', lat: -9, lon: 100 }, { name: 'Java Sea', lat: -5, lon: 111 }],
   kenya: [{ name: 'Indian Ocean', lat: -3, lon: 42.2 }],
-  mexico: [{ name: 'Pacific Ocean', lat: 15, lon: -100 }, { name: 'Gulf of Mexico', lat: 24, lon: -92 }],
+  mexico: [{ name: 'Pacific Ocean', lat: 18, lon: -109 }, { name: 'Gulf of Mexico', lat: 24, lon: -92 }],
   nicaragua: [{ name: 'Caribbean Sea', lat: 13, lon: -82.2 }, { name: 'Pacific Ocean', lat: 11, lon: -87.6 }],
   panama: [{ name: 'Pacific Ocean', lat: 6.6, lon: -79.5 }, { name: 'Caribbean Sea', lat: 10, lon: -79.5 }],
   peru: [{ name: 'Pacific Ocean', lat: -12, lon: -80.5 }],
@@ -84,22 +84,33 @@ const labelled = regions.map((r) => {
   boxes.push(pick.b);
   return { ...r, dx: pick.dx * u, dy: pick.dy * u, anchor: pick.anchor, lead: pick.lead };
 });
-// Seas, where their hand-placed spot is in view and in open water.
+// Seas: the hand-placed spot if the whole name sits in open water there, else the nearest spot
+// around it (within about 110 px) where it does, so a name never runs onto a coast.
+const wet = (b: Box) => {
+  // Sampled every few pixels along the top, middle and bottom of the name, so a thin peninsula can't hide between samples.
+  for (let px = b.x - 3; px <= b.x + b.w + 3; px += 5) for (const py of [b.y, b.y + b.h / 2, b.y + b.h]) if (onLand(vb[0] + px * u, vb[1] + py * u)) return false;
+  return true;
+};
 const seas = (SEAS[origin.id] ?? []).flatMap((sea) => {
-  const [x, y] = project(sea.lat, sea.lon);
-  const px = sx(x), py = sy(y), tw = sea.name.length * 8.4, b = { x: px - tw / 2, y: py - 11, w: tw, h: 15 };
-  if (b.x < 6 || b.y < 6 || b.x + b.w > PX_W - 6 || b.y + b.h > PX_H - 6 || onLand(x, y) || boxes.some((o) => hit(o, b))) return [];
-  boxes.push(b);
-  return [{ name: sea.name, x, y }];
+  const [hx, hy] = project(sea.lat, sea.lon);
+  const tw = sea.name.length * 8.4, tries: [number, number][] = [[sx(hx), sy(hy)]];
+  for (let r = 10; r <= 110; r += 10) for (let a = 0; a < 360; a += 15) tries.push([sx(hx) + r * Math.cos((a * Math.PI) / 180), sy(hy) + r * Math.sin((a * Math.PI) / 180)]);
+  for (const [px, py] of tries) {
+    const b = { x: px - tw / 2, y: py - 11, w: tw, h: 15 };
+    if (b.x < 6 || b.y < 6 || b.x + b.w > PX_W - 6 || b.y + b.h > PX_H - 6 || !wet(b) || boxes.some((o) => hit(o, b))) continue;
+    boxes.push(b);
+    return [{ name: sea.name, x: vb[0] + px * u, y: vb[1] + py * u }];
+  }
+  return [];
 });
 // Neighbors: named at a point well inside their visible part, when enough of them is in view.
 const neighbours = LAND.filter((c) => c.id !== origin.id && !SKIP_NAME.has(c.id)).flatMap((c) => {
   const cands: [number, number][] = [];
-  for (let i = 1; i < 12; i++) for (let j = 1; j < 9; j++) {
-    const x = vb[0] + (vb[2] * i) / 12, y = vb[1] + (vb[3] * j) / 9;
+  for (let i = 1; i < 36; i++) for (let j = 1; j < 24; j++) {
+    const x = vb[0] + (vb[2] * i) / 36, y = vb[1] + (vb[3] * j) / 24;
     if (c.polys.some((ps) => inPoly(x, y, ps))) cands.push([x, y]);
   }
-  if (cands.length < 4) return [];
+  if (cands.length < 14) return [];
   const mx = cands.reduce((t, p) => t + p[0], 0) / cands.length, my = cands.reduce((t, p) => t + p[1], 0) / cands.length;
   const label = nameOf(c.id).toUpperCase(), tw = label.length * 8.6;
   const ins = (x: number, y: number) => c.polys.some((ps) => inPoly(x, y, ps));

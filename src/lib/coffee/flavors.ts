@@ -107,8 +107,8 @@ export const FAMILIES: Family[] = [
         n('cocoa', 'Cocoa powder', 'Dusty, brown, slightly bitter cocoa.', 'unsweetened cocoa powder', ['cocoa', 'cocoa powder', 'cacao', 'cacao nib', 'cocoa nibs', 'cacao dusting'], { wheel: false }),
       ]],
       ['nutty', 'Nutty', [
-        n('almond', 'Almond', 'Sweet, woody, a hint of marzipan.', 'a toasted almond', ['almond', 'almonds', 'roasted almond', 'marzipan', 'almond cake']),
-        n('hazelnut', 'Hazelnut', 'Woody, sweet, buttery.', 'a roasted hazelnut', ['hazelnut', 'hazelnuts', 'roasted hazelnut', 'praline', 'nutella']),
+        n('almond', 'Almond', 'Sweet, woody, a hint of marzipan.', 'a toasted almond', ['almond', 'almonds', 'roasted almond', 'marzipan', 'almond cake', 'raw almond']),
+        n('hazelnut', 'Hazelnut', 'Woody, sweet, buttery.', 'a roasted hazelnut', ['hazelnut', 'hazelnuts', 'roasted hazelnut', 'praline', 'nutella', 'raw hazelnut']),
         n('peanut', 'Peanut', 'Oily, roasted, a little beany.', 'a dry-roasted peanut', ['peanut', 'peanuts']),
         n('pecan', 'Pecan & other nuts', 'Rich, buttery nuts with a tannic skin.', 'a pecan or walnut half', ['pecan', 'walnut', 'macadamia', 'cashew', 'chestnut'], extraWord),
       ]],
@@ -123,10 +123,10 @@ export const FAMILIES: Family[] = [
         n('brown-sugar', 'Brown sugar', 'Moist, deep sugar with a molasses note.', 'a pinch of dark brown sugar', ['brown sugar', 'raw sugar', 'cane sugar', 'panela', 'sugar cane', 'sugarcane', 'demerara', 'turbinado', 'golden syrup']),
         n('molasses', 'Molasses', 'Dark, thick, slightly bitter sugar.', 'a drop of molasses', ['molasses', 'treacle']),
         n('maple', 'Maple syrup', 'Woody, round sweetness.', 'a spoon of real maple syrup', ['maple', 'maple syrup']),
-        n('honey', 'Honey', 'Floral, waxy sweetness.', 'a spoon of mild honey', ['honey', 'honeyed', 'orange blossom honey', 'floral honey', 'manuka honey', 'honeycomb']),
+        n('honey', 'Honey', 'Floral, waxy sweetness.', 'a spoon of mild honey', ['honey', 'honeyed', 'orange blossom honey', 'floral honey', 'manuka honey', 'honeycomb', 'raw honey']),
       ]],
       ['vanilla', 'Vanilla', [
-        n('vanilla', 'Vanilla', 'Sweet, creamy, a little woody.', 'a drop of vanilla extract in milk', ['vanilla', 'vanilla custard']),
+        n('vanilla', 'Vanilla', 'Sweet, creamy, a little woody.', 'a drop of vanilla extract in milk', ['vanilla', 'vanilla custard', 'vanilla bean', 'smoked vanilla', 'smoked vanilla bean']),
       ]],
     ]),
   family('floral', 'Floral', '#9c6b98',
@@ -166,7 +166,7 @@ export const FAMILIES: Family[] = [
         n('dried-other', 'Other dried fruit', 'Dried apricot, cherry or mango: chewy, concentrated fruit.', 'a dried apricot', ['dried fruit', 'dried cherry', 'dried apricot', 'dried mango'], extraWord),
       ]],
       ['other-fruit', 'Other fruit', [
-        n('cherry', 'Cherry', 'Sweet red fruit with a slight almond bitterness.', 'a cherry, or cherry jam', ['cherry', 'cherries', 'ripe cherries', 'black cherry', 'red cherry', 'rainier cherry', 'cherry jam', 'cherry candy', 'cherry cola']),
+        n('cherry', 'Cherry', 'Sweet red fruit with a slight almond bitterness.', 'a cherry, or cherry jam', ['cherry', 'cherries', 'ripe cherries', 'black cherry', 'red cherry', 'rainier cherry', 'cherry jam', 'cherry candy', 'cherry cola', 'sour cherry', 'sour cherries']),
         n('stone-fruit', 'Peach & apricot', 'Soft, juicy, perfumed stone fruit.', 'a ripe peach or apricot', ['peach', 'peaches', 'apricot', 'nectarine', 'white peach', 'stewed peach', 'stone fruit', 'stonefruit'], extraWord),
         n('plum', 'Plum', 'Dark, juicy fruit with a tart skin.', 'a ripe plum', ['plum', 'plums', 'stewed plum'], extraWord),
         n('apple', 'Apple', 'Crisp, juicy, from green to red.', 'a slice of red or green apple', ['apple', 'apples', 'red apple', 'green apple', 'cooked apple', 'fuji apple', 'honeycrisp apples']),
@@ -194,12 +194,12 @@ export const FAMILIES: Family[] = [
     [
       ['sour', 'Sour', [
         n('citric', 'Citric acid', 'Clean, lemony sourness on the tongue.', 'a pinch of citric acid in a glass of water', ['citric'], { tryIt: 'Dissolve a small pinch of citric acid (or a squeeze of lemon) in a glass of water and sip. Then sip the coffee and notice where the sourness lands on your tongue.' }),
-        n('malic', 'Malic acid', 'Rounder, apple-like sourness.', 'a bite of green apple', ['malic'], { tryIt: 'Bite a tart green apple and notice the sourness at the sides of your tongue, then compare the coffee.' }),
+        n('malic', 'Malic acid', 'Rounder, apple-like sourness.', 'a bite of green apple', ['malic'], { tryIt: 'Bite a tart green apple and notice the sourness on your tongue, then compare the coffee.' }),
         n('acetic', 'Acetic acid', 'Vinegar-like sharpness. Small amounts read as bright; more is a flaw.', 'a drop of white vinegar in water (smell it)', ['vinegar', 'acetic'], { flaw: true }),
         n('sour-aromatics', 'Sour aromatics', 'A sour, sharp smell: often over-fermentation.', 'sauerkraut brine, smelled', ['sour'], { flaw: true }),
       ]],
       ['fermented', 'Alcohol & fermented', [
-        n('winey', 'Winey', 'Like red wine: fruity, sharp, a little boozy.', 'a sip of red wine, or red grape juice', ['winey', 'wine', 'wine-like', 'berries and wine', 'chardonnay']),
+        n('winey', 'Winey', 'Like red wine: fruity, sharp, a little boozy.', 'a sip of red wine, or red grape juice', ['winey', 'wine', 'wine-like', 'berries and wine', 'chardonnay', 'rose wine', 'rosé wine', 'rosé']),
         n('whiskey', 'Whiskey', 'Warm, boozy, oak-barrel sweetness.', 'a sniff of whiskey or rum', ['whiskey', 'whisky', 'boozy']),
         n('fermented', 'Fermented', 'Yeasty, sweet-sour, like stout or kombucha.', 'a sniff of stout or kombucha', ['fermented', 'funky']),
         n('overripe', 'Overripe', 'Fruit just past its best: sweet, damp, slightly musty.', 'a very ripe banana', ['overripe', 'over-ripe'], { flaw: true }),
@@ -248,7 +248,15 @@ export const groupById = (id: string) => ALL_GROUPS.find((g) => g.id === id);
 
 /** The tasting exercise, in words. */
 export function exercise(note: Note): string {
-  return note.tryIt ?? `Smell ${note.ref}. Then sip the coffee, swallow, and breathe out through your nose: look for the same smell, not the same taste.`;
+  if (note.tryIt) return note.tryIt;
+  // References are written as things ("a few raisins, chewed"); the sentence picks its verb from them.
+  let r = note.ref.replace(/,\s*smelled(?=\s*\(|$)/, '');
+  let verb = 'Smell';
+  if (/^a sip of /.test(r)) verb = 'Take';
+  else if (/^a sniff of /.test(r)) r = r.replace(/^a sniff of /, '');
+  else if (/^the smell of /.test(r)) r = r.replace(/^the smell of /, '');
+  if (/,\s*chewed$/.test(r)) { verb = 'Chew'; r = r.replace(/,\s*chewed$/, ''); }
+  return `${verb} ${r}. Then sip the coffee, swallow, and breathe out through your nose: look for the same smell, not the same taste.`;
 }
 
 // ── Roasters' words ──────────────────────────────────────────────────────────────────────────
@@ -256,14 +264,20 @@ export function exercise(note: Note): string {
 /** One lot as roasters described it. o = origin id, p = process, r = roast, notes = their words. */
 export interface Lot { o: string; p: string; r: string; notes: string[] }
 
+/**
+ * Which recorded lots belong in the sample: those with a description, and single origins only
+ * (blends and fruit co-ferments would credit an origin with words that came from elsewhere).
+ */
+export const inSample = (name: string, notes: string[]) => notes.some((t) => t.trim().length > 0) && !/\bblend\b|co-?ferment/i.test(name);
+
 export const ROASTER_SAMPLE = {
   label: 'roasters\' catalogs, winter 2026',
   detail: 'Lot descriptions from 38 specialty roasters\' online catalogs, recorded January–March 2026. Most are light roasts.',
 };
 
 // Longest phrases first, so "orange blossom" is floral and not orange, and "dark chocolate" isn't chocolate.
-const PHRASES: { phrase: string; id: string }[] = ALL_NOTES
-  .flatMap((x) => x.words.map((w) => ({ phrase: w.toLowerCase(), id: x.id })))
+const PHRASES: { phrase: string; id: string; flaw: boolean }[] = ALL_NOTES
+  .flatMap((x) => x.words.map((w) => ({ phrase: w.toLowerCase(), id: x.id, flaw: !!x.flaw || x.family === 'off' })))
   .sort((a, b) => b.phrase.length - a.phrase.length);
 
 const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -273,13 +287,15 @@ const PHRASE_RE = PHRASES.map((p) => ({ ...p, re: new RegExp(`(^|[^a-z])${escape
  * Note ids found in free text: a roaster's description or what a reader types from a bag.
  * Each stretch of text counts once, for its longest matching phrase.
  */
-export function notesInText(text: string): string[] {
+export function notesInText(text: string, opts: { roaster?: boolean } = {}): string[] {
   let rest = ` ${text.toLowerCase().replace(/&?nbsp;/g, ' ').replace(/[’']/g, "'")} `;
   const found: string[] = [];
   for (const p of PHRASE_RE) {
     const m = p.re.exec(rest);
     if (!m) continue;
-    if (!found.includes(p.id)) found.push(p.id);
+    // Roasters don't print flaws on their bags, so in their descriptions a flaw word is a misread
+    // ("sour", "raw"): it's set aside, not counted.
+    if (!found.includes(p.id) && !(opts.roaster && p.flaw)) found.push(p.id);
     const start = m.index + m[1].length;
     rest = rest.slice(0, start) + ' '.repeat(p.phrase.length) + rest.slice(start + p.phrase.length);
     // A phrase can appear twice ("lemon … lemon"); blank every occurrence.
@@ -348,7 +364,7 @@ function rates(lots: Lot[], hit: Set<Lot>, key: (l: Lot) => string, minOf: numbe
  * and Ethiopian lots than anything else, so raw counts would mostly show the sample's shape.
  */
 export function evidenceFor(noteId: string, lots: Lot[], { minLots = 6, minOrigin = 7 } = {}): NoteEvidence {
-  const hit = new Set(lots.filter((l) => l.notes.some((t) => notesInText(t).includes(noteId))));
+  const hit = new Set(lots.filter((l) => l.notes.some((t) => notesInText(t, { roaster: true }).includes(noteId))));
   return {
     noteId,
     lots: hit.size,
@@ -365,7 +381,7 @@ export function evidenceFor(noteId: string, lots: Lot[], { minLots = 6, minOrigi
 export function familyCounts(lots: Lot[]): Record<string, number> {
   const out: Record<string, number> = {};
   for (const l of lots) {
-    const fams = new Set(l.notes.flatMap((t) => notesInText(t)).map((id) => noteById(id)?.family).filter(Boolean) as string[]);
+    const fams = new Set(l.notes.flatMap((t) => notesInText(t, { roaster: true })).map((id) => noteById(id)?.family).filter(Boolean) as string[]);
     for (const f of fams) out[f] = (out[f] ?? 0) + 1;
   }
   return out;

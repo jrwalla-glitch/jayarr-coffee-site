@@ -4,7 +4,7 @@ import OriginAtlas from '../../../components/coffee/OriginAtlas.svelte';
 import originHubs from '../../../data/origin-hubs.json';
 import originSources from '../../../data/origins-sources.json';
 import { ORIGINS, CONTINENTS, harvestText, bandText, productionText } from '../../../lib/coffee/origins.ts';
-import { notesInText, noteById } from '../../../lib/coffee/flavors.ts';
+import { notesInText, noteById, inSample } from '../../../lib/coffee/flavors.ts';
 
 const title = 'Coffee Origins Map: Harvest Seasons, Altitude and Flavor';
 const description = 'A map of 30 coffee origins: when each is harvested, how high it grows, how much it produces and how its coffees are described, with sources. Compare any two.';
@@ -14,9 +14,10 @@ const roasterWords: Record<string, { words: { id: string; label: string; n: numb
 for (const h of originHubs) {
   const id = h.origin_slug.replace(/_/g, '-');
   const counts = new Map<string, number>();
-  for (const b of h.beans) for (const n of new Set(b.flavor_notes.flatMap((t) => notesInText(t)))) counts.set(n, (counts.get(n) ?? 0) + 1);
+  const sample = h.beans.filter((b) => inSample(b.name, b.flavor_notes));
+  for (const b of sample) for (const n of new Set(b.flavor_notes.flatMap((t) => notesInText(t, { roaster: true })))) counts.set(n, (counts.get(n) ?? 0) + 1);
   const words = [...counts.entries()].filter(([, n]) => n >= 2).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([nid, n]) => ({ id: nid, label: noteById(nid)!.label, n }));
-  roasterWords[id] = { words, lots: h.beans.length };
+  roasterWords[id] = { words, lots: sample.length };
 }
 const sources = originSources as Record<string, { title: string; url: string; checked: string }>;
 const sourceList = Object.entries(sources).sort((a, b) => a[1].title.localeCompare(b[1].title));

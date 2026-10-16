@@ -13,7 +13,7 @@
     { id: 'make', label: 'Make a better cup' },
     { id: 'fix', label: 'Fix today\'s coffee' },
     { id: 'choose', label: 'Choose gear' },
-    { id: 'explore', label: 'Explore flavor' },
+    { id: 'explore', label: 'Explore' },
   ];
   const BREWERS: { id: MethodId; label: string }[] = [
     { id: 'v60', label: 'V60' }, { id: 'chemex', label: 'Chemex' }, { id: 'french-press', label: 'French press' }, { id: 'aeropress', label: 'AeroPress' },
@@ -21,20 +21,34 @@
   ];
   const CUPS = [8, 10, 12, 16];
   const FIX = ['sour', 'bitter', 'weak', 'strong', 'flat'];
-  // What each taste usually points to, said as a likelihood: the Doctor asks before it decides.
-  const LIKELY: Record<string, string> = {
-    sour: 'Often under-extracted: the water didn\'t pull enough from the coffee. The usual suspects are a grind that\'s too coarse or a brew that ran too fast.',
-    bitter: 'Often over-extracted: too much was pulled out. A grind that\'s too fine or a brew that ran too long are the usual suspects, though dark roasts are bitter by nature.',
-    weak: 'Usually too little coffee for the water, before anything else. A stronger ratio is the first thing to try.',
-    strong: 'Usually too much coffee for the water. A lighter ratio, or adding a little hot water, fixes it without touching the grind.',
-    flat: 'Often stale beans or water with too few minerals, rather than the recipe.',
-  };
+  // What each taste usually points to, said as a likelihood: the Doctor asks before it decides, and
+  // its answer depends on the brewer (a shot's time, a press's steep), so the door asks which.
+  const FIX_BREWERS: { id: MethodId; label: string }[] = [
+    { id: 'v60', label: 'Pour-over' }, { id: 'french-press', label: 'French press' }, { id: 'aeropress', label: 'AeroPress' },
+    { id: 'drip-machine', label: 'Drip machine' }, { id: 'moka', label: 'Moka pot' }, { id: 'espresso', label: 'Espresso' },
+  ];
+  function likely(id: string, m: MethodId): string {
+    const steep = m === 'french-press' || m === 'aeropress';
+    if (m === 'espresso') return {
+      sour: 'Often under-extracted. The shot time decides the fix: a fast shot wants a finer grind, one that runs on time a longer shot.',
+      bitter: 'Over-extraction, a fast and uneven shot, or simply a dark roast: one timed shot tells them apart.',
+      strong: 'Espresso is intense by design, and the ratio sets it: a longer shot, with more liquid per gram, makes it gentler.',
+      flat: 'Often stale beans or water with too few minerals, rather than the recipe.',
+    }[id] ?? '';
+    return {
+      sour: `Often under-extracted: the water didn't pull enough from the coffee. The usual suspects are a grind that's too coarse or ${steep ? 'a steep that was too short' : 'a brew that ran too fast'}.`,
+      bitter: `Often over-extracted: too much was pulled out. A grind that's too fine or ${steep ? 'a steep that ran too long' : 'a brew that ran too long'} are the usual suspects, though dark roasts are bitter by nature.`,
+      weak: 'Usually too little coffee for the water, before anything else. A stronger ratio is the first thing to try.',
+      strong: m === 'moka' ? 'Moka coffee is concentrated by design: brew it as usual and add hot water to the cup to taste.' : 'Usually too much coffee for the water. A lighter ratio, or adding a little hot water, fixes it without touching the grind.',
+      flat: 'Often stale beans or water with too few minerals, rather than the recipe.',
+    }[id] ?? '';
+  }
 
   let door = $state<Door>('make');
   let method = $state<MethodId>('v60');
   let oz = $state(12);
   let symptom = $state('sour');
-  let fixMethod = $state<'v60' | 'espresso'>('v60');
+  let fixMethod = $state<MethodId>('v60');
 
   // Only the mug sizes this brewer can make in one go are offered (one AeroPress holds about 22 g).
   const fits = (m: MethodId, c: number) => buildRecipe({ method: m, target: { cupMl: flOzToMl(c) }, strength: 'classic', roast: 'medium' }).ok;
@@ -49,7 +63,8 @@
 
   // ── The drawn row under the numbers: the cup at its size, the ratio as cells, the grind to scale ──
   let ratioN = $derived(r ? Math.round(r.ratio) : 16);
-  let ratioText = $derived(r ? (Number.isInteger(Math.round(r.ratio * 10) / 10) ? String(Math.round(r.ratio)) : (Math.round(r.ratio * 10) / 10).toFixed(1)) : '16');
+  // The ratio as the Brew Guide prints it: up to two decimals, trailing zeros dropped (6.25, 15, 2).
+  let ratioText = $derived(r ? String(Math.round(r.ratio * 100) / 100) : '16');
   let cells = $derived(Array.from({ length: ratioN + 1 }, (_, i) => ({ x: (i % 9) * 11, y: Math.floor(i / 9) * 11, coffee: i === 0 })));
   let cellRows = $derived(Math.ceil((ratioN + 1) / 9));
   // A mug's height grows with its size: 8 oz to 16 oz.
@@ -64,7 +79,8 @@
 
   // ── The Fix door's picture: a small extraction map, the taste marked, an arrow to the usual fix ──
   const MAP_AT: Record<string, [number, number]> = { sour: [86, 66], bitter: [234, 66], weak: [160, 118], strong: [160, 16], flat: [160, 66] };
-  const MAP_FIX: Record<string, string> = { sour: 'grind finer?', bitter: 'grind coarser?', weak: 'more coffee?', strong: 'less coffee?', flat: 'check the beans and water' };
+  // Only the direction to move: how to get there depends on the brewer, which is the Doctor's job.
+  const MAP_FIX: Record<string, string> = { sour: 'extract more?', bitter: 'extract less?', weak: 'stronger?', strong: 'weaker?', flat: 'check the beans and water' };
 
   onMount(() => {
     try { const d = sessionStorage.getItem('jayarr-home-door') as Door | null; if (d && DOORS.some((x) => x.id === d)) door = d; } catch { /* no storage */ }
@@ -150,8 +166,7 @@
       </div>
       <p class="q">Made with</p>
       <div class="chips">
-        <button type="button" class="chip" aria-pressed={fixMethod === 'v60'} onclick={() => (fixMethod = 'v60')}>Filter or press</button>
-        <button type="button" class="chip" aria-pressed={fixMethod === 'espresso'} onclick={() => { fixMethod = 'espresso'; if (!sym(symptom).espresso) symptom = 'sour'; }}>Espresso</button>
+        {#each FIX_BREWERS as b (b.id)}<button type="button" class="chip" aria-pressed={fixMethod === b.id} onclick={() => { fixMethod = b.id; if (b.id === 'espresso' && !sym(symptom).espresso) symptom = 'sour'; }}>{b.label}</button>{/each}
       </div>
       {@const [mx, my] = MAP_AT[symptom]}
       <svg class="xmap" viewBox="0 0 320 136" aria-hidden="true">
@@ -172,20 +187,20 @@
         <circle cx={mx} cy={my} r="7" class="mark" />
         <defs><marker id="hs-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 1 L9 5 L0 9 Z" fill="#8f5d22" /></marker></defs>
       </svg>
-      <p class="likely"><b>{sym(symptom).tagline}.</b> {LIKELY[symptom]}</p>
+      <p class="likely"><b>{sym(symptom).tagline}.</b> {likely(symptom, fixMethod)}</p>
       <p class="note">Fix My Coffee asks two or three questions about your brew, then gives you one change to try and keeps everything else the same.</p>
       <a class="go" href="/tools/fix-my-coffee/?method={fixMethod}&symptom={symptom}">Find the one change →</a>
     {:else if door === 'choose'}
       <ul class="pick">
-        <li><a href="/tools/espresso-machines/"><span class="pm"><ToolMini id="machines" /></span><span><b>An espresso machine</b><small>Matches for how you drink and what you'll spend, grinder included</small></span></a></li>
-        <li><a href="/tools/nespresso-pods/"><span class="pm"><ToolMini id="pods" /></span><span><b>Nespresso pods</b><small>Every capsule your machine takes, Original or Vertuo</small></span></a></li>
-        <li><a href="/deep-brew/calibrator/"><span class="pm"><ToolMini id="calibrator" /></span><span><b>Your grinder's setting</b><small>The number to set for your brewer, from the maker's guidance</small></span></a></li>
+        <li><a href="/tools/espresso-machines/"><span class="pm" aria-hidden="true"><ToolMini id="machines" /></span><span><b>An espresso machine</b><small>Matches for how you drink and what you'll spend, grinder included</small></span></a></li>
+        <li><a href="/tools/nespresso-pods/"><span class="pm" aria-hidden="true"><ToolMini id="pods" /></span><span><b>Nespresso pods</b><small>Every capsule your machine takes, Original or Vertuo</small></span></a></li>
+        <li><a href="/deep-brew/calibrator/"><span class="pm" aria-hidden="true"><ToolMini id="calibrator" /></span><span><b>Your grinder's setting</b><small>The number to set for your brewer, from the maker's guidance</small></span></a></li>
       </ul>
     {:else}
       <ul class="pick gallery">
-        <li><a href="/explore/flavors/"><span class="pm"><GalleryMini id="flavors" names={false} /></span><span><b>The Flavor Bloom</b><small>Learn to taste a note, and how often roasters use it</small></span></a></li>
-        <li><a href="/explore/origins/"><span class="pm"><GalleryMini id="origins" names={false} /></span><span><b>The Coffee Origins</b><small>Who's harvesting now, and how high it grows</small></span></a></li>
-        <li><a href="/explore/methods/"><span class="pm"><GalleryMini id="methods" names={false} /></span><span><b>The Brewing Constellations</b><small>How thirteen brewers really differ</small></span></a></li>
+        <li><a href="/explore/flavors/"><span class="pm" aria-hidden="true"><GalleryMini id="flavors" names={false} /></span><span><b>The Flavor Bloom</b><small>Learn to taste a note, and how often roasters use it</small></span></a></li>
+        <li><a href="/explore/origins/"><span class="pm" aria-hidden="true"><GalleryMini id="origins" names={false} /></span><span><b>The Coffee Origins</b><small>Who's harvesting now, and how high it grows</small></span></a></li>
+        <li><a href="/explore/methods/"><span class="pm" aria-hidden="true"><GalleryMini id="methods" names={false} /></span><span><b>The Brewing Constellations</b><small>How thirteen brewers really differ</small></span></a></li>
       </ul>
     {/if}
   </div>

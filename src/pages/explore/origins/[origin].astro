@@ -7,7 +7,7 @@ import originHubs from '../../../data/origin-hubs.json';
 import summaries from '../../../data/origin-summaries.json';
 import originSources from '../../../data/origins-sources.json';
 import { originByPage, harvestText, bandText, productionText, ARRIVAL_EXAMPLES, ORIGINS } from '../../../lib/coffee/origins.ts';
-import { notesInText, noteById } from '../../../lib/coffee/flavors.ts';
+import { notesInText, noteById, inSample } from '../../../lib/coffee/flavors.ts';
 
 // The 19 country pages keep their indexed URLs (underscores included). Each is a detail plate
 // from the Origins map: the country, its regions, its year, and the lots roasters described.
@@ -29,12 +29,16 @@ const description = `${o.name} coffee at a glance: when it's harvested (${harves
 
 // Roasters' words for this origin's lots, and the lots themselves (as the roasters described them).
 const counts = new Map<string, number>();
-for (const b of hub.beans) for (const n of new Set(b.flavor_notes.flatMap((t) => notesInText(t)))) counts.set(n, (counts.get(n) ?? 0) + 1);
+const sample = hub.beans.filter((b) => inSample(b.name, b.flavor_notes));
+for (const b of sample) for (const n of new Set(b.flavor_notes.flatMap((t) => notesInText(t, { roaster: true })))) counts.set(n, (counts.get(n) ?? 0) + 1);
 const words = [...counts.entries()].filter(([, n]) => n >= 2).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([id, n]) => ({ id, label: noteById(id)!.label, n }));
 const PROC: Record<string, string> = { washed: 'Washed', natural: 'Natural', honey: 'Honey', honey_white: 'White honey', honey_red: 'Red honey', anaerobic_washed: 'Anaerobic washed', anaerobic_natural: 'Anaerobic natural', 'semi-washed': 'Semi-washed', washed_ea_decaf: 'Washed, EA decaf', blend_washed_natural: 'Washed and natural blend', natural_and_washed_blend: 'Washed and natural blend' };
 const ROAST: Record<string, string> = { light: 'Light', medium_light: 'Medium-light', medium: 'Medium', medium_dark: 'Medium-dark', dark: 'Dark' };
 const titleCase = (s: string) => (s === s.toUpperCase() ? s.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase()) : s);
-const lots = hub.beans.map((b) => ({ roaster: b.roaster, name: titleCase(b.name), process: PROC[b.processing] ?? b.processing, roast: ROAST[b.roast_level] ?? b.roast_level, notes: b.flavor_notes.filter((n) => n.length < 40 && !/^and\b|nbsp/.test(n)).join(', ') }));
+// The roasters' own words, tidied of scraping leftovers ("amp;", sentence fragments); none listed shows a dash.
+const cleanNote = (n: string) => n.replace(/&amp;|\bamp;/g, '&').replace(/^[&\s]+/, '').trim();
+const fragment = (n: string) => n.length >= 40 || /^(and|as well as|leading|sometimes|indulgent)\b|nbsp/i.test(n);
+const lots = hub.beans.map((b) => ({ roaster: b.roaster, name: titleCase(b.name), process: PROC[b.processing] ?? b.processing, roast: ROAST[b.roast_level] ?? b.roast_level, notes: b.flavor_notes.map(cleanNote).filter((n) => n && !fragment(n)).join(', ') || '—' }));
 
 const sourceIds = [...new Set([...o.harvest.sources, ...(o.altitudeM?.sources ?? []), ...(o.robustaAltitudeM?.sources ?? []), ...(o.production ? [o.production.source] : []), o.tendencies.source, ...(o.sources?.varieties ?? []), ...(o.sources?.processing ?? []), ...(o.sources?.regions ?? [])])].filter((id) => sources[id]);
 const neighbours = ORIGINS.filter((x) => x.id !== o.id && x.continent === o.continent && x.page).slice(0, 4);
@@ -96,7 +100,7 @@ const neighbours = ORIGINS.filter((x) => x.id !== o.id && x.continent === o.cont
     {words.length > 0 && (
       <>
         <h2>Roasters' words</h2>
-        <p>Across {hub.beans.length} lots from {o.name} in 38 specialty roasters' catalogs (recorded January–March 2026), these are the notes roasters used most. Each opens in the <a href="/explore/flavors/">Flavor Bloom</a> with an exercise to train your nose on it.</p>
+        <p>Across {sample.length} described single-origin lots from {o.name} in 38 specialty roasters' catalogs (recorded January–March 2026), these are the notes roasters used most. Each opens in the <a href="/explore/flavors/">Flavor Bloom</a> with an exercise to train your nose on it.</p>
         <ul class="op-words">{words.map((w) => <li><a href={`/explore/flavors/?note=${w.id}`}>{w.label}</a> <span>{w.n} lots</span></li>)}</ul>
       </>
     )}
