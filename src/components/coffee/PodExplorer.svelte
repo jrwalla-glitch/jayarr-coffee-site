@@ -281,8 +281,8 @@
           <select bind:value={family}><option value="all">Any</option>{#each AROMA_FAMILIES as f (f.id)}<option value={f.id}>{f.label}</option>{/each}</select></label>
         <label class="sel"><span class="lbl">Range</span>
           <select bind:value={category}><option value="all">All</option>{#each categories as c (c)}<option value={c}>{c}</option>{/each}</select></label>
-        <label class="sel"><span class="lbl">Flavoured</span>
-          <select bind:value={flavored}><option value="any">Either</option><option value="none">Not flavoured</option><option value="only">Flavoured only</option></select></label>
+        <label class="sel"><span class="lbl">Flavored</span>
+          <select bind:value={flavored}><option value="any">Either</option><option value="none">Not flavored</option><option value="only">Flavored only</option></select></label>
         <label class="chk"><input type="checkbox" bind:checked={decaf} /> Decaf</label>
         <label class="chk"><input type="checkbox" bind:checked={includeUnlisted} /> Show retired and unlisted</label>
       </div>
@@ -362,7 +362,7 @@
               <div>
                 <p class="kick">{LINES[selected.line].label} · {selected.size} · {selected.ml} ml</p>
                 <h3 tabindex="-1" bind:this={headEl}>{selected.name}</h3>
-                {#if rangeOf(selected) !== selected.size || selected.decaf || selected.flavored}<p class="cat">{[rangeOf(selected) !== selected.size ? rangeOf(selected) : '', selected.decaf ? 'Decaf' : '', selected.flavored ? 'Flavoured' : ''].filter(Boolean).join(' · ')}</p>{/if}
+                {#if rangeOf(selected) !== selected.size || selected.decaf || selected.flavored}<p class="cat">{[rangeOf(selected) !== selected.size ? rangeOf(selected) : '', selected.decaf ? 'Decaf' : '', selected.flavored ? 'Flavored' : ''].filter(Boolean).join(' · ')}</p>{/if}
               </div>
             </div>
             {#if selected.status === 'retired'}<p class="gone-note">Nespresso has discontinued this capsule, so it may be hard to find. Its tasting notes are from our earlier catalogue and weren't rechecked.</p>
@@ -442,7 +442,7 @@
         </div>
       </aside>
     </div>
-    <p class="data">Range checked against Nespresso's US catalogue on 15 October 2026; it changes often, so check the box before you buy. Retired and unlisted capsules are hidden unless you ask. Roast is Nespresso's own filter and 1–5 roastiness, where published. Capsule colours are approximate; aroma groups gather Nespresso's own aroma words.</p>
+    <p class="data">Range checked against Nespresso's US catalogue on October 15, 2026; it changes often, so check the box before you buy. Retired and unlisted capsules are hidden unless you ask. Roast is Nespresso's own filter and 1–5 roastiness, where published. Capsule colors are approximate; aroma groups gather Nespresso's own aroma words.</p>
   {/if}
 </div>
 
@@ -501,7 +501,7 @@
 
   /* The wall: a label column, a "not rated" column, then intensity 1–13 (14 columns). */
   .wall { --lab: 112px; }
-  /* "Not rated" is wider: unrated limited editions and flavours gather there and sit three abreast. */
+  /* "Not rated" is wider: unrated limited editions and flavors gather there and sit three abreast. */
   .head, .row { display: grid; grid-template-columns: var(--lab) minmax(0, 2.8fr) repeat(13, minmax(0, 1fr)); align-items: stretch; }
   .head { font: 500 11.5px/1 'IBM Plex Mono', monospace; color: var(--ink-3); text-align: center; padding-bottom: 6px; border-bottom: 1px solid var(--rule); }
   .head .corner { text-align: left; letter-spacing: .12em; text-transform: uppercase; font-size: 10.5px; }
