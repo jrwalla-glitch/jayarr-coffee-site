@@ -75,6 +75,16 @@
       "source": "/blog/ultimate-pour-over-coffee-guide/",
       "destination": "/blog/ultimate-pour-over-coffee-guide-and-best-v60-technique/",
       "permanent": true
+    },
+    {
+      "source": "/blog/what-does-kenyan-coffee-taste-like",
+      "destination": "/blog/kenyan-coffee-flavor-notes-and-best-coffees/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/what-does-kenyan-coffee-taste-like/",
+      "destination": "/blog/kenyan-coffee-flavor-notes-and-best-coffees/",
+      "permanent": true
     }
   ]
 }
