@@ -121,7 +121,7 @@ export const METHODS: Method[] = [
     steps: [
       { kind: 'prep', atS: 0, text: 'Add the coffee to a jar or French press and tare.', cue: '' },
       { kind: 'pour', atS: 0, untilS: 30, toG: 600, text: 'Pour cold water over all of it and stir until every ground is wet.', cue: '' },
-      { kind: 'steep', atS: 30, untilS: 12 * 3600, text: 'Cover and leave it for 12 hours.', cue: '' },
+      { kind: 'steep', atS: 30, untilS: 12 * 3600, text: 'Cover and leave it in the fridge for 12 hours.', cue: '' },
       { kind: 'press', atS: 12 * 3600, text: 'Press or filter out the grounds. This is concentrate.', cue: 'Keeps 1–2 weeks in the fridge.' },
       { kind: 'dilute', atS: 12 * 3600, text: 'Serve it mixed one to one with cold water or milk, over ice.', cue: '' },
     ],
@@ -177,7 +177,9 @@ export const METHODS: Method[] = [
     timeS: { min: 240, max: 300 },
     grindMicrons: { min: 300, max: 450 }, grindLabel: 'Medium-fine (coarser than espresso)', texture: 'fine sand',
     retentionGPerG: 2,
-    base: { doseG: 17, waterG: 170, by: "James Hoffmann's moka technique" },
+    // The steps are Hoffmann's technique; the 1:10 is our estimate (synthesis §23.1), not his: the World Atlas
+    // (p. 91) prints "Ratio: 200g/l", about 1:5 (Wave D batch 9).
+    base: { doseG: 17, waterG: 170, by: "James Hoffmann's moka technique, at the Brew Guide's estimated 1:10 ratio" },
     steps: [
       { kind: 'prep', atS: 0, text: 'Fill the basket level with coffee. Don\'t tamp.', cue: 'Level with the rim.' },
       { kind: 'pour', atS: 0, toG: 170, text: 'Fill the base with just-boiled water to just below the valve, then screw it together with a towel.', cue: 'Pre-boiled water keeps the grounds from cooking.' },
@@ -191,7 +193,9 @@ export const METHODS: Method[] = [
   },
 ];
 
-/** Extraction yield ranges by method, synthesis §17 (Newcastle 2018, Gloess 2013). */
+/** Extraction yield ranges by method, from synthesis §17's comparison table (claims register R11). The table credits
+ *  no study for its yield column; its one study credit covers the caffeine concentrations, and that study no longer
+ *  backs any engine figure (R1). */
 export const EY_BY_METHOD: Record<MethodId, Range> = {
   v60: { min: 19, max: 21 },
   chemex: { min: 18, max: 20 },

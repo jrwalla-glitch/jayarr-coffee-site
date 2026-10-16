@@ -155,3 +155,31 @@ test('the espresso recipe is credited as within Rao\'s published ranges, and it 
   assert.ok(v.timeS.min >= 25 && v.timeS.max <= 40);
   assert.ok(v.tempC >= 91 && v.tempC <= 95);
 });
+
+test('moka credit: the steps are Hoffmann\'s, the 1:10 ratio is the Brew Guide\'s estimate (batch 9: Hoffmann prints 200 g/l)', () => {
+  const r = buildRecipe({ method: 'moka', target: { doseG: 15 } });
+  assert.equal(r.ok, true);
+  assert.equal(r.value.by, "James Hoffmann's moka technique, at the Brew Guide's estimated 1:10 ratio");
+  assert.equal(METHODS.find((m) => m.id === 'moka').ratio.classic, 10);
+  assert.ok(Math.abs(r.value.waterG / r.value.doseG - 10) < 1e-9, `${r.value.waterG} / ${r.value.doseG}`);
+  assert.doesNotMatch(r.value.by, /Hoffmann's (moka )?ratio/);
+});
+
+test('cold brew steeps in the fridge (Easto; batch 9), and its strength doesn\'t depend on the 20 °C water figure', () => {
+  const r = buildRecipe({ method: 'cold-brew', target: { cupMl: 946 } });
+  assert.equal(r.ok, true);
+  const steep = r.value.steps.find((s) => s.kind === 'steep');
+  assert.equal(steep.text, 'Cover and leave it in the fridge for 12 hours.');
+  const cold = METHODS.find((m) => m.id === 'cold-brew');
+  assert.equal(r.value.tempC, cold.tempC.default);
+  // Strength comes from the method's extraction band and the weights alone.
+  assert.equal(r.value.strength.eyPct.min, 15); assert.equal(r.value.strength.eyPct.max, 20);
+});
+
+test('R11: the extraction-yield ranges no longer credit the Newcastle 2018 study (Wave A follow-ups 2, item 6)', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const src = await readFile(new URL('../methods.ts', import.meta.url), 'utf8');
+  const doc = src.slice(src.lastIndexOf('/**', src.indexOf('export const EY_BY_METHOD')), src.indexOf('export const EY_BY_METHOD'));
+  assert.match(doc, /synthesis §17/);
+  assert.doesNotMatch(src, /Newcastle/);
+});

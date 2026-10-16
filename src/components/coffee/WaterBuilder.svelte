@@ -88,8 +88,8 @@
       <text x={mx(176)} y={my(60) + 14} text-anchor="end" class="gl">3:1</text>
       {#each [0, 50, 100, 150] as v (v)}<text x={mx(v)} y={B + 18} text-anchor="middle" class="tk">{v}</text>{/each}
       {#each [0, 25, 50, 75, 100] as v (v)}<text x={L - 8} y={my(v) + 4} text-anchor="end" class="tk">{v}</text>{/each}
-      <text x={(L + R) / 2} y={B + 38} text-anchor="middle" class="ax">hardness (GH, ppm) → brighter, more extraction</text>
-      <text transform="translate(12 {(T + B) / 2}) rotate(-90)" text-anchor="middle" class="ax">alkalinity (KH) → rounder, flatter</text>
+      <text x={(L + R) / 2} y={B + 38} text-anchor="middle" class="ax">hardness (GH, ppm) →</text>
+      <text transform="translate(12 {(T + B) / 2}) rotate(-90)" text-anchor="middle" class="ax">alkalinity (KH, ppm) →</text>
       {#each WATER_RECIPES as r (r.id)}
         <g class="lm" class:on={r.id === targetId} role="button" tabindex="-1" onclick={() => (targetId = r.id)} onkeydown={(e) => e.key === 'Enter' && (targetId = r.id)}>
           <circle cx={mx(r.gh)} cy={my(r.kh)} r={r.id === targetId ? 8 : 5} />

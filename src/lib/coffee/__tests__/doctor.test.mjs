@@ -92,7 +92,7 @@ test('new paths: too strong lightens the ratio, bright and sweet is left alone, 
   const bright = ok(diagnose({ method: 'v60', symptom: 'bright', answers: { finish: 'sweet', roast: 'light' } }));
   assert.equal(bright.zone, 'ideal-ideal'); assert.equal(bright.change, undefined); assert.deepEqual(bright.next, {});
   const dirty = ok(diagnose({ method: 'espresso', symptom: 'off', answers: { clean: 'never', water: 'tap' } }));
-  assert.match(dirty.cause, /oils|scale/i); assert.match(dirty.changeNow, /backflush/i);
+  assert.match(dirty.cause, /oils|scale/i); assert.match(dirty.changeNow, /clean and descale the machine as your manual directs/i);
   const tap = ok(diagnose({ method: 'v60', symptom: 'off', answers: { clean: 'recent', water: 'tap' } }));
   assert.equal(tap.change, 'water'); assert.ok(!tap.hold.includes('water'));
 });
@@ -315,4 +315,30 @@ test('"Runs too fast" and the shot-time question use the same threshold (25 s, t
   assert.equal(sec(gushing.tagline), 25, gushing.tagline);
   assert.equal(sec(gushing.tagline), sec(fast), `${gushing.tagline} vs ${fast}`);
   assert.equal(METHODS.find((m) => m.id === 'espresso').timeS.min, 25);
+});
+
+test('espresso cleaning follows the machine\'s manual: no backflush for every machine, no monthly norm (batch 7)', () => {
+  const state = { method: 'espresso', symptom: 'off', answers: {} };
+  const q = questionsFor(state).find((x) => x.id === 'clean');
+  assert.match(q.text, /cleaned and descaled the machine as its manual directs/);
+  const all = q.text + ' ' + q.options.map((o) => o.label).join(' ');
+  assert.doesNotMatch(all, /backflush|month/i);
+  for (const clean of ['months', 'never']) {
+    const r = ok(diagnose({ ...state, answers: { clean, water: 'tap' } }));
+    assert.match(r.changeNow, /as your manual directs/); assert.doesNotMatch(r.changeNow, /backflush|detergent/i);
+  }
+  assert.notEqual(ok(diagnose({ ...state, answers: { clean: 'recent', water: 'tap' } })).cause, 'Old coffee oils or scale in the equipment');
+  // Other brewers keep their own question.
+  assert.match(questionsFor({ method: 'v60', symptom: 'off', answers: {} }).find((x) => x.id === 'clean').text, /deep-clean the brewer/);
+});
+
+test('grinder advice makes no unsourced superlatives: no "#1 upgrade", "dramatically" or "far fewer" fines (batch 6)', () => {
+  const said = new Set();
+  for (const m of METHODS) for (const s of SYMPTOMS) for (const i of [0, 1, 2, 3]) {
+    const r = walk(m.id, s.id, (q) => (q.options.find((o) => o.id === 'blade') && i === 0 ? 'blade' : q.options[Math.min(i, q.options.length - 1)].id));
+    if (r.ok) for (const k of ['cause', 'why', 'changeNow', 'nextExperiment', 'ruleOut']) said.add(r.value[k] ?? '');
+  }
+  const all = [...said].join(' | ');
+  assert.match(all, /A burr grinder makes fewer fines than a blade\./);
+  assert.doesNotMatch(all, /#1|number one|dramatically|far fewer|single biggest/i);
 });

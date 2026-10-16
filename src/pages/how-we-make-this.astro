@@ -21,7 +21,7 @@ const core = ['easto', 'gagne', 'hoffmann', 'rao', 'sca-chart', 'sca-water', 'ba
 				<p class="lede">JayArr Coffee started as a YouTube channel in 2019. The site adds written guides and interactive tools. Here is how they are put together.</p>
 
 				<h2>Where the numbers come from</h2>
-				<p>The tools calculate from published methods and measurements, not from guesses. Brew recipes are scaled from named methods, such as Jessica Easto's V60 and Chemex recipes or Scott Rao's espresso parameters. Extraction and strength follow the Specialty Coffee Association's brewing control chart. Caffeine guidance uses the FDA's, EFSA's and ACOG's own wording. Every tool lists its sources on its page.</p>
+				<p>The tools calculate from published methods and measurements, not from guesses. Brew recipes are scaled from named methods, such as Jessica Easto's V60 and Chemex recipes or an espresso recipe within Scott Rao's published ranges. Extraction and strength follow the Specialty Coffee Association's brewing control chart. Caffeine guidance uses the FDA's, EFSA's and ACOG's own wording. Every tool lists its sources on its page.</p>
 				<p>When a figure is an estimate rather than a measurement (how much caffeine a particular cup holds, how fresh a bag is, where a cup sits between sour and bitter), the tool says so and shows a range instead of a single number.</p>
 				<p>The core references:</p>
 				<ul>{core.map((s) => <li>{s.author}, <cite>{s.title}</cite>{s.year ? ` (${s.year})` : ''}.</li>)}</ul>
