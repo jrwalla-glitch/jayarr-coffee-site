@@ -85,6 +85,16 @@
       "source": "/blog/what-does-kenyan-coffee-taste-like/",
       "destination": "/blog/kenyan-coffee-flavor-notes-and-best-coffees/",
       "permanent": true
+    },
+    {
+      "source": "/blog/costa-rica-possibly-the-best-single-origin-coffee",
+      "destination": "/blog/what-does-costa-rican-coffee-taste-like/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/costa-rica-possibly-the-best-single-origin-coffee/",
+      "destination": "/blog/what-does-costa-rican-coffee-taste-like/",
+      "permanent": true
     }
   ]
 }
