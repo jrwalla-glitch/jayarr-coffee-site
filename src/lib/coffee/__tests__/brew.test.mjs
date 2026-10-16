@@ -165,6 +165,17 @@ test('moka credit: the steps are Hoffmann\'s, the 1:10 ratio is the Brew Guide\'
   assert.doesNotMatch(r.value.by, /Hoffmann's (moka )?ratio/);
 });
 
+test('cold brew steeps in the fridge (Easto; batch 9), and its strength doesn\'t depend on the 20 °C water figure', () => {
+  const r = buildRecipe({ method: 'cold-brew', target: { cupMl: 946 } });
+  assert.equal(r.ok, true);
+  const steep = r.value.steps.find((s) => s.kind === 'steep');
+  assert.equal(steep.text, 'Cover and leave it in the fridge for 12 hours.');
+  const cold = METHODS.find((m) => m.id === 'cold-brew');
+  assert.equal(r.value.tempC, cold.tempC.default);
+  // Strength comes from the method's extraction band and the weights alone.
+  assert.equal(r.value.strength.eyPct.min, 15); assert.equal(r.value.strength.eyPct.max, 20);
+});
+
 test('R11: the extraction-yield ranges no longer credit the Newcastle 2018 study (Wave A follow-ups 2, item 6)', async () => {
   const { readFile } = await import('node:fs/promises');
   const src = await readFile(new URL('../methods.ts', import.meta.url), 'utf8');

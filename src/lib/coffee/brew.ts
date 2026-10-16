@@ -18,7 +18,9 @@ function ratioBounds(m: Method): Range {
 
 /**
  * Light roasts toward the hot end of the method's range, dark toward the cool end. A moka pot's
- * water is just boiled and cold brew steeps at room temperature whatever the roast (Muse r4).
+ * water is just boiled and cold brew starts with cold or room-temperature water whatever the roast (Muse r4).
+ * Cold brew's tempC (20 °C) is that water, not the steep: the steep is in the fridge (Easto; Wave D batch 9),
+ * and no number the guide shows is computed from it (the card says "Cold"; strength uses EY_BY_METHOD).
  */
 function tempFor(m: Method, roast: Roast): number {
   if (m.id === 'moka' || m.id === 'cold-brew') return m.tempC.default;

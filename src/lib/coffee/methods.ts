@@ -121,7 +121,7 @@ export const METHODS: Method[] = [
     steps: [
       { kind: 'prep', atS: 0, text: 'Add the coffee to a jar or French press and tare.', cue: '' },
       { kind: 'pour', atS: 0, untilS: 30, toG: 600, text: 'Pour cold water over all of it and stir until every ground is wet.', cue: '' },
-      { kind: 'steep', atS: 30, untilS: 12 * 3600, text: 'Cover and leave it for 12 hours.', cue: '' },
+      { kind: 'steep', atS: 30, untilS: 12 * 3600, text: 'Cover and leave it in the fridge for 12 hours.', cue: '' },
       { kind: 'press', atS: 12 * 3600, text: 'Press or filter out the grounds. This is concentrate.', cue: 'Keeps 1–2 weeks in the fridge.' },
       { kind: 'dilute', atS: 12 * 3600, text: 'Serve it mixed one to one with cold water or milk, over ice.', cue: '' },
     ],
