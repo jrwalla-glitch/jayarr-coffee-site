@@ -424,7 +424,8 @@
         {#if method !== 'moka'}<button type="button" class="nudge" aria-label="Stronger: less water per gram" onclick={() => nudgeRatio(-1)}>−</button>{/if}
         <span class="rv">1 : {Number.isInteger(recipe.ratio) ? recipe.ratio : String(Math.round(recipe.ratio * 100) / 100)}</span>
         {#if method !== 'moka'}<button type="button" class="nudge" aria-label="Lighter: more water per gram" onclick={() => nudgeRatio(1)}>+</button>{/if}
-        <span class="tds">≈ {recipe.strength.tdsPct.min.toFixed(method === 'espresso' ? 0 : 2)}–{recipe.strength.tdsPct.max.toFixed(method === 'espresso' ? 0 : 2)}% strength (TDS){method === 'cold-brew' ? ' once diluted' : ''}, illustrative</span>
+        <!-- No moka strength: its ≈ 1.88–2.38% had no primary source (Wave D batch 9). -->
+        {#if method !== 'moka'}<span class="tds">≈ {recipe.strength.tdsPct.min.toFixed(method === 'espresso' ? 0 : 2)}–{recipe.strength.tdsPct.max.toFixed(method === 'espresso' ? 0 : 2)}% strength (TDS){method === 'cold-brew' ? ' once diluted' : ''}, illustrative</span>{/if}
       </div>
       <!-- Above the SCA 2019 reference (1.15–1.45%) isn't a fault: strength and extraction are different things (Astra R9). -->
       {#if method !== 'espresso' && method !== 'moka' && recipe.strength.tdsPct.max > 1.45}<p class="hint">Estimated, assuming {r0(recipe.strength.eyPct.min)}–{r0(recipe.strength.eyPct.max)}% extraction: a fuller-strength starting recipe. It can sit above reference ranges without being over-extracted; if it tastes too strong, add a little water to the cup.</p>{/if}
