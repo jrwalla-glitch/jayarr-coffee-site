@@ -1,265 +1,124 @@
 ---
-title: "The Physics of Espresso: Darcy's Law, Puck Resistance, and Pressure-Flow Dynamics"
-description: "How Darcy's law, bed compression, and fines migration govern espresso flow — and why puck prep matters more than machine cost."
+title: "The Physics of Espresso: Darcy's Law and Puck Resistance"
+description: "How Darcy's law describes water moving through an espresso puck, why flow rises only with about the square root of pressure, and what measured puck resistance shows about puck prep."
 pubDate: "Mar 12 2026"
+updatedDate: "Oct 15 2026"
 category: "Physics"
-tags: ["espresso", "darcy's law", "puck resistance", "pressure profiling", "extraction", "channeling", "WDT"]
+tags: ["espresso", "darcy's law", "puck resistance", "channeling", "paper filter", "WDT"]
+finding: "An espresso puck squeezes as pressure rises, so flow grows with roughly the square root of pressure, not in step with it. In Jonathan Gagné's tests, a paper filter under the puck lowered the settled resistance by a factor of 1.43 ± 0.04 over 10 shots."
+limitation: "These are one experimenter's small blog studies (10 to 24 shots, one coffee and one machine each), not peer-reviewed work, and a simple rule that predicts resistance from the finest 10% of particles failed on 24 grinders' dialed-in data."
 ---
 
-import DeepBrewFAQ from '../../components/DeepBrewFAQ.astro';
 import DeepBrewInfographic from '../../components/infographics/DeepBrewInfographic.astro';
 import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
-import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
-import ReferenceGuide from '../../components/infographics/ReferenceGuide.astro';
+import ToolCallout from '../../components/ToolCallout.astro';
 
-## Espresso Is a Hydraulic Engineering Problem
-
-Every espresso shot is a pressure-driven extraction through a packed bed of porous, compressible, heterogeneous particles. The barista is, functionally, a hydraulic engineer — managing pressure differentials, permeability gradients, and laminar flow through a medium that actively reshapes itself during the process.
-
-The mathematics governing this system are not coffee-specific. They come from petroleum engineering, soil science, and chemical engineering. The central equation is Darcy's law for flow through porous media, first published by Henry Darcy in 1856 to describe water movement through sand filters in Dijon, France. Jonathan Gagné, an astrophysicist who now applies physics research methodology to coffee at the Université de Montréal, has made this framework the backbone of modern espresso science (1). His work demonstrates that espresso flow is governed by well-understood physics — even when the puck refuses to hold still while you try to model it.
-
-## Darcy's Law for Packed Beds
-
-The governing equation for volumetric flow rate through a packed bed:
-
-**Q = (k × A × ΔP) / (μ × L)**
+This note summarizes published research; the sources are at the end. Most of the measurements come from Jonathan Gagné, an astrophysicist who publishes his coffee experiments on his blog, *Coffee ad Astra*, using a Decent DE1 machine that logs pressure and flow through every shot. The rest come from Scott Rao's *Espresso Extraction* and a few modeling papers. This note covers what happens inside the puck. For pressure profiles to try, see our [pressure profiling guide](/blog/pressure-profiling-espresso-guide/); for choosing a grinder, see [why the grinder matters more than the machine](/blog/why-grinder-matters-more-than-machine/).
 
 <DeepBrewInfographic>
   <ComparisonTable
-    title="Darcy's Law in the Portafilter"
-    subtitle="Each variable mapped to what it means inside your espresso puck"
-    rowLabel="Variable"
-    columns={["Meaning", "Espresso Context"]}
+    title="What Gagné measured"
+    subtitle="Four of his espresso studies, 2021 to 2023, with the setup and the result"
+    rowLabel="Study"
+    columns={["Result", "Setup"]}
     rows={[
-      { name: "Q", values: ["Volumetric flow rate (mL/s)", "The drip rate into the cup"] },
-      { name: "k", values: ["Intrinsic permeability (m²)", "Determined by particle size, shape, roughness, and pore geometry. D₁₀ drives this, not D₅₀."] },
-      { name: "A", values: ["Cross-sectional area (m²)", "The puck face — ~2,642 mm² for a 58mm basket"] },
-      { name: "ΔP", values: ["Pressure differential (Pa)", "Pump pressure minus atmospheric (~8–9 bar gauge). Doubling ΔP ≠ doubling flow."] },
-      { name: "μ", values: ["Dynamic viscosity (Pa·s)", "Water/slurry viscosity — changes ~50% between 0–10% TDS at 80°C (2)"] },
-      { name: "L", values: ["Bed depth (m)", "Puck thickness — typically 20–25mm for an 18g dose in a 58mm basket"] },
+      { name: "Puck resistance, Jan 2021", values: ["First drops at 11–12 s; puck mostly saturated by about 17 s; peak resistance varied about 40% with surface WDT; end-of-shot resistance varied about 5%", "24 shots, 18 g, Niche Zero at 14.0, DE1 'Best Pressure Profile'; surface vs deep WDT, with and without a top paper filter"] },
+      { name: "Paper filter under the puck, Apr 2021", values: ["Peak resistance lower by a factor of 1.9 ± 0.2, settled resistance by 1.43 ± 0.04; all 5 unfiltered pucks hollow in the middle, none of the filtered ones", "10 shots alternating with and without a bottom filter, deep WDT, Niche Zero at 13.0"] },
+      { name: "Low-fines burrs, May 2021", values: ["The low-fines grinder had to grind much finer; filtered extraction 24.1% vs 22.7%", "6 EG-1 shots with SSP ultra-low-fines burrs vs 5 Niche Zero shots, 30-second bloom, 1:4"] },
+      { name: "300 size distributions, Sep 2023", values: ["Dialed-in shots did not follow the geophysics rule that resistance goes with 1 / D10²", "Kaffeemacher and ZHAW data for 24 grinders, analyzed by Gagné"] },
     ]}
-    footnote="In a static, incompressible porous medium, flow increases linearly with pressure and area. Coffee violates this — Q ∝ √ΔP because higher pressure compresses the bed, reducing k."
+    footnote="Sources: Gagné, Coffee ad Astra posts of January 16, April 4 and May 10, 2021, and September 21, 2023. Extraction figures are VST-filtered readings; his unfiltered readings were 26.8% and 24.8%."
   />
 </DeepBrewInfographic>
 
-The equation predicts that flow increases linearly with pressure and puck area, and decreases with viscosity and bed depth. In a static, incompressible porous medium, this is precisely what happens. Sand behaves this way. Soil behaves this way.
+## Darcy's law in the portafilter
 
-Coffee does not.
+In 1856 Henry Darcy described how water flows through a bed of sand, and the same law is the starting point for any packed bed, including a coffee puck:
 
-## Why Pressure-Flow Is Non-Linear: The Bed Compression Problem
+<p class="eq">Q = k·A·ΔP / (μ·L)</p>
 
-Within the espresso operating range (&lt;10 bar), Gagné has demonstrated (1) that the drip rate depends roughly on the **square root** of the pressure drop — not linearly as Darcy's law would predict for a rigid medium. Doubling the pressure does not double the flow. It might increase it by 40%.
+In words: the flow Q (milliliters per second through the puck) rises with the bed's permeability k, the area A of the puck face and the pressure drop ΔP across it, and falls with the liquid's viscosity μ and the depth of the bed L. Permeability is the property of the bed itself: how easily its pores let liquid through, which depends on the sizes, shapes and roughness of the particles and the gaps between them.
 
-The reason: Darcy's law assumes the percolation medium is "fixed and immovable." An espresso puck violates this assumption in at least three ways:
+Two of the terms are easy to pin down. A 58 mm basket has a face of about 2,640 mm² (calculated: π × 29² mm²). The pressure drop is what the machine applies above the puck, minus atmospheric pressure below it. The other three are the hard part, because in a real shot none of them holds still.
 
-1. **Mechanical compression.** Higher pressure physically compresses the bed, reducing puck thickness (L decreases) but simultaneously collapsing pore spaces and reducing permeability (k drops faster than L shrinks). The puck behaves like a spring — it compresses under pump pressure and decompresses when pressure is released.
+## Why flow rises with the square root of pressure
 
-2. **Fines migration.** Small particles (sub-100 μm) physically relocate during extraction, driven by wall-friction convection and hydrodynamic forces. Knight, Jaeger, and Nagel (3) demonstrated that in vibrated granular beds, particles against container walls flow downward while central particles move upward, creating cyclical convection. In espresso, fines progressively concentrate near the basket exit, building a low-permeability layer that increases resistance over the shot duration.
+Read literally, Darcy's law says that doubling the pressure doubles the flow. Gagné explains why espresso doesn't behave that way: the law assumes a fixed, immovable bed, and an espresso puck is neither. As pressure rises, the puck compresses and gets shallower, which on its own would speed the flow. But the particles are also pushed closer together, so the pores between them shrink, and that slows the flow more. Some fine particles also break loose and move; Gagné notes they can raise the flow when they come free and lower it again if they lodge farther down.
 
-3. **Porosity evolution.** As soluble material dissolves, particle surfaces erode, void geometry changes, and the relationship between k and the remaining bed structure shifts continuously. The puck at second 5 is a materially different medium than the puck at second 25.
+Users of the Decent machine noticed the combined effect in their logged shots, and Gagné summarizes it as a rule of thumb:
 
-The practical consequence: a coffee bed twice as resistant requires **4× the pressure** — not 2×. Resistance scales with the square of grind-related factors.
+<p class="eq">Q ∝ √ΔP</p>
 
-## Puck Resistance Characterization
+That reads: below about 10 bar, the drip rate grows roughly with the square root of the pressure. Doubling the pressure therefore raises the flow by about 41%, not 100% (calculated: √2 ≈ 1.41). Turned around, a bed twice as resistant needs about four times the pressure to hold the same flow, which is why a flow-controlled shot's pressure reacts so sharply to small changes in grind or puck prep.
 
-Gagné defines puck resistance as (1):
+Above about 10 bar the rule breaks down: the drip rate becomes very small even at high pressure and shots can stall. John Buckman at Decent calls this "secondary puck compression", and Gagné suggests it *may* come from the cellulose of the particles deforming and closing the remaining pores. Neither presents it as measured.
 
-**R = √(ΔP) / Flow**
+None of this comes from the water. Water barely compresses at espresso pressures: Gagné notes it takes about 220 bar to compress it by 1%. So when more water goes in before the first drops appear, something else is giving way, and it's the puck. Transparent-portafilter videos he cites show the puck squeezing like a spring under pump pressure and relaxing when the pressure comes off.
 
-This square-root relationship captures the non-linear pressure-flow coupling. The Decent Espresso machine displays the inverse metric, R² = Flow² / ΔP, for real-time monitoring during extraction.
+Rao reaches the same physics from the barista's side. In *Espresso Extraction* (chapter 3) he writes that as pump pressure rises, flow through the bed rises too, until somewhere between 7 and 9 bar at the group, beyond which "additional compression inhibits flow more than the additional pressure promotes flow." He recommends running a non-profiling machine at whichever pressure gives the most flow, because that allows the finest grind, and he notes that most machine gauges read pump pressure, which is a little higher than the pressure at the group. His worked example of the test is labeled hypothetical, so it isn't data about any one machine.
 
-<DeepBrewInfographic>
-  <ProcessFlow
-    title="Puck Resistance Through an Espresso Shot"
-    subtitle="How resistance evolves from preinfusion to end of shot — based on Gagné's 24-shot study"
-    steps={[
-      { label: "Preinfusion → Saturation", sublabel: "0–12 seconds", description: "Resistance spikes to peak value as water begins saturating the puck unevenly.", detail: "3.5 mL/s preinfusion, exit trigger at 4 bar pressure drop." },
-      { label: "Peak → Stabilization", sublabel: "12–17 seconds", description: "Resistance declines 2–3.5× from peak to stable value.", detail: "Cannot be explained by viscosity alone (~50% shift). Fines migration and incomplete saturation are dominant factors." },
-      { label: "Mid-Shot Plateau", sublabel: "17–25 seconds", description: "Relatively stable resistance plateau. Full saturation reached at ~17 seconds.", detail: "Internal flow rate and exit flow rate converge." },
-      { label: "End of Shot", sublabel: "25–35 seconds", description: "Gradual resistance decline as the bed erodes and soluble material is depleted.", detail: "Declining pressure profile reduces mechanical stress on the weakened bed." },
-    ]}
-    footnote="Data from Gagné's study: 18.0g dose, Niche Zero at setting 14.0, DE1 'Best Pressure Profile' peaking at 8 bar declining to ~5 bar at 35s. 6 dial-in shots excluded from analysis."
-  />
-</DeepBrewInfographic>
+## Puck resistance, the number Gagné tracks
 
-In Gagné's 24-shot puck resistance study (1) (18.0g dose, Niche Zero grinder at setting 14.0, DE1 with "Best Pressure Profile" peaking at 8 bar and declining to ~5 bar at 35s, preinfusion at 3.5 mL/s with exit trigger at 4 bar pressure drop; 6 dial-in shots excluded from analysis), resistance behavior followed a consistent pattern:
+To compare shots despite the square-root behavior, Gagné characterizes the puck by its hydraulic resistance:
 
-| Phase | Resistance Behavior |
-|-------|-------------------|
-| Preinfusion → saturation | Resistance spikes to peak value |
-| Peak → stabilization | Declines 2-3.5× from peak to stable value |
-| Mid-shot | Relatively stable plateau |
-| End of shot | Gradual decline as bed erodes |
+<p class="eq">R = √ΔP / Q</p>
 
-The 2-3.5× resistance decline from peak to stable cannot be explained by viscosity changes alone — water viscosity shifts ~50% over the relevant TDS range (2). Fines migration and incomplete saturation are the dominant factors.
+That is, resistance is the square root of the pressure drop divided by the flow. A finer grind, a denser bed or a clog raises R; a channel lowers it. He corrected this definition himself: his January 2021 post first gave it upside down, and a February edit fixed it. His posts also describe the DE1's own resistance curve in two different ways (flow squared over pressure in January, pressure over flow squared in April). Only the second is the square of R as defined here; the first is its inverse. The numbers quoted in this note are for R itself, as he reports them.
 
-## Laminar Flow in the Puck: Reynolds Number 2-12
+## What happens to resistance during a shot
 
-One question that might seem relevant but turns out not to be: is flow through the espresso puck turbulent?
+In his January 2021 study, Gagné pulled 24 shots of one washed Honduran coffee: 18 g doses (all between 17.8 and 18.0 g) ground on a Niche Zero at setting 14.0, with three dial-in shots before he started. He used the DE1's "Best Pressure Profile": a preinfusion at about 3.5 ml per second until the pressure reaches 4 bar, then a jump to about 8.4 bar, easing to about 5 bar by 35 seconds. He alternated between puck prep methods so that warm-up or fatigue wouldn't favor any one of them.
 
-No. Not remotely.
+The logged shots followed a consistent pattern:
 
-Ellero and Navarini (4) used computational fluid dynamics to simulate espresso puck flow and found the microscopic Reynolds number inside the bed is **Re = 2-12**. Turbulent flow requires Reynolds numbers in the thousands. The flow through an espresso puck is firmly, unambiguously laminar.
+- **The first drops appeared at 11–12 seconds.** The flow measured into the cup caught up with the flow entering the puck at about 17 seconds, which he reads as the moment the puck is mostly saturated.
+- **Resistance climbed at the end of preinfusion,** which he attributes to the puck compressing, then fell by a factor of about 2 to 3.5 and settled.
+- **Thinner liquid can't be the whole explanation for that fall.** Viscosity data from Sobolík and colleagues (2002), which he plots, suggest the change from strong to weak extract should shift resistance by about 50%, not a factor of 2 or more.
+- **A 10-second pause after preinfusion "completely removes" the peak.** Nothing should thin out or migrate during a pause without flow, so he concluded the likeliest cause was a puck still partly dry when full pressure arrived.
 
-This has several important implications:
+Later work shifted the picture. In his May 2021 comparison he used a 30-second bloom, so the puck was fully wet before extraction, and the resistance still fell during the shot. This time he judged a drop in viscosity, as the liquid leaving the puck gets weaker, the most likely cause. He also said he was "very skeptical" of the common idea that the puck falls apart or develops many channels late in the shot, because longer shots pulled out to 1:11 showed no further loss of resistance. Rao, in chapter 11 of his book, describes the same late decline at the group as the bed eroding.
 
-- **Darcy's law (laminar regime) is the correct model.** The Darcy-Weisbach equation, which governs turbulent friction, is irrelevant to espresso.
-- **The Kozeny-Carman equation** (laminar flow through packed beds) provides the appropriate permeability model, relating flow resistance to particle size, porosity, and bed geometry.
-- **Pressure profiling works.** Because laminar flow responds predictably to pressure changes, systematically varying pressure during a shot produces predictable, reproducible effects on extraction. Turbulent systems would be chaotic and uncontrollable.
-- **The "water incompressibility" factor is not at play.** You need 220 bar to compress water by 1%. At 9 bar, water itself is not compressing — all the non-linear behavior comes from the bed.
+Independent imaging supports the wetting part of the story. Foster and colleagues (2025) followed water moving into an initially dry espresso bed with time-resolved X-ray micro-CT, tracking the wetting front as it advanced, and matched it with a model that splits the bed into wet and dry regions.
 
-## Puck Saturation Timing: 17 Seconds to Full Saturation
+## Laminar flow, with one exception
 
-One of Gagné's most consequential findings (1): the espresso puck takes approximately **17 seconds** to reach full saturation, defined as the point where internal flow rate and exit flow rate converge. First espresso drips appear at 11-12 seconds, but the puck is not uniformly wetted for another 5-6 seconds after that.
+Is the flow inside the puck turbulent? Gagné says no. Citing rule-of-thumb calculations and the simulations of Ellero and Navarini (2019), he puts the microscopic Reynolds number inside the puck at 2–12, far from the thousands needed for turbulence. That rules out the Darcy–Weisbach equation, which is built for turbulent friction, as a model for espresso, "perhaps unless a gigantic channel happens", as he puts it. In other words, laminar flow is the rule inside a sound puck, and a large channel is the possible exception.
 
-Standard preinfusion protocols are insufficient for complete saturation. On the DE1, Gagné's standard preinfusion runs at 3.5 mL/s until a 4 bar pressure drop is detected — a sequence that takes roughly 10-12 seconds but still leaves the puck incompletely wetted. He demonstrated this by modifying his extraction profile to include a **10-second pause after preinfusion**, which "drastically reduced the peak in bed resistance" (1) by allowing water to equilibrate through the full puck depth before extraction pressure was applied. The resistance spike that normally occurs at the preinfusion-to-extraction transition was nearly eliminated.
+Laminar flow doesn't mean the puck is easy to model, though. In geophysics, an empirical rule for soils says a bed's permeability goes with the square of D10, the particle size below which the finest 10% of the material falls. Gagné tested that rule in September 2023 against about 300 particle size distributions from 24 espresso grinders, gathered by the Kaffeemacher team with Marco Wellinger's lab at ZHAW (Zurich University of Applied Sciences). If the rule held, every grinder's dialed-in espresso grind should have landed at about the same predicted resistance. They didn't. He offered three possible reasons: different grinds release solids, oils and CO2 at different rates and so change the liquid's viscosity; espresso pressures compress and rearrange the bed in ways soils rarely see; and coffee particles may simply have unusual shapes or surfaces, which he thought least likely.
 
-The mechanism: during rapid preinfusion, water saturates the upper puck layers while lower layers remain partially dry. When full pressure hits, the saturated upper layers offer lower resistance than the dry lower layers, creating a resistance gradient. Water preferentially accelerates through the pre-wetted paths — the precondition for channeling.
+What the same data did show is that fines dominate dialing in. In his words, dialing in espresso means "dialling in the amount fines" more than the size of the coarser particles. Grinders that make fewer fines must be set much finer to reach the same flow, and, oddly, they end up with slightly more fines per gram at dial-in than grinders that make more, an effect he calls "over-shooting" and couldn't fully explain. His 2021 low-fines comparison fits: the EG-1 with ultra-low-fines burrs had to grind far finer than the Niche Zero for the same resistance, and the shots extracted more. So fines largely set the resistance, but a formula built on D10 alone doesn't predict it.
 
-Micro-CT imaging (Foster et al. 2025) confirmed this with real-time X-ray visualization of puck wetting: saturation time varies from &lt;4 to ~10 seconds depending on grind size, distribution, and dose. The puck does not saturate instantaneously, and any preinfusion protocol must account for this.
+## Channeling, distribution and the paper filter
 
-## Channeling Mechanics: The Permeability Gradient Problem
+Water takes the path of least resistance. Wherever the bed is looser, through a gap at the wall or a low-density patch, flow speeds up, and the coffee along that path gives up more while the rest gives up less. Our [channeling guide](/blog/fix-channeling-uneven-extraction/) covers the symptoms. Three measured interventions stand out.
 
-Channeling is espresso's most destructive defect, and it operates on straightforward physics: water follows the path of least resistance.
+**Deep WDT narrowed the spread, but didn't fix it.** With "surface WDT" (stirring only the top third of the dose), Gagné's peak resistance varied by about 40% from shot to shot. Stirring the full depth ("deep WDT") brought most shots closer together, but about 15% to 25% of the deep-WDT shots were still outliers, and all of them appeared to be chokers, not gushers. His "slightly frightening suspicion" was that his distribution was still inconsistent and that the best-prepared pucks were the high-resistance ones. All 24 shots looked fine to the eye. The settled resistance near the end of the shot was far steadier, varying about 5%, which he compares with adding or removing 1 g from an 18 g dose. Our [WDT guide](/blog/best-wdt-tool-espresso-distribution/) covers the tools.
 
-In a perfectly uniform puck, permeability (k) is constant across the cross-section, and flow distributes evenly. In any real puck, permeability varies due to:
+**A paper filter on top didn't help; one underneath did.** A dry paper filter above the puck raised the resistance by about 6 to 7%, did nothing clear for repeatability, and left the hollow that formed in the middle of every spent puck. In April 2021 Gagné moved the filter underneath and pulled 10 shots, alternating with and without it. The bottom filter lowered the peak resistance by a factor of 1.9 ± 0.2 and the settled resistance by a factor of 1.43 ± 0.04. He writes the second as a reduction of "about 43 ± 4%"; expressed as a cut, a factor of 1.43 takes the resistance to about 70% of its former value, about a 30% reduction (calculated). The shot-to-shot spread barely changed (4 ± 1% against 5 ± 1%). The spent pucks changed completely: all five without the filter had the central hollow, and none of the five with it did.
 
-- **Uneven particle distribution.** Clumps create high-density zones (low k) adjacent to voids (high k).
-- **Fines concentration gradients.** If fines settle preferentially in one region, that region's permeability drops relative to surrounding areas.
-- **Side channeling from tamper fit.** Rao specifies the ideal tamper diameter as 0.25-0.30mm smaller than the basket inner diameter, creating a 0.125-0.15mm gap per side (e.g., 58.4mm tamper in a 58.7mm basket) (5). A tamper even slightly more undersized — say 0.5mm too small — doubles this gap and creates a peripheral annulus with dramatically higher permeability than the packed center. Rao documented a 0.5 percentage point extraction decrease from invisible side channeling caused by poor tamper fit — measurable only by refractometer (5).
+His explanation is that the bottom filter lets water use the whole underside of the puck. The holes in his Decent basket only cover a circle about 50 mm across inside the 58 mm basket, so without a filter the outer ring has nowhere to drain. Stéphane Ribes's experiments, which Gagné cites, found the edges of unfiltered pucks under-extracted. Gagné expects slightly more even flow and a slightly finer grind as the benefits, and wanted blind tastings to confirm them.
 
-Once a channel initiates, it self-reinforces. Water flowing through the channel erodes particles, widening the path and further reducing its resistance relative to the surrounding bed. The channel over-extracts (producing bitter compounds from the thin bed it traverses), while adjacent regions under-extract (producing sour notes from insufficient water contact). This is why a channeled shot can taste simultaneously sour and bitter — a paradox that makes no sense from an average-extraction perspective but is entirely predictable from a flow-uniformity perspective.
+**Tamper fit matters more than it looks.** Rao (chapter 6) recommends a tamper 0.25 to 0.30 mm smaller than the basket's inner diameter, which leaves a gap of 0.125 to 0.15 mm all around: a 58.4 mm tamper in his 58.7 mm basket, for example. He writes that such channels "may not always be visible," but a refractometer shows the lower extraction, and that subtle channeling from a poor fit "can easily decrease extraction by 0.5 percentage point." Our [tamping guide](/blog/tamping-pressure-doesnt-matter-myth/) covers the rest of the tamp.
 
-### Why WDT Works
+## What it means at the machine
 
-The Weiss Distribution Technique — stirring grounds with thin needles before tamping — works by breaking clumps and homogenizing particle distribution, reducing the variance in local permeability across the puck face. Gagné's data shows that surface-only WDT leaves peak resistance variation at ~40% shot-to-shot (1). Deep WDT (full puck depth) dramatically tightens the grouping. Adding a paper filter below the puck further reduces stable resistance by 43 ± 4% and peak resistance by 1.9× (1).
+- **Dial in with the grinder, and expect it to move the fines.** That's what the 24-grinder data say you're mostly adjusting. A grinder that makes fewer fines needs a much finer setting for the same shot time, and on Gagné's evidence it extracts more at the same ratio. See our guide to [dialing in espresso](/blog/how-to-dial-in-espresso/).
+- **Judge puck prep by the settled part of the shot.** The early peak in resistance is dominated by how the puck wets; the settled resistance repeated to within about 5% in Gagné's shots.
+- **Wet the puck fully before full pressure.** A pause after preinfusion, or a bloom, removed the early peak in Gagné's shots. Our [pressure profiling guide](/blog/pressure-profiling-espresso-guide/) covers profiles, including Rao's.
+- **Try a paper filter under the puck if your spent pucks are hollow in the middle.** It's the change with the clearest measured effect here, at the cost of a disposable filter per shot.
+- **Measure, because the differences are small.** Rao's half-point from a loose tamper, or a point or two between grinders, is the kind of change his book argues you can't track by taste alone: taste-led dialing in makes it "nearly impossible" to know you've found the best settings (chapter 1). A refractometer reading turns it into a number.
 
-The paper filter mechanism is counterintuitive: adding a physical barrier *reduces* total system resistance. The explanation is that the filter adds a source of hydraulic resistance that is non-negligible compared to the puck itself, and critically, is **spatially uniform.** Where the puck might have a high-permeability channel, the filter's resistance is constant. This effectively puts a floor on how fast any path through the system can flow, limiting the damage from any single channel. The filter slows water where it would otherwise accelerate through low-resistance paths, evening out the overall flow distribution.
+<ToolCallout tool="extraction" preset={{ mode: 'measured', kind: 'espresso', dose: 18, liquid: 36, tds: 10 }} cta="Open the Extraction Map at 18 g, 36 g, 10%" context="Opens the Extraction Map's espresso mode with an 18 g dose, a 36 g shot and a 10% TDS reading: 20% extraction, at the top of the 19–20% that Rao says usually tastes best. Enter shots from before and after a puck-prep change to see whether extraction actually moved." />
 
-Spent puck evidence confirms this: without a bottom paper filter, all pucks in Gagné's study showed a central hollow (indicating preferential flow through the center) (1). With a filter, all spent pucks were flat and even.
+## Sources
 
-## The 7-9 Bar Sweet Spot: Why More Pressure Isn't Better
-
-Rao's pump pressure optimization data (5) reveals the critical non-linearity at the heart of espresso engineering. Flow rate through the coffee bed increases with pressure **until 7-9 bar at the group head**, then declines:
-
-<DeepBrewInfographic>
-  <ComparisonTable
-    title="Pressure vs. Flow: The Non-Linear Reality"
-    subtitle="Rao's pump pressure optimization data — more pressure doesn't mean more flow"
-    rowLabel="Pump Pressure"
-    columns={["Avg Shot Weight at 30s", "Zone"]}
-    rows={[
-      { name: "7.5 bar", values: ["30 g", "Flow-limited"] },
-      { name: "8.0 bar", values: ["33 g", "Approaching optimal"] },
-      { name: "8.5 bar", values: ["35 g", "Peak — optimal"], result: "Best" },
-      { name: "9.0 bar", values: ["31 g", "Compression-dominated"] },
-      { name: ">10 bar", values: ["Stalling", "Cellulose deforms irreversibly"] },
-    ]}
-    footnote="Above 10 bar, cellulose walls of coffee particles plastically deform, blocking pores irreversibly (Buckman/Decent). The industry-standard 9 bar (Faema E61, 1961) is a historical convention, not a physics optimization."
-  />
-</DeepBrewInfographic>
-
-Beyond the peak, additional pressure compresses the bed more than it promotes flow. The permeability reduction from compression outpaces the flow increase from higher ΔP. At sufficiently high pressure, flow trickles or stalls entirely.
-
-Above approximately **10 bar**, a second compression mechanism activates. Buckman and the Decent Espresso team documented (1) that at this threshold, the cellulose walls of coffee particles begin to plastically deform, blocking remaining pores. Unlike the elastic spring-like compression at lower pressures (which reverses when pressure drops), this secondary compression is partially irreversible. Shots stall completely. This is why the Decent's adaptive profile caps at 10 bar as a failsafe and why Rao's Best Practice Profile includes a 9 bar pressure limit (5).
-
-The practical implication: the optimal pump pressure is the one producing the highest flow rate, because this permits the finest possible grind (maximizing surface area and extraction) while still completing the shot in a reasonable time window.
-
-### Rao's 5-Step Pressure Optimization Protocol
-
-1. Set pump to 7.5 bar (7.0 at group head). Pull 3 shots at exactly 30 seconds, identical dose (±0.1g). Average shot weights.
-2. Increase to 8.0 bar (7.5 group). Repeat.
-3. Continue in 0.5 bar increments.
-4. When average shot weight **decreases** — the previous setting was optimal.
-5. Refine with 0.2 bar increments around the optimum.
-
-An important caveat: most machine gauges read pump pressure, not group-head pressure. Group pressure is always lower; the gap varies by machine design, flow rate, and gicleur restriction. The optimal reading on your gauge is machine-specific.
-
-## Extraction Windows: The 17.0% → 17.7% → 18.5% Nonlinearity
-
-Rao's empirical observation from hundreds of client setups (5): extraction quality versus yield is **not monotonically increasing**. There are valleys.
-
-At 17.0% EY, a shot is sour and unremarkable. Grinding finer to reach 17.7% makes the shot marginally worse — slightly more sour notes emerge as extraction shifts into an awkward transitional zone. Grinding finer again to 18.5% produces a qualitative leap: ripeness, caramels, and a dramatic drop in sourness.
-
-A barista guided only by taste would revert at 17.7% and never discover the quality plateau at 18.5-20%. This is Rao's central argument for refractometry: taste can identify local optima, but measurement reveals the global optimum.
-
-His empirical rule (5): each single variable optimization (tamper fit, burr replacement, preinfusion, water chemistry, roast development) yields approximately **0.5 percentage points** of extraction improvement. Stack five such improvements and you gain 2-2.5% EY — the difference between a mediocre shot and an exceptional one.
-
-## Pressure Profiling: Declining Pressure and Extraction Uniformity
-
-Rao's 3-phase pressure profile (5), validated across consulting clients (none improved upon it):
-
-| Phase | Duration | Pressure | Purpose |
-|-------|----------|----------|---------|
-| Preinfusion | 10-12 s | Ramp from low pressure | Wetting, swelling, redistribution. Reduces channeling, limits fines migration, enables finer grind. |
-| Full pressure | 6-9 s | Peak at flow-optimal pressure (7-9 bar) | Maximum extraction rate. Drives soluble material out of the fastest-extracting surface layers. |
-| Declining pressure | 15-18 s | Linear decline (lever-style) | Improves **clarity**. Limits fines transport into the cup. Allows gentle continued extraction without bed over-compression. |
-
-The declining phase is the least intuitive. Why would reducing pressure improve the shot?
-
-Several mechanisms contribute. As extraction progresses, the puck becomes increasingly fragile — soluble material has dissolved, weakening the particle structure. Maintaining full pressure on this degraded bed increases the likelihood of late-shot channeling and pushes fine particles through the basket. The declining pressure reduces mechanical stress on the weakened bed, maintains laminar flow at lower velocity, and limits the transport of undissolved particles (including astringent compounds) into the cup.
-
-Note that optimal shot times are **longer** with profiled pressure than with flat profiles — Rao documents 25-40 seconds for profiled shots versus 25-30 seconds for flat profiles (5), because the preinfusion ramp and declining tail extend the total window while extraction efficiency per second is optimized.
-
-Gagné's astringency hypothesis (1) supports the declining phase specifically: astringent compounds have strongly non-linear temperature-dependent solubility. Channels don't cause astringency from over-extraction along the channel path — they allow larger, undissolved astringent particles an easier path out of the coffee bed, bypassing the natural filtration that the intact packed bed provides. Gagné demonstrated this dramatically (1): at 70°C brew temperature, he achieved 27% extraction yield with zero perceptible astringency — the temperature drop made the astringent fraction so insoluble that even at extreme extraction levels, it couldn't reach the cup. Lower end-of-shot pressure reduces particle transport through the same mechanism at normal temperatures.
-
-## Practical Implications: Why Puck Prep Matters More Than Machine Cost
-
-The physics reveals a hierarchy of what actually matters for espresso quality, and it does not correlate well with price:
-
-<DeepBrewInfographic>
-  <ReferenceGuide
-    title="Espresso Impact Hierarchy"
-    subtitle="What actually matters for extraction quality — ranked by impact per dollar"
-    items={[
-      { label: "Deep WDT Distribution", description: "Reduces peak resistance variation from ~40% to single digits", value: "High impact, low cost", dotScale: 1.0 },
-      { label: "Proper Tamper Fit", description: "0.125–0.15mm gap per side eliminates invisible side channeling worth 0.5% EY", value: "High impact, low cost", dotScale: 0.95 },
-      { label: "Paper Filter Below Puck", description: "43% stable resistance reduction, flat spent pucks, 1.9× peak resistance reduction", value: "High impact, low cost", dotScale: 0.9 },
-      { label: "Dose Consistency (±0.1g)", description: "±0.5g dose change produces 3–4g beverage weight change with profiled shots", value: "High impact, low cost", dotScale: 0.85 },
-      { label: "Grinder Quality (Sharp Burrs, Narrow PSD)", description: "D₁₀ drives resistance more than D₅₀. ULF burrs showed 2.1 ± 0.3% EY advantage over Niche Zero", value: "Moderate impact, moderate cost", dotScale: 0.6 },
-      { label: "Water Chemistry", description: "Correct mineral content for extraction agent availability", value: "Moderate impact, moderate cost", dotScale: 0.55 },
-      { label: "Machine Pressure Profiling", description: "Meaningful but not transformative if puck prep is poor", value: "Lower impact per dollar", dotScale: 0.35 },
-      { label: "Basket Geometry", description: "52mm vs 58mm affects bed depth and channeling susceptibility", value: "Lower impact per dollar", dotScale: 0.25 },
-      { label: "Temperature Stability", description: "Within 91–95°C the effect is smaller than distribution quality", value: "Lower impact per dollar", dotScale: 0.2 },
-    ]}
-    scaleLabel={{ start: "Lower impact/dollar", end: "Higher impact/dollar" }}
-    footnote="A $300 setup with impeccable puck prep will out-extract a $5,000 machine with sloppy distribution. The physics doesn't care what you paid."
-  />
-</DeepBrewInfographic>
-
-**High impact, low cost:**
-- WDT distribution (deep, not just surface) — reduces peak resistance variation from ~40% to single digits
-- Proper tamper fit (0.125-0.15mm gap per side) — eliminates invisible side channeling worth 0.5% EY (5)
-- Paper filter below puck — 43% resistance reduction, flat spent pucks, 1.9× peak resistance reduction (1)
-- Dose consistency (±0.1g for pressure profiling) — Rao found that ±0.5g dose change produces 3-4g beverage weight change with profiled shots because grounds absorb more water during the extended preinfusion (5)
-
-**Moderate impact, moderate cost:**
-- Grinder quality (sharp burrs, narrow PSD) — D₁₀ drives hydraulic resistance more than D₅₀. Gagné's low-fines comparison (1) (EG-1 with SSP ULF burrs vs. Niche Zero, 12 shots each at 1:4 blooming ratio) showed a 2.1 ± 0.3% EY advantage for the unimodal grinder (26.8% vs. 24.8% raw), but ULF burrs required grinding "much finer overall" to match puck resistance — because fewer fines meant less flow restriction at the same median particle size
-- Water chemistry — correct mineral content for extraction agent availability
-
-**Lower impact per dollar spent:**
-- Machine pressure profiling capability — meaningful but not transformative if puck prep is poor
-- Basket geometry — 52mm vs 58mm affects bed depth and channeling susceptibility
-- Temperature stability — matters but within 91-95°C the effect is smaller than distribution quality
-
-Gagné's data supports this bluntly (1): end-of-shot variability after optimized puck prep was ~5%, equivalent to ±1g dose variance from an 18.0g target. A $300 setup with impeccable puck prep will out-extract a $5,000 machine with sloppy distribution. The physics doesn't care what you paid. It cares whether the permeability field across your puck face is uniform.
-
-The espresso puck is a dynamic, compressible, self-modifying packed bed operating in the laminar regime under conditions that systematically violate the assumptions of the equations we use to describe it. That we can still make predictably good espresso — shot after shot, day after day — is a testament to the fact that the deviations from ideal Darcy flow are themselves predictable, measurable, and controllable. The physics is not a barrier. It is the map.
-
-## References
-
-1. Gagné, J. *Espresso Physics* research, Université de Montréal.
-2. Sobolik, K. et al. Viscosity measurements of coffee solutions, 2002.
-3. Knight, J.B., Jaeger, H.M., and Nagel, S.R. "Vibration-induced size separation in granular media." *Physical Review Letters* 70, no. 24 (1993): 3728.
-4. Ellero, M. and Navarini, L. "Mesoscopic modelling and simulation of espresso coffee extraction." *Journal of Food Engineering* 263 (2019): 181–194.
-5. Rao, S. *Espresso Extraction: Measurement and Mastery*. Self-published, 2013.
-
-<DeepBrewFAQ items={[
-  { question: "Why does channeling produce sour AND bitter in the same shot?", answer: "Channeling creates two simultaneous extraction environments. Along the channel path, water over-extracts the small amount of coffee it contacts, dissolving bitter compounds (phenylindanes, quinic acid, polyphenols). In adjacent regions where the channel diverted water away, coffee is under-extracted — only fast-dissolving acids have been removed, leaving sour flavors. The cup blends both streams. Average extraction might read 19%, but the distribution ranges from 14% (under-extracted zones) to 24%+ (channel paths). A brew at 20% average EY with uneven extraction tastes worse than one at 19% with even extraction — because the palate detects the extremes, not the mean." },
-  { question: "Does pressure profiling actually improve extraction uniformity?", answer: "Yes, through two primary mechanisms. First, extended preinfusion allows complete puck saturation and particle swelling before full pressure hits, reducing early channel formation. Second, declining pressure reduces mechanical stress on an increasingly fragile puck — as soluble material dissolves, the particle structure weakens, and maintaining full pressure increases late-shot channeling risk. Gagné's data also shows declining pressure limits transport of undissolved astringent particles through the bed. The result is measurably higher extraction yields with improved clarity, though the primary benefit is consistency." },
-  { question: "Why is 9 bar the industry standard if 7 bar often produces better results?", answer: "The 9 bar standard is a historical artifact, not a physics optimization. Faema's E61 machine (1961) used a rotary pump set to 9 bar, and the specification propagated through the industry as a default. Rao's pressure optimization protocol demonstrates that optimal pressure — defined as producing maximum flow rate — varies by machine, grind, and dose. In his published example, peak flow occurred at 8.5 bar pump pressure (35g in 30 seconds), declining to 31g at 9.0 bar. Above the peak, bed compression outpaces flow promotion. The Decent Espresso team found that above 10 bar, cellulose walls plastically deform, blocking pores irreversibly." },
-  { question: "How does a paper filter below the puck reduce resistance by 43% when it adds a physical barrier?", answer: "The filter doesn't reduce puck resistance itself — it reduces total system effective resistance by evening out flow distribution. In a puck with permeability variations, water accelerates through high-permeability paths and stalls in low-permeability zones. The paper filter adds a uniform resistance layer below the entire puck face. Where the puck has a channel, the filter throttles excess flow. Where the puck is dense, the filter adds relatively less proportional resistance. The net effect: a ceiling on maximum local flow velocity, forcing more even distribution. Spent puck evidence is unambiguous — without filters, central hollows appear; with filters, every spent puck is flat." },
-  { question: "What is D₁₀ and why does it matter more than grind size?", answer: "D₁₀ is the particle diameter at the 10th percentile of the cumulative size distribution — the finest fraction of your grind. Gagné's research across 24 grinders and 300 particle size distributions found that D₁₀, not D₅₀ (the median), is the primary driver of hydraulic resistance in an espresso puck. Fine particles fill voids between larger particles, and a small fraction of fines dramatically reduces pore sizes and permeability. When baristas dial in espresso, they are primarily adjusting fines content, not median particle size. This explains why two grinders producing identical median particle sizes can require very different recipes — their D₁₀ values differ." },
-  { question: "Why does the puck take 17 seconds to saturate if water hits it at 3+ bar?", answer: "Saturation requires water to reach every pore, not just the easiest paths. Coffee particles are porous — roasting creates internal chambers that must fill via capillary forces, which operate independently of applied pressure. The puck also contains trapped CO2 from roasting that must be displaced before water can occupy those spaces. Gagné measured first drips at 11-12 seconds but convergence of internal and exit flow rates at ~17 seconds. During that 5-6 second gap, upper layers are fully saturated while lower layers remain partially dry — exactly the permeability gradient that initiates channeling. His 10-second pause after preinfusion nearly eliminated the resistance spike by allowing water to equilibrate through the full puck depth." },
-  { question: "Can you have too much puck prep?", answer: "In theory, more uniform distribution always improves extraction physics. In practice, excessive manipulation can introduce problems. Over-aggressive WDT can fracture particles and generate additional fines. Excessive tamping force is wasted (the pump's ~533 lbs dwarfs the barista's ~50 lbs), and tamping after particles have settled risks creating horizontal density layers. The optimal protocol is methodical but minimal: one deep WDT pass, level distribution, one firm tamp, clean rim. Gagné's optimized protocol increased extraction yield from 25.0% to 26.0% — a full percentage point from distribution alone." },
-]} />
+- Jonathan Gagné, "A Study of Espresso Puck Resistance and How Puck Preparation Affects it," *Coffee ad Astra*, January 16, 2021, edited February 7, 2021 (setup, saturation at about 17 s, the 10-second pause, WDT spreads, top filter, 5% end-of-shot variation, the 220-bar figure): [coffeeadastra.com](https://coffeeadastra.com/2021/01/16/a-study-of-espresso-puck-resistance-and-how-puck-preparation-affects-it/)
+- Jonathan Gagné, "How a Paper Filter Below an Espresso Puck Affects Hydraulic Resistance," *Coffee ad Astra*, April 4, 2021 (10 shots; factors 1.9 ± 0.2 and 1.43 ± 0.04; spent pucks; basket hole pattern): [coffeeadastra.com](https://coffeeadastra.com/2021/04/04/how-a-paper-filter-below-an-espresso-puck-affects-hydraulic-resistance/)
+- Jonathan Gagné, "A Comparison between Standard and Low-Fines Espresso Shots," *Coffee ad Astra*, May 10, 2021 (6 + 5 shots at 1:4; extraction yields; viscosity explanation of the late decline): [coffeeadastra.com](https://coffeeadastra.com/2021/05/10/a-comparison-between-standard-and-low-fines-espresso-shots/)
+- Jonathan Gagné, "An Espresso Profile that Adapts to your Grind Size," *Coffee ad Astra*, December 31, 2020 (Darcy's law and its assumptions, the square-root rule, secondary compression above 10 bar, the Reynolds number and Darcy–Weisbach): [coffeeadastra.com](https://coffeeadastra.com/2020/12/31/an-espresso-profile-that-adapts-to-your-grind-size/)
+- Jonathan Gagné, "What I Learned from Analyzing 300 Particle Size Distributions for 24 Espresso Grinders," *Coffee ad Astra*, September 21, 2023, first published on Patreon April 29, 2023 (the D10² rule, dialing in fines, over-shooting): [coffeeadastra.com](https://coffeeadastra.com/2023/09/21/what-i-learned-from-analyzing-300-particle-size-distributions-for-24-espresso-grinders/)
+- Henry Darcy, *Les Fontaines publiques de la ville de Dijon* (Paris: Dalmont, 1856), Appendix D (the sand-column experiments behind the law); we relied on secondary accounts, not the original
+- Scott Rao, *Espresso Extraction: Measurement and Mastery* (self-published, 2013), chapter 1 (time and extraction targets), chapter 3, "Pump Pressure," chapter 6, "Tamper Fit," and chapter 11, "Pressure Profiling"
+- M. Ellero and L. Navarini, "Mesoscopic modelling and simulation of espresso coffee extraction," *Journal of Food Engineering* 263 (2019): 181–194, as cited by Gagné for the Reynolds number; we read the abstract only: [doi.org/10.1016/j.jfoodeng.2019.05.038](https://doi.org/10.1016/j.jfoodeng.2019.05.038)
+- V. Sobolík and colleagues (2002), viscosity of coffee solutions, as cited and plotted in Gagné's January 2021 post; we did not read the paper itself
+- J. Foster, W. Lee, K. Moroney and colleagues, "Dynamics of liquid infiltration into an espresso bed using time-resolved micro-computed tomography," *Physics of Fluids* 37, no. 1 (2025): 013383, abstract: [doi.org/10.1063/5.0245167](https://doi.org/10.1063/5.0245167)
