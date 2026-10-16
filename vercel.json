@@ -75,6 +75,16 @@
       "source": "/blog/ultimate-pour-over-coffee-guide/",
       "destination": "/blog/ultimate-pour-over-coffee-guide-and-best-v60-technique/",
       "permanent": true
+    },
+    {
+      "source": "/blog/coffee-scores-what-they-taste-like",
+      "destination": "/blog/coffee-scoring-system-explained/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/coffee-scores-what-they-taste-like/",
+      "destination": "/blog/coffee-scoring-system-explained/",
+      "permanent": true
     }
   ]
 }
