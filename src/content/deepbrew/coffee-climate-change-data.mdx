@@ -1,297 +1,125 @@
 ---
-title: "Coffee Under Climate Pressure: The Data Behind the Crisis, Region by Region"
-description: "A data-driven analysis of how climate change is reshaping coffee production across every major origin, from Brazil's 70-year drought to Colombia's altitude migration and the rise of Yunnan as a specialty origin."
+title: "Coffee and Climate Change: The Data, Region by Region"
+description: "How climate change is affecting coffee in Brazil, Vietnam, Colombia, Ethiopia, Indonesia and Central America: heat, robusta's sensitivity, suitable land and recent harvests, with each figure dated."
 pubDate: "Mar 12 2026"
+updatedDate: "Oct 15 2026"
 category: "Agriculture"
-tags: ["climate change", "coffee production", "Arabica", "Robusta", "altitude migration", "shade growing", "F1 hybrids", "Yunnan", "Brazil", "Colombia", "Ethiopia", "agroforestry"]
+tags: ["climate change", "coffee production", "Arabica", "Robusta", "Brazil", "Vietnam", "Colombia", "Ethiopia", "Indonesia", "agroforestry"]
+finding: "Climate Central's attribution analysis (February 2026) found that climate change added about 47 days a year above 30 °C across 25 coffee-producing countries in 2021–2025, and 57 a year on average in the five largest producers."
+limitation: "Those are regional temperature averages, not harvests, and harvests still swing with weather and Brazil's two-year cycle: in July 2026 USDA forecast a record 189.7 million bags for 2026/27. Projections of suitable land by 2050 vary widely between models."
 ---
 
-import DeepBrewFAQ from '../../components/DeepBrewFAQ.astro';
 import DeepBrewInfographic from '../../components/infographics/DeepBrewInfographic.astro';
 import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
-import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
+import ToolCallout from '../../components/ToolCallout.astro';
 
-The numbers arrived in early 2026 and they are stark. Climate Central analyzed 25 coffee-producing countries responsible for 97% of global output (1). Across those countries, 47 additional days per year above 30C are now directly attributable to climate change. The top five producers — responsible for 75% of global supply — now average 144 days per year above 30C, the temperature threshold at which Arabica flower abortion begins.
+This note summarizes published research; the sources are at the end. It brings together three kinds of evidence that are easy to mix up: measurements of recent heat, models of where coffee will grow in future, and the harvest numbers for the latest seasons. Figures are as of October 15, 2026. Production estimates change twice a year; the next USDA report is due December 16, 2026.
 
-This is not a projection. This is the measured present.
-
-The coffee industry's climate problem is often framed as a future threat — something that will matter in 2050. But the data tells a different story. Brazil just recorded its worst drought in 70 years. Colombia's farms are climbing mountains at 200 meters per decade. Ethiopia posted record output while its wild Arabica forests march toward 50% population decline. The crisis is already here, and it looks different in every region.
-
-## The Temperature Thresholds That Matter
-
-Before diving into regional data, the thermal boundaries that govern coffee production need to be established clearly. These are not guidelines. They are physiological limits.
-
-### Arabica
+For the plant-breeding side, see our post on [F1 hybrid coffees](/blog/coffee-f1-hybrids-future-of-coffee/). For prices, see [why coffee is so expensive now](/blog/why-is-coffee-so-expensive-now-the-9-coffee-crisis/), and for the disease history, [coffee leaf rust](/blog/coffee-leaf-rust-hemileia-vastatrix-history/).
 
 <DeepBrewInfographic>
   <ComparisonTable
-    title="Arabica Temperature Thresholds"
-    subtitle="The physiological limits that govern Arabica coffee production"
-    columns={["Temperature", "Effect"]}
+    title="Coffee-harming heat in the top five producers"
+    subtitle="Days a year above 30 °C added by climate change, and the total, averaged over 2021–2025"
+    rowLabel="Country"
+    columns={["Added by climate change", "Total days over 30 °C", "World share"]}
     rows={[
-      { name: "Optimal mean annual", values: ["18-21C", "Best growth, yield, and quality"] },
-      { name: "Quality degradation onset", values: [">24C mean", "~7% dry matter reduction per C above 24C"] },
-      { name: "Flower abortion", values: [">30C reproductive phase", "Large-scale abortion of flowers"] },
-      { name: "Cherry drop / severe stress", values: [">33C", "Physiological collapse"] },
-      { name: "Frost damage", values: ["&lt;4C", "Plant death"] },
-      { name: "Yield decline rate", values: ["Per 1C rise", "~14% reduction"] },
+      { name: "Brazil", values: ["70", "187", "37%"] },
+      { name: "Vietnam", values: ["59", "179", "17%"] },
+      { name: "Colombia", values: ["48", "119", "8%"] },
+      { name: "Indonesia", values: ["73", "129", "6%"] },
+      { name: "Ethiopia", values: ["34", "108", "6%"] },
     ]}
-    footnote="The 7% dry matter loss per degree is critical for specialty: dry matter becomes flavor during roasting — sugars, organic acids, volatile precursors. Less dry matter = a fundamentally less complex cup."
+    footnote="Source: Climate Central, 'More Coffee-Harming Heat Due to Carbon Pollution,' February 2026, Table 1. Days are averaged over each country's growing regions, so higher-altitude farms may run cooler."
   />
 </DeepBrewInfographic>
 
-That 7% dry matter loss per degree is particularly important for specialty. Dry matter is what becomes flavor during roasting — sugars, organic acids, [volatile precursors](/deep-brew/research/flavor-volatiles-oav-guide/). A coffee that loses 7% of its dry matter doesn't just produce lower yields. It produces a fundamentally less complex cup.
+## What "coffee-harming heat" means
 
-### The Robusta Reckoning
+Climate Central counted, for each day from 2021 to 2025, whether the maximum temperature in a coffee-growing region passed 30 °C (86 °F), and whether it would have stayed below 30 °C in a modeled world without carbon pollution. Days that crossed the line only because of climate change are the "added" days. The observed temperatures come from the ERA5 reanalysis, the counterfactual from Climate Central's Climate Shift Index, and the 30 °C threshold from published crop research (Naik and colleagues, 2021; Cheserek and Gichimu, 2012). Above it, they write, heat is "extremely harmful" for arabica and suboptimal for robusta.
 
-For decades, the industry assumed Robusta was the climate-resilient backup. Robusta was supposed to thrive at 22-30C — well above Arabica's comfort zone. The safety net.
+Three findings stand out:
 
-Kath et al. (2020) demolished that assumption (2). Their analysis of global Robusta production data showed the species' true optimal temperature is **20.5C** — not 22-30C. Every 1C above optimal produces the same ~14% yield decline observed in Arabica. Robusta behaves far more like Arabica than the industry assumed.
+- **Every country studied got more of it.** All 25 countries, which together grow about 97% of the world's coffee, had more coffee-harming heat, about 47 extra days a year on average.
+- **The top five were hit harder.** Brazil, Vietnam, Colombia, Indonesia and Ethiopia (about 75% of supply) now see more than 144 such days a year on average, about 57 more than they would without climate change. The countries with the most added days were El Salvador (99), Nicaragua (77) and Thailand (75).
+- **The count may understate arabica's exposure, or overstate it.** Climate Central notes that 25–30 °C is already suboptimal for arabica, below the threshold used, so it calls the count conservative. But arabica is also usually grown higher, and cooler, than the regional averages in the analysis.
 
-This matters enormously for climate planning. Vietnam, the world's largest Robusta producer, has gained 59 additional days per year above 30C. Indonesia, the second largest, has gained 73. The backup plan needs its own backup plan.
+This is an attribution study of temperature. It doesn't measure yields, bean quality or rainfall, though Climate Central writes that the added heat was "potentially affecting the quality and quantity of recent harvests."
 
-## Region by Region: Where the Damage Is
+## Robusta isn't the heat-proof backup it seemed
 
-<DeepBrewInfographic>
-  <ComparisonTable
-    title="Coffee's Climate Exposure by Region"
-    subtitle="Current warming impact across major producing origins"
-    rowLabel="Region"
-    columns={["Extra days >30C/yr", "Key threat", "Severity"]}
-    rows={[
-      { name: "Brazil", values: ["~70", "80% of N. Minas Gerais unsuitable by 2050", "Critical"] },
-      { name: "Colombia", values: ["~48", "~200m/decade altitude migration required", "Stressed"] },
-      { name: "Ethiopia", values: ["~34", "Up to 60% area loss; 50% wild Arabica decline by 2088", "Stressed"] },
-      { name: "Central America", values: ["38-89% area loss", "Min viable altitude rising 600m to 1,000m", "Critical"] },
-      { name: "Indonesia", values: ["~73", "Highest thermal exposure of any major producer", "Critical"] },
-      { name: "Vietnam", values: ["~59", "Revised thresholds show Robusta equally vulnerable", "Stressed"] },
-    ]}
-    footnote="47 additional days/yr above 30C across 25 producing countries. Top 5 producers average 144 days/yr. 2025/26 forecast: 178.8M bags (record — but composition shifting toward Robusta)."
-  />
-</DeepBrewInfographic>
+Robusta has long been considered the heat-tolerant species, more resistant to climate change than arabica, with an optimal mean temperature usually given as 22–30 °C, an estimate based only on the climate of its native range in the Congo basin. Kath and colleagues (2020) tested that with 10 years of yields from 798 farms across Southeast Asia. Their models put robusta's optimum below 20.5 °C, 1.5 to 9 °C lower than the usual estimate. In the middle of the assumed range (mean annual temperatures over 25.1 °C), yields were 50% lower than at the optimum. During the growing season, every 1 °C rise in mean minimum and maximum temperature above 16.2 and 24.1 °C went with a yield drop of about 14%, or 350 to 460 kg per hectare.
 
-### Brazil: The Heavyweight Under Pressure
+Robusta supplies about 40% of the world's coffee, by their figure, and two of the three largest robusta growers are among the most exposed: Climate Central counts 59 added hot days a year in Vietnam and 73 in Indonesia. Global models point the same way, with a twist. Bunn and colleagues (2015) found that higher temperatures may reduce arabica yields, while robusta "could suffer from increasing variability of intra-seasonal temperatures": swings within the season, not only a warmer average.
 
-Brazil produces more coffee than any other country — roughly a third of global supply in a typical year. Its climate exposure is correspondingly enormous.
+## Region by region
 
-**The data:**
-- +1.2C temperature rise since 2010 during the critical flowering period
-- ~70 additional days per year above 30C (1)
-- 2024: worst drought in 70 years
-- 2025 Arabica forecast: down 6 million bags to 38 million
-- Northern Minas Gerais: ~80% of current coffee land projected unsuitable by 2050
-- Only ~30% of coffee farms are irrigated
+The heat figures are from Climate Central (February 2026). The harvest figures are USDA forecasts for the 2026/27 season from July 2026, in 60 kg bags.
 
-Northern Minas is the canary. This region, which grows a significant portion of Brazil's lower-altitude Arabica, faces near-total loss of viability within 25 years. The drought of 2024 wasn't an anomaly — it was a preview.
+### Brazil
 
-The irrigation statistic is both alarming and revealing. At 30% adoption, Brazilian coffee farming has significant adaptation headroom. But irrigation requires water, and the same climate dynamics driving temperature increases are simultaneously reducing rainfall reliability. The 2024 drought demonstrated that even regions with irrigation infrastructure can face supply constraints when reservoirs empty.
+Brazil grows nearly 40% of the world's coffee, and Climate Central counts 70 added hot days a year there, 67 in Minas Gerais, its largest coffee state. USDA's account of the last five arabica harvests reads like a weather log: in 2021/22, drought and high temperatures cut the off-year crop by 13.3 million bags; the next year recovered only 3.4 million because of severe frost, heat and low rainfall; 2023/24 yields lagged because of excessive rain during fruit development; and two more years of decline followed as drought and heat returned.
 
-Brazil's Robusta sector (Conilon), centered in Espirito Santo and Rondonia, was supposed to compensate for Arabica losses. Under the Kath et al. findings (2), Conilon faces similar thermal stress. The 2025/26 world forecast of 178.8 million bags (4) — a record — masks the fragility underneath.
+Then came a rebound. USDA forecasts Brazil's 2026/27 crop at a record 71.9 million bags, with arabica up 9.5 million to 47.5 million after timely rain during flowering, "ending a 5-year period of underperformance due to adverse weather conditions." Robusta (conilon) is forecast at 24.4 million bags, mostly from Espírito Santo. Brazil's arabica swings with a two-year cycle of heavy and light crops, so one good year doesn't settle the trend either way. Brazil's rebound is the main reason USDA expects world production to rise from 178.8 million bags in 2025/26 to a record 189.7 million in 2026/27. Looking further ahead, Bunn and colleagues (2015) projected that Brazil and Vietnam may see substantial losses of land suitable for coffee.
 
-### Colombia: Racing Up the Mountain
+### Vietnam
 
-Colombia's coffee sector provides perhaps the clearest illustration of altitude migration in action.
+Vietnam is the largest robusta producer: USDA forecasts a record 32.5 million bags for 2026/27, helped by more planted area and, after recent high prices, more spending on fertilizer. It also has 59 added hot days a year. Kath and colleagues' farms were in Southeast Asia, so their finding on robusta's lower optimum applies directly here.
 
-**The data:**
-- Warming rate: 0.3C per decade in mountain coffee regions
-- Altitude migration required: 150 meters per 1C of warming
-- Observed migration: ~200 meters per decade
-- Farms that thrived at 1,200 meters two decades ago now operate at 1,600 meters or higher
-- ~48 additional days per year above 30C
-- Cenicafe released Castillo 2.0 (December 2024) for climate resilience
+### Colombia
 
-The 150-meter-per-degree relationship is the key number. It means Colombia's coffee belt needs to shift upward by roughly 150 meters for every degree of warming just to maintain the same thermal conditions. At 0.3C per decade, that's 45 meters per decade of required migration — and the observed rate of 200 meters per decade suggests farmers are overshooting, likely because they're also fleeing pest pressure that intensifies at warmer temperatures.
+Colombia's 2025/26 crop was cut by 1.3 million bags to 12.5 million because excessive rain and cloud cover lowered yields; USDA forecasts 13.4 million for 2026/27. Climate Central counts 119 hot days a year, 48 of them added by climate change. Too much rain, not only heat, is the recent story here.
 
-But mountains have peaks. Colombia's Andes reach 5,800 meters, but coffee cannot grow above approximately 2,100 meters. Above that altitude, maturation becomes too slow, frost risk escalates, and yields drop to unviable levels. The band of viable coffee land narrows with each 100-meter gain — mountains get steeper and narrower as you ascend. Colombia is not running out of coffee. It is running out of mountain.
+### Ethiopia
 
-The release of Castillo 2.0 in December 2024 signals Cenicafe's recognition of the urgency. The original Castillo — a hybrid with Timor ancestry bred for leaf rust resistance — has been Colombia's dominant variety for years. Version 2.0 adds explicit climate resilience targets alongside the income-focused breeding goals.
+Ethiopia is on course for a record 12.1 million bags in 2026/27, which USDA attributes to more area and higher yields after more than half of the cultivated area was replanted with higher-yielding varieties over four years. It has the fewest added hot days of the top five (34).
 
-### Ethiopia: The Paradox
+The long-range picture is less comfortable, and the stakes are high: by Moat and colleagues' count, coffee supports around 15 million Ethiopian farmers and earns a quarter of the country's export income. Their 2017 study projected that 39–59% of Ethiopia's current growing area could become unsuitable for coffee under climate change, "in the absence of significant interventions," while moving coffee areas, combined with forest conservation or replanting, could increase the suitable area at least fourfold. For wild arabica in its native forests, Davis and colleagues (2012) projected losses by 2080 ranging from a 65% to an almost 100% reduction in the number of suitable localities, or 38% to about 90% of suitable area, depending on the scenario. Those forests hold the species' wild genetic diversity, which breeders draw on. For more on Ethiopia's coffees, see [Ethiopian heirloom vs named varieties](/blog/ethiopian-heirloom-vs-named-varietals/).
 
-Ethiopia is simultaneously posting record production numbers and facing the most existential long-term threat of any origin.
+### Indonesia
 
-**The data:**
-- Wild Arabica forests: projected 50% population decline by 2088
-- Worst-case scenario (SSP585): up to 60% loss of current growing area
-- Harar and Yirgacheffe: projected >40% suitable area loss by 2090s
-- 2024/25 output: record year, exports up 27.3% to 7.37 million bags
-- ~34 additional days per year above 30C
+Indonesia has the most added hot days of the top five, 73 a year. It is the third-largest robusta producer, after Vietnam and Brazil, on USDA's numbers (calculated from its table: 10.0 million bags of robusta against Brazil's 24.4 million). Its 2026/27 crop is forecast to fall 1.0 million bags to 11.4 million because excessive rain disrupted flowering and cherry formation in the lowlands of southern Sumatra and Java, where about 75% of its robusta is grown.
 
-The paradox is real but explicable. Ethiopia's current record output reflects expanded planting, improved agricultural extension, and a strong global price environment that incentivizes production. The climate projections model suitability of *existing growing areas* — they don't account for new areas being brought under cultivation.
+### Central America and Mexico
 
-The wild Arabica forests are a separate and more alarming story. These forests in southwest Ethiopia contain the genetic reservoir of the entire Arabica species. Every Arabica [cultivar](/deep-brew/research/cultivar-roast-profiles-hoos/) on Earth — Typica, Bourbon, Gesha, SL-28, all of them — traces its lineage to these forests. A 50% population decline in wild Arabica by 2088 represents an irreversible narrowing of the genetic base available for future breeding. You cannot breed climate-resilient cultivars without genetic diversity, and the primary source of that diversity is shrinking.
+USDA forecasts 17.7 million bags for the region in 2026/27, with Honduras accounting for nearly all the growth. Guatemala's 2025/26 crop was cut to 3.2 million bags by coffee berry borer and leaf rust. El Salvador (99 added hot days) and Nicaragua (77) top Climate Central's list.
 
-The 40%+ loss projected for Harar and Yirgacheffe strikes directly at specialty coffee's most celebrated origins. These are not interchangeable terroirs. A Yirgacheffe grown in a newly suitable highland zone may carry different soil chemistry, different microbial ecology, different everything. The name survives; the cup profile may not.
+The region's leaf rust epidemic of 2012–13 is a well-documented example of weather and disease combining. Avelino and colleagues (2015) found Central American production fell 16% in 2013 compared with 2011–12, and another 10% in 2013–14. They identify economic and weather causes. Low profitability led to poorer farm management, which left plants more vulnerable, and a narrower daily temperature range likely shortened the disease's latency: higher minimums and lower maximums, by 0.9 °C and 1.2 °C on average in 2012 across 1,224 Guatemalan farms. They call the epidemics a warning, "enhanced by weather conditions consistent with climate change."
 
-### Central America: The Rust Belt
+## Projections: how much land stays suitable
 
-Central America's climate vulnerability was stress-tested a decade ago, and the results were devastating.
+Models of future suitability give large numbers, and they vary.
 
-**The data:**
-- 2012-13 coffee leaf rust crisis: >$3 billion in damages, ~2 million workers displaced
-- Projected 38-89% area reduction by 2050
-- Minimum viable altitude rising from ~600 meters to ~1,000 meters
-- Nicaragua: optimal zone shifting from 1,200 meters to 1,600 meters by mid-century
-- Southern Mexico: ~500 meters upward shift needed by 2050
+- **Global.** Bunn and colleagues (2015) projected that climate change will reduce the global area suitable for coffee by about 50% across emission scenarios, with the biggest losses at low latitudes and low altitudes. Some areas in East Africa and Asia may become more suitable, but partly in forest. Climate Central's summary, that suitable land "may decrease by 50% by 2050 without adequate adaptation," is in the same range.
+- **Latin America.** Imbach and colleagues (2017) projected that coffee-suitable areas will shrink by 73–88% by 2050 across warming scenarios, a decline they describe as 46–76% greater than global assessments. They also modeled bees, which pollinate coffee, and found bee richness falling by 8–18% within the areas that remain suitable.
+- **Ethiopia.** Moat and colleagues' 39–59% (above), with a large potential gain if coffee can move.
 
-The 38-89% range in the area reduction projection reflects scenario uncertainty, but even the low end represents catastrophic loss for economies deeply dependent on coffee. Honduras, Guatemala, and Nicaragua each derive significant export revenue from coffee, and their smallholder farmers have the least capacity to absorb losses or invest in adaptation.
+These models map climate suitability, not yields, and they mostly assume no adaptation. Suitable land moving uphill also means pressure on forest: both Bunn's team and Climate Central warn that new coffee land may come from clearing it. For how altitude shapes coffee, see our [altitude guide](/blog/coffee-altitude-guide/), and for one of the newer regions, [Yunnan](/blog/china-yunnan-coffee-emerging-origin/).
 
-The rust crisis of 2012-13 demonstrated how climate and disease compound each other. Warmer temperatures expanded the range of *Hemileia vastatrix* (coffee leaf rust) into altitudes that had previously been too cool for the pathogen. The result was not just crop loss but structural displacement — 2 million people lost their livelihoods in a single season.
+## Adaptation: what the evidence says about shade
 
-The region's replanting response — switching to rust-resistant varieties like Lempira (Honduras) and Costa Rica 95 — is itself under threat. Both varieties are now showing rust susceptibility in the field. Because most available rust-resistant cultivars trace their resistance to a shared genetic source (the Timor Hybrid), most experts believe the current generation of resistant varieties will lose their resistance in the near-to-medium term. The disease evolves; the cultivars do not.
+Growing coffee under shade trees, or agroforestry, is a common adaptation, and the evidence for it has been pooled. Patil and colleagues (2025) pooled 68 studies from 2000 to 2024 in a meta-analysis. Agroforestry was associated with lower odds of climate-related yield loss (odds ratio 0.67, 95% interval 0.56–0.80), of pests and disease (0.79, 0.67–0.95), and of quality loss (0.74, 0.63–0.86), with consistent results across regions. An odds ratio below 1 means the bad outcome was less likely with shade. The review also lists trade-offs, lower yields under dense shade and more humidity-related disease, and notes that most of the studies weren't pre-registered.
 
-### Indonesia and Vietnam: The Robusta Frontline
+New varieties are the other main route, from rust-resistant cultivars to F1 hybrids; our [F1 hybrids post](/blog/coffee-f1-hybrids-future-of-coffee/) covers them.
 
-The two countries most exposed to rising temperatures are, not coincidentally, the world's largest Robusta producers.
+## What it means for the coffee you buy
 
-**The data:**
-- Indonesia: ~73 additional days per year above 30C (highest of any major producer) (1)
-- Vietnam: ~59 additional days per year above 30C (1)
-- Combined: ~28% of global coffee production
+- **Expect volatility, not a straight line.** Climate Central notes coffee prices hit records in December 2024 and again in February 2025. By July 2026, USDA reported prices down 25% over seven months, as larger supplies arrived. Both are true at once: warming adds risk, and harvests still swing with each season's weather.
+- **Origins will shift slowly.** Projections point to losses at lower, hotter elevations and possible gains at higher ones, but Bunn's team notes that plantations last about 30 years, so moving coffee takes a long time.
+- **Stocks are still thin.** USDA counts global ending stocks down 15.5 million bags between 2020/21 and 2024/25, recovering to 26.3 million in 2026/27 but still below the long-term average. With stocks this low, a short crop has less of a cushion.
+- **Small farms are the most exposed.** Climate Central notes that most coffee growers farm less than about 12 acres and may rely on this one crop, which makes them particularly vulnerable.
+- **Robusta isn't a safe hedge.** If you drink blends with robusta, they depend on some of the most heat-exposed regions in the data.
 
-Under the old assumption that Robusta tolerates 22-30C, these numbers would be manageable. Under the Kath et al. finding (2) that Robusta's true optimum is 20.5C, they are alarming. Vietnam and Indonesia are not just exceeding Arabica thresholds — they are exceeding the corrected Robusta thresholds by a widening margin.
+<ToolCallout tool="origins" cta="Open the Origins Atlas" context="The Origins Atlas maps the countries that grow coffee, with each one's growing regions, altitudes, harvest months and typical flavors. Its production figures are general and undated; for the latest harvests, use the USDA numbers above." />
 
-## Altitude Migration: The Numbers
+## Sources
 
-The global pattern is consistent. Coffee is moving uphill.
-
-<DeepBrewInfographic>
-  <ProcessFlow
-    title="Altitude Migration: Racing Up the Mountain"
-    subtitle="Coffee's viable growing zones are shifting upward — but mountains have peaks"
-    steps={[
-      { label: "2000 (Baseline)", sublabel: "Traditional coffee belt", description: "Optimal zone: ~800m to ~1,800m. Wide band of viable land with established infrastructure, soil, and microbial ecology.", detail: "9-11 month maturation produces complex sugars, high density beans." },
-      { label: "2025 (Present)", sublabel: "Current viable zone (+200m shift)", description: "Optimal zone: ~1,000m to ~1,900m. Farms at 1,200m two decades ago now operate at 1,600m+. Below 1,000m: increasing pest pressure, flower abortion, quality loss.", detail: "Colombia: ~200m/decade observed migration rate." },
-      { label: "2050 (Projected)", sublabel: "Projected viable zone (+500m shift)", description: "Optimal zone: ~1,300m to ~2,100m. Noticeably narrower band — mountains steepen, available land compresses. Hard ceiling at 2,100m: frost risk, unviable maturation.", detail: "Central America: 38-89% area loss. Southern Mexico: ~500m shift needed." },
-    ]}
-    compare={[
-      { title: "The Compression Problem", points: ["Mountains narrow as you ascend — each 100m gain = less usable acreage", "Steeper slopes increase erosion risk and labor costs", "Cloud forests above provide critical watershed services", "Coffee ceiling: ~2,100m (frost, slow maturation, unviable yields)", "Every 1C of warming = 150m altitude shift required (Colombia data)"] },
-    ]}
-    footnote="Data: Climate Central 2026, regional agricultural surveys. Colombia's observed migration rate (~200m/decade) exceeds the thermally required rate (~45m/decade), suggesting farmers are also fleeing pest pressure."
-  />
-</DeepBrewInfographic>
-
-| Region | Migration Rate |
-|---|---|
-| Global average | ~300 meters upward by mid-century |
-| Southern Mexico | ~500 meters needed by 2050 |
-| Colombia | 150 meters per 1C; ~200 meters/decade observed |
-| Central America | Minimum viable altitude: 600 to 1,000 meters by 2050 |
-| Nicaragua | 1,200 to 1,600 meters by mid-century |
-
-The phrase "when you run out of mountain" captures the fundamental constraint. Higher-altitude land is steeper, more erosion-prone, and typically covered by cloud forest ecosystems that provide critical watershed services. Converting cloud forest to coffee is not a neutral act — it accelerates the very hydrological disruption that climate change is already imposing.
-
-Mountains also narrow as they ascend. A 100-meter band of suitable land at 1,200 meters elevation might encompass thousands of hectares. The same 100-meter band at 1,900 meters might encompass a tenth as much usable acreage. Altitude migration is not just movement — it is compression.
-
-## Emerging Origins: Who Benefits?
-
-Climate disruption doesn't just take. It redistributes. Several regions that were marginal or nonexistent as coffee producers are now emerging with surprising speed.
-
-### China (Yunnan): The Breakout
-
-Yunnan's rise is the most dramatic origin story in current coffee.
-
-- 2024 exports: 32,500 tons (+358% year-over-year)
-- Specialty ratio: 8% to 31.6% (2021 to 2024)
-- 2025 "Gems of Yunnan" (Cup of Excellence pilot): 19 of 144 entries scored >87; top lot sold at $1,814/kg
-- Growing altitude: 900-1,500+ meters
-
-A 358% export increase in a single year is extraordinary. More significant is the specialty ratio trajectory — from 8% to 31.6% in three years. Yunnan is not just growing more coffee; it is growing dramatically better coffee. The Cup of Excellence pilot legitimizes what the cupping scores already showed: Yunnan produces world-class lots.
-
-The region benefits from high elevation, significant diurnal temperature variation, and a government actively investing in coffee as an agricultural development strategy. Whether Yunnan can scale to meaningfully offset losses from traditional origins remains to be seen — 32,500 tons is significant but not yet a global force.
-
-### Nepal
-
-Nepal's coffee sector is small but punching above its weight.
-
-- Altitude range: 1,000-2,100 meters across 15+ districts
-- Consistently scoring >80 SCA
-- 2024/25 production: 586 metric tons (only 106 MT exported)
-- Estimated demand: 8,000 MT — only 1.3% of market potential tapped
-
-The altitude range is ideal, and the quality scores are real. Nepal's constraint is infrastructure and scale, not terroir.
-
-### Myanmar
-
-Myanmar's coffee sector has shown what one observer called "a rate of change unparalleled anywhere else in the world" since 2014, with plans to add 27,900 acres to bring total coffee acreage to 300,000. Political instability introduces significant uncertainty, but the agricultural potential is clear.
-
-## The Production Map Is Being Redrawn
-
-The aggregate numbers confirm what the regional data implies: the geography of coffee production is shifting in real time (4).
-
-| Region | 2023/24 Share | 2024/25 Share | Change |
-|---|---|---|---|
-| South America | 48.4% | 42.5% | -5.9 percentage points |
-| Asia & Oceania | 29.3% | 32.1% | +2.8 percentage points |
-| Africa | 9.5% | 11.8% | +2.3 percentage points |
-
-South America lost nearly 6 percentage points of market share in a single year. Asia, Oceania, and Africa gained. The 2025/26 world forecast of 178.8 million bags (4) is a record, but the composition of that record is fundamentally different from five years ago.
-
-For specialty coffee, origin diversity is expanding. For commodity coffee, supply concentration is shifting away from the hemisphere that has dominated for a century.
-
-## Adaptation: What Actually Works
-
-### Shade Growing and Agroforestry
-
-The most consistently effective adaptation strategy is also the oldest: shade trees.
-
-<DeepBrewInfographic>
-  <ComparisonTable
-    title="Shade Growing vs. Full Sun: The Climate Resilience Data"
-    subtitle="Agroforestry is the leading strategy to enhance coffee systems resilience (Venancio et al. 2025)"
-    columns={["Full Sun", "Shaded", "Benefit"]}
-    rows={[
-      { name: "Air temperature", values: ["Baseline", "0.6-6C cooler", "Buffers heat stress"] },
-      { name: "Soil temperature", values: ["Baseline", "4-6C cooler", "Reduces evaporation"] },
-      { name: "Plant mortality (drought)", values: ["39%", "7%", "82% reduction in mortality"] },
-    ]}
-    footnote="Source: 2025 meta-analysis published in Frontiers in Climate. The mortality difference — 39% vs 7% — is the distance between a farm that survives a bad year and one that does not."
-  />
-</DeepBrewInfographic>
-
-A 2025 meta-analysis published in *Frontiers in Climate* concluded that agroforestry is "a leading strategy to enhance coffee systems resilience" (3). The mortality data is particularly stark: 39% plant death under full sun during drought versus 7% under shade. That difference is the distance between a farm that survives a bad year and one that does not.
-
-The tradeoff is yield. Shade-grown coffee typically produces less per hectare than full-sun cultivation. In a stable climate, that tradeoff often favors full sun. In an unstable climate, dead plants produce nothing.
-
-### Climate-Resilient Varieties
-
-The breeding pipeline is accelerating, driven by urgency.
-
-| Variety | Type | Key Performance |
-|---|---|---|
-| Centroamericano (H1) | F1 Hybrid | +22-47% yield vs. conventional; 91.25 SCA score (CoE Nicaragua) |
-| Starmaya | F1 Hybrid | First F1 propagated by seed (male sterile line); high rust resistance |
-| Castillo 2.0 | Introgressed (Sarchimor) | Released December 2024; climate resilience + income targets |
-
-The Centroamericano numbers deserve emphasis: 22-47% yield increase while maintaining a 91.25 SCA score. That is not a quality compromise. That is a cultivar that outperforms conventional varieties on both axes simultaneously. World Coffee Research shipped 10,000 seedlings of four F1 candidates for pre-commercial trials in 2024, with a commercial release target of 2030.
-
-A Robusta breeding network launched with Vietnam, Uganda, and Ghana — representing 48% of world Robusta production. Given the Kath et al. findings (2) on Robusta's true thermal sensitivity, improving Robusta genetics is no longer a secondary concern.
-
-## What This Means for Specialty Coffee
-
-Three implications stand out.
-
-**Price pressure is structural, not cyclical.** The supply disruptions of 2024-25 are not weather anomalies that will correct. They are early manifestations of a permanent narrowing of suitable growing land. Specialty coffee prices will trend upward not because of speculation but because the land capable of producing 85+ SCA coffee is shrinking.
-
-**Origin diversity is both expanding and contracting.** Traditional origins face area loss. Emerging origins are gaining capability. The net effect is a coffee map that looks increasingly different from the one specialty roasters built their businesses around. Yunnan, Nepal, and Myanmar are not curiosities — they are the future origin portfolio.
-
-**Quality will shift before it disappears.** Climate change does not simply turn good coffee land into bad coffee land overnight. It changes the thermal regime, the rainfall pattern, the pest ecology, and the viable cultivar set — all of which alter cup character. The Yirgacheffe of 2035 may score 86 but taste different from the Yirgacheffe of 2020. Origin identity will become a moving target. The compounds that define a coffee's [roast-dependent flavor profile](/deep-brew/research/sweetness-paradox-roasting/) — sugars, acids, [Maillard precursors](/deep-brew/research/maillard-caramelization-strecker/) — all start with what the plant produces, and what the plant produces depends on climate.
-
-The data is unambiguous. Coffee production is possible in a warmer world. But the coffee map of 2050 will bear limited resemblance to the one we know today. The question is not whether the industry adapts, but whether it adapts fast enough — and who gets left behind.
-
-## References
-
-1. Climate Central. "Coffee Under Pressure: How Climate Change Threatens the World's Favorite Drink." Climate Central Report, 2026.
-2. Kath, J. et al. "Not So Robust: Robusta Coffee Production Is Highly Sensitive to Temperature." *Global Change Biology* 26, no. 6 (2020): 3677-3688.
-3. Venancio, L.P. et al. "Agroforestry as a Leading Strategy to Enhance Coffee Systems Resilience." *Frontiers in Climate* 7 (2025).
-4. International Coffee Organization. Various statistical reports and market data.
-
-<DeepBrewFAQ items={[
-  { question: "Will climate change actually reduce coffee quality, or just shift where it's grown?", answer: "Both, but quality loss hits first. Rising temperatures reduce dry matter accumulation in coffee cherries — approximately 7% per degree Celsius above the 24C threshold. Dry matter is the raw material for flavor: sugars, organic acids, volatile precursors. Less dry matter means a fundamentally less complex cup, regardless of processing or roasting technique. Altitude migration can partially compensate by restoring cooler growing temperatures, but the new high-altitude terroir — different soil composition, different microbial ecology, different watershed dynamics — produces coffee with different character, not identical character at a new address." },
-  { question: "Is Robusta really more climate-resilient than Arabica?", answer: "Far less than the industry assumed. For decades, Robusta's optimal temperature range was cited as 22-30C, suggesting significant thermal headroom above Arabica's 18-21C sweet spot. Kath et al. (2020) overturned this with a comprehensive analysis showing Robusta's true optimal is 20.5C — squarely within Arabica's range. Yield decline per degree of warming is virtually identical between species at approximately 14% per 1C. Indonesia and Vietnam — the world's two largest Robusta producers — are already experiencing 73 and 59 additional days per year above 30C respectively." },
-  { question: "Could Yunnan or China replace traditional origins for specialty coffee?", answer: "Yunnan's trajectory is extraordinary — a 358% year-over-year export increase and a specialty ratio leap from 8% to 31.6% in three years — but replacement is the wrong frame. At 32,500 tons exported in 2024, Yunnan is still a fraction of Brazil's output (roughly 3 million tons annually). What Yunnan can do is expand the specialty origin portfolio and provide partial supply diversification. The Cup of Excellence pilot confirmed world-class potential: 19 of 144 entries scored above 87, with the top lot at $1,814/kg. But scaling to meaningful global supply replacement would require orders-of-magnitude production growth." },
-  { question: "What's the evidence that F1 hybrids maintain cup quality?", answer: "The strongest data point is Centroamericano (H1), which scored 91.25 SCA in Nicaraguan Cup of Excellence while delivering 22-47% higher yields than conventional varieties. This dual performance breaks the historical tradeoff in coffee breeding where rust-resistant, high-yielding varieties like Catimor and Sarchimor cupped below specialty threshold. F1 hybrids achieve this through heterosis (hybrid vigor), combining disease resistance and yield of one parent with cup quality of the other. World Coffee Research shipped 10,000 seedlings of four F1 candidates for pre-commercial trials in 2024, targeting commercial release by 2030." },
-  { question: "How does shade growing actually reduce climate stress?", answer: "Through direct thermal buffering and moisture retention. Shade trees reduce air temperature by 0.6-6C and soil temperature by 4-6C compared to full-sun cultivation. The soil temperature reduction is particularly significant: cooler soil retains moisture longer, reducing evaporative stress on root systems during drought. The mortality data is definitive — during drought, 39% of full-sun plants died versus 7% under shade canopy, an 82% reduction. The tradeoff is yield: shade-grown coffee produces less per hectare. But in an increasingly volatile climate, the relevant comparison is not maximum yield versus reduced yield — it is reduced yield versus total crop loss." },
-  { question: "What does 'running out of mountain' actually mean in practical terms?", answer: "Mountains narrow as they ascend — a 100-meter elevation band at 1,200m might contain thousands of plantable hectares, while the same band at 1,900m might contain a tenth as much. Slopes steepen at higher elevations, increasing erosion risk and labor costs. Above approximately 2,100m at equatorial latitudes, Arabica maturation slows to unviable yields and frost risk becomes intolerable. Colombia's Andes reach 5,800m but coffee's ceiling is 2,100m. Every meter of upward migration compresses the available growing area. Altitude migration is not relocation — it is contraction." },
-  { question: "Are the 2050 projections reliable, or could adaptation outpace them?", answer: "The area-loss projections (38-89% for Central America, 80% for Northern Minas Gerais) model suitability of current growing zones under projected temperature scenarios without accounting for adaptation. In that sense, they represent a no-adaptation worst case. But adaptation faces its own constraints: F1 hybrids won't reach commercial scale before 2030, irrigation requires climate-vulnerable water, shade conversion takes 5-10 years, and altitude migration faces geometric limits. The most realistic scenario is partial adaptation — loss less than worst-case projections but greater than current-trajectory assumptions. Ethiopia's simultaneous record output and long-term forest decline illustrates this precisely." },
-]} />
+- Climate Central, "More Coffee-Harming Heat Due to Carbon Pollution," *Climate Matters*, February 2026: key facts, Table 1, the 25-country results and methodology: [climatecentral.org](https://www.climatecentral.org/climate-matters/more-coffee-harming-heat-due-to-carbon-pollution-2026)
+- USDA Foreign Agricultural Service, *Coffee: World Markets and Trade*, July 2026: Brazil (pp. 1–2), 2026/27 overview and country forecasts (pp. 3–4), revisions to 2025/26 (p. 4), and the production tables: [apps.fas.usda.gov](https://apps.fas.usda.gov/psdonline/circulars/coffee.pdf)
+- J. Kath, V. M. Byrareddy, A. Craparo and colleagues, "Not so robust: Robusta coffee production is highly sensitive to temperature," *Global Change Biology* 26, no. 6 (2020): 3677–3688, abstract: [doi.org/10.1111/gcb.15097](https://doi.org/10.1111/gcb.15097)
+- C. Bunn, P. Läderach, O. Ovalle Rivera and D. Kirschke, "A bitter cup: climate change profile of global production of Arabica and Robusta coffee," *Climatic Change* 129 (2015): 89–101, abstract: [doi.org/10.1007/s10584-014-1306-x](https://doi.org/10.1007/s10584-014-1306-x)
+- P. Imbach, E. Fung, L. Hannah and colleagues, "Coupling of pollination services and coffee suitability under climate change," *Proceedings of the National Academy of Sciences* 114, no. 39 (2017): 10438–10442, abstract: [doi.org/10.1073/pnas.1617940114](https://doi.org/10.1073/pnas.1617940114)
+- J. Moat, J. Williams, S. Baena and colleagues, "Resilience potential of the Ethiopian coffee sector under climate change," *Nature Plants* 3 (2017): 17081, abstract: [doi.org/10.1038/nplants.2017.81](https://doi.org/10.1038/nplants.2017.81)
+- A. P. Davis, T. W. Gole, S. Baena and J. Moat, "The impact of climate change on indigenous Arabica coffee (*Coffea arabica*): predicting future trends and identifying priorities," *PLoS ONE* 7, no. 11 (2012): e47981, abstract: [doi.org/10.1371/journal.pone.0047981](https://doi.org/10.1371/journal.pone.0047981)
+- J. Avelino, M. Cristancho, S. Georgiou and colleagues, "The coffee rust crises in Colombia and Central America (2008–2013): impacts, plausible causes and proposed solutions," *Food Security* 7, no. 2 (2015): 303–321, abstract: [doi.org/10.1007/s12571-015-0446-9](https://doi.org/10.1007/s12571-015-0446-9)
+- S. Patil, C. S. Rudragouda, M. Govindappa and colleagues, "Mitigating climate risks in coffee production through agroforestry: global evidence from a systematic review and meta-analysis," *Frontiers in Climate* 7 (2025): 1699037, abstract and results: [doi.org/10.3389/fclim.2025.1699037](https://doi.org/10.3389/fclim.2025.1699037)
