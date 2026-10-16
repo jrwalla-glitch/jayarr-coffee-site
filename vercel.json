@@ -105,6 +105,16 @@
       "source": "/blog/costa-rica-possibly-the-best-single-origin-coffee/",
       "destination": "/blog/what-does-costa-rican-coffee-taste-like/",
       "permanent": true
+    },
+    {
+      "source": "/blog/coffee-scores-what-they-taste-like",
+      "destination": "/blog/coffee-scoring-system-explained/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/coffee-scores-what-they-taste-like/",
+      "destination": "/blog/coffee-scoring-system-explained/",
+      "permanent": true
     }
   ]
 }
