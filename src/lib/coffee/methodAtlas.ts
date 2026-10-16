@@ -66,8 +66,6 @@ export interface AtlasMethod {
   sourceIds: string[];
   /** A note on the time, where recipes vary a lot. */
   timeNote?: string;
-  /** Anything Astra should check before this ships. */
-  verify?: string[];
 }
 
 const fromEngine = (id: MethodId) => {
@@ -119,7 +117,7 @@ export const ATLAS: AtlasMethod[] = [
     brewGuide: null,
     guide: { slug: 'vietnamese-phin-guide', title: 'Vietnamese phin guide' },
     sourceIds: [],
-    verify: ['phin recipe (14 g / 120 ml, 4–5 min) is the site article\'s; check against a published Vietnamese source'],
+    // Astra, 2026-10-15: the house 14 g / 120 ml is close to Nguyen's published phin method; a house choice, not a standard.
   },
   {
     id: 'french-press', label: 'French press', the: 'the French press', line: 'Coffee steeps in all the water; a metal mesh holds the grounds back.',
@@ -144,7 +142,7 @@ export const ATLAS: AtlasMethod[] = [
     brewGuide: null,
     guide: { slug: 'turkish-coffee-guide', title: 'Turkish coffee guide' },
     sourceIds: ['synthesis'],
-    verify: ['contact time: the guide heats over 2–3 min; the synthesis gives 3–5 min overall'],
+    // Astra, 2026-10-15: 2–3 min of slow heating matches Specialty Turkish Coffee's method (about 2–2½ min).
   },
   {
     id: 'clever', label: 'Clever Dripper', the: 'the Clever Dripper', line: 'A cone with a valve: it steeps like a press, then drains through paper.',

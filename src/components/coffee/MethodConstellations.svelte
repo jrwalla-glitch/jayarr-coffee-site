@@ -282,7 +282,7 @@
             {/if}
             {#if by !== 'time'}
               {#if portrait}
-                <text x={L.w - 12} y="22" text-anchor="end" class="edge">along each line: quicker → slower</text>
+                <text x={L.w - 12} y="22" text-anchor="end" class="edge">follow each line: quicker → slower</text>
               {:else}
                 <g class="edge" pointer-events="none">
                   <text x={L.w - 14} y={TOP + 4} text-anchor="end">quicker</text>

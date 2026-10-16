@@ -119,7 +119,7 @@ export const FAMILIES: Family[] = [
     ['synthesis', 'wcr-lexicon'],
     [
       ['brown-sugar', 'Brown sugar', [
-        n('caramel', 'Caramel', 'Cooked sugar: sweet with a toasty edge.', 'a soft caramel or caramelized sugar', ['caramel', 'caramelized', 'caramelised', 'toffee', 'butterscotch', 'creme brulee', 'dulce de leche', 'creamy caramel', 'fudge', 'light fudge'], extraWord),
+        n('caramel', 'Caramel', 'Cooked sugar: sweet with a toasty edge.', 'a soft caramel or caramelized sugar', ['caramel', 'caramelized', 'caramelised', 'toffee', 'butterscotch', 'creme brulee', 'dulce de leche', 'creamy caramel', 'fudge', 'light fudge']),
         n('brown-sugar', 'Brown sugar', 'Moist, deep sugar with a molasses note.', 'a pinch of dark brown sugar', ['brown sugar', 'raw sugar', 'cane sugar', 'panela', 'sugar cane', 'sugarcane', 'demerara', 'turbinado', 'golden syrup']),
         n('molasses', 'Molasses', 'Dark, thick, slightly bitter sugar.', 'a drop of molasses', ['molasses', 'treacle']),
         n('maple', 'Maple syrup', 'Woody, round sweetness.', 'a spoon of real maple syrup', ['maple', 'maple syrup']),
