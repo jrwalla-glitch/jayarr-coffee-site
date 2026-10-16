@@ -31,7 +31,7 @@ export const FILTER: Record<FilterKind, { label: string; line: string; order: nu
 
 // Ordered by how hard the water is pushed.
 export const FORCE: Record<Force, { label: string; line: string; order: number }> = {
-  none: { label: 'None: it steeps', line: 'Nothing pushes the water through the coffee: it steeps, then the grounds are separated.', order: 0 },
+  none: { label: 'None (it steeps)', line: 'Nothing pushes the water through the coffee: it steeps, then the grounds are separated.', order: 0 },
   gravity: { label: 'Gravity', line: 'The water\'s own weight pulls it through the bed.', order: 1 },
   hand: { label: 'Hand pressure', line: 'You press a plunger to push the brew through the bed and filter.', order: 2 },
   vapor: { label: 'Vapor and vacuum', line: 'Heated vapor pushes the water up; as it cools, a vacuum pulls the brew back down.', order: 3 },
@@ -124,7 +124,7 @@ export const ATLAS: AtlasMethod[] = [
   {
     id: 'french-press', label: 'French press', the: 'the French press', line: 'Coffee steeps in all the water; a metal mesh holds the grounds back.',
     contact: 'immersion', filter: 'metal', force: 'none', attention: 1,
-    timeNote: 'Easto\'s recipe; 4-minute recipes are common too',
+    timeNote: 'Jessica Easto\'s recipe; 4-minute recipes are common too',
     ...fromEngine('french-press'),
     guide: { slug: 'how-to-use-a-french-press-the-most-amazing-coffee-youve-ever-had', title: 'How to use a French press' },
     sourceIds: ['easto', 'synthesis'],

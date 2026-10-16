@@ -135,14 +135,15 @@ const grain = fmt(1 / (1.6 * u));
       <feBlend in="SourceGraphic" in2="f" mode="soft-light" />
     </filter>
     <radialGradient id="op-vig" cx=".5" cy=".5" r=".7"><stop offset=".6" stop-color="#5a5040" stop-opacity="0" /><stop offset="1" stop-color="#5a5040" stop-opacity=".22" /></radialGradient>
-    <radialGradient id="op-area"><stop offset="0" stop-color="#7a3f14" stop-opacity=".55" /><stop offset=".6" stop-color="#7a3f14" stop-opacity=".25" /><stop offset="1" stop-color="#7a3f14" stop-opacity="0" /></radialGradient>
+    <radialGradient id="op-area"><stop offset="0" stop-color="#8a4a1c" stop-opacity=".32" /><stop offset=".7" stop-color="#8a4a1c" stop-opacity=".14" /><stop offset="1" stop-color="#8a4a1c" stop-opacity="0" /></radialGradient>
   </defs>
   <rect x={fmt(vb[0] - 5)} y={fmt(vb[1] - 5)} width={fmt(vb[2] + 10)} height={fmt(vb[3] + 10)} fill="#cbcfd5" filter="url(#op-grain)" />
   {[TROPIC_CANCER_Y, EQUATOR_Y, TROPIC_CAPRICORN_Y].map((y) => <line x1={fmt(vb[0])} x2={fmt(vb[0] + vb[2])} y1={y} y2={y} stroke="#8b9ba8" stroke-width={fmt(u)} stroke-dasharray={`${fmt(4 * u)} ${fmt(6 * u)}`} opacity=".55" />)}
   {drawn.map((c) => <path d={c.path} fill={c.id === origin.id ? '#cf9558' : '#ebe4d6'} stroke="#a89878" stroke-width={fmt(0.8 * u)} />)}
   {seas.map((s) => <text x={fmt(s.x)} y={fmt(s.y)} text-anchor="middle" font-size={fmt(12.5 * u)} class="op-sea">{s.name.toUpperCase()}</text>)}
   {neighbours.map((n) => <text x={fmt(n.x)} y={fmt(n.y)} text-anchor="middle" font-size={fmt(11 * u)} class="op-nb">{n.label}</text>)}
-  {regions.map((r) => <circle cx={fmt(r.xy[0])} cy={fmt(r.xy[1])} r={fmt(26 * u)} fill="url(#op-area)" />)}
+  {regions.map((r) => <circle cx={fmt(r.xy[0])} cy={fmt(r.xy[1])} r={fmt(24 * u)} fill="url(#op-area)" />)}
+  {regions.map((r) => <circle cx={fmt(r.xy[0])} cy={fmt(r.xy[1])} r={fmt(15 * u)} fill="none" stroke="#7a3f14" stroke-width={fmt(0.7 * u)} stroke-dasharray={`${fmt(2 * u)} ${fmt(2.5 * u)}`} opacity=".55" />)}
   {labelled.map((r) => (
     <g>
       <path d={`M${fmt(r.xy[0])} ${fmt(r.xy[1] - 5 * u)} L${fmt(r.xy[0] + 5 * u)} ${fmt(r.xy[1])} L${fmt(r.xy[0])} ${fmt(r.xy[1] + 5 * u)} L${fmt(r.xy[0] - 5 * u)} ${fmt(r.xy[1])} Z`} fill="#2a1d15" stroke="#fbf6ee" stroke-width={fmt(1.2 * u)} />

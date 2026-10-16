@@ -8,7 +8,9 @@
   let month = $state(10);
   let lit = $state<string | null>(null);
   onMount(() => { month = new Date().getMonth() + 1; });
-  let now = $derived(harvestingIn(month));
+  // The best-known origins first: by production, largest to smallest.
+  let now = $derived([...harvestingIn(month)].sort((a, b) => (b.production?.bags60kg ?? 0) - (a.production?.bags60kg ?? 0)));
+  const nb = (s: string) => s.replace(/ /g, '\u00a0');
 
   const PIECES = [
     // One cream mat for all three, as a collection is hung.
@@ -35,7 +37,7 @@
           {#if p.id === 'origins'}
             <p>When and where each origin is harvested, how high it grows and how its coffees are described.</p>
             <p class="key" aria-hidden="true"><span class="dot on"></span>harvesting in {MONTHS_LONG[month - 1]} <span class="dot off"></span>not this month</p>
-            <p class="now"><span>In {MONTHS_LONG[month - 1]}:</span> {now.slice(0, 4).map((o) => o.name).join(', ')}{now.length > 4 ? ` and ${now.length - 4} more` : ''} are harvesting.</p>
+            <p class="now"><span>In {MONTHS_LONG[month - 1]}:</span> {now.slice(0, 4).map((o) => nb(o.name)).join(', ')}{now.length > 4 ? ` and ${now.length - 4} more` : ''} are harvesting.</p>
             <p class="now"><a href="/explore/origins/">See who's harvesting now →</a></p>
           {:else if p.id === 'methods'}
             <p>Thirteen brewers as stars. Rearrange the sky by filter, pressure or time to see how they really differ.</p>

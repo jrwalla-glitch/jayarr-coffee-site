@@ -61,7 +61,7 @@
         const use = (q.get('use') === 'espresso' ? 'espresso' : 'filter') as FreshUse;
         const st = q.get('storage'); const storage = (st === 'sealed-bag' || st === 'frozen' ? st : 'opened') as Storage;
         const f = storage === 'frozen' ? null : freshness({ roastDate: roast, today: todayIso(), use, storage });
-        const where = f?.ok ? ` · day ${f.value.daysSinceRoast}, ${f.value.stage.short.toLowerCase()}` : '';
+        const where = f?.ok ? ` · day ${f.value.daysSinceRoast}, ${f.value.stage.label.toLowerCase()}` : '';
         out.push({ href: `/tools/freshness/?${fresh}`, label: 'Your bag', detail: `Roasted ${day}${where}`, icon: 'bag' });
       }
     }
@@ -194,7 +194,7 @@
 
 <style>
   .bench { --ink: #2a1d15; --ink-2: #5b4a3d; --ink-3: #75655a; --rule: #d9cdbd; --crema-deep: #8f5d22; color: var(--ink); font: 16px/1.5 'IBM Plex Sans', 'IBM Plex Sans Fallback', system-ui, sans-serif; }
-  .lbl { font: 500 11px/1.3 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); }
+  .lbl { font: 500 11px/1.3 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-2); }
   .quiet { color: var(--ink-3); }
   .small { font-size: 13.5px; }
   .jobs { display: flex; gap: 10px 14px; align-items: center; flex-wrap: wrap; margin: 4px 0 26px; }
@@ -208,13 +208,13 @@
   .resume p { margin: 0; }
   .resume ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
   .resume li { display: flex; }
-  .resume a { flex: 1; display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 12px; align-items: center; border: 1px solid var(--rule); background: #fff; border-radius: 12px; padding: 10px 14px 10px 10px; text-decoration: none; color: var(--ink); min-height: 66px; }
+  .resume a { flex: 1; display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 12px; align-items: start; border: 1px solid var(--rule); background: #fff; border-radius: 12px; padding: 10px 14px 10px 10px; text-decoration: none; color: var(--ink); min-height: 66px; }
   .resume a:hover, .resume a:focus-visible { border-color: var(--ink-3); background: #fffaf2; }
-  .ricon { width: 44px; height: 44px; border-radius: 50%; background: #f4ece0; display: grid; place-items: center; }
+  .ricon { width: 44px; height: 44px; border-radius: 50%; background: #f4ece0; display: grid; place-items: center; align-self: center; }
   .ricon svg { width: 34px; height: 34px; }
   .resume b { display: block; font: 600 15px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; }
-  .rd { display: block; font-size: 13.5px; color: var(--ink-2); }
-  .rgo { font-size: 18px; color: var(--crema-deep); transition: transform .2s; }
+  .rd { display: block; font: 500 12.5px/1.45 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; color: var(--ink-2); }
+  .rgo { font-size: 18px; color: var(--crema-deep); transition: transform .2s; align-self: center; }
   .resume a:hover .rgo { transform: translateX(3px); }
 
   .group { margin: 0 0 40px; scroll-margin-top: 90px; }
@@ -253,7 +253,7 @@
   .pframe :global(svg) { display: block; width: 100%; height: auto; }
   .piece .gp-plaque { margin-top: 12px; padding: 5px 18px; }
   .piece .gp-plaque b { font-size: 17px; }
-  .piece .tblurb { margin-top: 8px; font-size: 14.5px; max-width: 30ch; }
+  .piece .tblurb { margin-top: 8px; font-size: 14.5px; max-width: 30ch; text-wrap: balance; }
 
   @media (max-width: 1000px) {
     .trio { grid-template-columns: 1fr; }
@@ -267,7 +267,8 @@
     .tname { font-size: 20px; }
     .feature .tname { font-size: 26px; }
     .tblurb { font-size: 13.5px; }
-    .tag { top: 5px; right: 5px; font-size: 9px; padding: 2px 6px; }
+    /* On a narrow card the badge would sit on the drawing: it moves under it. */
+    .tag { position: static; display: inline-block; margin: 4px 0 0; font-size: 9px; padding: 2px 6px; }
     .ghead h2 { font-size: 28px; }
     .resume { padding: 14px 12px; }
     .resume ul { grid-template-columns: 1fr; }

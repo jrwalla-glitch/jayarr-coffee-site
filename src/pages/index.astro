@@ -18,10 +18,10 @@ const latest = allPosts.slice(0, 6);
 
 // Start here: one guide per everyday job, drawn in the site's own hand rather than with mixed photos.
 const START = [
-  { slug: 'ultimate-pour-over-coffee-guide-and-best-v60-technique', job: 'Brew a better pour-over', art: 'v60' },
-  { slug: 'how-to-dial-in-espresso', job: 'Dial in espresso', art: 'espresso' },
-  { slug: 'cold-brew-concentrate-guide', job: 'Make cold brew concentrate', art: 'cold-brew' },
-  { slug: 'why-water-matters-more-than-your-coffee-beans', job: 'Get your water right', art: 'water' },
+  { slug: 'ultimate-pour-over-coffee-guide-and-best-v60-technique', job: 'Brew a better pour-over', art: 'v60', promise: 'Grind, ratio and pour timing for a V60' },
+  { slug: 'how-to-dial-in-espresso', job: 'Dial in espresso', art: 'espresso', promise: 'Dose, yield and time, and what to change first' },
+  { slug: 'cold-brew-concentrate-guide', job: 'Make cold brew concentrate', art: 'cold-brew', promise: 'Ratio, steep time and how far to dilute it' },
+  { slug: 'why-water-matters-more-than-your-coffee-beans', job: 'Get your water right', art: 'water', promise: 'What minerals do to a cup, and how to fix your water' },
 ].map((x) => ({ ...x, post: bySlug(x.slug) })).filter((x) => x.post);
 // From the channel: the original reviews and comparisons the site grew out of.
 const REVIEWS = [
@@ -57,7 +57,7 @@ const featured = bySlug('coffee-grind-size-guide-what-grind-for-every-brew-metho
         </div>
         <div class="hero-inner">
           <div class="hero-copy">
-            <h1>Better coffee at home, <em>with the working shown</em></h1>
+            <h1>Better coffee at home, <em>with the work shown</em></h1>
             <p class="lede">Tools that draw what they calculate, guides that show their sources, and a small gallery of where coffee grows, how it's brewed and how it tastes.</p>
             <p class="more"><a href="/tools/">Every tool →</a> <a href="/explore/">The gallery →</a> <a href="/deep-brew/">Deep Brew →</a></p>
           </div>
@@ -72,12 +72,23 @@ const featured = bySlug('coffee-grind-size-guide-what-grind-for-every-brew-metho
           <p class="eyebrow">Start here</p>
           <h2 id="start-h">One guide for each everyday job</h2>
           <ul class="cards">
-            {START.map(({ post, job, art }) => (
+            {START.map(({ post, job, art, promise }) => (
               <li>
                 <a href={`/blog/${post!.id}/`} class="card">
-                  <span class="img art" aria-hidden="true">{art === 'water' ? <ToolMini id="water" /> : <BrewerCutaway method={art as 'v60' | 'espresso' | 'cold-brew'} compact label="" />}</span>
+                  <span class="img art" aria-hidden="true">{art === 'water' ? (
+                    <svg viewBox="0 0 200 240">
+                      <line x1="40" x2="160" y1="214" y2="214" stroke="#cdbfac" stroke-width="2" />
+                      <path d="M70 70 L130 70 L124 210 Q123 214 119 214 L81 214 Q77 214 76 210 Z" fill="#fffdf9" stroke="#2a1d15" stroke-width="2.4" />
+                      <path d="M73 104 L127 104 L123.5 209 Q123 211 119 211 L81 211 Q77 211 76.5 209 Z" fill="#d6eaee" />
+                      <path d="M73 104 Q86 99 100 104 T127 104" fill="none" stroke="#3f8fa0" stroke-width="1.8" />
+                      <g fill="#c3873a"><circle cx="88" cy="130" r="4" /><circle cx="110" cy="152" r="4" /><circle cx="94" cy="182" r="4" /></g>
+                      <g fill="#3f8fa0"><circle cx="112" cy="122" r="3.4" /><circle cx="86" cy="160" r="3.4" /><circle cx="108" cy="192" r="3.4" /></g>
+                      <text x="138" y="140" font-family="IBM Plex Mono, monospace" font-size="15" fill="#5b4a3d">Ca Mg</text>
+                      <text x="138" y="182" font-family="IBM Plex Mono, monospace" font-size="15" fill="#5b4a3d">HCO₃</text>
+                    </svg>
+                  ) : <BrewerCutaway method={art as 'v60' | 'espresso' | 'cold-brew'} compact label="" />}</span>
                   <span class="t">{job}</span>
-                  <span class="sub">{post!.data.title}</span>
+                  <span class="sub">{promise}</span>
                 </a>
               </li>
             ))}
@@ -99,7 +110,7 @@ const featured = bySlug('coffee-grind-size-guide-what-grind-for-every-brew-metho
           {featured && (
             <div class="video" style={`--poster: url(${videoPoster.src})`}>
               <LiteYouTube videoId="JT01fu8P_LM" title={featured.data.title} />
-              <p class="vcap">Watch: <a href={`/blog/${featured.id}/`}>{featured.data.title}</a>. The <a href="/tools/grind-guide/">Grind Guide</a> does the same job as a tool.</p>
+              <p class="vcap">Watch: <a href={`/blog/${featured.id}/`}>how to grind for every brewer</a>. Or let the <a href="/tools/grind-guide/">Grind Guide</a> work out your setting.</p>
             </div>
           )}
         </div>
@@ -167,7 +178,7 @@ const featured = bySlug('coffee-grind-size-guide-what-grind-for-every-brew-metho
   .hero-bg img, .hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .hero-video { opacity: 0; transition: opacity 1s ease; }
   .hero-video.on { opacity: 1; }
-  .hero-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(100deg, rgba(20, 14, 10, .9) 0%, rgba(20, 14, 10, .78) 42%, rgba(20, 14, 10, .5) 100%), linear-gradient(180deg, rgba(20, 14, 10, .3), rgba(20, 14, 10, .65)); }
+  .hero-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(100deg, rgba(20, 14, 10, .86) 0%, rgba(20, 14, 10, .68) 42%, rgba(20, 14, 10, .36) 100%), linear-gradient(180deg, rgba(20, 14, 10, .2), rgba(20, 14, 10, .55)); }
   /* The hero shares the page's 1180 px column, and the card's top edge stays put when its door changes. */
   .hero-inner { position: relative; max-width: 1180px; margin: 0 auto; padding: 120px 24px 56px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr); gap: 40px; align-items: start; min-height: 640px; }
   .hero-copy { padding-top: 56px; }
@@ -191,7 +202,7 @@ const featured = bySlug('coffee-grind-size-guide-what-grind-for-every-brew-metho
   .card .art :global(svg) { display: block; width: auto; height: 100%; max-width: 100%; }
   .card:hover .art { border-color: #b9a58b; transform: translateY(-2px); }
   .card .t { font: 400 24px/1.1 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; margin-top: 6px; }
-  .card .sub { font-size: 14px; line-height: 1.4; color: #75655a; }
+  .card .sub { font-size: 14.5px; line-height: 1.45; color: #5b4a3d; }
   .channel { background: #fbf8f3; border-top: 1px solid #e6dccd; border-bottom: 1px solid #e6dccd; }
   .reviews { list-style: none; padding: 0; margin: 12px 0; display: grid; gap: 8px; }
   .reviews a { color: #2a1d15; font: 500 16px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; text-decoration: underline; text-decoration-color: #c9a46e; text-underline-offset: 3px; }
@@ -199,6 +210,8 @@ const featured = bySlug('coffee-grind-size-guide-what-grind-for-every-brew-metho
   .video :global(.lite-youtube), .video :global(lite-youtube) { border-radius: 12px; overflow: hidden; }
   /* The facade's still comes from this site, not from YouTube, until someone presses play. */
   .video :global(.lite-youtube) { background-image: var(--poster) !important; }
+  /* The play button sits in a corner, off the thumbnail's own title. */
+  .video :global(.lty-playbtn) { top: auto; left: 16px; bottom: 14px; transform: none; width: 56px; height: 40px; }
   .vcap { font-size: 14.5px !important; margin-top: 8px; }
   .vcap a { color: #7a4e30; }
   .deep { background: #1d1713; color: #efe6da; }

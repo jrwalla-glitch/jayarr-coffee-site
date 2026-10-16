@@ -21,10 +21,13 @@
   const GROUPS: Contact[] = ['percolation', 'steep-drain', 'immersion'];
   const stars = GROUPS.flatMap((g, gi) => {
     const ms = ATLAS.filter((m) => m.contact === g).sort((a, b) => a.timeS[0] - b.timeS[0]);
-    const cx = 52 + gi * 98;
+    const cx = 46 + gi * 92;
     return ms.map((m, j) => ({ id: m.id, g: gi, x: cx + 20 * Math.sin(j * 1.9 + gi + 0.6) * (ms.length > 1 ? 1 : 0), y: ms.length === 1 ? 108 : 66 + (j * 92) / Math.max(1, ms.length - 1) }));
   });
-  const field = Array.from({ length: 46 }, (_, i) => { const a = Math.sin(i * 12.9898) * 43758.5453, b = Math.sin(i * 78.233) * 12345.6789; return { x: (a - Math.floor(a)) * 300, y: (b - Math.floor(b)) * 180, r: 0.3 + (i % 4) * 0.18 }; });
+  // One named landmark star per family.
+  const NAMED: Record<string, string> = { v60: 'V60', aeropress: 'AeroPress', 'french-press': 'French press' };
+  // Field stars keep clear of the headings, where they'd read as punctuation.
+  const field = Array.from({ length: 46 }, (_, i) => { const a = Math.sin(i * 12.9898) * 43758.5453, b = Math.sin(i * 78.233) * 12345.6789; return { x: (a - Math.floor(a)) * 300, y: (b - Math.floor(b)) * 180, r: 0.3 + (i % 4) * 0.18 }; }).filter((f) => f.y > 28);
 
   // Bloom: eight watercolour petals and the stem with its two leaves.
   const ANG = [-140, -100, -60, -20, 20, 60, 100, 140];
@@ -48,19 +51,20 @@
             {#each ORIGINS as o (o.id)}
               {@const [x, y] = dot(o.lat, o.lon)}
               {@const on = now.some((n) => n.id === o.id)}
-              <circle cx={x} cy={y} r={on ? 3.3 : 2.1} fill={on ? '#8a3f12' : '#fbf6ee'} stroke="#2a1d15" stroke-width={on ? 0.7 : 0.6} class:pulse={on} style="animation-delay: {(x % 7) * 0.3}s" />
+              {#if o.id === 'hawaii'}<ellipse cx={x + 0.6} cy={y + 0.4} rx="2.6" ry="1.7" fill="#d6ad6e" stroke="#8a6a3e" stroke-width=".4" />{/if}
+              <circle cx={x} cy={y} r={on ? 3.3 : 2.4} fill={on ? '#8a3f12' : '#fbf6ee'} stroke="#2a1d15" stroke-width={on ? 0.7 : 0.8} class:pulse={on} style="animation-delay: {(x % 7) * 0.3}s" />
             {/each}
-            <g transform="translate(26 150)" opacity=".6"><circle r="9" fill="none" stroke="#5b4a3d" stroke-width=".5" /><polygon points="0,-8 -1.3,-2.4 0,-3.2 1.3,-2.4" fill="#2a1d15" /><polygon points="0,8 -1.3,2.4 0,3.2 1.3,2.4" fill="#a6896a" /></g>
+            <g transform="translate(26 150)" opacity=".85"><circle r="9" fill="none" stroke="#5b4a3d" stroke-width=".5" /><polygon points="0,-8 -1.3,-2.4 0,-3.2 1.3,-2.4" fill="#2a1d15" /><polygon points="0,8 -1.3,2.4 0,3.2 1.3,2.4" fill="#a6896a" /></g>
             <rect width="300" height="180" fill="url(#eg-vig-{pid})" />
           </svg>
         {:else if id === 'methods'}
           <svg viewBox="0 0 300 180" class="art" aria-hidden="true">
             <defs><linearGradient id="eg-sky-{pid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1525" /><stop offset=".6" stop-color="#12213a" /><stop offset="1" stop-color="#1a2a3d" /></linearGradient>
-              <marker id="eg-arrow-{pid}" viewBox="0 0 6 6" refX="3" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L3 6 L6 0" fill="none" stroke="#8d9bb3" stroke-width="1" /></marker></defs>
+              <marker id="eg-arrow-{pid}" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L6 3 L0 6" fill="none" stroke="#8d9bb3" stroke-width="1.1" /></marker></defs>
             <rect width="300" height="180" fill="url(#eg-sky-{pid})" />
             {#each field as f, k (k)}<circle cx={f.x} cy={f.y} r={f.r} fill="#c8d0e0" opacity=".45" class="tw" style="animation-delay: {k * 0.37}s" />{/each}
             {#each GROUPS as g, gi (g)}
-              {@const hx = 52 + gi * 98}
+              {@const hx = 46 + gi * 92}
               {@const ss = stars.filter((s) => s.g === gi)}
               <polyline points={[`${hx},34`, ...ss.map((s) => `${s.x},${s.y}`)].join(' ')} fill="none" stroke="#c9a84e" stroke-width=".8" opacity=".6" class="chain" />
               <circle cx={hx} cy="34" r="7" fill="#d4a44c" opacity=".12" /><circle cx={hx} cy="34" r="3.2" fill="none" stroke="#e8b85c" stroke-width="1.1" />
@@ -68,11 +72,11 @@
               {#if names}<text x={hx} y="20" text-anchor="middle" class="hub">{CONTACT[g].label.toUpperCase()}</text>{/if}
               {#each ss as s (s.id)}
                 <circle cx={s.x} cy={s.y} r="5" fill="#e8c36a" opacity=".12" /><circle cx={s.x} cy={s.y} r="2.2" fill="#e8c36a" />
-                {#if names && (s.id === 'v60' || s.id === 'french-press')}<text x={s.x + 5} y={s.y + 2.5} class="sname">{s.id === 'v60' ? 'V60' : 'French press'}</text>{/if}
+                {#if names && NAMED[s.id]}<text x={s.x + 5} y={s.y + 2.8} class="sname">{NAMED[s.id]}</text>{/if}
               {/each}
             {/each}
             {#if names}
-              <g class="edge"><text x="292" y="66" text-anchor="end">quick</text><path d="M286 72 V150" stroke="#8d9bb3" stroke-width=".6" marker-end="url(#eg-arrow-{pid})" /><text x="292" y="164" text-anchor="end">slow</text></g>
+              <g class="edge"><text x="292" y="58" text-anchor="end">quick</text><path d="M286 64 V146" stroke="#8d9bb3" stroke-width=".7" marker-end="url(#eg-arrow-{pid})" /><text x="292" y="160" text-anchor="end">slow</text><text x="292" y="172" text-anchor="end" class="edgecap">brew time</text></g>
             {/if}
           </svg>
         {:else}
@@ -107,8 +111,9 @@
 <style>
   .art { display: block; width: 100%; height: auto; }
   .hub { font: 600 8px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .16em; fill: #e2b45a; }
-  .edge text { font: 500 7.5px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .08em; fill: #a9b5c9; }
-  .sname { font: 600 7px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; fill: #e8dccb; }
+  .edge .edgecap { font-size: 6.5px; letter-spacing: .14em; text-transform: uppercase; }
+  .edge text { font: 500 8.5px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .08em; fill: #a9b5c9; }
+  .sname { font: 600 8.5px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; fill: #e8dccb; }
   .lettered { font: italic 400 11.5px 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; fill: #2a2a1f; }
   .pulse { transform-box: fill-box; transform-origin: center; }
   :global(.lit) .pulse { animation: pulse 2.2s ease-in-out infinite; }

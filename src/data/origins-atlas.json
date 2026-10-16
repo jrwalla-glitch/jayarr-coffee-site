@@ -82,7 +82,7 @@
      "winey"
     ],
     "source": "ci-ethiopia",
-    "caveat": "Floral/citrus descriptions often concern washed coffees; fruit and wine-like notes often concern naturals."
+    "caveat": "Floral and citrus notes tend to come from washed lots, fruit and wine-like notes from naturals."
    },
    "sources": {
     "varieties": [
@@ -176,7 +176,7 @@
      "black tea"
     ],
     "source": "apex-kenya",
-    "caveat": "These descriptions chiefly concern washed specialty Arabica; cultivar and roast matter."
+    "caveat": "These describe mainly washed specialty arabica; variety and roast matter too."
    },
    "sources": {
     "varieties": [
@@ -458,7 +458,7 @@
      "complex"
     ],
     "source": "ci-tanzania",
-    "caveat": "These descriptors concern washed Arabica; Kagera Robusta deserves a separate profile."
+    "caveat": "These describe washed arabica; Kagera's robusta would need its own profile."
    },
    "sources": {
     "varieties": [
@@ -561,7 +561,7 @@
      "chocolate"
     ],
     "source": "ucda-summit",
-    "caveat": "UCDA's Arabica-oriented description should not be applied to the larger Robusta crop."
+    "caveat": "UCDA's arabica-oriented description should not be applied to the larger robusta crop."
    },
    "sources": {
     "varieties": [
@@ -744,7 +744,7 @@
      "fruit"
     ],
     "source": "ci-brazil",
-    "caveat": "Natural and pulped-natural Arabica descriptions differ from Conilon/Robusta and individual regional lots."
+    "caveat": "Natural and pulped-natural arabica descriptions differ from Conilon/robusta and individual regional lots."
    },
    "sources": {
     "varieties": [
@@ -947,7 +947,7 @@
      "distinctive"
     ],
     "source": "ci-ecuador",
-    "caveat": "These describe specialty Arabica, not the larger Robusta component of USDA's national total."
+    "caveat": "These describe specialty arabica, not the larger robusta component of USDA's national total."
    },
    "sources": {
     "varieties": [
@@ -1125,7 +1125,7 @@
      "floral"
     ],
     "source": "apex-bolivia",
-    "caveat": "This describes specialty highland Arabica, not a uniform national cup."
+    "caveat": "This describes specialty highland arabica, not a uniform national cup."
    },
    "sources": {
     "varieties": [
@@ -1766,7 +1766,7 @@
      "nuts"
     ],
     "source": "ci-mexico",
-    "caveat": "These chiefly concern washed Arabica; southern Robusta and individual regions differ."
+    "caveat": "These describe mainly washed arabica; southern robusta and individual regions differ."
    },
    "sources": {
     "varieties": [
@@ -2130,7 +2130,7 @@
      "savory"
     ],
     "source": "ci-sumatra",
-    "caveat": "These chiefly concern wet-hulled Sumatran Arabica, not the larger national Robusta crop."
+    "caveat": "These describe mainly wet-hulled Sumatran arabica, not the larger national robusta crop."
    },
    "sources": {
     "varieties": [
@@ -2330,7 +2330,7 @@
      "caramelized nuts"
     ],
     "source": "suca-vietnam-ganh",
-    "caveat": "Selected fine Robusta description; commodity Robusta and northern Arabica can differ greatly."
+    "caveat": "Selected fine robusta description; commodity robusta and northern arabica can differ greatly."
    },
    "sources": {
     "varieties": [
@@ -2679,7 +2679,7 @@
      "dark chocolate"
     ],
     "source": "movaci-thailand",
-    "caveat": "These concern northern specialty Arabica, not southern Robusta."
+    "caveat": "These describe northern specialty arabica, not southern robusta."
    },
    "sources": {
     "varieties": [
@@ -2769,7 +2769,7 @@
      "balanced"
     ],
     "source": "sucafina-handbook-2026",
-    "caveat": "Trade descriptions of selected washed Arabica grades vary by district and post-harvest handling."
+    "caveat": "Trade descriptions of selected washed arabica grades vary by district and post-harvest handling."
    },
    "sources": {
     "varieties": [

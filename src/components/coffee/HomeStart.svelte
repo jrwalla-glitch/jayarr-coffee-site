@@ -12,7 +12,7 @@
   const DOORS: { id: Door; label: string }[] = [
     { id: 'make', label: 'Make a better cup' },
     { id: 'fix', label: 'Fix today\'s coffee' },
-    { id: 'choose', label: 'Choose equipment' },
+    { id: 'choose', label: 'Choose gear' },
     { id: 'explore', label: 'Explore flavor' },
   ];
   const BREWERS: { id: MethodId; label: string }[] = [
@@ -50,19 +50,12 @@
   let cellRows = $derived(Math.ceil((ratioN + 1) / 9));
   // A mug's height grows with its size: 8 oz to 16 oz.
   let mugH = $derived(30 + 34 * Math.min(1, Math.max(0, (oz - 8) / 8)));
-  // Grind: particles drawn to a 1 mm scale bar (40 units), at the middle of the recipe's range.
-  let grindD = $derived(r ? ((r.grind.microns.min + r.grind.microns.max) / 2 / 1000) * 40 : 20);
-  function particles(d: number) {
-    const out: { x: number; y: number; pts: string }[] = [];
-    const step = d * 1.35, cols = Math.max(1, Math.floor(84 / step)), rows = Math.max(1, Math.min(3, Math.floor(52 / step)));
-    let k = 0;
-    for (let j = 0; j < rows; j++) for (let i = 0; i < cols && out.length < 10; i++, k++) {
-      const x = 50 - ((cols - 1) * step) / 2 + i * step + (j % 2 ? step * 0.25 : 0), y = 58 - d / 2 - j * step;
-      const pts = Array.from({ length: 7 }, (_, q) => { const a = (q / 7) * Math.PI * 2, rr = (d / 2) * (0.78 + 0.3 * Math.abs(Math.sin(k * 3.7 + q * 1.9))); return `${(x + Math.cos(a) * rr).toFixed(1)},${(y + Math.sin(a) * rr).toFixed(1)}`; }).join(' ');
-      out.push({ x, y, pts });
-    }
-    return out;
-  }
+  // Grind: five grounds from fine to coarse, drawn to one scale (1 mm = 22 units); the ones in the
+  // recipe's range are lit, so the size reads against its neighbours.
+  const GRIND_STEPS = [{ um: 250, x: 10 }, { um: 450, x: 25 }, { um: 650, x: 43 }, { um: 900, x: 64 }, { um: 1200, x: 88 }];
+  const grain = (x: number, d: number, k: number) => Array.from({ length: 7 }, (_, q) => { const a = (q / 7) * Math.PI * 2, rr = (d / 2) * (0.8 + 0.28 * Math.abs(Math.sin(k * 3.7 + q * 1.9))); return `${(x + Math.cos(a) * rr).toFixed(1)},${(58 - d / 2 + Math.sin(a) * rr).toFixed(1)}`; }).join(' ');
+  let grains = $derived(GRIND_STEPS.map((g, k) => ({ ...g, d: (g.um / 1000) * 22, pts: grain(g.x, (g.um / 1000) * 22, k), on: !!r && g.um >= r.grind.microns.min - 120 && g.um <= r.grind.microns.max + 120 })));
+  let litSpan = $derived.by(() => { const on = grains.filter((g) => g.on); return on.length ? [on[0].x - on[0].d / 2 - 2, on[on.length - 1].x + on[on.length - 1].d / 2 + 2] : null; });
   let grindShort = $derived(r ? r.grind.label.replace(/\s*\(.*\)$/, '') : '');
 
   // ── The Fix door's picture: a small extraction map, the taste marked, an arrow to the usual fix ──
@@ -134,9 +127,10 @@
           </figure>
           <figure>
             <svg viewBox="0 0 100 84">
-              {#each particles(grindD) as p, i (i)}<polygon points={p.pts} class="grain" />{/each}
-              <line x1="30" x2="70" y1="76" y2="76" class="scale" /><line x1="30" x2="30" y1="73" y2="79" class="scale" /><line x1="70" x2="70" y1="73" y2="79" class="scale" />
-              <text x="50" y="71" text-anchor="middle" class="mm">1 mm</text>
+              <line x1="2" x2="98" y1="62" y2="62" class="ground" />
+              {#each grains as g (g.um)}<polygon points={g.pts} class="grain" class:off={!g.on} />{/each}
+              {#if litSpan}<path d="M{litSpan[0]} 66 V69 H{litSpan[1]} V66" class="bracket" />{/if}
+              <text x="2" y="80" class="mm">fine</text><text x="98" y="80" text-anchor="end" class="mm">coarse</text>
             </svg>
             <figcaption>{grindShort}, like {r.grind.texture}</figcaption>
           </figure>
@@ -199,7 +193,8 @@
   .doors button + button { border-left: 1px solid var(--rule); }
   .doors button[aria-selected='true'] { background: #fbf8f3; color: var(--ink); border-bottom-color: #c3873a; }
   .doors button:focus-visible { outline: 3px solid rgba(143, 93, 34, .6); outline-offset: -3px; }
-  .panel { padding: 18px 20px 20px; min-height: 340px; }
+  /* Every door is the same height on desktop, so nothing below the card moves when you switch. */
+  .panel { padding: 18px 20px 20px; min-height: 470px; }
   .q { font: 500 11px/1 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 8px; }
   .q:not(:first-child) { margin-top: 14px; }
   .chips { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -216,7 +211,7 @@
   .nums .coffee { color: #7a4e30; }
   .nums .water { color: #2f7484; }
   .note { font-size: 14px; color: var(--ink-2); margin: 6px 0 12px; text-wrap: pretty; }
-  .figs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 10px 0 2px; }
+  .figs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 4px 0 10px; }
   .figs figure { margin: 0; text-align: center; }
   .figs svg { display: block; width: 100%; max-width: 132px; height: auto; margin: 0 auto; }
   .figs figcaption { font: 500 12px/1.3 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; color: var(--ink-2); margin-top: 2px; text-wrap: balance; }
@@ -229,11 +224,13 @@
   .figs .cc { fill: #7a4e30; }
   .figs .cw { fill: #7fb3bd; }
   .figs .grain { fill: #8a5a36; stroke: #4a2d1a; stroke-width: .6; }
+  .figs .grain.off { fill: #e9dfd1; stroke: #b9a891; }
+  .figs .bracket { fill: none; stroke: #c3873a; stroke-width: 1.4; }
   .figs .scale { stroke: var(--ink-3); stroke-width: 1; }
   .figs .mm { font: 500 8px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; fill: var(--ink-3); }
   .figs b { font-weight: 600; }
   .k-c { color: #7a4e30; } .k-w { color: #2f7484; }
-  .xmap { display: block; width: 100%; max-width: 420px; height: auto; margin: 14px 0 0; }
+  .xmap { display: block; width: 100%; max-width: 460px; height: auto; margin: 14px auto 0; }
   .xmap .field { fill: #f6efe4; stroke: var(--rule); }
   .xmap .ideal { fill: #e7efe0; stroke: #8aa070; stroke-dasharray: 3 3; }
   .xmap .ax { font: 500 10px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .06em; fill: var(--ink-3); }

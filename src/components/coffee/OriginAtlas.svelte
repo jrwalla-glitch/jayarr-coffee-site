@@ -111,7 +111,7 @@
   // placed greedily (the chosen origins and their regions first) so none overlap on screen.
   interface Box { x: number; y: number; w: number; h: number }
   const hit = (a: Box, b: Box) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
-  interface Spot { dx: number; dy: number; anchor: 'start' | 'middle' | 'end' }
+  interface Spot { dx: number; dy: number; anchor: 'start' | 'middle' | 'end'; lead?: boolean }
   let marks = $derived.by(() => {
     const v = vb.current, u = upp, H = mapW * (v[3] / v[2]);
     const pts = ORIGINS.map((o) => { const [mx, my] = project(o.lat, o.lon); return { o, sx: (mx - v[0]) / u, sy: (my - v[1]) / u }; });
@@ -123,7 +123,7 @@
       if (chosen(p.o.id) || narrow || !zoomed) continue;
       if (!pts.some((q) => q !== p && Math.hypot(q.sx - p.sx, q.sy - p.sy) < 38)) ring.add(p.o.id);
     }
-    const radius = (id: string) => (ring.has(id) ? 15 : chosen(id) ? 8 : 6);
+    const radius = (id: string) => (ring.has(id) ? 15 : chosen(id) ? 13 : 6);
     // Every marker in view is an obstacle; labels try four spots around their point.
     const boxes: Box[] = pts.filter(inView).map((p) => { const r = radius(p.o.id) + 2; return { x: p.sx - r, y: p.sy - r, w: r * 2, h: r * 2 }; });
     // The open card on the map is taken space too.
@@ -132,7 +132,7 @@
     const tryPlace = (sx: number, sy: number, text: string, fs: number, r: number, force = false): Spot | null => {
       const w = text.length * fs * 0.47, h = fs + 2;
       const spots: (Spot & { b: Box })[] = [];
-      for (const g of [0, 9]) spots.push(
+      for (const g of [0, 9, 20, 34]) spots.push(
         { dx: 0, dy: -r - 4 - g, anchor: 'middle', b: { x: sx - w / 2, y: sy - r - 4 - g - fs, w, h } },
         { dx: r + 5 + g, dy: fs * 0.35, anchor: 'start', b: { x: sx + r + 5 + g, y: sy - fs * 0.65, w, h } },
         { dx: 0, dy: r + fs + 2 + g, anchor: 'middle', b: { x: sx - w / 2, y: sy + r + 2 + g, w, h } },
@@ -143,7 +143,8 @@
       const ok = spots.find((c) => within(c.b) && !boxes.some((b) => hit(b, c.b)));
       const pick = ok ?? (force ? spots.find((c) => within(c.b)) ?? spots[0] : null);
       if (pick) boxes.push(pick.b);
-      return pick ? { dx: pick.dx, dy: pick.dy, anchor: pick.anchor } : null;
+      // Labels placed away from their mark get a short leader line back to it.
+      return pick ? { dx: pick.dx, dy: pick.dy, anchor: pick.anchor, lead: Math.hypot(pick.dx, pick.dy) > r + 22 } : null;
     };
     const label = new Map<string, Spot>(), regionLabel = new Map<string, Spot>();
     // Region marks first, so the country's own name never lands on one.
@@ -153,8 +154,11 @@
       boxes.push({ x: sx - 7, y: sy - 7, w: 14, h: 14 });
       return { key: `${p.o.id}|${r.name}`, name: r.name, sx, sy };
     }));
-    for (const p of pts.filter((q) => chosen(q.o.id))) { const sp = tryPlace(p.sx, p.sy, p.o.name, 17, radius(p.o.id), true); if (sp) label.set(p.o.id, sp); }
-    for (const r of regs) { const sp = tryPlace(r.sx, r.sy, r.name, 13, 5); if (sp) regionLabel.set(r.key, sp); }
+    // Zoomed to one origin, its regions are the picture and the card names the country, so the
+    // regions get the labels; a comparison names both countries.
+    const solo = !!sel && !vs && zoomed && regs.length > 0;
+    if (!solo) for (const p of pts.filter((q) => chosen(q.o.id))) { const sp = tryPlace(p.sx, p.sy, p.o.name, 17, radius(p.o.id), true); if (sp) label.set(p.o.id, sp); }
+    for (const r of regs) { const sp = tryPlace(r.sx, r.sy, r.name, 13, 5, solo); if (sp) regionLabel.set(r.key, sp); }
     if (hover && !chosen(hover)) { const p = pts.find((q) => q.o.id === hover); if (p) { const sp = tryPlace(p.sx, p.sy, p.o.name, 14, radius(p.o.id), true); if (sp) label.set(hover, sp); } }
     if (zoomed) {
       const order = pts.filter((p) => !label.has(p.o.id) && inView(p)).sort((a, b) => Number(live(b.o)) - Number(live(a.o)));
@@ -192,7 +196,7 @@
       <AltitudeBand arabica={o.altitudeM} robusta={o.robustaAltitudeM} name={o.name} height={compact ? 150 : 166} />
     </div>
     {#if !compact}
-      <ul class="rkey" aria-label="Ring key"><li><span class="k main"></span>Main harvest</li>{#if o.harvest.second}<li><span class="k second"></span>Second crop</li>{/if}<li><span class="k edge"></span>Uncertain edge</li><li>The hand points to {MONTHS_LONG[month - 1]}</li></ul>
+      <ul class="rkey" aria-label="Ring key"><li><span class="k main"></span>Main harvest</li>{#if o.harvest.second}<li><span class="k second"></span>Second crop</li>{/if}<li><span class="k edge"></span>Edge months: sources differ</li><li>The hand points to {MONTHS_LONG[month - 1]}</li></ul>
     {/if}
     <dl class="facts">
       <div><dt>Harvest</dt><dd>{harvestText(o)}{#if o.harvest.scope && !compact && !/^This is /.test(o.harvest.variesBy ?? '')}<span class="sub">{scopeText(o.harvest.scope)}</span>{/if}{#if o.harvest.variesBy && !compact}<span class="sub">{o.harvest.variesBy.replace(/^This is (\w+);\s*/, "This calendar is $1's; ")}</span>{/if}</dd></div>
@@ -255,7 +259,7 @@
               onclick={isCoffee ? () => choose(c.id) : undefined} onmouseenter={isCoffee ? () => (hover = c.id) : undefined} onmouseleave={isCoffee ? () => (hover = null) : undefined} />
           {/each}
           <g class="mapnotes" style="font-size: {9.5 * upp}px">
-            <text x={vb.current[0] + 10 * upp} y={TROPIC_CANCER_Y - 4 * upp} class="tl">TROPIC OF CANCER</text>
+            <text x={narrow ? vb.current[0] + vb.current[2] - 10 * upp : vb.current[0] + 10 * upp} y={TROPIC_CANCER_Y - 4 * upp} text-anchor={narrow ? 'end' : 'start'} class="tl">TROPIC OF CANCER</text>
             <text x={vb.current[0] + 10 * upp} y={EQUATOR_Y - 4 * upp} class="tl">EQUATOR</text>
             <text x={vb.current[0] + 10 * upp} y={TROPIC_CAPRICORN_Y + 13 * upp} class="tl">TROPIC OF CAPRICORN</text>
             {#if zoom < 2.2}
@@ -279,6 +283,7 @@
               {@const sp = marks.regionLabel.get(`${o.id}|${r.name}`)}
               <g class="region">
                 <path d="M{rx} {ry - 5 * upp} L{rx + 5 * upp} {ry} L{rx} {ry + 5 * upp} L{rx - 5 * upp} {ry} Z" fill="#2a1d15" stroke="#fbf6ee" stroke-width={1.2 * upp} />
+                {#if sp?.lead}<line x1={rx} y1={ry} x2={rx + sp.dx * upp * 0.82} y2={ry + (sp.dy - 4) * upp * 0.82} stroke="#2a1d15" stroke-width={0.8 * upp} opacity=".55" />{/if}
                 {#if sp}<text x={rx + sp.dx * upp} y={ry + sp.dy * upp} text-anchor={sp.anchor} class="rlab" style="font-size: {13 * upp}px; stroke-width: {3 * upp}px">{r.name}</text>{/if}
               </g>
             {/each}
@@ -335,7 +340,7 @@
         <div class="mapkey" aria-hidden="true">
           <span class="kt">Key</span>
           <span><span class="dot on"></span> Harvesting in {MONTHS_LONG[month - 1]}</span>
-          <span><span class="dot edge"></span> Maybe (uncertain edge)</span>
+          <span><span class="dot edge"></span> Maybe (an edge month: sources differ)</span>
           <span><span class="dot off"></span> Not harvesting</span>
           <span class="kring">{#if zoom > 2}<span class="ringk"></span> {narrow ? 'Ring: 12 months, Jan at top' : 'Ring: its 12-month harvest calendar, January at the top'}{:else}Pick an origin to zoom in and see its year as a ring{/if}</span>
         </div>
@@ -358,7 +363,7 @@
         </div><div>
         <label class="search"><span class="lbl">Find an origin or region</span><input type="search" placeholder="e.g. Huila, Sidama, Kenya" bind:value={query} /></label>
         <div class="olist">
-          {#each CONTINENTS as c (c.id)}
+          {#each CONTINENTS.filter((c) => !narrow || !!query.trim() || c.id === region) as c (c.id)}
             {@const list = shown.filter((o) => o.continent === c.id)}
             {#if list.length}
               <p class="lgroup">{c.label}</p>
@@ -398,7 +403,7 @@
             <p class="lbl">Roasters' words, January–March 2026</p>
             <p class="small">Across {roasterWords[sel.id].lots} lots from {sel.name} in our catalog sample, the notes roasters used most:</p>
             <ul class="chips">
-              {#each roasterWords[sel.id].words as w (w.id)}<li><a class="chip" href="/explore/flavors/?note={w.id}">{w.label} <span class="n">{w.n}</span></a></li>{/each}
+              {#each roasterWords[sel.id].words as w (w.id)}<li><a class="chip" href="/explore/flavors/?note={w.id}">{w.label} <span class="n">{w.n} lots</span></a></li>{/each}
             </ul>
           </div>
         {/if}
@@ -444,7 +449,7 @@
           {/each}
         </div>
         <div class="cmpfoot">
-          <ul class="rkey" aria-label="Ring key"><li><span class="k main"></span>Main harvest</li><li><span class="k second"></span>Second crop</li><li><span class="k edge"></span>Uncertain edge</li><li>The hand points to {MONTHS_LONG[month - 1]}</li></ul>
+          <ul class="rkey" aria-label="Ring key"><li><span class="k main"></span>Main harvest</li><li><span class="k second"></span>Second crop</li><li><span class="k edge"></span>Edge months: sources differ</li><li>The hand points to {MONTHS_LONG[month - 1]}</li></ul>
           <p class="small quiet">Both altitude bands are drawn on the same scale.</p>
           <button type="button" class="linkish" onclick={() => { const t = selId; selId = vsId; vsId = t; }}>Swap the two</button>
         </div>
@@ -563,7 +568,7 @@
   .linkish { appearance: none; border: 0; background: none; padding: 2px 0; font: inherit; font-size: 15px; color: var(--crema-deep); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
   .pickvs select { appearance: none; font: 500 15px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; padding: 9px 38px 9px 14px; border: 1px solid #c9b493; border-radius: 999px; color: var(--ink); min-height: 44px; cursor: pointer; background: #fbf6ec url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%235b4a3d' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 14px center; }
   .pickvs select:focus-visible { outline: 3px solid rgba(143, 93, 34, .55); outline-offset: 2px; }
-  .cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .cmp { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
   .cmp h3 { font: 400 24px 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; margin: 0; text-align: center; }
   .cmpfoot { text-align: center; margin-top: 12px; border-top: 1px solid var(--rule); padding-top: 10px; }
   .cmpfoot p { margin: 4px 0; }
@@ -581,6 +586,11 @@
     .regions button { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 6px; line-height: 1.2; }
     .panel h2 { font-size: 32px; }
     .journey ol { grid-template-columns: 1fr; }
+    .cmp { gap: 10px; }
+    .cmp .pfacts .pair { flex-direction: column; gap: 4px; }
+    .cmp :global(svg.hring) { width: 100%; max-width: 132px; height: auto; }
+    .cmp :global(svg.ab) { width: auto; height: 132px; max-width: 100%; }
+    .cmp h3 { font-size: 21px; }
     .journey li { padding: 0 0 6px 20px; }
     .journey li::before { left: 4px; right: auto; top: 0; bottom: 0; width: 2px; height: auto; }
     .journey li::after { top: 3px; }

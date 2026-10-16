@@ -22,7 +22,7 @@
   <ul class="key" aria-label="Ring key">
     <li><span class="k main"></span>Main harvest</li>
     {#if harvest.second}<li><span class="k second"></span>Second crop</li>{/if}
-    <li><span class="k edge"></span>Uncertain edge</li>
+    <li><span class="k edge"></span>Edge months: sources differ</li>
   </ul>
 </div>
 

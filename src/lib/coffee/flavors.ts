@@ -63,7 +63,7 @@ export const FAMILIES: Family[] = [
     ['wcr-lexicon'],
     [
       ['cereal', 'Cereal', [
-        n('malt', 'Malt', 'Sweet, bready grain, like malted milk.', 'a malted milk biscuit or a spoon of malt powder', ['malt', 'malty']),
+        n('malt', 'Malt', 'Sweet, bready grain, like malted milk.', 'a malted milk ball or a spoon of malt powder', ['malt', 'malty']),
         n('grain', 'Grain', 'Toasted cereal, crackers, a dry bready edge.', 'plain crackers or toasted oats', ['grain', 'cereal', 'biscuit', 'graham cracker', 'cracker', 'digestive biscuit', 'digestive biscuits', 'shortbread', 'wafer cookie', 'fresh bread']),
       ]],
       ['burnt', 'Burnt', [
@@ -119,9 +119,9 @@ export const FAMILIES: Family[] = [
     ['synthesis', 'wcr-lexicon'],
     [
       ['brown-sugar', 'Brown sugar', [
-        n('caramel', 'Caramel', 'Cooked sugar: sweet with a toasty edge.', 'a soft caramel or caramelised sugar', ['caramel', 'caramelized', 'caramelised', 'toffee', 'butterscotch', 'creme brulee', 'dulce de leche', 'creamy caramel', 'fudge', 'light fudge'], extraWord),
+        n('caramel', 'Caramel', 'Cooked sugar: sweet with a toasty edge.', 'a soft caramel or caramelized sugar', ['caramel', 'caramelized', 'caramelised', 'toffee', 'butterscotch', 'creme brulee', 'dulce de leche', 'creamy caramel', 'fudge', 'light fudge'], extraWord),
         n('brown-sugar', 'Brown sugar', 'Moist, deep sugar with a molasses note.', 'a pinch of dark brown sugar', ['brown sugar', 'raw sugar', 'cane sugar', 'panela', 'sugar cane', 'sugarcane', 'demerara', 'turbinado', 'golden syrup']),
-        n('molasses', 'Molasses', 'Dark, thick, slightly bitter sugar.', 'a drop of molasses or black treacle', ['molasses', 'treacle']),
+        n('molasses', 'Molasses', 'Dark, thick, slightly bitter sugar.', 'a drop of molasses', ['molasses', 'treacle']),
         n('maple', 'Maple syrup', 'Woody, round sweetness.', 'a spoon of real maple syrup', ['maple', 'maple syrup']),
         n('honey', 'Honey', 'Floral, waxy sweetness.', 'a spoon of mild honey', ['honey', 'honeyed', 'orange blossom honey', 'floral honey', 'manuka honey', 'honeycomb', 'agave', 'nougat']),
       ]],
@@ -232,7 +232,7 @@ export const OFF_GROUPS: Group[] = [
     { id: 'phenolic', label: 'Phenolic', gist: 'Medicinal, plastic or burnt-rubber tones: a defect.', ref: 'an adhesive bandage, smelled', words: ['phenolic', 'medicinal'], wheel: true, flaw: true, family: 'off', group: 'papery-musty' },
   ] },
   { id: 'chemical', label: 'Chemical', family: 'off', notes: [
-    { id: 'rubber', label: 'Rubber & petroleum', gist: 'Rubber, tyre or petrol smells: counted as a defect in arabica.', ref: 'a rubber band, smelled', words: ['rubber', 'rubbery', 'petroleum'], wheel: true, flaw: true, family: 'off', group: 'chemical' },
+    { id: 'rubber', label: 'Rubber & petroleum', gist: 'Rubber, tire or gasoline smells: counted as a defect in arabica.', ref: 'a rubber band, smelled', words: ['rubber', 'rubbery', 'petroleum'], wheel: true, flaw: true, family: 'off', group: 'chemical' },
     { id: 'potato', label: 'Potato', gist: 'Raw potato: a known defect in some East African lots, mostly from Rwanda and Burundi. One affected bean can taint a cup.', ref: 'a freshly cut raw potato', words: ['potato'], wheel: false, flaw: true, family: 'off', group: 'chemical' },
   ] },
 ];

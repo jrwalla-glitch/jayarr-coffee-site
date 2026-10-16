@@ -62,6 +62,13 @@ const neighbours = ORIGINS.filter((x) => x.id !== o.id && x.continent === o.cont
 
   <div class="op">
 
+    <figure class="op-plate">
+      <div class="gp-frame" style="--mat: #e8e1d4; --matpad: 12px; --matpad-phone: 7px">
+        <OriginPlate origin={o} />
+      </div>
+      <figcaption class="gp-plaque"><b>{o.name}</b><small>A detail from The Coffee Origins</small></figcaption>
+    </figure>
+
     <section class="gp-label op-label" aria-labelledby="op-glance">
       <h2 id="op-glance">At a glance</h2>
       <div class="op-pair">
@@ -80,12 +87,6 @@ const neighbours = ORIGINS.filter((x) => x.id !== o.id && x.continent === o.cont
       <p class="op-map"><a href={`/explore/origins/?o=${o.id}`}>See {o.name} on the map, and compare it →</a></p>
     </section>
 
-    <figure class="op-plate">
-      <div class="gp-frame" style="--mat: #e8e1d4; --matpad: 12px; --matpad-phone: 7px">
-        <OriginPlate origin={o} />
-      </div>
-      <figcaption class="gp-plaque"><b>{o.name}</b><small>A detail from The Coffee Origins</small></figcaption>
-    </figure>
   </div>
 
   <Fragment slot="body">
@@ -136,10 +137,8 @@ const neighbours = ORIGINS.filter((x) => x.id !== o.id && x.continent === o.cont
 </BenchPage>
 
 <style>
-  /* The label is first in the document (it streams in first); on desktop the plate sits on the left. */
+  /* Plate, then label, in document order on every screen, so nothing moves as the page streams in. */
   .op { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 32px; align-items: start; }
-  .op-plate { grid-column: 1; grid-row: 1; }
-  .op-label { grid-column: 2; grid-row: 1; }
   .op-plate { margin: 0; }
   .op-label h2 { font: 400 30px/1.1 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; margin: 0 0 6px; }
   .op-pair { display: flex; gap: 10px; align-items: center; justify-content: center; margin: 6px 0 10px; }
@@ -164,6 +163,6 @@ const neighbours = ORIGINS.filter((x) => x.id !== o.id && x.continent === o.cont
   .op-tab th, .op-tab td { text-align: left; padding: 7px 10px; border-bottom: 1px solid #e6dccd; vertical-align: top; }
   .op-tab thead th { font: 500 11px/1 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; white-space: nowrap; }
   .op-tab tbody th { font-weight: 600; }
-  @media (max-width: 900px) { .op { grid-template-columns: 1fr; gap: 22px; } .op-plate, .op-label { grid-column: 1; grid-row: auto; } }
+  @media (max-width: 900px) { .op { grid-template-columns: 1fr; gap: 22px; } }
   @media (max-width: 640px) { .op-answer { text-align: left; } .op-lead { font-size: 21px; } .op-rest { font-size: 15.5px; } }
 </style>

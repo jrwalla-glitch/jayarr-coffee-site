@@ -65,13 +65,13 @@
     if (axis === 'time') {
       // One row per brewer, fastest at the top: a range chart drawn in stars.
       const sorted = [...ATLAS].sort((p, q) => mid(p) - mid(q));
-      const w = portrait ? 600 : W, rowH = portrait ? 46 : 36, top = portrait ? 60 : 56;
-      const h = top + sorted.length * rowH + 64;
+      const w = portrait ? 600 : W, top = portrait ? 60 : 56, rowH = portrait ? 46 : (H - top - 64) / sorted.length;
+      const h = portrait ? top + sorted.length * rowH + 64 : H;
       const x0 = portrait ? 200 : 210, x1 = w - 40;
       sorted.forEach((m, i) => {
         const x = x0 + timePosition(mid(m)) * (x1 - x0), y = top + i * rowH + rowH / 2;
         const start = x0 + timePosition(m.timeS[0]) * (x1 - x0);
-        pos[m.id] = { x, y, lx: Math.min(start, x) - 16 - x, ly: 6, anchor: 'end' };
+        pos[m.id] = { x, y, lx: Math.min(start, x) - (pushed(m) ? Math.max(16, size(m) * 3.1 + 6) : 16) - x, ly: 6, anchor: 'end' };
       });
       return { w, h, pos, hubs, chains: [sorted.map((m) => m.id)], x0, x1 };
     }
@@ -89,10 +89,11 @@
           const x = cx + swing;
           // A label stays inside its own column: if it would cross into the next one, it goes on
           // the other side of its star (or whichever side has more room).
-          const lw = atlasById(id)!.label.length * 10.4, lo = cx - colW / 2 + 4, hi = cx + colW / 2 - 4;
-          const fitsR = x + 24 + lw < Math.min(hi, W - 8), fitsL = x - 24 - lw > Math.max(lo, 8);
+          const m = atlasById(id)!, gap = pushed(m) ? Math.max(24, size(m) * 3.1 + 7) : 24;
+          const lw = m.label.length * 10.4, lo = cx - colW / 2 + 4, hi = cx + colW / 2 - 4;
+          const fitsR = x + gap + lw < Math.min(hi, W - 8), fitsL = x - gap - lw > Math.max(lo, 8);
           const right = swing >= 0 ? (fitsR || !fitsL) && (fitsR || hi - x > x - lo) : !fitsL && (fitsR || hi - x > x - lo);
-          pos[id] = beside ? { x, y, lx: right ? 24 : -24, ly: 7, anchor: right ? 'start' : 'end' } : { x, y, lx: 0, ly: 40, anchor: 'middle' };
+          pos[id] = beside ? { x, y, lx: right ? gap : -gap, ly: 7, anchor: right ? 'start' : 'end' } : { x, y, lx: 0, ly: 40, anchor: 'middle' };
         });
       });
       return { w: W, h: H, pos, hubs, chains: gs.map((g) => g.ids) };
@@ -281,7 +282,7 @@
             {/if}
             {#if by !== 'time'}
               {#if portrait}
-                <text x={L.w - 12} y="22" text-anchor="end" class="edge">in each group: quicker → slower</text>
+                <text x={L.w - 12} y="22" text-anchor="end" class="edge">along each line: quicker → slower</text>
               {:else}
                 <g class="edge" pointer-events="none">
                   <text x={L.w - 14} y={TOP + 4} text-anchor="end">quicker</text>
@@ -369,7 +370,7 @@
           </ul>
           {#if A.timeNote}<p class="quiet small fn">* {A.timeNote.replace(/^\w/, (c) => c.toUpperCase())}.</p>{/if}
           <div class="cut">{#key A.id}<BrewerCutaway method={A.id} playing={!reduced} />{/key}</div>
-          <p class="desc">{describe(A)}</p>
+          <p class="desc">{keep(describe(A))}</p>
           <dl class="nums">
             <div><dt>Ratio</dt><dd>{keep(ratioText(A))}</dd></div>
             <div><dt>Grind</dt><dd>{A.grind}</dd></div>
@@ -482,7 +483,7 @@
   .star:focus-visible .slab { text-decoration: underline; }
   /* A sky-colored halo behind each name breaks the constellation line where it passes. */
   .slab { font: 600 18px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; letter-spacing: .02em; fill: #C0C8D8; transition: fill .2s; paint-order: stroke; stroke: #12203A; stroke-width: 6px; stroke-linejoin: round; }
-  .edge, .edge text { font: italic 400 16px 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; fill: #8d9bb3; }
+  .edge, .edge text { font: italic 400 19px 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; fill: #aab6ca; }
   .slab.on { fill: #F5F0E8; }
   .pick .slab { fill: #F0D070; }
   .ring { animation: pulse 2.4s ease-in-out infinite; }
@@ -526,9 +527,10 @@
   .qbtn:hover { border-color: var(--ink-3); background: #fffaf2; }
   .detail { position: relative; }
   .x { position: absolute; top: 0; right: 0; width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--rule); background: #fff; font-size: 19px; cursor: pointer; color: var(--ink-2); }
-  .axes { list-style: none; margin: 0 0 10px; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .axes { list-style: none; margin: 0 0 10px; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
   .axes li { padding: 8px 8px 8px 0; font-size: 14.5px; font-weight: 500; }
-  .axes li + li { border-left: 1px solid var(--rule); padding-left: 10px; }
+  .axes li:nth-child(even) { border-left: 1px solid var(--rule); padding-left: 10px; }
+  .axes li:nth-child(n + 3) { border-top: 1px solid var(--rule); }
   .axes .lbl { margin-bottom: 2px; }
   .cut { max-width: 300px; margin: 0 auto; }
   @media (max-width: 640px) { .cut { max-width: 230px; } }
@@ -539,7 +541,7 @@
   .nums div:nth-child(odd) { padding-right: 10px; }
   .nums div:nth-child(even) { border-left: 1px solid var(--rule); padding-left: 10px; }
   .nums dt { font: 500 11px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); }
-  .nums dd { margin: 2px 0 0; font: 500 15px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; }
+  .nums dd { margin: 2px 0 0; font: 500 15px 'IBM Plex Sans', 'IBM Plex Sans Fallback', system-ui, sans-serif; }
   .nums small { font: 400 12px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; color: var(--ink-3); }
   .att { letter-spacing: .12em; color: var(--crema-deep); }
   .actions { display: flex; gap: 10px 14px; align-items: center; flex-wrap: wrap; margin-top: 12px; }
@@ -581,9 +583,7 @@
     .topbar > .seg.small { margin-left: auto; }
     .ghost-cap { margin-right: 0; }
     .cut :global(svg) { overflow: visible; }
-    .axes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .axes li:nth-child(3) { border-left: 0; padding-left: 0; }
-    .axes li:nth-child(n + 3) { border-top: 1px solid var(--rule); }
+
     .panel h2 { font-size: 34px; }
     .diff { font-size: 20px; }
   }
