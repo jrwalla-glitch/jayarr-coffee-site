@@ -331,3 +331,14 @@ test('espresso cleaning follows the machine\'s manual: no backflush for every ma
   // Other brewers keep their own question.
   assert.match(questionsFor({ method: 'v60', symptom: 'off', answers: {} }).find((x) => x.id === 'clean').text, /deep-clean the brewer/);
 });
+
+test('grinder advice makes no unsourced superlatives: no "#1 upgrade", "dramatically" or "far fewer" fines (batch 6)', () => {
+  const said = new Set();
+  for (const m of METHODS) for (const s of SYMPTOMS) for (const i of [0, 1, 2, 3]) {
+    const r = walk(m.id, s.id, (q) => (q.options.find((o) => o.id === 'blade') && i === 0 ? 'blade' : q.options[Math.min(i, q.options.length - 1)].id));
+    if (r.ok) for (const k of ['cause', 'why', 'changeNow', 'nextExperiment', 'ruleOut']) said.add(r.value[k] ?? '');
+  }
+  const all = [...said].join(' | ');
+  assert.match(all, /A burr grinder makes fewer fines than a blade\./);
+  assert.doesNotMatch(all, /#1|number one|dramatically|far fewer|single biggest/i);
+});
