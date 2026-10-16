@@ -217,8 +217,8 @@
   const offIndex = () => Math.max(0, OFF_GROUPS.findIndex((g) => g.id === groupId));
   const OFF_R = 6;
   function offLayout(notes: Note[]) {
-    const n = notes.length, span = n === 1 ? 0 : Math.min(160, 34 * (n - 1));
-    return { list: notes.slice(0, 8), span, rho: 52, hidden: Math.max(0, n - 8) };
+    const n = notes.length, span = n === 1 ? 0 : Math.min(phone() ? 200 : 160, (phone() ? 46 : 34) * (n - 1));
+    return { list: notes.slice(0, 8), span, rho: phone() ? 62 : 52, hidden: Math.max(0, n - 8) };
   }
   /** The corner the flower's core falls in when its family is open: the inset sits there. */
   let corner = $derived.by(() => {

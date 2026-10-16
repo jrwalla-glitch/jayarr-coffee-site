@@ -161,7 +161,7 @@
     for (const r of regs) { const sp = tryPlace(r.sx, r.sy, r.name, 13, 5, solo); if (sp) regionLabel.set(r.key, sp); }
     if (hover && !chosen(hover)) { const p = pts.find((q) => q.o.id === hover); if (p) { const sp = tryPlace(p.sx, p.sy, p.o.name, 14, radius(p.o.id), true); if (sp) label.set(hover, sp); } }
     if (zoomed) {
-      const order = pts.filter((p) => !label.has(p.o.id) && inView(p)).sort((a, b) => Number(live(b.o)) - Number(live(a.o)));
+      const order = pts.filter((p) => !label.has(p.o.id) && inView(p) && !(solo && chosen(p.o.id))).sort((a, b) => Number(live(b.o)) - Number(live(a.o)));
       for (const p of order) { const sp = tryPlace(p.sx, p.sy, p.o.name, 14, radius(p.o.id)); if (sp) label.set(p.o.id, sp); }
     }
     return { ring, label, regionLabel };
