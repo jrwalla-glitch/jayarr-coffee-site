@@ -155,3 +155,11 @@ test('the espresso recipe is credited as within Rao\'s published ranges, and it 
   assert.ok(v.timeS.min >= 25 && v.timeS.max <= 40);
   assert.ok(v.tempC >= 91 && v.tempC <= 95);
 });
+
+test('R11: the extraction-yield ranges no longer credit the Newcastle 2018 study (Wave A follow-ups 2, item 6)', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const src = await readFile(new URL('../methods.ts', import.meta.url), 'utf8');
+  const doc = src.slice(src.lastIndexOf('/**', src.indexOf('export const EY_BY_METHOD')), src.indexOf('export const EY_BY_METHOD'));
+  assert.match(doc, /synthesis §17/);
+  assert.doesNotMatch(src, /Newcastle/);
+});

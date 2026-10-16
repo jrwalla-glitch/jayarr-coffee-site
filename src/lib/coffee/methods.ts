@@ -191,7 +191,9 @@ export const METHODS: Method[] = [
   },
 ];
 
-/** Extraction yield ranges by method, synthesis §17 (Newcastle 2018, Gloess 2013). */
+/** Extraction yield ranges by method, from synthesis §17's comparison table (claims register R11). The table credits
+ *  no study for its yield column; its one study credit covers the caffeine concentrations, and that study no longer
+ *  backs any engine figure (R1). */
 export const EY_BY_METHOD: Record<MethodId, Range> = {
   v60: { min: 19, max: 21 },
   chemex: { min: 18, max: 20 },
