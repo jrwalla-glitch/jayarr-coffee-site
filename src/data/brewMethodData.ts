@@ -309,7 +309,7 @@ export const methods: BrewMethod[] = [
       { methodId: 'aeropress', relationship: 'AeroPress with Prismo attachment mimics espresso concentration but at much lower pressure' },
     ],
     articles: [
-      { slug: 'best-espresso-machines-under-500-2026-7-picks-for-every-budget', title: 'Best Espresso Machines Under $500 in 2026: 7 Picks' },
+      { slug: 'best-espresso-machines-under-500-2026-7-picks-for-every-budget', title: 'Best Espresso Machines Under $500: What to Look For, and 8 Machines Compared' },
       { slug: 'espresso-battle-royale-reviews-of-gaggia-breville-bambino-and-phillips-3200', title: 'Gaggia vs Breville vs Philips: Which Espresso Machine?' },
       { slug: 'whats-different-about-ristretto-or-lungo-espresso-shots', title: 'Ristretto vs Lungo vs Normal Espresso' },
     ],
