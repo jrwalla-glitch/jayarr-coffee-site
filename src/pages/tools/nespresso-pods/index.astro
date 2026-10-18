@@ -1,123 +1,83 @@
 ---
+import '@fontsource/instrument-serif/400.css';
+import '@fontsource/instrument-serif/400-italic.css';
+import '@fontsource/ibm-plex-sans/400.css';
+import '@fontsource/ibm-plex-sans/500.css';
+import '@fontsource/ibm-plex-sans/600.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
 import BaseHead from '../../../components/BaseHead.astro';
 import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
-import NespressoPods from '../../../components/tools/NespressoPods.svelte';
+import PodExplorer from '../../../components/coffee/PodExplorer.svelte';
+
+const title = 'Nespresso Pod Explorer: Original and Vertuo Capsules by Cup Size and Intensity';
+const description = 'Pick your machine and see Nespresso’s US Original or Vertuo capsules, carafe sizes aside, laid out by cup size and intensity. Open one for its roast, aroma notes and the cup it pours.';
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead
-			title="Nespresso Pod Explorer — JayArr Coffee"
-			description="Explore Nespresso Original and Vertuo capsules: filter by system, intensity, roast and category, and open any pod for its details."
-		/>
+		<BaseHead title={title} description={description} />
 		<script type="application/ld+json" set:html={JSON.stringify({
-			"@context": "https://schema.org",
-			"@type": "WebApplication",
-			"name": "Nespresso Pod Explorer",
-			"url": "https://jayarr.coffee/tools/nespresso-pods/",
-			"description": "Explore Nespresso Original and Vertuo capsules: filter by system, intensity, roast and category, and open any pod for its details.",
-			"applicationCategory": "UtilityApplication",
-			"operatingSystem": "Any",
-			"offers": {
-				"@type": "Offer",
-				"price": "0",
-				"priceCurrency": "USD"
-			},
-			"publisher": {
-				"@type": "Organization",
-				"name": "JayArr Coffee",
-				"url": "https://jayarr.coffee"
-			}
+			'@context': 'https://schema.org', '@type': 'WebApplication', name: 'Nespresso Pod Explorer', url: 'https://jayarr.coffee/tools/nespresso-pods/', description,
+			applicationCategory: 'UtilityApplication', operatingSystem: 'Any', offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, publisher: { '@type': 'Organization', name: 'JayArr Coffee', url: 'https://jayarr.coffee' },
 		})}></script>
-		<script type="application/ld+json" set:html={JSON.stringify({
-			"@context": "https://schema.org",
-			"@type": "HowTo",
-			"name": "How to Find the Right Nespresso Pod",
-			"description": "Filter and compare Nespresso Original and Vertuo capsules by line, intensity, roast level and category to find your next pod.",
-			"totalTime": "PT2M",
-			"step": [
-						{
-									"@type": "HowToStep",
-									"position": 1,
-									"name": "Choose your Nespresso system",
-									"text": "Filter by Original Line (traditional espresso-style, 19-bar pressure extraction) or Vertuo Line (centrifugal extraction, multiple cup sizes from espresso to carafe)."
-						},
-						{
-									"@type": "HowToStep",
-									"position": 2,
-									"name": "Set your intensity preference",
-									"text": "Use the intensity filter to narrow results. Lower intensity (1-5) means lighter roast and brighter acidity. Higher intensity (8-13) means darker roast, heavier body, and more bitterness. Intensity does not equal caffeine content."
-						},
-						{
-									"@type": "HowToStep",
-									"position": 3,
-									"name": "Narrow by category and roast",
-									"text": "Pick a category, a roast level, decaf or flavored pods, or search by name. Each pod lists its aroma notes."
-						},
-						{
-									"@type": "HowToStep",
-									"position": 4,
-									"name": "Compare and decide",
-									"text": "Open a pod to see its roast, aroma notes, category and cup size, with a similar pod from the same system where there is one."
-						}
-			]
-})}></script>
 	</head>
-	<body class="bg-cream">
+	<body class="cf-page">
 		<Header />
+		<main>
+			<section class="cf-intro">
+				<a href="/tools/" class="cf-back">← All tools</a>
+				<p class="cf-kicker">Nespresso Pod Explorer</p>
+				<h1>Your machine's capsules, <em>on one wall</em></h1>
+				<p class="cf-lede">Choose Original or Vertuo. Each capsule sits on a wall by the cup it makes and how intense Nespresso rates it; pick one to see its roast, its aroma notes and the cup it pours.</p>
+			</section>
+			<section class="cf-tool" aria-label="Nespresso Pod Explorer"><PodExplorer client:load /></section>
 
-		<!-- Hero -->
-		<section class="bg-charcoal pt-32 pb-12 md:pb-16">
-			<div class="max-w-3xl mx-auto px-6 text-center">
-				<a href="/tools/" class="text-xs uppercase tracking-widest text-cream/40 hover:text-copper transition-colors">
-					&larr; All Tools
-				</a>
-				<h1 class="font-serif text-3xl md:text-5xl font-bold text-cream mt-3 mb-3">Nespresso Pod Explorer</h1>
-				<p class="text-cream/60 max-w-lg mx-auto leading-relaxed text-sm">
-					Nespresso Original and Vertuo capsules in one place. Filter, open any pod for its details, and find your next favorite.
-				</p>
-			</div>
-		</section>
+			<article class="cf-body">
+				<h2>Original or Vertuo?</h2>
+				<p>The two systems don't share capsules. <strong>Original</strong> machines push water through a small, flat-topped capsule with a pump, the way an espresso machine does, and make espresso, ristretto and lungo. <strong>Vertuo</strong> machines read a barcode on the rim of a dome-shaped capsule and spin it while brewing, which is how one machine makes everything from an espresso to a large mug. If you're not sure which you have, look at a used capsule: a flat top is Original, a dome is Vertuo.</p>
 
-		<!-- Explorer -->
-		<section class="py-12 md:py-16">
-			<div class="max-w-4xl mx-auto px-6">
-				<NespressoPods client:load />
-			</div>
-		</section>
+				<h2>What the intensity number means</h2>
+				<p>Nespresso's intensity scale runs from 1 to 13. It describes roast darkness, body and bitterness, not caffeine: an 11 tastes darker and heavier than a 5, but it isn't "stronger" in caffeine. Caffeine depends mostly on how much coffee is in the capsule and on the beans; robusta has roughly twice the caffeine of arabica by weight, so capsules blended with robusta usually carry more. Some milk-recipe capsules have no intensity rating at all; they sit in the wall's <em>n/r</em> column.</p>
 
-		<section class="py-16 px-6">
-			<div class="prose mx-auto">
-				<h2>Understanding Nespresso Capsules</h2>
-				<p>Nespresso capsules are engineered to solve the consistency problem in coffee brewing. Every variable that a barista controls manually — dose, grind size, water temperature, extraction time, and pressure — is pre-determined and locked inside a sealed aluminum pod. The result is very repeatable: from one pod to the next, the cup varies far less than it does from hand-made espresso, though machine temperature and descaling still make a difference.</p>
-				<p>The system operates in two distinct formats. The Original Line uses a 19-bar pump to force water through a small, flat capsule containing approximately 5-6 grams of finely ground coffee. The result approximates espresso — concentrated, with crema, typically 25-40ml per shot. The Vertuo Line uses centrifugal extraction: the capsule spins at up to 7,000 RPM while water is injected, creating a centrifugal force that pushes water through the coffee. Different capsule sizes and barcode-driven brew parameters allow Vertuo machines to produce everything from espresso-sized shots to large mugs and carafe-sized pods. The two systems are physically incompatible — Original capsules will not fit Vertuo machines and vice versa.</p>
-				<p>Nespresso’s intensity rating is one of the most misunderstood numbers in coffee. It does not measure caffeine content, quality, or extraction level. It is a composite score reflecting roast darkness, body, and bitterness perception on a 1-13 scale. A pod rated 11 is not “stronger” in caffeine than one rated 5 — it is darker roasted, heavier bodied, and more bitter. Caffeine content is determined primarily by the coffee dose and the Robusta-to-Arabica blend ratio: Robusta contains roughly twice the caffeine of Arabica by weight, so pods blended with Robusta for body and crema will typically deliver more caffeine per serving regardless of their intensity rating.</p>
-				<p>Flavor variation across the Nespresso range comes from three levers: origin selection (single-origin vs. blend), roast level (Nordic light through Italian dark), and processing method. The Master Origin series highlights geographic character — Ethiopian pods tend toward floral and fruity notes driven by the same terroir and varietal genetics that make Ethiopian specialty coffee prized by roasters worldwide. Nespresso describes its Colombia pods as fruity. Indonesian pods deliver the earthy, full-bodied character created by the traditional Giling Basah (semi-washed) processing method unique to Sumatra and Sulawesi. Barista Creations are blends made for milk drinks: some are flavored, such as vanilla or caramel, and some, such as Chiaro, Scuro and Corto, are not.</p>
-				<p>The environmental question deserves direct engagement. Aluminum Nespresso pods are infinitely recyclable in theory, but actual recycling rates depend on consumer participation in Nespresso’s return programs. The company operates collection points and mail-back programs in most markets where the aluminum is recovered and reprocessed and the spent coffee grounds are composted. Whether capsule coffee is more or less wasteful than traditional brewing depends on what you’re comparing: capsules eliminate the common waste of brewing more coffee than you drink, but they add packaging material that doesn’t exist in loose-bean brewing. The sealed capsule does offer one genuine quality advantage — it prevents the oxygen exposure and moisture absorption that degrade whole beans from the moment the bag is opened. A sealed Nespresso pod maintains its aromatic profile for months, while an opened bag of specialty beans begins losing its most volatile compounds within days.</p>
-			</div>
-		</section>
+				<h2>Choosing by cup size</h2>
+				<p>Each Vertuo capsule is made for a size of drink, from a 25 ml ristretto to the 355 ml Alto and Cold Brew Style capsules (carafe capsules aren't listed here), so the size you want comes first. The 355 ml XL capsules need a newer Vertuo machine: Nespresso lists the Creatista, Lattissima, Next, Pop and Up, not the original Vertuo, Evoluo or VertuoPlus. Original capsules make ristretto (25 ml), espresso (40 ml) or lungo (110 ml), and a few, such as the flavored Barista Creations, are made for a lungo. A lungo capsule is blended and ground for the longer drink, so it isn't simply an espresso capsule run longer. The cups drawn in the explorer share one width, so their heights compare volumes directly.</p>
 
-		<!-- Related articles -->
-		<section class="bg-charcoal py-12">
-			<div class="max-w-3xl mx-auto px-6 text-center">
-				<span class="text-xs uppercase tracking-widest text-copper font-medium">Learn More</span>
-				<h2 class="font-serif text-xl md:text-2xl font-bold text-cream mt-2 mb-6">Related Articles</h2>
-				<div class="flex flex-wrap justify-center gap-4">
-					<a href="/blog/what-is-nespresso-and-which-is-the-best/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						Nespresso Guide
-					</a>
-					<a href="/blog/espresso-vs-drip-coffee/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						Espresso vs Drip
-					</a>
-					<a href="/blog/whats-different-about-ristretto-or-lungo-espresso-shots/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-						Ristretto vs Lungo
-					</a>
-				</div>
-			</div>
-		</section>
+				<h2>Tasting several side by side</h2>
+				<p>The quickest way to find a favorite is to taste two or three at once. Add capsules to a flight, brew them into the same kind of cup one after another, and taste from mildest to most intense. If you drink milk drinks, taste them with milk too: the Barista Creations range is blended for milk, and several of its capsules have no intensity rating.</p>
 
+				<h2>Related guides</h2>
+				<ul>
+					<li><a href="/blog/what-is-nespresso-and-which-is-the-best/">What is Nespresso, and which is the best?</a></li>
+					<li><a href="/blog/whats-different-about-ristretto-or-lungo-espresso-shots/">Ristretto vs lungo</a></li>
+					<li><a href="/blog/espresso-vs-drip-coffee/">Espresso vs drip coffee</a></li>
+				</ul>
+
+				<h2>Sources</h2>
+				<ul class="cf-sources">
+					<li>Nespresso, the US Original and Vertuo catalogues and product pages (range, cup sizes, intensities, aroma notes, roast filters and roastiness), checked October 15, 2026. Each capsule links to the Nespresso page its details came from, usually its own product page.</li>
+				</ul>
+			</article>
+		</main>
 		<Footer />
 	</body>
 </html>
+
+<style is:global>.cf-page { background: #f3ede3; }</style>
+<style>
+	main { color: #2a1d15; }
+	.cf-intro { max-width: 1180px; margin: 0 auto; padding: 120px 24px 22px; }
+	.cf-back { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; text-decoration: none; }
+	.cf-kicker { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: #8f5d22; margin: 26px 0 0; }
+	h1 { font: 400 clamp(40px, 6vw, 68px)/.98 'Instrument Serif', Georgia, serif; letter-spacing: -.01em; margin: 10px 0 12px; }
+	h1 em { font-style: italic; color: #7a4e30; }
+	.cf-lede { font: 400 17px/1.5 'IBM Plex Sans', system-ui, sans-serif; color: #5b4a3d; max-width: 62ch; margin: 0; }
+	.cf-tool { max-width: 1180px; margin: 0 auto; padding: 8px 24px 40px; }
+	.cf-body { max-width: 760px; margin: 0 auto; padding: 24px 24px 72px; font: 400 17px/1.7 'IBM Plex Sans', system-ui, sans-serif; }
+	.cf-body h2 { font: 400 34px/1.1 'Instrument Serif', Georgia, serif; margin: 44px 0 12px; }
+	.cf-body a { color: #7a4e30; text-underline-offset: 3px; }
+	.cf-sources { font-size: 14.5px; color: #5b4a3d; }
+	@media (max-width: 640px) { .cf-intro { padding: 96px 16px 18px; } .cf-tool { padding: 4px 12px 32px; } .cf-body { padding: 16px 16px 56px; } }
+</style>
