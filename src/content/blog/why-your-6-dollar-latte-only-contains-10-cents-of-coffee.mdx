@@ -1,261 +1,86 @@
 ---
-title: "Latte Cost Breakdown: Why Your $6 Latte Has $0.10 of Coffee"
-description: "We traced every cent in a $6 latte — from the $0.10 bean to the 13.8% profit margin. Here's who actually makes money on your morning coffee."
+title: "Latte Cost Breakdown: How Much of a $6 Latte Is Coffee?"
+description: "What the coffee and milk in a six-dollar latte cost at September 2026 prices, with the ICO and BLS figures and the arithmetic shown, and where the rest of the price goes."
 pubDate: "Mar 16 2026"
-updatedDate: "May 5 2026"
+updatedDate: "Oct 15 2026"
 heroImage: "../../assets/blog/why-your-6-dollar-latte-only-contains-10-cents-of-coffee.jpg"
 category: "Science"
 ---
-import FAQ from '../../components/FAQ.astro';
 import AnswerBox from '../../components/AnswerBox.astro';
-import ArticleSchema from '../../components/ArticleSchema.astro';
 import ToolCallout from '../../components/ToolCallout.astro';
 
-<ArticleSchema
-  title="Latte Cost Breakdown: Why Your $6 Latte Has $0.10 of Coffee"
-  description="We traced every cent in a $6 latte — from the $0.10 bean to the 13.8% profit margin. Here's who actually makes money on your morning coffee."
-  pubDate="Mar 16 2026"
-  updatedDate="May 5 2026"
-  heroImage="/images/blog/why-your-6-dollar-latte-only-contains-10-cents-of-coffee.jpg"
-  category="Science"
-/>
+<AnswerBox answer="At September 2026 prices, the green coffee in a double-shot latte (18 g roasted, the Brew Guide's espresso dose) cost about 13 cents on the International Coffee Organization's composite price, or 14 to 17 cents for arabica, so the old '10 cents' figure no longer holds. Even at US retail prices, the coffee and milk come to about 56 to 62 cents, roughly a tenth of a six-dollar latte. The rest pays for staff, rent, equipment and the shop's margin, which at Starbucks was 7.9 percent of revenue in fiscal 2025." />
 
-<AnswerBox answer="A $6 latte contains about $0.10 worth of actual green coffee beans — less than 2% of the price. The rest goes to labor (25-35% of revenue), rent, equipment amortization, milk, cups, credit card processing, and the shop's profit margin of roughly $0.96 per drink. The farmer who grew those beans earns about $0.03-0.04 per cup." />
+Take a six-dollar latte, a round example price; what you pay depends on the city and the shop. This page works out what's physically in it, what those ingredients cost at published prices, and where published café accounts say the rest goes. Every price has a date and a source, and every per-cup figure is calculated, with the arithmetic shown.
 
-That six dollar latte you buy every morning. You know what's in it — espresso, steamed milk, maybe a pump of vanilla. But do you know what you're actually *paying* for?
+## What's in a latte
 
-The coffee beans in that cup — the ones a farmer grew, picked by hand, and shipped across an ocean — cost about ten cents. Ten cents out of six dollars. Less than two percent of the price. The other $5.90 goes somewhere, and where it goes tells you everything about the economics of the thing 400 million Americans drink every single day.
+Recipes vary, so these are the reference amounts this page uses:
 
-Here's the full breakdown, from the farm to the cup to the cash register.
+- **Coffee:** a double shot. Our Brew Guide's espresso recipe, from Scott Rao's parameters, starts at 18 g of ground coffee for 36 g in the cup.
+- **Milk:** a Spanish specialty recipe in our Coffee Drinks tool uses 40 g of espresso, close to the Brew Guide's 36 g, and 180 to 240 g of milk. An Italian latte from illy uses a single shot and 120 ml of whole milk, so the milk in a café latte varies a lot.
 
-## What's Physically Inside a $6 Latte
+<ToolCallout tool="brew" preset={{ method: 'espresso', dose: 18 }} cta="Open the Brew Guide at 18 g" context="Opens the Brew Guide's espresso recipe at 18 g: 36 g in the cup, a 25- to 30-second shot timed from pressing the button, and a starting temperature by roast. Its Longer and Shorter settings change the ratio to 1:2.5 or 1:1.5." />
 
-A standard latte uses a double espresso shot — about 18 grams of ground coffee. At wholesale prices, that's roughly **$0.25 to $0.43** worth of roasted beans.
+<ToolCallout tool="drinks" preset={{ a: 'latte-ineffable', b: 'latte-illy' }} cta="Compare two latte recipes" context="Opens Coffee Drinks with a Spanish specialty latte, a double shot with 180–240 g of milk, beside illy's single-shot latte with 120 ml of whole milk, drawn to the same scale with each recipe's source. It shows how much of each drink is milk; it doesn't price anything." />
 
-But those beans started as raw green coffee — the commodity that farmers actually grow and sell. At commodity prices, the green beans in your latte cost about **$0.08 to $0.10**. That's the number in our title, and it checks out.
+## What the coffee costs
 
-Then there's everything else:
+Coffee is priced at several points on its way to your cup. Two have published, dated figures: green coffee on the world market, and ground coffee in US stores. We found no published, dated index of what cafés pay roasters for roasted beans, so this page doesn't guess it.
 
-| Ingredient | Cost to the Shop |
-|---|---|
-| Green coffee beans (raw commodity) | $0.08 - $0.10 |
-| Roasted beans (wholesale) | $0.25 - $0.43 |
-| Whole milk (9 oz) | $0.21 - $0.36 |
-| Paper cup | $0.10 - $0.15 |
-| Lid | $0.05 - $0.08 |
-| Sleeve | $0.05 - $0.07 |
-| Vanilla syrup (1 pump) | $0.20 - $0.45 |
-| **Total raw materials** | **$0.89 - $1.42** |
+**Green coffee.** The ICO's composite indicator price, which blends arabica and robusta, averaged 262.18 US cents a pound in September 2026. Its arabica groups ranged from 290.19 cents (Brazilian naturals) to 356.15 cents (Colombian milds), and robustas averaged 167.49 cents.
 
-Total raw materials for a flavored latte come to roughly **$0.89 to $1.42** on a six dollar drink. That means about 15-24% of what you paid went to ingredients.
+Beans lose weight in roasting, so a roaster needs more green coffee than the roasted coffee it sells. An example from the Specialty Coffee Association of America, in a chapter Robert Thurston adapted for *Coffee: A Comprehensive Guide*, allows for an 18 percent "shrinkage loss" and calls such a loss typical, since some of the green beans' weight is water that escapes as steam; the roaster's cost example in Mark Pendergrast's *Uncommon Grounds* uses the same 18 percent. On that figure, 18 g of roasted coffee started as about 22 g of green coffee (18 ÷ 0.82, calculated). A pound is 453.6 g, so:
 
-The other 76-85%? That's where it gets interesting.
-
-<ToolCallout tool="caffeine" context="Curious how much caffeine is in that double-shot latte? Track your daily intake against recommended limits." />
-
-## Where the Other $5 Actually Goes
-
-### Labor: The Biggest Cost
-
-The biggest expense in any coffee shop isn't ingredients. It's people.
-
-**Labor takes 25-35% of a coffee shop's revenue.** The barista making your latte earns about $16 per hour on average. Run a seven-day operation with two staff per shift and you're looking at $10,000 a month in wages alone — before benefits, payroll taxes, or shift coverage for sick days.
-
-On a $6 latte, roughly **$1.50 to $2.10** goes to labor costs.
-
-### Rent: The Second-Biggest Line Item
-
-A sit-down cafe needs 1,500 to 2,000 square feet. In a decent urban location, that's **$2,000 to $8,000 a month**. The industry rule of thumb: if rent exceeds 10% of revenue, you're in trouble.
-
-### Equipment: The Upfront Hit
-
-A commercial espresso machine runs **$5,000 to $30,000**. A quality commercial grinder adds $1,500 to $4,000. Total equipment to open a shop? **$80,000 to $300,000.** That cost gets amortized into every drink over years. If you're curious about the home espresso equivalent, even consumer machines represent a significant investment — here's our guide to [the best espresso machines under $500](/blog/best-espresso-machines-under-500-2026-7-picks-for-every-budget/) and [under $200](/blog/best-espresso-machines-under-200/).
-
-### Credit Card Processing: The Hidden Drain
-
-This one surprises people. The processing fee is about **2-3% per transaction, plus a fixed per-swipe charge of $0.05 to $0.10**. On a $5 coffee, that per-swipe fee hits four times harder than on a $100 purchase. When your average ticket is five bucks, processing costs eat into margins fast.
-
-### Waste: The Invisible Cost
-
-Cafes throw away **20-25% of their milk** — overfilled pitchers, remakes, expired stock. That works out to roughly **$1,500 a year** in wasted milk alone.
-
-### The Full Operating Picture
-
-| Cost Category | % of Revenue |
-|---|---|
-| Labor (wages, benefits, payroll taxes) | 25 - 35% |
-| Rent and occupancy | 8 - 15% |
-| Cost of goods (ingredients, cups, supplies) | 15 - 24% |
-| Equipment amortization | 3 - 8% |
-| Credit card processing | 2 - 4% |
-| Utilities, insurance, marketing, waste | 5 - 10% |
-| **Total operating costs** | **75 - 85%** |
-| **Remaining for profit** | **15 - 25%** |
-
-Add it all up — labor, rent, equipment, utilities, insurance, processing, marketing, waste — and total operating costs hit **75-85% of revenue**. The owner keeps what's left, and "what's left" is often thinner than you'd expect.
-
-## The Supply Chain: Farm to Cup
-
-The story of that ten-cent coffee bean is really a story about a very long supply chain with markups at every stage.
-
-A coffee farmer — usually a smallholder with a few acres in Brazil, Colombia, Ethiopia, or Vietnam — sells raw green beans for about **$1.00 to $1.50 per pound**. After processing and export, those beans trade at the commodity price: roughly **$1.60 to $2.80 per pound**.
-
-Then they cross an ocean. Shipping and import costs add another **$1.00 to $1.50**. A roaster buys those green beans for **$3.00 to $5.00 per pound**. Roasting adds $2.00 to $4.00 more — partly because you lose nearly 15% of the weight in the process. The beans literally shrink as moisture and CO2 escape. (If you want to understand what happens during roasting in more detail, we covered [the chemistry of roast levels](/blog/coffee-roast-levels-explained/) in depth.)
-
-By the time a cafe buys roasted beans wholesale, they're paying **$8 to $12 per pound**. The national restaurant average is about **$10.92**.
-
-And when those beans get brewed and sold by the cup? One pound makes roughly 20-30 drinks. At $5-6 each, that pound generates **$42 to $70** in revenue.
-
-| Supply Chain Stage | Price per Pound |
-|---|---|
-| Farmer sells green beans | $1.00 - $1.50 |
-| Commodity/export price | $1.60 - $2.80 |
-| After shipping and import | $3.00 - $5.00 |
-| After roasting | $8.00 - $12.00 |
-| Revenue when brewed and sold | $42 - $70 |
-| **Total markup: farm to cup** | **30x - 70x** |
-
-The total markup from the farm gate to your hand? **Thirty to seventy times.** That's not a typo.
-
-## The Farmer's Share
-
-Here's the part that's hard to hear.
-
-The World Economic Forum estimates that the farmer who grew the beans in your latte earns about **$0.03 to $0.04 per cup**. That's roughly **1%** of what you paid.
-
-**5.5 million** of the world's 12.5 million smallholder coffee farmers live below the international poverty line of $3.20 a day. Many experience three to eight months of food scarcity every year. They grow one of the world's most popular beverages and can't reliably feed their families.
-
-Fair Trade and Direct Trade programs help some farmers earn **20-50% more per pound**. But most of the world's coffee still moves through commodity markets where the farmer's share is a tiny fraction of the retail price.
-
-And even when prices spike — like they did in 2024 and 2025 during the [global coffee crisis](/blog/why-is-coffee-so-expensive-now-the-9-coffee-crisis/) — many farmers don't actually earn more. The droughts that drove prices up also destroyed their crops. Higher price per bag times fewer bags often equals the same income. Or less.
-
-## The Oat Milk Question
-
-This might be the most revealing detail in coffee shop economics.
-
-Dairy whole milk costs the shop about **$0.02 per ounce**. Oat milk costs about **$0.06 per ounce**. So switching your latte to oat milk costs the shop roughly **$0.36 extra**.
-
-What do they charge you? **$0.50 to $1.50.** For $0.36 of additional cost.
-
-That upcharge has been one of the highest-margin moves in the history of coffee shops — an **8x to 25x markup** on the actual cost difference.
-
-To be fair, some of that premium covers higher spoilage rates and the complexity of stocking multiple milk options. But the math is the math.
-
-The tide is turning, though. Starbucks dropped their plant milk upcharge in November 2024, and over 325 chains have followed. But your neighborhood indie shop might still charge that extra dollar — and for a business running on 13% margins, it's hard to blame them.
-
-## Drip vs. Latte: What Shops Really Want You to Order
-
-If you're a coffee shop owner, what do you actually want people to order?
-
-| | Drip Coffee | Latte |
+| Price basis, September 2026 (checked October 18, 2026) | Price per pound | Coffee in an 18 g double (calculated) |
 |---|---|---|
-| **Retail price** | $2.50 - $3.50 | $5.00 - $6.00 |
-| **Cost to make** | $0.25 - $0.50 | $1.00 - $1.40 |
-| **Gross margin** | 80 - 90% | 70 - 85% |
-| **Absolute profit per drink** | About $2.50 | About $3.50 - $4.50 |
+| ICO composite, green | 262.18 cents | about 13 cents |
+| ICO Brazilian naturals, green | 290.19 cents | about 14 cents |
+| ICO Colombian milds, green | 356.15 cents | about 17 cents |
+| ICO robustas, green | 167.49 cents | about 8 cents |
+| BLS US average, ground coffee | $9.33 | about 37 cents |
 
-A drip coffee has the *highest margin percentage* on the menu — 80-90%. But a latte generates **$3.50 to $4.50 in absolute profit** versus about $2.50 for drip. You'd need almost two drip sales to match one latte.
+The green rows are 22 g × the price per gram; the ground row is 18 g × the price per gram, with no roasting loss because the coffee is already roasted. That's the arithmetic behind the old "10 cents of coffee": it works only at green prices of about 207 cents a pound or less (calculated). At September 2026 prices, only the robusta indicator comes in below it. For why prices rose and where they are heading, see our [coffee price explainer](/blog/why-is-coffee-so-expensive-now-the-9-coffee-crisis/), which uses the same ICO and BLS series.
 
-When you're paying $16 per hour for labor and $8,000 a month for rent, you need every customer spending as much as possible. Margin percentage matters. But **absolute dollars per transaction matter more.**
+## What the milk costs
 
-That's why the menu boards feature the lattes. That's why seasonal specials are always espresso-based. The drip coffee is more profitable per unit of ingredient. But the latte is more profitable per customer.
+The US Bureau of Labor Statistics put a gallon of whole milk at $4.11 on average in September 2026 (checked October 18, 2026). The USDA weighs a quart of whole milk at 976 g, so a gallon is about 3,904 g (calculated). At that price, the Spanish recipe's 180 to 240 g of milk costs about 19 to 25 cents (calculated). A café buys milk in bulk and may pay a different price.
 
-(And if you're a drip coffee person curious about espresso drinks, here's our guide to [what a cortado actually is](/blog/what-is-a-cortado/) and [the difference between ristretto and lungo shots](/blog/whats-different-about-ristretto-or-lungo-espresso-shots/).)
+So at US retail prices the coffee and milk in a double-shot latte come to about 56 to 62 cents, about 9 to 10 percent of six dollars (calculated). Cups, lids and syrup aren't counted, because we found no dated public price for them.
 
-## How Coffee Compares to Other Beverage Markups
+## Where the rest goes
 
-Before you get too worked up about coffee markups, here's some context from across the food service industry:
+No public source itemizes one latte, but two published accounts show how a café's money divides.
 
-| Beverage | Typical Markup |
-|---|---|
-| Fountain soda | 1,100%+ |
-| Iced tea | 1,000 - 2,000% |
-| Cocktails | 400 - 500% |
-| **Latte** | **500 - 700%** |
-| Draft beer | 200 - 300% |
-| Wine by the glass | About 200% |
+**A café example (Specialty Coffee Association of America, 2010).** Thurston's chapter "Where Does the Money Go in the Coffee Supply Chain?" adapts an SCAA example of a shop selling 16-ounce brewed coffees, using certified Fair Trade organic beans. Working from its figures, the roasted beans were about 26 percent of the shop's sales, and labor about 20 percent, "the biggest single expense of all." The lease was about 7 percent, and the shop's net profit after taxes about 6 percent (all calculated from the example). Thurston adds that the retailers he interviewed said beans were usually less than 20 percent of their costs and that "everywhere labor is the greatest expense." The example is for brewed coffee, not lattes, and it is dated; treat the shares as an illustration.
 
-That $2 Coke at a restaurant costs about $0.05 to $0.12 to produce — cup, syrup, carbonated water. That's it. Iced tea is even more extreme.
+**A chain's accounts (Starbucks, fiscal 2025).** Starbucks' annual report for the year to September 28, 2025, reports these shares of total net revenue:
 
-Your latte's 500-700% markup puts it right in the middle of the pack. And wine by the glass has one of the *lowest* markups on a typical menu — about 200%. Why? Because customers can look up the retail price on the bottle. The transparency keeps markups honest.
+- **Product and distribution costs:** 31.4 percent.
+- **Store operating expenses:** 45.9 percent. The company attributes part of the year's rise to "additional labor."
+- **Operating margin:** 7.9 percent, down from 15.0 percent the year before.
 
-The entire food service industry runs on high markups and thin margins. Coffee isn't the exception. It's the norm.
+These cover the whole company, including its licensed stores and packaged-coffee business, not a latte on its own. On a six-dollar drink, a 7.9 percent margin would be about 47 cents (calculated).
 
-## The Business Reality: Why Most Coffee Shops Fail
+## Plant milk
 
-Those thin margins bring us to an uncomfortable truth.
+Starbucks used to charge extra for non-dairy milk. It announced on October 30, 2024 that, from November 7, customers at its company-operated stores in the US and Canada would no longer pay extra for non-dairy milk. Independent shops set their own prices. For how oat and dairy milk behave in a latte, see our [oat milk versus dairy guide](/blog/oat-milk-vs-dairy-in-coffee/).
 
-**50-75% of independent coffee shops close within five years.** The average profit margin for the ones that survive? **13.8%.** On a $6 latte, that's about $0.83. On a six-figure investment.
+## The farmer's share
 
-Startup costs run **$100,000 to $300,000** for a sit-down location. You need to clear roughly **$30,000 to $35,000 a month** in revenue just to break even. And most new shops don't hit that number for the first year or two.
+The green-coffee prices above are world market prices for exported coffee. The farmer is paid part of that, after processing, transport and export costs, and we couldn't find a current, published figure for the share that reaches farms, so this page doesn't give one. Certification schemes such as Fairtrade set a minimum price as a floor for the years when the market falls; with market prices above that floor, as they have been, the market price applies. Our [coffee certifications guide](/blog/coffee-certifications-decoded/) has the current minimums and what each label checks.
 
-The shops that make it tend to share a few things:
+## Is it cheaper at home?
 
-- **The owner works in the shop.** Not managing from a distance — actually pulling shots and running the register.
-- **The format is compact and efficient.** Less square footage means less rent, fewer staff, and faster service.
-- **Upselling is consistent.** Every extra shot, every syrup, every pastry add-on improves the ticket average.
-- **There's a loyal base of regulars.** Not foot traffic, not tourists. Regulars who come five days a week.
+For the ingredients, yes. At September 2026 US retail averages, the coffee and milk for a double-shot latte cost about 56 to 62 cents (calculated above). That leaves out the espresso machine, the grinder, energy and your time, which is what the café's price mostly pays for. If you want to try, our guide to [steaming milk for lattes](/blog/how-to-steam-milk-for-lattes/) covers the milk, and our [coffee-to-water ratio guide](/blog/coffee-to-water-ratio-guide/) covers the brewing numbers.
 
-Drive-throughs are quietly becoming the smarter bet. Same margins, smaller footprint, faster turnover, less labor. A drive-through kiosk can generate **$1,300 per square foot per year**. A sit-down cafe? **$300 to $800.**
+## Sources
 
-The romantic vision of the cozy neighborhood coffee shop is an expensive one to maintain.
-
-## The Third Place Is Disappearing
-
-After buying Starbucks in 1987, Howard Schultz reimagined the company as a café chain anchored in an idea borrowed from sociologist Ray Oldenburg's 1989 book *The Great Good Place*. Home is your first place. Work is your second. And a community gathering spot — the cafe, the pub, the barbershop — is your *third place*.
-
-Schultz designed Starbucks to be that third place. Dim lighting. Plush armchairs. Earth tones. Rounded tables that encouraged lingering. The product wasn't really the coffee. It was the permission to sit and stay.
-
-And you paid for it. Not consciously, maybe. But the price of a Starbucks latte always included a little bit of rent — your share of the cost of occupying that comfortable seat.
-
-Here's the twist. Starting around 2022, Starbucks began dismantling the third place. Armchairs replaced with hard chairs and metal stools. Mobile ordering took priority. Drive-throughs now dominate sales.
-
-The experience that justified the premium is largely gone. But a grande latte hit **$5.65 in New York by 2025**. You're still paying third-place prices for what's increasingly a grab-and-go operation.
-
-## The Latte Factor: $6/Day = $270,000 in 30 Years?
-
-There's a famous personal finance concept called the Latte Factor, popularized by author David Bach.
-
-The math is simple:
-
-- **$6 per day** on coffee
-- **$2,190 per year**
-- Invested at **8% return for 30 years**
-- Final value: approximately **$270,000**
-
-It's a real number. And for some people, awareness of daily spending habits genuinely matters.
-
-But the counterargument is strong. The Latte Factor implies that small luxuries are the main obstacle to wealth. In reality, structural costs — housing, healthcare, student loans — take **40-60% of most people's income**. Cutting out lattes doesn't fix that math.
-
-## What Your $6 Latte Actually Pays For
-
-The real value of understanding your latte's economics isn't about whether to buy it or not. It's about knowing what you're paying for:
-
-- **$0.08-0.10** — Green coffee beans (the commodity)
-- **$0.25-0.43** — Roasted beans at wholesale
-- **$0.36-0.54** — Milk, cup, lid, sleeve
-- **$0.20-0.45** — Flavoring (vanilla syrup)
-- **$1.50-2.10** — Labor (the barista and everyone behind them)
-- **$0.48-0.90** — Rent (your share of the lease)
-- **$0.10-0.18** — Credit card processing
-- **$0.30-0.50** — Equipment, utilities, insurance, marketing, waste
-- **About $0.83** — Profit (if the owner is lucky, at a 13.8% margin)
-
-And somewhere at the very beginning of that chain, **$0.03 to $0.04** went to the farmer who grew the beans.
-
-It's not simple. It's not a scam. And the person who deserves more from your six dollars is probably the one who grew the beans.
-
-If you want to understand why coffee prices have been surging and what's driving the economics at a global scale, we covered the full story in our piece on the [coffee crisis](/blog/why-is-coffee-so-expensive-now-the-9-coffee-crisis/). And for getting the most out of every bean at home, our [coffee-to-water ratio guide](/blog/coffee-to-water-ratio-guide/) is the place to start.
-
-*Some links on this site are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*
-
----
-
-<FAQ items={[
-  { question: "How much does a latte actually cost a coffee shop to make?", answer: "A flavored latte costs a coffee shop about $0.89 to $1.42 in raw materials — beans, milk, cup, lid, sleeve, and syrup. But when you add labor (25-35% of revenue), rent, equipment amortization, credit card processing, utilities, and waste, total costs hit 75-85% of the retail price. On a $6 latte, the shop keeps about $0.83 in profit at the industry-average 13.8% margin." },
-  { question: "Why is the markup on lattes so high?", answer: "A latte's 500-700% markup sounds extreme, but it's actually in the middle of the pack for food service. Fountain soda marks up at 1,100%, iced tea at 1,000-2,000%. The high markup exists because the cost of serving the drink — labor, rent, equipment — far exceeds the cost of the ingredients. Coffee shops spend 75-85% of revenue on operating costs, leaving slim profit margins even with the markup." },
-  { question: "How much does the coffee farmer earn from my latte?", answer: "About $0.03 to $0.04 per cup — roughly 1% of the retail price. The World Economic Forum estimates that 5.5 million of the world's 12.5 million smallholder coffee farmers live below the international poverty line of $3.20 a day. Fair Trade and Direct Trade programs help some farmers earn 20-50% more per pound, but most coffee still moves through commodity markets where the farmer's share is minimal." },
-  { question: "Is the oat milk upcharge justified?", answer: "Oat milk costs a coffee shop about $0.36 more per latte than dairy — $0.06 per ounce versus $0.02 for whole milk. But many shops charge $0.50 to $1.50 for the switch, an 8-25x markup on the actual cost difference. Some of that covers higher spoilage and stocking complexity, but it remains one of the highest-margin moves in coffee shop history. Starbucks dropped the surcharge in November 2024, and over 325 chains have followed." },
-  { question: "Why do so many coffee shops fail?", answer: "50-75% of independent coffee shops close within five years. The combination of high startup costs ($100,000-$300,000), thin margins (average 13.8% for survivors), and the need to clear $30,000-35,000 per month in revenue just to break even makes the business extremely difficult. The shops that survive typically have an owner who works on-site, a compact format, consistent upselling, and a loyal base of regulars rather than foot traffic." },
-  { question: "Is it cheaper to make lattes at home?", answer: "Significantly. A home latte costs roughly $0.50-1.50 per cup depending on your beans and milk — compared to $5-7 at a shop. The upfront investment in an espresso machine ($200-500 for a capable home setup) pays for itself within a few months of daily use. You lose the convenience and the experience, but the per-cup economics are roughly 4-10x cheaper." }
-]} />
+- International Coffee Organization, *Coffee Market Report*, September 2026, p. 1 (I-CIP and group indicator prices for September 2026): [ico.org (PDF)](https://www.ico.org/documents/cy2025-26/cmr-0926-e.pdf)
+- US Bureau of Labor Statistics, Average Price Data, US city average, September 2026, retrieved October 18, 2026 through the BLS Public Data API: series APU0000717311, "Coffee, 100%, ground roast, all sizes, per lb." ([bls.gov](https://data.bls.gov/timeseries/APU0000717311)), and series APU0000709112, "Milk, fresh, whole, fortified, per gal. (3.8 lit)" ([bls.gov](https://data.bls.gov/timeseries/APU0000709112))
+- US Department of Agriculture, FoodData Central, SR Legacy, "Milk, whole, 3.25% milkfat, with added vitamin D" (FDC 171265), portion weight for 1 quart (976 g), retrieved October 18, 2026 through the FoodData Central API
+- Robert W. Thurston, "Where Does the Money Go in the Coffee Supply Chain?", in Robert W. Thurston, Jonathan Morris and Shawn Steiman, eds., *Coffee: A Comprehensive Guide to the Bean, the Beverage, and the Industry* (Rowman & Littlefield, 2013), ch. 18, adapted from a Specialty Coffee Association of America project, 2010
+- Mark Pendergrast, *Uncommon Grounds*, rev. ed. (Basic Books, 2010; third paperback edition, 2019), ch. 19, "Final Grounds," p. 372 (the roaster's cost example and its 18 percent roasting loss)
+- Starbucks Corporation, Form 10-K for the fiscal year ended September 28, 2025, Item 7, consolidated results of operations (shares of total net revenues, operating margin): [sec.gov](https://www.sec.gov/Archives/edgar/data/829224/000082922425000114/sbux-20250928.htm)
+- Starbucks, "Starbucks Announces Removal of Extra Charge for Non-Dairy Milk Starting Nov. 7," press release, October 30, 2024: [about.starbucks.com](https://about.starbucks.com/press/2024/starbucks-announces-removal-of-extra-charge-for-non-dairy-milk-starting-nov-7/)
+- JayArr Coffee, Brew Guide (espresso, 18 g dose and 36 g yield, from Scott Rao's parameters) and Coffee Drinks (Ineffable Coffee's specialty latte and illy's caffelatte, with their sources)
