@@ -1,204 +1,160 @@
 ---
 title: "Honduras Coffee Guide: Marcala, Comayagua, and Central America's Biggest Producer"
-description: "Honduras is the largest coffee producer in Central America, yet most people can't name a single Honduran coffee. Explore Marcala, Comayagua, and 6 regions producing exceptional specialty beans."
+description: "Honduras grows more coffee than any other Central American country. Here are its six regions, from Marcala's protected origin to Comayagua, its varieties and grades, and what to look for on a bag."
 pubDate: "Mar 10 2026"
-updatedDate: "Mar 10 2026"
+updatedDate: "Oct 15 2026"
 heroImage: "../../assets/blog/honduras-coffee-guide.jpg"
 category: "Origins"
 ---
 
-import RegionCards from '../../components/infographics/RegionCards.astro';
-import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
-import FAQ from '../../components/FAQ.astro';
+import AnswerBox from '../../components/AnswerBox.astro';
+import ToolCallout from '../../components/ToolCallout.astro';
 
-Here's a question that stumps most coffee drinkers: which Central American country produces the most coffee? It's not Guatemala. It's not Costa Rica. It's Honduras -- by a wide margin. With over 8 million bags produced annually, Honduras accounts for roughly half of all Central American coffee output. And yet most specialty consumers would struggle to name a single Honduran farm, region, or variety.
+<AnswerBox answer="Honduras is Central America's largest coffee producer: USDA forecasts 6.03 million 60 kg bags for 2026/27, all arabica. It grows in six regions defined by the national coffee institute, IHCAFE: Copán, Opalaca, Montecillos (which includes Marcala, a protected denomination of origin since 2005), Comayagua, Agalta and El Paraíso. The best lots can be fruity with a lively, juicy acidity, while much of the rest is mild and nutty, so look for a named region, producer and recent harvest rather than a grade." />
 
-That's starting to change. Over the past decade, Honduras has undergone one of the most dramatic quality transformations in the coffee world. The country's Cup of Excellence competitions routinely surface lots scoring 88+ points. Its Marcala region earned the country's first Denomination of Origin. And savvy roasters have quietly discovered what farmers in the western highlands have known for years: Honduran coffee, when grown at altitude and processed with care, can stand alongside anything from Guatemala or Colombia.
+Here's a question that stumps a lot of coffee drinkers: which Central American country grows the most coffee? It's not Guatemala, and it's not Costa Rica. It's Honduras, by a wide margin. And yet most people would struggle to name a single Honduran farm, region or variety.
 
-The best part? It's still dramatically underpriced for the quality.
+## How much coffee Honduras grows
 
-## A Brief History of Honduran Coffee
+USDA's July 2026 forecast puts Honduras's 2026/27 crop at 6.03 million 60 kg bags, all of it arabica. That makes it the fourth-largest arabica producer in the world on USDA's table, after Brazil, Colombia and Ethiopia, and about 34 percent of the 17.7 million bags USDA expects from Central America and Mexico together (calculated). It's about 3 percent of world production (calculated from USDA's 189.7 million).
 
-Coffee arrived in Honduras in the late 1700s, but commercial production didn't take hold until the late 19th century. For most of the 20th century, Honduras was a commodity coffee producer -- high volume, low differentiation, exported in bulk and blended into cans. The country's infrastructure challenges (poor roads, limited wet mills, inconsistent drying facilities) kept quality inconsistent.
+| Marketing year | Production (million 60 kg bags) |
+|---|---|
+| 2021/22 | 4.80 |
+| 2022/23 | 5.70 |
+| 2023/24 | 5.05 |
+| 2024/25 | 5.20 |
+| 2025/26 | 5.53 |
+| 2026/27 | 6.03 (forecast) |
 
-The turning point came in the early 2000s. IHCAFE (the Honduran Coffee Institute) launched aggressive quality programs, investing in cupping labs, farmer training, and varietal research. The country joined the Cup of Excellence program in 2004, immediately demonstrating that its best lots could compete internationally. International organizations like TechnoServe and the USAID-funded programs invested in infrastructure, helping cooperatives build proper processing facilities.
+USDA expects Honduras to account for nearly all of the region's growth in 2026/27, which its Tegucigalpa office, citing IHCAFE, credits to better plant nutrition, the crop's two-year cycle, more planted area, better pruning and newly planted farms coming into production. It forecasts exports of about 5.5 million bags in 2026/27, and ranks Honduras the eighth-largest coffee exporter in the world and the largest in Central America. In marketing year 2025, the United States took about 34 percent of Honduras's green coffee exports, Germany 23 percent and Belgium 13 percent.
 
-By 2011, Honduras had become the world's 6th largest coffee producer and Central America's largest. The specialty segment has grown every year since, with exports of high-grade coffee increasing roughly 15% annually.
+## A short history
 
-## Growing Regions
+Coffee has been in Honduras longer than its reputation suggests. James Hoffmann, in *The World Atlas of Coffee*, cites what's probably the earliest record, from 1804, which discusses the quality of Honduran coffee and so dates the first plants to before 1799. But production only took off after 2001, he writes, and because coffee came late, Honduras lacked the infrastructure it had built for its neighbors in the 1800s, so much of that new coffee went to the commodity market. By 2011 it was producing just under 6 million bags a year, more than Costa Rica and Guatemala combined.
 
-Honduras has six officially designated coffee-producing regions, each with distinct altitude profiles and flavor characteristics. Nearly all production is smallholder -- the average farm is fewer than 5 hectares.
+The Instituto Hondureño del Café (IHCAFE) was founded in 1970 and, according to the importer Café Imports, privatized in 2000. Hoffmann notes that it runs a cupping laboratory in each of its six regions to help local producers, and USDA reports it has six research and training centers.
 
-<RegionCards
-  title="Honduras: Central America's Largest Coffee Producer"
-  subtitle="Six regions, 8.3 million bags, and specialty quality you haven't discovered yet"
-  regions={[
-    {
-      name: "Marcala (La Paz)",
-      altitude: "1,300--1,700m",
-      location: "Department of La Paz, western highlands",
-      flavors: ["Citrus", "Stone fruit", "Caramel", "Chocolate", "Bright acidity"],
-      bestFor: "Pour-over, drip -- showcases Honduras's best clarity",
-      note: "Honduras's first Denomination of Origin (2005). Home to COMSA and RAOS cooperatives."
-    },
-    {
-      name: "Montecillos",
-      altitude: "1,200--1,700m",
-      location: "La Paz / Comayagua departments",
-      flavors: ["Bright acidity", "Floral", "Citrus", "Clean sweetness", "Peach"],
-      bestFor: "Light-roast single origins, competition-grade lots",
-      note: "Frequently produces Honduras's highest cupping scores and Cup of Excellence winners."
-    },
-    {
-      name: "Copan",
-      altitude: "1,000--1,500m",
-      location: "Western Honduras, bordering Guatemala",
-      flavors: ["Fruit-forward", "Chocolate", "Complex acidity", "Medium-full body"],
-      bestFor: "Those who enjoy Guatemalan profiles with more body",
-      note: "Shares volcanic geology with Guatemala's Huehuetenango."
-    },
-    {
-      name: "Comayagua",
-      altitude: "1,100--1,500m",
-      location: "Central Honduras, Comayagua Valley",
-      flavors: ["Balanced", "Nutty-sweet", "Mild acidity", "Chocolate", "Brown sugar"],
-      bestFor: "Everyday drinking, approachable specialty",
-      note: "Growing reputation for honey-processed experiments."
-    },
-    {
-      name: "Opalaca",
-      altitude: "1,100--1,500m",
-      location: "Intibuca, Lempira, La Paz departments",
-      flavors: ["Sweet", "Fruity", "Tropical", "Honey-like sweetness"],
-      bestFor: "Fruit-forward filter brewing",
-      note: "Many farms run by indigenous Lenca communities with generational coffee knowledge."
-    },
-    {
-      name: "Agalta",
-      altitude: "1,000--1,400m",
-      location: "Department of Olancho, eastern Honduras",
-      flavors: ["Full body", "Low-moderate acidity", "Chocolate", "Earth", "Sweet tobacco"],
-      bestFor: "French press, dark roast blends, those preferring low acidity",
-      note: "Least known region -- genuine value plays here."
-    }
-  ]}
-  stats={[
-    { value: "8.3M", label: "Bags/Year (#1 Central America)" },
-    { value: "Bourbon, Caturra, Parainema", label: "Key Varieties" },
-    { value: "Under 5 ha", label: "Avg. Farm Size" }
-  ]}
-/>
+Most Honduran coffee farmers are smallholders. IHCAFE says coffee is a way of life for more than 100,000 families and comes from 210 of the country's 298 municipalities, in 15 of its 18 departments. In 2024/25, it registered 86,895 small, 6,359 medium and 374 large coffee farmers, according to USDA: about 93 percent were small, they grew about 55 percent of the crop, and the average across all sizes was about 3 hectares of harvested coffee (all calculated).
 
-### Marcala (La Paz)
+## The six growing regions
 
-Marcala holds the distinction of being Honduras's first Denomination of Origin for coffee, awarded in 2005. Located in the department of La Paz at 1,300--1,700 meters, the region produces what many consider Honduras's finest cups. The combination of [high altitude](/blog/coffee-altitude-guide/), consistent rainfall, and well-drained volcanic soil creates ideal conditions for slow cherry maturation.
+IHCAFE divides the country into six coffee regions. Hoffmann's altitudes and harvest months match IHCAFE's earlier region pages almost exactly; IHCAFE's current chart gives wider bands, mostly 1,100 to 1,700 m.
 
-Marcala coffees are known for their sweetness, bright citric acidity, and stone fruit notes. The best lots show remarkable complexity -- chocolate, caramel, berry, and a clean finish that reflects the predominantly washed processing. Several cooperatives here, including COMSA and RAOS, have built direct-trade relationships with specialty roasters worldwide.
+| Region | Departments (IHCAFE) | Altitude (Hoffmann) | Harvest (Hoffmann) | IHCAFE's cup description |
+|---|---|---|---|---|
+| Copán | Copán, Ocotepeque, Santa Bárbara | 1,000–1,500 m | November–March | Sweet aroma, chocolate, creamy and balanced |
+| Opalaca | Santa Bárbara, Intibucá, Lempira | 1,100–1,500 m | November–February | Fine, delicate acidity; tropical fruit like grapes and blackberries |
+| Montecillos | La Paz, Comayagua, Santa Bárbara, Intibucá | 1,200–1,600 m | December–April | Fruity, sweet; lively, bright acidity; citrus and peach |
+| Comayagua | Comayagua, Francisco Morazán | 1,100–1,500 m | December–March | Sweet citrus; vibrant citric acidity, chocolate, creamy body |
+| Agalta | Olancho, Yoro, Atlántida, Colón | 1,000–1,400 m | December–March | Caramel fragrance, tropical fruit, a sweet finish |
+| El Paraíso | El Paraíso and parts of Choluteca and Francisco Morazán | 1,000–1,400 m | December–March | Sweet fragrance, smooth body, citrus |
 
-**Flavor profile:** Citrus, stone fruit, caramel, chocolate, clean bright acidity.
+Coffee Origins draws Honduras's harvest as November to April, from importers' calendars, with some finishing in March.
+
+Hoffmann adds that many roasters label coffee "Santa Barbara" after the department, which several of the regions cross into, even though IHCAFE doesn't treat it as a region. He singles out excellent Pacas lots from there, with "a distinctive and quite intense fruity quality" when well produced.
+
+### Marcala and Montecillos
+
+Hoffmann writes that Montecillos contains several notable sub-areas, above all Marcala, "now a protected name," and La Paz; Marcala is a municipality in the department of La Paz, and roasters are more likely to use these names than the wider "Montecillos."
+
+Café Marcala's denomination of origin was legally recognized on November 18, 2005, according to the association of local producers that administers it, ADOPCAM. A Honduran law firm's account adds that it was granted to the municipality of Marcala at the association's request, that denominations of origin in Honduras are granted by the Industrial Property Registry, and that Marcala's was the first legally recognized in the country. It's also protected in Europe: the EU's 2024 summary of its association agreement with Central America names "café de Marcala de Honduras" among the Central American geographical indications protected in European markets.
+
+In the cup, Montecillos and Marcala coffees can be sweet, with bright citric acidity, stone fruit such as peach, caramel and chocolate, and a clean finish. Café Imports buys from Cooperativa RAOS, a 250-member cooperative in Marcala, La Paz, and reports some of its most stable results there.
 
 ### Comayagua
 
-The Comayagua region sits in central Honduras at 1,100--1,500 meters, benefiting from the Comayagua Valley's microclimate -- warm days, cool nights, and reliable rainfall patterns. Coffee from this region tends to be balanced and approachable, with good sweetness and moderate acidity.
+Hoffmann describes the Comayagua region, in west-central Honduras, as dense with tropical rainforest; its city was once the country's capital. IHCAFE's earlier region page described Comayagua's coffee as sweet and citrusy, with vibrant citric acidity, chocolate and a creamy body, and Comayagua coffees can also lean nutty-sweet, with brown sugar. (IHCAFE's current chart repeats Montecillos' departments and cup description under Comayagua, so the table uses the earlier page.)
 
-Comayagua has become increasingly competitive in national competitions, with several farms experimenting with honey and natural [processing methods](/blog/coffee-processing-methods-explained/) to add fruit complexity to the region's traditionally clean washed profiles.
+Leaf rust has been a particular problem there lately. In March 2026, USDA reported an incidence of 14.08 percent in the department of Comayagua, the highest of the departments it listed, against a national average of 8.44 percent.
 
-**Flavor profile:** Balanced, nutty-sweet, mild acidity, chocolate, brown sugar.
+### Copán, Opalaca, Agalta and El Paraíso
 
-### Copan
+- **Copán** borders Guatemala. Hoffmann uses it to make a point about labels: "Geopolitical borders can be somewhat arbitrary," and coffees from either side can be closer than buyers expect. Its coffees can be fruit-forward and chocolatey, with a fuller body.
+- **Opalaca**, named after the Opalaca mountains, covers the southern coffee areas of Santa Bárbara as well as Intibucá and Lempira. Its coffees can be sweet and fruity, with tropical and honey-like notes.
+- **Agalta** stretches across the north; Hoffmann notes that much of it is protected forest. Its coffees can show chocolate and tropical fruit.
+- **El Paraíso**, in the east near Nicaragua, is one of the oldest growing regions and the largest, Hoffmann writes, and has suffered badly from leaf rust.
 
-Bordering Guatemala to the west, the Copan region shares much of the same volcanic geology and altitude range (1,000--1,500 meters) as Guatemala's Huehuetenango. The coffees reflect this proximity -- they tend to be more complex and fruit-forward than central Honduran lots, with good acidity and a fuller body.
+In a 2003 study of 52 plots across six Honduran producing regions, Decazy and colleagues found the best-quality coffees came from Olancho (part of IHCAFE's Agalta region) and El Paraíso, and that high altitude and annual rainfall under 1,500 mm favored quality. Our [coffee altitude guide](/blog/coffee-altitude-guide/) puts that study alongside others.
 
-The region is named for the ancient Maya city of Copan Ruinas, and several farms here have invested heavily in specialty processing infrastructure over the past five years.
+## Altitude grades on the bag
 
-**Flavor profile:** Fruit-forward, chocolate, complex acidity, medium-full body.
+Honduras grades coffee by altitude. Hoffmann gives Strictly High Grown (SHG) as above 1,200 m (3,900 ft) and High Grown (HG) as above 1,000 m (3,300 ft); Café Imports also lists Central Standard (CS). He adds that while there's some correlation between altitude and quality, the grades are most often used to market less traceable lots. A named region, farm or cooperative tells you more. Our [altitude guide](/blog/coffee-altitude-guide/) compares these cutoffs with Guatemala's and El Salvador's.
 
-### Montecillos
+## Varieties
 
-Montecillos is one of Honduras's highest-altitude growing regions, with farms reaching 1,200--1,700 meters in the departments of La Paz and Comayagua. The region's cool temperatures and frequent cloud cover slow cherry development, producing dense, hard beans with concentrated flavor.
+Hoffmann lists Bourbon, Caturra, Typica and Catuai as the varieties many Honduran farmers grow, and IHCAFE has bred its own. Here's how World Coffee Research (WCR) rates them:
 
-Coffee from Montecillos often earns Honduras's highest cupping scores, with bright acidity reminiscent of the best [Kenyan](/blog/kenyan-coffee-flavor-notes-and-best-coffees/) or [Ethiopian](/blog/7-ethiopian-coffees-reviewed-best-and-worst/) lots. It's where many of the country's Cup of Excellence winners originate.
+| Variety | What it is | Yield | Quality potential (WCR) | Leaf rust (WCR) |
+|---|---|---|---|---|
+| Bourbon | Old line from Yemen via Réunion; tall | Medium | Very Good | Susceptible |
+| Typica | Old line from Yemen; tall | Low | Very Good | Susceptible |
+| Caturra | Bourbon mutation from Brazil; compact | Medium | Good | Susceptible |
+| Catuai | Mundo Novo × Caturra; compact | Medium | Good | Susceptible |
+| Pacas | Bourbon mutation from El Salvador; compact | Medium | Good | Susceptible |
+| Lempira | IHCAFE's Timor Hybrid × Caturra (Catimor) | High | Low | Intermediate resistance |
+| IHCAFE 90 | IHCAFE's Timor Hybrid × Caturra (Catimor) | High | Very Low | Susceptible |
+| Parainema | IHCAFE's selection of T5296 (Sarchimor), released 2004 | Very High | Good | Highly resistant |
 
-**Flavor profile:** Bright, complex acidity, floral notes, citrus, clean sweetness, peach.
+A few notes from WCR's entries:
 
-### Opalaca
+- **Lempira and IHCAFE 90** were bred for rust resistance, but WCR says both have now been confirmed susceptible to leaf rust in Honduras. Lempira's "intermediate" rating comes from WCR's international trials, and local performance depends on which races of rust are present.
+- **Parainema** is rated well adapted to medium altitudes and resistant to rust and some nematodes. USDA reports that its introduction is driving the growth in Honduras's planted area.
+- **Pacas** was introduced to Honduras by IHCAFE in 1974; **Catuai** arrived in 1979 and was tested by IHCAFE. Bourbon itself is still grown in Honduras, WCR notes, though much of Latin America has replaced it with its descendants.
 
-Opalaca stretches across the departments of Intibuca, Lempira, and La Paz at 1,100--1,500 meters. The region is more remote and less commercially developed than Marcala or Copan, but it's producing increasingly interesting specialty lots. Many farmers here are indigenous Lenca communities who have been cultivating coffee for generations.
+Our [coffee varietal guide](/blog/coffee-varietal-guide/) explains the families these belong to.
 
-**Flavor profile:** Sweet, fruity, tropical notes, balanced acidity, honey-like sweetness.
+## Leaf rust
 
-### Agalta
+Hoffmann writes that Honduras declared a state of national emergency after leaf rust badly damaged the 2012/13 harvest, and that its effects usually last a few years. Our research note on [coffee and climate change](/deep-brew/research/coffee-climate-change-data/) covers what that epidemic did across Central America and why weather played a part. The disease hasn't gone away: USDA reported in March 2026 that national average incidence had risen from 7.57 to 8.44 percent, a "yellow alert," and that IHCAFE's April 2025 survey found very high incidence, above 15 percent, on 21.63 percent of sampled farms. Our history of [coffee leaf rust](/blog/coffee-leaf-rust-hemileia-vastatrix-history/) tells the longer story.
 
-The easternmost coffee region, Agalta (in the department of Olancho) sits at 1,000--1,400 meters and produces coffees with a distinctive character -- fuller body, lower acidity, and more earthy-sweet notes than the western regions. It's the least known of Honduras's six designations but offers genuine value for those who prefer a rounder, less acidic cup.
+## Processing, drying and freshness
 
-**Flavor profile:** Full body, low-moderate acidity, chocolate, earth, sweet tobacco.
+Washed is the standard process: it's the only one in Café Imports' Honduras profile. Drying is the hard part. Hoffmann explains that the high rainfall makes it difficult to dry the coffee after processing, so some producers combine sun and mechanical drying, and Café Imports adds that fully mechanical drying can leave a lot's moisture unstable, which "can result in quality concerns over time." Hoffmann notes that this has given Honduras a reputation for great coffees that can fade quite quickly, and that much of the coffee waits for shipment in very hot warehouses near Puerto Cortés, which can degrade it further; the very best tend to hold up better.
 
-## What Makes Honduran Coffee Different
+Café Imports also credits the Cup of Excellence with encouraging larger and wealthier producers to plant new varieties and experiment with processing. Our [processing methods guide](/blog/coffee-processing-methods-explained/) explains how washed, honey and natural coffees differ.
 
-Honduras occupies an interesting position in the Central American coffee landscape. Guatemala has the established reputation and the Antigua brand. Costa Rica has the micro-mill revolution and honey processing innovation. El Salvador has Pacamara. Honduras doesn't have a single defining [variety](/blog/coffee-varietal-guide/) or marketing narrative -- but it has volume, altitude, and an increasingly sophisticated processing culture.
+## Quality and the Cup of Excellence
 
-The country's advantage is geographic diversity. Six distinct growing regions spanning from the Guatemalan border to the Caribbean-facing east coast means Honduras can produce coffees across a wide flavor spectrum -- from the bright, complex lots of Montecillos that rival Kenya's best to the chocolate-heavy, full-bodied cups of Agalta that suit darker roasts and espresso. That range, combined with competitive pricing, makes Honduras a versatile sourcing origin for roasters building diverse [single-origin](/blog/what-is-single-origin-coffee/) programs.
+Honduras has held a Cup of Excellence competition since 2004: the Alliance for Coffee Excellence lists results from that year and marked the program's 20th anniversary in 2024, when the Honduran winner sold for 136.50 US dollars a pound. Café Imports notes that IHCAFE is closely involved in organizing and promoting the competition.
 
-The smallholder model (average farm under 5 hectares) also creates a natural micro-lot structure. Each small farm processes its own cherry or delivers to a cooperative that separates lots by altitude and quality. This means that even without the estate-farm branding that Panama or Guatemala enjoy, Honduras generates hundreds of distinct, traceable lots each season.
+The specialty side has grown into a big share of the crop. IHCAFE counts about half of each recent harvest as "differentiated" coffee, which covers certified and specialty lots: between 52 and 58 percent from 2019/20 to 2024/25, according to USDA. USDA adds that specialty coffee in Honduras is typically grown above 3,000 ft (about 900 m).
 
-## Varieties and Processing
+## What Honduran coffee tastes like
 
-### Varieties
+Hoffmann writes that Honduran coffees range widely, but the best often have "a complex fruity quality, and a lively, juicy acidity." Café Imports describes much of the country's coffee as "mild": nutty, sweet and heavy-bodied, but without the "oomph" of acidity of a fantastic Guatemalan or the dynamic profile of a top Costa Rican. The best Honduran coffees can offer clean sweetness, bright citric acidity, stone fruit, caramel and chocolate, sitting somewhere between Guatemala's complexity and Colombia's balance, and higher-grown lots can surprise you with floral and tropical fruit notes.
 
-Honduras grows a mix of traditional and modern varieties:
+Coffee Origins' small sample of Honduran lots that roasters described from January to March 2026 shows that range: mango and tropical fruit, jasmine, caramel, raisin, chocolate and orange each came up twice across six lots.
 
-- **Bourbon:** Still widely planted, especially at higher altitudes. Produces sweet, complex cups with delicate acidity. Low yields make it increasingly rare at lower elevations.
-- **Caturra:** A Bourbon mutation, compact and productive. Bright citric acidity, clean sweetness.
-- **Catuai:** The productivity workhorse -- high yields, good but not exceptional cup quality. Widely planted.
-- **Lempira:** Honduras's homegrown variety, developed for leaf rust resistance. Named after the Lenca warrior. Quality has been debated, and concerning reports suggest its rust resistance is beginning to break down.
-- **IHCAFE 90:** Another rust-resistant variety from IHCAFE's breeding program. Better cup quality reputation than Lempira but still below heirloom Bourbon.
-- **Pacas:** A Bourbon mutation from neighboring El Salvador. Sweet, clean, moderate yields.
-- **Parainema:** A newer Sarchimor-derived variety that offers strong disease resistance, good yields, and genuinely good cup quality at altitude. Increasingly popular as farmers replant after rust outbreaks.
+<ToolCallout tool="origins" preset={{ o: 'honduras' }} cta="Open Coffee Origins on Honduras" context="Opens Coffee Origins on Honduras: its November–April harvest drawn as a ring, a 950–1,950 m growing band from an importer, USDA's 6 million-bag forecast for 2026/27, its common varieties and processing, its regions from Copán to El Paraíso on the map, and the notes roasters used for six Honduran lots early in 2026." />
 
-### Processing
+## What to look for on a bag
 
-**Washed:** Dominates production (roughly 85--90%). Honduras's washed coffees emphasize clean acidity and sweetness. Fermentation typically runs 12--24 hours.
+- **A region, and ideally a place within it.** One of IHCAFE's six regions, or a sub-area such as Marcala or La Paz. "Santa Barbara" is a department, not an IHCAFE region, but it's a name worth knowing.
+- **The Marcala denomination of origin**, if the coffee claims Marcala.
+- **A producer, cooperative or mill.** Hoffmann says Honduran coffee can be traced to the estate or to a cooperative or producer group, so a bag that stops at the country is leaving information out.
+- **The variety.** A Pacas, Bourbon or Parainema rates higher for quality potential in WCR's catalog than Lempira or IHCAFE 90. It's a clue, not a verdict.
+- **A recent harvest and roast date.** Because Honduran coffee can fade, freshness matters more than usual. Our guide to [coffee freshness](/blog/coffee-freshness-roast-to-stale/) explains the roast-date side.
+- **An altitude grade on its own tells you little.** SHG says only that the coffee was grown above 1,200 m.
 
-**Honey:** Growing rapidly, especially in Marcala and Comayagua. Yellow and red honey processes add body and fruit sweetness while maintaining some of the washed clarity.
+## How to brew it
 
-**Natural:** Still a small percentage but increasing. Natural-processed Honduran lots show strawberry, tropical fruit, and wine-like character that can be remarkably complex when executed well.
+A clean, sweet washed Honduran suits a pour-over or a drip brewer; our [V60 guide](/blog/ultimate-pour-over-coffee-guide-and-best-v60-technique/) walks through a full recipe. If you're comparing it with other origins, our guide to [single-origin coffee](/blog/what-is-single-origin-coffee/) explains how to taste two side by side.
 
-## The Leaf Rust Crisis and Recovery
+<ToolCallout tool="brew" preset={{ method: 'v60', cup: 354.9 }} cta="Open the Brew Guide for a medium roast" context="Opens the Brew Guide on a 12 oz V60 of a medium roast: 1:16, a 201°F (94°C) kettle and a medium-fine grind, with a timed continuous pour. Switch the roast to light or dark and it changes the kettle temperature and grind." />
 
-The 2012--2013 coffee leaf rust (*roya*) epidemic devastated Honduras. At its peak, the fungus affected an estimated 25% of the country's crop and forced thousands of farmers to replant. IHCAFE promoted Lempira as a rust-resistant replacement, and many farms converted. But the crisis also accelerated quality improvement -- farmers who replanted had to make strategic varietal choices, and many opted for higher-quality cultivars alongside the resistant ones.
+## Sources
 
-The lingering concern is that Lempira's rust resistance appears to be weakening. This mirrors a global pattern documented by World Coffee Research: most varieties that gained their resistance from the Timor Hybrid parent may lose it as the rust pathogen evolves. Honduras's coffee sector is watching closely and investing in next-generation resistant varieties like Parainema and F1 hybrids.
-
-## Cup of Excellence and Quality Recognition
-
-Honduras joined the Cup of Excellence (CoE) program in 2004, and the results have been eye-opening. Winning lots routinely score 88--90+ SCA points -- numbers that would be impressive from any origin and are remarkable from a country that was considered commodity-only a generation ago.
-
-The CoE program has done more than generate good press. It's created a transparent quality feedback loop: farmers learn what cuppers value, invest in processing improvements, and compete again the following year. The top-scoring Honduran lots -- typically from Marcala or Montecillos at 1,500+ meters -- deliver complexity that rivals Guatemala's best at a fraction of the price.
-
-Internationally, Honduras is increasingly appearing on specialty roasters' menus. Roasters who once sourced exclusively from Colombia or Ethiopia for their [single-origin](/blog/what-is-single-origin-coffee/) pour-over offerings are adding Honduran lots to their rotations, recognizing that the quality-to-price ratio is exceptional. Several US and European roasters now maintain direct-trade relationships with Honduran cooperatives.
-
-## Why Honduran Coffee Deserves Your Attention
-
-Honduras offers what might be the best value proposition in specialty coffee right now. You can find well-grown, carefully processed, 84--87 point lots from Marcala or Montecillos for $14--20 per bag -- prices that would be unthinkable for comparable quality from Guatemala, Colombia, or Costa Rica.
-
-The reasons for the discount are structural, not qualitative: Honduras lacks the marketing infrastructure and brand recognition of its neighbors, and the sheer volume of commercial-grade production dilutes the specialty signal. But the best Honduran lots -- particularly from high-altitude Marcala and Montecillos farms -- genuinely compete with the best of Central America.
-
-If you're a [pour-over](/blog/ultimate-pour-over-coffee-guide-and-best-v60-technique/) or drip drinker who values clean acidity, sweetness, and fruit complexity, Honduran coffee should be in your regular rotation. Look for single-farm or cooperative lots from named regions, roasted within the past two weeks. You might be surprised at what $16 gets you.
-
-## Final Thoughts
-
-Honduras is the origin story you haven't heard yet. The country has done the hard work -- investing in infrastructure, varietal research, processing quality, and farmer education -- without getting much credit from the specialty market. That gap between quality and recognition is exactly where smart coffee buyers find value.
-
-Marcala and Montecillos lots, in particular, are producing cups that would score just as well with Guatemala or Colombia on the label. The farmers are skilled, the altitude is there, and the flavor profiles are genuinely compelling. Honduras just needs more people paying attention. Once you taste a good one, you'll wonder why it took so long.
-
-*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*
-
----
-
-<FAQ items={[
-  { question: "Why haven't I heard of Honduran coffee before?", answer: "Honduras produces more coffee than any other Central American country -- over 8 million bags annually -- but most of it has historically been exported as commodity-grade blends without origin labeling. The country lacks the marketing infrastructure and brand recognition of neighbors like Guatemala or Costa Rica. That's changing fast as specialty roasters discover that Honduras's best lots compete on quality while costing significantly less." },
-  { question: "What does Honduran coffee taste like?", answer: "It varies by region, but the best Honduran coffees -- particularly from Marcala and Montecillos -- offer clean sweetness, bright citric acidity, stone fruit, caramel, and chocolate notes. The flavor profile sits somewhere between Guatemala's complexity and Colombia's balance. High-altitude lots can surprise you with floral and tropical fruit notes that rival much more expensive origins." },
-  { question: "What is the best Honduran coffee region?", answer: "Marcala and Montecillos consistently produce Honduras's highest-scoring lots. Marcala earned the country's first Denomination of Origin in 2005 and is known for citrus-bright, sweet, clean coffees. Montecillos, at similar altitudes, often produces the country's Cup of Excellence winners. Both regions benefit from high altitude (1,200--1,700m) and meticulous processing." },
-  { question: "Is Honduran coffee good value for money?", answer: "Honduras may be the best value in specialty coffee right now. You can find well-processed, 84--87 point single-origin lots from named regions for $14--20 per bag -- prices that comparable quality from Guatemala or Costa Rica would never match. The quality gap has closed dramatically over the past decade, but prices haven't caught up yet." },
-  { question: "What happened with coffee leaf rust in Honduras?", answer: "The 2012--2013 leaf rust epidemic affected roughly 25% of Honduras's crop and forced widespread replanting. IHCAFE promoted the rust-resistant Lempira variety, but there are growing concerns that its resistance is breaking down. Many farmers are now transitioning to newer varieties like Parainema and F1 hybrids that offer both disease resistance and better cup quality." },
-]} />
+- USDA Foreign Agricultural Service, *Coffee: World Markets and Trade*, July 2026, p. 3 (Central America and Mexico) and pp. 7–8, Coffee Summary (arabica production, production and exports, 2021/22–2026/27): [apps.fas.usda.gov](https://apps.fas.usda.gov/psdonline/circulars/coffee.pdf)
+- USDA Foreign Agricultural Service, *Honduras: Coffee Annual*, report HO2026-0002, April 29, 2026 (crop area, production drivers, leaf rust incidence, Table 1 producers by size, exports and Table 2 destinations, IHCAFE's centers, Table 3 differentiated coffee, marketing): [apps.fas.usda.gov](https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Coffee%20Annual_Tegucigalpa_Honduras_HO2026-0002)
+- James Hoffmann, *The World Atlas of Coffee*, 2nd ed. (Octopus/Mitchell Beazley, 2018): "Honduras" (history, IHCAFE, the 2012/13 emergency, climate and drying, traceability, classification, varieties, taste profile, Santa Barbara, the six regions with altitudes, harvest months and varieties)
+- Instituto Hondureño del Café (IHCAFE), "Regiones cafetaleras" and its six-region chart (departments, altitudes, varieties and cup descriptions), as archived by the Internet Archive on October 13, 2026: [web.archive.org](https://web.archive.org/web/20261013142157/https://ihcafe.hn/regiones-cafetaleras/)
+- IHCAFE, region pages "Región 1 – Copán" through "Región 6 – El Paraíso" (departments, altitude, cup characteristics, harvest), as archived by the Internet Archive on February 8, 2017: [web.archive.org](https://web.archive.org/web/20170208174408/http://ihcafe.hn/index.php?view=article&catid=43%3Aregiones&id=124%3Aregion-4-comayagua&tmpl=component&print=1&layout=default&page=&option=com_content&Itemid=131)
+- ADOPCAM, "VI Aniversario de la Denominación de Origen Café Marcala," November 18, 2011 (legal recognition on November 18, 2005; the association's role): [cafemarcala.blogspot.com](http://cafemarcala.blogspot.com/2011_11_01_archive.html)
+- Némesis Escalante Ochoa, "Denomination of Origin in Honduras," García & Bodán, September 28, 2018: [garciabodan.com](https://garciabodan.com/en/?p=8352)
+- European External Action Service, "Acuerdo de Asociación con Centroamérica" factsheet, June 2024 ("Protección de las indicaciones geográficas"): [eeas.europa.eu](https://www.eeas.europa.eu/sites/default/files/documents/2024/Factsheet-Central%20America-Association%20Agreement-2024-06-ES.pdf)
+- Café Imports, "Honduras" origin page (Coffee Profile, grading, IHCAFE, drying, Cooperativa RAOS, the Cup of Excellence), checked October 18, 2026: [cafeimports.com](https://www.cafeimports.com/north-america/honduras)
+- World Coffee Research, *Coffee Varieties Catalog*, entries for Bourbon, Typica, Caturra, Catuai, Pacas, Lempira, IHCAFE 90 and Parainema (rating tables, history and agronomic notes), checked October 18, 2026: [varieties.worldcoffeeresearch.org](https://varieties.worldcoffeeresearch.org/varieties/lempira)
+- F. Decazy, J. Avelino, B. Guyot, J. J. Perriot, C. Pineda and C. Cilas, "Quality of Different Honduran Coffees in Relation to Several Environments," *Journal of Food Science* 68, no. 7 (2003): 2356–2361, abstract: [doi.org/10.1111/j.1365-2621.2003.tb05772.x](https://doi.org/10.1111/j.1365-2621.2003.tb05772.x)
+- Alliance for Coffee Excellence, "Honduras 2004" competition results, and "Mexico Closes Out Active 2024 Cup of Excellence® program for Central America," August 15, 2024: [allianceforcoffeeexcellence.org](https://allianceforcoffeeexcellence.org/farm-directory/wpbdp_category/honduras-2004/)
+- JayArr Coffee, Coffee Origins (Honduras panel: harvest calendar, altitude band, and roasters' notes for January–March 2026)
