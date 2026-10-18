@@ -14,6 +14,9 @@
   const ML_TOP = Math.max(...pods.map((p) => p.ml));
   const shortSize = (n: string) => (n === 'Double Espresso' ? 'Double' : n === 'Gran Lungo' ? 'Gran Lungo' : n);
   // The phone wall fits up to seven cup columns of about 47 px: short heads, with the exact ml beneath (WB2 Opus).
+  // The ladder draws one glass per cup volume: Vertuo's Alto and its over-ice capsule are both 355 ml (Muse WB2 P-4).
+  const ladderCols = (rws: SizeRow[]) => { const m = new Map<number, { key: string; ml: number; names: string[] }>(); for (const r of rws) { const c = m.get(r.ml); if (c) c.names.push(r.name); else m.set(r.ml, { key: r.key, ml: r.ml, names: [r.name] }); } return [...m.values()]; };
+  const colLabel = (ns: string[]) => ns.map((n) => (n === 'Double Espresso' ? 'Double' : n === 'Gran Lungo' ? 'Gran L.' : n === 'Over ice' ? 'Ice' : n)).join('/');
   const TALL_HEAD: Record<string, string> = { Ristretto: 'Ristr.', Espresso: 'Espr.', 'Double Espresso': 'Double', 'Gran Lungo': 'Gran L.', Lungo: 'Lungo', Mug: 'Mug', Alto: 'Alto' };
 
   let line = $state<Line | null>(null);
@@ -215,26 +218,27 @@
 
 <!-- The cups a system makes, at the page's one scale: so 355 ml looks nine times 40 ml, on either system. -->
 {#snippet ladder(fill: Pod | null, H: number, rws: SizeRow[], names = true, reference = false)}
+  {@const lcs = ladderCols(rws)}
   {@const W = 28}
   {@const gap = 18}
   <!-- Original's cups are small next to Vertuo's: a faint outline of the largest Vertuo cup shows why (design gate). -->
   {@const ref = reference && Math.max(...rws.map((r) => r.ml)) < ML_TOP}
-  {@const cols = rws.length + (ref ? 1 : 0)}
+  {@const cols = lcs.length + (ref ? 1 : 0)}
   <svg viewBox="0 0 {cols * (W + gap)} {H + (names ? 32 : 18)}" width={cols * (W + gap)} height={H + (names ? 32 : 18)} class="ladder" role="img" aria-label={fill ? `${fill.name} pours ${fill.ml} ml, drawn beside the other ${LINES[fill.line].label} cup sizes at one scale.` : `${rws.map((r) => `${r.name} ${r.ml} ml`).join(', ')}, drawn at one scale.`}>
-    {#each rws as r, i (r.key)}
+    {#each lcs as r, i (r.key)}
       {@const h = Math.max(3, (r.ml / ML_TOP) * H)}
       {@const x = i * (W + gap) + gap / 2}
-      {@const on = !!fill && fill.size === r.name && fill.ml === r.ml}
+      {@const on = !!fill && fill.ml === r.ml && r.names.includes(fill.size)}
       <rect x={x} y={H - h} width={W} height={h} rx="2" class="glass" class:on />
       {#if on}
         <rect x={x + 1.5} y={H - h + 1.5} width={W - 3} height={h - 3} rx="1.5" class="pour" fill="#3b2214" />
         <rect x={x + 1.5} y={H - h + 1.5} width={W - 3} height={Math.min(4, h - 3)} rx="1" class="pour" fill="#b77a3c" />
       {/if}
       <text x={x + W / 2} y={H + 14} text-anchor="middle" class="lml" class:on>{r.ml}</text>
-      {#if names}<text x={x + W / 2} y={H + 27} text-anchor="middle" class="lnm" class:on>{r.name === 'Double Espresso' ? 'Double' : r.name === 'Gran Lungo' ? 'Gran L.' : r.name}</text>{/if}
+      {#if names}<text x={x + W / 2} y={H + 27} text-anchor="middle" class="lnm" class:on>{colLabel(r.names)}</text>{/if}
     {/each}
     {#if ref}
-      {@const x = rws.length * (W + gap) + gap / 2}
+      {@const x = lcs.length * (W + gap) + gap / 2}
       <rect x={x} y="0.6" width={W} height={H - 0.6} rx="2" fill="none" stroke="#9c8f82" stroke-width="1" stroke-dasharray="3 4" opacity=".55" />
       <text x={x + W / 2} y={H + 14} text-anchor="middle" class="lml ref">{ML_TOP}</text>
       {#if names}<text x={x + W / 2} y={H + 27} text-anchor="middle" class="lnm ref">Vertuo</text>{/if}
