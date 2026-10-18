@@ -1,7 +1,7 @@
 // Region marks on the simplified map. The borders are Natural Earth's 110 m outlines, coarse enough
 // that a growing region a few kilometres from a border can fall inside the neighbour's outline
 // (Kayanza in Burundi, Renacimiento in Panama). The stored coordinates stay as sourced; the mark is
-// drawn at the nearest point inside its own country's outline (review r3, Astra).
+// drawn at the nearest point where it sits whole inside its own country's outline (reviews r3, r4, Astra).
 import { countryPaths } from '../../data/mapPaths.ts';
 import { project } from './origins.ts';
 
@@ -22,16 +22,41 @@ export function inRing(x: number, y: number, ps: Ring): boolean {
 }
 const inside = (id: string, x: number, y: number) => rings(id).some((ps) => inRing(x, y, ps));
 
-/** Where to draw a region of `countryId`: its projected point, or the nearest point at least
- *  `margin` map units inside the country's outline when the coarse border puts it outside. */
+// A mark fits where its whole diamond (half-diagonal `m`) lies inside: the centre, the four tips and
+// points along each edge, so a diamond near a coast or lake doesn't overhang (review r4, Astra).
+const EDGE = [0, 0.25, 0.5, 0.75];
+function fits(id: string, x: number, y: number, m: number): boolean {
+  if (!inside(id, x, y)) return false;
+  const tips: [number, number][] = [[m, 0], [0, m], [-m, 0], [0, -m]];
+  return tips.every(([ax, ay], i) => {
+    const [bx, by] = tips[(i + 1) % 4];
+    return EDGE.every((t) => inside(id, x + ax + (bx - ax) * t, y + ay + (by - ay) * t));
+  });
+}
+const placed = new Map<string, [number, number]>();
+
+/** Where to draw a region of `countryId`: its projected point when a diamond of half-diagonal
+ *  `margin` (map units) fits there whole, else the nearest point where it does. Where the country
+ *  is too thin for the whole mark, the nearest point inside it. */
 export function regionPoint(countryId: string, lat: number, lon: number, margin = 0.4): [number, number] {
+  const key = `${countryId}|${lat}|${lon}|${margin.toFixed(3)}`;
+  const hit = placed.get(key);
+  if (hit) return hit;
   const [x, y] = project(lat, lon);
-  if (!rings(countryId).length || inside(countryId, x, y)) return [x, y];
-  for (let r = 0.2; r <= 8; r += 0.2) {
+  let out: [number, number] = [x, y];
+  if (rings(countryId).length && !fits(countryId, x, y, margin)) {
+    const step = Math.max(0.02, margin / 3);
+    out = search(x, y, step, (px, py) => fits(countryId, px, py, margin)) ?? search(x, y, step, (px, py) => inside(countryId, px, py)) ?? [x, y];
+  }
+  placed.set(key, out);
+  return out;
+}
+function search(x: number, y: number, step: number, ok: (x: number, y: number) => boolean): [number, number] | null {
+  for (let r = step; r <= 10; r += step) {
     for (let a = 0; a < 360; a += 10) {
-      const dx = Math.cos((a * Math.PI) / 180), dy = Math.sin((a * Math.PI) / 180);
-      if (inside(countryId, x + dx * r, y + dy * r) && inside(countryId, x + dx * (r + margin), y + dy * (r + margin))) return [x + dx * (r + margin), y + dy * (r + margin)];
+      const px = x + Math.cos((a * Math.PI) / 180) * r, py = y + Math.sin((a * Math.PI) / 180) * r;
+      if (ok(px, py)) return [px, py];
     }
   }
-  return [x, y];
+  return null;
 }

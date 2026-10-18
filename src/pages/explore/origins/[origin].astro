@@ -30,6 +30,8 @@ const description = `${o.name} coffee at a glance: when it's harvested (${harves
 // Roasters' words for this origin's lots, and the lots themselves (as the roasters described them).
 const counts = new Map<string, number>();
 const sample = hub.beans.filter((b) => inSample(b.name, b.flavor_notes));
+const allLots = originHubs.reduce((n, h) => n + h.beans.length, 0);
+const allRoasters = new Set(originHubs.flatMap((h) => h.beans.map((b) => b.roaster))).size;
 for (const b of sample) for (const n of new Set(b.flavor_notes.flatMap((t) => notesInText(t, { roaster: true })))) counts.set(n, (counts.get(n) ?? 0) + 1);
 const words = [...counts.entries()].filter(([, n]) => n >= 2).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([id, n]) => ({ id, label: noteById(id)!.label, n }));
 const PROC: Record<string, string> = { washed: 'Washed', natural: 'Natural', honey: 'Honey', honey_white: 'White honey', honey_red: 'Red honey', anaerobic_washed: 'Anaerobic washed', anaerobic_natural: 'Anaerobic natural', 'semi-washed': 'Semi-washed', washed_ea_decaf: 'Washed, EA decaf', blend_washed_natural: 'Washed and natural blend', natural_and_washed_blend: 'Washed and natural blend' };
@@ -40,7 +42,7 @@ const cleanNote = (n: string) => n.replace(/&amp;|\bamp;/g, '&').replace(/^[&\s]
 const fragment = (n: string) => n.length >= 40 || /^(and|as well as|leading|sometimes|indulgent)\b|nbsp/i.test(n);
 const lots = hub.beans.map((b) => ({ roaster: b.roaster, name: titleCase(b.name), process: PROC[b.processing] ?? b.processing, roast: ROAST[b.roast_level] ?? b.roast_level, notes: b.flavor_notes.map(cleanNote).filter((n) => n && !fragment(n)).join(', ') || '—' }));
 
-const sourceIds = [...new Set([...o.harvest.sources, ...(o.altitudeM?.sources ?? []), ...(o.robustaAltitudeM?.sources ?? []), ...(o.production ? [o.production.source] : []), o.tendencies.source, ...(o.sources?.varieties ?? []), ...(o.sources?.processing ?? []), ...(o.sources?.regions ?? [])])].filter((id) => sources[id]);
+const sourceIds = [...new Set([...o.harvest.sources, ...(o.harvest.compare ?? []), ...(o.altitudeM?.sources ?? []), ...(o.robustaAltitudeM?.sources ?? []), ...(o.production ? [o.production.source] : []), o.tendencies.source, ...(o.sources?.varieties ?? []), ...(o.sources?.processing ?? []), ...(o.sources?.regions ?? [])])].filter((id) => sources[id]);
 // The closest other country pages, by distance on the globe (not just the same continent tab).
 const km = (a: { lat: number; lon: number }, b: { lat: number; lon: number }) => {
   const r = Math.PI / 180, h = Math.sin(((b.lat - a.lat) * r) / 2) ** 2 + Math.cos(a.lat * r) * Math.cos(b.lat * r) * Math.sin(((b.lon - a.lon) * r) / 2) ** 2;
@@ -85,7 +87,7 @@ const neighbours = ORIGINS.filter((x) => x.id !== o.id && x.page).sort((a, b) =>
         <AltitudeBand arabica={o.altitudeM} robusta={o.robustaAltitudeM} name={o.name} height={160} />
       </div>
       <dl class="op-facts">
-        <div><dt>Harvest</dt><dd>{harvestText(o)}{o.harvest.variesBy && <span class="sub">{o.harvest.variesBy.replace(/^This is (\w+);\s*/, "This calendar is $1's; ")}</span>}{o.harvest.elsewhere && <span class="sub">Outside these months, {o.harvest.elsewhere}.</span>}{arrival && <span class="sub">Typical arrival in the US: {arrival.arrival} (Café Imports).</span>}{o.harvest.sources.length > 0 && <span class="sub">Calendar from {sourceNames(o.harvest.sources)}, checked October 2026. Other references can differ by a month or so.</span>}</dd></div>
+        <div><dt>Harvest</dt><dd>{harvestText(o)}{o.harvest.variesBy && <span class="sub">{o.harvest.variesBy.replace(/^This is (\w+);\s*/, "This calendar is $1's; ")}</span>}{o.harvest.elsewhere && <span class="sub">Outside these months, {o.harvest.elsewhere}.</span>}{arrival && <span class="sub">Typical arrival in the US: {arrival.arrival} (Café Imports).</span>}{o.harvest.sources.length > 0 && <span class="sub">Calendar from {sourceNames(o.harvest.sources)}, checked October 2026.{o.harvest.compare?.length ? ` Compared with ${sourceNames(o.harvest.compare)}.` : ' Other references can differ.'}</span>}</dd></div>
         <div><dt>Altitude</dt><dd>{o.altitudeM ? bandText(o.altitudeM) : 'Not established'}{o.robustaAltitudeM && <span class="sub">Robusta: {bandText(o.robustaAltitudeM)}{o.robustaAltitudeM.scope ? ` · ${o.robustaAltitudeM.scope.replace(/;?\s*not national extrema\.?/i, '').replace(/\bRobusta\b/g, 'robusta').replace(/\.$/, '')}` : ''}{o.robustaAltitudeM.sources?.length ? ` (${sourceNames(o.robustaAltitudeM.sources)})` : ''}</span>}{o.altitudeM?.scope && <span class="sub">{o.altitudeM.scope.replace(/[,;]?\s*not national extrema\.?/i, "; not the country's highest or lowest farms.")}</span>}{o.altitudeM?.sources?.length ? <span class="sub">Band from {sourceNames(o.altitudeM.sources)}.</span> : null}</dd></div>
         <div><dt>Production</dt><dd>{productionText(o) ?? 'No current official figure'}{o.production && <span class="sub">{productionSource(o)}.</span>}</dd></div>
         <div><dt>Varieties</dt><dd>{o.varieties.join(', ')}</dd></div>
@@ -105,7 +107,7 @@ const neighbours = ORIGINS.filter((x) => x.id !== o.id && x.page).sort((a, b) =>
     {words.length > 0 && (
       <>
         <h2>Roasters' words</h2>
-        <p>Roasters described {sample.length} single-origin {sample.length === 1 ? 'lot' : 'lots'} from {o.name} in our catalog sample (38 specialty roasters, recorded January–March 2026); these are the notes they used most. Each opens in the <a href="/explore/flavors/">Flavor Bloom</a> with an exercise to train your nose on it.</p>
+        <p>Roasters described {sample.length} single-origin {sample.length === 1 ? 'lot' : 'lots'} from {o.name} in our catalog sample ({allLots} lots from {allRoasters} specialty roasters, recorded January–March 2026); these are the notes they used most. Each opens in the <a href="/explore/flavors/">Flavor Bloom</a> with an exercise to train your nose on it.</p>
         <ul class="op-words">{words.map((w) => <li><a href={`/explore/flavors/?note=${w.id}`}>{w.label}</a> <span>{w.n} lots</span></li>)}</ul>
       </>
     )}

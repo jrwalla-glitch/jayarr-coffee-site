@@ -17,6 +17,8 @@ export interface OriginFacts {
     variesBy: string | null;
     edgeMonths: number;
     sources: string[];
+    /** Other calendars that give a different window, named in variesBy (the drawn window is from `sources`). */
+    compare?: string[];
     scope?: string | null;
     /** Set where a source says picking goes on outside the drawn window (another region's calendar). */
     elsewhere?: string | null;
@@ -178,9 +180,9 @@ export function productionText(o: Origin): string | null {
 }
 // Who a figure comes from, in a few words: the publisher before the catalogue's " — ", with plain
 // names for the few long titles. Calendars here are importers' (Café Imports, Sucafina…), and other
-// references can differ by a month or so, so every figure names its source.
+// references can differ by a month or more, so every figure names its source.
 const SOURCE_NAMES: Record<string, string> = {
-  'sucafina-handbook-2026': 'Sucafina', 'cabi-coffee-ch2': 'a UK government agronomy guide', 'nass-may2026': 'USDA NASS',
+  'sucafina-handbook-2026': 'Sucafina', 'cabi-coffee-ch2': 'CAB International', 'nass-may2026': 'USDA NASS',
   'usda-psd-2026-07': 'USDA FAS', 'ctahr-coffee-2008': 'University of Hawaiʻi CTAHR', 'shade-indonesia': 'ShadeCoffee',
   'thai-moac': "Thailand's Ministry of Agriculture", 'ip-vietnam-lamdong': "Vietnam's IP Office (Lâm Đồng GI)",
   'tcb-manual-2023': 'Tanzania Coffee Board', 'hamdan-yemen': 'Hamdan Coffee', 'movaci-thailand': 'Movaci', 'iniap-robusta-2017': 'INIAP',

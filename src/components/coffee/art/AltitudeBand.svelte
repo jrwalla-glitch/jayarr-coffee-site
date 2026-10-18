@@ -10,7 +10,9 @@
   const pid = $props.id();
   const uid = `ab-${pid}`;
   const m = (v: number) => v.toLocaleString('en-US');
-  let text = $derived([arabica && `arabica ${m(arabica.min)} to ${m(arabica.max)} meters`, robusta && `robusta ${m(robusta.min)} to ${m(robusta.max)} meters`].filter(Boolean).join('; '));
+  // An open upper bound (the source's edge is above its figure) reads "and above", as the drawn "+" does.
+  const span = (b: Band) => `${m(b.min)} to ${m(b.max)} meters${b.upperBoundOpen ? ' and above' : ''}`;
+  let text = $derived([arabica && `arabica ${span(arabica)}`, robusta && `robusta ${span(robusta)}`].filter(Boolean).join('; '));
 </script>
 
 <svg viewBox="0 0 {W} {VH}" height={height} width={(height * W) / VH} role="img" aria-label={`${name ? name + ' altitude: ' : 'Altitude: '}${text || 'not established'}`} class="ab">

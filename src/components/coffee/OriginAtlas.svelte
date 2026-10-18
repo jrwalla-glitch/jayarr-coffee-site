@@ -57,6 +57,8 @@
   let mapW = $state(1200);
   // Map units per screen pixel: markers and labels keep their size on screen at any zoom.
   let upp = $derived(vb.current[2] / Math.max(200, mapW));
+  // Region marks are placed for the zoom's end point, so a zoom doesn't re-place them every frame.
+  let markU = $derived(vb.target[2] / Math.max(200, mapW));
   let shown = $derived.by(() => {
     const t = fold(query.trim());
     return ORIGINS.filter((o) => !t || fold(o.name).includes(t) || o.regions.some((r) => fold(r.name).includes(t)));
@@ -173,7 +175,7 @@
     const label = new Map<string, Spot>(), regionLabel = new Map<string, Spot>();
     // Region marks first, so the country's own name never lands on one.
     const regs = pts.filter((q) => chosen(q.o.id)).flatMap((p) => p.o.regions.filter((r) => r.lat !== null && r.lon !== null).map((r) => {
-      const [rx, ry] = regionPoint(p.o.id, r.lat!, r.lon!, 5 * u);
+      const [rx, ry] = regionPoint(p.o.id, r.lat!, r.lon!, 6 * markU);
       const sx = (rx - v[0]) / u, sy = (ry - v[1]) / u;
       boxes.push({ x: sx - 7, y: sy - 7, w: 14, h: 14 });
       return { key: `${p.o.id}|${r.name}`, name: r.name, sx, sy };
@@ -263,10 +265,10 @@
       <AltitudeBand arabica={o.altitudeM} robusta={o.robustaAltitudeM} name={o.name} height={compact ? 150 : 166} />
     </div>
     {#if !compact}
-      <ul class="rkey" aria-label="Ring key"><li><span class="k main"></span>Main harvest</li>{#if o.harvest.second}<li><span class="k second"></span>Second crop</li>{/if}{#if o.harvest.edgeMonths}<li><span class="k edge"></span>Edge months: can start early or run late</li>{/if}<li>The hand points to {MONTHS_LONG[month - 1]}</li></ul>
+      <ul class="rkey" aria-label="Ring key"><li><span class="k main"></span>Main harvest</li>{#if o.harvest.second}<li><span class="k second"></span>Second crop</li>{/if}{#if o.harvest.edgeMonths}<li><span class="k edge"></span>Edge month, our buffer: picking can start early or run late</li>{/if}<li>The hand points to {MONTHS_LONG[month - 1]}</li></ul>
     {/if}
     <dl class="facts">
-      <div><dt>Harvest</dt><dd>{harvestText(o)}{#if o.harvest.scope && !compact && !/^This is /.test(o.harvest.variesBy ?? '')}<span class="sub">{scopeText(o.harvest.scope)}</span>{/if}{#if o.harvest.variesBy && !compact}<span class="sub">{o.harvest.variesBy.replace(/^This is (\w+);\s*/, "This calendar is $1's; ")}</span>{/if}{#if o.harvest.elsewhere}<span class="sub">Outside these months, {o.harvest.elsewhere}.</span>{/if}{#if !compact && o.harvest.sources.length}<span class="sub srcline">Calendar from {sourceNames(o.harvest.sources)}, checked October 2026</span>{/if}</dd></div>
+      <div><dt>Harvest</dt><dd>{harvestText(o)}{#if o.harvest.scope && !compact && !/^This is /.test(o.harvest.variesBy ?? '')}<span class="sub">{scopeText(o.harvest.scope)}</span>{/if}{#if o.harvest.variesBy && !compact}<span class="sub">{o.harvest.variesBy.replace(/^This is (\w+);\s*/, "This calendar is $1's; ")}</span>{/if}{#if o.harvest.elsewhere}<span class="sub">Outside these months, {o.harvest.elsewhere}.</span>{/if}{#if !compact && o.harvest.sources.length}<span class="sub srcline">Calendar from {sourceNames(o.harvest.sources)}, checked October 2026{#if o.harvest.compare?.length}; compared with {sourceNames(o.harvest.compare)}{/if}</span>{/if}</dd></div>
       <div><dt>Altitude</dt><dd>{#if o.altitudeM}{@render band(compact ? bandText(o.altitudeM).split(' (')[0] : bandText(o.altitudeM))}{:else}Not established{/if}{#if o.altitudeM?.scope}<span class="sub">{altScope(o.altitudeM.scope)}</span>{/if}{#if o.robustaAltitudeM}<span class="sub">Robusta {@render band(compact ? bandText(o.robustaAltitudeM).split(' (')[0] : bandText(o.robustaAltitudeM))}{#if o.robustaAltitudeM.scope}{' · '}{altScope(o.robustaAltitudeM.scope)}{/if}</span>{/if}{#if !compact && (o.altitudeM?.sources?.length || o.robustaAltitudeM?.sources?.length)}<span class="sub srcline">{#if o.altitudeM?.sources?.length}{o.robustaAltitudeM ? 'Arabica band from' : 'Band from'} {sourceNames(o.altitudeM.sources)}{/if}{#if o.robustaAltitudeM?.sources?.length}{o.altitudeM?.sources?.length ? '; robusta band from ' : 'Robusta band from '}{sourceNames(o.robustaAltitudeM.sources)}{/if}</span>{/if}</dd></div>
       {#if !compact}
         <div><dt>Production</dt><dd>{productionText(o) ?? 'No current official figure'}{#if o.production?.arabicaShare != null && o.production.arabicaShare < 0.95}<span class="sub">{o.production.arabicaShare < 0.03 ? 'All counted as robusta' : `About ${Math.round(o.production.arabicaShare * 100)}% arabica, the rest robusta`}</span>{/if}{#if o.production}<span class="sub srcline">{productionSource(o)}</span>{/if}</dd></div>
@@ -348,7 +350,7 @@
           <!-- The selected origin's growing regions -->
           {#each [sel, vs].filter((x): x is Origin => !!x) as o (o.id)}
             {#each o.regions.filter((r) => r.lat !== null && r.lon !== null) as r (r.name)}
-              {@const [rx, ry] = regionPoint(o.id, r.lat!, r.lon!, 5 * upp)}
+              {@const [rx, ry] = regionPoint(o.id, r.lat!, r.lon!, 6 * markU)}
               {@const sp = marks.regionLabel.get(`${o.id}|${r.name}`)}
               <g class="region">
                 <path d="M{rx} {ry - 5 * upp} L{rx + 5 * upp} {ry} L{rx} {ry + 5 * upp} L{rx - 5 * upp} {ry} Z" fill="#2a1d15" stroke="#fbf6ee" stroke-width={1.2 * upp} />
@@ -421,7 +423,7 @@
         <div class="mapkey" aria-hidden="true">
           <span class="kt">Key</span>
           <span><span class="dot on"></span> Harvesting in {MONTHS_LONG[month - 1]}</span>
-          <span><span class="dot edge"></span> Maybe (an edge month: picking can start early or run late)</span>
+          <span><span class="dot edge"></span> Maybe (the month either side of the sourced harvest, our buffer: picking can start early or run late)</span>
           {#if elsewhereNow.length}<span><span class="dot else"></span> Outside the calendar drawn, but picked in another region</span>{/if}
           <span><span class="dot off"></span> Outside its harvest period</span>
           <span class="kring">{#if zoom > 2}<span class="ringk"></span> {narrow ? 'Ring: 12 months, Jan at top' : 'Ring: its 12-month harvest calendar, January at the top'}{:else}Pick an origin to zoom in and see its year as a ring{/if}</span>
@@ -531,7 +533,7 @@
           {/each}
         </div>
         <div class="cmpfoot">
-          <ul class="rkey" aria-label="Ring key"><li><span class="k main"></span>Main harvest</li><li><span class="k second"></span>Second crop</li><li><span class="k edge"></span>Edge months: can start early or run late</li><li>The hand points to {MONTHS_LONG[month - 1]}</li></ul>
+          <ul class="rkey" aria-label="Ring key"><li><span class="k main"></span>Main harvest</li><li><span class="k second"></span>Second crop</li><li><span class="k edge"></span>Edge month, our buffer: picking can start early or run late</li><li>The hand points to {MONTHS_LONG[month - 1]}</li></ul>
           <p class="small quiet">Both altitude bands are drawn on the same scale.</p>
           <button type="button" class="linkish" onclick={() => { const t = selId; selId = vsId; vsId = t; }}>Swap the two</button>
         </div>

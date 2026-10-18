@@ -112,6 +112,9 @@
     "sources": [
      "suca-kenya"
     ],
+    "compare": [
+     "ci-kenya"
+    ],
     "scope": "Central Kenya"
    },
    "altitudeM": {
@@ -965,13 +968,15 @@
      9
     ],
     "second": null,
-    "variesBy": "Regional harvests spread well beyond any one district's peak.",
-    "edgeMonths": 2,
+    "variesBy": "Sucafina's and Mercanta's calendar. Café Imports gives a later, shorter window, June–September. Regional harvests spread well beyond any one district's peak.",
+    "edgeMonths": 1,
     "sources": [
      "suca-peru",
      "mercanta-peru",
-     "ci-peru",
      "sucafina-handbook-2026"
+    ],
+    "compare": [
+     "ci-peru"
     ],
     "scope": "Arabica"
    },
@@ -1142,11 +1147,13 @@
      4
     ],
     "second": null,
-    "variesBy": "Warmer districts begin earlier and highland sites can finish later.",
-    "edgeMonths": 2,
+    "variesBy": "Sucafina's and Mercanta's calendar. Café Imports starts it two months earlier, in September. Warmer districts begin earlier and highland sites can finish later.",
+    "edgeMonths": 1,
     "sources": [
      "suca-guatemala",
-     "mercanta-guatemala",
+     "mercanta-guatemala"
+    ],
+    "compare": [
      "ci-guatemala"
     ],
     "scope": "Arabica"
@@ -1417,7 +1424,7 @@
     ],
     "second": null,
     "variesBy": "Higher northern districts often concentrate picking in December–March.",
-    "edgeMonths": 2,
+    "edgeMonths": 1,
     "sources": [
      "ci-nicaragua",
      "sucafina-handbook-2026",
@@ -1505,13 +1512,15 @@
      3
     ],
     "second": null,
-    "variesBy": "District and elevation matter; highland picking can continue into April.",
-    "edgeMonths": 2,
+    "variesBy": "Sucafina's and Mercanta's calendar. Apex gives November–March and Café Imports December–April. District and elevation matter; highland picking can continue into April.",
+    "edgeMonths": 1,
     "sources": [
      "suca-costa-rica",
-     "mercanta-costa-rica",
-     "ci-costa-rica",
-     "apex-costa-rica"
+     "mercanta-costa-rica"
+    ],
+    "compare": [
+     "apex-costa-rica",
+     "ci-costa-rica"
     ],
     "scope": "Arabica"
    },
@@ -1783,7 +1792,7 @@
     ],
     "second": null,
     "variesBy": "Escambray's October–March trade calendar differs from the broad country window.",
-    "edgeMonths": 2,
+    "edgeMonths": 1,
     "sources": [
      "bijdendijk-cuba",
      "moka-cuba"
@@ -2427,7 +2436,7 @@
     ],
     "second": null,
     "variesBy": "Lower Yunnan sites may start October; much specialty sourcing is concentrated December–March.",
-    "edgeMonths": 2,
+    "edgeMonths": 1,
     "sources": [
      "suca-china",
      "sucafina-handbook-2026"

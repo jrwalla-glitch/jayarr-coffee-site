@@ -14,5 +14,5 @@ export const EXPLORE_SOURCES: Record<string, Source> = {
   synthesis: { id: 'synthesis', author: 'JayArr Coffee', title: 'Coffee Knowledge Synthesis (seventeen sources)', where: '§1 extraction order, §5 filter science, §14 flavor chemistry, §17 method comparisons' },
   hoffmann: { id: 'hoffmann', author: 'James Hoffmann', title: 'The World Atlas of Coffee (2nd ed.) and published brewing technique', year: 2018, where: 'moka pot (about 1.5 bar against espresso\'s 9)' },
   rao: { id: 'rao', author: 'Scott Rao', title: 'Espresso Extraction: Measurement and Mastery', where: 'pump pressure: flow peaks at about 7–9 bar at the group head' },
-  'roaster-lots-2026': { id: 'roaster-lots-2026', author: 'JayArr Coffee', title: 'Lot descriptions from 38 specialty roasters\' online catalogs', year: 2026, where: '320 lots recorded January–March 2026, of which the 276 single-origin lots with tasting notes are counted; the words are the roasters\', counted as written' },
+  'roaster-lots-2026': { id: 'roaster-lots-2026', author: 'JayArr Coffee', title: 'Lot descriptions from 38 specialty roasters\' online catalogs', year: 2026, where: '320 lots recorded January–March 2026; the 272 single-origin lots whose descriptions name a tasting note, from 37 of the 38 roasters, are counted; the words are the roasters\', counted as written' },
 };

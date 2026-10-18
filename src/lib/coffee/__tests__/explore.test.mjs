@@ -137,7 +137,7 @@ test('harvest windows wrap across the new year; edges sit next to the window, ne
 test('altitude bands read low to high, and every cited source id exists', () => {
   for (const o of ORIGINS) {
     if (o.altitudeM) { assert.ok(o.altitudeM.min < o.altitudeM.max, o.id); assert.match(bandText(o.altitudeM), / m \(.* ft\)$/); }
-    const ids = [...(o.harvest.sources ?? []), ...(o.altitudeM?.sources ?? []), o.tendencies?.source, o.production?.source, ...(o.sources?.regions ?? []), ...(o.sources?.varieties ?? []), ...(o.sources?.processing ?? [])].filter(Boolean);
+    const ids = [...(o.harvest.sources ?? []), ...(o.harvest.compare ?? []), ...(o.altitudeM?.sources ?? []), o.tendencies?.source, o.production?.source, ...(o.sources?.regions ?? []), ...(o.sources?.varieties ?? []), ...(o.sources?.processing ?? [])].filter(Boolean);
     for (const id of ids) assert.ok(originSources[id], `${o.id}: unknown source ${id}`);
   }
   for (const m of ATLAS) for (const id of m.sourceIds) assert.ok(EXPLORE_SOURCES[id], `${m.id}: unknown source ${id}`);
