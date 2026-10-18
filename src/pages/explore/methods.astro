@@ -60,7 +60,7 @@ const rows = [...ATLAS].sort((a, b) => order.indexOf(a.contact) - order.indexOf(
               <td>{CONTACT[m.contact].label}</td>
               <td>{FILTER[m.filter].label}</td>
               <td>{FORCE[m.force].label}</td>
-              <td class="mono">{timeText(m)}</td>
+              <td class="mono">{timeText(m)}{m.timeNote ? '*' : ''}</td>
               <td class="mono">{ratioText(m)}</td>
               <td>{brewGuideHref(m) ? <a href={brewGuideHref(m)!}>Brew Guide</a> : <a href={`/blog/${m.guide.slug}/`}>Guide</a>}</td>
             </tr>
@@ -68,7 +68,7 @@ const rows = [...ATLAS].sort((a, b) => order.indexOf(a.contact) - order.indexOf(
         </tbody>
       </table>
     </div>
-    <p class="bp-note">Ratios are water to coffee by weight; espresso's is drink out to coffee in. Where the Brew Guide covers a brewer, these numbers are the Brew Guide's own. The phin, Turkish coffee, Clever Dripper and siphon use the recipes in our guides to those brewers.</p>
+    <p class="bp-note">Ratios are water to coffee by weight; espresso's is drink out to coffee in. Where the Brew Guide covers a brewer, these numbers are the Brew Guide's own, apart from the French press's time, which spans the common 4-minute recipe and the Brew Guide's 8-minute steep. Starred times: {rows.filter((m) => m.timeNote).map((m) => `${m.label}, ${m.timeNote}`).join('; ')}. The phin, Turkish coffee, Clever Dripper and siphon use the recipes in our guides to those brewers.</p>
 
     <h2>Guides to each brewer</h2>
     <ul>

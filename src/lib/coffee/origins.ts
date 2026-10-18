@@ -184,7 +184,7 @@ export function productionText(o: Origin): string | null {
 // names for the few long titles. Calendars here are importers' (Café Imports, Sucafina…), and other
 // references can differ by a month or more, so every figure names its source.
 const SOURCE_NAMES: Record<string, string> = {
-  'sucafina-handbook-2026': 'Sucafina', 'cabi-coffee-ch2': 'CAB International', 'nass-may2026': 'USDA NASS',
+  'sucafina-handbook-2026': "Sucafina's 2026 handbook", 'cabi-coffee-ch2': 'CAB International', 'nass-may2026': 'USDA NASS',
   'usda-psd-2026-07': 'USDA FAS', 'ctahr-coffee-2008': 'University of Hawaiʻi CTAHR', 'shade-indonesia': 'ShadeCoffee',
   'thai-moac': "Thailand's Ministry of Agriculture", 'ip-vietnam-lamdong': "Vietnam's IP Office (Lâm Đồng GI)",
   'tcb-manual-2023': 'Tanzania Coffee Board', 'hamdan-yemen': 'Hamdan Coffee', 'movaci-thailand': 'Movaci', 'iniap-robusta-2017': 'INIAP',

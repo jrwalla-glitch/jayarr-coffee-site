@@ -484,12 +484,14 @@
     ],
     "second": [
      11,
-     1
+     2
     ],
-    "variesBy": "Two regional robusta seasons: May–August is the large crop in the southwest and west, drawn solid; November–January is the main crop north of the equator, drawn pale. Arabica follows other regional calendars.",
+    "variesBy": "Two regional robusta seasons, from Sucafina's 2026 handbook: May–August in Masaka and the west, drawn solid; November–February in the central and eastern regions, drawn pale. Sucafina's website gives November–January for the later season. Arabica follows other regional calendars.",
     "edgeMonths": 1,
     "sources": [
-     "sucafina-handbook-2026",
+     "sucafina-handbook-2026"
+    ],
+    "compare": [
      "suca-uganda"
     ],
     "scope": "Robusta regional seasons"
@@ -968,15 +970,15 @@
      9
     ],
     "second": null,
-    "variesBy": "Sucafina's and Mercanta's calendar. Café Imports gives a later, shorter window, June–September. Regional harvests spread well beyond any one district's peak.",
+    "variesBy": "Sucafina's website and Mercanta's calendar. Café Imports gives a later, shorter window, June–September, and Sucafina's 2026 handbook April–October. Regional harvests spread well beyond any one district's peak.",
     "edgeMonths": 1,
     "sources": [
      "suca-peru",
-     "mercanta-peru",
-     "sucafina-handbook-2026"
+     "mercanta-peru"
     ],
     "compare": [
-     "ci-peru"
+     "ci-peru",
+     "sucafina-handbook-2026"
     ],
     "scope": "Arabica"
    },

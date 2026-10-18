@@ -242,9 +242,11 @@ test('review r4 (Opus): V60 vs Kalita names the grind; moka\'s ratio reads as th
   assert.equal(ratioText(moka), '1:10 (the pot sets it)');
 });
 
-test('review r4 (Opus): Uganda\'s robusta windows are Sucafina\'s (May–Aug; Nov–Jan); Cuba\'s one-lot band is scoped', () => {
+test('review r5 (Astra): Uganda\'s robusta windows are the Sucafina handbook\'s (May–Aug; Nov–Feb), the website compared; Cuba\'s one-lot band is scoped', () => {
   const ug = ORIGINS.find((o) => o.id === 'uganda'), cu = ORIGINS.find((o) => o.id === 'cuba');
   assert.deepEqual(ug.harvest.main, [5, 8]);
-  assert.deepEqual(ug.harvest.second, [11, 1]);
+  assert.deepEqual(ug.harvest.second, [11, 2]);
+  assert.deepEqual(ug.harvest.sources, ['sucafina-handbook-2026']);
+  assert.deepEqual(ORIGINS.find((o) => o.id === 'peru').harvest.compare, ['ci-peru', 'sucafina-handbook-2026']);
   assert.match(cu.altitudeM.scope, /offering/);
 });
