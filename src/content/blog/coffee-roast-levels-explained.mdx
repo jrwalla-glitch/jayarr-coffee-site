@@ -1,199 +1,93 @@
 ---
-title: "Coffee Roast Levels Explained: Light vs Medium vs Dark (With the Chemistry)"
-description: "Light vs medium vs dark roast coffee — what actually happens during roasting, why sweetness follows a bell curve, the caffeine myth, and why light roasts are harder to extract than dark."
+title: "Coffee Roast Levels Explained: Light vs Medium vs Dark"
+description: "What light, medium and dark roast mean, why there's no universal standard, how roasters measure color and weight loss, what changes in the cup, and how to read the roast on a bag."
 pubDate: "Mar 12 2026"
-updatedDate: "Mar 10 2026"
+updatedDate: "Oct 15 2026"
 heroImage: "../../assets/blog/coffee-roast-levels-explained.jpg"
 category: "Science"
 ---
 
-import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
-import FAQ from '../../components/FAQ.astro';
 import AnswerBox from '../../components/AnswerBox.astro';
-import DeepBrewCallout from '../../components/DeepBrewCallout.astro';
+import ToolCallout from '../../components/ToolCallout.astro';
 
-<AnswerBox answer="Light, medium, and dark roasts are specific chemical states produced by stopping the roasting process at different points. Light roasts preserve origin character and acidity but are harder to extract (denser bean structure). Dark roasts are more soluble and forgiving to brew but lose origin character. Sweetness peaks in the medium range. Caffeine differences between roast levels are minimal (5–15%) — the meaningful variation comes from species and dose, not roast." />
+<AnswerBox answer="Light, medium and dark describe how far a roaster took the beans, judged by their color and the weight they lost, but there's no universal standard: one roaster's medium can be another's light. Lighter roasts generally keep more of a coffee's acidity and its own flavors; darker ones trade them for roast flavor and bitterness. Caffeine barely changes. On a bag, the roast date and the roaster's own description tell you more than the word." />
 
-Most coffee drinkers pick a roast level the way they pick a paint color — by what they think they prefer — without knowing what they're actually choosing. Light, medium, and dark roasts are not just flavor descriptions. They are specific chemical states of the coffee bean, produced by stopping the roasting process at different points along a transformation that involves over 800 distinct volatile aromatic compounds, multiple chemical reaction cascades, and changes to the bean's physical structure that directly affect how you'll need to brew it.
+Light, medium and dark are useful words, but they're shorthand. Jessica Easto puts it plainly in *Craft Coffee*: the terms don't correspond to any "magical roasting time." Roasters treat each lot of beans differently, testing roast profiles until they get the result they want.
 
-Understanding what roasting does to a bean tells you why your current roast tastes the way it does, why your light roast keeps coming out sour, and why "dark roast is stronger" is not quite the right way to think about it.
+This page covers what the levels mean and how to read them on a bag. For how roasting works, from drying to second crack, see [how is coffee roasted?](/blog/how-is-coffee-roasted/), and to roast your own, [how to roast coffee at home](/blog/how-to-roast-coffee-at-home/).
 
-## What Green Coffee Is Before Roasting
+## There's no standard for light, medium or dark
 
-Raw coffee beans are green, dense, and grassily unpleasant. They contain sugars, amino acids, organic acids, fats, proteins, water, and hundreds of precursor compounds that don't yet taste like coffee. Roasting converts these precursors through a series of chemical reactions that produce the aromatics, sweetness, and body we associate with the final cup.
+Nobody owns the words, and the people who measure roasts most closely use them differently:
 
-The bean loses roughly **16-18% of its weight during roasting** (Rao) — almost entirely water initially, then carbon dioxide and volatile organic compounds as reactions progress. This degassing continues after roasting for several days, which is why fresh-roasted beans bloom vigorously and need a brief rest before optimal extraction.
+- **Researchers.** Christina Rune and colleagues roasted five specialty coffees to three levels for a 2023 study and called them lighter, medium and darker. They note that their "medium" roast is closer to what some earlier studies call light, and that their "darker" roasts fall in the range other studies call medium.
+- **Roasters.** Rob Hoos, a production roaster, tells readers to trust the number a roast-color meter gives rather than the roast level it names, which he has never found helpful. Of his own weight-loss scale he writes that people all have different perspectives on light, medium and dark.
+- **The Specialty Coffee Association.** For cupping, the SCA says the recommended roast "has mostly been described as 'medium'," and lists the color readings different authors have given for medium. It adds that the scales used by roast meters are arbitrary, and that even meters on the same scale don't always agree.
 
-## The Chemical Stages of Roasting
+So compare roast levels within one roaster's range. Across roasters, a bag marked "medium" tells you only roughly what to expect.
 
-<ProcessFlow
-  title="Coffee Roasting: Stage by Stage"
-  subtitle="From green bean through second crack — with flavor, chemistry, and color at each stage"
-  steps={[
-    {
-      label: "Green Bean (Ambient)",
-      sublabel: "Raw coffee: dense, 10-12% moisture",
-      description: "Contains amino acids, sugars, acids, and hundreds of flavor precursors. Grassy and unpleasant. 16-18% of total weight will be lost by end of roast (Rao).",
-    },
-    {
-      label: "Drying Phase (100-150°C)",
-      sublabel: "0-4 minutes — green to yellow",
-      description: "Water drives off. Bean turns yellow then tan. No flavor development yet — this phase prepares the structure for reactions to come. Rapid, uneven drying creates a hard outer shell that inhibits later reactions.",
-    },
-    {
-      label: "Maillard Reactions (150-200°C)",
-      sublabel: "Browning phase — nutty, caramel aromas",
-      description: "Amino acids + reducing sugars react, producing hundreds of aromatic compounds. Browning begins. Melanoidins form with documented antiradical (antioxidant) properties. Over 800 volatile aromatic compounds develop during the full roast.",
-    },
-    {
-      label: "Caramelization (170-200°C)",
-      sublabel: "Overlapping with Maillard — sugars restructure",
-      description: "Sugars break down into furans, diacetyl, and other flavor compounds. Contributes sweetness and color. Counterintuitive: extended caramelization reduces perceived sweetness as precursor sugars are destroyed.",
-    },
-    {
-      label: "First Crack (~196°C / 385°F)",
-      sublabel: "The dividing line — light roasts stop here",
-      description: "CO2 and water vapor build to fracture bean walls. Audible cracking. Bean roughly doubles in size. Stop too early and you get wood/bread taste — underdeveloped, not a good light roast (Easto).",
-    },
-    {
-      label: "Development Phase (196-212°C)",
-      sublabel: "Sweetness peaks here (Hoffmann)",
-      description: "Roaster controls duration between cracks. Longer development integrates sharp notes into sweetness, builds body. Sweetness follows a bell curve — the peak is somewhere in this phase.",
-    },
-    {
-      label: "Second Crack (212-218°C / 414-424°F)",
-      sublabel: "Oils surface — dark roast territory",
-      description: "Further fracturing of bean structure. Oils surface. Carbon dioxide released. Dark brown color. More than 90% of original chlorogenic acids destroyed. Dark roasts are more porous and easier to extract, but lose origin character.",
-    },
-    {
-      label: "French / Dark (220°C+ / 428°F+)",
-      sublabel: "Structural breakdown — roast dominates",
-      description: "Structural integrity breaking down. Dominant flavors come from destruction of original compounds, not origin character. Smoky, ashy, bittersweet. Oily surface. Howell: 'Dark roast covers origin like a heavy sauce.'",
-    }
-  ]}
-/>
+## How roasters measure a roast
 
-### Drying Phase (0-4 minutes, green to yellow)
+The SCA lists four ways to control roast level: color, measured against the Agtron/SCA Roast Color Classification discs or on the CIELAB color scale; infrared meters, such as Agtron's; the dry matter the beans lose; and how much they swell.
 
-The bean is mostly water at this point — approximately 10-12% moisture. The first phase drives off moisture and raises internal bean temperature to around 150°C. The color shifts from green to yellow to light tan. No meaningful flavor development yet; this phase is preparation.
+**Color.** On the Agtron scale, a higher number means a lighter roast, as the readings below show. In Hoos's figures, ground coffee reads well above whole beans from the same roast, so a published number should say which it is. Here are the references we could trace to their sources:
 
-The quality of this phase matters: rapid, uneven drying can create a hard outer shell that inhibits later reactions from completing evenly throughout the bean's interior.
+| Source | What they call it | Reading |
+|---|---|---|
+| SCA (2024) | Cupping roast, usually described as medium | Agtron "Gourmet" 63.0 target; authors' medium references from 54 to 65 on the Agtron/SCA discs |
+| SCA (2024) | Dark roast, its taste reference for bitterness | About Agtron #35 |
+| Rune and colleagues (2023) | Lighter, medium, darker | Agtron, ground coffee: 102–115, 71–81 and 50–62 |
+| Hoos (2025) | Light, for his Typica roasts | Agtron about 70 whole bean and 110 ground, at 11–12% weight loss |
 
-### Maillard Reactions (150-200°C, browning phase)
+**Weight loss.** Roasting drives off water and other compounds, so the beans weigh less. Hoos uses weight loss as one guide to roast degree: under about 11% he suspects the coffee is under-roasted, 11–13% is almost always light, 14–16% is medium to him, and 17–18% is dark, with roast notes taking over. Above that, he finds the roast extremely dark. For comparison, James Hoffmann writes that slow roasts of 14 to 20 minutes lose about 16 to 18%, and in Adriana Farah and colleagues' 2005 roasting study, about 14% weight loss was a light-medium roast. Weight loss also depends on how wet the green coffee was, as Hoos notes, so it's a guide rather than a grade.
 
-The Maillard reaction — the same one that browns bread, sears steak, and caramelizes onions — is the primary driver of coffee's flavor complexity. It occurs between amino acids and reducing sugars, generating hundreds of new aromatic compounds that did not exist in the green bean.
+## What changes from light to dark
 
-During roasting, Maillard reactions produce:
-- Brown color (melanoidins)
-- Roasted, nutty, and caramel aromas
-- The early framework of what becomes the cup's body and sweetness
-- Melanoidins that have documented antiradical (antioxidant) properties
+Hoffmann describes the trade-off with three curves. Acidity falls the longer a coffee is roasted, while bitterness rises slowly with roast time and definitely with darkness. Sweetness rises and falls between them, peaking somewhere in the middle, and a good roaster can move where a coffee is sweetest.
 
-The rate and temperature of Maillard development is one of the key variables separating roasters' styles. A longer, slower Maillard phase generally develops more complexity; a faster, hotter Maillard creates a more abbreviated flavor profile.
+- **The coffee's own character, or the roast's.** Lighter roasts show more of what the coffee brings, which Easto calls its origin character: where it grew, its variety and its processing. By second crack, Hoffmann writes, much of the acidity is gone and a generic "roast" flavor develops from charring, whatever the coffee. He describes French and Italian roasts as very dark, usually heavy in body and bitterness, with many of the raw coffee's characteristics lost. Easto quotes the roaster George Howell: "Dark roast covers things like a heavy sauce." Which you prefer, she writes, is a matter of taste, like preferring the sauce or the meat.
+- **Bitterness.** Most of it is made in the roaster. In light to medium roasts it comes mainly from compounds called lactones, and in darker roasts from harsher, lingering phenylindanes, as Thomas Hofmann's group found. Caffeine is a small part: Hofmann estimated about 15% of coffee's perceived bitterness. Our [chlorogenic acids note](/deep-brew/research/chlorogenic-acid-cascades/) explains where these compounds come from.
+- **Sweetness.** By the end of first crack, Hoffmann writes, few or no simple sugars are left, so a roast's sweetness comes mostly from aroma and from less sourness and bitterness. The [sweetness note](/deep-brew/research/sweetness-paradox-roasting/) covers the evidence.
+- **Color and body.** The brown polymers called melanoidins give roasted coffee its color, and in one study of a single coffee their amount in the brew rose from light to medium to dark roast. Our [melanoidins note](/deep-brew/research/melanoidins-body-color-health/) covers how much they do for body, which is less settled than often claimed.
+- **Oils.** Second crack drives oils to the surface of the bean, Hoffmann writes. Jonathan Gagné adds that oils also migrate out of beans as they age, faster in darker roasts and decaf, over days to months. Shiny beans are dark, old or both.
 
-### Caramelization (170-200°C, overlapping with Maillard)
+**Light isn't the same as underdeveloped.** Easto warns that a roast can be too light, without enough time in the heat, and then taste of wood or bread. The SCA describes a related fault, a roast so fast that the outside of the bean is much darker than the inside. A good light roast is a choice; an underdeveloped one is a defect.
 
-Sucrose and other sugars begin breaking down and restructuring into hundreds of flavor compounds including diacetyl (buttery), furans (nutty/caramel), and organic acids. Caramelization contributes both flavor complexity and color.
+## Caffeine: about the same
 
-**A counterintuitive fact:** More caramelization does not mean more perceived sweetness. The sugar molecules are being destroyed and converted. Extended caramelization — as in darker roasts — actually reduces perceived sweetness because the precursor sugars are depleted. Hoffmann describes sweetness as following a bell curve: too little development (too light) produces sourness and grassy character; the peak of the curve is where sweetness is highest; too much development (too dark) produces bitterness and ashy character as the sweetness-contributing compounds break down.
+Roasting barely changes the caffeine in a bean. Easto writes that caffeine is neither created nor destroyed in roasting. Adriana Farah's review says roasting doesn't alter it significantly, apart from small losses, though the share of caffeine can rise a little as other compounds are lost.
 
-### First Crack (~196°C / 385°F)
+What changes is how much coffee you measure. Darker beans weigh less, so a gram of dark roast holds more beans: Easto counts about 90 more beans in a pound of dark roast than in a pound of light. Weighed out, the dark roast has slightly more caffeine; measured by the scoop, the light roast does, because light beans swell less and more of them fit. Either way the difference is small. The species matters far more: robusta has about twice the caffeine of arabica, as our [arabica vs robusta guide](/blog/arabica-vs-robusta-differences/) explains, and the [caffeine guide](/blog/caffeine-in-coffee-guide/) covers the rest.
 
-First crack is the audible inflection point of roasting — a popping sound created when CO2 and water vapor build up enough internal pressure to fracture the bean's physical structure. The bean roughly doubles in size as cell walls break. This is the dividing line between under-developed and developed roasts.
+## Brewing light and dark roasts
 
-Light roasts stop shortly after first crack. Medium roasts develop further into what roasters call the "development phase" — the time between first and second crack. This development time is one of the most important quality variables, affecting the integration of the flavors that Maillard and caramelization built.
+The usual explanation, which Easto gives, is that light roasts are less soluble and take more coaxing to get the flavors into the cup. Gagné's own measurements complicate that. Across the coffees in his filter-brewing logs, darker roasts gave lower average extraction yields, not higher, and the trend held within each origin and among brews of similar length. When he brewed six roasts of a single green coffee, the darkest gave the lowest yields, though the lightest were slightly lower too. He cautions that espresso, with its much shorter brew, may behave differently.
 
-### Development Phase (Between Cracks)
+In practice, he brewed a light-roasted Gesha with kettle water at 210°F&nbsp;(99°C) and a darker Catimor at 194°F&nbsp;(90°C), to avoid bitterness in the darker one. Our Brew Guide follows the same pattern: for a V60, it starts light roasts at 205°F&nbsp;(96°C), medium at 201°F&nbsp;(94°C) and dark at 196°F&nbsp;(91°C), with a finer grind for light roasts and a coarser one for dark. Our [brewing temperature guide](/blog/whats-the-ideal-coffee-brewing-temperature/) explains why the kettle isn't the brew.
 
-The development phase is where the roaster has the most creative control. More development time:
-- Integrates sharp, sour notes from Maillard and acid formation into sweeter complexity
-- Builds body
-- Begins converting the structural complexity of the beans' cells into the porous matrix that water will need to penetrate when brewing
+<ToolCallout tool="brew" preset={{ method: 'v60', cup: 354.9, roast: 'dark' }} cta="Open the Brew Guide: dark-roast V60" context="Opens the Brew Guide on a 12 fl oz V60 with a dark roast, where it sets the kettle to 196°F&nbsp;(91°C) and the coarser half of the V60 grind band, about 550–650&nbsp;µm. Switch the roast to light or medium to see how the temperature and grind change." />
 
-Under-developed roasts stopped too early in this phase produce a distinctive wood or bread flavor — flat and grassy, not the same as a well-developed light roast. Easto distinguishes sharply between a genuinely good light roast (careful development, complex, bright) and an under-roasted bean (underdeveloped, woody, one-dimensional). "Light" and "underdeveloped" are not synonyms.
+If a dark roast tastes harsh even when the brew time is right, the bitterness may be the roast itself; our [bitter coffee guide](/blog/why-coffee-tastes-bitter-how-to-fix/) helps tell the two apart.
 
-### Second Crack (212-218°C / 414-424°F)
+## How to read the roast on a bag
 
-A second round of cracking occurs when the now-porous bean's structure fractures further. Oils begin surfacing to the bean exterior. Color darkens to deep brown. CO2 is released in volume.
+- **Find the roast date.** Hoffmann writes that coffee is at its best when used within a month of roasting. The Freshness tool shows where a bag is from its date.
+- **Read the roast word against the roaster's own range.** "Light" from a roaster who sells mostly dark roasts can be darker than "medium" from a roaster who sells mostly light ones. Names such as City, Full City, French or Italian are roasters' own labels, not grades on a shared scale.
+- **If there's an Agtron number, check the scale.** Higher means lighter, and in Hoos's figures a ground reading is well above a whole-bean reading of the same roast.
+- **Read the tasting notes as a guide.** They describe what the coffee can taste like brewed well. Our guide to [reading a coffee bag label](/blog/how-to-read-coffee-bag-label/) covers the rest of the label.
+- **Look at the beans.** A shiny, oily surface means a dark roast, an old one, or both.
 
-Beyond second crack, French roast territory begins (~220°C+). The bean is now losing structural integrity and the dominant flavors are generated not by the bean's original character but by the destruction of those compounds — smoky, ashy, intensely bitter, with oils heavily expressed on the surface.
+<ToolCallout tool="freshness" preset={{ storage: 'opened' }} cta="Open Freshness for an opened bag" context="Opens the Freshness tool for an opened bag of whole beans brewed as filter. It starts on a bag roasted ten days ago: enter the roast date from yours to see its stage and its usual best dates, with a reminder to reseal it and keep it out of the fridge." />
 
-**Second crack and beyond: George Howell's analogy.** Howell, one of the founders of modern American specialty coffee, described dark roasting as covering the coffee's inherent character "like a heavy sauce." The light roast shows you the meat. The dark roast shows you the sauce. The bean's origin character — the terroir, the variety, the processing — is progressively obscured as roasting progresses beyond the development phase.
+## Sources
 
-## The Caffeine Myth
-
-One of the most persistent misconceptions in coffee is that dark roast has more caffeine because it "tastes stronger."
-
-The reality is more nuanced. Roasting does not create caffeine — but it also barely destroys it (Easto). Caffeine content in green vs. roasted coffee of the same origin is nearly identical. The roasting process is largely caffeine-neutral.
-
-Where confusion enters is measurement method:
-
-- **By weight:** Dark roast has slightly *more* caffeine per gram. The roasting process drives off water and volatile compounds, making the bean lighter. Dark beans have more caffeine per gram because there's less non-caffeine material per gram.
-- **By volume (scoop):** Light roast has *more* caffeine per scoop. Light roast beans are denser and smaller — you fit more beans into the same scoop, which means more caffeine.
-
-The difference in either direction is modest — roughly 5-15% depending on roast level and measurement method. The meaningful caffeine variation in coffee comes from species (Robusta has approximately twice the caffeine of Arabica) and dose, not roast level.
-
-## Solubility: Why Light Roasts Are Harder to Brew
-
-Here is the most counterintuitive fact about roast levels for home brewers: **light roasts are less soluble than dark roasts, and harder to extract properly** (Easto, Gagné).
-
-This seems backward. Light roasts taste brighter and more acidic — shouldn't they dissolve more easily? No. The denser physical structure of lightly roasted beans resists water penetration. The Maillard and caramelization reactions that break down the bean's cellular structure haven't proceeded as far, leaving it more intact. Water has to work harder to dissolve the compounds you want.
-
-Dark roasts, by contrast, have a more porous, physically degraded structure. Water moves through them more easily. This is why dark roasts extract quickly and are more forgiving of imprecise grind settings — there's a wider window before they over-extract.
-
-**Practical consequences:**
-- Light roasts often need finer grind, higher temperature, longer brew time, or some combination of all three
-- [Extraction yield](/blog/coffee-extraction-yield-explained/) on light roasts requires more careful calibration
-- Gagné documents that darker roasts have lower available solubles overall and yield lower extraction yields at equivalent extraction parameters — they simply contain less extractable material by this point in development
-- [Water temperature](/blog/whats-the-ideal-coffee-brewing-temperature/) matters more for light roasts — approaching the upper limit of the brewing range (93-96°C) helps unlock compounds that won't dissolve at lower temperatures
-
-This is also why light roast espresso is notoriously difficult to dial in. The narrow solubility window combined with espresso's fast contact time creates very little margin for error. Dark roast espresso forgives more because the bean extracts freely and consistently.
-
-<DeepBrewCallout tool="calibrator" context="Start from your grinder's published setting for your brew method, then adjust for the roast by taste: finer if it's sour, coarser if it's bitter." />
-
-## Chlorogenic Acids: The Antioxidant Story
-
-Green coffee beans are rich in chlorogenic acids (CGAs) — a class of polyphenols with documented antioxidant properties. Roasting progressively destroys CGAs:
-
-- **Light roast:** Retains the highest CGA concentration — perhaps 50-70% of the original green coffee levels
-- **Medium roast:** Moderate CGA reduction
-- **Dark roast:** Loses more than 90% of original CGAs
-
-This doesn't mean dark roast is "unhealthy" — Maillard products (melanoidins) produced during roasting have their own antiradical activity. But if you're specifically interested in coffee's polyphenol content, lighter roasting preserves more of the original compounds.
-
-## Measuring Roast Level
-
-Professional roasters measure roast level with a colorimeter device that reads the lightness/darkness of ground coffee on a standardized scale. One system (used widely in Nordic roasting) measures light reflectance:
-
-- **Nordic light roast:** 65-70% (very light)
-- **Medium roast:** 72-76%
-- **French dark roast:** ~85% (very dark)
-
-Home roasters and consumers don't typically have access to colorimeters, but the visual cues are reliable:
-- **Light:** Cinnamon to medium brown, dry surface, no visible oils
-- **Medium:** Medium to slightly darker brown, dry to barely oily surface
-- **Medium-dark:** Rich brown, slight oil sheen
-- **Dark:** Dark brown to near-black, visible oil on surface
-- **French/Italian:** Very dark, shiny oily surface, sometimes with visible carbon
-
-## Which Roast for Which Purpose
-
-**Light roast:** Best for methods where origin character matters most — pour-over, V60, Aeropress, Chemex. Rewards careful brewing. For a guide to pour-over technique that works well with light roasts, see [the ultimate pour-over guide](/blog/ultimate-pour-over-coffee-guide-and-best-v60-technique/). Also pairs exceptionally well with [the Clever Dripper](/blog/the-clever-dripper-better-coffee-than-pour-over/), where immersion brewing helps extract the denser bean more thoroughly.
-
-**Medium roast:** Most versatile. Works in virtually any brew method. The sweetness peak of Hoffmann's bell curve tends to land here for most well-developed coffees. Good choice for [French press](/blog/how-to-use-a-french-press-the-most-amazing-coffee-youve-ever-had/) because the body and sweetness are balanced without the edge of light or the dominance of dark.
-
-**Dark roast:** Best for espresso beginners (wider extraction window), Moka pot (bold flavors survive the high-heat extraction), and cold brew, where long immersion time with coarse grounds benefits from the more readily extracted compounds. See the [cold brew guide](/blog/whats-great-about-cold-brew-toddy-cold-brew-tutorial/) for dark roast cold brew technique.
-
-**For freshness:** Roast level affects how long coffee stays at peak flavor. [Coffee freshness](/blog/coffee-freshness-roast-to-stale/) covers the timeline in full — dark roasts go stale faster because the oils on the surface oxidize more quickly than the oils locked inside a denser light-roast bean.
-
----
-
-<FAQ items={[
-  { question: "Does dark roast have more caffeine than light roast?", answer: "Neither decisively. Roasting barely destroys caffeine (Easto). By weight, dark roast has slightly more caffeine per gram because water loss during roasting concentrates what remains. By volume — a typical scoop — light roast has slightly more caffeine because denser, smaller beans pack more mass into the same volume. The difference is 5-15% in either direction. Meaningful caffeine variation in coffee comes from species (Robusta has roughly twice the caffeine of Arabica) and dose, not roast level." },
-  { question: "Why does my light roast coffee taste sour?", answer: "Almost always an extraction problem. Light roasts are less soluble than dark roasts — their denser physical structure resists water penetration more. Under-extraction (too little dissolved material) produces sour, thin coffee. Try grinding finer, increasing water temperature toward 93-96°C, extending brew time, or a combination. Also confirm the beans are well-developed light roast, not underdeveloped beans (which taste woody/grassy, not sour). A good light roast should taste sweet, bright, and complex — not sour." },
-  { question: "Is light roast or dark roast healthier?", answer: "Light roast retains significantly more chlorogenic acids (CGAs) — a class of antioxidant polyphenols. Dark roasts lose more than 90% of original CGAs through the roasting process. However, Maillard products (melanoidins) generated during roasting have their own documented antiradical activity, partially offsetting the CGA loss. If polyphenol content is a priority, lighter roasts preserve more. For overall health research on coffee, the picture is more complex than roast level alone." },
-  { question: "Why is it hard to taste 'origin character' in dark roast coffee?", answer: "Roasting progressively overwrites the flavors produced by the bean's origin — its variety, altitude, processing, and soil. At darker roast levels, the dominant flavors come from the roasting reactions themselves (Maillard products, caramelization byproducts, carbon char) rather than from the original bean. George Howell put it directly: dark roast covers origin character like a heavy sauce. The lighter the roast, the more the bean's inherent character is preserved and expressed in the cup." },
-  { question: "What's the difference between an underdeveloped and a well-developed light roast?", answer: "An underdeveloped coffee — stopped too early in roasting — tastes woody, bready, or grassy. A well-developed light roast, stopped just after first crack with adequate development time, tastes sweet, bright, and often fruity or floral. The distinction matters because under-development is a roasting flaw, not a roast level. When people say they 'don't like light roast,' they often have had underdeveloped beans, not a genuinely well-crafted light roast from a quality roaster." },
-  { question: "Does roast level affect how I should brew coffee?", answer: "Yes, significantly. Light roasts are denser and less soluble — they need finer grind, higher water temperature (93-96°C), and potentially longer contact time to extract properly. Dark roasts have a more porous structure and extract more easily, giving them a wider, more forgiving extraction window. This is why dark roast espresso is easier to dial in than light roast espresso. Adjust your grinder and temperature when switching between roast levels — the extraction parameters that work for one will likely under-extract or over-extract the other." },
-  { question: "Why does steeping coffee longer sometimes not fix a weak cup?", answer: "With dark roasts, the total available solubles are lower to begin with — roasting destroys extractable material, and darker roasts have less of it (Gagné). At some point you've extracted most of what's available, and longer steeping just adds bitterness rather than more flavor. Light roasts actually have more extractable material but require the right conditions to release it. If your dark roast coffee is weak and extending steep time doesn't fix it, consider increasing dose or switching to a denser extraction method." }
-]} />
+- Jessica Easto, *Craft Coffee: A Manual* (Agate Surrey, 2017), ch. 3: "Roast," pp. 144–149 (roast terms and profiles, the Howell quotation, solubility, a roast that's too light), and "A Note on Caffeination," p. 150
+- Christina J. Birke Rune and colleagues, "Acids in brewed coffees: Chemical composition and sensory threshold," *Current Research in Food Science* 6 (2023): 100485, section 2.1, Table 1 (Agtron readings on ground coffee) and its note on roast names in earlier studies: [doi.org/10.1016/j.crfs.2023.100485](https://doi.org/10.1016/j.crfs.2023.100485)
+- Specialty Coffee Association, *A System to Assess Coffee Value: Understanding the SCA's Coffee Value Assessment* (June 2024), §5.1.1, "Roasting," pp. 20–21 (methods, Table 3 "Reference values for 'medium' roast level," Table 4 target readings, roasting faults) and §6.3, "Taste References," p. 29
+- Rob Hoos, *Cultivar: A Practical Guide for Coffee Roasters* (self-published, 2025), p. 23 (Typica roast color and weight loss) and p. 53 (roast color meters; weight loss and roast degree)
+- James Hoffmann, *The World Atlas of Coffee*, 2nd ed. (Mitchell Beazley, 2018): "Coffee Roasting," p. 54 ("Fast or slow, light or dark?"), pp. 56–57 ("The stages of roasting") and p. 59 ("Sugars in coffee"); "Types of Coffee Roasters" (coffee at its best within a month)
+- Adriana Farah, Tomas de Paulis, Luiz C. Trugo and Peter R. Martin, "Effect of roasting on the formation of chlorogenic acid lactones in coffee," *Journal of Agricultural and Food Chemistry* 53, no. 5 (2005): 1505–1513, abstract: [doi.org/10.1021/jf048701t](https://doi.org/10.1021/jf048701t)
+- Adriana Farah, "Coffee Constituents," in *Coffee: Emerging Health Effects and Disease Prevention*, ed. Yi-Fang Chu (Wiley-Blackwell, 2012), ch. 2, p. 37 (caffeine and roasting)
+- American Chemical Society, "Battling Bitter Coffee: Chemists Identify Roasting As The Main Culprit," news release on Thomas Hofmann's presentation at the 234th ACS National Meeting, as published by *ScienceDaily*, August 22, 2007: [sciencedaily.com](https://www.sciencedaily.com/releases/2007/08/070821143629.htm)
+- Rosa Cinzia Borrelli, Attilio Visconti, Carmela Mennella, Monica Anese and Vincenzo Fogliano, "Chemical characterization and antioxidant properties of coffee melanoidins," *Journal of Agricultural and Food Chemistry* 50, no. 22 (2002): 6527–6533, abstract: [doi.org/10.1021/jf025686o](https://doi.org/10.1021/jf025686o)
+- Jonathan Gagné, *The Physics of Filter Coffee* (published by Scott Rao, 2020), §8.3, "Coffee Oils," p. 160, and ch. 9, "Roast, Terroir, Varieties, and Processing," §§9.1–9.2, pp. 171–177 (brewing temperatures, roast development and extraction yield)
