@@ -65,10 +65,8 @@
     }
    ],
    "varieties": [
-    "Regional landraces",
-    "JARC 74110",
-    "JARC 74112",
-    "JARC 74165"
+    "Local landraces",
+    "JARC selections"
    ],
    "processing": [
     "Washed",
@@ -1300,9 +1298,7 @@
     "Typica"
    ],
    "processing": [
-    "Washed",
-    "Natural",
-    "Honey"
+    "Washed"
    ],
    "tendencies": {
     "notes": [
