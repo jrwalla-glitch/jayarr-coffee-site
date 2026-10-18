@@ -3,6 +3,7 @@
 // regions marked. Rendered at build time; no JavaScript.
 import { countryPaths, TROPIC_CANCER_Y, TROPIC_CAPRICORN_Y, EQUATOR_Y } from '../../data/mapPaths.ts';
 import { project } from '../../lib/coffee/origins.ts';
+import { regionPoint } from '../../lib/coffee/mapPlace.ts';
 import { ORIGINS } from '../../lib/coffee/origins.ts';
 import type { Origin } from '../../lib/coffee/origins.ts';
 
@@ -47,7 +48,8 @@ if (own) {
   const main = subs.sort((a, b) => area(b) - area(a))[0] ?? [];
   pts.push(...main);
 }
-const regions = origin.regions.filter((r) => r.lat !== null && r.lon !== null).map((r) => ({ name: r.name, xy: project(r.lat!, r.lon!) }));
+// Each region is drawn inside its own country's outline (the 110 m borders are coarse near frontiers).
+let regions = origin.regions.filter((r) => r.lat !== null && r.lon !== null).map((r) => ({ name: r.name, lat: r.lat!, lon: r.lon!, xy: regionPoint(origin.id, r.lat!, r.lon!) }));
 pts.push(...regions.map((r) => r.xy), project(origin.lat, origin.lon));
 const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
 let [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
@@ -57,6 +59,8 @@ if (w / h < ASPECT) w = h * ASPECT; else h = w / ASPECT;
 const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
 const vb = [cx - w / 2, cy - h / 2, w, h];
 const u = w / width; // map units per screen pixel at the plate's drawn width
+// Now the scale is known, keep each mark a full diamond inside its border.
+regions = regions.map((r) => ({ ...r, xy: regionPoint(origin.id, r.lat, r.lon, Math.max(0.4, 7 * u)) }));
 const fmt = (n: number) => Math.round(n * 100) / 100;
 // Region labels: try right, left, above and below each mark; keep the first spot that doesn't
 // touch another label or mark (all in screen pixels at the plate's drawn width).

@@ -8,6 +8,7 @@
     productionText, productionSource, sourceNames, project,
   } from '../../lib/coffee/origins.ts';
   import type { Continent, Origin } from '../../lib/coffee/origins.ts';
+  import { regionPoint } from '../../lib/coffee/mapPlace.ts';
   import HarvestRing from './art/HarvestRing.svelte';
   import AltitudeBand from './art/AltitudeBand.svelte';
 
@@ -67,7 +68,7 @@
       const [px, py] = project(sel.lat, sel.lon);
       // On a phone, zoom in far enough that the growing regions spread apart (Ethiopia's five sit
       // within a few degrees of each other), but never past the country's own neighbourhood.
-      const pts = sel.regions.filter((r) => r.lat !== null && r.lon !== null).map((r) => project(r.lat!, r.lon!));
+      const pts = sel.regions.filter((r) => r.lat !== null && r.lon !== null).map((r) => regionPoint(sel!.id, r.lat!, r.lon!));
       const spread = pts.reduce((m, [x, y]) => Math.max(m, Math.abs(x - px), Math.abs(y - py) * aspect), 0);
       const w = narrow ? Math.min(150, Math.max(70, spread * 3.2)) : 330, h = w / aspect;
       const fx = narrow ? 0.5 : 0.34;
@@ -172,7 +173,7 @@
     const label = new Map<string, Spot>(), regionLabel = new Map<string, Spot>();
     // Region marks first, so the country's own name never lands on one.
     const regs = pts.filter((q) => chosen(q.o.id)).flatMap((p) => p.o.regions.filter((r) => r.lat !== null && r.lon !== null).map((r) => {
-      const [rx, ry] = project(r.lat!, r.lon!);
+      const [rx, ry] = regionPoint(p.o.id, r.lat!, r.lon!, 5 * u);
       const sx = (rx - v[0]) / u, sy = (ry - v[1]) / u;
       boxes.push({ x: sx - 7, y: sy - 7, w: 14, h: 14 });
       return { key: `${p.o.id}|${r.name}`, name: r.name, sx, sy };
@@ -265,7 +266,7 @@
     {/if}
     <dl class="facts">
       <div><dt>Harvest</dt><dd>{harvestText(o)}{#if o.harvest.scope && !compact && !/^This is /.test(o.harvest.variesBy ?? '')}<span class="sub">{scopeText(o.harvest.scope)}</span>{/if}{#if o.harvest.variesBy && !compact}<span class="sub">{o.harvest.variesBy.replace(/^This is (\w+);\s*/, "This calendar is $1's; ")}</span>{/if}{#if o.harvest.elsewhere}<span class="sub">Outside these months, {o.harvest.elsewhere}.</span>{/if}{#if !compact && o.harvest.sources.length}<span class="sub srcline">Calendar from {sourceNames(o.harvest.sources)}, checked October 2026</span>{/if}</dd></div>
-      <div><dt>Altitude</dt><dd>{#if o.altitudeM}{@render band(compact ? bandText(o.altitudeM).split(' (')[0] : bandText(o.altitudeM))}{:else}Not established{/if}{#if o.altitudeM?.scope}<span class="sub">{altScope(o.altitudeM.scope)}</span>{/if}{#if o.robustaAltitudeM}<span class="sub">Robusta {@render band(compact ? bandText(o.robustaAltitudeM).split(' (')[0] : bandText(o.robustaAltitudeM))}{#if o.robustaAltitudeM.scope}{' · '}{altScope(o.robustaAltitudeM.scope)}{/if}</span>{/if}{#if !compact && o.altitudeM?.sources?.length}<span class="sub srcline">Band from {sourceNames(o.altitudeM.sources)}</span>{/if}</dd></div>
+      <div><dt>Altitude</dt><dd>{#if o.altitudeM}{@render band(compact ? bandText(o.altitudeM).split(' (')[0] : bandText(o.altitudeM))}{:else}Not established{/if}{#if o.altitudeM?.scope}<span class="sub">{altScope(o.altitudeM.scope)}</span>{/if}{#if o.robustaAltitudeM}<span class="sub">Robusta {@render band(compact ? bandText(o.robustaAltitudeM).split(' (')[0] : bandText(o.robustaAltitudeM))}{#if o.robustaAltitudeM.scope}{' · '}{altScope(o.robustaAltitudeM.scope)}{/if}</span>{/if}{#if !compact && (o.altitudeM?.sources?.length || o.robustaAltitudeM?.sources?.length)}<span class="sub srcline">{#if o.altitudeM?.sources?.length}{o.robustaAltitudeM ? 'Arabica band from' : 'Band from'} {sourceNames(o.altitudeM.sources)}{/if}{#if o.robustaAltitudeM?.sources?.length}{o.altitudeM?.sources?.length ? '; robusta band from ' : 'Robusta band from '}{sourceNames(o.robustaAltitudeM.sources)}{/if}</span>{/if}</dd></div>
       {#if !compact}
         <div><dt>Production</dt><dd>{productionText(o) ?? 'No current official figure'}{#if o.production?.arabicaShare != null && o.production.arabicaShare < 0.95}<span class="sub">{o.production.arabicaShare < 0.03 ? 'All counted as robusta' : `About ${Math.round(o.production.arabicaShare * 100)}% arabica, the rest robusta`}</span>{/if}{#if o.production}<span class="sub srcline">{productionSource(o)}</span>{/if}</dd></div>
       {/if}
@@ -346,7 +347,7 @@
           <!-- The selected origin's growing regions -->
           {#each [sel, vs].filter((x): x is Origin => !!x) as o (o.id)}
             {#each o.regions.filter((r) => r.lat !== null && r.lon !== null) as r (r.name)}
-              {@const [rx, ry] = project(r.lat!, r.lon!)}
+              {@const [rx, ry] = regionPoint(o.id, r.lat!, r.lon!, 5 * upp)}
               {@const sp = marks.regionLabel.get(`${o.id}|${r.name}`)}
               <g class="region">
                 <path d="M{rx} {ry - 5 * upp} L{rx + 5 * upp} {ry} L{rx} {ry + 5 * upp} L{rx - 5 * upp} {ry} Z" fill="#2a1d15" stroke="#fbf6ee" stroke-width={1.2 * upp} />

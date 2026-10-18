@@ -188,3 +188,20 @@ test('a family word on the bag names the family, and a pinned note in it counts 
   assert.deepEqual(c.near, ['jasmine']);
   assert.deepEqual(c.yoursOnly, []);
 });
+
+// ── Review round 3 (Astra) regressions ──
+test('every growing region is drawn inside its own country, even where the simplified border is coarse', async () => {
+  const { regionPoint, inRing } = await import('../mapPlace.ts');
+  const { countryPaths } = await import('../../../data/mapPaths.ts');
+  const rings = (id) => (countryPaths.find((c) => c.id === id)?.path ?? '').split('M').filter(Boolean).map((sp) => [...sp.matchAll(/(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/g)].map((m) => [Number(m[1]), Number(m[2])]));
+  const bad = [];
+  for (const o of ORIGINS) {
+    const rs = rings(o.id);
+    if (!rs.length) continue; // Hawaii: no polygon of its own at this scale
+    for (const r of o.regions.filter((x) => x.lat !== null && x.lon !== null)) {
+      const [x, y] = regionPoint(o.id, r.lat, r.lon);
+      if (!rs.some((ps) => inRing(x, y, ps))) bad.push(`${o.id}: ${r.name}`);
+    }
+  }
+  assert.deepEqual(bad, []);
+});
