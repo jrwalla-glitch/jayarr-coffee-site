@@ -80,7 +80,7 @@
 <div class="wb">
   <figure class="stage">
     <svg viewBox="0 0 490 350" role="img" aria-label={`Water map: hardness across, alkalinity up. Target ${p?.target.name ?? ''}${base === 'tested' ? `; your water at GH ${gh}, KH ${kh}` : ''}.`}>
-      <rect x={L} y={T} width={R - L} height={B - T} rx="8" fill="#f2f6f6" />
+      <rect x={L} y={T} width={R - L} height={B - T} rx="8" style="fill: var(--t-stage-b, #f2f6f6)" />
       <!-- GH:KH 2:1 and 3:1 guide lines: reading aids, not taken from a source (Gagné's water post draws a 1:1 line; Wave D batch 1) -->
       <line x1={mx(0)} y1={my(0)} x2={mx(180)} y2={my(90)} class="guide" />
       <line x1={mx(0)} y1={my(0)} x2={mx(180)} y2={my(60)} class="guide" />
@@ -99,7 +99,7 @@
       {#if base === 'tested' && p}
         <line x1={mx(gh)} y1={my(kh)} x2={mx(gh * share)} y2={my(kh * share)} class="path" />
         <line x1={mx(gh * share)} y1={my(kh * share)} x2={mx(p.gh)} y2={my(p.kh)} class="path add" />
-        <g transform="translate({mx(gh)} {my(kh)})"><path d="M0 -14 C 7 -6, 7 0, 0 4 C -7 0, -7 -6, 0 -14 Z" fill="#3f8796" stroke="#2a1d15" stroke-width="1.2" /></g>
+        <g transform="translate({mx(gh)} {my(kh)})"><path d="M0 -14 C 7 -6, 7 0, 0 4 C -7 0, -7 -6, 0 -14 Z" style="fill: var(--t-water, #3f8796); stroke: var(--t-ink, #2a1d15)" stroke-width="1.2" /></g>
         <text x={mx(gh)} y={my(kh) - 20} text-anchor={mx(gh) < L + 50 ? 'start' : mx(gh) > R - 50 ? 'end' : 'middle'} class="ln strong">your water{gh > GMAX || kh > KMAX ? ' (off the chart)' : ''}</text>
       {/if}
     </svg>
@@ -157,7 +157,7 @@
     {#if p}
       <div class="result" aria-live="polite">
         <p class="kick">Your recipe: {p.target.name}</p>
-        {#if p.ghStockMl > 0 || p.khStockMl > 0}<p class="once"><b>Once:</b> make {p.ghStockMl > 0 && p.khStockMl > 0 ? 'two stock bottles' : 'a stock bottle'} (they keep for months, capped, out of the sun). {#if p.ghStockMl > 0} Bottle A: <span class="mono a">{CONCENTRATE_G_PER_L.gh} g</span> Epsom salt in distilled water, made up to 1 L.{/if}{#if p.khStockMl > 0} Bottle B: <span class="mono b">{CONCENTRATE_G_PER_L.kh} g</span> baking soda, made up to 1 L.{/if}</p>{/if}
+        {#if p.ghStockMl > 0 || p.khStockMl > 0}<p class="once"><b>Once:</b> make {p.ghStockMl > 0 && p.khStockMl > 0 ? 'two stock bottles' : 'a stock bottle'} (they keep for months, capped, out of the sun). {#if p.ghStockMl > 0} Bottle A: <span class="mono a">{CONCENTRATE_G_PER_L.gh} g</span> Epsom salt in distilled water, made up to 1 L.{/if}{#if p.khStockMl > 0}{' '}Bottle B: <span class="mono b">{CONCENTRATE_G_PER_L.kh} g</span> baking soda, made up to 1 L.{/if}</p>{/if}
         <ol class="steps">
           {#each steps as st, k (st.key)}<li class:fill={st.fill}><span class="n">{st.fill ? '✓' : k + 1}</span><span>{@html st.html}</span></li>{/each}
         </ol>
@@ -182,38 +182,38 @@
 </div>
 
 <style>
-  .wb { --rule: #d9cdbd; --ink: #2a1d15; --ink-2: #5b4a3d; --ink-3: #75655a; --crema-deep: #8f5d22; --water: #2f7484;
-    display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); background: #fbf8f3; border: 1px solid var(--rule); border-radius: 18px; overflow: hidden;
-    color: var(--ink); font: 16px/1.5 'IBM Plex Sans', system-ui, sans-serif; box-shadow: 0 30px 60px -40px rgba(60, 35, 15, .35); }
-  .stage { margin: 0; padding: 18px; border-right: 1px solid var(--rule); background: radial-gradient(120% 90% at 50% 10%, #fffdf9 0%, #eef2f1 85%); }
+  .wb { --rule: var(--t-rule, #d9cdbd); --ink: var(--t-ink, #2a1d15); --ink-2: var(--t-ink-2, #5b4a3d); --ink-3: var(--t-ink-3, #75655a); --crema-deep: var(--t-crema-deep, #8f5d22); --water: var(--t-water, #2f7484);
+    display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); background: var(--t-card, #fbf8f3); border: 1px solid var(--rule); border-radius: 18px; overflow: hidden;
+    color: var(--ink); font: 16px/1.5 'IBM Plex Sans', system-ui, sans-serif; box-shadow: 0 30px 60px -40px var(--t-shadow, rgba(60, 35, 15, .35)); }
+  .stage { margin: 0; padding: 18px; border-right: 1px solid var(--rule); background: radial-gradient(120% 90% at 50% 10%, var(--t-stage-a, #fffdf9) 0%, var(--t-stage-b, #eef2f1) 85%); }
   .stage svg { width: 100%; height: auto; display: block; }
-  .guide { stroke: #2f7484; stroke-opacity: .35; stroke-dasharray: 5 5; }
-  .gl { font: 400 11px 'IBM Plex Mono', monospace; fill: #2f7484; }
+  .guide { stroke: var(--t-water, #2f7484); stroke-opacity: .35; stroke-dasharray: 5 5; }
+  .gl { font: 400 11px 'IBM Plex Mono', monospace; fill: var(--t-water, #2f7484); }
   .tk { font: 400 11px 'IBM Plex Mono', monospace; fill: var(--ink-3); }
   .ax { font: 500 11px 'IBM Plex Mono', monospace; fill: var(--ink-2); letter-spacing: .04em; }
   .lm { cursor: pointer; }
-  .lm circle { fill: #fff; stroke: #2a1d15; stroke-width: 1.5; transition: r .2s; }
-  .lm.on circle { fill: #8f5d22; }
+  .lm circle { fill: var(--t-surface, #fff); stroke: var(--t-ink, #2a1d15); stroke-width: 1.5; transition: r .2s; }
+  .lm.on circle { fill: var(--t-crema-deep, #8f5d22); }
   .lm.dim { opacity: .35; cursor: default; }
   .ln { font: 400 12px 'IBM Plex Sans', sans-serif; fill: var(--ink-2); }
   .lm.on .ln, .ln.strong { fill: var(--ink); font-weight: 600; }
-  .path { stroke: #2f7484; stroke-width: 2; stroke-dasharray: 4 4; }
-  .path.add { stroke: #8f5d22; }
+  .path { stroke: var(--t-water, #2f7484); stroke-width: 2; stroke-dasharray: 4 4; }
+  .path.add { stroke: var(--t-crema-deep, #8f5d22); }
   figcaption { font-size: 13px; color: var(--ink-3); padding: 4px 6px 0; }
   .panel { padding: 20px 24px 24px; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
   fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
   .lbl { font: 500 11px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); display: block; margin-bottom: 9px; padding: 0; }
   .seg { display: flex; flex-wrap: wrap; gap: 6px; }
-  .seg button { appearance: none; border: 1px solid var(--rule); background: #fff; border-radius: 999px; padding: 8px 13px; min-height: 38px; font: 500 13.5px/1 'IBM Plex Sans', sans-serif; color: var(--ink-2); cursor: pointer; }
-  .seg button[aria-pressed='true'] { background: var(--ink); color: #f3ede3; border-color: var(--ink); }
+  .seg button { appearance: none; border: 1px solid var(--rule); background: var(--t-surface, #fff); border-radius: 999px; padding: 8px 13px; min-height: 38px; font: 500 13.5px/1 'IBM Plex Sans', sans-serif; color: var(--ink-2); cursor: pointer; }
+  .seg button[aria-pressed='true'] { background: var(--ink); color: var(--t-on-ink, #f3ede3); border-color: var(--ink); }
   .row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; align-items: flex-end; }
   .fld { display: flex; flex-direction: column; gap: 5px; font: 500 12px 'IBM Plex Mono', monospace; color: var(--ink-3); }
-  .fld input { font: 400 16px 'IBM Plex Mono', monospace; width: 110px; padding: 8px 10px; border: 1px solid var(--rule); border-radius: 8px; background: #fff; min-height: 42px; }
+  .fld input { font: 400 16px 'IBM Plex Mono', monospace; width: 110px; padding: 8px 10px; border: 1px solid var(--rule); border-radius: 8px; background: var(--t-surface, #fff); min-height: 42px; }
   .check { display: flex; gap: 8px; align-items: center; font-size: 14.5px; margin-bottom: 10px; }
   .check input { width: 18px; height: 18px; }
   .recipes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
-  .recipes button { appearance: none; border: 1px solid var(--rule); background: #fff; border-radius: 10px; padding: 8px 10px; text-align: left; cursor: pointer; display: grid; gap: 1px; color: var(--ink); }
-  .recipes button[aria-pressed='true'] { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink) inset; background: #fffdf8; }
+  .recipes button { appearance: none; border: 1px solid var(--rule); background: var(--t-surface, #fff); border-radius: 10px; padding: 8px 10px; text-align: left; cursor: pointer; display: grid; gap: 1px; color: var(--ink); }
+  .recipes button[aria-pressed='true'] { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink) inset; background: var(--t-surface-2, #fffdf8); }
   .rn { font-weight: 600; font-size: 14px; }
   .rp { font-size: 12.5px; color: var(--ink-3); }
   .rv { font: 400 12px 'IBM Plex Mono', monospace; color: var(--water); }
@@ -223,16 +223,18 @@
   .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
   .steps li { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; font-size: 16px; }
   .steps .n { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--ink); display: grid; place-items: center; font: 500 13px/1 'IBM Plex Mono', monospace; }
-  .steps .fill .n { background: var(--water); border-color: var(--water); color: #fff; }
-  .mono { font-family: 'IBM Plex Mono', monospace; font-weight: 500; }
+  .steps .fill .n { background: var(--water); border-color: var(--water); color: var(--t-on-accent, #fff); }
+  .mono { font-family: 'IBM Plex Mono', monospace; font-weight: 500; white-space: nowrap; }
   .mono.a { color: var(--crema-deep); }
   .mono.b { color: var(--water); }
   .direct, .out { font-size: 14.5px; color: var(--ink-2); margin: 10px 0 0; }
   .note { font-size: 13.5px; color: var(--ink-3); margin: 8px 0 0; }
-  .err { color: #9a3b1c; }
+  .err { color: var(--t-warn, #9a3b1c); }
   button:focus-visible, input:focus-visible { outline: 2px solid var(--crema-deep); outline-offset: 2px; }
   /* Phones: the map scales down, so its words scale up to stay readable (about 9–10 px on screen). */
   @media (max-width: 640px) { .ln { font-size: 17px; } .tk, .gl, .ax { font-size: 16px; } }
+  /* Wide screens: the chart stays in view beside the longer form (Deep Brew gate r1). */
+  @media (min-width: 861px) { .stage { align-self: start; position: sticky; top: 76px; border-right: 0; } .panel { border-left: 1px solid var(--rule); } }
   @media (max-width: 860px) { .wb { grid-template-columns: 1fr; } .stage { border-right: 0; border-bottom: 1px solid var(--rule); } .panel { padding: 18px 16px 20px; } .recipes { grid-template-columns: 1fr; } }
   .vol { flex-direction: row; align-items: center; gap: 6px; }
   .vol input { width: 84px; }

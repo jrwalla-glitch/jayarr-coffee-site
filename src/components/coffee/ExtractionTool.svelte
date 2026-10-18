@@ -91,6 +91,8 @@
     if (mode === 'taste' && espresso) q.set('espresso', '1');
     history.replaceState(history.state, '', `${location.pathname}${q.toString() ? `?${q}` : ''}`);
   });
+  // Each lever's direction as an arrow of one readable length (Deep Brew gate r1: the raw moves drew tiny arrows).
+  function arrowOf(l: (typeof LEVERS)[number]): [number, number] { const m = leverMove(l, espresso); const n = Math.hypot(m.dx, m.dy) || 1; return [(m.dx / n) * 9, (-m.dy / n) * 9]; }
 </script>
 
 <div class="xt">
@@ -148,20 +150,20 @@
 
     <label class="slider">
       <span class="lbl">How does it taste?</span>
-      <input type="range" min="-2" max="2" step="0.05" bind:value={sourBitter} oninput={() => (touched = true)} aria-valuetext={word(sourBitter, 'sour', 'bitter')} />
-      <span class="ends"><span>Sour</span><span class="now">{word(sourBitter, 'sour', 'bitter')}</span><span>Bitter</span></span>
+      <input type="range" min="-2" max="2" step="0.05" bind:value={sourBitter} oninput={() => (touched = true)} aria-valuetext={touched ? word(sourBitter, 'sour', 'bitter') : 'not set yet'} />
+      <span class="ends"><span>Sour</span><span class="now" class:unset={!touched}>{touched ? word(sourBitter, 'sour', 'bitter') : 'not set yet'}</span><span>Bitter</span></span>
     </label>
     <label class="slider">
       <span class="lbl">How does it feel?</span>
-      <input type="range" min="-2" max="2" step="0.05" bind:value={body} oninput={() => (touched = true)} aria-valuetext={word(body, 'thin', 'heavy')} />
-      <span class="ends"><span>Thin, watery</span><span class="now">{word(body, 'thin', 'heavy')}</span><span>Heavy, intense</span></span>
+      <input type="range" min="-2" max="2" step="0.05" bind:value={body} oninput={() => (touched = true)} aria-valuetext={touched ? word(body, 'thin', 'heavy') : 'not set yet'} />
+      <span class="ends"><span>Thin, watery</span><span class="now" class:unset={!touched}>{touched ? word(body, 'thin', 'heavy') : 'not set yet'}</span><span>Heavy, intense</span></span>
     </label>
 
     <div class="zonecard" aria-live="polite">
       {#if !touched}
       <span class="lbl">Your cup</span>
       <p class="zl">Describe it with the sliders</p>
-      <p class="zt">The dot starts in the middle; move it to match how your coffee tastes and feels.</p>
+      <p class="zt">Move the sliders to match how your coffee tastes and feels, and your cup appears on the map.</p>
       {:else}
       <span class="lbl">By taste, your cup is probably</span>
       <p class="zl">{zone.label}</p>
@@ -173,8 +175,9 @@
       <span class="lbl">Try a lever and watch the dot move</span>
       <div class="levers">
         {#each LEVERS as l (l.id)}
+          {@const [ax, ay] = arrowOf(l)}
           <button type="button" class:hint={suggestedIds.has(l.id)} onclick={() => pull(l.id)}>
-            <svg viewBox="-12 -12 24 24" aria-hidden="true"><line x1="0" y1="0" x2={leverMove(l, espresso).dx * 14} y2={-leverMove(l, espresso).dy * 14} stroke="currentColor" stroke-width="2" stroke-linecap="round" /><circle r="2.4" fill="currentColor" /></svg>
+            <svg viewBox="-12 -12 24 24" aria-hidden="true"><line x1={-ax * .55} y1={-ay * .55} x2={ax} y2={ay} stroke="currentColor" stroke-width="2.2" stroke-linecap="round" /><path d="M{ax} {ay} L{ax - ax * .45 - ay * .3} {ay - ay * .45 + ax * .3} M{ax} {ay} L{ax - ax * .45 + ay * .3} {ay - ay * .45 - ax * .3}" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none" /></svg>
             {espresso && l.espresso ? l.espresso : l.label}
           </button>
         {/each}
@@ -190,48 +193,54 @@
 </div>
 
 <style>
-  .xt { --rule: #d9cdbd; --ink: #2a1d15; --ink-2: #5b4a3d; --ink-3: #75655a; --crema: #c3873a; --crema-deep: #8f5d22;
-    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); background: #fbf8f3; border: 1px solid var(--rule); border-radius: 18px; overflow: hidden;
-    color: var(--ink); font: 16px/1.5 'IBM Plex Sans', system-ui, sans-serif; box-shadow: 0 30px 60px -40px rgba(60, 35, 15, .35); }
-  .stage { padding: 18px; border-right: 1px solid var(--rule); background: radial-gradient(120% 90% at 50% 10%, #fffdf9 0%, #f4ece0 80%); display: flex; flex-direction: column; justify-content: center; }
+  .xt { --rule: var(--t-rule, #d9cdbd); --ink: var(--t-ink, #2a1d15); --ink-2: var(--t-ink-2, #5b4a3d); --ink-3: var(--t-ink-3, #75655a); --crema: var(--t-crema, #c3873a); --crema-deep: var(--t-crema-deep, #8f5d22);
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); background: var(--t-card, #fbf8f3); border: 1px solid var(--rule); border-radius: 18px; overflow: hidden;
+    color: var(--ink); font: 16px/1.5 'IBM Plex Sans', system-ui, sans-serif; box-shadow: 0 30px 60px -40px var(--t-shadow, rgba(60, 35, 15, .35)); }
+  .stage { padding: 18px; border-right: 1px solid var(--rule); background: radial-gradient(120% 90% at 50% 10%, var(--t-stage-a, #fffdf9) 0%, var(--t-tint-2, #f4ece0) 80%); display: flex; flex-direction: column; justify-content: center; }
   .refcap { margin: 6px 4px 0; font: 400 12.5px/1.4 'IBM Plex Mono', monospace; color: var(--ink-3); text-align: center; }
   .panel { padding: 22px 24px 24px; display: flex; flex-direction: column; gap: 18px; min-width: 0; }
   .lbl { font: 500 11px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); display: block; margin-bottom: 8px; }
   .seg { display: flex; flex-wrap: wrap; gap: 6px; }
-  .seg button { appearance: none; border: 1px solid var(--rule); background: #fff; border-radius: 999px; padding: 8px 13px; min-height: 38px; font: 500 13.5px/1 'IBM Plex Sans', sans-serif; color: var(--ink-2); cursor: pointer; }
-  .seg button[aria-pressed='true'] { background: var(--ink); color: #f3ede3; border-color: var(--ink); }
+  .seg button { appearance: none; border: 1px solid var(--rule); background: var(--t-surface, #fff); border-radius: 999px; padding: 8px 13px; min-height: 38px; font: 500 13.5px/1 'IBM Plex Sans', sans-serif; color: var(--ink-2); cursor: pointer; }
+  .seg button[aria-pressed='true'] { background: var(--ink); color: var(--t-on-ink, #f3ede3); border-color: var(--ink); }
   .slider { display: block; }
-  input[type='range'] { width: 100%; accent-color: var(--crema-deep); height: 28px; }
+  /* A position on a scale, not an amount: a neutral track with a centre mark and a crema thumb (Deep Brew gate r1). */
+  input[type='range'] { -webkit-appearance: none; appearance: none; width: 100%; height: 28px; background: transparent; cursor: pointer; }
+  input[type='range']::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; background: linear-gradient(90deg, var(--rule) 0 calc(50% - 1px), var(--ink-3) calc(50% - 1px) calc(50% + 1px), var(--rule) calc(50% + 1px)); }
+  input[type='range']::-moz-range-track { height: 4px; border-radius: 2px; background: linear-gradient(90deg, var(--rule) 0 calc(50% - 1px), var(--ink-3) calc(50% - 1px) calc(50% + 1px), var(--rule) calc(50% + 1px)); }
+  input[type='range']::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; margin-top: -8px; border-radius: 50%; background: var(--crema-deep); border: 3px solid var(--t-card, #fbf8f3); box-shadow: 0 0 0 1px var(--crema-deep); }
+  input[type='range']::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--crema-deep); border: 3px solid var(--t-card, #fbf8f3); box-shadow: 0 0 0 1px var(--crema-deep); }
   .ends { display: flex; justify-content: space-between; font-size: 13px; color: var(--ink-3); }
   .ends .now { font: 500 13px 'IBM Plex Mono', monospace; color: var(--ink); text-transform: uppercase; letter-spacing: .08em; }
   .zonecard { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 12px 0; }
   .zl { font: 400 28px/1.1 'Instrument Serif', Georgia, serif; margin: 0; }
   .zt { margin: 4px 0 0; color: var(--ink-2); }
   .levers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
-  .levers button { appearance: none; border: 1px solid var(--rule); background: #fff; border-radius: 10px; padding: 8px 10px; min-height: 42px; font: 500 13.5px/1.2 'IBM Plex Sans', sans-serif; color: var(--ink-2); cursor: pointer; display: flex; align-items: center; gap: 8px; text-align: left; }
+  .levers button { appearance: none; border: 1px solid var(--rule); background: var(--t-surface, #fff); border-radius: 10px; padding: 8px 10px; min-height: 42px; font: 500 13.5px/1.2 'IBM Plex Sans', sans-serif; color: var(--ink-2); cursor: pointer; display: flex; align-items: center; gap: 8px; text-align: left; }
   .levers svg { width: 22px; height: 22px; flex: none; color: var(--crema-deep); }
-  .levers button.hint { border-color: var(--crema); background: #fff8ec; color: var(--ink); }
+  .levers button.hint { border-color: var(--crema); background: var(--t-tint, #fff8ec); color: var(--ink); }
   .note { font-size: 13px; color: var(--ink-3); margin: 10px 0 0; }
   .actions { display: flex; gap: 8px; flex-wrap: wrap; }
-  .go { background: var(--ink); color: #f3ede3; border-radius: 999px; padding: 13px 20px; font: 600 15px/1 'IBM Plex Sans', sans-serif; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
-  .ghost { border: 1px solid var(--rule); background: #fff; color: var(--ink-2); border-radius: 999px; padding: 11px 15px; font: 500 14px/1 'IBM Plex Sans', sans-serif; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
+  .go { background: var(--ink); color: var(--t-on-ink, #f3ede3); border-radius: 999px; padding: 13px 20px; font: 600 15px/1 'IBM Plex Sans', sans-serif; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
+  .ghost { border: 1px solid var(--rule); background: var(--t-surface, #fff); color: var(--ink-2); border-radius: 999px; padding: 11px 15px; font: 500 14px/1 'IBM Plex Sans', sans-serif; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
   button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--crema-deep); outline-offset: 2px; }
   @media (max-width: 860px) { .xt { grid-template-columns: 1fr; } .stage { border-right: 0; border-bottom: 1px solid var(--rule); padding: 10px 24px; } .panel { padding: 18px 16px 20px; } }
   .tabs { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; }
-  .tabs button { appearance: none; border: 0; background: #fff; padding: 10px 12px; font: 600 14.5px/1.2 'IBM Plex Sans', sans-serif; color: var(--ink-2); cursor: pointer; text-align: left; min-height: 48px; }
+  .tabs button { appearance: none; border: 0; background: var(--t-surface, #fff); padding: 10px 12px; font: 600 14.5px/1.2 'IBM Plex Sans', sans-serif; color: var(--ink-2); cursor: pointer; text-align: left; min-height: 48px; }
   .tabs button + button { border-left: 1px solid var(--rule); }
   .tabs button small { display: block; font: 400 12px 'IBM Plex Mono', monospace; color: var(--ink-3); }
-  .tabs button[aria-pressed='true'] { background: var(--ink); color: #f3ede3; }
-  .tabs button[aria-pressed='true'] small { color: #d9cdbd; }
+  .tabs button[aria-pressed='true'] { background: var(--ink); color: var(--t-on-ink, #f3ede3); }
+  .tabs button[aria-pressed='true'] small { color: var(--t-rule, #d9cdbd); }
   .inputs { display: flex; gap: 10px; flex-wrap: wrap; }
   .fld { display: flex; flex-direction: column; gap: 0; }
-  .fld input { font: 400 17px 'IBM Plex Mono', monospace; width: 112px; padding: 8px 10px; border: 1px solid var(--rule); border-radius: 8px; background: #fff; min-height: 44px; color: var(--ink); }
+  .fld input { font: 400 17px 'IBM Plex Mono', monospace; width: 112px; padding: 8px 10px; border: 1px solid var(--rule); border-radius: 8px; background: var(--t-surface, #fff); min-height: 44px; color: var(--ink); }
   .ey { font: 400 52px/1 'Instrument Serif', Georgia, serif; margin: 0; }
   .ey small { font-size: 26px; margin-left: 2px; }
   .calc { font: 400 12.5px 'IBM Plex Mono', monospace; color: var(--ink-3); margin: 6px 0 0; }
-  .err { color: #9a3b1c; margin: 0; }
+  .err { color: var(--t-warn, #9a3b1c); margin: 0; }
   .note.ex { margin: 0; color: var(--crema-deep); }
   .zonecard.suspect .ey { color: var(--ink-3); font-size: 40px; }
   .check { display: flex; gap: 8px; align-items: center; font-size: 14.5px; }
   .check input { width: 18px; height: 18px; }
+  .now.unset { color: var(--ink-3); font-weight: 400; text-transform: none; letter-spacing: 0; font-style: italic; }
 </style>

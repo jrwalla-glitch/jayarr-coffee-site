@@ -1,289 +1,232 @@
 ---
+import { getCollection } from 'astro:content';
 import DeepBrewLayout from '../../layouts/DeepBrewLayout.astro';
 import grinderData from '../../data/grinders.json';
-// Counted from the data, so the stats can't drift from the calibrator (Muse WB1).
-const grinderCount = grinderData.grinders.length;
-const settingCount = grinderData.grinders.reduce((n, g) => n + g.settings.length, 0);
+import { planWater, measuredExtraction, CHARTS, WATER_RECIPES } from '../../lib/coffee/index.ts';
+import { headline, grinderById } from '../../lib/coffee/grinders.ts';
+import type { Grinder } from '../../lib/coffee/grinders.ts';
+
+// Every readout on this page is computed by the same engine the instruments use, at build time,
+// so the landing page can't promise a number the tool wouldn't give.
+const grinders = grinderData.grinders as unknown as Grinder[];
+const grinderCount = grinders.length;
+const settingCount = grinders.reduce((n, g) => n + g.settings.length, 0);
+
+const water = planWater({ targetId: 'sca', volumeL: 1 });
+if (!water.ok) throw new Error('Deep Brew landing: the SCA water example no longer plans');
+const w = water.value;
+const mlA = Math.round(w.ghStockMl), mlB = Math.round(w.khStockMl);
+
+const ext = measuredExtraction({ kind: 'percolation', doseG: 20, liquidG: 300, tdsPct: 1.3 });
+if (!ext.ok) throw new Error('Deep Brew landing: the extraction example no longer computes');
+const ey = Math.round(ext.value.eyPct * 10) / 10;
+const chart = CHARTS.filter;
+
+const encore = grinderById(grinders, 'baratza-encore');
+const pour = encore?.settings.find((s) => s.group === 'pourover');
+if (!encore || !pour || pour.min == null || !encore.scale) throw new Error('Deep Brew landing: the Encore pour-over example is missing');
+const encoreSays = headline(encore, pour);
+const [d0, d1] = encore.scale as [number, number];
+
+// Mini figures, drawn from the same numbers.
+const EX = { L: 34, R: 226, T: 14, B: 132 };
+const ex2x = (v: number) => EX.L + ((v - chart.ey[0]) / (chart.ey[1] - chart.ey[0])) * (EX.R - EX.L);
+const ex2y = (v: number) => EX.B - ((v - chart.tds[0]) / (chart.tds[1] - chart.tds[0])) * (EX.B - EX.T);
+const SWEEP = 300, DC = 70, DR = 54;
+const dang = (v: number) => -SWEEP / 2 + ((v - d0) / (d1 - d0)) * SWEEP;
+const dpt = (a: number, r: number) => [DC + r * Math.sin((a * Math.PI) / 180), DC - r * Math.cos((a * Math.PI) / 180)];
+const dialTicks = Array.from({ length: d1 - d0 + 1 }, (_, i) => d0 + i).filter((v) => v % 5 === 0 || v === d0);
+// The dial turns so the setting sits under the index at the top, as the Grind Calibrator draws it.
+const turn = -dang(pour.min);
+
+const notes = (await getCollection('deepbrew')).sort((a, b) => (b.data.updatedDate ?? b.data.pubDate).valueOf() - (a.data.updatedDate ?? a.data.pubDate).valueOf());
+
+const title = 'Deep Brew: Measure Your Brewing Water, Extraction and Grind';
+const description = 'Three instruments for measuring coffee: mix brewing water to a published recipe, place a refractometer reading on the SCA chart, and find the setting your grinder’s maker publishes, with research notes.';
 ---
 
-<DeepBrewLayout
-  title="Deep Brew Mode | JayArr Coffee"
-  description="Three brewing tools for measuring and fixing your coffee: a water recipe builder, an extraction map and a grind calibrator, each showing the sources its numbers come from."
->
+<DeepBrewLayout title={title} description={description}>
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "Deep Brew Mode",
-      "url": "https://jayarr.coffee/deep-brew/",
-      "description": "Three brewing tools for measuring and fixing your coffee: a water recipe builder, an extraction map and a grind calibrator, each showing the sources its numbers come from.",
-      "applicationCategory": "UtilityApplication",
-      "operatingSystem": "Any",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "JayArr Coffee",
-        "url": "https://jayarr.coffee"
-      }
+      '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Deep Brew', url: 'https://jayarr.coffee/deep-brew/', description,
+      hasPart: [
+        { '@type': 'WebApplication', name: 'Water Recipe Builder', url: 'https://jayarr.coffee/deep-brew/water/' },
+        { '@type': 'WebApplication', name: 'Extraction Map', url: 'https://jayarr.coffee/deep-brew/extraction/' },
+        { '@type': 'WebApplication', name: 'Grind Calibrator', url: 'https://jayarr.coffee/deep-brew/calibrator/' },
+      ],
+      publisher: { '@type': 'Organization', name: 'JayArr Coffee', url: 'https://jayarr.coffee' },
     })}></script>
   </Fragment>
-  <!-- Hero -->
-  <section class="relative min-h-[85vh] md:min-h-screen flex items-center justify-center overflow-hidden">
-    <!-- Background gradient -->
-    <div class="absolute inset-0 bg-gradient-to-b from-db-bg via-db-bg to-db-surface">
-      <!-- Radial warm glow -->
-      <div class="absolute inset-0" style="background: radial-gradient(ellipse at 50% 40%, rgba(210, 125, 45, 0.06) 0%, transparent 70%);"></div>
-    </div>
 
-    <div class="relative z-10 text-center px-6 max-w-4xl">
-      <!-- Label -->
-      <div class="font-db-mono text-xs tracking-[0.3em] uppercase text-db-copper mb-6 opacity-90">
-        Precision Brewing Tools
-      </div>
-
-      <!-- Title -->
-      <h1 class="font-db-serif text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight"
-          style="background: linear-gradient(135deg, var(--color-db-text) 0%, var(--color-db-copper) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-        Deep Brew Mode
-      </h1>
-
-      <!-- Subtitle -->
-      <p class="text-lg md:text-xl text-db-text-muted max-w-2xl mx-auto mb-4 leading-relaxed font-light">
-        You've measured your water to the milligram. Welcome home.
-      </p>
-      <p class="text-sm text-db-text-muted/60 max-w-xl mx-auto mb-12">
-        Three instruments for the brewer who wants to understand <em>why</em>, not just <em>how</em>. Each one shows where its numbers come from.
-      </p>
-
-      <!-- Divider -->
-      <div class="w-20 h-px mx-auto mb-16" style="background: linear-gradient(90deg, transparent, var(--color-db-copper), transparent);"></div>
-
-      <!-- The Lab -->
-      <div class="font-db-mono text-[10px] tracking-[0.3em] uppercase text-db-text-muted/40 mb-3">Enter</div>
-      <h2 class="font-db-serif text-2xl md:text-3xl font-semibold text-db-text mb-8"
-          style="background: linear-gradient(135deg, var(--color-db-copper) 0%, var(--color-db-amber) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-        The Lab
-      </h2>
-
-      <!-- Tool Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-        <!-- Water Recipe Builder -->
-        <a href="/deep-brew/water" class="group block p-6 md:p-8 bg-db-surface rounded-lg border border-db-border hover:border-db-copper/40 transition-all duration-300">
-          <div class="text-db-copper mb-4">
-            <svg class="w-8 h-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 0-6.23.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
-            </svg>
-          </div>
-          <h3 class="font-db-serif text-xl font-semibold text-db-text group-hover:text-db-copper transition-colors mb-2">
-            Water Recipe Builder
-          </h3>
-          <p class="text-sm text-db-text-muted leading-relaxed mb-4">
-            Mix brewing water to one of 8 published recipes, from distilled or your own tap water, with the stock or dry-salt amounts to final volume.
-          </p>
-          <span class="font-db-mono text-xs text-db-copper/70 uppercase tracking-widest group-hover:text-db-copper transition-colors">
-            Open Tool &rarr;
-          </span>
-        </a>
-
-        <!-- Extraction Map -->
-        <a href="/deep-brew/extraction" class="group block p-6 md:p-8 bg-db-surface rounded-lg border border-db-border hover:border-db-copper/40 transition-all duration-300">
-          <div class="text-db-copper mb-4">
-            <svg class="w-8 h-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
-            </svg>
-          </div>
-          <h3 class="font-db-serif text-xl font-semibold text-db-text group-hover:text-db-copper transition-colors mb-2">
-            Extraction Map
-          </h3>
-          <p class="text-sm text-db-text-muted leading-relaxed mb-4">
-            Measure a cup with a refractometer and see its extraction against the SCA's reference range, or describe how it tastes for a likely direction to adjust.
-          </p>
-          <span class="font-db-mono text-xs text-db-copper/70 uppercase tracking-widest group-hover:text-db-copper transition-colors">
-            Open Tool &rarr;
-          </span>
-        </a>
-
-        <!-- Grind Calibrator -->
-        <a href="/deep-brew/calibrator" class="group block p-6 md:p-8 bg-db-surface rounded-lg border border-db-border hover:border-db-copper/40 transition-all duration-300">
-          <div class="text-db-copper mb-4">
-            <svg class="w-8 h-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-            </svg>
-          </div>
-          <h3 class="font-db-serif text-xl font-semibold text-db-text group-hover:text-db-copper transition-colors mb-2">
-            Grind Calibrator
-          </h3>
-          <p class="text-sm text-db-text-muted leading-relaxed mb-4">
-            Pick your grinder and brew method to see the setting or range its maker publishes (or a labelled secondary source), on your grinder's own dial, with its source.
-          </p>
-          <span class="font-db-mono text-xs text-db-copper/70 uppercase tracking-widest group-hover:text-db-copper transition-colors">
-            Open Tool &rarr;
-          </span>
-        </a>
-      </div>
-    </div>
-
-    <!-- Scroll indicator -->
-    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce">
-      <svg class="w-5 h-5 text-db-text-muted/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
-    </div>
+  <section class="hero">
+    <p class="kicker">Deep Brew</p>
+    <h1>The bench for <em>measuring</em> your coffee</h1>
+    <p class="lede">Three instruments for when taste alone can't tell you what changed. Mix water to a published recipe, place a refractometer reading on the extraction chart, and find the setting your grinder's maker publishes. Each one shows its working and names its sources.</p>
   </section>
 
-  <!-- Philosophy Section -->
-  <section class="py-24 bg-db-surface">
-    <div class="max-w-3xl mx-auto px-6 text-center">
-      <div class="font-db-mono text-xs tracking-[0.3em] uppercase text-db-copper mb-4">The Approach</div>
-      <h2 class="font-db-serif text-3xl md:text-4xl font-semibold text-db-text mb-6">Three Invisible Walls</h2>
-      <p class="text-db-text-muted leading-relaxed mb-8">
-        Most serious home brewers hit three barriers they can't diagnose on their own. Your grinder is dialed in. Your technique is solid. But something is still off. These tools target the variables that separate good from exceptional.
-      </p>
+  <section class="bench" aria-label="The three instruments">
+    <article class="inst">
+      <p class="ik"><span>01</span> Water</p>
+      <h2><a href="/deep-brew/water/">Water Recipe Builder</a></h2>
+      <p class="bring">You bring distilled water, Epsom salt and baking soda.</p>
+      <svg viewBox="0 0 260 150" class="fig" role="img" aria-label="Two stock bottles, A and B, poured into a one-litre jug: {mlA} mL of A and {mlB} mL of B.">
+        <g class="bottle"><rect x="18" y="34" width="46" height="96" rx="8" /><rect x="31" y="20" width="20" height="16" rx="3" /><rect x="22" y={130 - mlA * 0.9} width="38" height={mlA * 0.9 - 4} rx="5" class="liq a" /><text x="41" y="146" text-anchor="middle">A</text></g>
+        <g class="bottle"><rect x="80" y="34" width="46" height="96" rx="8" /><rect x="93" y="20" width="20" height="16" rx="3" /><rect x="84" y={130 - mlB * 0.9} width="38" height={mlB * 0.9 - 4} rx="5" class="liq b" /><text x="103" y="146" text-anchor="middle">B</text></g>
+        <path d="M150 30 L240 30 L232 132 L158 132 Z" class="jug" /><line x1="150" y1="44" x2="240" y2="44" class="fillline" /><text x="236" y="40" text-anchor="end" class="small">1 L line</text>
+        <path d="M64 70 C 100 54, 130 54, 160 70" class="pour a" /><path d="M126 86 C 140 80, 150 80, 162 88" class="pour b" />
+      </svg>
+      <p class="readout"><span class="rk">SCA water, 1 litre</span><span class="rv"><b class="a">{mlA} mL</b> of A + <b class="b">{mlB} mL</b> of B, then distilled water to the line</span></p>
+      <a class="go" href="/deep-brew/water/?target=sca&units=metric&vol=1">Mix your water →</a>
+    </article>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left mt-12">
-        <div class="p-6 rounded-lg border border-db-border">
-          <div class="font-db-mono text-xs text-db-copper mb-3">Wall 01</div>
-          <h3 class="font-db-serif text-lg font-semibold text-db-text mb-2">Water Composition</h3>
-          <p class="text-sm text-db-text-muted leading-relaxed">
-            The single biggest lever most people never touch. Your tap water's mineral content determines which flavor compounds dissolve and which get left behind.
-          </p>
-        </div>
-        <div class="p-6 rounded-lg border border-db-border">
-          <div class="font-db-mono text-xs text-db-copper mb-3">Wall 02</div>
-          <h3 class="font-db-serif text-lg font-semibold text-db-text mb-2">Extraction Evenness</h3>
-          <p class="text-sm text-db-text-muted leading-relaxed">
-            You taste something wrong but can't name what's happening chemically. Acids extract first, sugars next, bitter compounds last. Where you stop changes everything.
-          </p>
-        </div>
-        <div class="p-6 rounded-lg border border-db-border">
-          <div class="font-db-mono text-xs text-db-copper mb-3">Wall 03</div>
-          <h3 class="font-db-serif text-lg font-semibold text-db-text mb-2">Grind-Roast Interaction</h3>
-          <p class="text-sm text-db-text-muted leading-relaxed">
-            The same grind setting performs completely differently across roast levels and origins. Bean density, solubility, and cell structure all shift with the roast.
-          </p>
-        </div>
-      </div>
-    </div>
+    <article class="inst">
+      <p class="ik"><span>02</span> Extraction</p>
+      <h2><a href="/deep-brew/extraction/">Extraction Map</a></h2>
+      <p class="bring">You bring a refractometer reading, the dose and the brew weight.</p>
+      <svg viewBox="0 0 260 150" class="fig" role="img" aria-label="The SCA brewing chart: 20 g of coffee, 300 g of brew at 1.30% TDS sits at {ey}% extraction, inside the {chart.eyIdeal[0]} to {chart.eyIdeal[1]}% box.">
+        <rect x={EX.L} y={EX.T} width={EX.R - EX.L} height={EX.B - EX.T} class="plot" />
+        <rect x={ex2x(chart.eyIdeal[0])} y={ex2y(chart.tdsIdeal[1])} width={ex2x(chart.eyIdeal[1]) - ex2x(chart.eyIdeal[0])} height={ex2y(chart.tdsIdeal[0]) - ex2y(chart.tdsIdeal[1])} class="ideal" />
+        {[16, 18, 20, 22, 24].map((v) => <text x={ex2x(v)} y={EX.B + 13} text-anchor="middle" class="small">{v}</text>)}
+        {[1.0, 1.3, 1.6].map((v) => <text x={EX.L - 5} y={ex2y(v) + 4} text-anchor="end" class="small">{v.toFixed(1)}</text>)}
+        <circle cx={ex2x(ey)} cy={ex2y(1.3)} r="6" class="pt" />
+        <text x={ex2x(ey)} y={ex2y(chart.tdsIdeal[1]) - 7} text-anchor="middle" class="ptl">{ey}%</text>
+        <text x={EX.R} y={EX.B + 26} text-anchor="end" class="small">extraction, % →</text>
+      </svg>
+      <p class="readout"><span class="rk">20 g in, 300 g out, 1.30% TDS</span><span class="rv"><b>{ey}%</b> extracted, inside the SCA's {chart.eyIdeal[0]}–{chart.eyIdeal[1]}%</span></p>
+      <a class="go" href="/deep-brew/extraction/?mode=measured&kind=percolation&dose=20&liquid=300&tds=1.3">Place your reading →</a>
+    </article>
+
+    <article class="inst">
+      <p class="ik"><span>03</span> Grind</p>
+      <h2><a href="/deep-brew/calibrator/">Grind Calibrator</a></h2>
+      <p class="bring">You bring the name of your grinder.</p>
+      <svg viewBox="0 -8 260 158" class="fig" role="img" aria-label="A {encore.short} dial, numbered {d0} to {d1}, set to {pour.min} for pour-over.">
+        <g transform="translate(60 4)">
+          <circle cx={DC} cy={DC} r="68" class="bezel" />
+          <g transform={`rotate(${turn} ${DC} ${DC})`}>
+          {dialTicks.map((v) => { const [x0, y0] = dpt(dang(v), 58); const [x1, y1] = dpt(dang(v), 64); const [tx, ty] = dpt(dang(v), 44); return <g><line x1={x0} y1={y0} x2={x1} y2={y1} class:list={['tick', v === pour.min && 'on']} /><text x={tx} y={ty + 3.5} text-anchor="middle" class="num" transform={`rotate(${-turn} ${tx} ${ty})`}>{v}</text></g>; })}
+          </g>
+          <path d={`M${DC - 7} -3 L${DC + 7} -3 L${DC} 9 Z`} class="mk" />
+          <circle cx={DC} cy={DC} r="26" class="hub" /><text x={DC} y={DC + 7} text-anchor="middle" class="hubv">{pour.min}</text>
+        </g>
+      </svg>
+      <p class="readout"><span class="rk">{encore.short}, pour-over</span><span class="rv"><b>{encoreSays}</b>, as Baratza publishes it</span></p>
+      <a class="go" href={`/deep-brew/calibrator/?grinder=${encore.id}&method=pourover`}>Find your grinder →</a>
+    </article>
   </section>
 
-  <!-- Featured Research -->
-  <section class="py-24">
-    <div class="max-w-4xl mx-auto px-6">
-      <div class="text-center mb-12">
-        <div class="font-db-mono text-xs tracking-[0.3em] uppercase text-db-copper mb-4">Featured Research</div>
-        <h2 class="font-db-serif text-3xl md:text-4xl font-semibold text-db-text mb-4">Deep Dives</h2>
-        <p class="text-db-text-muted max-w-xl mx-auto leading-relaxed">
-          Long-form articles on the science behind brewing, each with its sources.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Article card 1 -->
-        <a href="/deep-brew/research/extraction-sequence-explained/" class="group block p-6 bg-db-surface rounded-lg border border-db-border hover:border-db-copper/40 transition-all duration-300">
-          <div class="flex items-center gap-2 mb-3">
-            <span class="font-db-mono text-[10px] uppercase tracking-[0.15em] text-db-copper/70 bg-db-copper/10 px-2 py-0.5 rounded">Chemistry</span>
-          </div>
-          <h3 class="font-db-serif text-lg font-semibold text-db-text group-hover:text-db-copper transition-colors mb-2">
-            The Extraction Sequence
-          </h3>
-          <p class="text-sm text-db-text-muted leading-relaxed mb-3">
-            Acids extract first, sugars second, bitter compounds last. The precise order determines everything you taste in the cup.
-          </p>
-          <span class="font-db-mono text-xs text-db-copper/60 uppercase tracking-widest group-hover:text-db-copper transition-colors">
-            Read Article &rarr;
-          </span>
-        </a>
-
-        <!-- Article card 2 -->
-        <a href="/deep-brew/research/espresso-physics-darcy-law/" class="group block p-6 bg-db-surface rounded-lg border border-db-border hover:border-db-copper/40 transition-all duration-300">
-          <div class="flex items-center gap-2 mb-3">
-            <span class="font-db-mono text-[10px] uppercase tracking-[0.15em] text-db-copper/70 bg-db-copper/10 px-2 py-0.5 rounded">Physics</span>
-          </div>
-          <h3 class="font-db-serif text-lg font-semibold text-db-text group-hover:text-db-copper transition-colors mb-2">
-            Espresso Physics &amp; Darcy's Law
-          </h3>
-          <p class="text-sm text-db-text-muted leading-relaxed mb-3">
-            Why 9 bars of pressure, 25&ndash;35 seconds, and puck resistance are connected by a 150-year-old fluid dynamics equation.
-          </p>
-          <span class="font-db-mono text-xs text-db-copper/60 uppercase tracking-widest group-hover:text-db-copper transition-colors">
-            Read Article &rarr;
-          </span>
-        </a>
-
-        <!-- Article card 3 -->
-        <a href="/deep-brew/research/flavor-volatiles-oav-guide/" class="group block p-6 bg-db-surface rounded-lg border border-db-border hover:border-db-copper/40 transition-all duration-300">
-          <div class="flex items-center gap-2 mb-3">
-            <span class="font-db-mono text-[10px] uppercase tracking-[0.15em] text-db-copper/70 bg-db-copper/10 px-2 py-0.5 rounded">Chemistry</span>
-          </div>
-          <h3 class="font-db-serif text-lg font-semibold text-db-text group-hover:text-db-copper transition-colors mb-2">
-            Flavor Volatiles &amp; OAV
-          </h3>
-          <p class="text-sm text-db-text-muted leading-relaxed mb-3">
-            Over 1,000 volatile compounds, but only ~40 matter. How odor activity values separate the signal from the noise.
-          </p>
-          <span class="font-db-mono text-xs text-db-copper/60 uppercase tracking-widest group-hover:text-db-copper transition-colors">
-            Read Article &rarr;
-          </span>
-        </a>
-
-        <!-- Article card 4 -->
-        <a href="/deep-brew/research/maillard-caramelization-strecker/" class="group block p-6 bg-db-surface rounded-lg border border-db-border hover:border-db-copper/40 transition-all duration-300">
-          <div class="flex items-center gap-2 mb-3">
-            <span class="font-db-mono text-[10px] uppercase tracking-[0.15em] text-db-copper/70 bg-db-copper/10 px-2 py-0.5 rounded">Chemistry</span>
-          </div>
-          <h3 class="font-db-serif text-lg font-semibold text-db-text group-hover:text-db-copper transition-colors mb-2">
-            Maillard, Caramelization &amp; Strecker
-          </h3>
-          <p class="text-sm text-db-text-muted leading-relaxed mb-3">
-            The three browning reactions that create coffee flavor. How temperature, time, and precursor chemistry interact during roasting.
-          </p>
-          <span class="font-db-mono text-xs text-db-copper/60 uppercase tracking-widest group-hover:text-db-copper transition-colors">
-            Read Article &rarr;
-          </span>
-        </a>
-      </div>
-
-      <div class="text-center mt-8">
-        <a href="/deep-brew/research" class="inline-flex items-center gap-2 font-db-mono text-sm text-db-text-muted hover:text-db-copper transition-colors uppercase tracking-widest">
-          All Research
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-          </svg>
-        </a>
-      </div>
+  <section class="research" aria-labelledby="research-h">
+    <div class="rhead">
+      <h2 id="research-h">Research notes</h2>
+      <p>The science behind the instruments, at length, each with its sources.</p>
+      <p class="rlinks"><a href="/deep-brew/research/">All research notes →</a><a href="/deep-brew/rss.xml" class="rss"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="3" cy="13" r="2" /><path d="M1 7a8 8 0 0 1 8 8M1 2a13 13 0 0 1 13 13" /></svg>RSS feed</a></p>
     </div>
+    <ol class="notes">
+      {notes.map((n) => (
+        <li>
+          <a href={`/deep-brew/research/${n.id}/`}>
+            <span class="cat">{n.data.category}</span>
+            <span class="nt">{n.data.title}</span>
+            <span class="nd">{n.data.description}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
   </section>
 
-  <!-- Science Backing -->
-  <section class="py-24 bg-db-surface">
-    <div class="max-w-3xl mx-auto px-6 text-center">
-      <div class="font-db-mono text-xs tracking-[0.3em] uppercase text-db-copper mb-4">The Foundation</div>
-      <h2 class="font-db-serif text-3xl md:text-4xl font-semibold text-db-text mb-6">Where the numbers come from</h2>
-      <p class="text-db-text-muted leading-relaxed mb-12">
-        Each tool names its sources: the SCA's brewing chart for the extraction reference range, published water recipes, and the grinder makers' own charts and manuals, with two labelled secondary sources where no maker chart could be verified.
-      </p>
-
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-        <div class="p-5 bg-db-bg rounded-lg border border-db-border">
-          <div class="font-db-mono text-2xl text-db-copper font-medium mb-1">{grinderCount}</div>
-          <div class="text-xs text-db-text-muted uppercase tracking-wider">Grinders charted</div>
-        </div>
-        <div class="p-5 bg-db-bg rounded-lg border border-db-border">
-          <div class="font-db-mono text-2xl text-db-copper font-medium mb-1">8</div>
-          <div class="text-xs text-db-text-muted uppercase tracking-wider">Published water recipes</div>
-        </div>
-        <div class="p-5 bg-db-bg rounded-lg border border-db-border">
-          <div class="font-db-mono text-2xl text-db-amber font-medium mb-1">{settingCount}</div>
-          <div class="text-xs text-db-text-muted uppercase tracking-wider">Grind settings</div>
-        </div>
-        <div class="p-5 bg-db-bg rounded-lg border border-db-border">
-          <div class="font-db-mono text-2xl text-db-amber font-medium mb-1">18-22%</div>
-          <div class="text-xs text-db-text-muted uppercase tracking-wider">SCA extraction reference</div>
-        </div>
-      </div>
-    </div>
+  <section class="sources" aria-labelledby="src-h">
+    <h2 id="src-h">Where the numbers come from</h2>
+    <dl class="stats">
+      <div><dt>Grinders</dt><dd>{grinderCount}</dd></div>
+      <div><dt>Published grind settings</dt><dd>{settingCount}</dd></div>
+      <div><dt>Water recipes</dt><dd>{WATER_RECIPES.length}</dd></div>
+      <div><dt>SCA extraction reference</dt><dd>{chart.eyIdeal[0]}–{chart.eyIdeal[1]}%</dd></div>
+    </dl>
+    <p>Grind settings are the makers' own charts and manuals, checked October 15, 2026; for two grinders with no maker chart, a documented secondary source, labelled as such. Water recipes are each source's published hardness and alkalinity targets, mixed from two salts. The extraction chart is the SCA's. Each instrument names its sources beside its answer.</p>
   </section>
 </DeepBrewLayout>
+
+<style>
+  .hero, .bench, .research, .sources { max-width: 1180px; margin: 0 auto; padding-left: 24px; padding-right: 24px; }
+  .hero { padding-top: 120px; padding-bottom: 28px; }
+  .kicker, .ik, .rk, .cat, dt { font: 500 11.5px/1.3 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; }
+  .kicker { color: var(--t-crema-deep, #8f5d22); margin: 0; }
+  h1 { font: 400 clamp(44px, 6.6vw, 82px)/.96 'Instrument Serif', Georgia, serif; letter-spacing: -.01em; margin: 12px 0 14px; color: var(--t-ink, #2a1d15); }
+  h1 em { font-style: italic; color: var(--t-coffee, #7a4e30); }
+  .lede { font: 400 18px/1.55 'IBM Plex Sans', system-ui, sans-serif; color: var(--t-ink-2, #5b4a3d); max-width: 62ch; margin: 0; }
+
+  /* The bench: three instruments side by side on graph paper. */
+  .bench { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; padding-top: 18px; padding-bottom: 56px; }
+  .inst { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 20px 20px 18px; border: 1px solid var(--t-rule, #d9cdbd); border-radius: 18px;
+    background:
+      linear-gradient(var(--t-rule-2, #e6dccd) 1px, transparent 1px) 0 0 / 100% 22px,
+      linear-gradient(90deg, var(--t-rule-2, #e6dccd) 1px, transparent 1px) 0 0 / 22px 100%,
+      var(--t-card, #fbf8f3);
+    background-blend-mode: normal; }
+  .inst::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(180deg, var(--t-card, #fbf8f3) 0%, transparent 30%, transparent 70%, var(--t-card, #fbf8f3) 100%); opacity: .85; pointer-events: none; }
+  .inst > * { position: relative; }
+  .ik { margin: 0; color: var(--t-ink-3, #75655a); display: flex; gap: 10px; }
+  .ik span { color: var(--t-crema-deep, #8f5d22); }
+  h2 { font: 400 30px/1.05 'Instrument Serif', Georgia, serif; margin: 0; color: var(--t-ink, #2a1d15); }
+  h2 a { color: inherit; text-decoration: none; }
+  h2 a:hover { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+  .bring { margin: 0; font-size: 14.5px; color: var(--t-ink-2, #5b4a3d); }
+  .fig { width: 100%; height: auto; margin: 4px 0; }
+  .fig text { font: 500 10.5px 'IBM Plex Mono', monospace; fill: var(--t-ink-3, #75655a); }
+  .fig .small { font-size: 9.5px; }
+  .bottle rect:first-child { fill: none; stroke: var(--t-ink-2, #5b4a3d); stroke-width: 1.5; }
+  .bottle rect:nth-child(2) { fill: var(--t-ink-3, #75655a); }
+  .liq.a { fill: var(--t-crema, #c3873a); opacity: .85; } .liq.b { fill: var(--t-water, #2f7484); opacity: .85; }
+  .jug { fill: none; stroke: var(--t-ink-2, #5b4a3d); stroke-width: 1.5; }
+  .fillline { stroke: var(--t-water, #2f7484); stroke-dasharray: 4 3; }
+  .pour { fill: none; stroke-width: 2; stroke-dasharray: 3 4; }
+  .pour.a { stroke: var(--t-crema, #c3873a); } .pour.b { stroke: var(--t-water, #2f7484); }
+  .plot { fill: var(--t-stage-b, #f4ece0); stroke: var(--t-rule, #d9cdbd); }
+  .ideal { fill: var(--t-crema, #c3873a); fill-opacity: .18; stroke: var(--t-crema, #c3873a); stroke-dasharray: 4 3; }
+  .pt { fill: var(--t-water, #2f7484); stroke: var(--t-card, #fbf8f3); stroke-width: 2; }
+  .ptl { font-weight: 600; fill: var(--t-ink, #2a1d15) !important; font-size: 12px !important; }
+  .bezel { fill: #3a2a20; stroke: var(--t-rule, #d9cdbd); }
+  .tick { stroke: #f3ede3; stroke-width: 1.5; }
+  .num { fill: #f3ede3 !important; font-size: 9px !important; }
+  .mk { fill: #c3873a; }
+  .tick.on { stroke: #c3873a; stroke-width: 3; }
+  .hub { fill: #fbf8f3; }
+  .hubv { font: 400 22px 'Instrument Serif', Georgia, serif !important; fill: #2a1d15 !important; }
+  .readout { margin: auto 0 0; display: grid; gap: 3px; padding-top: 12px; border-top: 1px dashed var(--t-rule, #d9cdbd); }
+  .rk { color: var(--t-ink-3, #75655a); font-size: 10.5px; }
+  .rv { font-size: 15px; color: var(--t-ink, #2a1d15); }
+  .rv b { font: 600 15px 'IBM Plex Mono', monospace; }
+  .rv b.a { color: var(--t-crema-deep, #8f5d22); } .rv b.b { color: var(--t-water, #2f7484); }
+  .go { align-self: flex-start; margin-top: 6px; display: inline-flex; align-items: center; min-height: 44px; padding: 10px 16px; border-radius: 999px; background: var(--t-ink, #2a1d15); color: var(--t-on-ink, #f3ede3); font: 600 14px/1.2 'IBM Plex Sans', sans-serif; text-decoration: none; }
+  .go:hover { background: var(--t-crema-deep, #8f5d22); }
+
+  /* Research notes */
+  .research { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 2fr); gap: 32px; padding-top: 36px; padding-bottom: 44px; border-top: 1px solid var(--t-rule, #d9cdbd); }
+  .rhead h2, .sources h2 { font: 400 40px/1 'Instrument Serif', Georgia, serif; margin: 0 0 10px; }
+  .rhead { align-self: start; position: sticky; top: 90px; }
+  .rhead p { margin: 0 0 14px; color: var(--t-ink-2, #5b4a3d); font-size: 15.5px; }
+  .rlinks { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+  .rlinks a { color: var(--t-crema-deep, #8f5d22); font: 500 14px 'IBM Plex Sans', sans-serif; text-underline-offset: 3px; display: inline-flex; align-items: center; gap: 6px; min-height: 32px; }
+  .rss svg { width: 13px; height: 13px; fill: currentColor; stroke: currentColor; stroke-width: 2; }
+  .rss svg path { fill: none; }
+  .notes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--t-rule, #d9cdbd); border: 1px solid var(--t-rule, #d9cdbd); border-radius: 14px; overflow: hidden; }
+  .notes li { background: var(--t-card, #fbf8f3); }
+  .notes a { display: grid; align-content: start; gap: 4px; padding: 14px 16px 16px; text-decoration: none; color: inherit; height: 100%; box-sizing: border-box; }
+  .notes a:hover { background: var(--t-surface, #fff); }
+  .notes a:hover .nt { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  .cat { color: var(--t-crema-deep, #8f5d22); font-size: 10.5px; }
+  .nt { font: 400 21px/1.15 'Instrument Serif', Georgia, serif; color: var(--t-ink, #2a1d15); }
+  .nd { font-size: 13.5px; line-height: 1.45; color: var(--t-ink-3, #75655a); }
+
+  /* Sources */
+  .sources { padding-top: 36px; padding-bottom: 80px; border-top: 1px solid var(--t-rule, #d9cdbd); }
+  .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 16px 0 18px; }
+  .stats div { padding: 14px 16px; border: 1px solid var(--t-rule, #d9cdbd); border-radius: 12px; background: var(--t-card, #fbf8f3); }
+  dt { color: var(--t-ink-3, #75655a); font-size: 10.5px; }
+  dd { margin: 6px 0 0; font: 400 38px/1 'Instrument Serif', Georgia, serif; color: var(--t-ink, #2a1d15); }
+  .sources > p { max-width: 72ch; color: var(--t-ink-2, #5b4a3d); font-size: 15.5px; line-height: 1.6; margin: 0; }
+
+  a:focus-visible { outline: 2px solid var(--t-crema-deep, #8f5d22); outline-offset: 3px; border-radius: 4px; }
+  @media (max-width: 980px) { .bench { grid-template-columns: 1fr; max-width: 560px; } .research { grid-template-columns: 1fr; gap: 16px; } .rhead { position: static; } .notes { grid-template-columns: 1fr; } .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 640px) { .hero { padding: 96px 16px 20px; } .bench, .research, .sources { padding-left: 16px; padding-right: 16px; } }
+</style>

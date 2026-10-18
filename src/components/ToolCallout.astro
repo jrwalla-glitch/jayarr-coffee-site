@@ -67,7 +67,8 @@ const href = `${data.href}${query}`;
 		padding: 0 1rem;
 		border-radius: 999px;
 		background: var(--color-ink, #2A1D15);
-		color: #F3EDE3;
+		/* On a dark page the ink is light, so the text takes the dark theme's on-ink colour (Deep Brew a11y). */
+		color: var(--t-on-ink, #F3EDE3);
 		font: 600 14px/1 var(--font-sans);
 		text-decoration: none;
 	}

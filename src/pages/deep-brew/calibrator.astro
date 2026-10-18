@@ -15,6 +15,7 @@ import grinderData from '../../data/grinders.json';
 const title = 'Grind Calibrator: Your Grinder’s Own Settings, Method by Method';
 const description = 'Pick your grinder and brew method and see the setting or range its maker publishes (for two grinders, a labelled secondary source), on your grinder’s own dial: Baratza, Fellow, Comandante, 1Zpresso, Niche, Breville and more, each with its source.';
 const grinders = grinderData.grinders;
+const longDate = (iso: string) => new Date(`${iso}T12:00:00`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 const secondary = grinders.filter((g) => g.settings.some((s) => s.provenance !== 'maker')).map((g) => g.short);
 ---
 
@@ -22,12 +23,13 @@ const secondary = grinders.filter((g) => g.settings.some((s) => s.provenance !==
 <html lang="en">
 	<head>
 		<BaseHead title={title} description={description} />
+		<link rel="alternate" type="application/rss+xml" title="JayArr Coffee: Deep Brew research" href="/deep-brew/rss.xml" />
 		<script type="application/ld+json" set:html={JSON.stringify({
 			'@context': 'https://schema.org', '@type': 'WebApplication', name: 'Grind Calibrator', url: 'https://jayarr.coffee/deep-brew/calibrator/', description,
 			applicationCategory: 'UtilityApplication', operatingSystem: 'Any', offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, publisher: { '@type': 'Organization', name: 'JayArr Coffee', url: 'https://jayarr.coffee' },
 		})}></script>
 	</head>
-	<body class="cf-page">
+	<body class="cf-page db-dark">
 		<Header />
 		<main>
 			<section class="cf-intro">
@@ -50,10 +52,15 @@ const secondary = grinders.filter((g) => g.settings.some((s) => s.provenance !==
 				<p>Hand grinders count clicks or numbers from a zero point, and makers define zero differently: some count from where the handle starts to turn with resistance, others from where the burrs just touch. The calibrator shows each maker's own definition under "Where zero is". If your count starts somewhere else, the published settings will be off by that difference. A few makers also say how far one click moves the burrs (12.5 µm on a JX-Pro, for example). That is the burr movement, not the size of the grounds.</p>
 
 				<h2>The grinders</h2>
-				<p>{grinders.length} grinders, from the makers' own charts and manuals, checked on {grinderData.checked}. {secondary.length ? `For the ${secondary.join(' and ')}, no maker chart could be found, so the settings come from a documented secondary source and are labelled that way.` : ''} {grinderData.excluded.length ? `Not included yet: ${grinderData.excluded.map((e) => e.name).join(', ')}, because no maker chart for that exact model could be verified.` : ''}</p>
-				<ul class="cf-cols">
-					{grinders.map((g) => <li><a href={`/deep-brew/calibrator/?grinder=${g.id}`}>{g.short}</a></li>)}
-				</ul>
+				<p>{grinders.length} grinders, from the makers' own charts and manuals, checked on {longDate(grinderData.checked)}. {secondary.length ? `For the ${secondary.join(' and ')}, no maker chart could be found, so the settings come from a documented secondary source and are labelled that way.` : ''} {grinderData.excluded.length ? `Not included yet: ${grinderData.excluded.map((e) => e.name).join(', ')}, because no maker chart for that exact model could be verified.` : ''}</p>
+				{[['electric', 'Electric grinders'], ['hand', 'Hand grinders']].map(([type, label]) => (
+					<>
+						<h3>{label}</h3>
+						<ul class="cf-cols">
+							{grinders.filter((g) => g.type === type).map((g) => <li><a href={`/deep-brew/calibrator/?grinder=${g.id}`}>{g.short}</a></li>)}
+						</ul>
+					</>
+				))}
 
 				<h2>Sources</h2>
 				<ul class="cf-sources">
@@ -66,20 +73,20 @@ const secondary = grinders.filter((g) => g.settings.some((s) => s.provenance !==
 	</body>
 </html>
 
-<style is:global>.cf-page { background: #f3ede3; }</style>
+<style is:global>.cf-page { background: var(--t-paper, #f3ede3); }</style>
 <style>
-	main { color: #2a1d15; }
+	main { color: var(--t-ink, #2a1d15); }
 	.cf-intro { max-width: 1180px; margin: 0 auto; padding: 120px 24px 22px; }
-	.cf-back { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; text-decoration: none; }
-	.cf-kicker { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: #8f5d22; margin: 26px 0 0; }
+	.cf-back { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--t-ink-3, #75655a); text-decoration: none; }
+	.cf-kicker { font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--t-crema-deep, #8f5d22); margin: 26px 0 0; }
 	h1 { font: 400 clamp(40px, 6vw, 68px)/.98 'Instrument Serif', Georgia, serif; letter-spacing: -.01em; margin: 10px 0 12px; }
-	h1 em { font-style: italic; color: #7a4e30; }
-	.cf-lede { font: 400 17px/1.5 'IBM Plex Sans', system-ui, sans-serif; color: #5b4a3d; max-width: 62ch; margin: 0; }
+	h1 em { font-style: italic; color: var(--t-coffee, #7a4e30); }
+	.cf-lede { font: 400 17px/1.5 'IBM Plex Sans', system-ui, sans-serif; color: var(--t-ink-2, #5b4a3d); max-width: 62ch; margin: 0; }
 	.cf-tool { max-width: 1180px; margin: 0 auto; padding: 8px 24px 40px; }
 	.cf-body { max-width: 760px; margin: 0 auto; padding: 24px 24px 72px; font: 400 17px/1.7 'IBM Plex Sans', system-ui, sans-serif; }
 	.cf-body h2 { font: 400 34px/1.1 'Instrument Serif', Georgia, serif; margin: 44px 0 12px; }
-	.cf-body a { color: #7a4e30; text-underline-offset: 3px; }
+	.cf-body a { color: var(--t-coffee, #7a4e30); text-underline-offset: 3px; }
 	.cf-cols { columns: 2; column-gap: 24px; padding-left: 18px; }
-	.cf-sources { font-size: 14.5px; color: #5b4a3d; }
+	.cf-sources { font-size: 14.5px; color: var(--t-ink-2, #5b4a3d); }
 	@media (max-width: 640px) { .cf-intro { padding: 96px 16px 18px; } .cf-tool { padding: 4px 12px 32px; } .cf-body { padding: 16px 16px 56px; } .cf-cols { columns: 1; } }
 </style>

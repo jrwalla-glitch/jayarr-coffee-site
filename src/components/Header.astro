@@ -5,11 +5,12 @@ import { TOOLS, TOOL_GROUPS } from '../data/tools';
 const pathname = Astro.url.pathname;
 const isHome = pathname === '/';
 const on = (prefix: string) => pathname.startsWith(prefix);
-const toolsActive = on('/tools') || ['/deep-brew/water', '/deep-brew/extraction', '/deep-brew/calibrator'].some((p) => on(p));
+// The Deep Brew instruments sit in the Tools menu too, but their pages belong to the Deep Brew section (Deep Brew gate r1).
+const toolsActive = on('/tools');
 const links = [
   { href: '/blog/', label: 'Articles', active: on('/blog') },
   { href: '/explore/', label: 'Explore', active: on('/explore') },
-  { href: '/deep-brew/', label: 'Deep Brew', active: on('/deep-brew') && !toolsActive },
+  { href: '/deep-brew/', label: 'Deep Brew', active: on('/deep-brew') },
   { href: '/videos/', label: 'Videos', active: on('/videos') },
   { href: '/about/', label: 'About', active: on('/about') },
 ];
