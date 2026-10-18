@@ -56,13 +56,13 @@ const featured = bySlug('coffee-grind-size-guide-what-grind-for-every-brew-metho
           <video class="hero-video" muted loop playsinline preload="none" poster="/hero/espresso-hero-poster.jpg" data-webm="/hero/espresso-hero.webm" data-mp4="/hero/espresso-hero.mp4"></video>
         </div>
         <div class="hero-inner">
-          <div class="hero-copy">
-            <h1>Better coffee at home, <em class="keep">with the work shown</em></h1>
-            <p class="lede">Tools that draw what they calculate, guides that show their sources, and a small gallery of where coffee grows, how it's brewed and how it tastes.</p>
-            <p class="more"><a href="/tools/">Every tool →</a> <a href="/explore/">The gallery →</a> <a href="/deep-brew/">Deep Brew →</a></p>
-          </div>
+          <h1 class="hero-title">Better coffee at home, <em class="keep">with the work shown</em></h1>
           <div class="hero-card">
             <HomeStart client:load />
+          </div>
+          <div class="hero-copy">
+            <p class="lede">Tools that draw what they calculate, guides that show their sources, and a small gallery of where coffee grows, how it's brewed and how it tastes.</p>
+            <p class="more"><a href="/tools/">Every tool →</a> <a href="/explore/">The gallery →</a> <a href="/deep-brew/">Deep Brew →</a></p>
           </div>
         </div>
       </section>
@@ -181,7 +181,10 @@ const featured = bySlug('coffee-grind-size-guide-what-grind-for-every-brew-metho
   .hero-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(100deg, rgba(20, 14, 10, .86) 0%, rgba(20, 14, 10, .68) 42%, rgba(20, 14, 10, .36) 100%), linear-gradient(180deg, rgba(20, 14, 10, .2), rgba(20, 14, 10, .55)); }
   /* The hero shares the page's 1180 px column, and the card's top edge stays put when its door changes. */
   .hero-inner { position: relative; max-width: 1180px; margin: 0 auto; padding: 120px 24px 56px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr); gap: 40px; align-items: start; min-height: 640px; }
-  .hero-copy { padding-top: 56px; }
+  .hero-inner { grid-template-areas: 'title card' 'copy card'; grid-template-rows: auto 1fr; row-gap: 0; }
+  .hero-title { grid-area: title; padding-top: 56px; }
+  .hero-card { grid-area: card; }
+  .hero-copy { grid-area: copy; }
   .kicker { font: 500 12px/1 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .16em; text-transform: uppercase; color: #d9a35e; margin: 0 0 14px; }
   .hero h1 { font: 400 clamp(42px, 5.6vw, 70px)/1 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; margin: 0 0 16px; letter-spacing: -.01em; color: #fbf6ee; }
   .hero h1 em { color: #e2b47a; }
@@ -237,16 +240,13 @@ const featured = bySlug('coffee-grind-size-guide-what-grind-for-every-brew-metho
     .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .two { grid-template-columns: 1fr; gap: 24px; }
   }
-  @media (max-width: 1000px) { .hero-copy { padding-top: 0; } }
+  @media (max-width: 1000px) { .hero-inner { grid-template-areas: 'title' 'card' 'copy'; grid-template-rows: auto; row-gap: 22px; } .hero-title { padding-top: 0; } }
   @media (max-width: 640px) {
     .hero-inner { padding: 84px 16px 28px; }
-    /* On a phone the working preview comes straight after the headline; the intro follows it. */
-    .hero-copy { display: contents; }
+    /* On a phone the working preview comes straight after the headline; the intro follows it (document order). */
     .kicker { display: none; }
-    .hero h1 { order: 1; margin: 0; font-size: 38px; }
-    .hero-card { order: 2; }
-    .lede { order: 3; font-size: 16px; margin: 0; }
-    .more { order: 4; }
+    .hero h1 { margin: 0; font-size: 38px; }
+    .lede { font-size: 16px; margin: 0 0 12px; }
     .band { padding: 40px 0; }
     .wrap { padding: 0 16px; }
     .cards { grid-template-columns: 1fr 1fr; gap: 12px; }
