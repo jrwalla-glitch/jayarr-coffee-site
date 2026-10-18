@@ -6,7 +6,7 @@ import AltitudeBand from '../../../components/coffee/art/AltitudeBand.svelte';
 import originHubs from '../../../data/origin-hubs.json';
 import summaries from '../../../data/origin-summaries.json';
 import originSources from '../../../data/origins-sources.json';
-import { originByPage, harvestText, bandText, productionText, ARRIVAL_EXAMPLES, ORIGINS } from '../../../lib/coffee/origins.ts';
+import { originByPage, harvestText, bandText, productionText, productionSource, sourceNames, ARRIVAL_EXAMPLES, ORIGINS } from '../../../lib/coffee/origins.ts';
 import { notesInText, noteById, inSample } from '../../../lib/coffee/flavors.ts';
 
 // The 19 country pages keep their indexed URLs (underscores included). Each is a detail plate
@@ -80,9 +80,9 @@ const neighbours = ORIGINS.filter((x) => x.id !== o.id && x.continent === o.cont
         <AltitudeBand arabica={o.altitudeM} robusta={o.robustaAltitudeM} name={o.name} height={160} />
       </div>
       <dl class="op-facts">
-        <div><dt>Harvest</dt><dd>{harvestText(o)}{o.harvest.variesBy && <span class="sub">{o.harvest.variesBy}</span>}{arrival && <span class="sub">Typical arrival in the US: {arrival.arrival} (Café Imports).</span>}</dd></div>
-        <div><dt>Altitude</dt><dd>{o.altitudeM ? bandText(o.altitudeM) : 'Not established'}{o.robustaAltitudeM && <span class="sub">Robusta: {bandText(o.robustaAltitudeM)}</span>}{o.altitudeM?.scope && <span class="sub">{o.altitudeM.scope.replace(/;?\s*not national extrema\.?/i, "; not the country's highest or lowest farms.")}</span>}</dd></div>
-        <div><dt>Production</dt><dd>{productionText(o) ?? 'No current official figure'}{o.production && <span class="sub">USDA Foreign Agricultural Service, PSD (July 2026)</span>}</dd></div>
+        <div><dt>Harvest</dt><dd>{harvestText(o)}{o.harvest.variesBy && <span class="sub">{o.harvest.variesBy}</span>}{arrival && <span class="sub">Typical arrival in the US: {arrival.arrival} (Café Imports).</span>}{o.harvest.sources.length > 0 && <span class="sub">Calendar from {sourceNames(o.harvest.sources)}, checked October 2026. Other references can differ by a month or so.</span>}</dd></div>
+        <div><dt>Altitude</dt><dd>{o.altitudeM ? bandText(o.altitudeM) : 'Not established'}{o.robustaAltitudeM && <span class="sub">Robusta: {bandText(o.robustaAltitudeM)}{o.robustaAltitudeM.sources?.length ? ` (${sourceNames(o.robustaAltitudeM.sources)})` : ''}</span>}{o.altitudeM?.scope && <span class="sub">{o.altitudeM.scope.replace(/;?\s*not national extrema\.?/i, "; not the country's highest or lowest farms.")}</span>}{o.altitudeM?.sources?.length ? <span class="sub">Band from {sourceNames(o.altitudeM.sources)}.</span> : null}</dd></div>
+        <div><dt>Production</dt><dd>{productionText(o) ?? 'No current official figure'}{o.production && <span class="sub">{productionSource(o)}.</span>}</dd></div>
         <div><dt>Varieties</dt><dd>{o.varieties.join(', ')}</dd></div>
         <div><dt>Processing</dt><dd>{o.processing.join(', ')}</dd></div>
         <div><dt>Regions</dt><dd>{o.regions.map((r) => r.name).join(', ')}</dd></div>

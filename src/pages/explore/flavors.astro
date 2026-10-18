@@ -12,7 +12,7 @@ const description = 'Pick a tasting note like blueberry, jasmine or caramel to l
 // Lots with a description, single origins only (inSample).
 const lots = originHubs.flatMap((h) => h.beans.filter((b) => inSample(b.name, b.flavor_notes)).map((b) => ({ o: h.origin_slug.replace(/_/g, '-'), p: b.processing, r: b.roast_level, notes: b.flavor_notes })));
 const origins = ORIGINS.map((o) => ({ id: o.id, name: o.name, page: o.page }));
-const cited = ['sca-wcr-wheel', 'wcr-lexicon', 'sca-cva', 'easto', 'synthesis', 'roaster-lots-2026'].map((id) => EXPLORE_SOURCES[id]);
+const cited = ['sca-wcr-wheel', 'wcr-lexicon', 'sca-cva', 'wcr-ptd', 'easto', 'synthesis', 'roaster-lots-2026'].map((id) => EXPLORE_SOURCES[id]);
 const noteCount = ALL_NOTES.length;
 const offCount = OFF_GROUPS.reduce((t, g) => t + g.notes.length, 0);
 ---

@@ -3,6 +3,7 @@
 // (makeover-2026-10/research/ORIGINS_ATLAS.md); this module adds the site's own layer: names,
 // map positions, the country pages that exist, and our articles.
 import data from '../../data/origins-atlas.json' with { type: 'json' };
+import sourcesData from '../../data/origins-sources.json' with { type: 'json' };
 
 export type Continent = 'africa' | 'americas' | 'asia-pacific';
 export type Month = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
@@ -150,6 +151,26 @@ export function productionText(o: Origin): string | null {
   const p = o.production;
   if (!p) return null;
   return `${fmtBags(p.bags60kg)} 60 kg bags (${p.season} ${p.kind})`;
+}
+// Who a figure comes from, in a few words: the publisher before the catalogue's " — ", with plain
+// names for the few long titles. Calendars here are importers' (Café Imports, Sucafina…), and other
+// references can differ by a month or so, so every figure names its source.
+const SOURCE_NAMES: Record<string, string> = {
+  'sucafina-handbook-2026': 'Sucafina', 'cabi-coffee-ch2': 'a UK government agronomy guide', 'nass-may2026': 'USDA NASS',
+  'usda-psd-2026-07': 'USDA FAS', 'ctahr-coffee-2008': 'University of Hawaiʻi CTAHR', 'shade-indonesia': 'ShadeCoffee',
+  'thai-moac': "Thailand's Ministry of Agriculture", 'ip-vietnam-lamdong': "Vietnam's IP Office (Lâm Đồng GI)",
+  'tcb-manual-2023': 'Tanzania Coffee Board', 'hamdan-yemen': 'Hamdan Coffee', 'movaci-thailand': 'Movaci', 'iniap-robusta-2017': 'INIAP',
+  'coffee-board-india': 'Coffee Board of India', 'moka-cuba': 'Moka Trade', 'mzuzu': 'Mzuzu Coffee', 'shac-regions': 'Hawaii coffee growers',
+};
+export function sourceNames(ids: string[] | undefined): string {
+  const all = sourcesData as Record<string, { title: string }>;
+  const names = [...new Set((ids ?? []).map((id) => SOURCE_NAMES[id] ?? all[id]?.title.split(' — ')[0]).filter((x): x is string => !!x))];
+  return names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names.at(-1)}` : names[0] ?? '';
+}
+/** Where and when a production figure was published. */
+export function productionSource(o: Origin): string | null {
+  if (!o.production) return null;
+  return o.production.source === 'nass-may2026' ? 'USDA NASS estimate, published May 2026' : 'USDA Foreign Agricultural Service forecast, published July 2026';
 }
 export function rankOf(o: Origin): number | null {
   if (!o.production) return null;

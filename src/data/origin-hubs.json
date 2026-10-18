@@ -3037,11 +3037,6 @@
     },
     "blog_references": [
       {
-        "slug": "costa-rica-possibly-the-best-single-origin-coffee",
-        "title": "Costa Rican Coffee: Why It Might Be the Best",
-        "context": "The case for Costa Rica as the most consistently excellent single origin"
-      },
-      {
         "slug": "what-does-costa-rican-coffee-taste-like",
         "title": "What Does Costa Rican Coffee Taste Like?",
         "context": "Flavor profile breakdown of Costa Rican coffees by region and processing method"
@@ -4753,11 +4748,6 @@
         "slug": "kenyan-coffee-flavor-notes-and-best-coffees",
         "title": "Kenyan Coffee: Flavor Profile, Growing Regions",
         "context": "Comprehensive guide to Kenya's SL varieties, growing regions, and the auction system"
-      },
-      {
-        "slug": "what-does-kenyan-coffee-taste-like",
-        "title": "What Does Kenyan Coffee Taste Like?",
-        "context": "Flavor profile walkthrough of Kenyan coffee's distinctive brightness and complexity"
       }
     ],
     "bean_count": 10,

@@ -5,7 +5,7 @@
   import { countryPaths, TROPIC_CANCER_Y, TROPIC_CAPRICORN_Y, EQUATOR_Y } from '../../data/mapPaths.ts';
   import {
     ORIGINS, CONTINENTS, MONTHS_LONG, ARRIVAL_EXAMPLES, originById, harvestState, harvestText, harvestingIn, bandText,
-    productionText, project,
+    productionText, productionSource, sourceNames, project,
   } from '../../lib/coffee/origins.ts';
   import type { Continent, Origin } from '../../lib/coffee/origins.ts';
   import HarvestRing from './art/HarvestRing.svelte';
@@ -254,10 +254,10 @@
       <ul class="rkey" aria-label="Ring key"><li><span class="k main"></span>Main harvest</li>{#if o.harvest.second}<li><span class="k second"></span>Second crop</li>{/if}{#if o.harvest.edgeMonths}<li><span class="k edge"></span>Edge months: can start early or run late</li>{/if}<li>The hand points to {MONTHS_LONG[month - 1]}</li></ul>
     {/if}
     <dl class="facts">
-      <div><dt>Harvest</dt><dd>{harvestText(o)}{#if o.harvest.scope && !compact && !/^This is /.test(o.harvest.variesBy ?? '')}<span class="sub">{scopeText(o.harvest.scope)}</span>{/if}{#if o.harvest.variesBy && !compact}<span class="sub">{o.harvest.variesBy.replace(/^This is (\w+);\s*/, "This calendar is $1's; ")}</span>{/if}</dd></div>
-      <div><dt>Altitude</dt><dd>{o.altitudeM ? bandText(o.altitudeM) : 'Not established'}{#if o.robustaAltitudeM}<span class="sub">Robusta {bandText(o.robustaAltitudeM)}</span>{/if}{#if o.altitudeM?.scope && !compact}<span class="sub">{altScope(o.altitudeM.scope)}</span>{/if}</dd></div>
+      <div><dt>Harvest</dt><dd>{harvestText(o)}{#if o.harvest.scope && !compact && !/^This is /.test(o.harvest.variesBy ?? '')}<span class="sub">{scopeText(o.harvest.scope)}</span>{/if}{#if o.harvest.variesBy && !compact}<span class="sub">{o.harvest.variesBy.replace(/^This is (\w+);\s*/, "This calendar is $1's; ")}</span>{/if}{#if !compact && o.harvest.sources.length}<span class="sub srcline">Calendar from {sourceNames(o.harvest.sources)}, checked October 2026</span>{/if}</dd></div>
+      <div><dt>Altitude</dt><dd>{o.altitudeM ? bandText(o.altitudeM) : 'Not established'}{#if o.robustaAltitudeM}<span class="sub">Robusta {bandText(o.robustaAltitudeM)}</span>{/if}{#if o.altitudeM?.scope && !compact}<span class="sub">{altScope(o.altitudeM.scope)}</span>{/if}{#if !compact && o.altitudeM?.sources?.length}<span class="sub srcline">Band from {sourceNames(o.altitudeM.sources)}</span>{/if}</dd></div>
       {#if !compact}
-        <div><dt>Production</dt><dd>{productionText(o) ?? 'No current official figure'}{#if o.production?.arabicaShare != null && o.production.arabicaShare < 0.95}<span class="sub">{o.production.arabicaShare < 0.03 ? 'All counted as robusta' : `About ${Math.round(o.production.arabicaShare * 100)}% arabica, the rest robusta`}</span>{/if}{#if o.production}<span class="sub">{src(o.production.source)?.title ?? 'USDA FAS'}</span>{/if}</dd></div>
+        <div><dt>Production</dt><dd>{productionText(o) ?? 'No current official figure'}{#if o.production?.arabicaShare != null && o.production.arabicaShare < 0.95}<span class="sub">{o.production.arabicaShare < 0.03 ? 'All counted as robusta' : `About ${Math.round(o.production.arabicaShare * 100)}% arabica, the rest robusta`}</span>{/if}{#if o.production}<span class="sub srcline">{productionSource(o)}</span>{/if}</dd></div>
       {/if}
       <div><dt>Varieties</dt><dd>{o.varieties.join(', ') || 'Not established'}</dd></div>
       <div><dt>Processing</dt><dd>{o.processing.join(', ') || 'Not established'}</dd></div>
@@ -622,6 +622,7 @@
   .facts dt { font: 500 11px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); padding-top: 2px; }
   .facts dd { margin: 0; font-size: 14.5px; }
   .facts .sub { display: block; font-size: 13px; color: var(--ink-3); margin-top: 2px; }
+  .facts .srcline { font-style: italic; }
   .compact .facts div { grid-template-columns: 1fr; gap: 0; }
   .desc { margin: 12px 0; }
   .notes { font: italic 400 22px/1.2 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; margin: 0 0 4px; }
