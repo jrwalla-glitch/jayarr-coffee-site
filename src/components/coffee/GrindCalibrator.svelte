@@ -78,7 +78,7 @@
   const isSingle = (r: Setting) => r.start != null || (r.min != null && r.max === r.min && !r.openTop);
   let single = $derived(!!s && isSingle(s));
   // A published low end that sits inside the maker's "don't grind here" zone reads as "above" it (the C2).
-  const lowText = (r: Setting) => (g.avoid && r.min != null && r.min <= g.avoid[1] ? `above ${r.min}` : `${r.min}`);
+  const lowText = (r: Setting) => ((g.avoid && r.min != null && r.min <= g.avoid[1]) || r.lowExclusive ? `above ${r.min}` : `${r.min}`);
 
   // ── Numbered dial: a 300° scale; top centre is the grinder's index mark ──
   const SWEEP = 300, C = 160, CAP = (6 / 120) * (180 / Math.PI);
@@ -178,7 +178,7 @@
     if (r.start != null) return r.max != null && r.max !== r.min ? `${r.start}, in ${r.min}–${r.max}` : `${r.start}`;
     if (r.openTop) return `${r.min} and coarser`;
     if (r.max == null || r.max === r.min) return `${r.min}`;
-    return g.avoid && r.min <= g.avoid[1] ? `above ${r.min}, to ${r.max}` : `${r.min}–${r.max}`;
+    return (g.avoid && r.min <= g.avoid[1]) || r.lowExclusive ? `above ${r.min}, to ${r.max}` : `${r.min}–${r.max}`;
   }
   let mapUnit = $derived(g.kind === 'dial' && g.scale ? `on its ${g.scale[0]}–${g.scale[1]} dial` : g.kind === 'turns' ? `${g.unit} from zero` : g.kind === 'named' ? 'fine to coarse' : 'as written');
   // The secondary source's notation, from its own chart: a rotation and a mark ("1+4"); plain numbers
@@ -189,11 +189,11 @@
   ]);
 </script>
 
-{#snippet legend(range: boolean, start: boolean, avoid: boolean, flat = false)}
+{#snippet legend(range: boolean, start: boolean, avoid: boolean, flat = false, avoidBy = 'maker')}
   <p class="legend" aria-hidden="true">
     {#if range}<span><i class="k-band" class:flat></i>{who}'s range</span>{/if}
     {#if start}<span><i class="k-start"></i>{who}'s setting</span>{/if}
-    {#if avoid}<span><i class="k-avoid"></i>maker says avoid</span>{/if}
+    {#if avoid}<span><i class="k-avoid"></i>{avoidBy} says avoid</span>{/if}
   </p>
 {/snippet}
 
@@ -226,7 +226,7 @@
         <g class="ring" style:transform="rotate({ringTurn}deg)">
           <circle cx={C} cy={C} r="138" class="ringface" />
           {#if bandTo != null && s.min != null && bandTo > s.min}
-            {@const a0 = ang(s.min, g.scale)}
+            {@const a0 = ang(s.min, g.scale) + (s.lowExclusive ? 2 * CAP : 0)}
             {@const a1 = ang(bandTo, g.scale)}
             <!-- the round caps sit inside the band's ends, so it stops exactly at the published values -->
             <path d={a1 - a0 > 2 * CAP ? arc(a0 + CAP, a1 - CAP, 120) : arc(a0, a1, 120)} class="band" class:short={a1 - a0 <= 2 * CAP} />
@@ -245,15 +245,16 @@
             <line x1={x0} y1={y0} x2={x1} y2={y1} class="tick" class:major={t.major} />
             {#if t.major}{@const [tx, ty] = pt(a, 104)}<text x={tx} y={ty + 4} text-anchor="middle" class="num up" style:transform="rotate({-ringTurn}deg)">{t.v}</text>{/if}
           {/each}
+          {#if s.lowExclusive && s.min != null}{@const [ax0, ay0] = pt(ang(s.min, g.scale), 108)}{@const [ax1, ay1] = pt(ang(s.min, g.scale), 134)}<line x1={ax0} y1={ay0} x2={ax1} y2={ay1} class="avoidtick" />{/if}
           {#if s.start != null || s.max === s.min}{@const [sx, sy] = pt(ang(s.start ?? s.min!, g.scale), 120)}<circle cx={sx} cy={sy} r="7" class="startdot" />{/if}
         </g>
         {#if single}<path d="M{C - 10} 0 L{C + 10} 0 L{C} 18 Z" class="index" />{/if}
         <circle cx={C} cy={C} r="66" class="hub" />
-        <text x={C} y={C - 14} text-anchor="middle" class="hubk">{s.start != null || s.max === s.min ? 'set to' : s.openTop ? 'from' : 'between'}</text>
-        <text x={C} y={C + 18} text-anchor="middle" class="hubv">{s.start != null ? s.start : s.openTop ? `${s.min}+` : rangeText(s).replace(' to ', '–')}</text>
+        <text x={C} y={C - 14} text-anchor="middle" class="hubk">{s.start != null || s.max === s.min ? 'set to' : s.openTop ? 'from' : s.lowExclusive ? `above ${s.min}, up to` : 'between'}</text>
+        <text x={C} y={C + 18} text-anchor="middle" class="hubv">{s.start != null ? s.start : s.openTop ? `${s.min}+` : s.lowExclusive ? s.max : rangeText(s).replace(' to ', '–')}</text>
         <text x={C} y={C + 38} text-anchor="middle" class="hubu">{g.stepless ? 'stepless dial' : `of ${g.scale[0]}–${g.scale[1]}`}</text>
       </svg>
-      {@render legend(s.max !== s.min || !!s.openTop, s.start != null || s.max === s.min, false)}
+      {@render legend(s.max !== s.min || !!s.openTop, s.start != null || s.max === s.min, !!s.lowExclusive, false, 'retailer')}
       <p class="cap">Lower numbers grind finer. {single ? 'The dial is turned so the setting sits under the mark.' : `The band is the range the ${who} prints.`}</p>
     {:else if s && g.kind === 'turns' && s.min != null}
       {#if g.perTurn}
@@ -457,6 +458,7 @@
   .turnline { stroke: #2a1d15; stroke-width: 1; stroke-dasharray: 3 3; opacity: .4; }
   .turnlbl { font: 500 10px 'IBM Plex Mono', monospace; fill: #5b4a3d; }
   .avoid { fill: #b04a2a; opacity: .22; }
+  .avoidtick { stroke: #b04a2a; stroke-width: 4; stroke-linecap: round; opacity: .6; }
   .ground { fill: #e9dcc9; opacity: .5; }
   .onseg { fill: rgba(195, 135, 58, .5); stroke: #c3873a; stroke-width: 3; }
   .altseg { fill: none; stroke: #e9b56c; stroke-width: 1.5; stroke-dasharray: 4 3; }

@@ -15,6 +15,8 @@ export interface Setting {
   makerLabel?: string;
   /** Wording where the source's own range or scope needs saying (a conflict, a recipe-scoped start). */
   headline?: string; note?: string;
+  /** The published low end is the finest point, which a caution says never to grind at: read it as "above". */
+  lowExclusive?: boolean;
 }
 export interface Grinder {
   id: string; name: string; short: string; maker: string; type: 'electric' | 'hand'; kind: Kind;

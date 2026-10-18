@@ -640,8 +640,9 @@
      "source": "Honest Coffee Guide Turin DF64 (Gen 2) table, fully fetched 2026-10-15",
      "url": "https://honestcoffeeguide.com/turin-df64-gen-2-grind-settings/",
      "checked": "2026-10-15",
-     "headline": "The source lists 0 to 20 on its dial",
+     "headline": "The source lists 0 to 20 on its dial: start above 0",
      "note": "These are the secondary source’s dial numbers. It doesn’t say where its 0 is, so don’t read 0 as burr contact: find your grinder’s own zero first, and never grind at the finest point.",
+     "lowExclusive": true,
      "min": 0,
      "max": 20,
      "start": null
