@@ -224,7 +224,10 @@
   .doors button[aria-selected='true'] { background: #fbf8f3; color: var(--ink); border-bottom-color: #c3873a; }
   .doors button:focus-visible { outline: 3px solid rgba(143, 93, 34, .6); outline-offset: -3px; }
   /* Every door is the same height on desktop, so nothing below the card moves when you switch. */
-  .panel { padding: 18px 20px 20px; min-height: 600px; }
+  /* Every door the same height on desktop; the button sits at the card's foot, so the room reads as layout, not leftover. */
+  .panel { padding: 18px 20px 20px; min-height: 600px; display: flex; flex-direction: column; }
+  .panel > .go { margin-top: auto; align-self: flex-start; }
+  .panel > .pick + .go, .panel > .nowh + .go { margin-top: auto; }
   .q { font: 500 11px/1 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 8px; }
   .q:not(:first-child) { margin-top: 14px; }
   .chips { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -286,6 +289,7 @@
     .doors button:nth-child(3) { border-left: 0; }
     .doors button:nth-child(n + 3) { border-top: 1px solid var(--rule); }
     .panel { padding: 14px 14px 16px; min-height: 0; }
+    .panel > .go, .panel > .pick + .go, .panel > .nowh + .go { margin-top: 10px; }
     .nums div + div { padding-left: 8px; }
     .nums dd { font-size: 24px; }
     .figs figcaption { font-size: 11px; }

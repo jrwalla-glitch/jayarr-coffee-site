@@ -228,7 +228,7 @@
   const phone = () => stageW < 520;
   /** The notes a group shows on the plate (its most-used, up to 8; 6 on a phone) and the arc they hang on. */
   function budLayout(notes: Note[]) {
-    const shown = [...notes].sort((p, q) => (COUNTS[q.id] ?? 0) - (COUNTS[p.id] ?? 0)).slice(0, phone() ? 6 : 8);
+    const shown = [...notes].sort((p, q) => (COUNTS[q.id] ?? 0) - (COUNTS[p.id] ?? 0)).slice(0, phone() ? 7 : 8);
     const keep = new Set(shown.map((x) => x.id));
     const list = notes.filter((x) => keep.has(x.id)), n = list.length;
     const span = n === 1 ? 0 : Math.min(200, 30 * (n - 1));
@@ -303,7 +303,7 @@
       for (const f of [0.45, 0.65, 0.85]) { const [px, py] = at(ANGLE[fam.id], R * f); boxes.push({ x: px - 26, y: py - 26, w: 52, h: 52 }); }
     } else {
       for (const i of [0, 1]) for (const f of [0.3, 0.55, 0.8]) { const [px, py] = leafAt(i, f); boxes.push({ x: px - 14, y: py - 14, w: 28, h: 28 }); }
-      for (const f of [0.15, 0.4, 0.65, 0.9]) { const py = CY + CORE + (300 - CORE) * f; boxes.push({ x: CX - 6, y: py - 6, w: 12, h: 12 }); }
+      for (let f = 0.05; f < 1; f += 0.06) { const py = CY + CORE + (300 - CORE) * f; boxes.push({ x: CX - 5, y: py - 6, w: 10, h: 12, hard: true }); }
     }
     const [vx, vy, vw, vh] = zoomTarget();
     // The inset in the corner is taken too.
@@ -557,7 +557,7 @@
   </svg>
 {/snippet}
 
-{#snippet keyText()}Bigger bud, more mentions: the number is how many of {lots.length} roasters' lot descriptions name the note.{#if branch.hidden}{' '}The plate shows the {branch.buds.length} most named; {branch.hidden === 1 ? 'one rarer note is' : `${branch.hidden} rarer notes are`} in the list view.{/if}{/snippet}
+{#snippet keyText()}Bigger bud, more mentions: the number is how many of the {lots.length} lot descriptions in roasters' catalogs name the note.{#if branch.hidden}{' '}The plate shows the {branch.buds.length} most named; {branch.hidden === 1 ? 'one rarer note is' : `${branch.hidden} rarer notes are`} in the list view.{/if}{/snippet}
 
 {#snippet budKey()}
   <span class="budkey" aria-hidden="true">
@@ -684,7 +684,7 @@
             <h2 tabindex="-1" bind:this={headEl}>{label}</h2>
           </div>
         </div>
-        <p class="blurb">{fam ? fam.blurb : 'Usually flaws: the wheel\u2019s \u201cother\u201d notes, papery, musty and chemical tastes. Faint, a few (earthy, woody) can be part of a coffee\'s character; strong or persistent, they usually point to a problem on the farm, in processing, in storage or with age.'}</p>
+        <p class="blurb">{fam ? fam.blurb : 'Usually flaws. The wheel\u2019s \u201cother\u201d notes: papery, musty and chemical tastes. Faint, a few (earthy, woody) can be part of a coffee\'s character; strong or persistent, they usually point to a problem on the farm, in processing, in storage or with age.'}</p>
         {#if fam}<p class="keyline inpanel">{@render budKey()}<span>{@render keyText()}</span></p>{/if}
         {#if fam?.brings}
           <div class="tends"><p class="lbl">In general</p><p>{fam.brings}</p></div>

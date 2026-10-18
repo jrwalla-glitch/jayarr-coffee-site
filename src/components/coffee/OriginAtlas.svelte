@@ -251,7 +251,7 @@
 <svelte:window onkeydown={onKey} />
 
 <!-- A band never breaks inside a figure: metres and feet each stay on one line. -->
-{#snippet band(t: string)}{@const [m, ft] = t.split(' (')}<span class="nb">{m}</span>{#if ft} <span class="nb">({ft}</span>{/if}{/snippet}
+{#snippet band(t: string)}{@const [m, ft] = t.split(' (')}<span class="nb">{m}</span>{#if ft}{' '}<span class="nb">({ft}</span>{/if}{/snippet}
 
 {#snippet profile(o: Origin, compact: boolean)}
   <div class="pfacts" class:compact>
@@ -292,7 +292,7 @@
     {/if}
   </div>
   <p class="nowline"><span class="lbl">Harvesting in {MONTHS_LONG[month - 1]}</span>
-    {#each harvesting as o (o.id)}<span class="nowitem" class:inreg={o.continent === region}><button type="button" class="nowname" onclick={() => choose(o.id)}>{o.name}</button></span>{/each}{#if harvesting.some((o) => o.continent !== region)}<span class="nowmore"> · {harvesting.filter((o) => o.continent !== region).length} more under the other tabs</span>{/if}
+    {#each harvesting as o (o.id)}<span class="nowitem" class:inreg={o.continent === region}><button type="button" class="nowname" onclick={() => choose(o.id)}>{o.name}</button></span>{/each}{#if harvesting.some((o) => o.continent !== region)}<span class="nowmore">{'\u00a0·\u00a0'}{harvesting.filter((o) => o.continent !== region).length} more under the other tabs</span>{/if}
   </p>
 
   <div class="body">
@@ -497,7 +497,7 @@
           {#if arrival}<p class="small quiet jnote">Café Imports lists {sel.name}'s harvest as {arrival.harvest} and typical arrival as {arrival.arrival}.</p>{/if}
         </div>
         <div class="actions">
-          {#if sel.page}<a class="primary" href={sel.page}>{sel.name}'s country page →</a>{/if}
+          {#if sel.page}<a class="primary" href={sel.page}>{sel.name}'s country page{'\u00a0'}→</a>{/if}
           {#each sel.articles.slice(0, sel.page ? 1 : 2) as art (art.slug)}<a class="linkish" href="/blog/{art.slug}/"><span class="artk">Article:</span> {art.title}</a>{/each}
         </div>
         <label class="pickvs">
@@ -518,7 +518,7 @@
               <h3>{o.name}</h3>
               {@render profile(o, true)}
               <p class="small"><b>Often described as</b> {o.tendencies.notes.join(', ') || 'not established'}</p>
-              {#if o.page}<a class="linkish" href={o.page}>{o.name}'s country page →</a>{/if}
+              {#if o.page}<a class="linkish" href={o.page}>{o.name}'s country page{'\u00a0'}→</a>{/if}
             </section>
           {/each}
         </div>

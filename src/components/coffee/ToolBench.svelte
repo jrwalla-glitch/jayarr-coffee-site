@@ -275,8 +275,8 @@
     .tblurb { font-size: 13.5px; }
     /* On a narrow card the badge would sit on the drawing: it sits in a strip under it, and every
        card keeps that strip, so the names in a row still line up. */
-    .mini { padding-bottom: 22px; }
-    .tag { top: auto; right: auto; bottom: 5px; left: 6px; font-size: 9px; padding: 2px 6px; }
+    .mini { padding-top: 22px; }
+    .tag { top: 5px; right: 6px; font-size: 9px; padding: 2px 6px; }
     .ghead h2 { font-size: 28px; }
     .resume { padding: 14px 12px; }
     .resume ul { grid-template-columns: 1fr; }
