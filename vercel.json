@@ -115,6 +115,16 @@
       "source": "/blog/coffee-scores-what-they-taste-like/",
       "destination": "/blog/coffee-scoring-system-explained/",
       "permanent": true
+    },
+    {
+      "source": "/blog/coffee-varieties-explained",
+      "destination": "/blog/coffee-varietal-guide/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/coffee-varieties-explained/",
+      "destination": "/blog/coffee-varietal-guide/",
+      "permanent": true
     }
   ]
 }
