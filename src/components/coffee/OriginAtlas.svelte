@@ -7,7 +7,7 @@
     ORIGINS, CONTINENTS, MONTHS_LONG, ARRIVAL_EXAMPLES, originById, harvestState, harvestText, harvestingIn, pickingElsewhereIn, bandText,
     productionText, productionSource, sourceNames, project,
   } from '../../lib/coffee/origins.ts';
-  import type { Continent, Origin } from '../../lib/coffee/origins.ts';
+  import type { Band, Continent, HarvestState, Origin } from '../../lib/coffee/origins.ts';
   import { regionPoint } from '../../lib/coffee/mapPlace.ts';
   import HarvestRing from './art/HarvestRing.svelte';
   import AltitudeBand from './art/AltitudeBand.svelte';
@@ -37,7 +37,8 @@
   const hover = $derived(hoverMarker ?? hoverCountry);
   let mapSvg = $state<SVGSVGElement | null>(null);
   let query = $state('');
-  let thisMonth = 10, monthFromLink: number | null = null;
+  // A month the reader picks (or a link brings) goes in the link, even today's (review r4, Muse O2).
+  let monthPicked = $state(false);
   // Search ignores accents and case, so "Tarrazu" finds Tarrazú and "Narino" finds Nariño.
   const fold = (t: string) => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
   let narrow = $state(false);
@@ -116,8 +117,7 @@
     const o = slug(q.get('o')), v = slug(q.get('vs')), m = Number(q.get('month'));
     if (o && originById(o)) { selId = o; if (narrow) region = originById(o)!.continent; }
     if (selId && v && v !== selId && originById(v)) vsId = v;
-    if (Number.isInteger(m) && m >= 1 && m <= 12) { month = m; monthFromLink = m; }
-    thisMonth = new Date().getMonth() + 1;
+    if (Number.isInteger(m) && m >= 1 && m <= 12) { month = m; monthPicked = true; }
     vb.set(target(), { duration: 0 });
     mounted = true;
   });
@@ -126,8 +126,7 @@
     const q = new URLSearchParams();
     if (selId) q.set('o', selId);
     if (selId && vsId) q.set('vs', vsId);
-    // The month goes in the link once it differs from today's, or when the link brought one.
-    if (month !== thisMonth || monthFromLink === month) q.set('month', String(month));
+    if (monthPicked) q.set('month', String(month));
     history.replaceState(history.state, '', q.toString() ? `${location.pathname}?${q}` : location.pathname);
   });
 
@@ -241,6 +240,11 @@
     choose(near[0].id);
   }
   const stateOf = (o: Origin) => harvestState(o, month);
+  // The glance card pairs harvest and altitude, so both describe the same coffee: a robusta calendar
+  // gets the robusta band, and an arabica band is named as one where robusta grows too (review r4, Muse O1).
+  const tagAltitude = (o: Origin): [string, Band | null] =>
+    /^robusta/i.test(o.harvest.scope ?? '') && o.robustaAltitudeM ? ['Altitude (robusta)', o.robustaAltitudeM] : [o.robustaAltitudeM ? 'Altitude (arabica)' : 'Altitude', o.altitudeM];
+  let selAlt = $derived<[string, Band | null]>(sel ? tagAltitude(sel) : ['Altitude', null]);
   const live = (o: Origin) => { const s = stateOf(o); return s === 'main' || s === 'second'; };
   // Country fills stay quiet: a whole country isn't a growing region. Only the chosen ones are rust;
   // the dots carry who is harvesting.
@@ -256,6 +260,18 @@
 <svelte:window onkeydown={onKey} />
 
 <!-- A band never breaks inside a figure: metres and feet each stay on one line. -->
+{#snippet stateDot(mx: number, my: number, st: HarvestState)}
+  {#if st === 'edge'}
+    <circle cx={mx} cy={my} r={6 * upp} fill="#fbf6ee" stroke="#2a1d15" stroke-width={1.3 * upp} />
+    <path d="M{mx} {my - 6 * upp} A {6 * upp} {6 * upp} 0 0 0 {mx} {my + 6 * upp} Z" fill="#9a5420" />
+  {:else if st === 'elsewhere'}
+    <!-- Outside the drawn calendar, but picked in another region: a ring with a small centre. -->
+    <circle cx={mx} cy={my} r={5.4 * upp} fill="#fbf6ee" stroke="#2a1d15" stroke-width={1.2 * upp} />
+    <circle cx={mx} cy={my} r={2 * upp} fill="#9a5420" />
+  {:else}
+    <circle cx={mx} cy={my} r={(st === 'off' ? 4.4 : 6) * upp} fill={st === 'off' ? '#fbf6ee' : '#9a5420'} stroke="#2a1d15" stroke-width={(st === 'off' ? 1.1 : 1.3) * upp} />
+  {/if}
+{/snippet}
 {#snippet band(t: string)}{@const [m, ft] = t.split(' (')}<span class="nb">{m}</span>{#if ft}{' '}<span class="nb">({ft}</span>{/if}{/snippet}
 
 {#snippet profile(o: Origin, compact: boolean)}
@@ -285,7 +301,7 @@
       <span class="lbl">Harvest in</span>
       <div class="months">
         {#each MONTHS_LONG as m, i (m)}
-          <button type="button" aria-pressed={month === i + 1} aria-label={m} onclick={() => (month = i + 1)}>{m.slice(0, 3)}</button>
+          <button type="button" aria-pressed={month === i + 1} aria-label={m} onclick={() => { month = i + 1; monthPicked = true; }}>{m.slice(0, 3)}</button>
         {/each}
       </div>
     </div>
@@ -374,21 +390,13 @@
               {#if showRing}
                 <HarvestRing harvest={o.harvest} month={month} size={30 * upp} x={mx} y={my} faint={!live(o)} />
               {:else if isSel && marks.solo}
-                <circle cx={mx} cy={my} r={4.5 * upp} fill="#fbf6ee" stroke="#6b3a12" stroke-width={2 * upp} />
+                <!-- Zoomed on one origin: its dot in this month's state, as the key reads (gate r8). -->
+                {@render stateDot(mx, my, st)}
               {:else if isSel}
                 <circle cx={mx} cy={my} r={13 * upp} fill="#c3873a" opacity=".35" />
                 <circle cx={mx} cy={my} r={7.5 * upp} fill="#6b3a12" stroke="#fbf6ee" stroke-width={2 * upp} />
               {:else}
-                {#if st === 'edge'}
-                  <circle cx={mx} cy={my} r={6 * upp} fill="#fbf6ee" stroke="#2a1d15" stroke-width={1.3 * upp} />
-                  <path d="M{mx} {my - 6 * upp} A {6 * upp} {6 * upp} 0 0 0 {mx} {my + 6 * upp} Z" fill="#9a5420" />
-                {:else if st === 'elsewhere'}
-                  <!-- Outside the drawn calendar, but picked in another region: a ring with a small centre. -->
-                  <circle cx={mx} cy={my} r={5.4 * upp} fill="#fbf6ee" stroke="#2a1d15" stroke-width={1.2 * upp} />
-                  <circle cx={mx} cy={my} r={2 * upp} fill="#9a5420" />
-                {:else}
-                  <circle cx={mx} cy={my} r={(st === 'off' ? 4.4 : 6) * upp} fill={st === 'off' ? '#fbf6ee' : '#9a5420'} stroke="#2a1d15" stroke-width={(st === 'off' ? 1.1 : 1.3) * upp} />
-                {/if}
+                {@render stateDot(mx, my, st)}
               {/if}
               {#if marks.label.has(o.id)}
                 {@const sp = marks.label.get(o.id)!}
@@ -413,7 +421,7 @@
               <HarvestRing harvest={sel.harvest} month={month} labels size={104} label="{sel.name} harvest: {harvestText(sel)}" />
               <dl>
                 <dt>Harvest</dt><dd>{harvestText(sel)}</dd>
-                <dt>Altitude</dt><dd>{sel.altitudeM ? bandText(sel.altitudeM).replace(/ \(.*\)$/, '') : 'Not established'}</dd>
+                <dt>{selAlt[0]}</dt><dd>{selAlt[1] ? bandText(selAlt[1]).replace(/ \(.*\)$/, '') : 'Not established'}</dd>
                 {#if sel.tendencies.notes.length}<dt>Often described as</dt><dd class="it">{sel.tendencies.notes.slice(0, 3).join(', ')}</dd>{/if}
               </dl>
             </div>
@@ -423,8 +431,9 @@
         <div class="mapkey" aria-hidden="true">
           <span class="kt">Key</span>
           <span><span class="dot on"></span> Harvesting in {MONTHS_LONG[month - 1]}</span>
-          <span><span class="dot edge"></span> Maybe (the month either side of the sourced harvest, our buffer: picking can start early or run late)</span>
+          <span><span class="dot edge"></span> Maybe (our one-month buffer either side of the sourced harvest)</span>
           {#if elsewhereNow.length}<span><span class="dot else"></span> Outside the calendar drawn, but picked in another region</span>{/if}
+          {#if sel && zoom > 2}<span><span class="dia"></span> A growing region</span>{/if}
           <span><span class="dot off"></span> Outside its harvest period</span>
           <span class="kring">{#if zoom > 2}<span class="ringk"></span> {narrow ? 'Ring: 12 months, Jan at top' : 'Ring: its 12-month harvest calendar, January at the top'}{:else}Pick an origin to zoom in and see its year as a ring{/if}</span>
         </div>
@@ -627,6 +636,7 @@
   .dot.edge { background: linear-gradient(90deg, #9a5420 50%, #fbf6ee 50%); }
   .dot.off { width: 8px; height: 8px; }
   .dot.else { background: radial-gradient(circle, #9a5420 0 2px, #fbf6ee 2.5px); }
+  .dia { width: 8px; height: 8px; margin: 0 1px; background: #2a1d15; outline: 1px solid #fbf6ee; transform: rotate(45deg); display: inline-block; }
   .ringk { width: 12px; height: 12px; border-radius: 50%; border: 3px solid #b86e2c; border-right-color: #d9cdbd; border-bottom-color: #d9cdbd; display: inline-block; }
 
   .panel { min-width: 0; position: relative; scroll-margin-top: 84px; }

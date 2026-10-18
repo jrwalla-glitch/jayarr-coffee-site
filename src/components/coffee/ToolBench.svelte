@@ -159,7 +159,8 @@
   {#if resume.length}
     <section class="resume" aria-labelledby="resume-h">
       <div class="rhead"><h2 id="resume-h">Pick up where you left off</h2><p class="quiet small">Saved on this device only.</p></div>
-      <ul>
+      <!-- Four saved answers sit two by two rather than three and one left alone (gate r6–r8). -->
+      <ul class:pairs={resume.length === 4}>
         {#each resume as r (r.label)}
           <li><a href={r.href}><span class="ricon">{@render icon(r.icon)}</span><span class="rtext"><b>{r.label}</b><span class="rd">{keep(r.detail)}</span></span><span class="rgo" aria-hidden="true">→</span></a></li>
         {/each}
@@ -221,6 +222,7 @@
   .resume h2 { font: 400 28px/1.1 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; margin: 0; }
   .resume p { margin: 0; }
   .resume ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 10px; }
+  .resume ul.pairs { grid-template-columns: repeat(auto-fit, minmax(max(270px, calc(50% - 5px)), 1fr)); }
   .resume li { display: flex; }
   .resume a { flex: 1; display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 12px; align-items: start; border: 1px solid var(--rule); background: #fff; border-radius: 12px; padding: 10px 14px 10px 10px; text-decoration: none; color: var(--ink); min-height: 66px; }
   .resume a:hover, .resume a:focus-visible { border-color: var(--ink-3); background: #fffaf2; }

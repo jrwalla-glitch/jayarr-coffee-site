@@ -574,7 +574,7 @@
   </svg>
 {/snippet}
 
-{#snippet keyText()}Bigger bud, more mentions: the number is how many of the {lots.length} lot descriptions in roasters' catalogs name the note.{#if branch.hidden}{' '}The plate shows the {branch.buds.length} most named; {branch.hidden === 1 ? 'one rarer note is' : `${branch.hidden} rarer notes are`} in the list view.{/if}{/snippet}
+{#snippet keyText()}Bigger bud, more mentions (the smallest buds are two or fewer): the number is how many of the {lots.length} lot descriptions in roasters' catalogs name the note.{#if branch.hidden}{' '}The plate shows the {branch.buds.length} most named; {branch.hidden === 1 ? 'one rarer note is' : `${branch.hidden} rarer notes are`} in the list view.{/if}{/snippet}
 
 {#snippet budKey()}
   <span class="budkey" aria-hidden="true">

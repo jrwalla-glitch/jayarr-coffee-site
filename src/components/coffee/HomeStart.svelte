@@ -78,6 +78,13 @@
   // ── The drawn row under the numbers: the cup at its size, the ratio as cells, the grind to scale ──
   // The ratio as the Brew Guide prints it: up to two decimals, trailing zeros dropped (6.25, 15, 2).
   let ratioText = $derived(r ? String(Math.round(r.ratio * 100) / 100) : '16');
+  // An AeroPress mug's water is more than the chamber holds; the Guide adds the rest after pressing,
+  // and the preview says so, so no one pours it all into the chamber (review r4, Muse H1).
+  let topUpG = $derived.by(() => {
+    if (method !== 'aeropress' || !r?.waterG || !r.steps.some((x) => x.kind === 'dilute')) return 0;
+    const inChamber = r.steps.filter((x) => x.kind === 'pour').at(-1)?.toG;
+    return inChamber != null ? Math.round(r.waterG - inChamber) : 0;
+  });
   // One coffee cell, then a water cell per unit of the ratio; a fractional ratio (cold brew's 6.25)
   // ends on a part-cell, so the drawing says what the caption says.
   let cells = $derived.by(() => {
@@ -192,7 +199,7 @@
             <figcaption>{grindShort}, like {r.grind.texture}</figcaption>
           </figure>
         </div>
-        <p class="note">{method === 'espresso' ? 'A double shot: 18 g in, 36 g out, in 25–30 seconds.' : method === 'cold-brew' ? 'A concentrate: dilute it about one to one to serve.' : method === 'moka' ? 'The pot sets the amounts: coffee level in the basket, water to just below the valve. The Brew Guide sizes it to your pot.' : `1:${ratioText} is the Brew Guide's classic strength for the ${BREWERS.find((b) => b.id === method)?.label}, and the Guide ${method === 'french-press' || method === 'aeropress' ? 'times the steep and the press' : method === 'cold-brew' ? 'times the steep' : method === 'drip-machine' ? 'walks you through the batch' : 'times every pour'}.`}</p>
+        <p class="note">{method === 'espresso' ? 'A double shot: 18 g in, 36 g out, in 25–30 seconds.' : method === 'cold-brew' ? 'A concentrate: dilute it about one to one to serve.' : method === 'moka' ? 'The pot sets the amounts: coffee level in the basket, water to just below the valve. The Brew Guide sizes it to your pot.' : `1:${ratioText} is the Brew Guide's classic strength for the ${BREWERS.find((b) => b.id === method)?.label}, and the Guide ${method === 'french-press' || method === 'aeropress' ? 'times the steep and the press' : method === 'cold-brew' ? 'times the steep' : method === 'drip-machine' ? 'walks you through the batch' : 'times every pour'}.${topUpG > 0 ? ` The chamber holds about 230 g, so ${topUpG} g of the water goes in after pressing.` : ''}`}</p>
       {/if}
       <a class="go" href={href}>Brew it step by step →</a>
     {:else if door === 'fix'}

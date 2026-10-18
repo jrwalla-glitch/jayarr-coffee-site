@@ -188,7 +188,7 @@
     history.replaceState(history.state, '', q.toString() ? `${location.pathname}?${q}` : location.pathname);
   });
 
-  const axisValue = (m: AtlasMethod, axis: Axis) => axis === 'contact' ? CONTACT[m.contact].label : axis === 'filter' ? FILTER[m.filter].label : axis === 'force' ? FORCE[m.force].label : timeText(m) + (m.timeNote ? '*' : '');
+  const axisValue = (m: AtlasMethod, axis: Axis) => axis === 'contact' ? CONTACT[m.contact].label : axis === 'filter' ? FILTER[m.filter].label + (m.filterNote ? '†' : '') : axis === 'force' ? FORCE[m.force].label : timeText(m) + (m.timeNote ? '*' : '');
   // Ranges and units stay on one line.
   const keep = (s: string) => s.replace(/–/g, '\u2060–\u2060').replace(/ \(/g, '\u00a0(');
   const dots = (n: number) => '●'.repeat(n) + '○'.repeat(3 - n);
@@ -373,6 +373,7 @@
             {#each ARRANGE as x (x.id)}<li><span class="lbl">{x.label}</span>{axisValue(A, x.id)}</li>{/each}
           </ul>
           {#if A.timeNote}<p class="quiet small fn">* {A.timeNote.replace(/^\w/, (c) => c.toUpperCase())}.</p>{/if}
+          {#if A.filterNote}<p class="quiet small fn">† {A.filterNote.replace(/^\w/, (c) => c.toUpperCase())}.</p>{/if}
           <div class="cut">{#key A.id}<BrewerCutaway method={A.id} playing={!reduced} />{/key}</div>
           <p class="desc">{keep(describe(A))}</p>
           <dl class="nums">
@@ -430,7 +431,7 @@
               <tr><th scope="row">Grind</th><td>{A.grind}</td><td>{B.grind}</td></tr>
             </tbody>
           </table>
-          <p class="quiet small">Highlighted rows are the axes that differ. Time is highlighted when the ranges don't overlap or one takes at least 1.5 times as long. Time is the typical brew time for each recipe (the moka pot's is its time on the stove).{#each [A, B].filter((m) => m.timeNote) as m (m.id)}{' '}* {m.label}: {m.timeNote}.{/each}</p>
+          <p class="quiet small">Highlighted rows are the axes that differ. Time is highlighted when the ranges don't overlap or one takes at least 1.5 times as long. Time is the typical brew time for each recipe (the moka pot's is its time on the stove).{#each [A, B].filter((m) => m.timeNote) as m (m.id)}{' '}* {m.label}: {m.timeNote}.{/each}{#each [A, B].filter((m) => m.filterNote) as m (m.id)}{' '}† {m.label}: {m.filterNote}.{/each}</p>
           <div class="actions">
             {#each [A, B] as m (m.id)}
               {#if brewGuideHref(m)}<a class="ghost" href={brewGuideHref(m)}>{m.label} in the Brew Guide →</a>{:else}<a class="ghost" href="/blog/{m.guide.slug}/">{m.label} guide →</a>{/if}

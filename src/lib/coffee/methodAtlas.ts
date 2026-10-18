@@ -66,6 +66,10 @@ export interface AtlasMethod {
   sourceIds: string[];
   /** A note on the time, where recipes vary a lot. */
   timeNote?: string;
+  /** A note on the filter, where the brewer is sold or used with others too (review r4, Muse M2). */
+  filterNote?: string;
+  /** How a sentence says it brews, where "steeps" would be wrong (Turkish coffee is heated with the water). */
+  brewVerb?: string;
 }
 
 const fromEngine = (id: MethodId) => {
@@ -105,6 +109,7 @@ export const ATLAS: AtlasMethod[] = [
   {
     id: 'drip-machine', label: 'Drip machine', the: 'a drip machine', line: 'A machine heats the water and showers it over a filter basket.',
     contact: 'percolation', filter: 'paper', force: 'gravity', attention: 1,
+    filterNote: 'paper is the usual; many machines also come with a reusable metal basket',
     ...fromEngine('drip-machine'),
     guide: { slug: 'batch-brew-drip-coffee-guide', title: 'Batch brew and drip coffee guide' },
     sourceIds: ['rao', 'synthesis'],
@@ -122,14 +127,18 @@ export const ATLAS: AtlasMethod[] = [
   {
     id: 'french-press', label: 'French press', the: 'the French press', line: 'Coffee steeps in all the water; a metal mesh holds the grounds back.',
     contact: 'immersion', filter: 'metal', force: 'none', attention: 1,
-    timeNote: 'the Brew Guide\'s long steep; 4-minute recipes are common too',
     ...fromEngine('french-press'),
+    // Most press recipes steep about 4 minutes; the Brew Guide's is Easto's long 8-minute steep. The star
+    // spans both so a comparison doesn't treat one recipe as the method's time (review r4, Muse M1).
+    timeS: [240, 480],
+    timeNote: '4 minutes is the common recipe; the Brew Guide\'s is the long 8-minute steep',
     guide: { slug: 'how-to-use-a-french-press-the-most-amazing-coffee-youve-ever-had', title: 'How to use a French press' },
     sourceIds: ['easto', 'synthesis'],
   },
   {
     id: 'cold-brew', label: 'Cold brew', the: 'cold brew', line: 'Coarse coffee steeps in cold water for half a day or more.',
     contact: 'immersion', filter: 'metal', force: 'none', attention: 1,
+    filterNote: 'a metal mesh in the recipe drawn; paper and cloth work too',
     ...fromEngine('cold-brew'),
     guide: { slug: 'cold-brew-concentrate-guide', title: 'Cold brew concentrate: ratio, steep time and dilution' },
     sourceIds: ['easto', 'synthesis'],
@@ -137,6 +146,7 @@ export const ATLAS: AtlasMethod[] = [
   {
     id: 'turkish', label: 'Turkish coffee', the: 'Turkish coffee', line: 'Powder-fine coffee heated with water in a cezve and poured unfiltered.',
     contact: 'immersion', filter: 'none', force: 'none', attention: 2,
+    brewVerb: 'heats the coffee in all the water to just short of the boil',
     timeS: [120, 180], ratio: { classic: 10, range: [9, 10] }, grind: 'Powder (finer than espresso)', temp: 'Heated slowly to just below the boil',
     recipeBy: 'our Turkish coffee guide: about 1:9 to 1:10, heated over 2–3 minutes',
     brewGuide: null,
@@ -156,6 +166,7 @@ export const ATLAS: AtlasMethod[] = [
   {
     id: 'siphon', label: 'Siphon', the: 'the siphon', line: 'Vapor pushes water up into the coffee; a vacuum pulls the brew back down.',
     contact: 'steep-drain', filter: 'cloth', force: 'vapor', attention: 3,
+    filterNote: 'cloth in most siphons; paper and metal filters are made for them too',
     timeS: [120, 180], ratio: { classic: 15, range: [15, 15] }, grind: 'Medium-fine', temp: '194–199°F (90–93°C)',
     recipeBy: 'our siphon guide: 20 g of coffee and 300 g of water, a 60–90 second steep and a 60–90 second drawdown',
     brewGuide: null,
@@ -250,6 +261,7 @@ export function describe(m: AtlasMethod): string {
     const out = m.force === 'hand' ? 'you press the brew through the bed and out through' : m.force === 'vapor' ? 'vapor pushes the water up into the coffee and a vacuum pulls the brew back down through' : 'the brew drains through the bed and out through';
     return `${cap(m.the)} steeps the coffee, then ${out} ${FILTER_PHRASE[m.filter]}, in about ${t}.`;
   }
+  if (m.brewVerb) return `${cap(m.the)} ${m.brewVerb} over about ${t} and is poured unfiltered; the grounds settle in the cup.`;
   return m.filter === 'none'
     ? `${cap(m.the)} steeps the coffee in all the water for about ${t} and is poured unfiltered; the grounds settle in the cup.`
     : `${cap(m.the)} steeps the coffee in all the water for about ${t}, then ${FILTER_PHRASE[m.filter]} holds the grounds back.`;
@@ -262,7 +274,7 @@ export function differenceSentence(a: AtlasMethod, b: AtlasMethod): string {
   const parts: string[] = [];
   if (d.includes('contact')) {
     const verb = (m: AtlasMethod) => m.contact === 'percolation' ? 'runs water through the coffee'
-      : m.contact === 'immersion' ? 'steeps the coffee in all the water'
+      : m.contact === 'immersion' ? m.brewVerb ?? 'steeps the coffee in all the water'
       : m.force === 'hand' ? 'steeps the coffee, then presses the brew through it'
       : m.force === 'vapor' ? 'steeps the coffee, then pulls the brew back down through a filter'
       : 'steeps the coffee, then drains the brew through it';

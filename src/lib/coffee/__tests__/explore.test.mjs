@@ -7,7 +7,7 @@ import {
   FAMILIES, OFF_GROUPS, ALL_NOTES, noteById, notesInText, familiesInText, evidenceFor, familyCounts, compareCard, encodeCard, decodeCard, MAX_PINS,
 } from '../flavors.ts';
 import { ATLAS, brewGuideHref, differences, differenceSentence, describe, timeText, timePosition, TIME_TICKS } from '../methodAtlas.ts';
-import { ORIGINS, CONTINENTS, monthsIn, harvestState, harvestingIn, originByPage, bandText, project } from '../origins.ts';
+import { ORIGINS, CONTINENTS, monthsIn, harvestState, harvestingIn, originByPage, bandText, project, sourceNames } from '../origins.ts';
 import { EXPLORE_SOURCES } from '../explore-sources.ts';
 import { decodeBrew } from '../share.ts';
 import { buildRecipe } from '../brew.ts';
@@ -134,6 +134,12 @@ test('harvest windows wrap across the new year; edges sit next to the window, ne
   for (let m = 1; m <= 12; m++) for (const x of harvestingIn(m)) assert.ok(['main', 'second'].includes(harvestState(x, m)));
 });
 
+test('the "maybe" buffer is one month at most, as the key says (review r4, Astra)', () => {
+  for (const o of ORIGINS) assert.ok(o.harvest.edgeMonths <= 1, `${o.id}: ${o.harvest.edgeMonths}`);
+  // Each named source for a calendar resolves, drawn or compared.
+  for (const o of ORIGINS) for (const id of [...o.harvest.sources, ...(o.harvest.compare ?? [])]) assert.ok(sourceNames([id]), `${o.id}: ${id}`);
+});
+
 test('altitude bands read low to high, and every cited source id exists', () => {
   for (const o of ORIGINS) {
     if (o.altitudeM) { assert.ok(o.altitudeM.min < o.altitudeM.max, o.id); assert.match(bandText(o.altitudeM), / m \(.* ft\)$/); }
@@ -204,4 +210,17 @@ test('every growing region is drawn inside its own country, even where the simpl
     }
   }
   assert.deepEqual(bad, []);
+});
+
+test('review r4 (Muse): compounds credit both notes; bare "olive" is not olive oil; the press spans 4–8 min; Turkish is heated', () => {
+  assert.deepEqual(notesInText('caramelised pineapple', { roaster: true }).sort(), ['caramel', 'pineapple']);
+  assert.deepEqual(notesInText('lemon citrus', { roaster: true }).sort(), ['citrus', 'lemon']);
+  assert.deepEqual(notesInText('olive'), []);
+  assert.deepEqual(notesInText('olive oil'), ['olive-oil']);
+  const fp = ATLAS.find((m) => m.id === 'french-press'), tk = ATLAS.find((m) => m.id === 'turkish');
+  assert.deepEqual(fp.timeS, [240, 480]);
+  assert.match(fp.timeNote, /4 minutes/);
+  assert.match(describe(tk), /^Turkish coffee heats the coffee/);
+  assert.doesNotMatch(describe(tk), /steeps/);
+  for (const id of ['drip-machine', 'siphon', 'cold-brew']) assert.ok(ATLAS.find((m) => m.id === id).filterNote, id);
 });
