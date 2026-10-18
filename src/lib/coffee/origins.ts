@@ -123,6 +123,8 @@ export function monthsIn(w: [number, number] | null): number[] {
 }
 export type HarvestState = 'main' | 'second' | 'edge' | 'elsewhere' | 'off';
 /** Where a month sits for an origin: in the main harvest, the secondary one, an uncertain edge, or off. */
+/** Whether an origin's ring draws any edge month (where another region picks, it draws that instead). */
+export const drawsEdge = (o: Pick<OriginFacts, 'harvest'>) => Array.from({ length: 12 }, (_, i) => i + 1).some((m) => harvestState(o, m) === 'edge');
 export function harvestState(o: Pick<OriginFacts, 'harvest'>, month: number): HarvestState {
   if (monthsIn(o.harvest.main).includes(month)) return 'main';
   if (monthsIn(o.harvest.second).includes(month)) return 'second';

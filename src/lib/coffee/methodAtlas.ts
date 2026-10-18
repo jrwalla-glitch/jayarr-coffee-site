@@ -66,6 +66,8 @@ export interface AtlasMethod {
   sourceIds: string[];
   /** A note on the time, where recipes vary a lot. */
   timeNote?: string;
+  /** Said in place of a ratio range where the brewer sets the ratio itself (the moka pot). */
+  ratioNote?: string;
   /** A note on the filter, where the brewer is sold or used with others too (review r4, Muse M2). */
   filterNote?: string;
   /** How a sentence says it brews, where "steeps" would be wrong (Turkish coffee is heated with the water). */
@@ -184,6 +186,7 @@ export const ATLAS: AtlasMethod[] = [
     id: 'moka', label: 'Moka pot', the: 'the moka pot', line: 'Steam pressure in the base pushes water up through the coffee.',
     contact: 'percolation', filter: 'metal', force: 'steam', attention: 2,
     ...fromEngine('moka'),
+    ratioNote: 'the pot sets it',
     timeNote: 'time on the stove, from heat to sputter; the coffee itself flows for the last part of it',
     guide: { slug: 'moka-pot-brewing-guide', title: 'Moka pot brewing guide' },
     sourceIds: ['hoffmann', 'synthesis'],
@@ -222,6 +225,8 @@ export function timeText(m: AtlasMethod): string {
 export function ratioText(m: AtlasMethod): string {
   const r = (x: number) => String(Math.round(x * 100) / 100);
   if (m.ratio.yield) return `1:${r(m.ratio.classic)} out (1:${r(m.ratio.range[0])}–1:${r(m.ratio.range[1])})`;
+  // As the Brew Guide's own table puts it (review r4, Opus M3).
+  if (m.ratioNote) return `1:${r(m.ratio.classic)} (${m.ratioNote})`;
   return m.ratio.range[0] === m.ratio.range[1] ? `1:${r(m.ratio.classic)}` : `1:${r(m.ratio.classic)} (1:${r(m.ratio.range[0])}–1:${r(m.ratio.range[1])})`;
 }
 
@@ -270,7 +275,9 @@ export function describe(m: AtlasMethod): string {
 /** The headline difference for a comparison: at most two clauses, the rest is in the table. */
 export function differenceSentence(a: AtlasMethod, b: AtlasMethod): string {
   const d = differences(a, b);
-  if (!d.length) return `${cap(a.the)} and ${b.the} work the same way on contact, filter and force, and their times overlap (${timeText(a)} and ${timeText(b)}); they differ in the brewer's shape and how fast it drains.`;
+  // Same axes: the grind each recipe uses can still differ, so say so (review r4, Opus M2).
+  const grind = a.grind !== b.grind ? `, and in the grind each recipe uses (${a.grind.toLowerCase()} and ${b.grind.toLowerCase()})` : '';
+  if (!d.length) return `${cap(a.the)} and ${b.the} work the same way on contact, filter and force, and their times overlap (${timeText(a)} and ${timeText(b)}); they differ in the brewer's shape and how fast it drains${grind}.`;
   const parts: string[] = [];
   if (d.includes('contact')) {
     const verb = (m: AtlasMethod) => m.contact === 'percolation' ? 'runs water through the coffee'

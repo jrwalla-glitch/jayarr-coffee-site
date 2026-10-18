@@ -41,7 +41,7 @@
         <div class="label">
           {#if p.id === 'origins'}
             <p>When each country harvests, how high its coffee grows and how its coffees are described.</p>
-            <p class="key" aria-hidden="true" class:pending={!mounted}><span class="dot on"></span>harvesting now <span class="dot half"></span>maybe <span class="dot off"></span>not now</p>
+            <p class="key" aria-hidden="true" class:pending={!mounted}><span class="dot on"></span>harvesting now <span class="dot half"></span>maybe {#if elsewhereNow.length}<span class="dot else"></span>some regions {/if}<span class="dot off"></span>not now</p>
             <p class="now" class:pending={!mounted}><span>In {MONTHS_LONG[month - 1]}:</span> {now.slice(0, 4).map((o) => nb(o.name)).join(', ')}{now.length > 4 ? ` and ${now.length - 4} more` : ''} are harvesting{elsewhereNow.length ? `; ${elsewhereNow.map((o) => nb(o.name)).join(' and ')} ${elsewhereNow.length > 1 ? 'pick' : 'picks'} in some regions too` : ''}.</p>
             <p class="now"><a href="/explore/origins/">See who's harvesting now →</a></p>
           {:else if p.id === 'methods'}
@@ -93,6 +93,7 @@
   .dot.on { width: 10px; height: 10px; background: #8a3f12; }
   .dot.off { width: 7px; height: 7px; background: #fbf6ee; margin-left: 8px; }
   .dot.half { width: 8px; height: 8px; margin-left: 8px; background: linear-gradient(90deg, #8a3f12 50%, #fbf6ee 50%); }
+  .dot.else { width: 8px; height: 8px; margin-left: 8px; background: radial-gradient(circle, #8a3f12 0 1.6px, #fbf6ee 2px); }
   .label p { margin: 0 0 6px; }
   .now { font-size: 14px; }
   .pending { visibility: hidden; }

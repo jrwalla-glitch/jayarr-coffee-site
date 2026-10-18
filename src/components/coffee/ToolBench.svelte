@@ -11,6 +11,7 @@
   import type { FreshUse, Storage } from '../../lib/coffee/freshness.ts';
   import { METHODS } from '../../lib/coffee/methods.ts';
   import { noteById } from '../../lib/coffee/flavors.ts';
+  import { parseStore } from '../../lib/coffee/diary.ts';
 
   // The toolkit as a working bench: every tool is a card with a live miniature of what it draws,
   // grouped by the job you're doing. What you've saved on this device comes first, with its answer,
@@ -54,7 +55,8 @@
         if (d.ok && r?.ok) {
           const m = METHODS.find((x) => x.id === d.value.method);
           const rc = r.value;
-          const amounts = rc.yieldG ? `${g1(rc.doseG)} g in, ${g1(rc.yieldG)} g out` : `${g1(rc.doseG)} g coffee, ${Math.round(rc.waterG ?? 0)} g water`;
+          // A moka pot's water is "to the valve" in the Brew Guide, never a weight (review r4, Opus T4).
+          const amounts = rc.yieldG ? `${g1(rc.doseG)} g in, ${g1(rc.yieldG)} g out` : d.value.method === 'moka' ? `${g1(rc.doseG)} g coffee, water to the valve` : `${g1(rc.doseG)} g coffee, ${Math.round(rc.waterG ?? 0)} g water`;
           out.push({ href: `/tools/brew-ratio/?${b.last}`, label: 'Your last recipe', detail: `${m?.label ?? 'Brew'}: ${amounts}`, icon: 'brew' });
         }
       }
@@ -65,9 +67,10 @@
       if (roast && day) {
         const use = (q.get('use') === 'espresso' ? 'espresso' : 'filter') as FreshUse;
         const st = q.get('storage'); const storage = (st === 'sealed-bag' || st === 'frozen' ? st : 'opened') as Storage;
-        // As the tool does: no freezer date saved means three days ago (not before the roast).
+        // As the tool does on load: no freezer date saved means three days ago, unclamped, so a roast after
+        // that reads as the tool's own error and the card is left out (review r4, Opus T5).
         const back3 = (() => { const t = new Date(); t.setDate(t.getDate() - 3); return `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`; })();
-        const frozenOn = q.get('frozen') ?? (storage === 'frozen' ? (back3 < roast ? roast : back3) : null), thawedOn = q.get('thawed');
+        const frozenOn = q.get('frozen') ?? (storage === 'frozen' ? back3 : null), thawedOn = q.get('thawed');
         const f = storage === 'frozen' && !frozenOn ? null : freshness({ roastDate: roast, today: todayIso(), use, storage, ...(storage === 'frozen' ? { frozenOn: frozenOn!, ...(thawedOn ? { thawedOn } : {}) } : {}) });
         const counting = f?.ok && f.value.effectiveDays !== f.value.daysSinceRoast ? ` (${f.value.effectiveDays} counting)` : '';
         const where = f?.ok ? ` · day ${f.value.daysSinceRoast}${counting}, ${f.value.stage.label.toLowerCase()}` : '';
@@ -91,7 +94,9 @@
     } catch { /* ignore */ }
     // The caffeine diary is health data: say it's there, never what's in it.
     // Only when the diary holds something (its contents are never shown).
-    const hasDiary = (() => { try { const c = JSON.parse(get('jayarr-caffeine-log-v2') ?? 'null'); return Array.isArray(c?.entries) && c.entries.length > 0; } catch { return false; } })();
+    // Read with the Caffeine Calculator's own parser, so the two agree on what a diary is (review r4, Opus T3:
+    // the strip looked for `entries`, the tool saves `drinks`).
+    const hasDiary = (parseStore(get('jayarr-caffeine-log-v2'))?.drinks.length ?? 0) > 0;
     if (hasDiary) out.push({ href: '/tools/caffeine/', label: 'Your caffeine day', detail: 'Kept on this device', icon: 'night' });
     resume = out;
 

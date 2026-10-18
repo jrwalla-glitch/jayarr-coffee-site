@@ -9,6 +9,7 @@
   } from '../../lib/coffee/origins.ts';
   import type { Band, Continent, HarvestState, Origin } from '../../lib/coffee/origins.ts';
   import { regionPoint } from '../../lib/coffee/mapPlace.ts';
+  import { drawsEdge } from '../../lib/coffee/origins.ts';
   import HarvestRing from './art/HarvestRing.svelte';
   import AltitudeBand from './art/AltitudeBand.svelte';
 
@@ -281,7 +282,7 @@
       <AltitudeBand arabica={o.altitudeM} robusta={o.robustaAltitudeM} name={o.name} height={compact ? 150 : 166} />
     </div>
     {#if !compact}
-      <ul class="rkey" aria-label="Ring key"><li><span class="k main"></span>Main harvest</li>{#if o.harvest.second}<li><span class="k second"></span>Second crop</li>{/if}{#if o.harvest.edgeMonths}<li><span class="k edge"></span>Edge month, our buffer: picking can start early or run late</li>{/if}<li>The hand points to {MONTHS_LONG[month - 1]}</li></ul>
+      <ul class="rkey" aria-label="Ring key"><li><span class="k main"></span>Main harvest</li>{#if o.harvest.second}<li><span class="k second"></span>Second crop</li>{/if}{#if drawsEdge(o)}<li><span class="k edge"></span>Edge month, our buffer: picking can start early or run late</li>{/if}<li>The hand points to {MONTHS_LONG[month - 1]}</li></ul>
     {/if}
     <dl class="facts">
       <div><dt>Harvest</dt><dd>{harvestText(o)}{#if o.harvest.scope && !compact && !/^This is /.test(o.harvest.variesBy ?? '')}<span class="sub">{scopeText(o.harvest.scope)}</span>{/if}{#if o.harvest.variesBy && !compact}<span class="sub">{o.harvest.variesBy.replace(/^This is (\w+);\s*/, "This calendar is $1's; ")}</span>{/if}{#if o.harvest.elsewhere}<span class="sub">Outside these months, {o.harvest.elsewhere}.</span>{/if}{#if !compact && o.harvest.sources.length}<span class="sub srcline">Calendar from {sourceNames(o.harvest.sources)}, checked October 2026{#if o.harvest.compare?.length}; compared with {sourceNames(o.harvest.compare)}{/if}</span>{/if}</dd></div>
@@ -313,7 +314,7 @@
     {/if}
   </div>
   <p class="nowline" class:pending={!mounted}><span class="lbl">Harvesting in {MONTHS_LONG[month - 1]}</span>
-    {#each harvesting as o (o.id)}<span class="nowitem" class:inreg={o.continent === region}><button type="button" class="nowname" onclick={() => choose(o.id)}>{o.name}</button></span>{/each}{#if elsewhereNow.length}<span class="alsoline">{'\u00a0· '}Also picking in some regions: {#each elsewhereNow as o, i (o.id)}<span class="alsoitem" class:inreg={o.continent === region}>{i > 0 ? ', ' : ''}<button type="button" class="nowname" onclick={() => choose(o.id)}>{o.name}</button></span>{/each}</span>{/if}{#if harvesting.some((o) => o.continent !== region)}<span class="nowmore">{'\u00a0·\u00a0'}{harvesting.filter((o) => o.continent !== region).length} more under the other tabs</span>{/if}
+    {#each harvesting as o (o.id)}<span class="nowitem" class:inreg={o.continent === region}><button type="button" class="nowname" onclick={() => choose(o.id)}>{o.name}</button></span>{/each}{#if elsewhereNow.length}<span class="alsoline">{'\u00a0· '}Also picking in some regions: {#each elsewhereNow as o, i (o.id)}<span class="alsoitem" class:inreg={o.continent === region}>{i > 0 ? ', ' : ''}<button type="button" class="nowname" onclick={() => choose(o.id)}>{o.name}</button></span>{/each}</span>{/if}{#if harvesting.some((o) => o.continent !== region)}<span class="nowmore">{harvesting.filter((o) => o.continent !== region).length} more under the other tabs</span>{/if}
   </p>
 
   <div class="body">
@@ -570,7 +571,8 @@
     .nowitem:not(.inreg) { display: none; }
     .nowitem + .nowitem::before { content: none; }
     .nowitem.inreg ~ .nowitem.inreg::before { content: '\00a0·\00a0'; }
-    .nowmore { display: inline; }
+    /* Its own line: a wrapped "·" can't start a line (gate r8). */
+    .nowmore { display: block; margin-top: 2px; }
     .alsoitem:not(.inreg) { display: none; }
     .alsoline:not(:has(.alsoitem.inreg)) { display: none; }
   }

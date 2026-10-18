@@ -168,7 +168,7 @@ export const FAMILIES: Family[] = [
       ['other-fruit', 'Other fruit', [
         n('cherry', 'Cherry', 'Sweet red fruit with a slight almond bitterness.', 'a cherry, or cherry jam', ['cherry', 'cherries', 'ripe cherries', 'black cherry', 'red cherry', 'rainier cherry', 'cherry jam', 'cherry candy', 'cherry cola', 'sour cherry', 'sour cherries']),
         n('stone-fruit', 'Peach & apricot', 'Soft, juicy, perfumed stone fruit.', 'a ripe peach or apricot', ['peach', 'peaches', 'apricot', 'nectarine', 'white peach', 'stewed peach'], extraWord),
-        n('plum', 'Plum', 'Dark, juicy fruit with a tart skin.', 'a ripe plum', ['plum', 'plums', 'stewed plum'], extraWord),
+        n('plum', 'Plum', 'Dark, juicy fruit with a tart skin.', 'a ripe plum', ['plum', 'plums', 'stewed plum', 'cherry plum'], extraWord),
         n('apple', 'Apple', 'Crisp, juicy, from green to red.', 'a slice of red or green apple', ['apple', 'apples', 'red apple', 'green apple', 'cooked apple', 'fuji apple', 'honeycrisp apples']),
         n('pear', 'Pear', 'Soft, floral, grainy-sweet.', 'a ripe pear', ['pear', 'bosc pear']),
         n('grape', 'Grape', 'Sweet, juicy, sometimes winey.', 'a few red or white grapes', ['grape', 'grapes', 'grapey', 'red grape', 'white grape', 'green grape', 'green grapes', 'concord grape', 'grape soda']),
@@ -286,6 +286,20 @@ const fold = (t: string) => t.toLowerCase();
 const NO_NOTE = ['stone fruit', 'stone fruits', 'stonefruit', 'white chocolate', 'currant', 'currants', 'dried fruit', 'dried fruits', 'toasted marshmallow', 'green tea'];
 /** Generic phrases a text names ("stone fruit"), which count toward no single note. */
 export const genericIn = (text: string) => NO_NOTE.filter((w) => new RegExp(`(^|[^a-z])${w}(?=$|[^a-z])`).test(fold(text)));
+// What a generic phrase could mean on a tasting card. It still counts toward no note in the roasters'
+// numbers, but a bag that says "stone fruit" roughly agrees with a pinned peach or plum, and names the
+// Fruity family (review r4, Opus F2). White chocolate and toasted marshmallow read as Sweet; green tea
+// names no family the wheel has.
+const STONE = { family: 'fruity' as FamilyId, notes: ['stone-fruit', 'plum', 'cherry'] };
+const DRIED = { family: 'fruity' as FamilyId, notes: ['raisin', 'prune', 'fig', 'dried-other'] };
+const CURRANT = { family: 'fruity' as FamilyId, notes: ['blackcurrant', 'berries-mixed'] };
+const GENERIC_MEANS: Record<string, { family: FamilyId | null; notes: string[] }> = {
+  'stone fruit': STONE, 'stone fruits': STONE, stonefruit: STONE, 'dried fruit': DRIED, 'dried fruits': DRIED,
+  currant: CURRANT, currants: CURRANT, 'white chocolate': { family: 'sweet', notes: [] }, 'toasted marshmallow': { family: 'sweet', notes: [] },
+  'green tea': { family: null, notes: [] },
+};
+/** The notes a generic phrase covers, and its family, for the tasting card only. */
+export const genericMeans = (phrase: string) => GENERIC_MEANS[phrase] ?? { family: null, notes: [] };
 const PHRASES: { phrase: string; id: string; flaw: boolean }[] = [
   ...ALL_NOTES.flatMap((x) => x.words.map((w) => ({ phrase: fold(w), id: x.id, flaw: !!x.flaw || x.family === 'off' }))),
   ...NO_NOTE.map((phrase) => ({ phrase, id: '', flaw: false })),
@@ -429,7 +443,7 @@ export const MAX_PINS = 3;
 
 export interface CardComparison {
   bagNotes: string[];
-  /** Families the bag names by their own word ("floral"). */
+  /** Families the bag names by their own word ("floral"), or by a generic phrase ("stone fruit": Fruity). */
   bagFamilies: FamilyId[];
   /** Your notes the bag also names. */
   shared: string[];
@@ -443,10 +457,12 @@ export interface CardComparison {
 
 /** How the reader's notes line up with a roaster's: same note, same family, or neither. */
 export function compareCard(pins: string[], bag: string): CardComparison {
-  const bagNotes = notesInText(bag), bagFamilies = familiesInText(bag);
+  const generic = genericIn(bag).map(genericMeans);
+  const bagNotes = notesInText(bag), bagFamilies = [...new Set([...familiesInText(bag), ...generic.flatMap((g) => (g.family ? [g.family] : []))])];
+  const covered = generic.flatMap((g) => g.notes);
   const fam = (id: string) => noteById(id)?.family;
   const shared = pins.filter((p) => bagNotes.includes(p));
-  const near = pins.filter((p) => !shared.includes(p) && (bagNotes.some((b) => fam(b) === fam(p)) || bagFamilies.includes(fam(p) as FamilyId)));
+  const near = pins.filter((p) => !shared.includes(p) && (covered.includes(p) || bagNotes.some((b) => fam(b) === fam(p)) || bagFamilies.includes(fam(p) as FamilyId)));
   const yoursOnly = pins.filter((p) => !shared.includes(p) && !near.includes(p));
   const bagOnly = bagNotes.filter((b) => !pins.includes(b));
   return { bagNotes, bagFamilies, shared, near, yoursOnly, bagOnly };

@@ -52,11 +52,15 @@
               {@const [x, y] = dot(o.lat, o.lon)}
               {@const on = now.some((n) => n.id === o.id)}
               {#if o.id === 'hawaii'}<ellipse cx={x + 0.8} cy={y + 0.6} rx="4.6" ry="2.6" fill="#d6ad6e" stroke="#8a6a3e" stroke-width=".4" />{/if}
-              {@const maybe = !on && ['edge', 'elsewhere'].includes(harvestState(o, month))}
-              {#if maybe}
-                <!-- An edge month, or another region picking: half-filled, as on the full map. -->
+              {@const st = on ? 'main' : harvestState(o, month)}
+              {#if st === 'edge'}
+                <!-- An edge month: half-filled, as on the full map. -->
                 <circle cx={x} cy={y} r="2.8" fill="#fbf6ee" stroke="#2a1d15" stroke-width=".75" />
                 <path d="M{x} {y - 2.8} A 2.8 2.8 0 0 0 {x} {y + 2.8} Z" fill="#8a3f12" />
+              {:else if st === 'elsewhere'}
+                <!-- Another region picking: a ring with a small centre, as on the full map (review r4, Opus E1). -->
+                <circle cx={x} cy={y} r="2.8" fill="#fbf6ee" stroke="#2a1d15" stroke-width=".75" />
+                <circle cx={x} cy={y} r="1.1" fill="#8a3f12" />
               {:else}
                 <circle cx={x} cy={y} r={on ? 3.3 : 2.4} fill={on ? '#8a3f12' : '#fbf6ee'} stroke="#2a1d15" stroke-width={on ? 0.7 : 0.8} class:pulse={on} style="animation-delay: {(x % 7) * 0.3}s" />
               {/if}

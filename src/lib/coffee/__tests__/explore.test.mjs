@@ -6,7 +6,7 @@ import summaries from '../../../data/origin-summaries.json' with { type: 'json' 
 import {
   FAMILIES, OFF_GROUPS, ALL_NOTES, noteById, notesInText, familiesInText, evidenceFor, familyCounts, compareCard, encodeCard, decodeCard, MAX_PINS,
 } from '../flavors.ts';
-import { ATLAS, brewGuideHref, differences, differenceSentence, describe, timeText, timePosition, TIME_TICKS } from '../methodAtlas.ts';
+import { ATLAS, brewGuideHref, differences, differenceSentence, describe, ratioText, timeText, timePosition, TIME_TICKS } from '../methodAtlas.ts';
 import { ORIGINS, CONTINENTS, monthsIn, harvestState, harvestingIn, originByPage, bandText, project, sourceNames } from '../origins.ts';
 import { EXPLORE_SOURCES } from '../explore-sources.ts';
 import { decodeBrew } from '../share.ts';
@@ -223,4 +223,28 @@ test('review r4 (Muse): compounds credit both notes; bare "olive" is not olive o
   assert.match(describe(tk), /^Turkish coffee heats the coffee/);
   assert.doesNotMatch(describe(tk), /steeps/);
   for (const id of ['drip-machine', 'siphon', 'cold-brew']) assert.ok(ATLAS.find((m) => m.id === id).filterNote, id);
+});
+
+test('review r4 (Opus): a bag saying "stone fruit" or "dried fruit" is close to the notes it covers, and names Fruity; roasters\' counts unchanged', () => {
+  const c = compareCard(['stone-fruit', 'raisin'], 'stone fruit, dried fruit');
+  assert.deepEqual(c.near.sort(), ['raisin', 'stone-fruit']);
+  assert.deepEqual(c.bagFamilies, ['fruity']);
+  assert.deepEqual(c.yoursOnly, []);
+  assert.deepEqual(notesInText('stone fruit', { roaster: true }), []);
+  assert.deepEqual(notesInText('cherry plum', { roaster: true }), ['plum']);
+});
+
+test('review r4 (Opus): V60 vs Kalita names the grind; moka\'s ratio reads as the Brew Guide says', () => {
+  const v60 = ATLAS.find((m) => m.id === 'v60'), kal = ATLAS.find((m) => m.id === 'kalita'), moka = ATLAS.find((m) => m.id === 'moka');
+  const s = differenceSentence(v60, kal);
+  if (v60.grind !== kal.grind) assert.match(s, /grind each recipe uses/);
+  assert.match(s, /\.$/);
+  assert.equal(ratioText(moka), '1:10 (the pot sets it)');
+});
+
+test('review r4 (Opus): Uganda\'s robusta windows are Sucafina\'s (May–Aug; Nov–Jan); Cuba\'s one-lot band is scoped', () => {
+  const ug = ORIGINS.find((o) => o.id === 'uganda'), cu = ORIGINS.find((o) => o.id === 'cuba');
+  assert.deepEqual(ug.harvest.main, [5, 8]);
+  assert.deepEqual(ug.harvest.second, [11, 1]);
+  assert.match(cu.altitudeM.scope, /offering/);
 });

@@ -4,7 +4,7 @@
   import { cubicOut } from 'svelte/easing';
   import {
     FAMILIES, OFF_GROUPS, ALL_NOTES, MAX_PINS, noteById, familyById, groupById, exercise, evidenceFor,
-    compareCard, encodeCard, decodeCard, notesInText, familiesInText, genericIn, PROCESS_LABEL, ROAST_LABEL, ROASTER_SAMPLE,
+    compareCard, encodeCard, decodeCard, notesInText, familiesInText, genericIn, genericMeans, PROCESS_LABEL, ROAST_LABEL, ROASTER_SAMPLE,
   } from '../../lib/coffee/flavors.ts';
   import type { Family, FamilyId, Lot, Note } from '../../lib/coffee/flavors.ts';
 
@@ -77,12 +77,12 @@
   // A family's own word ("floral") reads as that family, not as a word the wheel lacks.
   const famLabel = (f: string) => `the ${familyById(f as FamilyId)!.label} family`;
   let bagReadAs = $derived(bagPhrases.flatMap((t) => {
-    if (!notesInText(t).length && !familiesInText(t).length && genericIn(t).length) return [`“${t}” as several notes, so it isn't counted as one`];
+    if (!notesInText(t).length && !familiesInText(t).length && genericIn(t).length) { const f = genericMeans(genericIn(t)[0]).family; return [`“${t}” as several notes${f ? ` (${famLabel(f)})` : ''}, so it isn't counted as one`]; }
     const labels = [...notesInText(t).map((id) => noteById(id)!.label), ...familiesInText(t).map(famLabel)];
     return labels.length && !(labels.length === 1 && labels[0].toLowerCase() === t.toLowerCase()) ? [`“${t}” as ${labels.join(' and ')}`] : [];
   }));
   let bagUnmatched = $derived(bagPhrases.filter((t) => !notesInText(t).length && !familiesInText(t).length && !genericIn(t).length));
-  const nearBecause = (x: string) => { const f = noteById(x)?.family, b = cmp.bagNotes.find((n) => noteById(n)?.family === f); return b ? `same family as the bag's ${noteById(b)!.label.toLowerCase()}` : `the bag names ${famLabel(f as string)}`; };
+  const nearBecause = (x: string) => { const g = genericIn(bag).find((w) => genericMeans(w).notes.includes(x)); if (g) return `the bag's “${g}” covers it`; const f = noteById(x)?.family, b = cmp.bagNotes.find((n) => noteById(n)?.family === f); return b ? `same family as the bag's ${noteById(b)!.label.toLowerCase()}` : `the bag names ${famLabel(f as string)}`; };
   let thinOrigins = $derived(note && ev?.thin ? [...new Set(lots.filter((l) => l.notes.some((t) => notesInText(t, { roaster: true }).includes(note.id))).map((l) => originName(l.o)))] : []);
   let originName = (id: string) => origins.find((o) => o.id === id)?.name ?? id;
   let originPage = (id: string) => origins.find((o) => o.id === id)?.page;

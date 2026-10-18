@@ -80,7 +80,7 @@
      "winey"
     ],
     "source": "ci-ethiopia",
-    "caveat": "Floral and citrus notes tend to come from washed lots, fruit and wine-like notes from naturals."
+    "caveat": "Naturals tend toward pronounced fruit, chocolate and a winey character; washed lots are lighter, with brighter acidity. The floral and citrus notes are those of Yirgacheffe's microregions."
    },
    "sources": {
     "varieties": [
@@ -484,9 +484,9 @@
     ],
     "second": [
      11,
-     2
+     1
     ],
-    "variesBy": "These Robusta windows differ between western/Masaka and central/eastern districts; Arabica follows other regional calendars.",
+    "variesBy": "Two regional robusta seasons: May–August is the large crop in the southwest and west, drawn solid; November–January is the main crop north of the equator, drawn pale. Arabica follows other regional calendars.",
     "edgeMonths": 1,
     "sources": [
      "sucafina-handbook-2026",

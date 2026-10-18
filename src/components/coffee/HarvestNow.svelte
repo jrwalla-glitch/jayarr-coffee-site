@@ -3,7 +3,7 @@
   // picked now. The page is built ahead of time, so the month is set in the reader's browser.
   import { onMount } from 'svelte';
   import HarvestRing from './art/HarvestRing.svelte';
-  import { harvestState, MONTHS_LONG } from '../../lib/coffee/origins.ts';
+  import { drawsEdge, harvestState, MONTHS_LONG } from '../../lib/coffee/origins.ts';
   import type { OriginFacts } from '../../lib/coffee/origins.ts';
   interface Props { harvest: OriginFacts['harvest']; name: string; size?: number }
   let { harvest, name, size = 150 }: Props = $props();
@@ -24,7 +24,7 @@
   <ul class="key" aria-label="Ring key">
     <li><span class="k main"></span>Main harvest</li>
     {#if harvest.second}<li><span class="k second"></span>Second crop</li>{/if}
-    {#if harvest.edgeMonths}<li><span class="k edge"></span>Edge month, our buffer: picking can start early or run late</li>{/if}
+    {#if drawsEdge({ harvest })}<li><span class="k edge"></span>Edge month, our buffer: picking can start early or run late</li>{/if}
   </ul>
   {#if scope}<p class="sc">Calendar shown: {scope}</p>{/if}
 </div>

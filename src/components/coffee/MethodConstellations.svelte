@@ -173,7 +173,8 @@
     portrait = mq.matches;
     mq.addEventListener('change', (e) => { portrait = e.matches; });
     const q = new URLSearchParams(location.search);
-    const a = q.get('m'), b = q.get('vs'), axis = q.get('by');
+    // Case doesn't matter in a link (?m=V60), as on the Origins map (review r4, Opus M4).
+    const a = q.get('m')?.toLowerCase(), b = q.get('vs')?.toLowerCase(), axis = q.get('by')?.toLowerCase();
     if (a && atlasById(a)) aId = a as AtlasId;
     if (aId && b && b !== aId && atlasById(b)) bId = b as AtlasId;
     if (axis && ARRANGE.some((x) => x.id === axis)) by = axis as Axis;
@@ -276,9 +277,10 @@
             {/if}
             {#if by === 'time' && L.x0 !== undefined && L.x1 !== undefined}
               {@const sx = (t: number) => L.x0! + timePosition(t) * (L.x1! - L.x0!)}
-              {#each TIME_TICKS as t (t.s)}
+              {#each TIME_TICKS as t, i (t.s)}
                 <line x1={sx(t.s)} x2={sx(t.s)} y1="34" y2={L.h - 52} stroke="#8898B0" stroke-opacity=".22" stroke-dasharray="2 5" />
-                <text x={sx(t.s)} y={L.h - 32} text-anchor="middle" class="tick">{t.label}</text>
+                <!-- On a phone the ticks sit close, so every other label drops a line (review r4, Opus M1). -->
+                <text x={sx(t.s)} y={L.h - 32 + (portrait && i % 2 === 1 ? 18 : 0)} text-anchor="middle" class="tick">{t.label}</text>
               {/each}
               <text x="20" y="30" class="timecap">Fastest at the top</text>
               <text x={L.x1} y="30" text-anchor="end" class="timecap">brew time, log scale →</text>
@@ -296,7 +298,13 @@
               {/if}
             {/if}
             {#key by}
-              <g class="chains" pointer-events="none">
+              <!-- The lines stop short of every name, so none cuts through one (gate r8): each name, drawn
+                   with a wide stroke, is cut out of the lines' mask. -->
+              <mask id="mc-lmask" maskUnits="userSpaceOnUse" x="0" y="0" width={L.w} height={L.h}>
+                <rect width={L.w} height={L.h} fill="#fff" />
+                {#each ATLAS as m (m.id)}{@const p = L.pos[m.id]}<text x={p.x + p.lx} y={p.y + p.ly} text-anchor={p.anchor} class="mlab">{m.label}</text>{/each}
+              </mask>
+              <g class="chains" pointer-events="none" mask="url(#mc-lmask)">
                 {#each L.chains as ids, ci (ci)}
                   {@const hb = L.hubs[ci]}
                   <polyline points={[...(hb ? [`${hb.x},${hb.y}`] : []), ...ids.map((id) => `${L.pos[id].x},${L.pos[id].y}`)].join(' ')} fill="none" stroke="#C9A84E" stroke-width="1.1" stroke-opacity={by === 'time' ? 0.3 : 0.5} />
@@ -488,6 +496,7 @@
   .star:focus-visible .slab { text-decoration: underline; }
   /* A sky-colored halo behind each name breaks the constellation line where it passes. */
   .slab { font: 600 18px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; letter-spacing: .02em; fill: #C0C8D8; transition: fill .2s; paint-order: stroke; stroke: #12203A; stroke-width: 6px; stroke-linejoin: round; }
+  .mlab { font: 600 18px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; letter-spacing: .02em; fill: #000; stroke: #000; stroke-width: 12px; stroke-linejoin: round; }
   .kit { white-space: nowrap; display: inline-block; margin-right: 10px; }
   .lring { display: inline-block; width: 11px; height: 11px; border-radius: 50%; border: 1.5px solid #c8a24a; vertical-align: -1px; margin-right: 4px; }
   .edge, .edge text { font: italic 400 19px 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; fill: #aab6ca; }
@@ -575,7 +584,7 @@
     .body { grid-template-columns: 1fr; }
   }
   @media (max-width: 720px) {
-    .slab { font-size: 22px; }
+    .slab, .mlab { font-size: 22px; }
     .hublab { font-size: 18px; }
     .hubsub { font-size: 20px; }
     .tick { font-size: 17px; }

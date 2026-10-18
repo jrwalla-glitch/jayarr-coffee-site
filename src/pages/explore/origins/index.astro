@@ -66,7 +66,7 @@ const sourceList = Object.entries(sources).sort((a, b) => a[1].title.localeCompa
                 <tr>
                   <th scope="row">{o.page ? <a href={o.page}>{o.name}</a> : o.name}</th>
                   <td>{harvestText(o)}</td>
-                  <td class="mono">{o.altitudeM ? bandText(o.altitudeM).replace(/ \(.*\)$/, '') : '—'}</td>
+                  <td class="mono">{o.altitudeM ? bandText(o.altitudeM).replace(/ \(.*\)$/, '') + (/offering/i.test(o.altitudeM.scope ?? '') ? '*' : '') : '—'}</td>
                   <td class="mono">{productionText(o) ?? 'No current figure'}</td>
                 </tr>
               ))}
@@ -75,6 +75,7 @@ const sourceList = Object.entries(sources).sort((a, b) => a[1].title.localeCompa
         </div>
       </>
     ))}
+    <p class="bp-note">* One lot's growing altitude (Cuba: an Escambray lot from El Nicho); no national range is established. Every other band is a sourcing or growing band, scoped in its origin's profile.</p>
     <p class="bp-note">Production is in 60 kg bags of green coffee, from the US Department of Agriculture's Foreign Agricultural Service (PSD, July 2026) unless noted; forecasts are for the 2026/27 season. Hawaii's figure is calculated from the USDA's Hawaii coffee report. Harvest calendars are importers' (mostly Café Imports and Sucafina); other references, such as atlases and national boards, can differ by a month or so, so each country's page names the source of every figure. Research checked 15 October 2026.</p>
 
     <h2>Sources</h2>
