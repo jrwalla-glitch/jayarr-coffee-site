@@ -268,7 +268,9 @@ export interface Lot { o: string; p: string; r: string; notes: string[] }
  * Which recorded lots belong in the sample: those with a description, and single origins only
  * (blends and fruit co-ferments would credit an origin with words that came from elsewhere).
  */
-export const inSample = (name: string, notes: string[]) => notes.some((t) => t.trim().length > 0) && !/\bblend\b|co-?ferment/i.test(name);
+// The sample is lots whose descriptions name at least one note or family (a scraped fragment such as
+// "leading the cup" isn't a tasting note), leaving out blends and co-ferments (review r3, Muse).
+export const inSample = (name: string, notes: string[]) => notes.some((t) => notesInText(t).length > 0 || familiesInText(t).length > 0) && !/\bblend\b|co-?ferment/i.test(name);
 
 export const ROASTER_SAMPLE = {
   label: 'roasters\' catalogs, winter 2026',

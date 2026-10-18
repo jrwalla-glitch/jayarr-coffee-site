@@ -57,7 +57,7 @@
   };
   const headOf = (axis: Axis, g: Group) => (axis === 'filter' && g.key === 'none' ? 'No filter' : HEAD[g.key] ?? g.label);
   const subOf = (axis: Axis, g: Group) => (axis === 'filter' && g.key === 'none' ? 'grounds settle in the cup' : SUB[g.key] ?? '');
-  const GHOST: Record<Axis, string> = { contact: 'how water meets the coffee', filter: 'what holds the grounds back', force: 'what moves the water', time: 'how long water and coffee meet' };
+  const GHOST: Record<Axis, string> = { contact: 'how water meets the coffee', filter: 'what holds the grounds back', force: 'what moves the water', time: 'how long the brew takes' };
 
   function layout(axis: Axis, portrait: boolean): Layout {
     const pos: Record<string, Placed> = {};
@@ -281,7 +281,7 @@
                 <text x={sx(t.s)} y={L.h - 32} text-anchor="middle" class="tick">{t.label}</text>
               {/each}
               <text x="20" y="30" class="timecap">Fastest at the top</text>
-              <text x={L.x1} y="30" text-anchor="end" class="timecap">contact time, log scale →</text>
+              <text x={L.x1} y="30" text-anchor="end" class="timecap">brew time, log scale →</text>
               {#each ATLAS as m (m.id)}
                 <line class="range" x1={sx(m.timeS[0])} x2={sx(Math.max(m.timeS[1], m.timeS[0] * 1.08))} y1={L.pos[m.id].y} y2={L.pos[m.id].y} />
               {/each}
@@ -430,7 +430,7 @@
               <tr><th scope="row">Grind</th><td>{A.grind}</td><td>{B.grind}</td></tr>
             </tbody>
           </table>
-          <p class="quiet small">Highlighted rows are the axes that differ. Time is highlighted when the ranges don't overlap or one takes at least 1.5 times as long. Contact time is a typical range for each recipe.{#each [A, B].filter((m) => m.timeNote) as m (m.id)}{' '}* {m.label}: {m.timeNote}.{/each}</p>
+          <p class="quiet small">Highlighted rows are the axes that differ. Time is highlighted when the ranges don't overlap or one takes at least 1.5 times as long. Time is the typical brew time for each recipe (the moka pot's is its time on the stove).{#each [A, B].filter((m) => m.timeNote) as m (m.id)}{' '}* {m.label}: {m.timeNote}.{/each}</p>
           <div class="actions">
             {#each [A, B] as m (m.id)}
               {#if brewGuideHref(m)}<a class="ghost" href={brewGuideHref(m)}>{m.label} in the Brew Guide →</a>{:else}<a class="ghost" href="/blog/{m.guide.slug}/">{m.label} guide →</a>{/if}

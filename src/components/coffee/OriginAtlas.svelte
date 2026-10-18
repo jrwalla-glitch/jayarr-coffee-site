@@ -185,7 +185,8 @@
     for (const r of regs) { const sp = tryPlace(r.sx, r.sy, r.name, 13, 5, solo, regs.filter((q) => q !== r)); if (sp) regionLabel.set(r.key, sp); }
     if (hover && !chosen(hover)) { const p = pts.find((q) => q.o.id === hover); if (p) { const sp = tryPlace(p.sx, p.sy, p.o.name, 14, radius(p.o.id), true); if (sp) label.set(hover, sp); } }
     if (zoomed) {
-      const order = pts.filter((p) => !label.has(p.o.id) && inView(p) && !(solo && chosen(p.o.id))).sort((a, b) => Number(live(b.o)) - Number(live(a.o)));
+      const crowded = (p: { sx: number; sy: number; o: Origin }) => narrow && !chosen(p.o.id) && pts.some((q) => q !== p && inView(q) && Math.hypot(q.sx - p.sx, q.sy - p.sy) < 10);
+      const order = pts.filter((p) => !label.has(p.o.id) && inView(p) && !(solo && chosen(p.o.id)) && !crowded(p)).sort((a, b) => Number(live(b.o)) - Number(live(a.o)));
       for (const p of order) { const sp = tryPlace(p.sx, p.sy, p.o.name, 14, radius(p.o.id)); if (sp) label.set(p.o.id, sp); }
     }
     // Where dots crowd (Rwanda and Burundi), a name could sit nearer a neighbour's dot than its own,

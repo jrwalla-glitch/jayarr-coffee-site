@@ -92,7 +92,12 @@
   // recipe's range are lit, so the size reads against its neighbours.
   const GRIND_STEPS = [{ um: 250, x: 10 }, { um: 450, x: 25 }, { um: 650, x: 43 }, { um: 900, x: 64 }, { um: 1200, x: 88 }];
   const grain = (x: number, d: number, k: number) => Array.from({ length: 7 }, (_, q) => { const a = (q / 7) * Math.PI * 2, rr = (d / 2) * (0.8 + 0.28 * Math.abs(Math.sin(k * 3.7 + q * 1.9))); return `${(x + Math.cos(a) * rr).toFixed(1)},${(58 - d / 2 + Math.sin(a) * rr).toFixed(1)}`; }).join(' ');
-  let grains = $derived(GRIND_STEPS.map((g, k) => ({ ...g, d: (g.um / 1000) * 22, pts: grain(g.x, (g.um / 1000) * 22, k), on: !!r && g.um >= r.grind.microns.min - 120 && g.um <= r.grind.microns.max + 120 })));
+  let grains = $derived(GRIND_STEPS.map((g, k) => ({ ...g, d: (g.um / 1000) * 22, pts: grain(g.x, (g.um / 1000) * 22, k), on: !!r && g.um >= r.grind.microns.min && g.um <= r.grind.microns.max })).map((g, _, all) => {
+    // Only grains inside the recipe's band are lit; if none of the five steps falls inside, the nearest one (review r3, Muse).
+    if (!r || all.some((x) => x.on)) return g;
+    const mid = (r.grind.microns.min + r.grind.microns.max) / 2, near = all.reduce((b, x) => (Math.abs(x.um - mid) < Math.abs(b.um - mid) ? x : b));
+    return { ...g, on: g.um === near.um };
+  }));
   let litSpan = $derived.by(() => { const on = grains.filter((g) => g.on); return on.length ? [Math.max(1, on[0].x - on[0].d / 2 - 2), Math.min(99, on[on.length - 1].x + on[on.length - 1].d / 2 + 2)] : null; });
   let grindShort = $derived(r ? r.grind.label.replace(/\s*\(.*\)$/, '') : '');
 
@@ -135,7 +140,7 @@
         <p class="q">Your mug</p>
         <div class="chips">
           {#each cups as c (c)}<button type="button" class="chip" aria-pressed={oz === c} onclick={() => (oz = c)}>{c} oz</button>{/each}
-          {#if cups.length < CUPS.length}<span class="cupnote">{method === 'aeropress' ? 'One press makes about 8 oz; for a bigger mug, make two.' : `One ${BREWERS.find((b) => b.id === method)?.label} brew makes up to ${cups.at(-1)} oz.`}</span>{/if}
+          {#if cups.length < CUPS.length}<span class="cupnote">{method === 'aeropress' ? 'One press makes about 8 oz; for a bigger mug, make two.' : `The Brew Guide sizes one ${BREWERS.find((b) => b.id === method)?.label} brew up to ${cups.at(-1)} oz.`}</span>{/if}
         </div>
       {/if}
       {#if r}
