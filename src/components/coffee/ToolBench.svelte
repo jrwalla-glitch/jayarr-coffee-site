@@ -48,7 +48,9 @@
       const b = JSON.parse(get('jayarr-brew-guide-v1') ?? 'null');
       if (b?.last) {
         const d = decodeBrew(b.last);
-        const r = d.ok ? buildRecipe(d.value) : null;
+        // The Brew Guide's own rule: a moka pot is always classic strength with no ratio override (review r3, Opus).
+        const input = d.ok ? (d.value.method === 'moka' ? (({ ratio: _r, ...rest }) => ({ ...rest, strength: 'classic' as const }))(d.value as typeof d.value & { ratio?: number }) : d.value) : null;
+        const r = input ? buildRecipe(input) : null;
         if (d.ok && r?.ok) {
           const m = METHODS.find((x) => x.id === d.value.method);
           const rc = r.value;
@@ -63,7 +65,9 @@
       if (roast && day) {
         const use = (q.get('use') === 'espresso' ? 'espresso' : 'filter') as FreshUse;
         const st = q.get('storage'); const storage = (st === 'sealed-bag' || st === 'frozen' ? st : 'opened') as Storage;
-        const frozenOn = q.get('frozen'), thawedOn = q.get('thawed');
+        // As the tool does: no freezer date saved means three days ago (not before the roast).
+        const back3 = (() => { const t = new Date(); t.setDate(t.getDate() - 3); return `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`; })();
+        const frozenOn = q.get('frozen') ?? (storage === 'frozen' ? (back3 < roast ? roast : back3) : null), thawedOn = q.get('thawed');
         const f = storage === 'frozen' && !frozenOn ? null : freshness({ roastDate: roast, today: todayIso(), use, storage, ...(storage === 'frozen' ? { frozenOn: frozenOn!, ...(thawedOn ? { thawedOn } : {}) } : {}) });
         const counting = f?.ok && f.value.effectiveDays !== f.value.daysSinceRoast ? ` (${f.value.effectiveDays} counting)` : '';
         const where = f?.ok ? ` · day ${f.value.daysSinceRoast}${counting}, ${f.value.stage.label.toLowerCase()}` : '';
@@ -86,7 +90,9 @@
       if (pins.length) out.push({ href: '/explore/flavors/', label: 'Your tasting card', detail: pins.join(', '), icon: 'flower' });
     } catch { /* ignore */ }
     // The caffeine diary is health data: say it's there, never what's in it.
-    if (get('jayarr-caffeine-log-v2')) out.push({ href: '/tools/caffeine/', label: 'Your caffeine day', detail: 'Kept on this device', icon: 'night' });
+    // Only when the diary holds something (its contents are never shown).
+    const hasDiary = (() => { try { const c = JSON.parse(get('jayarr-caffeine-log-v2') ?? 'null'); return Array.isArray(c?.entries) && c.entries.length > 0; } catch { return false; } })();
+    if (hasDiary) out.push({ href: '/tools/caffeine/', label: 'Your caffeine day', detail: 'Kept on this device', icon: 'night' });
     resume = out;
 
     // On touch screens there's no hover: each miniature plays once as it scrolls into view.

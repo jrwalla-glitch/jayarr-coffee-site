@@ -43,14 +43,14 @@
       flat: 'Often stale beans or water with too few minerals, rather than the recipe.',
     }[id] ?? '';
     if (m === 'moka') return {
-      sour: 'Often the water passed through too fast or too cool: a finer grind (still coarser than espresso) or a lower flame.',
+      sour: 'Often the water passed through too fast: grind one step finer (still coarser than espresso); a lower flame, which slows it, is the next thing to try.',
       bitter: 'Often overheated: take the pot off the heat as it starts to sputter, and cool the base under the tap.',
       weak: 'Usually too little coffee in the basket: fill it level, without tamping.',
       strong: 'Moka coffee is concentrated by design: brew it as usual and add hot water to the cup to taste.',
       flat: 'Often stale beans or water with too few minerals, rather than the recipe.',
     }[id] ?? '';
     return {
-      sour: `Often under-extracted: the water didn't pull enough from the coffee. The usual suspects are a grind that's too coarse or ${steep ? 'a steep that was too short' : 'a brew that ran too fast'}.`,
+      sour: `Often under-extracted: the water didn't pull enough from the coffee. The usual suspects are a grind that's too coarse or ${steep ? 'a steep that was too short' : 'a brew that ran too fast, or water that wasn\'t hot enough'}.`,
       bitter: `Often over-extracted: too much was pulled out. A grind that's too fine or ${steep ? 'a steep that ran too long' : 'a brew that ran too long'} are the usual suspects, though dark roasts are bitter by nature.`,
       weak: 'Usually too little coffee for the water, before anything else. A stronger ratio is the first thing to try.',
       strong: 'Usually too much coffee for the water. A lighter ratio, or adding a little hot water, fixes it without touching the grind.',
@@ -105,6 +105,8 @@
   const MAP_AT: Record<string, [number, number]> = { sour: [86, 66], bitter: [234, 66], weak: [160, 118], strong: [160, 16], flat: [160, 66] };
   // Only the direction to move: how to get there depends on the brewer, which is the Doctor's job.
   const MAP_FIX: Record<string, string> = { sour: 'extract more?', bitter: 'extract less?', weak: 'stronger?', strong: 'weaker?', flat: 'check the beans and water' };
+  // A bitter shot can be a fast, uneven one, so for espresso the picture asks for the timing first, as the Doctor does.
+  let fixLabel = $derived(fixMethod === 'espresso' && symptom === 'bitter' ? 'time the shot?' : MAP_FIX[symptom]);
 
   // The Explore door's live line: who is harvesting this month (the reader's month, once known).
   let mounted = $state(false);
@@ -190,7 +192,7 @@
             <figcaption>{grindShort}, like {r.grind.texture}</figcaption>
           </figure>
         </div>
-        <p class="note">{method === 'espresso' ? 'A double shot: 18 g in, 36 g out, in 25–30 seconds.' : method === 'cold-brew' ? 'A concentrate: dilute it about one to one to serve.' : method === 'moka' ? 'The pot sets the amounts: coffee level in the basket, water to just below the valve. The Brew Guide sizes it to your pot.' : `1:${ratioText} is the Brew Guide's classic strength for the ${BREWERS.find((b) => b.id === method)?.label}, and the Guide times ${method === 'french-press' || method === 'aeropress' ? 'the steep and the press' : method === 'cold-brew' ? 'the steep' : 'every pour'}.`}</p>
+        <p class="note">{method === 'espresso' ? 'A double shot: 18 g in, 36 g out, in 25–30 seconds.' : method === 'cold-brew' ? 'A concentrate: dilute it about one to one to serve.' : method === 'moka' ? 'The pot sets the amounts: coffee level in the basket, water to just below the valve. The Brew Guide sizes it to your pot.' : `1:${ratioText} is the Brew Guide's classic strength for the ${BREWERS.find((b) => b.id === method)?.label}, and the Guide ${method === 'french-press' || method === 'aeropress' ? 'times the steep and the press' : method === 'cold-brew' ? 'times the steep' : method === 'drip-machine' ? 'walks you through the batch' : 'times every pour'}.`}</p>
       {/if}
       <a class="go" href={href}>Brew it step by step →</a>
     {:else if door === 'fix'}
@@ -210,13 +212,13 @@
         <text x="160" y="16" text-anchor="middle" class="ax" opacity={symptom === 'strong' ? 0 : 1}>strong</text><text x="160" y="124" text-anchor="middle" class="ax" opacity={symptom === 'weak' ? 0 : 1}>weak</text>
         {#if symptom === 'flat'}
           <circle cx={mx} cy={my} r="26" class="ring" />
-          <text x={mx + 34} y={my - 22} class="fixlab">{MAP_FIX[symptom]}</text>
+          <text x={mx + 34} y={my - 22} class="fixlab">{fixLabel}</text>
         {:else}
           {@const vert = symptom === 'weak' || symptom === 'strong'}
           {@const tx = symptom === 'sour' ? 124 : symptom === 'bitter' ? 196 : 160}
           {@const ty = symptom === 'weak' ? 92 : symptom === 'strong' ? 40 : 66}
           <line x1={mx} y1={my} x2={tx} y2={ty} class="arrow" marker-end="url(#hs-arr)" />
-          <text x={vert ? mx + 12 : mx} y={vert ? (my + ty) / 2 + 5 : my + 26} text-anchor={vert ? 'start' : 'middle'} class="fixlab">{MAP_FIX[symptom]}</text>
+          <text x={vert ? mx + 12 : mx} y={vert ? (my + ty) / 2 + 5 : my + 26} text-anchor={vert ? 'start' : 'middle'} class="fixlab">{fixLabel}</text>
         {/if}
         <circle cx={mx} cy={my} r="7" class="mark" />
         <defs><marker id="hs-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 1 L9 5 L0 9 Z" fill="#8f5d22" /></marker></defs>

@@ -294,7 +294,7 @@
       </div>
     {/if}
   </div>
-  <p class="nowline"><span class="lbl">Harvesting in {MONTHS_LONG[month - 1]}</span>
+  <p class="nowline" class:pending={!mounted}><span class="lbl">Harvesting in {MONTHS_LONG[month - 1]}</span>
     {#each harvesting as o (o.id)}<span class="nowitem" class:inreg={o.continent === region}><button type="button" class="nowname" onclick={() => choose(o.id)}>{o.name}</button></span>{/each}{#if elsewhereNow.length}<span class="alsoline">{'\u00a0· '}Also picking in some regions: {#each elsewhereNow as o, i (o.id)}<span class="alsoitem" class:inreg={o.continent === region}>{i > 0 ? ', ' : ''}<button type="button" class="nowname" onclick={() => choose(o.id)}>{o.name}</button></span>{/each}</span>{/if}{#if harvesting.some((o) => o.continent !== region)}<span class="nowmore">{'\u00a0·\u00a0'}{harvesting.filter((o) => o.continent !== region).length} more under the other tabs</span>{/if}
   </p>
 
@@ -434,7 +434,7 @@
       {#if !sel}
         <div class="cols"><div>
         <h2 tabindex="-1" bind:this={headEl}>Harvesting in {MONTHS_LONG[month - 1]}</h2>
-        <p class="lead">{harvesting.length} of {ORIGINS.length} origins are picking this month. Choose one on the map or below to see its year, its growing regions and how its coffees are described.</p>
+        <p class="lead"><span class:pending={!mounted}>{harvesting.length} of {ORIGINS.length} origins are picking this month.</span> Choose one on the map or below to see its year, its growing regions and how its coffees are described.</p>
         <ul class="chips">
           {#each harvesting as o (o.id)}<li><button type="button" class="chip" onclick={() => choose(o.id)}>{o.name}</button></li>{/each}
         </ul>
@@ -602,6 +602,8 @@
   .mapkey > span { display: inline-flex; align-items: center; gap: 7px; }
   .mapkey .kt { font: 400 15px 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; color: #8f5d22; text-transform: uppercase; letter-spacing: .08em; }
   .mapbox { position: relative; }
+  .pending { visibility: hidden; }
+  .marker:focus-visible circle:first-of-type { stroke: var(--crema-deep); stroke-width: 3px; }
   .nb { white-space: nowrap; }
   .artk { font: 500 11px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
   .which { position: absolute; z-index: 3; width: 150px; background: #fbf8f3; border: 1px solid #c17a3a; border-radius: 3px; box-shadow: 0 10px 24px -14px rgba(42, 29, 21, .6); padding: 6px; display: grid; gap: 4px; }

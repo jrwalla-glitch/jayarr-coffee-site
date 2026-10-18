@@ -119,7 +119,7 @@ export const FAMILIES: Family[] = [
     ['synthesis', 'wcr-lexicon'],
     [
       ['brown-sugar', 'Brown sugar', [
-        n('caramel', 'Caramel', 'Cooked sugar: sweet with a toasty edge.', 'a soft caramel or caramelized sugar', ['caramel', 'caramelized', 'caramelised', 'toffee', 'butterscotch', 'creme brulee', 'dulce de leche', 'creamy caramel', 'fudge', 'light fudge']),
+        n('caramel', 'Caramel', 'Cooked sugar: sweet with a toasty edge.', 'a soft caramel or caramelized sugar', ['caramel', 'caramelized', 'caramelised', 'toffee', 'butterscotch', 'creme brulee', 'crème brûlée', 'dulce de leche', 'creamy caramel', 'fudge', 'light fudge']),
         n('brown-sugar', 'Brown sugar', 'Moist, deep sugar with a molasses note.', 'a pinch of dark brown sugar', ['brown sugar', 'raw sugar', 'cane sugar', 'panela', 'sugar cane', 'sugarcane', 'demerara', 'turbinado', 'golden syrup']),
         n('molasses', 'Molasses', 'Dark, thick, slightly bitter sugar.', 'a drop of molasses', ['molasses', 'treacle']),
         n('maple', 'Maple syrup', 'Woody, round sweetness.', 'a spoon of real maple syrup', ['maple', 'maple syrup']),
@@ -163,7 +163,7 @@ export const FAMILIES: Family[] = [
         n('raisin', 'Raisin', 'Dark, sweet dried grape.', 'a few raisins, chewed', ['raisin', 'raisins', 'golden raisin', 'sultana']),
         n('prune', 'Prune', 'Deep, sweet, slightly bitter dried plum.', 'a prune', ['prune']),
         n('fig', 'Fig & date', 'Jammy, seedy, honeyed dried fruit.', 'a dried fig or a date', ['fig', 'date', 'dates'], extraWord),
-        n('dried-other', 'Other dried fruit', 'Dried apricot, cherry or mango: chewy, concentrated fruit.', 'a dried apricot', ['dried fruit', 'dried cherry', 'dried apricot', 'dried mango'], extraWord),
+        n('dried-other', 'Other dried fruit', 'Dried apricot, cherry or mango: chewy, concentrated fruit.', 'a dried apricot', ['dried cherry', 'dried apricot', 'dried mango', 'dried cherries'], extraWord),
       ]],
       ['other-fruit', 'Other fruit', [
         n('cherry', 'Cherry', 'Sweet red fruit with a slight almond bitterness.', 'a cherry, or cherry jam', ['cherry', 'cherries', 'ripe cherries', 'black cherry', 'red cherry', 'rainier cherry', 'cherry jam', 'cherry candy', 'cherry cola', 'sour cherry', 'sour cherries']),
@@ -281,9 +281,13 @@ export const ROASTER_SAMPLE = {
 // Phrases that name no single note ("stone fruit" covers peach, plum and cherry; white chocolate has
 // no cocoa; a bare "currant" could be red or black): matched, so their words aren't misread, but
 // counted toward nothing (review r2, Opus).
-const NO_NOTE = ['stone fruit', 'stone fruits', 'stonefruit', 'white chocolate', 'currant', 'currants'];
+// Lower case, accents kept: "rosé" (wine) and "rose" (flower) are different words.
+const fold = (t: string) => t.toLowerCase();
+const NO_NOTE = ['stone fruit', 'stone fruits', 'stonefruit', 'white chocolate', 'currant', 'currants', 'dried fruit', 'dried fruits', 'toasted marshmallow', 'green tea'];
+/** Generic phrases a text names ("stone fruit"), which count toward no single note. */
+export const genericIn = (text: string) => NO_NOTE.filter((w) => new RegExp(`(^|[^a-z])${w}(?=$|[^a-z])`).test(fold(text)));
 const PHRASES: { phrase: string; id: string; flaw: boolean }[] = [
-  ...ALL_NOTES.flatMap((x) => x.words.map((w) => ({ phrase: w.toLowerCase(), id: x.id, flaw: !!x.flaw || x.family === 'off' }))),
+  ...ALL_NOTES.flatMap((x) => x.words.map((w) => ({ phrase: fold(w), id: x.id, flaw: !!x.flaw || x.family === 'off' }))),
   ...NO_NOTE.map((phrase) => ({ phrase, id: '', flaw: false })),
 ].sort((a, b) => b.phrase.length - a.phrase.length);
 
@@ -298,7 +302,7 @@ export function notesInText(text: string, opts: { roaster?: boolean } = {}): str
   return scan(text, opts).found;
 }
 function scan(text: string, opts: { roaster?: boolean } = {}): { found: string[]; rest: string } {
-  let rest = ` ${text.toLowerCase().replace(/&?nbsp;/g, ' ').replace(/[’']/g, "'")} `;
+  let rest = ` ${fold(text).replace(/&?nbsp;/g, ' ').replace(/[’']/g, "'")} `;
   const found: string[] = [];
   for (const p of PHRASE_RE) {
     const m = p.re.exec(rest);
@@ -457,7 +461,7 @@ export function encodeCard(card: Pick<TastingCard, 'pins' | 'bag'>): string {
 }
 export function decodeCard(query: string): { pins: string[]; bag: string; dropped: number; unknown: number; overLimit: number } {
   const q = new URLSearchParams(query.startsWith('?') ? query.slice(1) : query);
-  const raw = (q.get('pins') ?? '').split(',').map((s) => s.trim()).filter(Boolean);
+  const raw = (q.get('pins') ?? '').split(',').map((s) => s.trim().toLowerCase()).filter(Boolean);
   const known = [...new Set(raw.filter((id) => !!noteById(id)))];
   const pins = known.slice(0, MAX_PINS);
   const unknown = raw.filter((id) => !noteById(id)).length;

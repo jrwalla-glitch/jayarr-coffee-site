@@ -4,7 +4,7 @@
   import { cubicOut } from 'svelte/easing';
   import {
     FAMILIES, OFF_GROUPS, ALL_NOTES, MAX_PINS, noteById, familyById, groupById, exercise, evidenceFor,
-    compareCard, encodeCard, decodeCard, notesInText, familiesInText, PROCESS_LABEL, ROAST_LABEL, ROASTER_SAMPLE,
+    compareCard, encodeCard, decodeCard, notesInText, familiesInText, genericIn, PROCESS_LABEL, ROAST_LABEL, ROASTER_SAMPLE,
   } from '../../lib/coffee/flavors.ts';
   import type { Family, FamilyId, Lot, Note } from '../../lib/coffee/flavors.ts';
 
@@ -77,10 +77,11 @@
   // A family's own word ("floral") reads as that family, not as a word the wheel lacks.
   const famLabel = (f: string) => `the ${familyById(f as FamilyId)!.label} family`;
   let bagReadAs = $derived(bagPhrases.flatMap((t) => {
+    if (!notesInText(t).length && !familiesInText(t).length && genericIn(t).length) return [`“${t}” as several notes, so it isn't counted as one`];
     const labels = [...notesInText(t).map((id) => noteById(id)!.label), ...familiesInText(t).map(famLabel)];
     return labels.length && !(labels.length === 1 && labels[0].toLowerCase() === t.toLowerCase()) ? [`“${t}” as ${labels.join(' and ')}`] : [];
   }));
-  let bagUnmatched = $derived(bagPhrases.filter((t) => !notesInText(t).length && !familiesInText(t).length));
+  let bagUnmatched = $derived(bagPhrases.filter((t) => !notesInText(t).length && !familiesInText(t).length && !genericIn(t).length));
   const nearBecause = (x: string) => { const f = noteById(x)?.family, b = cmp.bagNotes.find((n) => noteById(n)?.family === f); return b ? `same family as the bag's ${noteById(b)!.label.toLowerCase()}` : `the bag names ${famLabel(f as string)}`; };
   let thinOrigins = $derived(note && ev?.thin ? [...new Set(lots.filter((l) => l.notes.some((t) => notesInText(t, { roaster: true }).includes(note.id))).map((l) => originName(l.o)))] : []);
   let originName = (id: string) => origins.find((o) => o.id === id)?.name ?? id;
@@ -162,8 +163,11 @@
   }
   function keyAct(e: KeyboardEvent, fn: () => void) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(); } }
 
+  // While a shared card is shown unchanged, the reader's own card stays the stored one, Save included.
+  let ownCurrent: { pins: string[]; bag: string } | null = null;
   function persist() {
-    try { localStorage.setItem(STORE, JSON.stringify({ current: { pins, bag }, saved })); } catch { /* storage unavailable */ }
+    const current = linkCard !== null ? ownCurrent ?? { pins: [], bag: '' } : { pins, bag };
+    try { localStorage.setItem(STORE, JSON.stringify({ current, saved })); } catch { /* storage unavailable */ }
   }
   function saveCard() {
     if (!pins.length) return;
@@ -186,19 +190,26 @@
     fontTick++;
     document.fonts?.ready.then(() => fontTick++);
     const q = new URLSearchParams(location.search);
-    let fromLink = false;
+    let fromLink = false, pendingWhy: string[] = [];
     if (q.get('pins') || q.get('bag')) {
       const d = decodeCard(location.search);
       pins = d.pins; bag = d.bag; fromLink = true; linkCard = encodeCard(d);
       const why = [d.unknown ? `${d.unknown === 1 ? 'one note' : `${d.unknown} notes`} didn't match our list` : '', d.overLimit ? `a card holds ${MAX_PINS} notes, so the first ${MAX_PINS} were kept` : ''].filter(Boolean);
-      linkNote = `This is a shared card; your own stays saved on this device until you change this one.${why.length ? ` From that link, ${why.join('; ')}.` : ''}`;
+      pendingWhy = why;
     }
     try {
       const s = JSON.parse(localStorage.getItem(STORE) ?? 'null');
       if (s && Array.isArray(s.saved)) saved = s.saved.filter((c: { pins?: unknown }) => Array.isArray(c?.pins)).slice(0, 12);
       // Someone else's link never replaces your own card until you change it.
+      if (fromLink && s?.current && Array.isArray(s.current.pins)) ownCurrent = { pins: s.current.pins, bag: typeof s.current.bag === 'string' ? s.current.bag : '' };
       if (!fromLink && s?.current && Array.isArray(s.current.pins)) { pins = s.current.pins.filter((p: string) => !!noteById(p)).slice(0, MAX_PINS); bag = typeof s.current.bag === 'string' ? s.current.bag : ''; }
     } catch { /* storage unavailable */ }
+    if (fromLink) {
+      // Say it's a shared card only when it holds something, and mention the reader's own only if they have one.
+      const hasOwn = !!ownCurrent && (ownCurrent.pins.length > 0 || ownCurrent.bag.trim().length > 0);
+      const parts = [pins.length || bag.trim() ? `This is a shared card${hasOwn ? '; your own stays saved on this device until you change this one' : ''}.` : '', pendingWhy.length ? `From that link, ${pendingWhy.join('; ')}.` : ''];
+      linkNote = parts.filter(Boolean).join(' ') || null;
+    }
     const n = q.get('note');
     if (n && noteById(n)) { noteId = n; familyId = noteById(n)!.family as FamilyId | 'off'; groupId = noteById(n)!.group; }
     else { const f = q.get('family'); if (f && (familyById(f) || f === 'off')) openFamily(f as FamilyId | 'off'); }
@@ -677,7 +688,7 @@
           </ul>
           <div class="kinds">
             <p><b>Roasters say</b> Words counted from {lots.length} lot descriptions in {ROASTER_SAMPLE.label}.</p>
-            <p><b>In general</b> Broad tendencies, with their sources.</p>
+            <p><b>In general</b> Broad tendencies; their sources are listed at the foot of the page.</p>
             <p><b>You noticed</b> Your own tasting card, kept on this device.</p>
           </div>
         </div>
@@ -710,7 +721,7 @@
           <div class="notethumb">{@render bloomSvg('n', note.family)}</div>
           <p class="kick"><span class="sw" style:background={colourOf(note.family as FamilyId)}></span>{fam ? fam.label : 'Off notes'} · {g?.label}</p>
           <h2 tabindex="-1" bind:this={headEl}>{note.label}</h2>
-          <p class="gist">{note.gist}{#if note.flaw}{' '}<span class="flawtag">Usually a flaw</span>{/if}</p>
+          <p class="gist">{note.gist}{#if note.flaw}{' '}<span class="flawtag">{note.id === 'musty' || note.id === 'woody' ? 'Character when faint, a flaw when strong' : 'Usually a flaw'}</span>{/if}</p>
           {#if !note.wheel}<p class="quiet small">{note.family === 'off' && note.id === 'potato' ? 'Not on the wheel itself: a named defect in the SCA\'s cupping standard, placed under chemical.' : `Not printed on the wheel in this form: a word roasters use often, or the wheel's notes combined, placed under ${g?.label.toLowerCase()}.`}</p>{/if}
 
           <div class="tryit">
@@ -721,7 +732,7 @@
           <div class="evidence">
             <p class="lbl">Roasters say</p>
             {#if note.family === 'off'}
-              <p>Roasters don't print off notes on their bags, so their words can't show where this turns up.</p>
+              <p>{note.id === 'musty' || note.id === 'woody' ? 'Roasters do write “earthy” or “woody” for some coffees, such as wet-hulled Sumatras, where a faint note is character. Because the same words also mark flaws, they aren\'t counted here.' : 'Roasters don\'t print off notes on their bags, so their words can\'t show where this turns up.'}</p>
             {:else if ev && ev.lots === 0}
               <p>None of the {ev.total} lot descriptions we recorded names {note.label.toLowerCase()}. That says more about how roasters write than about coffee: it's a word you'll meet more in cupping notes than on bags.</p>
             {:else if ev}
@@ -733,12 +744,13 @@
                 {@render bars('By process', ev.process, (k) => PROCESS_LABEL[k] ?? k, ev.overall, top)}
                 {@render bars('By roast', ['light', 'medium', 'dark'].map((k) => ev!.roast.find((r) => r.key === k)).filter((r) => !!r) as typeof ev.roast, (k) => ROAST_LABEL[k] ?? k, ev.overall, top)}
                 <div class="bar axis" aria-hidden="true"><span></span><span class="ticks"><span>0</span><span class="avg" style:left="{(ev.overall / top) * 100}%">all lots {pct(ev.overall)}</span><span>{pct(top)}</span></span><span></span></div>
-                {#if ev.origins.filter((o) => o.hits >= 2).length}
-                  <p class="lbl orig">Origins where it's named most often <span class="quiet">(origins with 7 or more lots)</span></p>
+                {@const above = ev.origins.filter((o) => o.hits >= 2 && o.rate > ev!.overall)}
+                {#if above.length}
+                  <p class="lbl orig">Named more often than average <span class="quiet">(origins with 7 or more lots)</span></p>
                   <ul class="origins">
-                    {#each ev.origins.filter((o) => o.hits >= 2).slice(0, 4) as o (o.key)}
+                    {#each above.slice(0, 4) as o (o.key)}
                       {@const page = originPage(o.key)}
-                      <li>{#if page}<a href={page}>{originName(o.key)}</a>{:else}{originName(o.key)}{/if} <span class="mono">{o.hits} of {o.of} lots</span></li>
+                      <li>{#if page}<a href={page}>{originName(o.key)}</a>{:else}{originName(o.key)}{/if} <span class="mono">{o.hits} of {o.of} lots · {pct(o.rate)}</span></li>
                     {/each}
                   </ul>
                 {/if}
