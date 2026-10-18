@@ -41,7 +41,12 @@ const fragment = (n: string) => n.length >= 40 || /^(and|as well as|leading|some
 const lots = hub.beans.map((b) => ({ roaster: b.roaster, name: titleCase(b.name), process: PROC[b.processing] ?? b.processing, roast: ROAST[b.roast_level] ?? b.roast_level, notes: b.flavor_notes.map(cleanNote).filter((n) => n && !fragment(n)).join(', ') || '—' }));
 
 const sourceIds = [...new Set([...o.harvest.sources, ...(o.altitudeM?.sources ?? []), ...(o.robustaAltitudeM?.sources ?? []), ...(o.production ? [o.production.source] : []), o.tendencies.source, ...(o.sources?.varieties ?? []), ...(o.sources?.processing ?? []), ...(o.sources?.regions ?? [])])].filter((id) => sources[id]);
-const neighbours = ORIGINS.filter((x) => x.id !== o.id && x.continent === o.continent && x.page).slice(0, 4);
+// The closest other country pages, by distance on the globe (not just the same continent tab).
+const km = (a: { lat: number; lon: number }, b: { lat: number; lon: number }) => {
+  const r = Math.PI / 180, h = Math.sin(((b.lat - a.lat) * r) / 2) ** 2 + Math.cos(a.lat * r) * Math.cos(b.lat * r) * Math.sin(((b.lon - a.lon) * r) / 2) ** 2;
+  return 12742 * Math.asin(Math.sqrt(h));
+};
+const neighbours = ORIGINS.filter((x) => x.id !== o.id && x.page).sort((a, b) => km(o, a) - km(o, b)).slice(0, 4);
 ---
 
 <BenchPage
@@ -106,7 +111,7 @@ const neighbours = ORIGINS.filter((x) => x.id !== o.id && x.continent === o.cont
     )}
 
     <details class="op-lots">
-      <summary>The {lots.length} lots, as roasters described them (winter 2026)</summary>
+      <summary>All {lots.length} lots, as roasters described them (winter 2026){sample.length < lots.length && <span class="op-sumnote"> · {sample.length} single-origin lots with tasting notes are counted above</span>}</summary>
       <p class="bp-note">Lots are seasonal: this is a record of how roasters described these coffees in early 2026, not a list of what's in stock.</p>
       <div class="op-tab-wrap">
         <table class="op-tab">
@@ -124,11 +129,11 @@ const neighbours = ORIGINS.filter((x) => x.id !== o.id && x.continent === o.cont
     )}
 
     <h2>Brew it</h2>
-    <p>Single origins show their character best brewed clean. The <a href="/tools/brew-ratio/?method=v60&cup=355">Brew Guide</a> starts you on a V60; if the cup comes out sour or bitter, <a href="/tools/fix-my-coffee/">Fix My Coffee</a> finds the one change to make. <a href="/explore/methods/">Brewing Constellations</a> shows how other brewers change the cup.</p>
+    <p>Single origins show their character best brewed clean. The <a href="/tools/brew-ratio/?method=v60&cup=354.9">Brew Guide</a> starts you on a V60; if the cup comes out sour or bitter, <a href="/tools/fix-my-coffee/">Fix My Coffee</a> finds the one change to make. <a href="/explore/methods/">Brewing Constellations</a> shows how other brewers change the cup.</p>
 
     {neighbours.length > 0 && (
       <>
-        <h2>Nearby origins</h2>
+        <h2>The nearest country pages</h2>
         <p>{neighbours.map((n, i) => <>{i > 0 && ' · '}<a href={n.page}>{n.name}</a></>)}</p>
       </>
     )}
@@ -143,7 +148,8 @@ const neighbours = ORIGINS.filter((x) => x.id !== o.id && x.continent === o.cont
 <style>
   /* Plate, then label, in document order on every screen, so nothing moves as the page streams in. */
   .op { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 32px; align-items: start; }
-  .op-plate { margin: 0; }
+  .op-plate { margin: 0; position: sticky; top: 84px; }
+  .op-sumnote { font-weight: 400; color: #75655a; }
   .op-label h2 { font: 400 30px/1.1 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; margin: 0 0 6px; }
   .op-pair { display: flex; gap: 10px; align-items: center; justify-content: center; margin: 6px 0 10px; }
   .op-facts { margin: 0; border-top: 1px solid #d9cdbd; font: 400 15px/1.45 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; }
@@ -167,6 +173,6 @@ const neighbours = ORIGINS.filter((x) => x.id !== o.id && x.continent === o.cont
   .op-tab th, .op-tab td { text-align: left; padding: 7px 10px; border-bottom: 1px solid #e6dccd; vertical-align: top; }
   .op-tab thead th { font: 500 11px/1 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; white-space: nowrap; }
   .op-tab tbody th { font-weight: 600; }
-  @media (max-width: 900px) { .op { grid-template-columns: 1fr; gap: 22px; } }
+  @media (max-width: 900px) { .op { grid-template-columns: 1fr; gap: 22px; } .op-plate { position: static; } }
   @media (max-width: 640px) { .op-answer { text-align: left; } .op-lead { font-size: 21px; } .op-rest { font-size: 15.5px; } }
 </style>

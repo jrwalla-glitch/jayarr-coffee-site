@@ -64,7 +64,11 @@
     const aspect = narrow ? 1.45 : FULL[2] / FULL[3];
     if (sel && !vs) {
       const [px, py] = project(sel.lat, sel.lon);
-      const w = narrow ? 150 : 330, h = w / aspect;
+      // On a phone, zoom in far enough that the growing regions spread apart (Ethiopia's five sit
+      // within a few degrees of each other), but never past the country's own neighbourhood.
+      const pts = sel.regions.filter((r) => r.lat !== null && r.lon !== null).map((r) => project(r.lat!, r.lon!));
+      const spread = pts.reduce((m, [x, y]) => Math.max(m, Math.abs(x - px), Math.abs(y - py) * aspect), 0);
+      const w = narrow ? Math.min(150, Math.max(70, spread * 3.2)) : 330, h = w / aspect;
       const fx = narrow ? 0.5 : 0.34;
       return [Math.max(0, Math.min(1000 - w, px - w * fx)), Math.max(0, Math.min(367 - h, py - h / 2)), w, h];
     }
@@ -139,13 +143,13 @@
       if (chosen(p.o.id) || narrow || !zoomed) continue;
       if (!pts.some((q) => q !== p && Math.hypot(q.sx - p.sx, q.sy - p.sy) < 38)) ring.add(p.o.id);
     }
-    const radius = (id: string) => (ring.has(id) ? 15 : chosen(id) ? 13 : 6);
+    const radius = (id: string) => (ring.has(id) ? 15 : chosen(id) ? (sel && !vs && zoomed ? 6 : 13) : 6);
     // Every marker in view is an obstacle; labels try four spots around their point.
     const boxes: Box[] = pts.filter(inView).map((p) => { const r = radius(p.o.id) + 2; return { x: p.sx - r, y: p.sy - r, w: r * 2, h: r * 2 }; });
     // The open card on the map is taken space too.
     if (sel && !vs && !narrow) boxes.push({ x: mapW - 16 - TAG_W - 8, y: 0, w: TAG_W + 24, h: TAG_H + 24 });
     const within = (b: Box) => b.x > 4 && b.y > 2 && b.x + b.w < mapW - 4 && b.y + b.h < H - 2;
-    const tryPlace = (sx: number, sy: number, text: string, fs: number, r: number, force = false): Spot | null => {
+    const tryPlace = (sx: number, sy: number, text: string, fs: number, r: number, force = false, others: { sx: number; sy: number }[] = []): Spot | null => {
       const w = text.length * fs * 0.47, h = fs + 2;
       const spots: (Spot & { b: Box })[] = [];
       for (const g of [0, 9, 20, 34]) spots.push(
@@ -156,8 +160,10 @@
         { dx: r + 3 + g, dy: -r - 2 - g, anchor: 'start', b: { x: sx + r + 3 + g, y: sy - r - 2 - g - fs, w, h } },
         { dx: -r - 3 - g, dy: r + fs + g, anchor: 'end', b: { x: sx - r - 3 - g - w, y: sy + r + g, w, h } },
       );
-      const ok = spots.find((c) => within(c.b) && !boxes.some((b) => hit(b, c.b)));
-      const pick = ok ?? (force ? spots.find((c) => within(c.b)) ?? spots[0] : null);
+      const near = (b: Box, q: { sx: number; sy: number }) => Math.hypot(Math.max(b.x - q.sx, 0, q.sx - b.x - b.w), Math.max(b.y - q.sy, 0, q.sy - b.y - b.h));
+      const owns = (b: Box) => others.every((q) => near(b, q) > near(b, { sx, sy }) + 2);
+      const ok = spots.find((c) => within(c.b) && owns(c.b) && !boxes.some((b) => hit(b, c.b))) ?? spots.find((c) => within(c.b) && !boxes.some((b) => hit(b, c.b)));
+      const pick = ok ?? (force ? spots.find((c) => within(c.b) && owns(c.b)) ?? spots.find((c) => within(c.b)) ?? spots[0] : null);
       if (pick) boxes.push(pick.b);
       // Labels placed away from their mark get a short leader line back to it.
       return pick ? { dx: pick.dx, dy: pick.dy, anchor: pick.anchor, lead: Math.hypot(pick.dx, pick.dy) > r + 22 } : null;
@@ -174,7 +180,7 @@
     // regions get the labels; a comparison names both countries.
     const solo = !!sel && !vs && zoomed && regs.length > 0;
     if (!solo) for (const p of pts.filter((q) => chosen(q.o.id))) { const sp = tryPlace(p.sx, p.sy, p.o.name, 17, radius(p.o.id), true); if (sp) label.set(p.o.id, sp); }
-    for (const r of regs) { const sp = tryPlace(r.sx, r.sy, r.name, 13, 5, solo); if (sp) regionLabel.set(r.key, sp); }
+    for (const r of regs) { const sp = tryPlace(r.sx, r.sy, r.name, 13, 5, solo, regs.filter((q) => q !== r)); if (sp) regionLabel.set(r.key, sp); }
     if (hover && !chosen(hover)) { const p = pts.find((q) => q.o.id === hover); if (p) { const sp = tryPlace(p.sx, p.sy, p.o.name, 14, radius(p.o.id), true); if (sp) label.set(hover, sp); } }
     if (zoomed) {
       const order = pts.filter((p) => !label.has(p.o.id) && inView(p) && !(solo && chosen(p.o.id))).sort((a, b) => Number(live(b.o)) - Number(live(a.o)));
@@ -186,7 +192,7 @@
       const p = pts.find((q) => q.o.id === id)!;
       if (pts.some((q) => q !== p && Math.hypot(q.sx - p.sx, q.sy - p.sy) < 24)) sp.lead = true;
     }
-    return { ring, label, regionLabel };
+    return { ring, label, regionLabel, solo };
   });
 
   // Research scopes in plain words: which calendar or band a figure describes.
@@ -244,6 +250,9 @@
 
 <svelte:window onkeydown={onKey} />
 
+<!-- A band never breaks inside a figure: metres and feet each stay on one line. -->
+{#snippet band(t: string)}{@const [m, ft] = t.split(' (')}<span class="nb">{m}</span>{#if ft} <span class="nb">({ft}</span>{/if}{/snippet}
+
 {#snippet profile(o: Origin, compact: boolean)}
   <div class="pfacts" class:compact>
     <div class="pair">
@@ -255,7 +264,7 @@
     {/if}
     <dl class="facts">
       <div><dt>Harvest</dt><dd>{harvestText(o)}{#if o.harvest.scope && !compact && !/^This is /.test(o.harvest.variesBy ?? '')}<span class="sub">{scopeText(o.harvest.scope)}</span>{/if}{#if o.harvest.variesBy && !compact}<span class="sub">{o.harvest.variesBy.replace(/^This is (\w+);\s*/, "This calendar is $1's; ")}</span>{/if}{#if !compact && o.harvest.sources.length}<span class="sub srcline">Calendar from {sourceNames(o.harvest.sources)}, checked October 2026</span>{/if}</dd></div>
-      <div><dt>Altitude</dt><dd>{o.altitudeM ? bandText(o.altitudeM) : 'Not established'}{#if o.robustaAltitudeM}<span class="sub">Robusta {bandText(o.robustaAltitudeM)}</span>{/if}{#if o.altitudeM?.scope && !compact}<span class="sub">{altScope(o.altitudeM.scope)}</span>{/if}{#if !compact && o.altitudeM?.sources?.length}<span class="sub srcline">Band from {sourceNames(o.altitudeM.sources)}</span>{/if}</dd></div>
+      <div><dt>Altitude</dt><dd>{#if o.altitudeM}{@render band(compact ? bandText(o.altitudeM).split(' (')[0] : bandText(o.altitudeM))}{:else}Not established{/if}{#if o.robustaAltitudeM}<span class="sub">Robusta {@render band(compact ? bandText(o.robustaAltitudeM).split(' (')[0] : bandText(o.robustaAltitudeM))}</span>{/if}{#if o.altitudeM?.scope && !compact}<span class="sub">{altScope(o.altitudeM.scope)}</span>{/if}{#if !compact && o.altitudeM?.sources?.length}<span class="sub srcline">Band from {sourceNames(o.altitudeM.sources)}</span>{/if}</dd></div>
       {#if !compact}
         <div><dt>Production</dt><dd>{productionText(o) ?? 'No current official figure'}{#if o.production?.arabicaShare != null && o.production.arabicaShare < 0.95}<span class="sub">{o.production.arabicaShare < 0.03 ? 'All counted as robusta' : `About ${Math.round(o.production.arabicaShare * 100)}% arabica, the rest robusta`}</span>{/if}{#if o.production}<span class="sub srcline">{productionSource(o)}</span>{/if}</dd></div>
       {/if}
@@ -283,7 +292,7 @@
     {/if}
   </div>
   <p class="nowline"><span class="lbl">Harvesting in {MONTHS_LONG[month - 1]}</span>
-    {#each harvesting as o, i (o.id)}{i > 0 ? ' · ' : ''}<button type="button" class="nowname" onclick={() => choose(o.id)}>{o.name}</button>{/each}
+    {#each harvesting as o (o.id)}<span class="nowitem" class:inreg={o.continent === region}><button type="button" class="nowname" onclick={() => choose(o.id)}>{o.name}</button></span>{/each}{#if harvesting.some((o) => o.continent !== region)}<span class="nowmore"> · {harvesting.filter((o) => o.continent !== region).length} more under the other tabs</span>{/if}
   </p>
 
   <div class="body">
@@ -359,6 +368,8 @@
               {#if lsp?.lead}<line x1={mx} y1={my} x2={mx + lsp.dx * upp * 0.86} y2={my + (lsp.dy - (lsp.anchor === 'middle' && lsp.dy < 0 ? 0 : 4)) * upp * 0.86} stroke="#2a1d15" stroke-width={0.8 * upp} opacity=".5" />{/if}
               {#if showRing}
                 <HarvestRing harvest={o.harvest} month={month} size={30 * upp} x={mx} y={my} faint={!live(o)} />
+              {:else if isSel && marks.solo}
+                <circle cx={mx} cy={my} r={4.5 * upp} fill="#fbf6ee" stroke="#6b3a12" stroke-width={2 * upp} />
               {:else if isSel}
                 <circle cx={mx} cy={my} r={13 * upp} fill="#c3873a" opacity=".35" />
                 <circle cx={mx} cy={my} r={7.5 * upp} fill="#6b3a12" stroke="#fbf6ee" stroke-width={2 * upp} />
@@ -486,8 +497,8 @@
           {#if arrival}<p class="small quiet jnote">Café Imports lists {sel.name}'s harvest as {arrival.harvest} and typical arrival as {arrival.arrival}.</p>{/if}
         </div>
         <div class="actions">
-          {#if sel.page}<a class="primary" href={sel.page}>The {sel.name} profile →</a>{/if}
-          {#each sel.articles.slice(0, sel.page ? 1 : 2) as art (art.slug)}<a class="linkish" href="/blog/{art.slug}/">{art.title}</a>{/each}
+          {#if sel.page}<a class="primary" href={sel.page}>{sel.name}'s country page →</a>{/if}
+          {#each sel.articles.slice(0, sel.page ? 1 : 2) as art (art.slug)}<a class="linkish" href="/blog/{art.slug}/"><span class="artk">Article:</span> {art.title}</a>{/each}
         </div>
         <label class="pickvs">
           <span class="lbl">Compare with</span>
@@ -507,7 +518,7 @@
               <h3>{o.name}</h3>
               {@render profile(o, true)}
               <p class="small"><b>Often described as</b> {o.tendencies.notes.join(', ') || 'not established'}</p>
-              {#if o.page}<a class="linkish" href={o.page}>{o.name} profile →</a>{/if}
+              {#if o.page}<a class="linkish" href={o.page}>{o.name}'s country page →</a>{/if}
             </section>
           {/each}
         </div>
@@ -531,6 +542,16 @@
   .controls { display: flex; justify-content: center; align-items: center; gap: 10px 14px; flex-wrap: wrap; margin-bottom: 10px; }
   .nowline { text-align: center; margin: 0 auto 14px; max-width: 980px; font-size: 15px; color: var(--ink-2); line-height: 1.7; }
   .nowline .lbl { display: inline; margin-right: 8px; color: var(--crema-deep); }
+  /* On a phone the names follow the chosen region tab, as the map does: done in CSS, so the
+     server-built list and the live one match and nothing shifts on load. */
+  .nowitem + .nowitem::before { content: '\00a0·\00a0'; }
+  .nowmore { display: none; color: var(--ink-3); }
+  @media (max-width: 720px) {
+    .nowitem:not(.inreg) { display: none; }
+    .nowitem + .nowitem::before { content: none; }
+    .nowitem.inreg ~ .nowitem.inreg::before { content: '\00a0·\00a0'; }
+    .nowmore { display: inline; }
+  }
   .nowname { appearance: none; border: 0; background: none; padding: 0; font: 500 15px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; color: var(--ink); text-decoration: underline; text-decoration-color: #c9a46e; text-underline-offset: 3px; cursor: pointer; }
   .nowname:hover { color: var(--crema-deep); }
   .cnt { font: 500 11.5px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; background: #f1e3cc; color: #6b3a12; border-radius: 999px; padding: 1px 6px; margin-left: 2px; }
@@ -549,7 +570,7 @@
 
   .body { display: grid; gap: 22px; }
   .cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: start; }
-  .stage { min-width: 0; }
+  .stage { min-width: 0; scroll-margin-top: 84px; }
   .gp-frame { position: relative; }
   .map { display: block; width: 100%; height: auto; aspect-ratio: 920 / 272; background: #cbcfd5; box-shadow: 0 0 0 1px #b8ad99; }
   .lines line { stroke: #8b9ba8; stroke-width: .6; stroke-dasharray: 4 6; opacity: .55; }
@@ -570,6 +591,8 @@
   .mapkey > span { display: inline-flex; align-items: center; gap: 7px; }
   .mapkey .kt { font: 400 15px 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; color: #8f5d22; text-transform: uppercase; letter-spacing: .08em; }
   .mapbox { position: relative; }
+  .nb { white-space: nowrap; }
+  .artk { font: 500 11px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
   .which { position: absolute; z-index: 3; width: 150px; background: #fbf8f3; border: 1px solid #c17a3a; border-radius: 3px; box-shadow: 0 10px 24px -14px rgba(42, 29, 21, .6); padding: 6px; display: grid; gap: 4px; }
   .which p { margin: 0 4px 2px; font: 500 11px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .08em; text-transform: uppercase; color: #8f5d22; }
   .which button { appearance: none; border: 1px solid var(--rule, #d9cbb8); background: #fff; border-radius: 3px; padding: 7px 10px; text-align: left; font: 600 14px/1.2 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; color: var(--ink, #2a1d15); cursor: pointer; }

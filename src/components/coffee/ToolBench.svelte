@@ -26,6 +26,8 @@
 
   type Icon = 'brew' | 'bag' | 'dial' | 'pod' | 'flower' | 'night';
   interface Resume { href: string; label: string; detail: string; icon: Icon }
+  // A figure and its unit (and "day 15") never split across lines.
+  const keep = (t: string) => t.replace(/(\d) (g|ml|oz|mg)\b/g, '$1\u00a0$2').replace(/\b(g|ml|oz) (coffee|water)\b/g, '$1\u00a0$2').replace(/\b(day|Oct|Nov|Dec|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep) (\d)/g, '$1\u00a0$2');
   let resume = $state<Resume[]>([]);
   let live = $state<string | null>(null);
   let seen = $state<Set<string>>(new Set());
@@ -150,7 +152,7 @@
       <div class="rhead"><h2 id="resume-h">Pick up where you left off</h2><p class="quiet small">Saved on this device only.</p></div>
       <ul>
         {#each resume as r (r.label)}
-          <li><a href={r.href}><span class="ricon">{@render icon(r.icon)}</span><span class="rtext"><b>{r.label}</b><span class="rd">{r.detail}</span></span><span class="rgo" aria-hidden="true">→</span></a></li>
+          <li><a href={r.href}><span class="ricon">{@render icon(r.icon)}</span><span class="rtext"><b>{r.label}</b><span class="rd">{keep(r.detail)}</span></span><span class="rgo" aria-hidden="true">→</span></a></li>
         {/each}
       </ul>
     </section>
@@ -209,14 +211,14 @@
   .rhead { display: flex; align-items: baseline; gap: 4px 14px; flex-wrap: wrap; margin-bottom: 12px; }
   .resume h2 { font: 400 28px/1.1 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; margin: 0; }
   .resume p { margin: 0; }
-  .resume ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+  .resume ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 10px; }
   .resume li { display: flex; }
   .resume a { flex: 1; display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 12px; align-items: start; border: 1px solid var(--rule); background: #fff; border-radius: 12px; padding: 10px 14px 10px 10px; text-decoration: none; color: var(--ink); min-height: 66px; }
   .resume a:hover, .resume a:focus-visible { border-color: var(--ink-3); background: #fffaf2; }
   .ricon { width: 44px; height: 44px; border-radius: 50%; background: #f4ece0; display: grid; place-items: center; align-self: center; }
   .ricon svg { width: 34px; height: 34px; }
   .resume b { display: block; font: 600 15px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; }
-  .rd { display: block; font: 500 12.5px/1.45 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; color: var(--ink-2); }
+  .rd { display: block; font: 500 12.5px/1.45 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; color: var(--ink-2); text-wrap: pretty; }
   .rgo { font-size: 18px; color: var(--crema-deep); transition: transform .2s; align-self: center; }
   .resume a:hover .rgo { transform: translateX(3px); }
 
@@ -271,8 +273,10 @@
     .tname { font-size: 20px; }
     .feature .tname { font-size: 26px; }
     .tblurb { font-size: 13.5px; }
-    /* On a narrow card the badge would sit on the drawing: it moves under it. */
-    .tag { position: static; display: inline-block; margin: 4px 0 0; font-size: 9px; padding: 2px 6px; }
+    /* On a narrow card the badge would sit on the drawing: it sits in a strip under it, and every
+       card keeps that strip, so the names in a row still line up. */
+    .mini { padding-bottom: 22px; }
+    .tag { top: auto; right: auto; bottom: 5px; left: 6px; font-size: 9px; padding: 2px 6px; }
     .ghead h2 { font-size: 28px; }
     .resume { padding: 14px 12px; }
     .resume ul { grid-template-columns: 1fr; }

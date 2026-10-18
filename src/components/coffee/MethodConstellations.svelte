@@ -85,7 +85,10 @@
         const n = g.ids.length;
         g.ids.forEach((id, j) => {
           const y = n === 1 ? (TOP + BOT) / 2 + 10 : TOP + 16 + (j * (BOT - TOP - 26)) / (n - 1);
-          const swing = n === 1 ? 0 : (beside ? 0.22 : 0.17) * colW * Math.sin(j * 1.9 + i + 0.6);
+          // A crowded column (four stars or more, labels under them) zigzags left and right, so the
+          // name under one star never sits on top of the next one.
+          const crowded = !beside && n >= 4;
+          const swing = n === 1 ? 0 : crowded ? (j % 2 ? -1 : 1) * 0.24 * colW : (beside ? 0.22 : 0.17) * colW * Math.sin(j * 1.9 + i + 0.6);
           const x = cx + swing;
           // A label stays inside its own column: if it would cross into the next one, it goes on
           // the other side of its star (or whichever side has more room).
@@ -93,7 +96,9 @@
           const lw = m.label.length * 10.4, lo = cx - colW / 2 + 4, hi = cx + colW / 2 - 4;
           const fitsR = x + gap + lw < Math.min(hi, W - 8), fitsL = x - gap - lw > Math.max(lo, 8);
           const right = swing >= 0 ? (fitsR || !fitsL) && (fitsR || hi - x > x - lo) : !fitsL && (fitsR || hi - x > x - lo);
-          pos[id] = beside ? { x, y, lx: right ? gap : -gap, ly: 7, anchor: right ? 'start' : 'end' } : { x, y, lx: 0, ly: 40, anchor: 'middle' };
+          pos[id] = beside ? { x, y, lx: right ? gap : -gap, ly: 7, anchor: right ? 'start' : 'end' }
+            : crowded ? { x, y, lx: swing > 0 ? 12 : -12, ly: 34, anchor: swing > 0 ? 'end' : 'start' }
+            : { x, y, lx: 0, ly: 40, anchor: 'middle' };
         });
       });
       return { w: W, h: H, pos, hubs, chains: gs.map((g) => g.ids) };
@@ -281,14 +286,12 @@
               {/each}
             {/if}
             {#if by !== 'time'}
+              <!-- Height means order within a line only (not one time scale across the sky), so the
+                   caption says to follow each line rather than drawing a shared axis. -->
               {#if portrait}
-                <text x={L.w - 12} y="22" text-anchor="end" class="edge">follow each line: quicker → slower</text>
+                <text x={L.w - 12} y="22" text-anchor="end" class="edge">follow each line: quicker → slower · tap a star</text>
               {:else}
-                <g class="edge" pointer-events="none">
-                  <text x={L.w - 14} y={TOP + 4} text-anchor="end">quicker</text>
-                  <line x1={L.w - 22} x2={L.w - 22} y1={TOP + 16} y2={BOT - 18} stroke="#8898B0" stroke-opacity=".45" marker-end="url(#mc-arrow)" />
-                  <text x={L.w - 14} y={BOT + 8} text-anchor="end">slower</text>
-                </g>
+                <text x="20" y="24" class="edge">follow each line down: quicker → slower · pick a star for its recipe</text>
               {/if}
             {/if}
             {#key by}
@@ -318,7 +321,7 @@
         <p class="gp-plaque"><b>The Brewing Constellations</b><small>An interactive star chart</small></p>
         <div class="key gp-label">
           <p class="kstate">Thirteen brewers, sorted by one property at a time: {GHOST[by]}.</p>
-          <p class="ksym"><span class="lstar big"></span><span class="lstar"></span> A bigger star: more body in the cup <span class="lray" aria-hidden="true">✳</span> Rays: the water is pushed</p>
+          <p class="ksym"><span class="kit"><span class="lstar big"></span><span class="lstar"></span> A bigger star: more body in the cup</span> <span class="kit"><span class="lray" aria-hidden="true">✳</span> Rays: the water is pushed</span> <span class="kit"><span class="lring" aria-hidden="true"></span> A ring: where a group's line starts</span></p>
           {#each groups as g (g.key)}
             <p><b>{g.label}</b> {g.line}</p>
           {/each}
@@ -426,7 +429,7 @@
               <tr><th scope="row">Grind</th><td>{A.grind}</td><td>{B.grind}</td></tr>
             </tbody>
           </table>
-          <p class="quiet small">Highlighted rows are the axes that differ; time counts when one typically runs at least half as long again as the other. Contact time is a typical range for each recipe.{#each [A, B].filter((m) => m.timeNote) as m (m.id)}{' '}* {m.label}: {m.timeNote}.{/each}</p>
+          <p class="quiet small">Highlighted rows are the axes that differ. Time is highlighted when the ranges don't overlap or one takes at least 1.5 times as long. Contact time is a typical range for each recipe.{#each [A, B].filter((m) => m.timeNote) as m (m.id)}{' '}* {m.label}: {m.timeNote}.{/each}</p>
           <div class="actions">
             {#each [A, B] as m (m.id)}
               {#if brewGuideHref(m)}<a class="ghost" href={brewGuideHref(m)}>Brew the {m.label} →</a>{:else}<a class="ghost" href="/blog/{m.guide.slug}/">{m.label} guide →</a>{/if}
@@ -483,6 +486,8 @@
   .star:focus-visible .slab { text-decoration: underline; }
   /* A sky-colored halo behind each name breaks the constellation line where it passes. */
   .slab { font: 600 18px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; letter-spacing: .02em; fill: #C0C8D8; transition: fill .2s; paint-order: stroke; stroke: #12203A; stroke-width: 6px; stroke-linejoin: round; }
+  .kit { white-space: nowrap; display: inline-block; margin-right: 10px; }
+  .lring { display: inline-block; width: 11px; height: 11px; border-radius: 50%; border: 1.5px solid #c8a24a; vertical-align: -1px; margin-right: 4px; }
   .edge, .edge text { font: italic 400 19px 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; fill: #aab6ca; }
   .slab.on { fill: #F5F0E8; }
   .pick .slab { fill: #F0D070; }

@@ -209,7 +209,6 @@
     <path class="o" d="M62.8 43 V67 Q62.8 73 68.5 73 H91.5 Q97.2 73 97.2 67 V43" />
     <path class="o" d="M60.6 43 H99.4" />
     <path class="o" d="M97.2 48.5 C105.5 48.5 105.5 63.5 97.2 63.5" />
-    <path class="d tick" d="M57 54 H66" />
     <!-- scale -->
     <rect x="46" y="73.8" width="68" height="10.2" rx="2.2" class="ink" />
     <circle cx="52.5" cy="79" r="1.6" class="btn" /><circle cx="58.5" cy="79" r="1.6" class="btn" />

@@ -38,16 +38,16 @@
         <a class="plate" href={p.href} tabindex="-1" aria-hidden="true"><b>{p.title}</b><small>{p.sub}</small></a>
         <div class="label">
           {#if p.id === 'origins'}
-            <p>When and where each origin is harvested, how high it grows and how its coffees are described.</p>
-            <p class="key" aria-hidden="true" class:pending={!mounted}><span class="dot on"></span>harvesting in {MONTHS_LONG[month - 1]} <span class="dot off"></span>not this month</p>
+            <p>When each country harvests, how high its coffee grows and how its coffees are described.</p>
+            <p class="key" aria-hidden="true" class:pending={!mounted}><span class="dot on"></span>harvesting now <span class="dot off"></span>not now</p>
             <p class="now" class:pending={!mounted}><span>In {MONTHS_LONG[month - 1]}:</span> {now.slice(0, 4).map((o) => nb(o.name)).join(', ')}{now.length > 4 ? ` and ${now.length - 4} more` : ''} are harvesting.</p>
             <p class="now"><a href="/explore/origins/">See who's harvesting now →</a></p>
           {:else if p.id === 'methods'}
-            <p>Thirteen brewers as stars. Rearrange the sky by filter, pressure or time to see how they really differ.</p>
+            <p>Thirteen brewers as stars. Rearrange the sky by filter, pressure or time to see how they differ.</p>
             <p class="now"><a href="/explore/methods/?m=v60&vs=french-press">Compare a V60 and a French press →</a></p>
           {:else}
-            <p>Tasting notes as a flower: what each one is like, how to train your nose on it, and how often roasters use it.</p>
-            <p class="now"><a href="/explore/flavors/?note=blueberry">Start with blueberry →</a></p>
+            <p>Tasting notes as a flower: what each one is like, how to train your nose on it, and how often roasters name it.</p>
+            <p class="now"><a href="/explore/flavors/?family=fruity">Open the fruity petal →</a></p>
           {/if}
         </div>
       </figcaption>

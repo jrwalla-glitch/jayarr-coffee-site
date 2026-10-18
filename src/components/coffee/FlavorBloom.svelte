@@ -335,7 +335,7 @@
     const inside = (b: Box) => b.x > vx + 8 * u && b.y > vy + 8 * u && b.x + b.w < vx + vw - 8 * u && b.y + b.h < vy + vh - 8 * u;
     // Try spots around the point, near first, radially outward first; keep the first that is free
     // and inside the frame, else the one that overlaps least.
-    const place = (x: number, y: number, r: number, wPx: number, prefer: number, px = 14): { lx: number; ly: number; anchor: string } => {
+    const place = (x: number, y: number, r: number, wPx: number, prefer: number, px = 14, opt: { own?: Bud; side?: number } = {}): { lx: number; ly: number; anchor: string } => {
       const fs = px * u, w = wPx * u + 6 * u, h = fs * 1.25;
       // Directions nearest the preferred one first; rings further out only when the near ones are taken.
       const dirs = [0, 20, -20, 40, -40, 60, -60, 90, -90, 120, -120, 150, -150, 180].map((d) => prefer + d);
@@ -346,10 +346,15 @@
       }
       const boxOf = (sp: { lx: number; ly: number; anchor: string }) => ({ x: x + sp.lx - 3 * u - (sp.anchor === 'end' ? w - 6 * u : sp.anchor === 'middle' ? w / 2 - 3 * u : 0), y: y + sp.ly - fs * 0.95, w, h });
       const area = (a: Box, b: Box) => Math.max(0, Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x)) * Math.max(0, Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y));
+      // A bud's label is nearer its own bud than any other, so the pairing reads; a leaf's label stays on its side of the stem.
+      const near = (bx: Box, b: { x: number; y: number }) => Math.hypot(Math.max(bx.x - b.x, 0, b.x - bx.x - bx.w), Math.max(bx.y - b.y, 0, b.y - bx.y - bx.h));
+      const ownsIt = (bx: Box) => (!opt.own || buds.every((b) => b === opt.own || near(bx, b) > near(bx, opt.own!) + 2 * u))
+        && (!opt.side || Math.sign(bx.x + bx.w / 2 - CX) === opt.side);
       const cost = (bx: Box) => boxes.reduce((t, b) => t + area(b, bx) * (b.hard ? 60 : 1), 0) + (inside(bx) ? 0 : 1e7);
       // The nearest spot that touches nothing; failing that, the nearest that covers no bud, label or
       // inset; failing that, the one that costs least.
-      let pick = spots.find((spot) => { const bx = boxOf(spot); return inside(bx) && !boxes.some((b) => hit(b, bx)); })
+      let pick = spots.find((spot) => { const bx = boxOf(spot); return inside(bx) && ownsIt(bx) && !boxes.some((b) => hit(b, bx)); })
+        ?? spots.find((spot) => { const bx = boxOf(spot); return inside(bx) && ownsIt(bx) && !boxes.some((b) => b.hard && hit(b, bx)); })
         ?? spots.find((spot) => { const bx = boxOf(spot); return inside(bx) && !boxes.some((b) => b.hard && hit(b, bx)); });
       if (!pick) pick = [...spots].sort((a, b2) => cost(boxOf(a)) - cost(boxOf(b2)))[0];
       boxes.push({ ...boxOf(pick), hard: true });
@@ -364,18 +369,12 @@
         })
       : OFF_GROUPS.map((g, i) => {
           const [px, py, a] = leafAt(i, 0.55);
-          const pl = place(px, py, 14 * u, textW(g.label, 15, { italic: true }), a + (LEAVES[i].d < 0 ? -90 : 90), 15);
+          const pl = place(px, py, 14 * u, textW(g.label, 15, { italic: true }), a + (LEAVES[i].d < 0 ? -90 : 90), 15, { side: LEAVES[i].d });
           return { id: g.id, label: g.label, x: px + pl.lx, y: py + pl.ly, anchor: pl.anchor };
         });
-    for (const b of buds) Object.assign(b, place(b.x, b.y, b.r, textW(b.label, 14) + (fam ? 4 + textW(String(b.count), 11.5, { mono: true }) : 0), b.a));
-    // The rarer notes the plate leaves out: a dashed ghost bud just past the last one, "+3 rarer in the list".
-    let more = null as null | { x: number; y: number; anchor: string; bx: number; by: number; a: number };
-    if (hidden) {
-      const ea = baseA + span / 2 + (n > 1 ? span / (n - 1) : 30) * 0.9, ex = gx + Math.sin(rad(ea)) * rho * 0.92, ey = gy - Math.cos(rad(ea)) * rho * 0.92;
-      boxes.push({ x: ex - 7, y: ey - 7, w: 14, h: 14, hard: true });
-      const pl = place(ex, ey, 5, textW(`+${hidden} rarer in the list`, 13, { italic: true }), ea);
-      more = { x: ex + pl.lx, y: ey + pl.ly, anchor: pl.anchor, bx: ex, by: ey, a: ea };
-    }
+    for (const b of buds) Object.assign(b, place(b.x, b.y, b.r, textW(b.label, 14) + (fam ? 4 + textW(String(b.count), 11.5, { mono: true }) : 0), b.a, 14, { own: b }));
+    // The rarer notes the plate leaves out are named in the panel, not drawn (a ghost bud collided with the group names).
+    const more = null as null | { x: number; y: number; anchor: string; bx: number; by: number; a: number };
     return { buds, glabels, hidden, more, gx, gy, off };
   });
   // A bud: a teardrop pointing away from its stalk, with two sepals; it opens into a blossom when picked.
@@ -461,18 +460,18 @@
           aria-label={mini ? undefined : `${f.label}: ${f.groups.map((g) => g.label.toLowerCase()).join(', ')}`}
           onclick={mini ? undefined : () => openFamily(f.id)} onkeydown={mini ? undefined : (e) => keyAct(e, () => openFamily(f.id))}>
           <path class="shape" d={petal(R, 46)} fill={mini && !lit?.has(f.id) ? '#e9ece2' : `url(#fb-wc-${key}-${f.id})`} filter="url(#fb-soft-{key})"
-            fill-opacity={mini ? 1 : sel ? 1 : dim ? 0.22 : 0.86} />
-          <path d={petal(R, 46)} fill="none" stroke="#2a1d15" stroke-opacity={mini ? (lit?.has(f.id) ? 0.6 : 0.3) : sel ? 0.55 : 0.16} stroke-width={mini ? 2 : 1} />
+            fill-opacity={mini ? 1 : sel ? 1 : dim ? (familyId === 'off' ? 0.1 : 0.22) : 0.86} />
+          <path d={petal(R, 46)} fill="none" stroke="#2a1d15" stroke-opacity={mini ? (lit?.has(f.id) ? 0.6 : 0.3) : sel ? 0.55 : familyId === 'off' ? 0.07 : 0.16} stroke-width={mini ? 2 : 1} />
           {#if !mini}
-            <path d="M0 {-CORE} L0 {-R + 14}" stroke="#2a1d15" stroke-width=".8" opacity=".28" />
-            <path d="M0 {-R * 0.42} Q 12 {-R * 0.55} 18 {-R * 0.7} M0 {-R * 0.42} Q -12 {-R * 0.55} -18 {-R * 0.7}" fill="none" stroke="#2a1d15" stroke-width=".8" opacity=".2" />
+            <path d="M0 {-CORE} L0 {-R + 14}" stroke="#2a1d15" stroke-width=".8" opacity={familyId === 'off' ? 0.08 : 0.28} />
+            <path d="M0 {-R * 0.42} Q 12 {-R * 0.55} 18 {-R * 0.7} M0 {-R * 0.42} Q -12 {-R * 0.55} -18 {-R * 0.7}" fill="none" stroke="#2a1d15" stroke-width=".8" opacity={familyId === 'off' ? 0.06 : 0.2} />
             <path class="hit" d={hitSector(f.id)} fill="transparent" />
           {/if}
         </g>
       {/each}
 
-      <circle cx={CX} cy={CY} r={CORE} fill="#f6f1e8" stroke="#c17a3a" stroke-width={mini ? 3.4 : 2} opacity={open ? 0.35 : 1} />
-      <g transform="translate({CX} {CY}) rotate(-28)" opacity={open ? 0.35 : 1}>
+      <circle cx={CX} cy={CY} r={CORE} fill="#f6f1e8" stroke="#c17a3a" stroke-width={mini ? 3.4 : 2} opacity={open ? (familyId === 'off' ? 0.12 : 0.35) : 1} />
+      <g transform="translate({CX} {CY}) rotate(-28)" opacity={open ? (familyId === 'off' ? 0.12 : 0.35) : 1}>
         <ellipse rx="10.5" ry="14.5" fill="#7a4e30" />
         <path d="M0 -12 C 4.5 -5, -4.5 5, 0 12" fill="none" stroke="#f6f1e8" stroke-width="2" stroke-linecap="round" />
       </g>
@@ -558,6 +557,8 @@
   </svg>
 {/snippet}
 
+{#snippet keyText()}Bigger bud, more mentions: the number is how many of {lots.length} roasters' lot descriptions name the note.{#if branch.hidden} The plate shows the {branch.buds.length} most named; {branch.hidden === 1 ? 'one rarer note is' : `${branch.hidden} rarer notes are`} in the list view.{/if}{/snippet}
+
 {#snippet budKey()}
   <span class="budkey" aria-hidden="true">
     {#each KEY_COUNTS as c (c)}
@@ -619,9 +620,9 @@
         </div>
         <p class="gp-plaque"><b>The Flavor Bloom</b><small>A botanical tasting guide</small></p>
         {#if fam}
-          <p class="cap keyline phoneonly">{@render budKey()}<span>Bud size and number: how many of {lots.length} roasters' lot descriptions name the note.</span></p>
+          <p class="cap keyline phoneonly">{@render budKey()}<span>{@render keyText()}</span></p>
         {:else if familyId === 'off'}
-          <p class="cap">Strong or persistent, off notes usually mean a flaw. Roasters rarely print them, so these buds aren't sized by count.</p>
+          <p class="cap">When strong or persistent, off notes usually mean a flaw. Roasters rarely print them, so these buds aren't sized by count.</p>
         {:else}
           <p class="cap">Eight families from the SCA and WCR Coffee Taster's Flavor Wheel; the leaves on the stem are off notes, tastes that usually mean a flaw.</p>
         {/if}
@@ -679,12 +680,12 @@
         <div class="famhead">
           <span class="sw big" style:background={colourOf(familyId)}></span>
           <div>
-            <p class="kick">{fam ? 'Flavor family' : 'Off notes: usually flaws'}</p>
+            <p class="kick">{fam ? 'Flavor family' : 'The leaves on the stem'}</p>
             <h2 tabindex="-1" bind:this={headEl}>{label}</h2>
           </div>
         </div>
-        <p class="blurb">{fam ? fam.blurb : 'The wheel\'s "other" notes: papery, musty and chemical tastes. Faint, a few (earthy, woody) can be part of a coffee\'s character; strong or persistent, they usually point to a problem on the farm, in processing, in storage or with age.'}</p>
-        {#if fam}<p class="keyline inpanel">{@render budKey()}<span>On the plate, a bud's size and number: how many of {lots.length} roasters' lot descriptions name the note.</span></p>{/if}
+        <p class="blurb">{fam ? fam.blurb : 'Usually flaws: the wheel\u2019s \u201cother\u201d notes, papery, musty and chemical tastes. Faint, a few (earthy, woody) can be part of a coffee\'s character; strong or persistent, they usually point to a problem on the farm, in processing, in storage or with age.'}</p>
+        {#if fam}<p class="keyline inpanel">{@render budKey()}<span>{@render keyText()}</span></p>{/if}
         {#if fam?.brings}
           <div class="tends"><p class="lbl">In general</p><p>{fam.brings}</p></div>
         {/if}
@@ -931,8 +932,10 @@
   /* Fixed columns, so every track is the same length and the baseline sits at the same place on every row. */
   .bar { display: grid; grid-template-columns: 96px minmax(0, 1fr) 132px; gap: 10px; align-items: center; margin: 4px 0; font-size: 14px; }
   .bar.axis { margin-top: -2px; }
-  .ticks .avg { position: absolute; transform: translateX(-50%); color: var(--ink-2); white-space: nowrap; }
-  .ticks { position: relative; display: flex; justify-content: space-between; font: 400 11px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; color: var(--ink-3); border-top: 1px solid var(--rule); padding-top: 2px; }
+  /* The all-lots mark hangs on its own line under its tick, so it never sits on the 0 or the top. */
+  .ticks .avg { position: absolute; top: 15px; transform: translateX(-50%); color: var(--ink-2); white-space: nowrap; }
+  .ticks .avg::before { content: ''; position: absolute; left: 50%; top: -13px; height: 11px; border-left: 1px solid var(--ink-3); opacity: .6; }
+  .ticks { position: relative; display: flex; justify-content: space-between; font: 400 11px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; color: var(--ink-3); border-top: 1px solid var(--rule); padding: 2px 0 16px; }
   .bk { color: var(--ink-2); }
   .track { position: relative; height: 10px; background: #f1e9dd; border-radius: 5px; }
   .fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 5px; background: var(--crema); }

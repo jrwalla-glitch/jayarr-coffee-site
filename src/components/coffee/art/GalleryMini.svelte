@@ -51,7 +51,7 @@
             {#each ORIGINS as o (o.id)}
               {@const [x, y] = dot(o.lat, o.lon)}
               {@const on = now.some((n) => n.id === o.id)}
-              {#if o.id === 'hawaii'}<ellipse cx={x + 0.6} cy={y + 0.4} rx="2.6" ry="1.7" fill="#d6ad6e" stroke="#8a6a3e" stroke-width=".4" />{/if}
+              {#if o.id === 'hawaii'}<ellipse cx={x + 0.8} cy={y + 0.6} rx="4.6" ry="2.6" fill="#d6ad6e" stroke="#8a6a3e" stroke-width=".4" />{/if}
               <circle cx={x} cy={y} r={on ? 3.3 : 2.4} fill={on ? '#8a3f12' : '#fbf6ee'} stroke="#2a1d15" stroke-width={on ? 0.7 : 0.8} class:pulse={on} style="animation-delay: {(x % 7) * 0.3}s" />
             {/each}
             <g transform="translate(26 150)" opacity=".85"><circle r="9" fill="none" stroke="#5b4a3d" stroke-width=".5" /><polygon points="0,-8 -1.3,-2.4 0,-3.2 1.3,-2.4" fill="#2a1d15" /><polygon points="0,8 -1.3,2.4 0,3.2 1.3,2.4" fill="#a6896a" /></g>
@@ -69,14 +69,19 @@
               <polyline points={[`${hx},34`, ...ss.map((s) => `${s.x},${s.y}`)].join(' ')} fill="none" stroke="#c9a84e" stroke-width=".8" opacity=".6" class="chain" />
               <circle cx={hx} cy="34" r="7" fill="#d4a44c" opacity=".12" /><circle cx={hx} cy="34" r="3.2" fill="none" stroke="#e8b85c" stroke-width="1.1" />
               <path d="M{hx - 6} 34 H{hx + 6} M{hx} 28 V40" stroke="#d4a44c" stroke-width=".5" opacity=".6" />
-              {#if names}<text x={hx} y="20" text-anchor="middle" class="hub">{CONTACT[g].label.toUpperCase()}</text>{/if}
+              {#if names}
+                <!-- "Steep, then drain" takes two lines so the three headings read as three. -->
+                {#if g === 'steep-drain'}<text x={hx} y="13" text-anchor="middle" class="hub">STEEP, THEN</text><text x={hx} y="21" text-anchor="middle" class="hub">DRAIN</text>
+                {:else}<text x={hx} y="20" text-anchor="middle" class="hub">{CONTACT[g].label.toUpperCase()}</text>{/if}
+              {/if}
               {#each ss as s (s.id)}
                 <circle cx={s.x} cy={s.y} r="5" fill="#e8c36a" opacity=".12" /><circle cx={s.x} cy={s.y} r="2.2" fill="#e8c36a" />
                 {#if names && NAMED[s.id]}<text x={s.x + 5} y={s.y + 2.8} class="sname">{NAMED[s.id]}</text>{/if}
               {/each}
             {/each}
             {#if names}
-              <g class="edge"><text x="292" y="58" text-anchor="end">quick</text><path d="M286 64 V146" stroke="#8d9bb3" stroke-width=".7" marker-end="url(#eg-arrow-{pid})" /><text x="292" y="160" text-anchor="end">slow</text><text x="292" y="172" text-anchor="end" class="edgecap">brew time</text></g>
+              <!-- Height is order along each line, not one time scale across the sky. -->
+              <g class="edge"><text x="294" y="172" text-anchor="end" class="edgecap">each line: quick → slow</text></g>
             {/if}
           </svg>
         {:else}
@@ -111,7 +116,7 @@
 <style>
   .art { display: block; width: 100%; height: auto; }
   .hub { font: 600 8px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .16em; fill: #e2b45a; }
-  .edge .edgecap { font-size: 6.5px; letter-spacing: .14em; text-transform: uppercase; }
+  .edge .edgecap { font-size: 9.5px; }
   .edge text { font: 500 8.5px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .08em; fill: #a9b5c9; }
   .sname { font: 600 8.5px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; fill: #e8dccb; }
   .lettered { font: italic 400 11.5px 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; fill: #2a2a1f; }

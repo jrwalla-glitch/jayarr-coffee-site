@@ -4,6 +4,7 @@
   import type { MethodId } from '../../lib/coffee/index.ts';
   import ToolMini from './art/ToolMini.svelte';
   import GalleryMini from './art/GalleryMini.svelte';
+  import { harvestingIn, MONTHS_LONG } from '../../lib/coffee/origins.ts';
 
   // The homepage's first screen is a decision with a working preview. "Make a better cup" runs the
   // Brew Guide's own engine, so the numbers here are the numbers there, and the button carries the
@@ -23,12 +24,9 @@
   const FIX = ['sour', 'bitter', 'weak', 'strong', 'flat'];
   // What each taste usually points to, said as a likelihood: the Doctor asks before it decides, and
   // its answer depends on the brewer (a shot's time, a press's steep), so the door asks which.
-  const FIX_BREWERS: { id: MethodId; label: string }[] = [
-    { id: 'v60', label: 'Pour-over' }, { id: 'french-press', label: 'French press' }, { id: 'aeropress', label: 'AeroPress' },
-    { id: 'drip-machine', label: 'Drip machine' }, { id: 'moka', label: 'Moka pot' }, { id: 'espresso', label: 'Espresso' },
-  ];
+  const FIX_BREWERS = BREWERS;
   function likely(id: string, m: MethodId): string {
-    const steep = m === 'french-press' || m === 'aeropress';
+    const steep = m === 'french-press' || m === 'aeropress' || m === 'cold-brew';
     if (m === 'espresso') return {
       sour: 'Often under-extracted. The shot time decides the fix: a fast shot wants a finer grind, one that runs on time a longer shot.',
       bitter: 'Over-extraction, a fast and uneven shot, or simply a dark roast: one timed shot tells them apart.',
@@ -82,8 +80,17 @@
   // Only the direction to move: how to get there depends on the brewer, which is the Doctor's job.
   const MAP_FIX: Record<string, string> = { sour: 'extract more?', bitter: 'extract less?', weak: 'stronger?', strong: 'weaker?', flat: 'check the beans and water' };
 
+  // The Explore door's live line: who is harvesting this month (the reader's month, once known).
+  let mounted = $state(false);
+  let month = $state(10);
+  let nowNames = $derived.by(() => {
+    const now = [...harvestingIn(month)].sort((a, b) => (b.production?.bags60kg ?? 0) - (a.production?.bags60kg ?? 0));
+    return `${now.slice(0, 4).map((o) => o.name).join(', ')}${now.length > 4 ? ` and ${now.length - 4} more` : ''}`;
+  });
   onMount(() => {
     try { const d = sessionStorage.getItem('jayarr-home-door') as Door | null; if (d && DOORS.some((x) => x.id === d)) door = d; } catch { /* no storage */ }
+    month = new Date().getMonth() + 1;
+    mounted = true;
   });
   function pick(d: Door) { door = d; try { sessionStorage.setItem('jayarr-home-door', d); } catch { /* no storage */ } }
 </script>
@@ -106,7 +113,7 @@
         <p class="q">Your mug</p>
         <div class="chips">
           {#each cups as c (c)}<button type="button" class="chip" aria-pressed={oz === c} onclick={() => (oz = c)}>{c} oz</button>{/each}
-          {#if cups.length < CUPS.length}<span class="cupnote">{method === 'aeropress' ? 'One press makes about 8 oz; for a bigger mug, make two.' : `A ${BREWERS.find((b) => b.id === method)?.label} this size tops out at ${cups.at(-1)} oz.`}</span>{/if}
+          {#if cups.length < CUPS.length}<span class="cupnote">{method === 'aeropress' ? 'One press makes about 8 oz; for a bigger mug, make two.' : `One ${BREWERS.find((b) => b.id === method)?.label} brew makes up to ${cups.at(-1)} oz.`}</span>{/if}
         </div>
       {/if}
       {#if r}
@@ -156,7 +163,7 @@
             <figcaption>{grindShort}, like {r.grind.texture}</figcaption>
           </figure>
         </div>
-        <p class="note">{method === 'espresso' ? 'A double shot: 18 g in, 36 g out, in 25–30 seconds.' : method === 'cold-brew' ? 'A concentrate: dilute it about one to one to serve.' : method === 'moka' ? 'The pot sets the amounts: coffee level in the basket, water to just below the valve. The Brew Guide sizes it to your pot.' : `At 1:${ratioText}, the Brew Guide's classic strength for ${BREWERS.find((b) => b.id === method)?.label}. It times every pour.`}</p>
+        <p class="note">{method === 'espresso' ? 'A double shot: 18 g in, 36 g out, in 25–30 seconds.' : method === 'cold-brew' ? 'A concentrate: dilute it about one to one to serve.' : method === 'moka' ? 'The pot sets the amounts: coffee level in the basket, water to just below the valve. The Brew Guide sizes it to your pot.' : `1:${ratioText} is the Brew Guide's classic strength for the ${BREWERS.find((b) => b.id === method)?.label}, and the Guide times every pour.`}</p>
       {/if}
       <a class="go" href={href}>Brew it step by step →</a>
     {:else if door === 'fix'}
@@ -192,16 +199,19 @@
       <a class="go" href="/tools/fix-my-coffee/?method={fixMethod}&symptom={symptom}">Find the one change →</a>
     {:else if door === 'choose'}
       <ul class="pick">
-        <li><a href="/tools/espresso-machines/"><span class="pm" aria-hidden="true"><ToolMini id="machines" /></span><span><b>An espresso machine</b><small>Matches for how you drink and what you'll spend, grinder included</small></span></a></li>
+        <li><a href="/tools/espresso-machines/"><span class="pm" aria-hidden="true"><ToolMini id="machines" /></span><span><b>An espresso machine</b><small>Machines matched to how you drink and what you'll spend, grinder included</small></span></a></li>
         <li><a href="/tools/nespresso-pods/"><span class="pm" aria-hidden="true"><ToolMini id="pods" /></span><span><b>Nespresso pods</b><small>Every capsule your machine takes, Original or Vertuo</small></span></a></li>
         <li><a href="/deep-brew/calibrator/"><span class="pm" aria-hidden="true"><ToolMini id="calibrator" /></span><span><b>Your grinder's setting</b><small>The number to set for your brewer, from the maker's guidance</small></span></a></li>
       </ul>
+      <a class="go" href="/tools/#job-choose">Every gear tool →</a>
     {:else}
       <ul class="pick gallery">
         <li><a href="/explore/flavors/"><span class="pm" aria-hidden="true"><GalleryMini id="flavors" names={false} /></span><span><b>The Flavor Bloom</b><small>Learn to taste a note, and how often roasters use it</small></span></a></li>
         <li><a href="/explore/origins/"><span class="pm" aria-hidden="true"><GalleryMini id="origins" names={false} /></span><span><b>The Coffee Origins</b><small>Who's harvesting now, and how high it grows</small></span></a></li>
         <li><a href="/explore/methods/"><span class="pm" aria-hidden="true"><GalleryMini id="methods" names={false} /></span><span><b>The Brewing Constellations</b><small>How thirteen brewers really differ</small></span></a></li>
       </ul>
+      <p class="note nowh" class:pending={!mounted}>Harvesting in {MONTHS_LONG[month - 1]}: {nowNames}.</p>
+      <a class="go" href="/explore/">Walk through the gallery →</a>
     {/if}
   </div>
 </div>
@@ -214,7 +224,7 @@
   .doors button[aria-selected='true'] { background: #fbf8f3; color: var(--ink); border-bottom-color: #c3873a; }
   .doors button:focus-visible { outline: 3px solid rgba(143, 93, 34, .6); outline-offset: -3px; }
   /* Every door is the same height on desktop, so nothing below the card moves when you switch. */
-  .panel { padding: 18px 20px 20px; min-height: 470px; }
+  .panel { padding: 18px 20px 20px; min-height: 600px; }
   .q { font: 500 11px/1 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 8px; }
   .q:not(:first-child) { margin-top: 14px; }
   .chips { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -232,6 +242,8 @@
   .nums .coffee { color: #7a4e30; }
   .nums .water { color: #2f7484; }
   .note { font-size: 14px; color: var(--ink-2); margin: 6px 0 12px; text-wrap: pretty; }
+  .pending { visibility: hidden; }
+  .pick + .go { margin-top: 14px; }
   .figs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 4px 0 10px; }
   .figs figure { margin: 0; text-align: center; }
   .figs svg { display: block; width: 100%; max-width: 132px; height: auto; margin: 0 auto; }
@@ -263,8 +275,8 @@
   .go { display: inline-block; background: var(--ink); color: #f3ede3; text-decoration: none; border-radius: 999px; padding: 11px 20px; font: 600 15px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; }
   .go:hover { background: #3b2a1f; }
   .pick { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-  .pick a { display: grid; grid-template-columns: 120px 1fr; gap: 14px; align-items: center; border: 1px solid var(--rule); background: #fff; border-radius: 12px; padding: 8px 12px 8px 8px; text-decoration: none; color: var(--ink); }
-  .pick a:hover { border-color: var(--ink-3); background: #fffaf2; }
+  .pick a { display: grid; grid-template-columns: 150px 1fr; gap: 16px; align-items: center; border: 1px solid var(--rule); background: #fff; border-radius: 12px; padding: 10px 14px 10px 10px; text-decoration: none; color: var(--ink); }
+  @media (hover: hover) { .pick a:hover { border-color: var(--ink-3); background: #fffaf2; } }
   .pm :global(svg) { display: block; width: 100%; height: auto; }
   .gallery .pm { border: 4px solid #2a2118; box-shadow: inset 0 0 0 1px rgba(214, 170, 92, .7); }
   .pick b { display: block; font: 400 23px/1.1 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; }
