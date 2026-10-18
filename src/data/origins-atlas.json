@@ -2051,10 +2051,12 @@
      6
     ],
     "second": null,
-    "variesBy": "Picking varies within Sumatra, with peaks in spring and late in the year; small fly crops can fall outside these months. Robusta and the other islands keep different calendars; lowland robusta runs about April–July.",
+    "variesBy": "Café Imports' Sumatra calendar. Sucafina gives two main Sumatran harvests and a fly crop all year: April–June and November–January on its website, October–December and March–May in its 2026 handbook. Robusta and the other islands keep different calendars; lowland robusta runs about April–July.",
     "edgeMonths": 0,
     "sources": [
-     "ci-sumatra",
+     "ci-sumatra"
+    ],
+    "compare": [
      "suca-indonesia",
      "sucafina-handbook-2026"
     ],
@@ -2122,9 +2124,9 @@
     "Typica"
    ],
    "processing": [
-    "Natural",
     "Wet-hulled",
-    "Washed"
+    "Washed",
+    "Natural (mostly robusta)"
    ],
    "tendencies": {
     "notes": [
