@@ -4,7 +4,7 @@ import originHubs from '../../../data/origin-hubs.json' with { type: 'json' };
 import originSources from '../../../data/origins-sources.json' with { type: 'json' };
 import summaries from '../../../data/origin-summaries.json' with { type: 'json' };
 import {
-  FAMILIES, OFF_GROUPS, ALL_NOTES, noteById, notesInText, evidenceFor, familyCounts, compareCard, encodeCard, decodeCard, MAX_PINS,
+  FAMILIES, OFF_GROUPS, ALL_NOTES, noteById, notesInText, familiesInText, evidenceFor, familyCounts, compareCard, encodeCard, decodeCard, MAX_PINS,
 } from '../flavors.ts';
 import { ATLAS, brewGuideHref, differences, differenceSentence, describe, timeText, timePosition, TIME_TICKS } from '../methodAtlas.ts';
 import { ORIGINS, CONTINENTS, monthsIn, harvestState, harvestingIn, originByPage, bandText, project } from '../origins.ts';
@@ -169,4 +169,22 @@ test('the Clever Dripper is four minutes plus its drain; time differences of hal
   assert.ok(!differences(v60, chemex).includes('time'));
   const kalita = ATLAS.find((m) => m.id === 'kalita');
   assert.match(differenceSentence(v60, kalita), /times overlap/);
+});
+
+// ── Review round 2 (Opus) regressions ──
+test('generic phrases count toward no note: stone fruit, white chocolate, a bare currant; red currant is a mixed berry', () => {
+  assert.deepEqual(notesInText('stone fruit'), []);
+  assert.deepEqual(notesInText('stonefruit, florals'), []);
+  assert.deepEqual(notesInText('peach and white chocolate'), ['stone-fruit']);
+  assert.deepEqual(notesInText('currant'), []);
+  assert.deepEqual(notesInText('red currant').map((id) => noteById(id).label), ['Mixed berries']);
+  assert.deepEqual(notesInText('blackcurrant').map((id) => noteById(id).label), ['Blackcurrant']);
+});
+
+test('a family word on the bag names the family, and a pinned note in it counts as close', () => {
+  assert.deepEqual(familiesInText('floral, fruity'), ['floral', 'fruity']);
+  assert.deepEqual(familiesInText('orange blossom'), []);
+  const c = compareCard(['jasmine'], 'floral, nutty');
+  assert.deepEqual(c.near, ['jasmine']);
+  assert.deepEqual(c.yoursOnly, []);
 });

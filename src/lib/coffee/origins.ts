@@ -124,6 +124,8 @@ export type HarvestState = 'main' | 'second' | 'edge' | 'elsewhere' | 'off';
 export function harvestState(o: Pick<OriginFacts, 'harvest'>, month: number): HarvestState {
   if (monthsIn(o.harvest.main).includes(month)) return 'main';
   if (monthsIn(o.harvest.second).includes(month)) return 'second';
+  // Where sources say another region is picking outside the drawn window, that beats a "maybe" edge.
+  if (o.harvest.elsewhere) return 'elsewhere';
   const e = o.harvest.edgeMonths;
   if (e > 0) {
     for (const w of [o.harvest.main, o.harvest.second]) {
@@ -133,7 +135,7 @@ export function harvestState(o: Pick<OriginFacts, 'harvest'>, month: number): Ha
       }
     }
   }
-  return o.harvest.elsewhere ? 'elsewhere' : 'off';
+  return 'off';
 }
 export const windowText = (w: [number, number] | null) => (w ? (w[0] === w[1] ? MONTHS_LONG[w[0] - 1] : `${MONTHS[w[0] - 1]}–${MONTHS[w[1] - 1]}`) : '');
 
@@ -141,7 +143,7 @@ export const windowText = (w: [number, number] | null) => (w ? (w[0] === w[1] ? 
 const CALENDAR_TAGS: Record<string, string> = {
   Robusta: 'robusta', 'Robusta regional seasons': 'robusta', 'Huila illustrative calendar': 'Huila',
   'arabica from Sumatra': 'Sumatran arabica', 'arabica, south and north together': 'arabica',
-  'northern arabica, Chiang Rai and Chiang Mai together': 'northern arabica',
+  'northern arabica, Chiang Rai and Chiang Mai together': 'northern arabica', 'Central Kenya': 'Central Kenya',
 };
 export const calendarTag = (o: Pick<OriginFacts, 'harvest'>): string | null => (o.harvest.scope && CALENDAR_TAGS[o.harvest.scope]) || null;
 export function harvestText(o: Origin): string {

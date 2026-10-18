@@ -92,14 +92,14 @@ export const ATLAS: AtlasMethod[] = [
     id: 'chemex', label: 'Chemex', the: 'the Chemex', line: 'An hourglass brewer with a thick folded paper: the clearest cup.',
     contact: 'percolation', filter: 'thick-paper', force: 'gravity', attention: 2,
     ...fromEngine('chemex'),
-    guide: { slug: 'ultimate-pour-over-coffee-guide-and-best-v60-technique', title: 'Pour over coffee guide (V60 and other cones)' },
+    guide: { slug: 'flat-bottom-vs-cone-pour-over', title: 'Flat-bottom vs cone pour-over (the Chemex among the cones)' },
     sourceIds: ['easto', 'synthesis'],
   },
   {
     id: 'kalita', label: 'Kalita Wave', the: 'the Kalita Wave', line: 'A flat-bottomed dripper with three small holes: the flat bed is forgiving.',
     contact: 'percolation', filter: 'paper', force: 'gravity', attention: 2,
     ...fromEngine('kalita'),
-    guide: { slug: 'dripper-material-comparison', title: 'Dripper materials compared' },
+    guide: { slug: 'flat-bottom-vs-cone-pour-over', title: 'Flat-bottom vs cone pour-over' },
     sourceIds: ['easto', 'synthesis'],
   },
   {
@@ -112,7 +112,7 @@ export const ATLAS: AtlasMethod[] = [
   {
     id: 'phin', label: 'Phin', the: 'the phin', line: 'A small Vietnamese metal filter that drips slowly straight into the glass.',
     contact: 'percolation', filter: 'metal', force: 'gravity', attention: 2,
-    timeS: [240, 300], ratio: { classic: 8.6, range: [8.6, 8.6] }, grind: 'Medium-coarse', temp: '205–212°F (95–100°C)',
+    timeS: [240, 300], ratio: { classic: 8.6, range: [8.6, 8.6] }, grind: 'Medium-coarse', temp: '203–212°F (95–100°C)',
     recipeBy: 'our phin guide: 14 g of coffee and 120 ml of water, dripping for 4–5 minutes',
     brewGuide: null,
     guide: { slug: 'vietnamese-phin-guide', title: 'Vietnamese phin guide' },
@@ -147,7 +147,7 @@ export const ATLAS: AtlasMethod[] = [
   {
     id: 'clever', label: 'Clever Dripper', the: 'the Clever Dripper', line: 'A cone with a valve: it steeps like a press, then drains through paper.',
     contact: 'steep-drain', filter: 'paper', force: 'gravity', attention: 1,
-    timeS: [270, 285], ratio: { classic: 15, range: [15, 16] }, grind: 'Medium-coarse', temp: '200–205°F (93–96°C)',
+    timeS: [270, 285], ratio: { classic: 15, range: [15, 16] }, grind: 'Medium-coarse', temp: '199–205°F (93–96°C)',
     recipeBy: 'our Clever Dripper guide: 20 g of coffee and 300 g of water, 4 minutes, then a 30–45 second drain',
     brewGuide: null,
     guide: { slug: 'the-clever-dripper-better-coffee-than-pour-over', title: 'The Clever Dripper' },
@@ -156,7 +156,7 @@ export const ATLAS: AtlasMethod[] = [
   {
     id: 'siphon', label: 'Siphon', the: 'the siphon', line: 'Vapor pushes water up into the coffee; a vacuum pulls the brew back down.',
     contact: 'steep-drain', filter: 'cloth', force: 'vapor', attention: 3,
-    timeS: [120, 180], ratio: { classic: 15, range: [15, 15] }, grind: 'Medium-fine', temp: '195–200°F (90–93°C)',
+    timeS: [120, 180], ratio: { classic: 15, range: [15, 15] }, grind: 'Medium-fine', temp: '194–199°F (90–93°C)',
     recipeBy: 'our siphon guide: 20 g of coffee and 300 g of water, a 60–90 second steep and a 60–90 second drawdown',
     brewGuide: null,
     guide: { slug: 'how-to-use-a-siphon-coffee-maker', title: 'How to use a siphon coffee maker' },
@@ -273,7 +273,8 @@ export function differenceSentence(a: AtlasMethod, b: AtlasMethod): string {
   if (d.includes('filter')) {
     const [clear, full] = FILTER[a.filter].order <= FILTER[b.filter].order ? [a, b] : [b, a];
     parts.push(full.filter === 'none' ? `only ${clear.the} is filtered` : `${clear.the}'s ${FILTER_PHRASE[clear.filter]} gives the clearer cup`);
-  } else if (d.includes('time')) {
+  }
+  if (d.includes('time') && parts.length < 2) {
     const [fast, slow] = a.timeS[1] <= b.timeS[1] ? [a, b] : [b, a];
     parts.push(`${fast.the} takes ${timeText(fast)}, ${slow.the} ${timeText(slow)}`);
   }

@@ -203,12 +203,13 @@
   {@const lit = sel || vs}
   <g class="star" class:sel class:vs class:pick={picking && m.id !== aId} class:dimmed={!!aId && !lit && !picking} style="transform: translate({p.x}px, {p.y}px)"
     role="button" tabindex="0" data-star={m.id} aria-pressed={lit}
-    aria-label="{m.label}: {CONTACT[m.contact].label.toLowerCase()}, {FILTER[m.filter].label.toLowerCase()} filter, {FORCE[m.force].label.toLowerCase()}, {timeText(m)}"
+    aria-label="{m.label}: {CONTACT[m.contact].label.toLowerCase()}, {m.filter === 'none' ? 'no filter' : `${FILTER[m.filter].label.toLowerCase()} filter`}, {FORCE[m.force].label.toLowerCase()}, {timeText(m)}"
     onclick={() => select(m.id)} onkeydown={(e) => keyAct(e, () => select(m.id))}>
     <circle class="halo" r={lit ? r * 5 : r * 3.2} fill="#E8C36A" opacity={lit ? 0.13 : 0.06} />
     <circle class="halo" r={lit ? r * 2.6 : r * 1.7} fill="#E8C36A" opacity={lit ? 0.28 : 0.14} />
     {#if pushed(m)}
-      <path d="M{-r * 3.1} 0 H{r * 3.1} M0 {-r * 3.1} V{r * 3.1}" stroke="#F0D070" stroke-width="1.5" opacity=".9" />
+      {@const vr = by === 'time' ? Math.min(r * 3.1, 12) : r * 3.1}
+      <path d="M{-r * 3.1} 0 H{r * 3.1} M0 {-vr} V{vr}" stroke="#F0D070" stroke-width="1.5" opacity=".9" />
     {/if}
     <circle class="core" r={lit ? r * 1.25 : r} fill={lit ? '#F5D78E' : '#E8C36A'} filter="url(#mc-star-glow)" />
     {#if sel}<circle r={r * 1.25 + 9} fill="none" stroke="#F5D78E" stroke-width="1.6" class="ring" />{/if}
@@ -387,7 +388,7 @@
               <a class="linkish" href="/blog/{A.guide.slug}/">{A.guide.title}</a>
             {:else}
               <a class="primary" href="/blog/{A.guide.slug}/">Read the {A.label} guide →</a>
-              <span class="quiet small">The Brew Guide doesn't cover the {A.label} yet.</span>
+              <span class="quiet small">The Brew Guide doesn't cover {A.the} yet.</span>
             {/if}
           </div>
           <div class="cmpstart">
@@ -432,7 +433,7 @@
           <p class="quiet small">Highlighted rows are the axes that differ. Time is highlighted when the ranges don't overlap or one takes at least 1.5 times as long. Contact time is a typical range for each recipe.{#each [A, B].filter((m) => m.timeNote) as m (m.id)}{' '}* {m.label}: {m.timeNote}.{/each}</p>
           <div class="actions">
             {#each [A, B] as m (m.id)}
-              {#if brewGuideHref(m)}<a class="ghost" href={brewGuideHref(m)}>Brew the {m.label} →</a>{:else}<a class="ghost" href="/blog/{m.guide.slug}/">{m.label} guide →</a>{/if}
+              {#if brewGuideHref(m)}<a class="ghost" href={brewGuideHref(m)}>{m.label} in the Brew Guide →</a>{:else}<a class="ghost" href="/blog/{m.guide.slug}/">{m.label} guide →</a>{/if}
             {/each}
             <button type="button" class="linkish" onclick={swap}>Swap</button>
           </div>

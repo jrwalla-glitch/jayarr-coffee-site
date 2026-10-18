@@ -107,14 +107,12 @@
      5,
      7
     ],
-    "variesBy": "District, rainfall and elevation change the main and early crops.",
+    "variesBy": "Sucafina's Central Kenya calendar. Café Imports gives a wider national window: main crop August–January, fly crop April–July.",
     "edgeMonths": 2,
     "sources": [
-     "suca-kenya",
-     "ci-kenya",
-     "sucafina-handbook-2026"
+     "suca-kenya"
     ],
-    "scope": "Arabica"
+    "scope": "Central Kenya"
    },
    "altitudeM": {
     "min": 1100,
@@ -777,9 +775,7 @@
     "variesBy": "This is Huila; southern districts can reverse main and mitaca seasons, and coffee is harvested somewhere year-round.",
     "edgeMonths": 1,
     "sources": [
-     "ci-colombia",
-     "suca-colombia",
-     "sucafina-handbook-2026"
+     "ci-colombia"
     ],
     "scope": "Huila illustrative calendar"
    },
@@ -876,7 +872,7 @@
      "ci-ecuador",
      "mercanta-ecuador"
     ],
-    "scope": "Arabica"
+    "scope": "arabica and robusta, nationally"
    },
    "altitudeM": {
     "min": 1200,
@@ -941,8 +937,7 @@
    "tendencies": {
     "notes": [
      "fruity",
-     "floral",
-     "distinctive"
+     "floral"
     ],
     "source": "ci-ecuador",
     "caveat": "These describe specialty arabica, not the larger robusta component of USDA's national total."
@@ -1345,7 +1340,7 @@
     "min": 400,
     "max": 2000,
     "species": "arabica",
-    "scope": "Combined published growing bands: Sucafina 400–1,600 m; Mercanta's Alotepeque–Metapán coffee-growing zone 1,000–2,000 m; not national extrema.",
+    "scope": "Combined published growing bands: Sucafina 400–1,600 m; Mercanta's Alotepec–Metapán coffee-growing zone 1,000–2,000 m; not national extrema.",
     "sources": [
      "sucafina-handbook-2026",
      "mercanta-el-salvador"

@@ -36,7 +36,8 @@
 
   const pretty = (id: string) => id.replace(/[-_]+/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()).replace(/\bC(\d+)\b/, 'C$1');
   const fmtDate = (iso: string) => { const d = new Date(`${iso}T12:00:00`); return Number.isNaN(d.valueOf()) ? null : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); };
-  const g1 = (x: number) => (Math.round(x * 10) / 10).toLocaleString('en-US');
+  // As the Brew Guide prints coffee: a tenth of a gram under 100 g, whole grams above.
+  const g1 = (x: number) => (x >= 100 ? Math.round(x) : Math.round(x * 10) / 10).toLocaleString('en-US');
   const todayIso = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
 
   onMount(() => {

@@ -73,7 +73,7 @@ export const FAMILIES: Family[] = [
         n('acrid', 'Acrid', 'Sharp, scorched, over-roasted.', 'a burnt edge of toast', ['acrid', 'burnt', 'charred']),
       ]],
       ['tobacco', 'Tobacco', [
-        n('tobacco', 'Tobacco', 'Dried leaf, sweet and a little earthy.', 'dried tea leaves or a fresh cigar\'s wrapper smell', ['tobacco', 'pipe tobacco']),
+        n('tobacco', 'Tobacco', 'Dried leaf, sweet and a little earthy.', 'a pinch of pipe tobacco, or the wrapper of an unlit cigar', ['tobacco', 'pipe tobacco']),
       ]],
     ]),
   family('spices', 'Spices', '#b4532a',
@@ -83,14 +83,14 @@ export const FAMILIES: Family[] = [
     [
       ['brown-spice', 'Brown spice', [
         n('cinnamon', 'Cinnamon', 'Sweet, woody, warm.', 'a cinnamon stick, snapped', ['cinnamon']),
-        n('clove', 'Clove', 'Sharp, numbing, medicinal warmth.', 'one whole clove, cracked', ['clove']),
+        n('clove', 'Clove', 'Sharp, numbing, medicinal warmth.', 'one whole clove, cracked', ['clove', 'cloves']),
         n('nutmeg', 'Nutmeg', 'Warm, nutty, a little piney.', 'freshly grated nutmeg', ['nutmeg']),
         n('anise', 'Anise', 'Licorice-like and sweet.', 'a fennel seed or star anise', ['anise', 'licorice', 'liquorice']),
         n('cardamom', 'Cardamom', 'Bright, resinous, citrus-and-pine spice.', 'a cracked green cardamom pod', ['cardamom'], extraWord),
         n('baking-spice', 'Baking spice', 'Warm mixed spice, like a spice cookie.', 'a pinch of mixed spice or pumpkin-pie spice', ['baking spice', 'brown spice', 'allspice', 'gingersnap', 'snickerdoodle cookie'], extraWord),
       ]],
       ['pepper', 'Pepper', [
-        n('pepper', 'Pepper', 'Black-pepper bite at the back of the nose.', 'freshly cracked black pepper', ['pepper', 'peppery']),
+        n('pepper', 'Pepper', 'Black-pepper bite at the back of the nose.', 'freshly cracked black pepper', ['pepper', 'peppery', 'peppercorn', 'peppercorns']),
       ]],
       ['pungent', 'Pungent', [
         n('pungent', 'Pungent', 'A sharp, prickly spice smell that fills the nose.', 'a raw ginger slice', ['pungent', 'ginger']),
@@ -102,7 +102,7 @@ export const FAMILIES: Family[] = [
     ['wcr-lexicon'],
     [
       ['cocoa', 'Cocoa', [
-        n('chocolate', 'Chocolate', 'Cocoa with the round fat of cocoa butter.', 'a square of milk chocolate', ['chocolate', 'milk chocolate', 'chocolate chip cookie', 'white chocolate']),
+        n('chocolate', 'Chocolate', 'Cocoa with the round fat of cocoa butter.', 'a square of milk chocolate', ['chocolate', 'milk chocolate', 'chocolate chip cookie', 'chocolatey']),
         n('dark-chocolate', 'Dark chocolate', 'Intense cocoa, drier and more bitter.', 'a square of 85–90% dark chocolate', ['dark chocolate', 'bittersweet chocolate']),
         n('cocoa', 'Cocoa powder', 'Dusty, brown, slightly bitter cocoa.', 'unsweetened cocoa powder', ['cocoa', 'cocoa powder', 'cacao', 'cacao nib', 'cocoa nibs', 'cacao dusting'], { wheel: false }),
       ]],
@@ -155,9 +155,9 @@ export const FAMILIES: Family[] = [
         n('strawberry', 'Strawberry', 'Sweet, candied red berry.', 'a ripe strawberry, crushed', ['strawberry', 'strawberries', 'ripe strawberry', 'strawberry candy', 'strawberry shortcake']),
         n('raspberry', 'Raspberry', 'Bright, tart red berry.', 'a few raspberries', ['raspberry', 'raspberry aroma']),
         n('blackberry', 'Blackberry', 'Dark, tart-sweet berry with seeds.', 'a blackberry or blackberry jam', ['blackberry', 'blackberry jam', 'boysenberry', 'mulberry']),
-        n('blackcurrant', 'Blackcurrant', 'Tart, dark, slightly green berry: a hallmark word for Kenyan coffees.', 'blackcurrant jam or cordial', ['blackcurrant', 'black currant', 'currant', 'cassis'], extraWord),
+        n('blackcurrant', 'Blackcurrant', 'Tart, dark, slightly green berry: a hallmark word for Kenyan coffees.', 'blackcurrant jam or cordial', ['blackcurrant', 'black currant', 'black currants', 'cassis'], extraWord),
         n('cranberry', 'Cranberry', 'Sharp, dry red berry.', 'a dried or fresh cranberry', ['cranberry'], extraWord),
-        n('berries-mixed', 'Mixed berries', 'Berries without one fruit in front.', 'a spoon of mixed-berry jam', ['berry', 'berries', 'red berries', 'juicy berries', 'mixed berries', 'forest fruits', 'cloudberry', 'seabuckthorn berry', 'redcurrant'], extraWord),
+        n('berries-mixed', 'Mixed berries', 'Berries without one fruit in front.', 'a spoon of mixed-berry jam', ['berry', 'berries', 'red berries', 'juicy berries', 'mixed berries', 'forest fruits', 'cloudberry', 'seabuckthorn berry', 'redcurrant', 'red currant', 'red currants'], extraWord),
       ]],
       ['dried-fruit', 'Dried fruit', [
         n('raisin', 'Raisin', 'Dark, sweet dried grape.', 'a few raisins, chewed', ['raisin', 'raisins', 'golden raisin', 'sultana']),
@@ -167,7 +167,7 @@ export const FAMILIES: Family[] = [
       ]],
       ['other-fruit', 'Other fruit', [
         n('cherry', 'Cherry', 'Sweet red fruit with a slight almond bitterness.', 'a cherry, or cherry jam', ['cherry', 'cherries', 'ripe cherries', 'black cherry', 'red cherry', 'rainier cherry', 'cherry jam', 'cherry candy', 'cherry cola', 'sour cherry', 'sour cherries']),
-        n('stone-fruit', 'Peach & apricot', 'Soft, juicy, perfumed stone fruit.', 'a ripe peach or apricot', ['peach', 'peaches', 'apricot', 'nectarine', 'white peach', 'stewed peach', 'stone fruit', 'stonefruit'], extraWord),
+        n('stone-fruit', 'Peach & apricot', 'Soft, juicy, perfumed stone fruit.', 'a ripe peach or apricot', ['peach', 'peaches', 'apricot', 'nectarine', 'white peach', 'stewed peach'], extraWord),
         n('plum', 'Plum', 'Dark, juicy fruit with a tart skin.', 'a ripe plum', ['plum', 'plums', 'stewed plum'], extraWord),
         n('apple', 'Apple', 'Crisp, juicy, from green to red.', 'a slice of red or green apple', ['apple', 'apples', 'red apple', 'green apple', 'cooked apple', 'fuji apple', 'honeycrisp apples']),
         n('pear', 'Pear', 'Soft, floral, grainy-sweet.', 'a ripe pear', ['pear', 'bosc pear']),
@@ -179,7 +179,7 @@ export const FAMILIES: Family[] = [
         n('coconut', 'Coconut', 'Sweet, woody, oily.', 'unsweetened coconut flakes', ['coconut']),
       ]],
       ['citrus', 'Citrus fruit', [
-        n('lemon', 'Lemon', 'Sharp, clean, peely sourness.', 'a strip of lemon zest', ['lemon', 'meyer lemon', 'lemon zest', 'grilled lemon', 'candied lemon', 'lemon candy', 'sweet lemon', 'limoncello', 'pink lemonade']),
+        n('lemon', 'Lemon', 'Sharp, clean, peely sourness.', 'a strip of lemon zest', ['lemon', 'meyer lemon', 'lemon zest', 'grilled lemon', 'candied lemon', 'lemon candy', 'sweet lemon', 'limoncello', 'pink lemonade', 'lemonade']),
         n('lime', 'Lime', 'Sour, green, a little bitter.', 'a strip of lime zest', ['lime', 'lime zest', 'key lime', 'kaffir lime', 'candied lime']),
         n('orange', 'Orange', 'Sweet, juicy, floral citrus.', 'a segment of orange', ['orange', 'blood orange', 'tangerine', 'mandarin', 'mandarin orange', 'clementine', 'sweet orange', 'orange zest', 'marmalade']),
         n('grapefruit', 'Grapefruit', 'Sour with a bitter peel edge.', 'a strip of grapefruit peel', ['grapefruit', 'ruby grapefruit', 'pomelo']),
@@ -232,7 +232,7 @@ export const OFF_GROUPS: Group[] = [
     { id: 'papery', label: 'Papery & cardboard', gist: 'Wet paper or cardboard.', ref: 'a dry paper filter, smelled (then rinse yours)', words: ['papery', 'cardboard'], wheel: false, flaw: true, family: 'off', group: 'papery-musty' },
     { id: 'musty', label: 'Musty & earthy', gist: 'Damp cellar, dust, earth.', ref: 'a damp basement or potting soil, smelled', words: ['musty', 'earthy', 'dusty', 'damp', 'moldy', 'mouldy'], wheel: true, flaw: true, family: 'off', group: 'papery-musty' },
     { id: 'woody', label: 'Woody', gist: 'Dry wood or sawdust.', ref: 'a pencil shaving', words: ['woody', 'cedar'], wheel: true, family: 'off', group: 'papery-musty' },
-    { id: 'phenolic', label: 'Phenolic', gist: 'Medicinal, plastic or burnt-rubber tones: one of the three sensory defects in the SCA\'s cupping standard (SCA-104, 2024), with potato and moldy.', ref: 'an adhesive bandage, smelled', words: ['phenolic', 'medicinal'], wheel: true, flaw: true, family: 'off', group: 'papery-musty' },
+    { id: 'phenolic', label: 'Phenolic', gist: 'Medicinal, plastic or burnt-rubber tones: one of the three sensory defects in the SCA\'s cupping standard (SCA-104, 2024), with potato and moldy.', ref: 'an adhesive bandage, smelled', words: ['phenolic'], wheel: true, flaw: true, family: 'off', group: 'papery-musty' },
   ] },
   { id: 'chemical', label: 'Chemical', family: 'off', notes: [
     { id: 'rubber', label: 'Rubber & petroleum', gist: 'Rubber, tire or gasoline smells, from the wheel\'s chemical group: unwelcome in a specialty cup, though the SCA\'s current standard doesn\'t list it as a defect.', ref: 'a rubber band, smelled', words: ['rubber', 'rubbery', 'petroleum'], wheel: false, flaw: true, family: 'off', group: 'chemical' },
@@ -276,9 +276,14 @@ export const ROASTER_SAMPLE = {
 };
 
 // Longest phrases first, so "orange blossom" is floral and not orange, and "dark chocolate" isn't chocolate.
-const PHRASES: { phrase: string; id: string; flaw: boolean }[] = ALL_NOTES
-  .flatMap((x) => x.words.map((w) => ({ phrase: w.toLowerCase(), id: x.id, flaw: !!x.flaw || x.family === 'off' })))
-  .sort((a, b) => b.phrase.length - a.phrase.length);
+// Phrases that name no single note ("stone fruit" covers peach, plum and cherry; white chocolate has
+// no cocoa; a bare "currant" could be red or black): matched, so their words aren't misread, but
+// counted toward nothing (review r2, Opus).
+const NO_NOTE = ['stone fruit', 'stone fruits', 'stonefruit', 'white chocolate', 'currant', 'currants'];
+const PHRASES: { phrase: string; id: string; flaw: boolean }[] = [
+  ...ALL_NOTES.flatMap((x) => x.words.map((w) => ({ phrase: w.toLowerCase(), id: x.id, flaw: !!x.flaw || x.family === 'off' }))),
+  ...NO_NOTE.map((phrase) => ({ phrase, id: '', flaw: false })),
+].sort((a, b) => b.phrase.length - a.phrase.length);
 
 const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const PHRASE_RE = PHRASES.map((p) => ({ ...p, re: new RegExp(`(^|[^a-z])${escape(p.phrase)}(?=$|[^a-z])`) }));
@@ -288,6 +293,9 @@ const PHRASE_RE = PHRASES.map((p) => ({ ...p, re: new RegExp(`(^|[^a-z])${escape
  * Each stretch of text counts once, for its longest matching phrase.
  */
 export function notesInText(text: string, opts: { roaster?: boolean } = {}): string[] {
+  return scan(text, opts).found;
+}
+function scan(text: string, opts: { roaster?: boolean } = {}): { found: string[]; rest: string } {
   let rest = ` ${text.toLowerCase().replace(/&?nbsp;/g, ' ').replace(/[’']/g, "'")} `;
   const found: string[] = [];
   for (const p of PHRASE_RE) {
@@ -295,7 +303,7 @@ export function notesInText(text: string, opts: { roaster?: boolean } = {}): str
     if (!m) continue;
     // Roasters don't print flaws on their bags, so in their descriptions a flaw word is a misread
     // ("sour", "raw"): it's set aside, not counted.
-    if (!found.includes(p.id) && !(opts.roaster && p.flaw)) found.push(p.id);
+    if (p.id && !found.includes(p.id) && !(opts.roaster && p.flaw)) found.push(p.id);
     const start = m.index + m[1].length;
     rest = rest.slice(0, start) + ' '.repeat(p.phrase.length) + rest.slice(start + p.phrase.length);
     // A phrase can appear twice ("lemon … lemon"); blank every occurrence.
@@ -305,7 +313,20 @@ export function notesInText(text: string, opts: { roaster?: boolean } = {}): str
       rest = rest.slice(0, s) + ' '.repeat(p.phrase.length) + rest.slice(s + p.phrase.length);
     }
   }
-  return found;
+  return { found, rest };
+}
+
+// A family's own name on a bag ("floral", "fruity", "nutty") names the family, not one note: the
+// tasting card reads it that way, so a pinned Jasmine is close to a bag that says "floral".
+const FAMILY_WORDS: Record<string, FamilyId> = {
+  floral: 'floral', florals: 'floral', flowery: 'floral', fruity: 'fruity', fruit: 'fruity', fruits: 'fruity',
+  nutty: 'nutty-cocoa', sweet: 'sweet', sweetness: 'sweet', spicy: 'spices', spice: 'spices', spices: 'spices',
+  roasty: 'roasted', roasted: 'roasted', green: 'green', vegetal: 'green', herbal: 'green', fermented: 'sour-fermented', sour: 'sour-fermented',
+};
+/** Family ids named in free text by a family's own word, once the notes' phrases are taken out. */
+export function familiesInText(text: string): FamilyId[] {
+  const rest = scan(text).rest;
+  return [...new Set(Object.entries(FAMILY_WORDS).filter(([w]) => new RegExp(`(^|[^a-z])${w}(?=$|[^a-z])`).test(rest)).map(([, f]) => f))];
 }
 
 export const PROCESS_LABEL: Record<string, string> = { washed: 'Washed', natural: 'Natural', honey: 'Honey', anaerobic: 'Anaerobic', other: 'Other or blend' };
@@ -402,6 +423,8 @@ export const MAX_PINS = 3;
 
 export interface CardComparison {
   bagNotes: string[];
+  /** Families the bag names by their own word ("floral"). */
+  bagFamilies: FamilyId[];
   /** Your notes the bag also names. */
   shared: string[];
   /** Your notes the bag doesn't name, but in the same family as one it does. */
@@ -414,13 +437,13 @@ export interface CardComparison {
 
 /** How the reader's notes line up with a roaster's: same note, same family, or neither. */
 export function compareCard(pins: string[], bag: string): CardComparison {
-  const bagNotes = notesInText(bag);
+  const bagNotes = notesInText(bag), bagFamilies = familiesInText(bag);
   const fam = (id: string) => noteById(id)?.family;
   const shared = pins.filter((p) => bagNotes.includes(p));
-  const near = pins.filter((p) => !shared.includes(p) && bagNotes.some((b) => fam(b) === fam(p)));
+  const near = pins.filter((p) => !shared.includes(p) && (bagNotes.some((b) => fam(b) === fam(p)) || bagFamilies.includes(fam(p) as FamilyId)));
   const yoursOnly = pins.filter((p) => !shared.includes(p) && !near.includes(p));
   const bagOnly = bagNotes.filter((b) => !pins.includes(b));
-  return { bagNotes, shared, near, yoursOnly, bagOnly };
+  return { bagNotes, bagFamilies, shared, near, yoursOnly, bagOnly };
 }
 
 /** Card ↔ URL: ?pins=blueberry,jasmine&bag=… Unknown notes are dropped, never guessed. */

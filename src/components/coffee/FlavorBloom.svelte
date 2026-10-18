@@ -4,7 +4,7 @@
   import { cubicOut } from 'svelte/easing';
   import {
     FAMILIES, OFF_GROUPS, ALL_NOTES, MAX_PINS, noteById, familyById, groupById, exercise, evidenceFor,
-    compareCard, encodeCard, decodeCard, notesInText, PROCESS_LABEL, ROAST_LABEL, ROASTER_SAMPLE,
+    compareCard, encodeCard, decodeCard, notesInText, familiesInText, PROCESS_LABEL, ROAST_LABEL, ROASTER_SAMPLE,
   } from '../../lib/coffee/flavors.ts';
   import type { Family, FamilyId, Lot, Note } from '../../lib/coffee/flavors.ts';
 
@@ -74,11 +74,14 @@
   // How the bag's words were read, where the reading changed something: "milk chocolate" counts as
   // Chocolate, and a word the wheel doesn't have is named, not silently dropped.
   let bagPhrases = $derived(bag.split(/[,;\/]| and /).map((t) => t.trim()).filter(Boolean));
+  // A family's own word ("floral") reads as that family, not as a word the wheel lacks.
+  const famLabel = (f: string) => `the ${familyById(f as FamilyId)!.label} family`;
   let bagReadAs = $derived(bagPhrases.flatMap((t) => {
-    const labels = notesInText(t).map((id) => noteById(id)!.label);
+    const labels = [...notesInText(t).map((id) => noteById(id)!.label), ...familiesInText(t).map(famLabel)];
     return labels.length && !(labels.length === 1 && labels[0].toLowerCase() === t.toLowerCase()) ? [`“${t}” as ${labels.join(' and ')}`] : [];
   }));
-  let bagUnmatched = $derived(bagPhrases.filter((t) => !notesInText(t).length));
+  let bagUnmatched = $derived(bagPhrases.filter((t) => !notesInText(t).length && !familiesInText(t).length));
+  const nearBecause = (x: string) => { const f = noteById(x)?.family, b = cmp.bagNotes.find((n) => noteById(n)?.family === f); return b ? `same family as the bag's ${noteById(b)!.label.toLowerCase()}` : `the bag names ${famLabel(f as string)}`; };
   let thinOrigins = $derived(note && ev?.thin ? [...new Set(lots.filter((l) => l.notes.some((t) => notesInText(t, { roaster: true }).includes(note.id))).map((l) => originName(l.o)))] : []);
   let originName = (id: string) => origins.find((o) => o.id === id)?.name ?? id;
   let originPage = (id: string) => origins.find((o) => o.id === id)?.page;
@@ -188,7 +191,7 @@
       const d = decodeCard(location.search);
       pins = d.pins; bag = d.bag; fromLink = true; linkCard = encodeCard(d);
       const why = [d.unknown ? `${d.unknown === 1 ? 'one note' : `${d.unknown} notes`} didn't match our list` : '', d.overLimit ? `a card holds ${MAX_PINS} notes, so the first ${MAX_PINS} were kept` : ''].filter(Boolean);
-      if (why.length) linkNote = `From that link: ${why.join('; ')}.`.replace(/: o/, ': O');
+      linkNote = `This is a shared card; your own stays saved on this device until you change this one.${why.length ? ` From that link, ${why.join('; ')}.` : ''}`;
     }
     try {
       const s = JSON.parse(localStorage.getItem(STORE) ?? 'null');
@@ -227,6 +230,8 @@
   // stalks as buds. Every label is placed so none overlap, in screen pixels.
   const groupTip = (f: FamilyId, angle: number) => { const [tx, ty] = at(ANGLE[f], R - 6); return [tx + Math.sin(rad(angle)) * SPRAY, ty - Math.cos(rad(angle)) * SPRAY]; };
   const phone = () => stageW < 520;
+  // Label sizes on the plate: a point smaller on a phone, so seven names fit beside their buds.
+  const BFS = () => (phone() ? 13 : 14), GFS = () => (phone() ? 14 : 15);
   /** The notes a group shows on the plate (its most-used, up to 8; 6 on a phone) and the arc they hang on. */
   function budLayout(notes: Note[]) {
     const shown = [...notes].sort((p, q) => (COUNTS[q.id] ?? 0) - (COUNTS[p.id] ?? 0)).slice(0, phone() ? 7 : 8);
@@ -365,15 +370,15 @@
     const glabels: GLabel[] = fam
       ? sp.map((x) => {
           const [px, py] = groupTip(fam.id, x.angle);
-          const pl = place(px, py, 6 * u, textW(x.label, 15, { italic: true }), x.angle, 15);
+          const pl = place(px, py, 6 * u, textW(x.label, GFS(), { italic: true }), x.angle, GFS());
           return { id: x.g.id, label: x.label, x: px + pl.lx, y: py + pl.ly, anchor: pl.anchor };
         })
       : OFF_GROUPS.map((g, i) => {
           const [px, py, a] = leafAt(i, 0.55);
-          const pl = place(px, py, 14 * u, textW(g.label, 15, { italic: true }), a + (LEAVES[i].d < 0 ? -90 : 90), 15, { side: LEAVES[i].d });
+          const pl = place(px, py, 14 * u, textW(g.label, GFS(), { italic: true }), a + (LEAVES[i].d < 0 ? -90 : 90), GFS(), { side: LEAVES[i].d });
           return { id: g.id, label: g.label, x: px + pl.lx, y: py + pl.ly, anchor: pl.anchor };
         });
-    for (const b of buds) Object.assign(b, place(b.x, b.y, b.r, textW(b.label, 14) + (fam ? 4 + textW(String(b.count), 11.5, { mono: true }) : 0), b.a, 14, { own: b }));
+    for (const b of buds) Object.assign(b, place(b.x, b.y, b.r, textW(b.label, BFS()) + (fam ? 4 + textW(String(b.count), BFS() - 2.5, { mono: true }) : 0), b.a, BFS(), { own: b }));
     // The rarer notes the plate leaves out are named in the panel, not drawn (a ghost bud collided with the group names).
     const more = null as null | { x: number; y: number; anchor: string; bx: number; by: number; a: number };
     return { buds, glabels, hidden, more, gx, gy, off };
@@ -508,7 +513,7 @@
       {@const budFill = fam ? fam.colour : OFF_COLOUR}
       {#each branch.glabels as gl (gl.id)}
         <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions (the group petal is the keyboard target) -->
-        <text x={gl.x} y={gl.y} text-anchor={gl.anchor} class="glab" class:on={groupId === gl.id} style="font-size: {15 * upp}px; stroke-width: {4 * upp}px" onclick={() => (groupId = gl.id)}>{gl.label}</text>
+        <text x={gl.x} y={gl.y} text-anchor={gl.anchor} class="glab" class:on={groupId === gl.id} style="font-size: {GFS() * upp}px; stroke-width: {4 * upp}px" onclick={() => (groupId = gl.id)}>{gl.label}</text>
       {/each}
       <!-- The active group's notes hang on stalks as buds: a bud's size is how often roasters name it -->
       {#each branch.buds as b (b.id)}
@@ -534,7 +539,7 @@
             {/if}
           </g>
           {#if pinned}<circle cx={b.x} cy={b.y} r={2.8 * upp} fill="#fffaf2" stroke="#2a1d15" stroke-width={0.8 * upp} />{/if}
-          <text x={b.x + b.lx} y={b.y + b.ly} text-anchor={b.anchor} class="blab" class:on={sel} style="font-size: {14 * upp}px; stroke-width: {4 * upp}px">{b.label}{#if !branch.off}<tspan class="bcount" dx={4 * upp} style="font-size: {11.5 * upp}px">{b.count}</tspan>{/if}</text>
+          <text x={b.x + b.lx} y={b.y + b.ly} text-anchor={b.anchor} class="blab" class:on={sel} style="font-size: {BFS() * upp}px; stroke-width: {4 * upp}px">{b.label}{#if !branch.off}<tspan class="bcount" dx={4 * upp} style="font-size: {(BFS() - 2.5) * upp}px">{b.count}</tspan>{/if}</text>
         </g>
       {/each}
       {#if branch.more}
@@ -706,7 +711,7 @@
           <p class="kick"><span class="sw" style:background={colourOf(note.family as FamilyId)}></span>{fam ? fam.label : 'Off notes'} · {g?.label}</p>
           <h2 tabindex="-1" bind:this={headEl}>{note.label}</h2>
           <p class="gist">{note.gist}{#if note.flaw}{' '}<span class="flawtag">Usually a flaw</span>{/if}</p>
-          {#if !note.wheel}<p class="quiet small">Not printed on the wheel in this form: a word roasters use often, or the wheel's notes combined, placed under {g?.label.toLowerCase()}.</p>{/if}
+          {#if !note.wheel}<p class="quiet small">{note.family === 'off' && note.id === 'potato' ? 'Not on the wheel itself: a named defect in the SCA\'s cupping standard, placed under chemical.' : `Not printed on the wheel in this form: a word roasters use often, or the wheel's notes combined, placed under ${g?.label.toLowerCase()}.`}</p>{/if}
 
           <div class="tryit">
             <p class="lbl">Try it</p>
@@ -786,24 +791,25 @@
         <span class="lbl">What does the bag say? <span class="quiet">(optional)</span></span>
         <input type="text" maxlength="160" placeholder="e.g. blueberry, jasmine, dark chocolate" bind:value={bag} />
       </label>
-      {#if pins.length && cmp.bagNotes.length}
+      {#if pins.length && (cmp.bagNotes.length || cmp.bagFamilies.length)}
         <div class="cmp" aria-live="polite">
           {#if cmp.shared.length}<p><b>You and the bag both found</b> {cmp.shared.map((x) => noteById(x)?.label).join(', ')}</p>{/if}
-          {#if cmp.near.length}<p><b>Close</b> {cmp.near.map((x) => `${noteById(x)?.label} (same family as the bag's ${noteById(cmp.bagNotes.find((b) => noteById(b)?.family === noteById(x)?.family)!)?.label.toLowerCase()})`).join(', ')}</p>{/if}
+          {#if cmp.near.length}<p><b>Close</b> {cmp.near.map((x) => `${noteById(x)?.label} (${nearBecause(x)})`).join(', ')}</p>{/if}
           {#if cmp.yoursOnly.length}<p><b>Only you</b> {cmp.yoursOnly.map((x) => noteById(x)?.label).join(', ')}</p>{/if}
           {#if cmp.bagOnly.length}<p><b>Only on the bag</b> {#each cmp.bagOnly as x, i (x)}{i > 0 ? ', ' : ''}<button type="button" class="inl" onclick={() => openNote(x)}>{noteById(x)?.label}</button>{/each}{' '}<span class="quiet">(open one to try its exercise)</span></p>{/if}
           {#if bagReadAs.length}<p class="quiet small mapping">We read {bagReadAs.join('; ')}.</p>{/if}
           {#if bagUnmatched.length}<p class="quiet small mapping">Not on the wheel yet: {bagUnmatched.map((t) => `“${t}”`).join(', ')}.</p>{/if}
           <p class="quiet small">Tasting notes are hints, not a test: a note in the same family counts as close.</p>
         </div>
-      {:else if cmp.bagNotes.length}
+      {:else if cmp.bagNotes.length || cmp.bagFamilies.length}
         <div class="cmp" aria-live="polite">
-          <p><b>The bag's notes on the wheel</b> {#each cmp.bagNotes as x, i (x)}{i > 0 ? ', ' : ''}<button type="button" class="inl" onclick={() => openNote(x)}>{noteById(x)?.label}</button>{/each}{' '}<span class="quiet">(open one to try its exercise)</span></p>
+          {#if cmp.bagFamilies.length}<p><b>The bag's families</b> {cmp.bagFamilies.map((f) => familyById(f)!.label).join(', ')}</p>{/if}
+          {#if cmp.bagNotes.length}<p><b>The bag's notes on the wheel</b> {#each cmp.bagNotes as x, i (x)}{i > 0 ? ', ' : ''}<button type="button" class="inl" onclick={() => openNote(x)}>{noteById(x)?.label}</button>{/each}{' '}<span class="quiet">(open one to try its exercise)</span></p>{/if}
           {#if bagReadAs.length}<p class="quiet small mapping">We read {bagReadAs.join('; ')}.</p>{/if}
           {#if bagUnmatched.length}<p class="quiet small mapping">Not on the wheel yet: {bagUnmatched.map((t) => `“${t}”`).join(', ')}.</p>{/if}
           <p class="quiet small">Add the notes you taste to compare them with the bag.</p>
         </div>
-      {:else if bag.trim() && !cmp.bagNotes.length}
+      {:else if bag.trim()}
         <p class="quiet small">None of those words match a note on the wheel yet. Try the main fruit or sweet word on the bag.</p>
       {/if}
       <div class="cardactions">

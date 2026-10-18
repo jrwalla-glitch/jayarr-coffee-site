@@ -33,11 +33,27 @@
       strong: 'Espresso is intense by design, and the ratio sets it: a longer shot, with more liquid per gram, makes it gentler.',
       flat: 'Often stale beans or water with too few minerals, rather than the recipe.',
     }[id] ?? '';
+    // Cold brew is a concentrate and a moka pot's ratio is set by the pot, so their advice is their own,
+    // as the Doctor gives it (review r2, Opus).
+    if (m === 'cold-brew') return {
+      sour: 'Often under-extracted: a steep that was too short or a grind that was too coarse.',
+      bitter: 'Often a steep that ran long or a grind that was too fine; dark roasts are bitter by nature.',
+      weak: 'Cold brew is a concentrate: serve it with less water or milk before changing the recipe.',
+      strong: 'Cold brew is a concentrate: add more cold water or milk when you serve it.',
+      flat: 'Often stale beans or water with too few minerals, rather than the recipe.',
+    }[id] ?? '';
+    if (m === 'moka') return {
+      sour: 'Often the water passed through too fast or too cool: a finer grind (still coarser than espresso) or a lower flame.',
+      bitter: 'Often overheated: take the pot off the heat as it starts to sputter, and cool the base under the tap.',
+      weak: 'Usually too little coffee in the basket: fill it level, without tamping.',
+      strong: 'Moka coffee is concentrated by design: brew it as usual and add hot water to the cup to taste.',
+      flat: 'Often stale beans or water with too few minerals, rather than the recipe.',
+    }[id] ?? '';
     return {
       sour: `Often under-extracted: the water didn't pull enough from the coffee. The usual suspects are a grind that's too coarse or ${steep ? 'a steep that was too short' : 'a brew that ran too fast'}.`,
       bitter: `Often over-extracted: too much was pulled out. A grind that's too fine or ${steep ? 'a steep that ran too long' : 'a brew that ran too long'} are the usual suspects, though dark roasts are bitter by nature.`,
       weak: 'Usually too little coffee for the water, before anything else. A stronger ratio is the first thing to try.',
-      strong: m === 'moka' ? 'Moka coffee is concentrated by design: brew it as usual and add hot water to the cup to taste.' : 'Usually too much coffee for the water. A lighter ratio, or adding a little hot water, fixes it without touching the grind.',
+      strong: 'Usually too much coffee for the water. A lighter ratio, or adding a little hot water, fixes it without touching the grind.',
       flat: 'Often stale beans or water with too few minerals, rather than the recipe.',
     }[id] ?? '';
   }
@@ -77,7 +93,7 @@
   const GRIND_STEPS = [{ um: 250, x: 10 }, { um: 450, x: 25 }, { um: 650, x: 43 }, { um: 900, x: 64 }, { um: 1200, x: 88 }];
   const grain = (x: number, d: number, k: number) => Array.from({ length: 7 }, (_, q) => { const a = (q / 7) * Math.PI * 2, rr = (d / 2) * (0.8 + 0.28 * Math.abs(Math.sin(k * 3.7 + q * 1.9))); return `${(x + Math.cos(a) * rr).toFixed(1)},${(58 - d / 2 + Math.sin(a) * rr).toFixed(1)}`; }).join(' ');
   let grains = $derived(GRIND_STEPS.map((g, k) => ({ ...g, d: (g.um / 1000) * 22, pts: grain(g.x, (g.um / 1000) * 22, k), on: !!r && g.um >= r.grind.microns.min - 120 && g.um <= r.grind.microns.max + 120 })));
-  let litSpan = $derived.by(() => { const on = grains.filter((g) => g.on); return on.length ? [on[0].x - on[0].d / 2 - 2, on[on.length - 1].x + on[on.length - 1].d / 2 + 2] : null; });
+  let litSpan = $derived.by(() => { const on = grains.filter((g) => g.on); return on.length ? [Math.max(1, on[0].x - on[0].d / 2 - 2), Math.min(99, on[on.length - 1].x + on[on.length - 1].d / 2 + 2)] : null; });
   let grindShort = $derived(r ? r.grind.label.replace(/\s*\(.*\)$/, '') : '');
 
   // ── The Fix door's picture: a small extraction map, the taste marked, an arrow to the usual fix ──
@@ -149,7 +165,7 @@
                 <path d="M{50 - 21} {78 - mugH * 0.84} H{50 + 21} V{70} a7 7 0 0 1 -7 7 H{50 - 14} a7 7 0 0 1 -7 -7 Z" class="brew" />
               {/if}
             </svg>
-            <figcaption>{method === 'espresso' ? 'A double shot' : method === 'cold-brew' ? 'A jar of concentrate' : method === 'moka' ? 'One pot' : `A ${oz} oz mug`}</figcaption>
+            <figcaption>{method === 'espresso' ? 'A double shot' : method === 'cold-brew' ? 'A jar of concentrate' : method === 'moka' ? 'One pot' : `${oz === 8 || oz === 11 || oz === 18 ? 'An' : 'A'} ${oz} oz mug`}</figcaption>
           </figure>
           <figure>
             <svg viewBox="0 0 100 84">
@@ -169,7 +185,7 @@
             <figcaption>{grindShort}, like {r.grind.texture}</figcaption>
           </figure>
         </div>
-        <p class="note">{method === 'espresso' ? 'A double shot: 18 g in, 36 g out, in 25–30 seconds.' : method === 'cold-brew' ? 'A concentrate: dilute it about one to one to serve.' : method === 'moka' ? 'The pot sets the amounts: coffee level in the basket, water to just below the valve. The Brew Guide sizes it to your pot.' : `1:${ratioText} is the Brew Guide's classic strength for the ${BREWERS.find((b) => b.id === method)?.label}, and the Guide times every pour.`}</p>
+        <p class="note">{method === 'espresso' ? 'A double shot: 18 g in, 36 g out, in 25–30 seconds.' : method === 'cold-brew' ? 'A concentrate: dilute it about one to one to serve.' : method === 'moka' ? 'The pot sets the amounts: coffee level in the basket, water to just below the valve. The Brew Guide sizes it to your pot.' : `1:${ratioText} is the Brew Guide's classic strength for the ${BREWERS.find((b) => b.id === method)?.label}, and the Guide times ${method === 'french-press' || method === 'aeropress' ? 'the steep and the press' : method === 'cold-brew' ? 'the steep' : 'every pour'}.`}</p>
       {/if}
       <a class="go" href={href}>Brew it step by step →</a>
     {:else if door === 'fix'}
