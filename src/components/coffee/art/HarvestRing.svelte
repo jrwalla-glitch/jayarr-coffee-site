@@ -30,7 +30,8 @@
   const pid = $props.id();
   const uid = `hr-${pid}`;
   let states = $derived(Array.from({ length: 12 }, (_, i) => harvestState({ harvest }, i + 1)));
-  const COLOUR: Record<string, string> = { main: '#b86e2c', second: '#e2a861', edge: `url(#${uid}-hatch)`, off: '#d9cdbd' };
+  // The ring draws its own calendar; months picked only in other regions stay unfilled here.
+  const COLOUR: Record<string, string> = { main: '#b86e2c', second: '#e2a861', edge: `url(#${uid}-hatch)`, elsewhere: '#d9cdbd', off: '#d9cdbd' };
 </script>
 
 <svg viewBox={labels ? '-60 -60 120 120' : '-48 -48 96 96'} width={size} height={size} x={x !== undefined ? x - size / 2 : undefined} y={y !== undefined ? y - size / 2 : undefined}
@@ -42,7 +43,7 @@
   </defs>
   <circle r={R + W / 2 + 1.5} fill="#fbf6ee" fill-opacity={labels ? 0 : 0.92} stroke="#2a1d15" stroke-opacity=".25" stroke-width=".8" />
   {#each states as st, i (i)}
-    <path d={arc(i)} fill="none" stroke={COLOUR[st]} stroke-width={W} stroke-opacity={st === 'off' ? 0.7 : 1} />
+    <path d={arc(i)} fill="none" stroke={COLOUR[st]} stroke-width={W} stroke-opacity={st === 'off' || st === 'elsewhere' ? 0.7 : 1} />
   {/each}
   <circle r={R - W / 2 - 1.5} fill={labels ? '#fbf6ee' : '#fbf6ee'} stroke="#2a1d15" stroke-opacity=".2" stroke-width=".8" />
   {#if month}

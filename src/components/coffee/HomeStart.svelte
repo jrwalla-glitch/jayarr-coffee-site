@@ -4,7 +4,7 @@
   import type { MethodId } from '../../lib/coffee/index.ts';
   import ToolMini from './art/ToolMini.svelte';
   import GalleryMini from './art/GalleryMini.svelte';
-  import { harvestingIn, MONTHS_LONG } from '../../lib/coffee/origins.ts';
+  import { harvestingIn, pickingElsewhereIn, MONTHS_LONG } from '../../lib/coffee/origins.ts';
 
   // The homepage's first screen is a decision with a working preview. "Make a better cup" runs the
   // Brew Guide's own engine, so the numbers here are the numbers there, and the button carries the
@@ -60,11 +60,16 @@
   const sym = (id: string) => SYMPTOMS.find((s) => s.id === id)!;
 
   // ── The drawn row under the numbers: the cup at its size, the ratio as cells, the grind to scale ──
-  let ratioN = $derived(r ? Math.round(r.ratio) : 16);
   // The ratio as the Brew Guide prints it: up to two decimals, trailing zeros dropped (6.25, 15, 2).
   let ratioText = $derived(r ? String(Math.round(r.ratio * 100) / 100) : '16');
-  let cells = $derived(Array.from({ length: ratioN + 1 }, (_, i) => ({ x: (i % 9) * 11, y: Math.floor(i / 9) * 11, coffee: i === 0 })));
-  let cellRows = $derived(Math.ceil((ratioN + 1) / 9));
+  // One coffee cell, then a water cell per unit of the ratio; a fractional ratio (cold brew's 6.25)
+  // ends on a part-cell, so the drawing says what the caption says.
+  let cells = $derived.by(() => {
+    const ratio = r ? r.ratio : 16, whole = Math.floor(ratio + 1e-9), part = ratio - whole;
+    const n = whole + (part > 0.05 ? 1 : 0);
+    return Array.from({ length: n + 1 }, (_, i) => ({ x: (i % 9) * 11, y: Math.floor(i / 9) * 11, coffee: i === 0, w: i === n && part > 0.05 ? Math.max(2, 9 * part) : 9 }));
+  });
+  let cellRows = $derived(Math.ceil(cells.length / 9));
   // A mug's height grows with its size: 8 oz to 16 oz.
   let mugH = $derived(30 + 34 * Math.min(1, Math.max(0, (oz - 8) / 8)));
   // Grind: five grounds from fine to coarse, drawn to one scale (1 mm = 22 units); the ones in the
@@ -83,6 +88,7 @@
   // The Explore door's live line: who is harvesting this month (the reader's month, once known).
   let mounted = $state(false);
   let month = $state(10);
+  let elsewhereNow = $derived(pickingElsewhereIn(month));
   let nowNames = $derived.by(() => {
     const now = [...harvestingIn(month)].sort((a, b) => (b.production?.bags60kg ?? 0) - (a.production?.bags60kg ?? 0));
     return `${now.slice(0, 4).map((o) => o.name).join(', ')}${now.length > 4 ? ` and ${now.length - 4} more` : ''}`;
@@ -147,8 +153,8 @@
           </figure>
           <figure>
             <svg viewBox="0 0 100 84">
-              <g transform="translate({50 - (Math.min(9, ratioN + 1) * 11 - 2) / 2} {78 - (cellRows * 11 - 2)})">
-                {#each cells as c, i (i)}<rect x={c.x} y={c.y} width="9" height="9" rx="1.5" class={c.coffee ? 'cc' : 'cw'} />{/each}
+              <g transform="translate({50 - (Math.min(9, cells.length) * 11 - 2) / 2} {78 - (cellRows * 11 - 2)})">
+                {#each cells as c, i (i)}<rect x={c.x} y={c.y} width={c.w} height="9" rx="1.5" class={c.coffee ? 'cc' : 'cw'} />{/each}
               </g>
             </svg>
             <figcaption><b class="k-c">1</b> coffee to <b class="k-w">{ratioText}</b> {method === 'espresso' ? 'in the cup' : 'water'}</figcaption>
@@ -210,7 +216,7 @@
         <li><a href="/explore/origins/"><span class="pm" aria-hidden="true"><GalleryMini id="origins" names={false} /></span><span><b>The Coffee Origins</b><small>Who's harvesting now, and how high it grows</small></span></a></li>
         <li><a href="/explore/methods/"><span class="pm" aria-hidden="true"><GalleryMini id="methods" names={false} /></span><span><b>The Brewing Constellations</b><small>How thirteen brewers really differ</small></span></a></li>
       </ul>
-      <p class="note nowh" class:pending={!mounted}>Harvesting in {MONTHS_LONG[month - 1]}: {nowNames}.</p>
+      <p class="note nowh" class:pending={!mounted}>Harvesting in {MONTHS_LONG[month - 1]}: {nowNames}.{#if elsewhereNow.length}{' '}{elsewhereNow.map((o) => o.name).join(' and ')} {elsewhereNow.length > 1 ? 'pick' : 'picks'} in some regions too.{/if}</p>
       <a class="go" href="/explore/">Walk through the gallery →</a>
     {/if}
   </div>

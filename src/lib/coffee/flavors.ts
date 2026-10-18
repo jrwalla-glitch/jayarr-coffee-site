@@ -229,13 +229,13 @@ export const FAMILIES: Family[] = [
 export const OFF_GROUPS: Group[] = [
   { id: 'papery-musty', label: 'Papery & musty', family: 'off', notes: [
     { id: 'stale', label: 'Stale', gist: 'Flat and faded: old coffee.', ref: 'coffee left open for weeks', words: ['stale'], wheel: true, flaw: true, family: 'off', group: 'papery-musty' },
-    { id: 'papery', label: 'Papery & cardboard', gist: 'Wet paper or cardboard.', ref: 'a dry paper filter, smelled (then rinse yours)', words: ['papery', 'cardboard'], wheel: true, flaw: true, family: 'off', group: 'papery-musty' },
+    { id: 'papery', label: 'Papery & cardboard', gist: 'Wet paper or cardboard.', ref: 'a dry paper filter, smelled (then rinse yours)', words: ['papery', 'cardboard'], wheel: false, flaw: true, family: 'off', group: 'papery-musty' },
     { id: 'musty', label: 'Musty & earthy', gist: 'Damp cellar, dust, earth.', ref: 'a damp basement or potting soil, smelled', words: ['musty', 'earthy', 'dusty', 'damp'], wheel: true, flaw: true, family: 'off', group: 'papery-musty' },
     { id: 'woody', label: 'Woody', gist: 'Dry wood or sawdust.', ref: 'a pencil shaving', words: ['woody', 'cedar'], wheel: true, family: 'off', group: 'papery-musty' },
     { id: 'phenolic', label: 'Phenolic', gist: 'Medicinal, plastic or burnt-rubber tones: one of the three sensory defects in the SCA\'s cupping standard (SCA-104, 2024), with potato and moldy.', ref: 'an adhesive bandage, smelled', words: ['phenolic', 'medicinal'], wheel: true, flaw: true, family: 'off', group: 'papery-musty' },
   ] },
   { id: 'chemical', label: 'Chemical', family: 'off', notes: [
-    { id: 'rubber', label: 'Rubber & petroleum', gist: 'Rubber, tire or gasoline smells, from the wheel\'s chemical group: unwelcome in a specialty cup, though the SCA\'s current standard doesn\'t list it as a defect.', ref: 'a rubber band, smelled', words: ['rubber', 'rubbery', 'petroleum'], wheel: true, flaw: true, family: 'off', group: 'chemical' },
+    { id: 'rubber', label: 'Rubber & petroleum', gist: 'Rubber, tire or gasoline smells, from the wheel\'s chemical group: unwelcome in a specialty cup, though the SCA\'s current standard doesn\'t list it as a defect.', ref: 'a rubber band, smelled', words: ['rubber', 'rubbery', 'petroleum'], wheel: false, flaw: true, family: 'off', group: 'chemical' },
     { id: 'potato', label: 'Potato', gist: 'Raw, freshly peeled potato: a defect found mostly in coffee from Africa\'s Great Lakes region (Rwanda, Burundi, DR Congo, Uganda) and tied to antestia-bug damage. World Coffee Research says a single affected bean can ruin a whole bag.', ref: 'a freshly cut raw potato', words: ['potato'], wheel: false, flaw: true, family: 'off', group: 'chemical' },
   ] },
 ];

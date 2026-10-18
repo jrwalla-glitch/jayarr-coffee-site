@@ -12,7 +12,7 @@ const description = 'Pick a tasting note like blueberry, jasmine or caramel to l
 // Lots with a description, single origins only (inSample).
 const lots = originHubs.flatMap((h) => h.beans.filter((b) => inSample(b.name, b.flavor_notes)).map((b) => ({ o: h.origin_slug.replace(/_/g, '-'), p: b.processing, r: b.roast_level, notes: b.flavor_notes })));
 const origins = ORIGINS.map((o) => ({ id: o.id, name: o.name, page: o.page }));
-const cited = ['sca-wcr-wheel', 'wcr-lexicon', 'sca-cva', 'wcr-ptd', 'easto', 'synthesis', 'roaster-lots-2026'].map((id) => EXPLORE_SOURCES[id]);
+const cited = ['sca-wcr-wheel', 'wcr-lexicon', 'sca-cupping', 'sca-cva', 'wcr-ptd', 'easto', 'synthesis', 'roaster-lots-2026'].map((id) => EXPLORE_SOURCES[id]);
 const noteCount = ALL_NOTES.length;
 const offCount = OFF_GROUPS.reduce((t, g) => t + g.notes.length, 0);
 ---
@@ -78,7 +78,7 @@ const offCount = OFF_GROUPS.reduce((t, g) => t + g.notes.length, 0);
 
     <h2>Sources</h2>
     <ul class="bp-sources">
-      {cited.map((s) => <li>{s.author}, <cite>{s.title}</cite>{s.year ? ` (${s.year})` : ''}{s.where ? `: ${s.where}` : ''}.</li>)}
+      {cited.map((s) => <li>{s.author}, <cite>{s.url ? <a href={s.url} rel="noopener">{s.title}</a> : s.title}</cite>{s.year ? ` (${s.year})` : ''}{s.where ? `: ${s.where}` : ''}.</li>)}
     </ul>
   </Fragment>
 </BenchPage>

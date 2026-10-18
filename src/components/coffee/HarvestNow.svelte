@@ -18,7 +18,7 @@
   <HarvestRing harvest={harvest} month={month} labels size={size} label="{name} harvest calendar" />
   <p class="now" aria-live="polite">
     {#if month && st}
-      {#if st === 'main'}<b>Harvesting now</b> ({MONTHS_LONG[month - 1]}, main crop){:else if st === 'second'}<b>Harvesting now</b> ({MONTHS_LONG[month - 1]}, second crop){:else if st === 'edge'}<b>Maybe</b>: {MONTHS_LONG[month - 1]} is at the uncertain edge{:else}<b>Outside its harvest</b> in {MONTHS_LONG[month - 1]}{/if}
+      {#if st === 'main'}<b>Harvesting now</b> ({MONTHS_LONG[month - 1]}, main crop){:else if st === 'second'}<b>Harvesting now</b> ({MONTHS_LONG[month - 1]}, second crop){:else if st === 'edge'}<b>Maybe</b>: {MONTHS_LONG[month - 1]} is at the uncertain edge{:else if st === 'elsewhere'}<b>Outside this calendar</b> in {MONTHS_LONG[month - 1]}, but {harvest.elsewhere}{:else}<b>Outside its harvest</b> in {MONTHS_LONG[month - 1]}{/if}
     {/if}
   </p>
   <ul class="key" aria-label="Ring key">

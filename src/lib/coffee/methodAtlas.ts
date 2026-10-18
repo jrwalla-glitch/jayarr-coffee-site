@@ -103,7 +103,7 @@ export const ATLAS: AtlasMethod[] = [
     sourceIds: ['easto', 'synthesis'],
   },
   {
-    id: 'drip-machine', label: 'Drip machine', the: 'a drip machine', line: 'A machine heats the water and showers it over a flat basket.',
+    id: 'drip-machine', label: 'Drip machine', the: 'a drip machine', line: 'A machine heats the water and showers it over a filter basket.',
     contact: 'percolation', filter: 'paper', force: 'gravity', attention: 1,
     ...fromEngine('drip-machine'),
     guide: { slug: 'batch-brew-drip-coffee-guide', title: 'Batch brew and drip coffee guide' },

@@ -4,7 +4,7 @@
   import { cubicOut } from 'svelte/easing';
   import { countryPaths, TROPIC_CANCER_Y, TROPIC_CAPRICORN_Y, EQUATOR_Y } from '../../data/mapPaths.ts';
   import {
-    ORIGINS, CONTINENTS, MONTHS_LONG, ARRIVAL_EXAMPLES, originById, harvestState, harvestText, harvestingIn, bandText,
+    ORIGINS, CONTINENTS, MONTHS_LONG, ARRIVAL_EXAMPLES, originById, harvestState, harvestText, harvestingIn, pickingElsewhereIn, bandText,
     productionText, productionSource, sourceNames, project,
   } from '../../lib/coffee/origins.ts';
   import type { Continent, Origin } from '../../lib/coffee/origins.ts';
@@ -51,6 +51,7 @@
   let sel = $derived(selId ? originById(selId) ?? null : null);
   let vs = $derived(vsId ? originById(vsId) ?? null : null);
   let harvesting = $derived(harvestingIn(month));
+  let elsewhereNow = $derived(pickingElsewhereIn(month));
   let zoom = $derived(FULL[2] / vb.current[2]);
   let mapW = $state(1200);
   // Map units per screen pixel: markers and labels keep their size on screen at any zoom.
@@ -201,7 +202,7 @@
     if (/^robusta$/i.test(sc)) return 'The robusta harvest.';
     return `The calendar shown: ${sc.replace(/ illustrative calendar/i, '').replace(/^\w/, (c) => c.toLowerCase())}.`.replace('calendar shown: huila', "calendar shown: Huila's");
   }
-  const altScope = (sc: string) => sc.replace(/;?\s*not national extrema\.?/i, '; not the highest or lowest farms.').replace(/not national extrema/i, "not the country's highest or lowest farms");
+  const altScope = (sc: string) => sc.replace(/\bRobusta\b/g, 'robusta').replace(/\bArabica\b/g, 'arabica').replace(/;?\s*not national extrema\.?/i, '; not the highest or lowest farms.').replace(/not national extrema/i, "not the country's highest or lowest farms");
   // Markers sit close together (Rwanda and Burundi, Costa Rica and Panama), so a click or tap opens
   // the nearest one within reach of the pointer rather than whichever hit area is drawn on top. A
   // tap uses where the finger landed (the browser may nudge the click toward a nearby target), and
@@ -263,8 +264,8 @@
       <ul class="rkey" aria-label="Ring key"><li><span class="k main"></span>Main harvest</li>{#if o.harvest.second}<li><span class="k second"></span>Second crop</li>{/if}{#if o.harvest.edgeMonths}<li><span class="k edge"></span>Edge months: can start early or run late</li>{/if}<li>The hand points to {MONTHS_LONG[month - 1]}</li></ul>
     {/if}
     <dl class="facts">
-      <div><dt>Harvest</dt><dd>{harvestText(o)}{#if o.harvest.scope && !compact && !/^This is /.test(o.harvest.variesBy ?? '')}<span class="sub">{scopeText(o.harvest.scope)}</span>{/if}{#if o.harvest.variesBy && !compact}<span class="sub">{o.harvest.variesBy.replace(/^This is (\w+);\s*/, "This calendar is $1's; ")}</span>{/if}{#if !compact && o.harvest.sources.length}<span class="sub srcline">Calendar from {sourceNames(o.harvest.sources)}, checked October 2026</span>{/if}</dd></div>
-      <div><dt>Altitude</dt><dd>{#if o.altitudeM}{@render band(compact ? bandText(o.altitudeM).split(' (')[0] : bandText(o.altitudeM))}{:else}Not established{/if}{#if o.robustaAltitudeM}<span class="sub">Robusta {@render band(compact ? bandText(o.robustaAltitudeM).split(' (')[0] : bandText(o.robustaAltitudeM))}</span>{/if}{#if o.altitudeM?.scope && !compact}<span class="sub">{altScope(o.altitudeM.scope)}</span>{/if}{#if !compact && o.altitudeM?.sources?.length}<span class="sub srcline">Band from {sourceNames(o.altitudeM.sources)}</span>{/if}</dd></div>
+      <div><dt>Harvest</dt><dd>{harvestText(o)}{#if o.harvest.scope && !compact && !/^This is /.test(o.harvest.variesBy ?? '')}<span class="sub">{scopeText(o.harvest.scope)}</span>{/if}{#if o.harvest.variesBy && !compact}<span class="sub">{o.harvest.variesBy.replace(/^This is (\w+);\s*/, "This calendar is $1's; ")}</span>{/if}{#if o.harvest.elsewhere}<span class="sub">Outside these months, {o.harvest.elsewhere}.</span>{/if}{#if !compact && o.harvest.sources.length}<span class="sub srcline">Calendar from {sourceNames(o.harvest.sources)}, checked October 2026</span>{/if}</dd></div>
+      <div><dt>Altitude</dt><dd>{#if o.altitudeM}{@render band(compact ? bandText(o.altitudeM).split(' (')[0] : bandText(o.altitudeM))}{:else}Not established{/if}{#if o.altitudeM?.scope}<span class="sub">{altScope(o.altitudeM.scope)}</span>{/if}{#if o.robustaAltitudeM}<span class="sub">Robusta {@render band(compact ? bandText(o.robustaAltitudeM).split(' (')[0] : bandText(o.robustaAltitudeM))}{#if o.robustaAltitudeM.scope}{' · '}{altScope(o.robustaAltitudeM.scope)}{/if}</span>{/if}{#if !compact && o.altitudeM?.sources?.length}<span class="sub srcline">Band from {sourceNames(o.altitudeM.sources)}</span>{/if}</dd></div>
       {#if !compact}
         <div><dt>Production</dt><dd>{productionText(o) ?? 'No current official figure'}{#if o.production?.arabicaShare != null && o.production.arabicaShare < 0.95}<span class="sub">{o.production.arabicaShare < 0.03 ? 'All counted as robusta' : `About ${Math.round(o.production.arabicaShare * 100)}% arabica, the rest robusta`}</span>{/if}{#if o.production}<span class="sub srcline">{productionSource(o)}</span>{/if}</dd></div>
       {/if}
@@ -292,7 +293,7 @@
     {/if}
   </div>
   <p class="nowline"><span class="lbl">Harvesting in {MONTHS_LONG[month - 1]}</span>
-    {#each harvesting as o (o.id)}<span class="nowitem" class:inreg={o.continent === region}><button type="button" class="nowname" onclick={() => choose(o.id)}>{o.name}</button></span>{/each}{#if harvesting.some((o) => o.continent !== region)}<span class="nowmore">{'\u00a0·\u00a0'}{harvesting.filter((o) => o.continent !== region).length} more under the other tabs</span>{/if}
+    {#each harvesting as o (o.id)}<span class="nowitem" class:inreg={o.continent === region}><button type="button" class="nowname" onclick={() => choose(o.id)}>{o.name}</button></span>{/each}{#if elsewhereNow.length}<span class="alsoline">{'\u00a0· '}Also picking in some regions: {#each elsewhereNow as o, i (o.id)}<span class="alsoitem" class:inreg={o.continent === region}>{i > 0 ? ', ' : ''}<button type="button" class="nowname" onclick={() => choose(o.id)}>{o.name}</button></span>{/each}</span>{/if}{#if harvesting.some((o) => o.continent !== region)}<span class="nowmore">{'\u00a0·\u00a0'}{harvesting.filter((o) => o.continent !== region).length} more under the other tabs</span>{/if}
   </p>
 
   <div class="body">
@@ -363,7 +364,7 @@
             {@const showRing = marks.ring.has(o.id)}
             {@const lsp = marks.label.get(o.id)}
             <g class="marker" class:sel={isSel} data-origin={o.id} role="button" tabindex="0"
-              aria-label="{o.name}: harvest {harvestText(o)}{st === 'main' || st === 'second' ? `, harvesting in ${MONTHS_LONG[month - 1]}` : ''}"
+              aria-label="{o.name}: harvest {harvestText(o)}{st === 'main' || st === 'second' ? `, harvesting in ${MONTHS_LONG[month - 1]}` : st === 'elsewhere' ? `, picked in another region in ${MONTHS_LONG[month - 1]}` : ''}"
               aria-pressed={isSel} onclick={() => choose(o.id)} onkeydown={(e) => keyAct(e, () => choose(o.id))}>
               {#if lsp?.lead}<line x1={mx} y1={my} x2={mx + lsp.dx * upp * 0.86} y2={my + (lsp.dy - (lsp.anchor === 'middle' && lsp.dy < 0 ? 0 : 4)) * upp * 0.86} stroke="#2a1d15" stroke-width={0.8 * upp} opacity=".5" />{/if}
               {#if showRing}
@@ -377,6 +378,10 @@
                 {#if st === 'edge'}
                   <circle cx={mx} cy={my} r={6 * upp} fill="#fbf6ee" stroke="#2a1d15" stroke-width={1.3 * upp} />
                   <path d="M{mx} {my - 6 * upp} A {6 * upp} {6 * upp} 0 0 0 {mx} {my + 6 * upp} Z" fill="#9a5420" />
+                {:else if st === 'elsewhere'}
+                  <!-- Outside the drawn calendar, but picked in another region: a ring with a small centre. -->
+                  <circle cx={mx} cy={my} r={5.4 * upp} fill="#fbf6ee" stroke="#2a1d15" stroke-width={1.2 * upp} />
+                  <circle cx={mx} cy={my} r={2 * upp} fill="#9a5420" />
                 {:else}
                   <circle cx={mx} cy={my} r={(st === 'off' ? 4.4 : 6) * upp} fill={st === 'off' ? '#fbf6ee' : '#9a5420'} stroke="#2a1d15" stroke-width={(st === 'off' ? 1.1 : 1.3) * upp} />
                 {/if}
@@ -415,6 +420,7 @@
           <span class="kt">Key</span>
           <span><span class="dot on"></span> Harvesting in {MONTHS_LONG[month - 1]}</span>
           <span><span class="dot edge"></span> Maybe (an edge month: picking can start early or run late)</span>
+          {#if elsewhereNow.length}<span><span class="dot else"></span> Outside the calendar drawn, but picked in another region</span>{/if}
           <span><span class="dot off"></span> Outside its harvest period</span>
           <span class="kring">{#if zoom > 2}<span class="ringk"></span> {narrow ? 'Ring: 12 months, Jan at top' : 'Ring: its 12-month harvest calendar, January at the top'}{:else}Pick an origin to zoom in and see its year as a ring{/if}</span>
         </div>
@@ -546,11 +552,14 @@
      server-built list and the live one match and nothing shifts on load. */
   .nowitem + .nowitem::before { content: '\00a0·\00a0'; }
   .nowmore { display: none; color: var(--ink-3); }
+  .alsoline { color: var(--ink-3); }
   @media (max-width: 720px) {
     .nowitem:not(.inreg) { display: none; }
     .nowitem + .nowitem::before { content: none; }
     .nowitem.inreg ~ .nowitem.inreg::before { content: '\00a0·\00a0'; }
     .nowmore { display: inline; }
+    .alsoitem:not(.inreg) { display: none; }
+    .alsoline:not(:has(.alsoitem.inreg)) { display: none; }
   }
   .nowname { appearance: none; border: 0; background: none; padding: 0; font: 500 15px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; color: var(--ink); text-decoration: underline; text-decoration-color: #c9a46e; text-underline-offset: 3px; cursor: pointer; }
   .nowname:hover { color: var(--crema-deep); }
@@ -611,6 +620,7 @@
   .dot.on { background: #9a5420; }
   .dot.edge { background: linear-gradient(90deg, #9a5420 50%, #fbf6ee 50%); }
   .dot.off { width: 8px; height: 8px; }
+  .dot.else { background: radial-gradient(circle, #9a5420 0 2px, #fbf6ee 2.5px); }
   .ringk { width: 12px; height: 12px; border-radius: 50%; border: 3px solid #b86e2c; border-right-color: #d9cdbd; border-bottom-color: #d9cdbd; display: inline-block; }
 
   .panel { min-width: 0; position: relative; scroll-margin-top: 84px; }

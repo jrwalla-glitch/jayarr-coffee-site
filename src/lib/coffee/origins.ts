@@ -18,6 +18,8 @@ export interface OriginFacts {
     edgeMonths: number;
     sources: string[];
     scope?: string | null;
+    /** Set where a source says picking goes on outside the drawn window (another region's calendar). */
+    elsewhere?: string | null;
   };
   altitudeM: Band | null;
   robustaAltitudeM?: Band | null;
@@ -93,7 +95,16 @@ export const DATA_STATUS: string = (data as { status?: string }).status ?? 'fina
 const EMPTY: Omit<OriginFacts, 'id'> = { harvest: { main: null, second: null, variesBy: null, edgeMonths: 1, sources: [] }, altitudeM: null, robustaAltitudeM: null, production: null, regions: [], varieties: [], processing: [], tendencies: { notes: [], source: '' } };
 
 /** Every origin with its facts; an origin the research couldn't support shows its gaps, not guesses. */
-export const ORIGINS: Origin[] = META.map((m) => ({ ...EMPTY, ...(FACTS.get(m.id) ?? { id: m.id }), ...m })).sort((x, y) => x.name.localeCompare(y.name));
+// Where a calendar is one region's but the sources say coffee is picked elsewhere in the country
+// outside it, the months outside read "picking elsewhere", not "outside its harvest" (review r2, B1).
+const ELSEWHERE: Record<string, string> = {
+  colombia: 'southern districts reverse the seasons, so coffee is picked somewhere in Colombia all year (Sucafina, Café Imports)',
+  indonesia: "other islands keep their own calendars and Sumatra has a year-round fly crop (Sucafina)",
+};
+export const ORIGINS: Origin[] = META.map((m) => {
+  const o = { ...EMPTY, ...(FACTS.get(m.id) ?? { id: m.id }), ...m } as Origin;
+  return ELSEWHERE[o.id] ? { ...o, harvest: { ...o.harvest, elsewhere: ELSEWHERE[o.id] } } : o;
+}).sort((x, y) => x.name.localeCompare(y.name));
 export const originById = (id: string) => ORIGINS.find((o) => o.id === id);
 export const originByPage = (slug: string) => ORIGINS.find((o) => o.page === `/explore/origins/${slug}/`);
 
@@ -108,7 +119,7 @@ export function monthsIn(w: [number, number] | null): number[] {
   for (let m = w[0], i = 0; i < 12; i++, m = (m % 12) + 1) { out.push(m); if (m === w[1]) break; }
   return out;
 }
-export type HarvestState = 'main' | 'second' | 'edge' | 'off';
+export type HarvestState = 'main' | 'second' | 'edge' | 'elsewhere' | 'off';
 /** Where a month sits for an origin: in the main harvest, the secondary one, an uncertain edge, or off. */
 export function harvestState(o: Pick<OriginFacts, 'harvest'>, month: number): HarvestState {
   if (monthsIn(o.harvest.main).includes(month)) return 'main';
@@ -122,15 +133,26 @@ export function harvestState(o: Pick<OriginFacts, 'harvest'>, month: number): Ha
       }
     }
   }
-  return 'off';
+  return o.harvest.elsewhere ? 'elsewhere' : 'off';
 }
 export const windowText = (w: [number, number] | null) => (w ? (w[0] === w[1] ? MONTHS_LONG[w[0] - 1] : `${MONTHS[w[0] - 1]}–${MONTHS[w[1] - 1]}`) : '');
 
+// A drawn calendar that is one region's or one species' says so wherever it is summarised.
+const CALENDAR_TAGS: Record<string, string> = {
+  Robusta: 'robusta', 'Robusta regional seasons': 'robusta', 'Huila illustrative calendar': 'Huila',
+  'arabica from Sumatra': 'Sumatran arabica', 'arabica, south and north together': 'arabica',
+  'northern arabica, Chiang Rai and Chiang Mai together': 'northern arabica',
+};
+export const calendarTag = (o: Pick<OriginFacts, 'harvest'>): string | null => (o.harvest.scope && CALENDAR_TAGS[o.harvest.scope]) || null;
 export function harvestText(o: Origin): string {
   if (!o.harvest.main) return 'Not established';
   if (monthsIn(o.harvest.main).length === 12) return 'All year, depending on region';
-  return o.harvest.second ? `${windowText(o.harvest.main)}, and ${windowText(o.harvest.second)}` : windowText(o.harvest.main);
+  const w = o.harvest.second ? `${windowText(o.harvest.main)}, and ${windowText(o.harvest.second)}` : windowText(o.harvest.main);
+  const tag = calendarTag(o);
+  return tag ? `${w} (${tag})` : w;
 }
+/** Origins picking somewhere outside their drawn calendar this month (see ELSEWHERE). */
+export const pickingElsewhereIn = (month: number) => ORIGINS.filter((o) => harvestState(o, month) === 'elsewhere');
 
 /** Origins harvesting in a given month (main or secondary crop). */
 export const harvestingIn = (month: number) => ORIGINS.filter((o) => { const s = harvestState(o, month); return s === 'main' || s === 'second'; });

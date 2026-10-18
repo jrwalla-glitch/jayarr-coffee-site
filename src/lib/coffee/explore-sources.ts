@@ -6,7 +6,9 @@ import type { Source } from './sources.ts';
 export const EXPLORE_SOURCES: Record<string, Source> = {
   'sca-wcr-wheel': { id: 'sca-wcr-wheel', author: 'Specialty Coffee Association and World Coffee Research', title: 'Coffee Taster\'s Flavor Wheel', year: 2016, where: 'family, group and attribute names', url: 'https://sca.coffee/research/coffee-tasters-flavor-wheel' },
   'wcr-lexicon': { id: 'wcr-lexicon', author: 'World Coffee Research', title: 'Sensory Lexicon, 2nd edition', year: 2017, where: 'attribute definitions; notes on the Roasted, Nutty and Floral categories', url: 'https://worldcoffeeresearch.org/resources/sensory-lexicon' },
-  'sca-cva': { id: 'sca-cva', author: 'Specialty Coffee Association', title: 'SCA-104-2024, Coffee Value Assessment: cupping protocol', year: 2024, where: 'tasting each cup several times as it cools from about 70 °C; §5.4.1, the sensory defects (potato, moldy, phenolic)' },
+  // Review r2 (Astra, N2): the three-defect list is SCA-104's (Affective Assessment); tasting as the cup cools is the cupping protocol's.
+  'sca-cupping': { id: 'sca-cupping', author: 'Specialty Coffee Association', title: 'Cupping Protocols', where: 'evaluation begins at about 71 °C and the cup is tasted again as it cools' },
+  'sca-cva': { id: 'sca-cva', author: 'Specialty Coffee Association', title: 'SCA-104-2024, Coffee Value Assessment: Affective Assessment', year: 2024, where: '§5.4.1, the sensory defects (potato, moldy, phenolic)' },
   'wcr-ptd': { id: 'wcr-ptd', author: 'World Coffee Research', title: 'Potato taste defect', year: 2026, where: 'where it occurs (the Great Lakes region), its link to antestia-bug damage, one bean spoiling a bag (checked October 18, 2026)', url: 'https://worldcoffeeresearch.org/resources/potato-taste-defect' },
   easto: { id: 'easto', author: 'Jessica Easto', title: 'Craft Coffee: A Manual', year: 2017, where: 'acids in coffee; roast and brightness; brewing method chapters' },
   synthesis: { id: 'synthesis', author: 'JayArr Coffee', title: 'Coffee Knowledge Synthesis (seventeen sources)', where: '§1 extraction order, §5 filter science, §14 flavor chemistry, §17 method comparisons' },

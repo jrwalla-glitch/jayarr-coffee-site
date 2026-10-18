@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { MONTHS_LONG, harvestingIn } from '../../lib/coffee/origins.ts';
+  import { MONTHS_LONG, harvestingIn, pickingElsewhereIn } from '../../lib/coffee/origins.ts';
   import GalleryMini from './art/GalleryMini.svelte';
 
   // The Coffee Collection: three framed paintings on a gallery wall, each a live miniature of its
@@ -14,6 +14,8 @@
   // The best-known origins first: by production, largest to smallest.
   let now = $derived([...harvestingIn(month)].sort((a, b) => (b.production?.bags60kg ?? 0) - (a.production?.bags60kg ?? 0)));
   const nb = (s: string) => s.replace(/ /g, '\u00a0');
+  // Origins whose drawn calendar is one region's, but which other regions are picking now (Colombia).
+  let elsewhereNow = $derived(pickingElsewhereIn(month));
 
   const PIECES = [
     // One cream mat for all three, as a collection is hung.
@@ -40,7 +42,7 @@
           {#if p.id === 'origins'}
             <p>When each country harvests, how high its coffee grows and how its coffees are described.</p>
             <p class="key" aria-hidden="true" class:pending={!mounted}><span class="dot on"></span>harvesting now <span class="dot off"></span>not now</p>
-            <p class="now" class:pending={!mounted}><span>In {MONTHS_LONG[month - 1]}:</span> {now.slice(0, 4).map((o) => nb(o.name)).join(', ')}{now.length > 4 ? ` and ${now.length - 4} more` : ''} are harvesting.</p>
+            <p class="now" class:pending={!mounted}><span>In {MONTHS_LONG[month - 1]}:</span> {now.slice(0, 4).map((o) => nb(o.name)).join(', ')}{now.length > 4 ? ` and ${now.length - 4} more` : ''} are harvesting{elsewhereNow.length ? `; ${elsewhereNow.map((o) => nb(o.name)).join(' and ')} ${elsewhereNow.length > 1 ? 'pick' : 'picks'} in some regions too` : ''}.</p>
             <p class="now"><a href="/explore/origins/">See who's harvesting now →</a></p>
           {:else if p.id === 'methods'}
             <p>Thirteen brewers as stars. Rearrange the sky by filter, pressure or time to see how they differ.</p>
