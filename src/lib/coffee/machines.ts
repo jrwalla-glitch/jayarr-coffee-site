@@ -75,7 +75,19 @@ export function setupBand(m: Machine, grinders: GrinderPrice[]): { low: number; 
 }
 
 /** The height to test against the cabinets: the body, or the maker's suggested clearance where that is more. */
-export const neededHeight = (m: Machine) => (m.dims || m.clearanceCm ? Math.max(m.dims?.h ?? 0, m.clearanceCm ?? 0) : null);
+/** The largest figure in a listed size whose axes are unclear (Breville's US triples), in cm. One of the three is the
+ *  height and we can't tell which, so fit is never claimed below it (Muse WB2 M-6: a retailer lists the BES450 taller
+ *  than the 12 in clearance Breville suggests). */
+export const unclearMaxCm = (m: Machine): number | null => {
+  if (!m.dimsUnclear) return null;
+  const nums = [...m.dimsUnclear.matchAll(/\d+(?:\.\d+)?/g)].map((x) => Number(x[0]));
+  return nums.length ? Math.round(Math.max(...nums) * (/\bin\b/.test(m.dimsUnclear) ? 2.54 : 1) * 100) / 100 : null;
+};
+/** The height a machine needs: its body, the clearance its maker suggests, and for an unclear listing its largest figure. */
+export const neededHeight = (m: Machine) => {
+  const x = unclearMaxCm(m);
+  return m.dims || m.clearanceCm || x ? Math.max(m.dims?.h ?? 0, m.clearanceCm ?? 0, x ?? 0) : null;
+};
 
 /**
  * Does it fit the space given (width and height under the cabinets)? Unknown dimensions never "fit".

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { chooseMachines, setupBand, fitsCounter, needsGrinder, bandText } from '../machines.ts';
+import { chooseMachines, setupBand, fitsCounter, needsGrinder, bandText, neededHeight, unclearMaxCm } from '../machines.ts';
 
 // Fixtures: shapes only, not real specs (the real data is checked separately).
 const m = (o) => ({ id: o.id, brand: 'X', name: o.id, models: [], status: 'current', category: 'semi-auto', heating: { system: 'thermoblock' }, milk: { type: 'manual-wand' }, grinder: { builtIn: false }, listPrice: { usd: 400 }, dims: { w: 20, d: 30, h: 30 }, ...o });
@@ -95,4 +95,15 @@ test('milk in most drinks never gets a machine without a milk system', async () 
   const data = JSON.parse(readFileSync(new URL('../../../data/machines.json', import.meta.url), 'utf8'));
   for (const budget of [200, 500, 1500, 5000]) for (const effort of ['button', 'guided', 'hands-on'])
     for (const x of chooseMachines(data.machines, data.grinders, { milk: 'most', cups: 3, budget, effort })) assert.notEqual(x.machine.milk.type, 'none', x.machine.id);
+});
+
+test('an unclear listing never claims fit below its largest figure, even when the suggested clearance is lower', () => {
+  // Breville lists the BES450 as 11.9 × 6.1 × 13.5 in and suggests 12 in of clearance; one of the three is the height.
+  const bes450 = { ...fleet[0], dims: null, dimsUnclear: '11.9 × 6.1 × 13.5 in', clearanceCm: 30.48 };
+  assert.equal(unclearMaxCm(bes450), 34.29);
+  assert.equal(neededHeight(bes450), 34.29);
+  assert.equal(fitsCounter(bes450, { heightCm: 31 }), false);
+  assert.equal(fitsCounter(bes450, { heightCm: 35 }), true);
+  // Where the clearance is the larger, it still decides.
+  assert.equal(neededHeight({ ...bes450, dimsUnclear: '15.9 × 13.1 × 12.4 in', clearanceCm: 40.64 }), 40.64);
 });

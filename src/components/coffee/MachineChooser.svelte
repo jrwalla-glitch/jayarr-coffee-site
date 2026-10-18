@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import data from '../../data/machines.json';
-  import { chooseMachines, needsGrinder, neededHeight, CATEGORY_LABEL } from '../../lib/coffee/machines.ts';
+  import { chooseMachines, needsGrinder, neededHeight, unclearMaxCm, CATEGORY_LABEL } from '../../lib/coffee/machines.ts';
   import type { Machine, GrinderPrice, Needs, Category, Heating, Match } from '../../lib/coffee/machines.ts';
 
   // Choose a machine for your counter, budget (grinder included), milk and effort; then, if you own
@@ -24,6 +24,8 @@
   let mounted = $state(false);
   // An owner link naming a machine this guide doesn't include: said, not silently replaced by another machine's care.
   let badOwnLink = $state(false);
+  // Link values the guide couldn't use, named in a notice rather than silently replaced (Muse WB2 M-5).
+  let badRoute = $state<string[]>([]);
   let narrow = $state(false);
 
   const toCm = (v: number | null) => (v == null || !Number.isFinite(v) || v <= 0 ? null : unitsIn ? v * 2.54 : v);
@@ -69,7 +71,11 @@
   // Unknown widths are drawn at a nominal 28 cm, dashed, and say so.
   const drawW = (m: M) => (m.dims ? m.dims.w : 28);
   // Breville's printed size conflicts with its own guidance (research/BREVILLE_DIMS_CHECK.md): said plainly.
-  const unclearNote = (m: M) => `${m.brand}'s listed size (${m.dimsUnclear}, as W × D × H) conflicts with its own clearance guidance, so it isn't drawn to scale or tested against a width.${m.clearanceCm ? ` ${m.brand} suggests ${len(m.clearanceCm)} ${u} of clearance under cabinets.` : ''}`;
+  const unclearNote = (m: M) => `${m.brand}'s listed size (${m.dimsUnclear}, as W × D × H) conflicts with its own clearance guidance, so it isn't drawn to scale or tested against a width.${neededHeight(m) ? ` Under cabinets we allow ${len(neededHeight(m)!)} ${u}: ${allowWhy(m)}.` : ''}`;
+  // Why that height: the maker's clearance, or the largest figure in its listing when that is more.
+  const allowWhy = (m: M) => ((unclearMaxCm(m) ?? 0) > (m.clearanceCm ?? 0) ? `the largest figure in ${m.brand}'s listed size${m.clearanceCm ? `, more than the ${len(m.clearanceCm)} ${u} of clearance it suggests` : ''}` : `the clearance ${m.brand} suggests`);
+  // A manual that downloads as an archive says so in its link (Muse WB2 M-9b).
+  const zipNote = (url: string) => (/\.zip($|\?)/i.test(url) ? ' (a ZIP download)' : '');
   const fullName = (m: M) => `${m.brand} ${m.name}${m.variant ? `, ${m.variant}` : ''}`;
   const statusNote = (m: M) => (m.status === 'discontinued' ? 'Discontinued by the maker' : m.status === 'unconfirmed' ? 'Not confirmed as a current US model' : m.status === 'replaced' ? 'Replaced by a newer model' : '');
   const brands = [...new Set(machines.map((m) => m.brand))].sort();
@@ -119,6 +125,12 @@
   }
   // Why a machine isn't drawn: Breville's listed sizes conflict with its own guidance (research/BREVILLE_DIMS_CHECK.md),
   // or the maker publishes none we could find.
+  // How each dashed outline was sized: an unclear listing at the height we allow, an unknown size at a nominal one.
+  function dashedCap(ms: M[]): string {
+    const one = ms.length === 1, unclear = ms.filter((m) => m.dimsUnclear && neededHeight(m)), rest = ms.filter((m) => !(m.dimsUnclear && neededHeight(m)));
+    const who = (xs: M[]) => (one ? 'It is' : `The ${xs.map((m) => m.name).join(xs.length === 2 ? ' and ' : ', ').replace(/, ([^,]*)$/, ' and $1')} ${xs.length === 1 ? 'is' : 'are'}`);
+    return [unclear.length ? `${who(unclear)} outlined at the height we allow for ${unclear.length === 1 ? 'it' : 'each'}, at a nominal width.` : '', rest.length ? `${who(rest)} outlined at a nominal height and width.` : ''].filter(Boolean).join(' ');
+  }
   function sizeWhy(ms: M[]): string {
     const names = (xs: M[]) => xs.map((m) => m.name).join(xs.length === 2 ? ' and ' : ', ').replace(/, ([^,]*)$/, ' and $1');
     const unclear = ms.filter((m) => m.dimsUnclear), none = ms.filter((m) => !m.dimsUnclear);
@@ -129,9 +141,7 @@
   }
   // "Breville suggests 16.0 in of clearance under cabinets for all three", grouped by brand and clearance.
   function clearanceText(ms: M[]): string {
-    const groups = new Map<string, M[]>();
-    for (const m of ms) if (m.clearanceCm) { const k = `${m.brand}|${m.clearanceCm}`; groups.set(k, [...(groups.get(k) ?? []), m]); }
-    return [...groups.values()].map((g) => ` ${g[0].brand} suggests ${len(g[0].clearanceCm!)} ${u} of clearance under cabinets for ${g.length === ms.length ? (ms.length === 1 ? 'it' : ms.length === 2 ? 'both' : `all ${ms.length === 3 ? 'three' : ms.length}`) : `the ${g.map((m) => m.name).join(' and ')}`}.`).join('');
+    return ms.filter((m) => m.dimsUnclear && neededHeight(m)).map((m) => ` For the ${m.name}, we allow ${len(neededHeight(m)!)} ${u} under cabinets: ${allowWhy(m)}.`).join('');
   }
   // Less than an inch above the machine: it fits, but there may be no room to lift a lid or fill the tank in place.
   function tightLine(m: M): string | null {
@@ -141,7 +151,8 @@
   }
   function fitLines(m: M): string[] {
     const out: string[] = [];
-    if (needs.heightCm && m.clearanceCm && (!m.dims || m.clearanceCm > m.dims.h)) out.push(`Fits under your ${heightIn} ${u} cabinets: ${m.brand} suggests ${len(m.clearanceCm)} ${u} of clearance.`);
+    if (needs.heightCm && !m.dims && neededHeight(m)) out.push(`Fits under your ${heightIn} ${u} cabinets: we allow ${len(neededHeight(m)!)} ${u}, ${allowWhy(m)}.`);
+    else if (needs.heightCm && m.clearanceCm && m.dims && m.clearanceCm > m.dims.h) out.push(`Fits under your ${heightIn} ${u} cabinets: ${m.brand} suggests ${len(m.clearanceCm)} ${u} of clearance.`);
     else if (needs.heightCm && m.dims && !tightLine(m)) out.push(`Leaves ${len(needs.heightCm - m.dims.h)} ${u} under your cabinets.`);
     if (needs.widthCm && m.dims) out.push(`Fits your ${widthIn} ${u} of width, with ${len(needs.widthCm - m.dims.w)} ${u} to spare.`);
     return out;
@@ -149,16 +160,20 @@
 
   onMount(() => {
     const q = new URLSearchParams(location.search);
+    const bad: string[] = [];
     const md = q.get('mode');
-    if (md === 'own' || md === 'all' || md === 'find') mode = md;
-    const mi = q.get('milk'); if (mi === 'none' || mi === 'some' || mi === 'most') milk = mi;
-    const c = Number(q.get('cups')); if (c === 1 || c === 3 || c === 5) cups = c;
-    const ef = q.get('effort'); if (ef === 'button' || ef === 'guided' || ef === 'hands-on') effort = ef;
+    if (md === 'own' || md === 'all' || md === 'find') mode = md; else if (md) bad.push('the view');
+    const mi = q.get('milk'); if (mi === 'none' || mi === 'some' || mi === 'most') milk = mi; else if (mi) bad.push('milk');
+    const c = Number(q.get('cups')); if (c === 1 || c === 3 || c === 5) cups = c; else if (q.get('cups')) bad.push('drinks');
+    const ef = q.get('effort'); if (ef === 'button' || ef === 'guided' || ef === 'hands-on') effort = ef; else if (ef) bad.push('how hands-on');
     // Kept within the slider's range and steps, so the display and the slider always agree (WB2 Opus).
-    const b = Number(q.get('budget')); if (Number.isFinite(b) && b > 0) budget = Math.min(5000, Math.max(150, Math.round(b / 50) * 50));
+    const b = Number(q.get('budget'));
+    if (Number.isFinite(b) && b > 0) { budget = Math.min(5000, Math.max(150, Math.round(b / 50) * 50)); if (budget !== b) bad.push(`the budget (kept to $150–$5,000 in $50 steps)`); }
+    else if (q.get('budget')) bad.push('the budget');
     if (q.get('units') === 'cm') unitsIn = false;
-    const w = Number(q.get('w')); if (w > 0) widthIn = w;
-    const h = Number(q.get('h')); if (h > 0) heightIn = h;
+    const w = Number(q.get('w')); if (w > 0) widthIn = w; else if (q.get('w')) bad.push('the counter width');
+    const h = Number(q.get('h')); if (h > 0) heightIn = h; else if (q.get('h')) bad.push('the cabinet height');
+    badRoute = bad;
     const m = q.get('m'); if (byId(m)) ownId = m!; else if (m) badOwnLink = true;
     const mq = matchMedia('(max-width: 640px)'); narrow = mq.matches; mq.addEventListener('change', (e) => (narrow = e.matches));
     mounted = true;
@@ -181,8 +196,8 @@
   let CW = $derived(narrow ? 360 : 640);
   let counter = $derived.by(() => {
     const items = matches.map((x) => x.machine);
-    // An unclear size is drawn at the clearance its maker suggests, dashed; an unknown one at a nominal 34 cm.
-    const ws = items.map(drawW), hs = items.map((m) => (m.dims ? m.dims.h : m.clearanceCm ?? 34));
+    // An unclear size is drawn dashed at the height we allow for it; an unknown one at a nominal 34 cm.
+    const ws = items.map(drawW), hs = items.map((m) => (m.dims ? m.dims.h : neededHeight(m) ?? 34));
     const slot = (i: number) => Math.max(ws[i], needs.widthCm ?? 0);
     const gap = 10;
     const totalW = items.reduce((a, _, i) => a + slot(i), 0) + gap * Math.max(0, items.length - 1);
@@ -321,6 +336,7 @@
       {#if matches.length}<a class="peek" href="#chooser-results"><span class="lbl">Best fit</span><b>{matches[0].machine.brand} {matches[0].machine.name}</b><span>about {band(matches[0].band)}{needsGrinder(matches[0].machine) ? ' with a grinder' : ''} ↓</span></a>
       {:else}<a class="peek" href="#chooser-results"><span class="lbl">Nothing fits yet</span><span>See what would ↓</span></a>{/if}
 
+      {#if badRoute.length}<p class="widthnote" role="status">That link had values this guide couldn't use for {badRoute.join(', ').replace(/, ([^,]*)$/, ' and $1')}, so those answers are the defaults or the nearest allowed value. Change them below.</p>{/if}
       <form class="ask" onsubmit={(e) => e.preventDefault()} aria-label="Your routine">
         <fieldset><legend class="lbl">Milk in your drinks</legend>
           <div class="chips">
@@ -396,7 +412,7 @@
             {/each}
             <g class="bar"><line x1="12" y1={c.H - 10} x2={12 + c.barPx} y2={c.H - 10} /><line x1="12" y1={c.H - 14} x2="12" y2={c.H - 6} /><line x1={12 + c.barPx} y1={c.H - 14} x2={12 + c.barPx} y2={c.H - 6} /><text x={18 + c.barPx} y={c.H - 6} class="barl">{c.barLabel}</text></g>
           </svg>
-          <p class="cap">{counter.compact ? `Numbered as the cards below: ${matches.map((x, i) => `${i + 1} ${x.machine.name}`).join(', ')}. ` : ''}Drawn to one scale from the makers' published sizes, width × height{needs.widthCm ? ', each in the width you gave' : ''}.{matches.some((x) => !x.machine.dims) ? ` Dashed: ${lowerFirst(sizeWhy(matches.filter((x) => !x.machine.dims).map((x) => x.machine as M)))} ${matches.filter((x) => !x.machine.dims).length === 1 ? 'It is' : 'Each is'} outlined at the clearance its maker suggests, at a nominal width.` : ''}</p>
+          <p class="cap">{counter.compact ? `Numbered as the cards below: ${matches.map((x, i) => `${i + 1} ${x.machine.name}`).join(', ')}. ` : ''}Drawn to one scale from the makers' published sizes, width × height{needs.widthCm ? ', each in the width you gave' : ''}.{matches.some((x) => !x.machine.dims) ? ` Dashed: ${lowerFirst(sizeWhy(matches.filter((x) => !x.machine.dims).map((x) => x.machine as M)))} ${dashedCap(matches.filter((x) => !x.machine.dims).map((x) => x.machine as M))}` : ''}</p>
           {/if}
           <ol class="cards">
             {#each matches as x, i (x.machine.id)}
@@ -416,7 +432,7 @@
                   {:else}<div aria-hidden="true"></div>{/if}
                   <div><dt>Milk</dt><dd>{m.milk.type ? MILK[m.milk.type] : NE}</dd></div>
                   {#if m.dims}<div><dt>Size, W × D × H</dt><dd>{sizeText(m)}</dd></div>
-                  {:else}<div><dt>Height to allow</dt><dd>{m.dimsUnclear && m.clearanceCm ? `About ${len(m.clearanceCm)} ${u}, the maker's suggested clearance` : NE}</dd></div>{/if}
+                  {:else}<div><dt>Height to allow</dt><dd>{m.dimsUnclear && neededHeight(m) ? `About ${len(neededHeight(m)!)} ${u}, ${allowWhy(m)}` : NE}</dd></div>{/if}
                 </dl>
                 <div class="acts">
                   {#if m.amazon}<a class="go" href={m.amazon.url} rel="sponsored noopener" target="_blank">See it on Amazon</a>
@@ -473,7 +489,7 @@
           <div class="note"><p class="lbl">Descaling</p><p>{own.owner?.descale ?? 'The maker\'s materials we checked give no descaling interval; the manual has the procedure.'}</p></div>
           {#if own.owner?.clean}<div class="note"><p class="lbl">Cleaning</p><p>{own.owner.clean}</p></div>{/if}
           <div class="acts">
-            {#if own.care?.manualUrl}<a class="go" href={own.care.manualUrl} rel="noopener" target="_blank">The maker's manual ↗</a>{/if}
+            {#if own.care?.manualUrl}<a class="go" href={own.care.manualUrl} rel="noopener" target="_blank">The maker's manual{zipNote(own.care.manualUrl)} ↗</a>{/if}
             {#if makesEspressoByHand(own)}<a class="ghost" href="/tools/brew-ratio/?method=espresso&dose=18">Brew an espresso in the Brew Guide</a>{/if}
             <a class="ghost" href="/tools/fix-my-coffee/?method=espresso">Fix a shot</a>
           </div>

@@ -6426,7 +6426,6 @@
    "preInfusion": null,
    "portafilterMm": 58,
    "baskets": [
-    "High-flow basket",
     "High dose basket",
     "Low dose basket",
     "Pressurized basket"
@@ -6588,7 +6587,7 @@
    "owner": {
     "dose": null,
     "recipe": "Flair gives a standard dose of 16–20 g with the included baskets.",
-    "baskets": "High-flow, high-dose, low-dose, and pressurized baskets are included.",
+    "baskets": "Three baskets are included: high dose, low dose and pressurized.",
     "temperature": "Preheat settings are low at about 185°F (85°C), medium at about 194°F (90°C), and high at about 203°F (95°C).",
     "descale": null,
     "clean": null
