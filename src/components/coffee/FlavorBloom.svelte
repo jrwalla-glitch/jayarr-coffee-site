@@ -332,11 +332,11 @@
         boxes.push({ x: px - 4 * u, y: py - 4 * u, w: 8 * u, h: 8 * u });
       }
     }
-    const inside = (b: Box) => b.x > vx + 8 * u && b.y > vy + 8 * u && b.x + b.w < vx + vw - 8 * u && b.y + b.h < vy + vh - 8 * u;
+    const inside = (b: Box) => b.x > vx + 5 * u && b.y > vy + 5 * u && b.x + b.w < vx + vw - 5 * u && b.y + b.h < vy + vh - 5 * u;
     // Try spots around the point, near first, radially outward first; keep the first that is free
     // and inside the frame, else the one that overlaps least.
     const place = (x: number, y: number, r: number, wPx: number, prefer: number, px = 14, opt: { own?: Bud; side?: number } = {}): { lx: number; ly: number; anchor: string } => {
-      const fs = px * u, w = wPx * u + 6 * u, h = fs * 1.25;
+      const fs = px * u, w = wPx * u + 4 * u, h = fs * 1.25;
       // Directions nearest the preferred one first; rings further out only when the near ones are taken.
       const dirs = [0, 20, -20, 40, -40, 60, -60, 90, -90, 120, -120, 150, -150, 180].map((d) => prefer + d);
       const spots: { lx: number; ly: number; anchor: string }[] = [];
@@ -557,7 +557,7 @@
   </svg>
 {/snippet}
 
-{#snippet keyText()}Bigger bud, more mentions: the number is how many of {lots.length} roasters' lot descriptions name the note.{#if branch.hidden} The plate shows the {branch.buds.length} most named; {branch.hidden === 1 ? 'one rarer note is' : `${branch.hidden} rarer notes are`} in the list view.{/if}{/snippet}
+{#snippet keyText()}Bigger bud, more mentions: the number is how many of {lots.length} roasters' lot descriptions name the note.{#if branch.hidden}{' '}The plate shows the {branch.buds.length} most named; {branch.hidden === 1 ? 'one rarer note is' : `${branch.hidden} rarer notes are`} in the list view.{/if}{/snippet}
 
 {#snippet budKey()}
   <span class="budkey" aria-hidden="true">
