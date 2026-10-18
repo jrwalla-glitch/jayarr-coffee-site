@@ -285,7 +285,9 @@ export const ROASTER_SAMPLE = {
 const fold = (t: string) => t.toLowerCase();
 const NO_NOTE = ['stone fruit', 'stone fruits', 'stonefruit', 'white chocolate', 'currant', 'currants', 'dried fruit', 'dried fruits', 'toasted marshmallow', 'green tea'];
 /** Generic phrases a text names ("stone fruit"), which count toward no single note. */
-export const genericIn = (text: string) => NO_NOTE.filter((w) => new RegExp(`(^|[^a-z])${w}(?=$|[^a-z])`).test(fold(text)));
+// Read by the same longest-first scan as the notes, so "black currant" is Blackcurrant and not also a
+// generic "currant" (review r5, Opus).
+export const genericIn = (text: string) => scan(text).generic;
 // What a generic phrase could mean on a tasting card. It still counts toward no note in the roasters'
 // numbers, but a bag that says "stone fruit" roughly agrees with a pinned peach or plum, and names the
 // Fruity family (review r4, Opus F2). White chocolate and toasted marshmallow read as Sweet; green tea
@@ -315,15 +317,16 @@ const PHRASE_RE = PHRASES.map((p) => ({ ...p, re: new RegExp(`(^|[^a-z])${escape
 export function notesInText(text: string, opts: { roaster?: boolean } = {}): string[] {
   return scan(text, opts).found;
 }
-function scan(text: string, opts: { roaster?: boolean } = {}): { found: string[]; rest: string } {
+function scan(text: string, opts: { roaster?: boolean } = {}): { found: string[]; generic: string[]; rest: string } {
   let rest = ` ${fold(text).replace(/&?nbsp;/g, ' ').replace(/[’']/g, "'")} `;
-  const found: string[] = [];
+  const found: string[] = [], generic: string[] = [];
   for (const p of PHRASE_RE) {
     const m = p.re.exec(rest);
     if (!m) continue;
     // Roasters don't print flaws on their bags, so in their descriptions a flaw word is a misread
     // ("sour", "raw"): it's set aside, not counted.
     if (p.id && !found.includes(p.id) && !(opts.roaster && p.flaw)) found.push(p.id);
+    if (!p.id && !generic.includes(p.phrase)) generic.push(p.phrase);
     const start = m.index + m[1].length;
     rest = rest.slice(0, start) + ' '.repeat(p.phrase.length) + rest.slice(start + p.phrase.length);
     // A phrase can appear twice ("lemon … lemon"); blank every occurrence.
@@ -333,7 +336,7 @@ function scan(text: string, opts: { roaster?: boolean } = {}): { found: string[]
       rest = rest.slice(0, s) + ' '.repeat(p.phrase.length) + rest.slice(s + p.phrase.length);
     }
   }
-  return { found, rest };
+  return { found, generic, rest };
 }
 
 // A family's own name on a bag ("floral", "fruity", "nutty") names the family, not one note: the
@@ -344,9 +347,16 @@ const FAMILY_WORDS: Record<string, FamilyId> = {
   roasty: 'roasted', roasted: 'roasted', green: 'green', vegetal: 'green', herbal: 'green', fermented: 'sour-fermented', sour: 'sour-fermented',
 };
 /** Family ids named in free text by a family's own word, once the notes' phrases are taken out. */
+// Phrase by phrase: a family word that describes a note in the same phrase ("roasted almonds", "sweet
+// tangerine") is an adjective, not the family (review r5, Opus).
 export function familiesInText(text: string): FamilyId[] {
-  const rest = scan(text).rest;
-  return [...new Set(Object.entries(FAMILY_WORDS).filter(([w]) => new RegExp(`(^|[^a-z])${w}(?=$|[^a-z])`).test(rest)).map(([, f]) => f))];
+  const out = new Set<FamilyId>();
+  for (const part of text.split(/[,;\/\n]| and /)) {
+    const s = scan(part);
+    if (s.found.length) continue;
+    for (const [w, f] of Object.entries(FAMILY_WORDS)) if (new RegExp(`(^|[^a-z])${w}(?=$|[^a-z])`).test(s.rest)) out.add(f);
+  }
+  return [...out];
 }
 
 export const PROCESS_LABEL: Record<string, string> = { washed: 'Washed', natural: 'Natural', honey: 'Honey', anaerobic: 'Anaerobic', other: 'Other or blend' };

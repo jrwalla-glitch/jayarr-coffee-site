@@ -137,6 +137,9 @@
   }));
   const clear = (x: number, y: number) => !nameBoxes.some((b) => x > b.x && x < b.x + b.w && y > b.y && y < b.y + b.h);
   let groups = $derived(groupsFor(by));
+  // The list is the sky's text alternative: under Time it reads fastest to slowest with each brewer's time,
+  // not the contact rows the sky uses only to spread its stars (review r5, Opus).
+  let listGroups = $derived<Group[]>(by === 'time' ? [{ key: 'time', label: 'Fastest to slowest', line: 'how long each brew takes', ids: [...ATLAS].sort((p, q) => mid(p) - mid(q)).map((m) => m.id) }] : groups);
 
   // The night sky, fixed so it's the same on every load: field stars that twinkle, a few bright ones.
   function seeded(n: number) { let x = 42; return () => { x = (x * 16807) % 2147483647; return (x - 1) / 2147483646; }; }
@@ -330,14 +333,14 @@
         <p class="gp-plaque"><b>The Brewing Constellations</b><small>An interactive star chart</small></p>
         <div class="key gp-label">
           <p class="kstate">Thirteen brewers, sorted by one property at a time: {GHOST[by]}.</p>
-          <p class="ksym"><span class="kit"><span class="lstar big"></span><span class="lstar"></span> A bigger star: more body in the cup</span> <span class="kit"><span class="lray" aria-hidden="true">✳</span> Rays: the water is pushed</span> <span class="kit"><span class="lring" aria-hidden="true"></span> A ring: where a group's line starts</span></p>
+          <p class="ksym"><span class="kit"><span class="lstar big"></span><span class="lstar"></span> A bigger star: a more open filter, so more body</span> <span class="kit"><span class="lray" aria-hidden="true">✳</span> Rays: the water is pushed</span> <span class="kit"><span class="lring" aria-hidden="true"></span> A ring: where a group's line starts</span></p>
           {#each groups as g (g.key)}
             <p><b>{g.label}</b> {g.line}</p>
           {/each}
         </div>
       {:else}
         <div class="list gp-label">
-          {#each groups as g (g.key)}
+          {#each listGroups as g (g.key)}
             <section>
               <h3>{g.label}</h3>
               <p class="gline">{g.line}</p>
@@ -348,7 +351,7 @@
                     <button type="button" class="row" class:on={aId === id || bId === id} data-star={id} aria-pressed={aId === id || bId === id} onclick={() => select(id)}>
                       <span class="rstar" style:--s="{size(m) * 1.6}px" class:rays={pushed(m)} aria-hidden="true"></span>
                       <span class="rname">{m.label}</span>
-                      <span class="rmeta">{by === 'time' ? CONTACT[m.contact].label : timeText(m)}</span>
+                      <span class="rmeta">{timeText(m)}{m.timeNote ? '*' : ''}</span>
                       <span class="rline">{m.line}</span>
                     </button>
                   </li>
@@ -411,7 +414,7 @@
                 {#each ATLAS.filter((m) => m.id !== A.id) as m (m.id)}<option value={m.id}>{m.label}</option>{/each}
               </select>
             </label>
-            {#if !picking}<button type="button" class="linkish" onclick={() => (picking = true)}>or pick a second star on the chart</button>{/if}
+            {#if !picking}<button type="button" class="linkish" onclick={async () => { picking = true; await tick(); (document.querySelector(`.mc [data-star]:not([data-star="${A!.id}"])`) as HTMLElement | null)?.focus(); }}>or pick a second star on the chart</button>{/if}
           </div>
         </div>
       {:else}

@@ -112,6 +112,22 @@
     const pt = (a: number, r: number) => `${(r * Math.sin(rad(a))).toFixed(1)} ${(-r * Math.cos(rad(a))).toFixed(1)}`;
     return `M${pt(lo, r0)} L${pt(lo, r1)} A${r1} ${r1} 0 0 1 ${pt(hi, r1)} L${pt(hi, r0)} A${r0} ${r0} 0 0 0 ${pt(lo, r0)} Z`;
   }
+  // Chrome on Android nudges a tap toward the nearest large target, and the petals' hit sectors sit in
+  // overlapping boxes, so a tap on a petal's middle could open its neighbour (review r5, Opus: 3–7 of 96
+  // taps). A touch on the plate is routed by its own angle around the flower, from the raw pointerdown.
+  let tapFamily: { id: FamilyId; t: number } | null = null;
+  function plateDown(e: PointerEvent) {
+    tapFamily = null;
+    if (e.pointerType === 'mouse') return;
+    const m = (e.currentTarget as SVGSVGElement).getScreenCTM();
+    if (!m) return;
+    const p = new DOMPoint(e.clientX, e.clientY).matrixTransform(m.inverse());
+    const dx = p.x - CX, dy = p.y - CY, r = Math.hypot(dx, dy), a = (Math.atan2(dx, -dy) * 180) / Math.PI;
+    if (r < CORE || r > R + 8 || Math.abs(a) > 174) return;
+    const id = (Object.keys(ANGLE) as FamilyId[]).reduce((b, k) => (Math.abs(ANGLE[k] - a) < Math.abs(ANGLE[b] - a) ? k : b));
+    tapFamily = { id, t: performance.now() };
+  }
+  const routed = (fallback: FamilyId) => { const t = tapFamily; tapFamily = null; return t && performance.now() - t.t < 1000 ? t.id : fallback; };
   // The open family's groups spray out from its tip, like a flower spike.
   const GROUP_SHORT: Record<string, string> = { fermented: 'Fermented', 'green-veg': 'Green', 'brown-spice': 'Brown spice', 'citrus': 'Citrus' };
   function fan(f: Family) {
@@ -429,7 +445,7 @@
   {@const lit = key === 'm' ? new Set(pins.map((p) => noteById(p)?.family)) : focus ? new Set([focus]) : null}
   {@const open = !mini && !!familyId}
   {@const [vx, vy, vw, vh] = vb.current}
-  <svg viewBox={mini ? '130 40 460 520' : vb.current.join(' ')} class:mini role={mini ? 'img' : 'group'}
+  <svg viewBox={mini ? '130 40 460 520' : vb.current.join(' ')} class:mini role={mini ? 'img' : 'group'} onpointerdown={mini ? undefined : plateDown}
     aria-hidden={key === 'l' || key === 'n' ? 'true' : undefined}
     aria-label={key === 'm' ? (pins.length ? `Your card: ${pins.map((p) => noteById(p)?.label).join(', ')}` : 'An empty tasting card') : mini ? undefined : fam ? `${fam.label}: choose a group, then a note` : 'Flavor families as petals. Choose one to open it.'}>
     <defs>
@@ -475,7 +491,7 @@
         <g class="petal" class:sel class:dim transform="translate({CX} {CY}) rotate({ANGLE[f.id]})"
           role={mini ? undefined : 'button'} tabindex={mini ? undefined : 0} aria-pressed={mini ? undefined : sel}
           aria-label={mini ? undefined : `${f.label}: ${f.groups.map((g) => g.label.toLowerCase()).join(', ')}`}
-          onclick={mini ? undefined : () => openFamily(f.id)} onkeydown={mini ? undefined : (e) => keyAct(e, () => openFamily(f.id))}>
+          onclick={mini ? undefined : () => openFamily(routed(f.id))} onkeydown={mini ? undefined : (e) => keyAct(e, () => openFamily(f.id))}>
           <path class="shape" d={petal(R, 46)} fill={mini && !lit?.has(f.id) ? '#e9ece2' : `url(#fb-wc-${key}-${f.id})`} filter="url(#fb-soft-{key})"
             fill-opacity={mini ? 1 : sel ? 1 : dim ? (familyId === 'off' ? 0.1 : 0.22) : 0.86} />
           <path d={petal(R, 46)} fill="none" stroke="#2a1d15" stroke-opacity={mini ? (lit?.has(f.id) ? 0.6 : 0.3) : sel ? 0.55 : familyId === 'off' ? 0.07 : 0.16} stroke-width={mini ? 2 : 1} />
@@ -574,7 +590,7 @@
   </svg>
 {/snippet}
 
-{#snippet keyText()}Bigger bud, more mentions (notes named twice or less share the smallest size): the number is how many of the {lots.length} lot descriptions in roasters' catalogs name the note.{#if branch.hidden}{' '}The plate shows the {branch.buds.length} most named; {branch.hidden === 1 ? 'one rarer note is' : `${branch.hidden} rarer notes are`} in the list view.{/if}{/snippet}
+{#snippet keyText()}Bigger bud, more mentions (notes named twice or less share the smallest size): the number is how many of the {lots.length} lot descriptions in roasters' catalogs name the note.{#if branch.hidden}{' '}The plate shows the {branch.buds.length} most named; {branch.hidden === 1 ? 'one rarer note is' : `${branch.hidden} rarer notes are`} in the panel's list and the list view.{/if}{/snippet}
 
 {#snippet budKey()}
   <span class="budkey" aria-hidden="true">
@@ -722,7 +738,7 @@
           <p class="kick"><span class="sw" style:background={colourOf(note.family as FamilyId)}></span>{fam ? fam.label : 'Off notes'} · {g?.label}</p>
           <h2 tabindex="-1" bind:this={headEl}>{note.label}</h2>
           <p class="gist">{note.gist}{#if note.flaw}{' '}<span class="flawtag">{note.id === 'musty' || note.id === 'woody' ? 'Character when faint, a flaw when strong' : 'Usually a flaw'}</span>{/if}</p>
-          {#if !note.wheel}<p class="quiet small">{note.family === 'off' && note.id === 'potato' ? 'Not on the wheel itself: a named defect in the SCA\'s cupping standard, placed under chemical.' : `Not printed on the wheel in this form: a word roasters use often, or the wheel's notes combined, placed under ${g?.label.toLowerCase()}.`}</p>{/if}
+          {#if !note.wheel}<p class="quiet small">{note.family === 'off' && note.id === 'potato' ? 'Not on the wheel itself: a named defect in the SCA\'s cupping standard, placed under chemical.' : `Not printed on the wheel in this form: a word roasters use, or the wheel's notes combined, placed under ${g?.label.toLowerCase()}.`}</p>{/if}
 
           <div class="tryit">
             <p class="lbl">Try it</p>

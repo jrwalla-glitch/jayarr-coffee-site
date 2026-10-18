@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { MONTHS_LONG, harvestingIn, pickingElsewhereIn } from '../../lib/coffee/origins.ts';
+  import { MONTHS_LONG, harvestBags, harvestingIn, pickingElsewhereIn } from '../../lib/coffee/origins.ts';
   import GalleryMini from './art/GalleryMini.svelte';
 
   // The Coffee Collection: three framed paintings on a gallery wall, each a live miniature of its
@@ -12,7 +12,7 @@
   let mounted = $state(false);
   onMount(() => { month = new Date().getMonth() + 1; mounted = true; });
   // The best-known origins first: by production, largest to smallest.
-  let now = $derived([...harvestingIn(month)].sort((a, b) => (b.production?.bags60kg ?? 0) - (a.production?.bags60kg ?? 0)));
+  let now = $derived([...harvestingIn(month)].sort((a, b) => harvestBags(b) - harvestBags(a)));
   const nb = (s: string) => s.replace(/ /g, '\u00a0');
   // Origins whose drawn calendar is one region's, but which other regions are picking now (Colombia).
   let elsewhereNow = $derived(pickingElsewhereIn(month));

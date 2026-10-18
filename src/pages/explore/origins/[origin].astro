@@ -113,7 +113,7 @@ const neighbours = ORIGINS.filter((x) => x.id !== o.id && x.page).sort((a, b) =>
     )}
 
     <details class="op-lots">
-      <summary>All {lots.length} lots, as roasters described them (winter 2026){sample.length < lots.length && <span class="op-sumnote"> · {sample.length} single-origin {sample.length === 1 ? 'lot with tasting notes is' : 'lots with tasting notes are'} counted above</span>}</summary>
+      <summary>All {lots.length} lots, as roasters described them (winter 2026){sample.length < lots.length && <span class="op-sumnote"> · {sample.length} single-origin {sample.length === 1 ? 'lot with tasting notes is' : 'lots with tasting notes are'} counted {words.length > 0 ? 'above' : 'in the Flavor Bloom'}</span>}</summary>
       <p class="bp-note">Lots are seasonal: this is a record of how roasters described these coffees in early 2026, not a list of what's in stock.</p>
       <div class="op-tab-wrap">
         <table class="op-tab">

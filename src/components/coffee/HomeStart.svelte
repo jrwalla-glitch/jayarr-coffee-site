@@ -4,7 +4,7 @@
   import type { MethodId } from '../../lib/coffee/index.ts';
   import ToolMini from './art/ToolMini.svelte';
   import GalleryMini from './art/GalleryMini.svelte';
-  import { harvestingIn, pickingElsewhereIn, MONTHS_LONG } from '../../lib/coffee/origins.ts';
+  import { harvestBags, harvestingIn, pickingElsewhereIn, MONTHS_LONG } from '../../lib/coffee/origins.ts';
 
   // The homepage's first screen is a decision with a working preview. "Make a better cup" runs the
   // Brew Guide's own engine, so the numbers here are the numbers there, and the button carries the
@@ -25,6 +25,7 @@
   // What each taste usually points to, said as a likelihood: the Doctor asks before it decides, and
   // its answer depends on the brewer (a shot's time, a press's steep), so the door asks which.
   const FIX_BREWERS = BREWERS;
+  // A drip machine sets its own water temperature, and Fix My Coffee never suggests changing it (review r5, Opus).
   function likely(id: string, m: MethodId): string {
     const steep = m === 'french-press' || m === 'aeropress' || m === 'cold-brew';
     if (m === 'espresso') return {
@@ -50,7 +51,7 @@
       flat: 'Often stale beans or water with too few minerals, rather than the recipe.',
     }[id] ?? '';
     return {
-      sour: `Often under-extracted: the water didn't pull enough from the coffee. The usual suspects are a grind that's too coarse or ${steep ? 'a steep that was too short' : 'a brew that ran too fast, or water that wasn\'t hot enough'}.`,
+      sour: `Often under-extracted: the water didn't pull enough from the coffee. The usual suspects are a grind that's too coarse or ${steep ? 'a steep that was too short' : m === 'drip-machine' ? 'a brew that ran too fast' : 'a brew that ran too fast, or water that wasn\'t hot enough'}.`,
       bitter: `Often over-extracted: too much was pulled out. A grind that's too fine or ${steep ? 'a steep that ran too long' : 'a brew that ran too long'} are the usual suspects, though dark roasts are bitter by nature.`,
       weak: 'Usually too little coffee for the water, before anything else. A stronger ratio is the first thing to try.',
       strong: 'Usually too much coffee for the water. A lighter ratio, or adding a little hot water, fixes it without touching the grind.',
@@ -120,7 +121,7 @@
   let month = $state(10);
   let elsewhereNow = $derived(pickingElsewhereIn(month));
   let nowNames = $derived.by(() => {
-    const now = [...harvestingIn(month)].sort((a, b) => (b.production?.bags60kg ?? 0) - (a.production?.bags60kg ?? 0));
+    const now = [...harvestingIn(month)].sort((a, b) => harvestBags(b) - harvestBags(a));
     return `${now.slice(0, 4).map((o) => o.name).join(', ')}${now.length > 4 ? ` and ${now.length - 4} more` : ''}`;
   });
   onMount(() => {

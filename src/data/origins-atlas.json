@@ -776,7 +776,7 @@
      5,
      7
     ],
-    "variesBy": "This is Huila; southern districts can reverse main and mitaca seasons, and coffee is harvested somewhere year-round.",
+    "variesBy": "This is Huila; southern districts can reverse main and mitaca seasons.",
     "edgeMonths": 1,
     "sources": [
      "ci-colombia"
@@ -1065,11 +1065,13 @@
      10
     ],
     "second": null,
-    "variesBy": "Yungas and Santa Cruz sites can ripen at different times.",
+    "variesBy": "Café Imports' and Apex's calendar. Mercanta gives July–November. Yungas and Santa Cruz sites can ripen at different times.",
     "edgeMonths": 1,
     "sources": [
      "ci-bolivia",
-     "apex-bolivia",
+     "apex-bolivia"
+    ],
+    "compare": [
      "mercanta-bolivia"
     ],
     "scope": "Arabica"
@@ -2619,9 +2621,9 @@
    },
    "altitudeM": {
     "min": 1100,
-    "max": 1600,
+    "max": 1800,
     "species": "arabica",
-    "scope": "Northern Arabica examples, including Thep Sadet and Chiang Rai/Chiang Mai.",
+    "scope": "Northern Arabica examples: Thep Sadet; Movaci's Chiang Mai 1,100–1,500 m and Chiang Rai 1,200–1,600 m; Mae Salong up to 1,800 m, a band Movaci gives for its tea and Arabica together.",
     "sources": [
      "thai-moac",
      "movaci-thailand"

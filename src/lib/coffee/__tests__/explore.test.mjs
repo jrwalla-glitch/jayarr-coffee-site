@@ -4,10 +4,10 @@ import originHubs from '../../../data/origin-hubs.json' with { type: 'json' };
 import originSources from '../../../data/origins-sources.json' with { type: 'json' };
 import summaries from '../../../data/origin-summaries.json' with { type: 'json' };
 import {
-  FAMILIES, OFF_GROUPS, ALL_NOTES, noteById, notesInText, familiesInText, evidenceFor, familyCounts, compareCard, encodeCard, decodeCard, MAX_PINS,
+  FAMILIES, OFF_GROUPS, ALL_NOTES, noteById, notesInText, familiesInText, evidenceFor, familyCounts, compareCard, encodeCard, decodeCard, MAX_PINS, inSample,
 } from '../flavors.ts';
 import { ATLAS, brewGuideHref, differences, differenceSentence, describe, ratioText, timeText, timePosition, TIME_TICKS } from '../methodAtlas.ts';
-import { ORIGINS, CONTINENTS, monthsIn, harvestState, harvestingIn, originByPage, bandText, project, sourceNames } from '../origins.ts';
+import { ORIGINS, CONTINENTS, monthsIn, harvestState, harvestingIn, originByPage, bandText, project, sourceNames, harvestBags } from '../origins.ts';
 import { EXPLORE_SOURCES } from '../explore-sources.ts';
 import { decodeBrew } from '../share.ts';
 import { buildRecipe } from '../brew.ts';
@@ -249,4 +249,21 @@ test('review r5 (Astra): Uganda\'s robusta windows are the Sucafina handbook\'s 
   assert.deepEqual(ug.harvest.sources, ['sucafina-handbook-2026']);
   assert.deepEqual(ORIGINS.find((o) => o.id === 'peru').harvest.compare, ['ci-peru', 'sucafina-handbook-2026']);
   assert.match(cu.altitudeM.scope, /offering/);
+});
+
+test('review r5 (Opus): adjectives on a note aren\'t families; "black currant" isn\'t also a generic currant; the sample is unchanged', () => {
+  assert.deepEqual(familiesInText('roasted almonds'), []);
+  assert.deepEqual(familiesInText('sweet tangerine'), []);
+  assert.deepEqual(familiesInText('floral, sweet'), ['floral', 'sweet']);
+  const c = compareCard(['berries-mixed', 'caramel'], 'black currant, sweet tangerine');
+  assert.ok(!c.near.includes('caramel'), 'sweet tangerine names no Sweet family');
+  assert.ok(c.near.includes('berries-mixed'), 'same family as the bag\'s blackcurrant');
+  const sample = originHubs.flatMap((h) => h.beans).filter((b) => inSample(b.name, b.flavor_notes ?? []));
+  assert.equal(sample.length, 272);
+});
+
+test('review r5 (Opus): harvest lists order by the bags of the species picked; Indonesia\'s robusta total doesn\'t lift its arabica calendar', () => {
+  const oct = harvestingIn(10).sort((a, b) => harvestBags(b) - harvestBags(a)).map((o) => o.id);
+  assert.equal(oct[0], 'vietnam');
+  assert.ok(oct.indexOf('indonesia') > 3, oct.join(','));
 });

@@ -157,6 +157,17 @@ export function harvestText(o: Origin): string {
   const tag = calendarTag(o);
   return tag ? `${w} (${tag})` : w;
 }
+/** Bags of the species the drawn calendar is for, to order "who's harvesting" lists: Indonesia's
+ *  calendar is Sumatran arabica, so its mostly-robusta total doesn't put it near the top (review r5, Opus). */
+export function harvestBags(o: Origin): number {
+  const p = o.production, sc = o.harvest.scope ?? '';
+  if (!p) return 0;
+  const share = p.arabicaShare;
+  if (share == null) return p.bags60kg;
+  if (/robusta/i.test(sc) && !/arabica/i.test(sc)) return p.bags60kg * (1 - share);
+  if (/arabica/i.test(sc) && !/robusta/i.test(sc)) return p.bags60kg * share;
+  return p.bags60kg;
+}
 /** Origins picking somewhere outside their drawn calendar this month (see ELSEWHERE). */
 export const pickingElsewhereIn = (month: number) => ORIGINS.filter((o) => harvestState(o, month) === 'elsewhere');
 
