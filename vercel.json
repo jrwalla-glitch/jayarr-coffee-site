@@ -115,6 +115,26 @@
       "source": "/blog/coffee-scores-what-they-taste-like/",
       "destination": "/blog/coffee-scoring-system-explained/",
       "permanent": true
+    },
+    {
+      "source": "/blog/coffee-varieties-explained",
+      "destination": "/blog/coffee-varietal-guide/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/coffee-varieties-explained/",
+      "destination": "/blog/coffee-varietal-guide/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/4-more-single-origin-coffees-you-need-to-know",
+      "destination": "/blog/what-is-single-origin-coffee/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/4-more-single-origin-coffees-you-need-to-know/",
+      "destination": "/blog/what-is-single-origin-coffee/",
+      "permanent": true
     }
   ]
 }
