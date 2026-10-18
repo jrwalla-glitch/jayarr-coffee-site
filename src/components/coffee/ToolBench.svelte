@@ -62,8 +62,10 @@
       if (roast && day) {
         const use = (q.get('use') === 'espresso' ? 'espresso' : 'filter') as FreshUse;
         const st = q.get('storage'); const storage = (st === 'sealed-bag' || st === 'frozen' ? st : 'opened') as Storage;
-        const f = storage === 'frozen' ? null : freshness({ roastDate: roast, today: todayIso(), use, storage });
-        const where = f?.ok ? ` · day ${f.value.daysSinceRoast}, ${f.value.stage.label.toLowerCase()}` : '';
+        const frozenOn = q.get('frozen'), thawedOn = q.get('thawed');
+        const f = storage === 'frozen' && !frozenOn ? null : freshness({ roastDate: roast, today: todayIso(), use, storage, ...(storage === 'frozen' ? { frozenOn: frozenOn!, ...(thawedOn ? { thawedOn } : {}) } : {}) });
+        const counting = f?.ok && f.value.effectiveDays !== f.value.daysSinceRoast ? ` (${f.value.effectiveDays} counting)` : '';
+        const where = f?.ok ? ` · day ${f.value.daysSinceRoast}${counting}, ${f.value.stage.label.toLowerCase()}` : '';
         // A date the tool itself rejects (one in the future) is flagged, not quoted as a reading.
         if (roast > todayIso()) out.push({ href: `/tools/freshness/?${fresh}`, label: 'Your bag', detail: `Roasted ${day}? That date is in the future`, icon: 'bag' });
         else if (!f || f.ok) out.push({ href: `/tools/freshness/?${fresh}`, label: 'Your bag', detail: `Roasted ${day}${where}`, icon: 'bag' });

@@ -85,11 +85,11 @@ const neighbours = ORIGINS.filter((x) => x.id !== o.id && x.page).sort((a, b) =>
         <AltitudeBand arabica={o.altitudeM} robusta={o.robustaAltitudeM} name={o.name} height={160} />
       </div>
       <dl class="op-facts">
-        <div><dt>Harvest</dt><dd>{harvestText(o)}{o.harvest.variesBy && <span class="sub">{o.harvest.variesBy}</span>}{o.harvest.elsewhere && <span class="sub">Outside these months, {o.harvest.elsewhere}.</span>}{arrival && <span class="sub">Typical arrival in the US: {arrival.arrival} (Café Imports).</span>}{o.harvest.sources.length > 0 && <span class="sub">Calendar from {sourceNames(o.harvest.sources)}, checked October 2026. Other references can differ by a month or so.</span>}</dd></div>
-        <div><dt>Altitude</dt><dd>{o.altitudeM ? bandText(o.altitudeM) : 'Not established'}{o.robustaAltitudeM && <span class="sub">Robusta: {bandText(o.robustaAltitudeM)}{o.robustaAltitudeM.scope ? ` · ${o.robustaAltitudeM.scope.replace(/;?\s*not national extrema\.?/i, '').replace(/\bRobusta\b/g, 'robusta').replace(/\.$/, '')}` : ''}{o.robustaAltitudeM.sources?.length ? ` (${sourceNames(o.robustaAltitudeM.sources)})` : ''}</span>}{o.altitudeM?.scope && <span class="sub">{o.altitudeM.scope.replace(/;?\s*not national extrema\.?/i, "; not the country's highest or lowest farms.")}</span>}{o.altitudeM?.sources?.length ? <span class="sub">Band from {sourceNames(o.altitudeM.sources)}.</span> : null}</dd></div>
+        <div><dt>Harvest</dt><dd>{harvestText(o)}{o.harvest.variesBy && <span class="sub">{o.harvest.variesBy.replace(/^This is (\w+);\s*/, "This calendar is $1's; ")}</span>}{o.harvest.elsewhere && <span class="sub">Outside these months, {o.harvest.elsewhere}.</span>}{arrival && <span class="sub">Typical arrival in the US: {arrival.arrival} (Café Imports).</span>}{o.harvest.sources.length > 0 && <span class="sub">Calendar from {sourceNames(o.harvest.sources)}, checked October 2026. Other references can differ by a month or so.</span>}</dd></div>
+        <div><dt>Altitude</dt><dd>{o.altitudeM ? bandText(o.altitudeM) : 'Not established'}{o.robustaAltitudeM && <span class="sub">Robusta: {bandText(o.robustaAltitudeM)}{o.robustaAltitudeM.scope ? ` · ${o.robustaAltitudeM.scope.replace(/;?\s*not national extrema\.?/i, '').replace(/\bRobusta\b/g, 'robusta').replace(/\.$/, '')}` : ''}{o.robustaAltitudeM.sources?.length ? ` (${sourceNames(o.robustaAltitudeM.sources)})` : ''}</span>}{o.altitudeM?.scope && <span class="sub">{o.altitudeM.scope.replace(/[,;]?\s*not national extrema\.?/i, "; not the country's highest or lowest farms.")}</span>}{o.altitudeM?.sources?.length ? <span class="sub">Band from {sourceNames(o.altitudeM.sources)}.</span> : null}</dd></div>
         <div><dt>Production</dt><dd>{productionText(o) ?? 'No current official figure'}{o.production && <span class="sub">{productionSource(o)}.</span>}</dd></div>
         <div><dt>Varieties</dt><dd>{o.varieties.join(', ')}</dd></div>
-        <div><dt>Processing</dt><dd>{o.processing.join(', ')}</dd></div>
+        <div><dt>Processing</dt><dd>{o.processing.join(', ')}<span class="sub">The usual methods; individual lots vary (see the lots below).</span></dd></div>
         <div><dt>Regions</dt><dd>{o.regions.map((r) => r.name).join(', ')}</dd></div>
         <div><dt>Often described as</dt><dd><em class="op-notes">{o.tendencies.notes.join(', ')}</em></dd></div>
       </dl>
@@ -105,13 +105,13 @@ const neighbours = ORIGINS.filter((x) => x.id !== o.id && x.page).sort((a, b) =>
     {words.length > 0 && (
       <>
         <h2>Roasters' words</h2>
-        <p>Across {sample.length} described single-origin lots from {o.name} in 38 specialty roasters' catalogs (recorded January–March 2026), these are the notes roasters used most. Each opens in the <a href="/explore/flavors/">Flavor Bloom</a> with an exercise to train your nose on it.</p>
+        <p>Roasters described {sample.length} single-origin {sample.length === 1 ? 'lot' : 'lots'} from {o.name} in our catalog sample (38 specialty roasters, recorded January–March 2026); these are the notes they used most. Each opens in the <a href="/explore/flavors/">Flavor Bloom</a> with an exercise to train your nose on it.</p>
         <ul class="op-words">{words.map((w) => <li><a href={`/explore/flavors/?note=${w.id}`}>{w.label}</a> <span>{w.n} lots</span></li>)}</ul>
       </>
     )}
 
     <details class="op-lots">
-      <summary>All {lots.length} lots, as roasters described them (winter 2026){sample.length < lots.length && <span class="op-sumnote"> · {sample.length} single-origin lots with tasting notes are counted above</span>}</summary>
+      <summary>All {lots.length} lots, as roasters described them (winter 2026){sample.length < lots.length && <span class="op-sumnote"> · {sample.length} single-origin {sample.length === 1 ? 'lot with tasting notes is' : 'lots with tasting notes are'} counted above</span>}</summary>
       <p class="bp-note">Lots are seasonal: this is a record of how roasters described these coffees in early 2026, not a list of what's in stock.</p>
       <div class="op-tab-wrap">
         <table class="op-tab">

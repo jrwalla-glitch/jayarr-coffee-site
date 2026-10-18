@@ -4522,7 +4522,7 @@
         "context": "Comprehensive guide covering Gesha and other varieties"
       }
     ],
-    "bean_count": 11,
+    "bean_count": 10,
     "brewing_note": "Gesha demands a lighter touch than almost any other coffee. The floral and citrus aromatics that make it extraordinary are the first things to disappear when you overextract, so dial back compared to your usual settings. Use slightly lower temperature (90-93C), a slightly coarser grind, or shorter contact time -- any of these will help preserve the jasmine and bergamot top notes. Pour-over is the ideal method, giving those delicate aromatics room to develop across the cup as it cools. If you are pulling espresso with Gesha, use a longer ratio (1:2.5 or even 1:3) at moderate temperature to keep the floral character intact rather than burying it under concentration. Given what Gesha costs per gram, getting the recipe right matters. Select your specific bean and brewer in our Brew Dial-In tool for a personalized recipe -- it is worth the extra minute before you commit those precious beans to the grinder.",
     "beans": [
       {
@@ -4554,23 +4554,6 @@
         "flavor_notes": [
           "juicy citrus",
           "gentle florals"
-        ],
-        "top_brewer": "chemex-6cup",
-        "top_score": 95
-      },
-      {
-        "id": "market-lane-las-alasitas-2026-winter",
-        "name": "Las Alasitas",
-        "roaster": "Market Lane Coffee",
-        "roast_level": "light",
-        "processing": "washed",
-        "variety": [
-          "gesha"
-        ],
-        "flavor_notes": [
-          "white peach",
-          "orange blossom",
-          "toffee"
         ],
         "top_brewer": "chemex-6cup",
         "top_score": 95
@@ -5762,9 +5745,26 @@
         "context": "Guide to why Bolivian coffee is so rare and what makes the best lots exceptional"
       }
     ],
-    "bean_count": 7,
+    "bean_count": 8,
     "brewing_note": "Bolivian beans are exceptionally dense from extreme altitude growing conditions, which means they can handle -- and actively benefit from -- higher extraction parameters than most coffees. Use a finer grind and hotter water (95-96C) than you would for a typical Central or South American coffee. Pour-over is the ideal method, letting the bright acidity and stone fruit complexity unfold across the cup as it cools. The slow cherry maturation at altitude builds concentrated sugars and acids that reward a thorough extraction, so do not be afraid to push contact time slightly longer than usual. As espresso, Bolivian coffees produce bright, complex shots with pronounced acidity -- best enjoyed straight rather than in milk. If your cup tastes flat or underdeveloped, go finer and hotter. These are rare beans worth getting right. Select your specific bean and brewer in our Brew Dial-In tool for a personalized recipe calibrated to high-altitude origins.",
     "beans": [
+      {
+        "id": "market-lane-las-alasitas-2026-winter",
+        "name": "Las Alasitas",
+        "roaster": "Market Lane Coffee",
+        "roast_level": "light",
+        "processing": "washed",
+        "variety": [
+          "gesha"
+        ],
+        "flavor_notes": [
+          "white peach",
+          "orange blossom",
+          "toffee"
+        ],
+        "top_brewer": "chemex-6cup",
+        "top_score": 95
+      },
       {
         "id": "counter-culture-nueva-llusta-2026-winter",
         "name": "Nueva Llusta",

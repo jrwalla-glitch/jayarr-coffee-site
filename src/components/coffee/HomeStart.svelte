@@ -17,7 +17,7 @@
     { id: 'explore', label: 'Explore' },
   ];
   const BREWERS: { id: MethodId; label: string }[] = [
-    { id: 'v60', label: 'V60' }, { id: 'chemex', label: 'Chemex' }, { id: 'french-press', label: 'French press' }, { id: 'aeropress', label: 'AeroPress' },
+    { id: 'v60', label: 'V60' }, { id: 'kalita', label: 'Kalita Wave' }, { id: 'chemex', label: 'Chemex' }, { id: 'french-press', label: 'French press' }, { id: 'aeropress', label: 'AeroPress' },
     { id: 'drip-machine', label: 'Drip machine' }, { id: 'cold-brew', label: 'Cold brew' }, { id: 'moka', label: 'Moka pot' }, { id: 'espresso', label: 'Espresso' },
   ];
   const CUPS = [8, 10, 12, 16];

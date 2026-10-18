@@ -202,7 +202,7 @@
     if (/^robusta$/i.test(sc)) return 'The robusta harvest.';
     return `The calendar shown: ${sc.replace(/ illustrative calendar/i, '').replace(/^\w/, (c) => c.toLowerCase())}.`.replace('calendar shown: huila', "calendar shown: Huila's");
   }
-  const altScope = (sc: string) => sc.replace(/\bRobusta\b/g, 'robusta').replace(/\bArabica\b/g, 'arabica').replace(/;?\s*not national extrema\.?/i, '; not the highest or lowest farms.').replace(/not national extrema/i, "not the country's highest or lowest farms");
+  const altScope = (sc: string) => sc.replace(/\bRobusta\b/g, 'robusta').replace(/\bArabica\b/g, 'arabica').replace(/[,;]?\s*not national extrema\.?/i, '; not the highest or lowest farms.').replace(/not national extrema/i, "not the country's highest or lowest farms");
   // Markers sit close together (Rwanda and Burundi, Costa Rica and Panama), so a click or tap opens
   // the nearest one within reach of the pointer rather than whichever hit area is drawn on top. A
   // tap uses where the finger landed (the browser may nudge the click toward a nearby target), and
@@ -270,7 +270,7 @@
         <div><dt>Production</dt><dd>{productionText(o) ?? 'No current official figure'}{#if o.production?.arabicaShare != null && o.production.arabicaShare < 0.95}<span class="sub">{o.production.arabicaShare < 0.03 ? 'All counted as robusta' : `About ${Math.round(o.production.arabicaShare * 100)}% arabica, the rest robusta`}</span>{/if}{#if o.production}<span class="sub srcline">{productionSource(o)}</span>{/if}</dd></div>
       {/if}
       <div><dt>Varieties</dt><dd>{o.varieties.join(', ') || 'Not established'}</dd></div>
-      <div><dt>Processing</dt><dd>{o.processing.join(', ') || 'Not established'}</dd></div>
+      <div><dt>Processing</dt><dd>{o.processing.join(', ') || 'Not established'}{#if !compact && o.processing.length}<span class="sub">The usual methods; individual lots vary.</span>{/if}</dd></div>
     </dl>
   </div>
 {/snippet}

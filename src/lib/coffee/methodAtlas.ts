@@ -191,12 +191,13 @@ export const atlasById = (id: string) => ATLAS.find((m) => m.id === id);
 /** The Brew Guide link for a method, or null if the guide doesn't cover it. */
 export function brewGuideHref(m: AtlasMethod): string | null {
   if (!m.brewGuide) return null;
-  // A standard cup, so the link opens a complete recipe: a 12 oz mug, an 8 oz cup for the AeroPress
-  // (one press holds about 22 g), an 18 g double shot, or a 17 g moka basket (Hoffmann's recipe).
+  // Each brewer's own default in the Brew Guide (a size chip it offers), so the link opens a complete
+  // recipe with its chip lit: an 18 g double shot, a 15 g moka basket, an 8 oz AeroPress cup, a 12 oz
+  // V60 or Kalita, a 16 oz Chemex or French press, a 32 oz drip or cold-brew batch (review r2, Muse).
   if (m.brewGuide === 'espresso') return `/tools/brew-ratio/?method=espresso&dose=18`;
-  if (m.brewGuide === 'moka') return `/tools/brew-ratio/?method=moka&dose=17`;
-  // The Brew Guide's own mug sizes (8 and 12 US fl oz), so its size chip lights up.
-  return `/tools/brew-ratio/?method=${m.brewGuide}&cup=${m.brewGuide === 'aeropress' ? 236.6 : 354.9}`;
+  if (m.brewGuide === 'moka') return `/tools/brew-ratio/?method=moka&dose=15`;
+  const CUP: Record<string, number> = { aeropress: 236.6, v60: 354.9, kalita: 354.9, chemex: 473.2, 'french-press': 473.2, 'drip-machine': 946.4, 'cold-brew': 946.4 };
+  return `/tools/brew-ratio/?method=${m.brewGuide}&cup=${CUP[m.brewGuide] ?? 354.9}`;
 }
 
 const mmss = (s: number) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`;

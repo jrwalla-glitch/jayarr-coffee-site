@@ -135,14 +135,14 @@ export const FAMILIES: Family[] = [
     ['wcr-lexicon'],
     [
       ['floral', 'Floral', [
-        n('jasmine', 'Jasmine', 'Sweet, heady white flowers.', 'jasmine tea, smelled dry', ['jasmine', 'jasmine tea']),
+        n('jasmine', 'Jasmine', 'Sweet, heady white flowers.', 'dry jasmine tea leaves', ['jasmine', 'jasmine tea']),
         n('rose', 'Rose', 'Sweet, perfumed petals.', 'a drop of rosewater', ['rose', 'floral rose']),
         n('chamomile', 'Chamomile', 'Gentle, honeyed, hay-like flowers.', 'a chamomile tea bag', ['chamomile']),
         n('orange-blossom', 'Orange blossom', 'Citrus flowers: sweet and bright.', 'orange-blossom water', ['orange blossom', 'neroli'], extraWord),
         n('flowers-other', 'Other flowers', 'Honeysuckle, lavender, elderflower: flowers other than these.', 'a sprig of lavender or an elderflower cordial, smelled', ['honeysuckle', 'elderflower', 'magnolia blossom', 'gardenia', 'lavender', 'violet', 'hibiscus'], extraWord),
       ]],
       ['black-tea', 'Black tea', [
-        n('black-tea', 'Black tea', 'Brisk, dry, a little tannic, like a plain cup of tea.', 'a plain black tea bag, brewed', ['black tea', 'earl grey', 'earl grey tea', 'darjeeling', 'assam']),
+        n('black-tea', 'Black tea', 'Brisk, dry, a little tannic, like a plain cup of tea.', 'a cup of plain black tea', ['black tea', 'earl grey', 'earl grey tea', 'darjeeling', 'assam']),
       ]],
     ]),
   family('fruity', 'Fruity', '#b23d4a',
@@ -195,7 +195,7 @@ export const FAMILIES: Family[] = [
       ['sour', 'Sour', [
         n('citric', 'Citric acid', 'Clean, lemony sourness on the tongue.', 'a pinch of citric acid in a glass of water', ['citric'], { tryIt: 'Dissolve a small pinch of citric acid (or a squeeze of lemon) in a glass of water and sip. Then sip the coffee and notice where the sourness lands on your tongue.' }),
         n('malic', 'Malic acid', 'Rounder, apple-like sourness.', 'a bite of green apple', ['malic'], { tryIt: 'Bite a tart green apple and notice the sourness on your tongue, then compare the coffee.' }),
-        n('acetic', 'Acetic acid', 'Vinegar-like sharpness. Small amounts read as bright; more is a flaw.', 'a drop of white vinegar in water (smell it)', ['vinegar', 'acetic'], { flaw: true }),
+        n('acetic', 'Acetic acid', 'Vinegar-like sharpness. Small amounts read as bright; more is a flaw.', 'a drop of white vinegar in a glass of water', ['vinegar', 'acetic'], { flaw: true }),
         n('sour-aromatics', 'Sour aromatics', 'A sour, sharp smell: often over-fermentation.', 'sauerkraut brine, smelled', ['sour'], { flaw: true }),
       ]],
       ['fermented', 'Alcohol & fermented', [
@@ -230,7 +230,7 @@ export const OFF_GROUPS: Group[] = [
   { id: 'papery-musty', label: 'Papery & musty', family: 'off', notes: [
     { id: 'stale', label: 'Stale', gist: 'Flat and faded: old coffee.', ref: 'coffee left open for weeks', words: ['stale'], wheel: true, flaw: true, family: 'off', group: 'papery-musty' },
     { id: 'papery', label: 'Papery & cardboard', gist: 'Wet paper or cardboard.', ref: 'a dry paper filter, smelled (then rinse yours)', words: ['papery', 'cardboard'], wheel: false, flaw: true, family: 'off', group: 'papery-musty' },
-    { id: 'musty', label: 'Musty & earthy', gist: 'Damp cellar, dust, earth.', ref: 'a damp basement or potting soil, smelled', words: ['musty', 'earthy', 'dusty', 'damp'], wheel: true, flaw: true, family: 'off', group: 'papery-musty' },
+    { id: 'musty', label: 'Musty & earthy', gist: 'Damp cellar, dust, earth.', ref: 'a damp basement or potting soil, smelled', words: ['musty', 'earthy', 'dusty', 'damp', 'moldy', 'mouldy'], wheel: true, flaw: true, family: 'off', group: 'papery-musty' },
     { id: 'woody', label: 'Woody', gist: 'Dry wood or sawdust.', ref: 'a pencil shaving', words: ['woody', 'cedar'], wheel: true, family: 'off', group: 'papery-musty' },
     { id: 'phenolic', label: 'Phenolic', gist: 'Medicinal, plastic or burnt-rubber tones: one of the three sensory defects in the SCA\'s cupping standard (SCA-104, 2024), with potato and moldy.', ref: 'an adhesive bandage, smelled', words: ['phenolic', 'medicinal'], wheel: true, flaw: true, family: 'off', group: 'papery-musty' },
   ] },

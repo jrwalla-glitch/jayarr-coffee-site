@@ -22,7 +22,7 @@
     phin: 'Water sits on a press disc above the grounds, seeps through them and drips slowly from the perforated base into the glass.',
     'french-press': 'Grounds steep loose in the water for minutes, then a metal mesh is pressed down to hold them below the brew.',
     clever: 'Water and grounds steep together in a paper-lined cone until it is set on a cup, which opens a valve so the brew drains through the paper.',
-    'cold-brew': 'Coarse grounds sit in cold water for 12 to 24 hours while the coffee slowly spreads into the water, with no flow at all.',
+    'cold-brew': 'Coarse grounds sit in cold water for 12 to 18 hours in a fine metal mesh, while the coffee slowly spreads into the water, with no flow at all.',
     siphon: 'Vapor pressure in the heated lower globe pushes the water up into the grounds, and when the heat goes off the cooling globe pulls the brew back down through the filter.',
     turkish: 'Very fine coffee is heated with water in a cezve until the foam rises, then poured unfiltered so the grounds settle in the cup.',
     espresso: 'A pump forces hot water at about 9 bar through a tamped puck of fine coffee, and two thin streams fall into the cup.',
@@ -419,9 +419,9 @@
     <circle class="d f-card" cx="170" cy="32" r="9" />
     <path class="d" d="M170 32 L170 26.5" />
     <path class="d cb-hand" d="M170 32 L174.5 34.5" />
-    <text class="note" x="170" y="54" text-anchor="middle">12–24 h</text>
+    <text class="note" x="170" y="54" text-anchor="middle">12–18 h</text>
     {#if !compact}
-      {@render co('filter\nbag', 4, 146, 'start', 34, 149, 75, 150)}
+      {@render co('mesh\nfilter', 4, 146, 'start', 34, 149, 75, 150)}
       {@render co('cold\nwater', 144, 108, 'start', 142, 111, 126, 112)}
     {/if}
   {:else if method === 'turkish'}

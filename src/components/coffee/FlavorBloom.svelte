@@ -88,7 +88,8 @@
     const n = parseInt(hex.slice(1), 16), mix = (c: number) => Math.round(c + (255 - c) * t);
     return `rgb(${mix(n >> 16)}, ${mix((n >> 8) & 255)}, ${mix(n & 255)})`;
   }
-  const pct = (x: number) => `${Math.round(x * 100)}%`;
+  // A share under half a percent reads "<1%", never "0%" beside a count of one.
+  const pct = (x: number) => (x > 0 && x < 0.005 ? '<1%' : `${Math.round(x * 100)}%`);
   /** A group that is just one note of the same name (Vanilla, Black tea): listed under "Also on the wheel". */
   const single = (g: { label: string; notes: Note[] }) => g.notes.length === 1 && g.notes[0].label === g.label;
   /** The bars' scale: a round number a little above the longest bar, so no bar reads as 100%. */
@@ -728,7 +729,7 @@
                 {@render bars('By roast', ['light', 'medium', 'dark'].map((k) => ev!.roast.find((r) => r.key === k)).filter((r) => !!r) as typeof ev.roast, (k) => ROAST_LABEL[k] ?? k, ev.overall, top)}
                 <div class="bar axis" aria-hidden="true"><span></span><span class="ticks"><span>0</span><span class="avg" style:left="{(ev.overall / top) * 100}%">all lots {pct(ev.overall)}</span><span>{pct(top)}</span></span><span></span></div>
                 {#if ev.origins.filter((o) => o.hits >= 2).length}
-                  <p class="lbl orig">Origins where it's named most often</p>
+                  <p class="lbl orig">Origins where it's named most often <span class="quiet">(origins with 7 or more lots)</span></p>
                   <ul class="origins">
                     {#each ev.origins.filter((o) => o.hits >= 2).slice(0, 4) as o (o.key)}
                       {@const page = originPage(o.key)}
