@@ -273,8 +273,26 @@ test('review r5 (Muse): ratio and grind rows differ when they do; a large ratio 
   assert.deepEqual(recipeDiffers(by('phin'), by('v60')), { ratio: true, grind: true });
   assert.equal(recipeDiffers(by('v60'), by('french-press')).ratio, false);
   assert.equal(recipeDiffers(by('espresso'), by('moka')).ratio, true);
-  assert.match(differenceSentence(by('phin'), by('v60')), /the phin uses about twice the coffee for its water \(1:8\.6 against 1:16\)/);
+  assert.match(differenceSentence(by('phin'), by('v60')), /the phin uses about twice the coffee for its water \(1:8\.45 against 1:16\)/);
   assert.ok(by('clever').timeNote && by('aeropress').timeNote);
+});
+
+test('Wave F r1 B1: the phin star is the Brew Guide\'s phin (Nguyen\'s recipe), and its link opens it', () => {
+  const phin = ATLAS.find((m) => m.id === 'phin');
+  assert.equal(ratioText(phin), '1:8.45');
+  assert.equal(phin.grind, 'Fine');
+  assert.equal(phin.temp, '195–200°F (91–93°C)');
+  assert.equal(timeText(phin), '5 minutes');
+  assert.equal(phin.brewGuide, 'phin');
+  assert.equal(brewGuideHref(phin), '/tools/brew-ratio/?method=phin&dose=14');
+  assert.match(phin.recipeBy, /Nguyen Coffee Supply's phin recipe.*14 g of coffee to 4 oz \(118\.3 g\) of water, 1:8\.45 \(calculated\)/);
+  assert.deepEqual(phin.sourceIds, ['nguyen-iced']);
+  const r = buildRecipe(decodeBrew(brewGuideHref(phin).split('?')[1]).value);
+  assert.equal(r.ok, true);
+  assert.equal(r.value.doseG, 14);
+  assert.equal(Math.round(r.value.waterG * 10) / 10, 118.3);
+  // No other star's numbers moved: every °C the atlas prints from the engine is a whole number.
+  for (const m of ATLAS) assert.doesNotMatch(m.temp, /\d\.\d+°C|\d\.\d+–/, m.id);
 });
 
 test('review r6 (Opus): cold brew reads as a concentrate and compares as served; multiples are said exactly; a bag\'s "sour" isn\'t the flaw note', () => {

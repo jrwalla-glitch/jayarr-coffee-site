@@ -152,10 +152,10 @@ export const methods: BrewMethod[] = [
     physics: 'A small stainless steel chamber sits directly on the cup. Ground coffee is loaded, a perforated press plate compresses the bed, and hot water is added on top. Gravity slowly pulls water through the compressed coffee and the metal filter — no paper involved. The metal filter and slow drip produce a concentrate typically served over ice with sweetened condensed milk.',
     whatMakesItUnique: 'The phin is Vietnam\'s answer to espresso — a concentrated, full-bodied brew that pairs perfectly with condensed milk to create cà phê sữa đá, one of the world\'s great iced coffees. The metal filter lets oils through like a French Press, but the gravity percolation adds clarity. It\'s also the most portable and inexpensive way to make concentrate — the whole brewer fits in your palm and costs under $10.',
     parameters: {
-      ratio: '1:4 – 1:6 (concentrate)',
-      grindSize: 'Medium-coarse',
-      waterTemp: '96°C (205°F)',
-      brewTime: '4:00 – 6:00',
+      ratio: '1:8.45 (Nguyen Coffee Supply\'s recipe, calculated)',
+      grindSize: 'Fine, like sand',
+      waterTemp: '91–93°C (195–200°F)',
+      brewTime: 'about 5:00',
       difficulty: 1,
     },
     comparisons: [

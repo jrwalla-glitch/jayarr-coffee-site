@@ -3,10 +3,10 @@
 // Contact (how water meets coffee), filter (what holds the grounds back), force (what moves the
 // water) and contact time are independent: espresso is percolation under pump pressure, the
 // AeroPress steeps and is then pushed by hand, a siphon steeps and is pulled down by a vacuum.
-// Where the Brew Guide covers a method, its numbers come from the engine (methods.ts), so the
-// atlas and the guide can't disagree. The other four use the recipe in the site's own guide to
-// that brewer, credited as such.
-import { METHODS } from './methods.ts';
+// Where the Brew Guide covers a method (the phin included), its numbers come from the engine
+// (methods.ts), so the atlas and the guide can't disagree. The other three use the recipe in the
+// site's own guide to that brewer, credited as such.
+import { GUIDE_METHODS, PHIN } from './methods.ts';
 import type { MethodId } from './types.ts';
 
 export type AtlasId = 'v60' | 'chemex' | 'kalita' | 'drip-machine' | 'phin' | 'french-press' | 'clever' | 'cold-brew' | 'siphon' | 'turkish' | 'espresso' | 'moka' | 'aeropress';
@@ -77,11 +77,12 @@ export interface AtlasMethod {
 }
 
 const fromEngine = (id: MethodId) => {
-  const m = METHODS.find((x) => x.id === id)!;
+  const m = GUIDE_METHODS.find((x) => x.id === id)!;
   return {
     ratio: { classic: m.ratio.classic, range: [m.ratio.stronger, m.ratio.lighter] as [number, number], ...(id === 'espresso' ? { yield: true } : {}) },
     grind: m.grindLabel,
-    temp: id === 'cold-brew' ? 'Cold or room temperature' : id === 'moka' ? 'Just-boiled water in the base' : `${Math.round(m.tempC.min * 9 / 5 + 32)}–${Math.round(m.tempC.max * 9 / 5 + 32)}°F (${m.tempC.min}–${m.tempC.max}°C)`,
+    // The phin's range is set in °F (195–200), so its °C is rounded: 91–93.
+    temp: id === 'cold-brew' ? 'Cold or room temperature' : id === 'moka' ? 'Just-boiled water in the base' : `${Math.round(m.tempC.min * 9 / 5 + 32)}–${Math.round(m.tempC.max * 9 / 5 + 32)}°F (${Math.round(m.tempC.min)}–${Math.round(m.tempC.max)}°C)`,
     timeS: [m.timeS.min, m.timeS.max] as [number, number],
     // The Guide's classic numbers are its own, adapted from the recipe it credits, not that recipe's exact ratio (review r7, Opus).
     recipeBy: m.base?.by ? `the Brew Guide's classic recipe (adapted from ${m.base.by})` : 'the Brew Guide\'s classic recipe',
@@ -122,12 +123,11 @@ export const ATLAS: AtlasMethod[] = [
   {
     id: 'phin', label: 'Phin', the: 'the phin', line: 'A small Vietnamese metal filter that drips slowly straight into the glass.',
     contact: 'percolation', filter: 'metal', force: 'gravity', attention: 2,
-    timeS: [240, 300], ratio: { classic: 8.6, range: [8.6, 8.6] }, grind: 'Medium-coarse', temp: '203–212°F (95–100°C)',
-    recipeBy: 'our phin guide: 14 g of coffee and 120 ml of water, dripping for 4–5 minutes',
-    brewGuide: null,
+    // The Brew Guide's phin is Nguyen Coffee Supply's recipe, numbers and all (Wave F r1, B1): 1:8.45, fine, 195–200°F, the last drop around 5:00.
+    ...fromEngine('phin'),
+    recipeBy: `Nguyen Coffee Supply's phin recipe, as the Brew Guide makes it: ${PHIN.base!.doseG} g of coffee to 4 oz (${PHIN.base!.waterG} g) of water, 1:${PHIN.ratio.classic} (calculated), with the last drop around 5:00`,
     guide: { slug: 'vietnamese-phin-guide', title: 'Vietnamese phin guide' },
-    sourceIds: [],
-    // Astra, 2026-10-15: the house 14 g / 120 ml is close to Nguyen's published phin method; a house choice, not a standard.
+    sourceIds: ['nguyen-iced'],
   },
   {
     id: 'french-press', label: 'French press', the: 'the French press', line: 'Coffee steeps in all the water; a metal mesh holds the grounds back.',
@@ -216,6 +216,8 @@ export function brewGuideHref(m: AtlasMethod): string | null {
   // V60 or Kalita, a 16 oz Chemex or French press, a 32 oz drip or cold-brew batch (review r2, Muse).
   if (m.brewGuide === 'espresso') return `/tools/brew-ratio/?method=espresso&dose=18`;
   if (m.brewGuide === 'moka') return `/tools/brew-ratio/?method=moka&dose=15`;
+  // The phin's one size: Nguyen's 14 g in a 4 oz phin, as the phin article's callout opens it.
+  if (m.brewGuide === 'phin') return `/tools/brew-ratio/?method=phin&dose=14`;
   const CUP: Record<string, number> = { aeropress: 236.6, v60: 354.9, kalita: 354.9, chemex: 473.2, 'french-press': 473.2, 'drip-machine': 946.4, 'cold-brew': 946.4 };
   return `/tools/brew-ratio/?method=${m.brewGuide}&cup=${CUP[m.brewGuide] ?? 354.9}`;
 }
@@ -248,11 +250,12 @@ export function differences(a: AtlasMethod, b: AtlasMethod): Axis[] {
   if (a.force !== b.force) out.push('force');
   // Time differs when the ranges don't overlap, or one typically runs at least half as long again as
   // the other (by the middle of each range), so 3–4 minutes against 4–8 counts and 3–4 against 3:30–4:30 doesn't.
-  const mid = (m: AtlasMethod) => Math.sqrt(m.timeS[0] * m.timeS[1]);
   const apart = a.timeS[1] < b.timeS[0] || b.timeS[1] < a.timeS[0];
-  if (apart || Math.max(mid(a), mid(b)) / Math.min(mid(a), mid(b)) >= 1.5) out.push('time');
+  if (apart || Math.max(midS(a), midS(b)) / Math.min(midS(a), midS(b)) >= 1.5) out.push('time');
   return out;
 }
+/** The middle of a brewer's time range (geometric, as the time axis is a log scale). */
+const midS = (m: AtlasMethod) => Math.sqrt(m.timeS[0] * m.timeS[1]);
 
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const FORCE_PHRASE: Record<Force, string> = {
@@ -312,18 +315,25 @@ export function differenceSentence(a: AtlasMethod, b: AtlasMethod): string {
     const [clear, full] = FILTER[a.filter].order <= FILTER[b.filter].order ? [a, b] : [b, a];
     parts.push(full.filter === 'none' ? `only ${clear.the} is filtered` : `${clear.the}'s ${FILTER_PHRASE[clear.filter]} gives the clearer cup`);
   }
-  if (d.includes('time') && parts.length < 2) {
+  let timePart: string | null = null;
+  if (d.includes('time')) {
     const [fast, slow] = a.timeS[1] <= b.timeS[1] ? [a, b] : [b, a];
-    parts.push(`${fast.the} takes ${timeText(fast)}, ${slow.the} ${timeText(slow)}`);
+    timePart = `${fast.the} takes ${timeText(fast)}, ${slow.the} ${timeText(slow)}`;
   }
   // A large ratio difference is often the one a reader notices most (phin against V60): say it when
   // there's room, for brewers measured the same way (review r5, Muse).
   const [strong, weak] = served(a) <= served(b) ? [a, b] : [b, a];
   const times = served(weak) / served(strong);
-  if (parts.length < 2 && !a.ratio.yield && !b.ratio.yield && !a.servedFactor && !b.servedFactor && times >= 1.5) {
+  let ratioPart: string | null = null;
+  if (!a.ratio.yield && !b.ratio.yield && !a.servedFactor && !b.servedFactor && times >= 1.5) {
     const r = (x: number) => String(Math.round(x * 100) / 100);
-    parts.push(`${strong.the} uses about ${times >= 1.85 && times < 2.15 ? 'twice' : `${times.toFixed(1)} times`} the coffee for its water (1:${r(strong.ratio.classic)} against 1:${r(weak.ratio.classic)})`);
+    ratioPart = `${strong.the} uses about ${times >= 1.85 && times < 2.15 ? 'twice' : `${times.toFixed(1)} times`} the coffee for its water (1:${r(strong.ratio.classic)} against 1:${r(weak.ratio.classic)})`;
   }
+  // Room for only one: say the bigger of the two, as a multiple. The phin's 5 minutes against a V60's
+  // 3–4 is about 1.4 times; its coffee is about twice (Wave F r1). The table marks both rows either way.
+  const timeTimes = Math.max(midS(a), midS(b)) / Math.min(midS(a), midS(b));
+  if (timePart && ratioPart && parts.length === 1) parts.push(times > timeTimes ? ratioPart : timePart);
+  else for (const p of [timePart, ratioPart]) if (p && parts.length < 2) parts.push(p);
   if (parts.length === 1 && d.includes('force') && d.includes('contact')) {
     const pushed = [a, b].filter((m) => m.force === 'hand' || m.force === 'steam' || m.force === 'pump' || m.force === 'vapor');
     if (pushed.length === 1) parts.push(`only ${pushed[0].the} ${FORCE_DO[pushed[0].force]}`);
