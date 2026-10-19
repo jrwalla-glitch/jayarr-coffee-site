@@ -48,16 +48,16 @@ const filter = freshnessStages('filter');
 						</tbody>
 					</table>
 				</div>
-				<p class="cf-note">Filter coffee timings. For espresso, give the beans a few more days of rest; the extra CO₂ in very fresh beans makes shots run unevenly. The boundaries after a month are our guide, not a rule.</p>
+				<p class="cf-note">Filter coffee timings. For espresso, give the beans a few more days of rest: in a shot the gas in very fresh beans pushes back against the water. The boundaries after a month are our guide, not a rule.</p>
 
 				<h2>Why fresh beans need a rest</h2>
-				<p>Roasting fills the beans with carbon dioxide. In the first few days it bubbles out so fast that it pushes water away from the grounds and makes extraction uneven, so a coffee roasted yesterday can taste sharp and thin. A few days' rest lets it settle; after that, aroma compounds slowly escape and oils oxidize, which is why beans peak and then fade. Fresh beans don't look oily; very oily beans are often old or very dark.</p>
+				<p>Roasting fills the beans with carbon dioxide, which leaves quickly in the first few days and then more slowly. Resting matters most for espresso: in Scott Rao's account, the gas pushes back against the water flowing through the puck, so very fresh beans need a coarser grind and extract less. In an open filter brewer most of the gas escapes into the air above the slurry, and Rao finds it doesn't significantly change extraction or flavor; James Hoffmann still thinks coffee tastes better two or three days after roasting than straight away. After that, aroma compounds slowly escape and oils oxidize, which is why beans peak and then fade. Fresh beans don't look oily; very oily beans are often old or very dark.</p>
 
 				<h2>How to store coffee</h2>
 				<ul>
 					<li><strong>Keep it sealed, cool, dark and dry.</strong> The original bag with the air squeezed out is fine.</li>
 					<li><strong>Never the fridge:</strong> beans pick up smells and moisture condenses on them.</li>
-					<li><strong>Freeze what you won't use in two weeks.</strong> Sealed and frozen, beans keep for months; take out only what you need and don't refreeze.</li>
+					<li><strong>Freeze what you won't use in two weeks.</strong> Sealed and frozen, beans keep for months; take out only what you need and don't refreeze. Freezing slows staling rather than stopping it: in Krešimir Marin's year-long study, even ground coffee kept under nitrogen at −4°F&nbsp;(−20°C) lost aroma compounds.</li>
 					<li><strong>Grind close to brewing.</strong> Ground coffee loses aroma much faster than whole beans, though grinding a batch for drip a few hours ahead is fine.</li>
 				</ul>
 
@@ -72,6 +72,9 @@ const filter = freshnessStages('filter');
 				<h2>Sources</h2>
 				<ul class="cf-sources">
 					{['gagne', 'rao', 'hoffmann', 'synthesis'].map((id) => SOURCES[id]).map((s) => <li>{s.author}, <cite>{s.title}</cite>{s.year ? ` (${s.year})` : ''}.</li>)}
+					<li>Scott Rao, <cite>Espresso Extraction: Measurement and Mastery</cite> (2013), chapter 8, "Roast Age," and chapter 9, "Grinding": resting beans for espresso and for non-pressurized brewing.</li>
+					<li>James Hoffmann, <cite>The World Atlas of Coffee</cite>, revised edition (2018), p. 65, "'Resting' coffee".</li>
+					<li>{SOURCES['marin-2008'].author}, <cite>{SOURCES['marin-2008'].title}</cite> ({SOURCES['marin-2008'].year}): {SOURCES['marin-2008'].where}.</li>
 				</ul>
 			</article>
 		</main>

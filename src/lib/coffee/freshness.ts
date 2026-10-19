@@ -3,6 +3,12 @@ import { failure, finite, success } from './units.ts';
 
 // Freshness windows (synthesis §13): rest at least 3–4 days after roasting (too much CO2),
 // peak 7–21 days post-roast (all sources), use within about a month (Hoffmann), never refrigerate.
+// Filter and espresso rest differently (round 3, item 23). Rao (Espresso Extraction, 2013, ch. 8 and 9): in espresso,
+// outgassing "causes back pressure that inhibits the flow of liquid" and forces a coarser grind; in non-pressurized
+// brewing most of the gas "dissipates into the air above the slurry" and "does not significantly affect extraction
+// yield or flavor". Hoffmann (World Atlas, p. 65): resting is "not as important" for filter, but he finds coffee
+// tastes better "after two to three days than immediately after roasting". So filter's first days read as very
+// fresh and fine to brew, not as a warning.
 // Freezing slows the loss rather than stopping it: Marin 2008's frozen samples still lost volatiles
 // over a year. The tool treats up to about a year frozen as paused (Gagné, Rao), a simplification.
 // The "fading" and "stale" boundaries after a month are editorial and labelled as such in the UI.
@@ -21,7 +27,9 @@ export interface Stage { id: StageId; label: string; short: string; from: number
 export function stages(use: FreshUse): Stage[] {
   const restEnd = use === 'espresso' ? 7 : 4;
   const all: Stage[] = [
-    { id: 'resting', short: 'Resting', label: 'Probably still resting', from: 0, to: restEnd, advice: 'Likely too fresh: trapped CO₂ can make it brew unevenly. Another few days usually helps.' },
+    use === 'filter'
+      ? { id: 'resting', short: 'Very fresh', label: 'Very fresh', from: 0, to: restEnd, advice: 'Fine to brew. In an open filter brewer most of the gas escapes as it brews (Rao), though Hoffmann finds coffee tastes better after two or three days.' }
+      : { id: 'resting', short: 'Resting', label: 'Probably still resting', from: 0, to: restEnd, advice: 'Likely too fresh for espresso: the gas pushes back against the water and forces a coarser grind (Rao). Another few days usually helps.' },
     { id: 'opening', short: 'Opening up', label: 'Opening up', from: restEnd, to: 7, advice: 'Ready to brew; most coffees keep getting sweeter for a few more days.' },
     { id: 'peak', short: 'Usually best', label: 'Likely at its best', from: 7, to: 22, advice: 'Most coffees taste their best around now. Brew it.' },
     { id: 'good', short: 'Still good', label: 'Probably still good', from: 22, to: 31, advice: 'Typically past its best but still good. Finish it soon, or freeze what you won\'t use.' },
