@@ -225,7 +225,8 @@ export const EY_BY_METHOD: Partial<Record<MethodId, Range>> = {
  * fixes the strength (Nguyen: add hot water if it's too strong), and a 4 oz phin holds the 14 g: larger phins
  * keep about 1 tbsp per 2 oz and take a second pour, which this recipe doesn't cover.
  *
- * Kept out of METHODS, which Fix My Coffee and the Caffeine Calculator list: neither models a phin yet.
+ * Kept out of METHODS, which the Caffeine Calculator lists: it doesn't model a phin. Fix My Coffee adds the phin
+ * on a short path of its own (doctor.ts), limited to Nguyen Coffee Supply's troubleshooting (Wave F r1, B14).
  */
 export const PHIN: Method = {
   id: 'phin', label: 'Phin', family: 'percolation', fixedRatio: true,

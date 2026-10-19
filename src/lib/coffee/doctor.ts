@@ -5,21 +5,23 @@ import { strengthParam } from './share.ts';
 import { failure, flOzToMl, success } from './units.ts';
 
 // Fix My Coffee (the "Coffee Doctor" in code) and the Extraction Map share this module.
-// It covers METHODS; the Brew Guide's phin isn't modeled here yet, so it gets no diagnosis.
+// It covers METHODS, and the Brew Guide's phin on a short path of its own: the drip running fast, the drip
+// stalling, and a cup too strong, with only the causes Nguyen Coffee Supply's troubleshooting gives (Wave F r1, B14).
 // Science: compounds dissolve at different speeds, so taste changes as extraction rises; under-extracted
 // cups tend to taste sour and thin, over-extracted ones bitter and drying (Gagné; synthesis §1). No fixed
 // acid → sugar → bitter phases: the Deep Brew note on the extraction sequence finds the bitter, slow end
 // better supported than the sour, fast one (Wave F r1, B2). Espresso dial-in by shot time and yield (§7, Rao).
 // The map is qualitative: taste cannot give a TDS or extraction reading.
 
-export type SymptomId = 'sour' | 'bitter' | 'weak' | 'strong' | 'harsh-mixed' | 'bright' | 'flat' | 'off' | 'muddy' | 'gushing' | 'choking';
+export type SymptomId = 'sour' | 'bitter' | 'weak' | 'strong' | 'harsh-mixed' | 'bright' | 'flat' | 'off' | 'muddy' | 'gushing' | 'choking' | 'drip-fast' | 'drip-stall';
 
-export interface Symptom { id: SymptomId; label: string; tagline: string; espresso: boolean; filter: boolean }
+/** `phin`: offered for the phin, whose path covers only what Nguyen Coffee Supply's troubleshooting does. */
+export interface Symptom { id: SymptomId; label: string; tagline: string; espresso: boolean; filter: boolean; phin?: boolean }
 export const SYMPTOMS: Symptom[] = [
   { id: 'sour', label: 'Sour', tagline: 'Sharp, tangy, thin, like under-ripe fruit', espresso: true, filter: true },
   { id: 'bitter', label: 'Bitter', tagline: 'Harsh, ashy, drying finish', espresso: true, filter: true },
   { id: 'weak', label: 'Weak', tagline: 'Watery, thin, not enough coffee', espresso: false, filter: true },
-  { id: 'strong', label: 'Too strong', tagline: 'Heavy and intense, more than you want', espresso: true, filter: true },
+  { id: 'strong', label: 'Too strong', tagline: 'Heavy and intense, more than you want', espresso: true, filter: true, phin: true },
   { id: 'harsh-mixed', label: 'Sour and bitter', tagline: 'Both at once, hollow in the middle', espresso: true, filter: true },
   { id: 'bright', label: 'Bright, is that right?', tagline: 'Lively, fruity acidity you are not sure about', espresso: true, filter: true },
   { id: 'flat', label: 'Flat', tagline: 'Dull, papery, no aroma', espresso: true, filter: true },
@@ -27,11 +29,14 @@ export const SYMPTOMS: Symptom[] = [
   { id: 'muddy', label: 'Muddy', tagline: 'Silty, gritty, heavy sludge', espresso: false, filter: true },
   { id: 'gushing', label: 'Runs too fast', tagline: 'Shot pours in under 25 seconds', espresso: true, filter: false },
   { id: 'choking', label: 'Barely drips', tagline: 'Shot drips slowly or not at all', espresso: true, filter: false },
+  // The phin's own two, in the terms of Nguyen Coffee Supply's troubleshooting (the phin guide's "When the drip runs too fast or too slow").
+  { id: 'drip-fast', label: 'Drips too fast', tagline: 'A phin that empties in about a minute', espresso: false, filter: false, phin: true },
+  { id: 'drip-stall', label: 'Stalls', tagline: 'A phin that hasn\'t dripped for more than 5 minutes', espresso: false, filter: false, phin: true },
 ];
 
 export interface Option { id: string; label: string }
 export interface Question { id: QuestionId; text: string; options: Option[] }
-export type QuestionId = 'time' | 'roast' | 'grinder' | 'age' | 'water' | 'measure' | 'shot' | 'finish' | 'clean' | 'serve';
+export type QuestionId = 'time' | 'roast' | 'grinder' | 'age' | 'water' | 'measure' | 'shot' | 'finish' | 'clean' | 'serve' | 'press' | 'dose' | 'dry';
 
 export interface DoctorState { method: MethodId; symptom: SymptomId; answers: Partial<Record<QuestionId, string>> }
 
@@ -100,6 +105,13 @@ function question(id: QuestionId, method: MethodId): Question {
       return { id, text: 'Did you brew a concentrate and dilute it, or brew it ready to drink?', options: [{ id: 'concentrate', label: 'A concentrate, diluted to serve' }, { id: 'ready', label: 'Ready to drink, nothing added' }] };
     case 'finish':
       return { id, text: 'How does a sip finish?', options: [{ id: 'sweet', label: 'Sweet and juicy, it lingers' }, { id: 'short', label: 'Sharp, then thin and gone' }, { id: 'drying', label: 'Dry and puckering' }] };
+    // The phin's questions: what Nguyen Coffee Supply names as the causes of a fast or stalled drip.
+    case 'press':
+      return { id, text: 'Which press does your phin have?', options: [{ id: 'gravity', label: 'It rests on the coffee' }, { id: 'screw', label: 'It screws down' }, { id: 'unsure', label: 'Not sure' }] };
+    case 'dose':
+      return { id, text: 'How much coffee went in?', options: [{ id: 'full', label: '14 g (about 2 tablespoons) or more' }, { id: 'less', label: 'Less than that' }, { id: 'unsure', label: 'I didn\'t measure' }] };
+    case 'dry':
+      return { id, text: 'Was the phin dry when you started?', options: [{ id: 'dry', label: 'Yes, dry' }, { id: 'wet', label: 'Still wet from washing' }, { id: 'unsure', label: 'Not sure' }] };
     case 'clean':
       // Espresso machines differ (the Bambino has no backflush; some makers name their own tablets), so ask
       // against the machine's manual, not a monthly norm (Wave D batch 7).
@@ -118,7 +130,9 @@ function question(id: QuestionId, method: MethodId): Question {
 function questionIds(state: DoctorState): QuestionId[] {
   const fam = familyOf(state.method);
   const esp = fam === 'espresso';
+  if (state.method === 'phin') return state.symptom === 'drip-fast' ? ['press', 'dose'] : state.symptom === 'drip-stall' ? ['press', 'dry'] : [];
   switch (state.symptom) {
+    case 'drip-fast': case 'drip-stall': return [];
     case 'sour': return esp ? ['shot', 'roast'] : fam === 'percolation' ? ['time', 'roast', 'grinder'] : ['time'];
     case 'bitter': return esp ? ['shot', 'roast'] : ['time', 'roast'];
     case 'weak': return fam === 'moka' ? [] : state.method === 'cold-brew' ? ['serve', 'measure', 'time'] : ['measure', 'time'];
@@ -141,7 +155,7 @@ export function questionsFor(state: DoctorState): Question[] {
   return questionIds(state).map((id) => question(id, state.method));
 }
 
-export type Variable = 'grind' | 'dose' | 'yield' | 'water' | 'temperature' | 'steep time' | 'pour' | 'heat' | 'dilution';
+export type Variable = 'grind' | 'dose' | 'yield' | 'water' | 'temperature' | 'steep time' | 'pour' | 'heat' | 'dilution' | 'press';
 const VARS: Record<Family, Variable[]> = {
   espresso: ['grind', 'dose', 'yield', 'temperature'],
   moka: ['grind', 'dose', 'water', 'heat'],
@@ -178,22 +192,43 @@ export interface Diagnosis {
 const S = ['synthesis', 'gagne', 'rao'];
 
 export function diagnose(state: DoctorState): Result<Diagnosis> {
-  const m = METHODS.some((x) => x.id === state.method) ? methodById(state.method) : undefined;
+  const phin = state.method === 'phin';
+  const m = METHODS.some((x) => x.id === state.method) || phin ? methodById(state.method) : undefined;
   if (!m) return failure('unknown-method', 'method', 'Choose how you brewed it.');
   const sym = SYMPTOMS.find((s) => s.id === state.symptom);
   if (!sym) return failure('unknown-symptom', 'symptom', 'Choose what tastes wrong.');
   const fam = familyOf(state.method);
   const esp = fam === 'espresso';
-  if ((esp && !sym.espresso) || (!esp && !sym.filter)) return failure('symptom-method', 'symptom', `That symptom doesn't apply to ${m.label}.`);
+  if (phin ? !sym.phin : (esp && !sym.espresso) || (!esp && !sym.filter)) return failure('symptom-method', 'symptom', `That symptom doesn't apply to ${m.label}.`);
   const missing = nextQuestion(state);
   if (missing) return failure('needs-answer', missing.id, missing.text);
   const a = state.answers;
   const cold = state.method === 'cold-brew';
   // Cold brew: no temperature to change, but the serving dilution is its own variable, unless it was brewed ready to drink.
-  const vars: Variable[] = cold ? [...VARS[fam].filter((v) => v !== 'temperature'), ...(a.serve === 'ready' ? [] : ['dilution' as const])] : VARS[fam];
+  // The phin's variables: Nguyen's recipe fixes the dose and water, and a screw-down press sets the drip speed.
+  const vars: Variable[] = phin ? ['grind', 'dose', 'water', 'temperature', 'press'] : cold ? [...VARS[fam].filter((v) => v !== 'temperature'), ...(a.serve === 'ready' ? [] : ['dilution' as const])] : VARS[fam];
   // Every diagnosis changes at most one brew variable and says what stays fixed.
-  const d = (x: Omit<Diagnosis, 'sourceIds' | 'hold' | 'placement'> & { hold?: Variable[]; placement?: Diagnosis['placement'] }): Result<Diagnosis> =>
-    success({ ...x, placement: x.placement ?? 'likely', hold: x.hold ?? (x.change ? vars.filter((v) => v !== x.change) : []), sourceIds: S });
+  const d = (x: Omit<Diagnosis, 'sourceIds' | 'hold' | 'placement'> & { hold?: Variable[]; placement?: Diagnosis['placement']; sourceIds?: string[] }): Result<Diagnosis> =>
+    success({ ...x, placement: x.placement ?? 'likely', hold: x.hold ?? (x.change ? vars.filter((v) => v !== x.change) : []), sourceIds: x.sourceIds ?? S });
+
+  // ── The phin: only the causes Nguyen Coffee Supply's troubleshooting gives (the phin guide, "When the drip runs
+  // too fast or too slow"). Its guide times the drip and gives no taste for it, so the map's dot is a guess. ──
+  if (phin) {
+    const N = ['nguyen-iced', 'nguyen-phin'];
+    const timing = 'The first drop falls at about 2:00 and the last around 5:00, as in Nguyen\'s guide; a little faster or slower is fine, Nguyen says.';
+    if (state.symptom === 'strong') return d({ cause: 'Nguyen\'s recipe makes a small, strong cup', why: 'The recipe fixes the coffee at 14 g for a 4 oz phin, and Nguyen Coffee Supply\'s answer to a cup that\'s too strong is to add water.', changeNow: 'Add hot water to the cup, or give the phin a second pour.', change: 'dilution', hold: ['grind', 'dose', 'water', 'temperature'], nextExperiment: 'Keep the 14 g: Nguyen says less than 2 tablespoons in a 4 oz phin may drip fast.', ruleOut: 'If it\'s only too strong black, try it the way Nguyen\'s recipe serves it, over condensed milk and ice.', zone: 'ideal-strong', placement: 'uncertain', placementNote: 'Strong for its water; Nguyen gives no extraction for its recipe, so the dot is a guess.', next: {}, sourceIds: N });
+    if (state.symptom === 'drip-fast') {
+      const note = { placement: 'uncertain' as const, placementNote: 'A fast drip is too little contact, but Nguyen gives no taste for it: the dot is a guess.' };
+      if (a.press === 'screw') return d({ cause: 'The screw-down press is set loose', why: 'Nguyen Coffee Supply says how tightly a screw-down press is turned sets how fast the phin drips, so adjust it before the grind.', changeNow: 'Screw the press down a little tighter on the next brew.', change: 'press', nextExperiment: 'If it still empties in about a minute, grind one step finer, as a separate change.', ruleOut: timing, zone: 'under-weak', ...note, next: {}, sourceIds: N });
+      if (a.dose === 'less') return d({ cause: 'Too little coffee for a 4 oz phin', why: 'Nguyen Coffee Supply says less than 2 tablespoons (14 g) in a 4 oz phin may drip fast.', changeNow: 'Use the full 14 g, about 2 tablespoons.', change: 'dose', nextExperiment: 'If it still rushes through, grind one step finer, as a separate change.', ruleOut: timing, zone: 'under-weak', ...note, next: {}, sourceIds: N });
+      return d({ cause: 'Probably a grind that\'s too coarse', why: 'Too coarse, Nguyen Coffee Supply says, and the coffee drips too fast; its recipe asks for a fine grind, "like sand".', changeNow: 'Grind one step finer.', change: 'grind', nextExperiment: a.dose === 'unsure' ? 'Weigh the coffee next time: less than 14 g can make it drip fast too.' : 'If it still rushes through, check that the bed is level before the press goes on: a lopsided bed lets water run down one side.', ruleOut: timing, zone: 'under-weak', ...note, next: { grind: 'finer' }, sourceIds: N });
+    }
+    // drip-stall
+    const note = { placement: 'uncertain' as const, placementNote: 'A stalled drip is too much contact, but Nguyen gives no taste for it: the dot is a guess.' };
+    if (a.dry === 'wet') return d({ cause: 'A wet phin blocking its own holes', why: 'Nguyen Coffee Supply says a phin that\'s still wet from washing can block its holes.', changeNow: 'Dry the phin completely before you brew.', nextExperiment: 'If it still stalls with a dry phin, lift the press for about 2 seconds to let trapped gas out.', ruleOut: timing, zone: 'over-ideal', ...note, next: {}, sourceIds: N });
+    if (a.press === 'screw') return d({ cause: 'The screw-down press is set tight', why: 'Nguyen Coffee Supply says how tightly a screw-down press is turned sets how fast the phin drips, so adjust it before the grind.', changeNow: 'Loosen the press a little on the next brew.', change: 'press', nextExperiment: 'If it still stalls, grind one step coarser, as a separate change.', ruleOut: timing, zone: 'over-ideal', ...note, next: {}, sourceIds: N });
+    return d({ cause: 'Trapped gas, or a grind that\'s too fine', why: 'Fresh coffee releases gas that can create suction in the chamber and stop the flow, Nguyen Coffee Supply says; a grind that\'s too fine slows it too.', changeNow: 'Lift the press with a spoon or chopstick for about 2 seconds to let the gas out.', nextExperiment: 'If it stalls again on the next brew, grind one step coarser, on its own.', ruleOut: 'If lifting the press starts the drip, it was the gas, not the grind.', zone: 'over-ideal', ...note, next: {}, sourceIds: N });
+  }
   // Hoffmann's long, unplunged settle is a French press brewed to its own recipe: judged as on target.
   const t = esp ? a.shot : a.time === 'settled' ? 'ok' : a.time;
   const settled = a.time === 'settled';
@@ -347,7 +382,7 @@ export function brewLinkFor(method: MethodId, d: Diagnosis, roast?: string): str
   const q = new URLSearchParams({ method });
   const r1 = (n: number) => String(Math.round(n * 10) / 10);
   const strength = d.next.strength ?? 'classic';
-  if (method === 'espresso' || method === 'moka') q.set('dose', method === 'espresso' ? '18' : '15');
+  if (method === 'espresso' || method === 'moka' || method === 'phin') q.set('dose', method === 'espresso' ? '18' : method === 'moka' ? '15' : '14');
   else {
     const sizes = method === 'cold-brew' || method === 'drip-machine' ? [32, 16] : method === 'aeropress' ? [8, 6] : [12, 10, 8];
     // "More (or less) coffee for the same water": keep the standard recipe's water, so only the coffee changes (Opus r4).
@@ -378,6 +413,7 @@ export type ZoneId = `${'under' | 'ideal' | 'over'}-${'weak' | 'ideal' | 'strong
 export const SYMPTOM_ZONE: Record<SymptomId, ZoneId | null> = {
   sour: 'under-ideal', bitter: 'over-ideal', weak: 'ideal-weak', strong: 'ideal-strong', 'harsh-mixed': 'under-strong',
   bright: 'ideal-ideal', flat: null, off: null, muddy: null, gushing: 'under-weak', choking: 'over-strong',
+  'drip-fast': 'under-weak', 'drip-stall': 'over-ideal',
 };
 export interface Zone { id: ZoneId; label: string; tastes: string; moves: string[] }
 

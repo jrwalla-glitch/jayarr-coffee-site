@@ -393,8 +393,9 @@ test('item 37: Hoffmann\'s unplunged 9–12 minute French press is its own answe
 test('A3: the map\'s starting guess: flat, off and muddy have none, because every diagnosis puts them off the map', () => {
   for (const sy of SYMPTOMS) {
     const zones = new Set(), placements = new Set();
-    for (const m of METHODS) {
-      const applies = m.id === 'espresso' ? sy.espresso : sy.filter; if (!applies) continue;
+    // The phin's own symptoms are checked on the phin (Wave F r1, B14).
+    for (const m of [...METHODS, { id: 'phin' }]) {
+      const applies = m.id === 'phin' ? sy.phin : m.id === 'espresso' ? sy.espresso : sy.filter; if (!applies) continue;
       for (const answers of allPaths(m.id, sy.id)) { const d = ok(diagnose({ method: m.id, symptom: sy.id, answers })); zones.add(d.zone); placements.add(d.placement); }
     }
     const guess = SYMPTOM_ZONE[sy.id];
@@ -427,4 +428,32 @@ test('Wave F r1 B2: no diagnosis teaches a fixed acids-then-sugars-then-bitters 
   }
   // The fast-shot, fast-drawdown and short-steep diagnoses say what is supported: too little extracted tends to taste sour.
   for (const w of ['A fast shot stops early, and an under-extracted cup tends to taste sour and thin.', 'Water that runs through fast extracts too little, which tends to taste sour and thin.', 'A short steep extracts too little, and an under-extracted cup tends to taste sour.']) assert.ok(whys.has(w), w);
+});
+
+test('Wave F r1 B14: the phin gets a short path built only from Nguyen Coffee Supply\'s troubleshooting', async () => {
+  const { brewLinkFor } = await import('../index.ts');
+  const offered = SYMPTOMS.filter((s) => s.phin).map((s) => s.id);
+  assert.deepEqual(offered, ['strong', 'drip-fast', 'drip-stall']);
+  // Nothing else applies to the phin, and its two symptoms apply to nothing else.
+  for (const s of SYMPTOMS) if (!s.phin) assert.equal(diagnose({ method: 'phin', symptom: s.id, answers: {} }).ok, false, s.id);
+  for (const m of METHODS) for (const id of ['drip-fast', 'drip-stall']) assert.equal(diagnose({ method: m.id, symptom: id, answers: {} }).ok, false, `${m.id} ${id}`);
+  const run = (symptom, answers) => ok(diagnose({ method: 'phin', symptom, answers }));
+  let n = 0;
+  for (const symptom of offered) for (const answers of allPaths('phin', symptom)) {
+    const d = run(symptom, answers); n++;
+    assert.deepEqual(d.sourceIds, ['nguyen-iced', 'nguyen-phin'], `${symptom} ${JSON.stringify(answers)}`);
+    assert.match(`${d.why} ${d.changeNow} ${d.nextExperiment}`, /Nguyen|14 g|grind|press|phin/, symptom);
+    if (d.change) assert.ok(!d.hold.includes(d.change));
+    assert.match(brewLinkFor('phin', d), /^\/tools\/brew-ratio\/\?method=phin&dose=14/);
+  }
+  assert.ok(n >= 10, `${n} paths`);
+  // The sourced causes, each where Nguyen puts it.
+  assert.equal(run('drip-fast', { press: 'screw', dose: 'full' }).changeNow, 'Screw the press down a little tighter on the next brew.');
+  assert.equal(run('drip-fast', { press: 'gravity', dose: 'less' }).changeNow, 'Use the full 14 g, about 2 tablespoons.');
+  assert.equal(run('drip-fast', { press: 'gravity', dose: 'full' }).change, 'grind');
+  assert.equal(run('drip-stall', { press: 'gravity', dry: 'wet' }).changeNow, 'Dry the phin completely before you brew.');
+  assert.match(run('drip-stall', { press: 'gravity', dry: 'dry' }).changeNow, /Lift the press .* about 2 seconds/);
+  assert.equal(run('drip-stall', { press: 'screw', dry: 'dry' }).change, 'press');
+  assert.match(run('strong', {}).changeNow, /Add hot water/);
+  assert.match(brewLinkFor('phin', run('drip-fast', { press: 'gravity', dose: 'full' })), /adjust=finer/);
 });
