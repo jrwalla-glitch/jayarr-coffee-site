@@ -135,6 +135,18 @@
     mounted = true;
   });
   $effect(() => { if (!mounted) return; history.replaceState(history.state, '', `${location.pathname}?a=${aId}&b=${bId}`); });
+
+  // "The difference" for screen readers: one polite sentence once the choice settles, not one per tap.
+  // The comparison already on screen when the page opens isn't read out; each later change is.
+  let said = $state('');
+  let quiet = true;
+  $effect(() => {
+    const s = `${da.name}, ${a.label}, and ${db.name}, ${b.label}: ${sentence}`;
+    if (!mounted) return;
+    if (quiet) { quiet = false; return; }
+    const t = setTimeout(() => (said = s), 700);
+    return () => clearTimeout(t);
+  });
 </script>
 
 <div class="cd">
@@ -206,6 +218,7 @@
   </figure>
 
   <div class="diff"><span class="k">The difference</span><p>{sentence}</p></div>
+  <p class="sr" aria-live="polite" aria-atomic="true">{said}</p>
 
   <div class="cards">
     {#each [{ r: a, d: da, set: (id: string) => (aId = id), tag: 'Left' }, { r: b, d: db, set: (id: string) => (bId = id), tag: 'Right' }] as c (c.tag)}
@@ -282,6 +295,7 @@
   .src { font-size: 13px; color: var(--ink-3); margin: 10px 0 0; }
   .src a { color: #7a4e30; }
   button:focus-visible, a:focus-visible { outline: 2px solid var(--crema-deep); outline-offset: 2px; }
+  .sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
   @media (max-width: 760px) {
     .gl { width: 100%; }
     .cards { grid-template-columns: 1fr; }
