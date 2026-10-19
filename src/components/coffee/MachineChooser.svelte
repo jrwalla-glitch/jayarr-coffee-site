@@ -439,7 +439,8 @@
                 <div class="acts">
                   {#if m.amazon}<a class="go" href={m.amazon.url} rel="sponsored noopener" target="_blank">See it on Amazon</a>
                   {:else if m.listPrice.url}<a class="go" href={m.listPrice.url} rel="noopener" target="_blank">{m.listPrice.seller ? `${m.listPrice.seller} ↗` : 'The maker\'s page ↗'}</a>{/if}
-                  {#if m.capsuleLine}<a class="ghost" href={`/tools/nespresso-pods/?line=${m.capsuleLine}`}>See its capsules</a>{/if}
+                  <!-- The machine's id, exactly as machines.json has it, so the Pod Explorer can mark capsules it can't brew (Wave F r1, B9 / A15). -->
+                  {#if m.capsuleLine}<a class="ghost" href={`/tools/nespresso-pods/?line=${m.capsuleLine}&machine=${m.id}`}>See its capsules</a>{/if}
                   <button type="button" class="ghost" onclick={() => openOwn(m.id)}>Dose and care</button>
                   {#if m.heating.system && HEATS.includes(m.heating.system)}<button type="button" class="ghost" onclick={() => { pickHeat(m.heating.system!); document.getElementById('how-it-heats')?.scrollIntoView({ behavior: 'smooth' }); }}>How it brews and steams</button>{/if}
                 </div>
