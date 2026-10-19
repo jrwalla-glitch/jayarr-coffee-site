@@ -5,19 +5,23 @@ import { strengthParam } from './share.ts';
 import { failure, flOzToMl, success } from './units.ts';
 
 // Fix My Coffee (the "Coffee Doctor" in code) and the Extraction Map share this module.
-// It covers METHODS; the Brew Guide's phin isn't modeled here yet, so it gets no diagnosis.
-// Science: extraction order — acids first, then sugars and Maillard products, then bitter
-// compounds (synthesis §1, §14, Gagné); espresso dial-in by shot time and yield (§7, Rao).
+// It covers METHODS, and the Brew Guide's phin on a short path of its own: the drip running fast, the drip
+// stalling, and a cup too strong, with only the causes Nguyen Coffee Supply's troubleshooting gives (Wave F r1, B14).
+// Science: compounds dissolve at different speeds, so taste changes as extraction rises; under-extracted
+// cups tend to taste sour and thin, over-extracted ones bitter and drying (Gagné; synthesis §1). No fixed
+// acid → sugar → bitter phases: the Deep Brew note on the extraction sequence finds the bitter, slow end
+// better supported than the sour, fast one (Wave F r1, B2). Espresso dial-in by shot time and yield (§7, Rao).
 // The map is qualitative: taste cannot give a TDS or extraction reading.
 
-export type SymptomId = 'sour' | 'bitter' | 'weak' | 'strong' | 'harsh-mixed' | 'bright' | 'flat' | 'off' | 'muddy' | 'gushing' | 'choking';
+export type SymptomId = 'sour' | 'bitter' | 'weak' | 'strong' | 'harsh-mixed' | 'bright' | 'flat' | 'off' | 'muddy' | 'gushing' | 'choking' | 'drip-fast' | 'drip-stall';
 
-export interface Symptom { id: SymptomId; label: string; tagline: string; espresso: boolean; filter: boolean }
+/** `phin`: offered for the phin, whose path covers only what Nguyen Coffee Supply's troubleshooting does. */
+export interface Symptom { id: SymptomId; label: string; tagline: string; espresso: boolean; filter: boolean; phin?: boolean }
 export const SYMPTOMS: Symptom[] = [
   { id: 'sour', label: 'Sour', tagline: 'Sharp, tangy, thin, like under-ripe fruit', espresso: true, filter: true },
   { id: 'bitter', label: 'Bitter', tagline: 'Harsh, ashy, drying finish', espresso: true, filter: true },
   { id: 'weak', label: 'Weak', tagline: 'Watery, thin, not enough coffee', espresso: false, filter: true },
-  { id: 'strong', label: 'Too strong', tagline: 'Heavy and intense, more than you want', espresso: true, filter: true },
+  { id: 'strong', label: 'Too strong', tagline: 'Heavy and intense, more than you want', espresso: true, filter: true, phin: true },
   { id: 'harsh-mixed', label: 'Sour and bitter', tagline: 'Both at once, hollow in the middle', espresso: true, filter: true },
   { id: 'bright', label: 'Bright, is that right?', tagline: 'Lively, fruity acidity you are not sure about', espresso: true, filter: true },
   { id: 'flat', label: 'Flat', tagline: 'Dull, papery, no aroma', espresso: true, filter: true },
@@ -25,11 +29,14 @@ export const SYMPTOMS: Symptom[] = [
   { id: 'muddy', label: 'Muddy', tagline: 'Silty, gritty, heavy sludge', espresso: false, filter: true },
   { id: 'gushing', label: 'Runs too fast', tagline: 'Shot pours in under 25 seconds', espresso: true, filter: false },
   { id: 'choking', label: 'Barely drips', tagline: 'Shot drips slowly or not at all', espresso: true, filter: false },
+  // The phin's own two, in the terms of Nguyen Coffee Supply's troubleshooting (the phin guide's "When the drip runs too fast or too slow").
+  { id: 'drip-fast', label: 'Drips too fast', tagline: 'A phin that empties in about a minute', espresso: false, filter: false, phin: true },
+  { id: 'drip-stall', label: 'Stalls', tagline: 'A phin that hasn\'t dripped for more than 5 minutes', espresso: false, filter: false, phin: true },
 ];
 
 export interface Option { id: string; label: string }
 export interface Question { id: QuestionId; text: string; options: Option[] }
-export type QuestionId = 'time' | 'roast' | 'grinder' | 'age' | 'water' | 'measure' | 'shot' | 'finish' | 'clean' | 'serve';
+export type QuestionId = 'time' | 'roast' | 'grinder' | 'age' | 'water' | 'measure' | 'shot' | 'finish' | 'clean' | 'serve' | 'press' | 'dose' | 'dry';
 
 export interface DoctorState { method: MethodId; symptom: SymptomId; answers: Partial<Record<QuestionId, string>> }
 
@@ -74,8 +81,9 @@ function question(id: QuestionId, method: MethodId): Question {
         : method === 'drip-machine' ? `How long did the machine take to brew? Usually ${target}.`
         : `How long did the brew take, from the first pour to the end of drawdown? Target for ${inSentence(m?.label ?? 'this method')} is ${target}.`;
       // Hoffmann's French press (World Atlas pp. 78–79; his 2016 video) steeps 4:00, skims, then settles 5 or more minutes
-      // and is poured without plunging: about 9–12 minutes, on purpose. It is its own answer, not "too long" (Wave D batch 19).
-      const settled = method === 'french-press' ? [{ id: 'settled', label: 'About 9–12 min, Hoffmann\'s way: crust broken at 4:00, then left to settle and poured without plunging' }] : [];
+      // and is poured without plunging: about 9½–12½ minutes from the first pour, as the French press guide times it
+      // (Wave F r1, B3). It is its own answer, not "too long" (Wave D batch 19).
+      const settled = method === 'french-press' ? [{ id: 'settled', label: 'About 9½–12½ min, Hoffmann\'s way: crust broken at 4:00, then left to settle and poured without plunging' }] : [];
       return { id, text, options: [{ id: 'fast', label: `Shorter than ${fmt(t.min)}` }, { id: 'ok', label: 'About on target' }, { id: 'slow', label: `Longer than ${fmt(t.max)}` }, ...settled, { id: 'unsure', label: 'Not sure' }] };
     }
     case 'shot':
@@ -98,6 +106,13 @@ function question(id: QuestionId, method: MethodId): Question {
       return { id, text: 'Did you brew a concentrate and dilute it, or brew it ready to drink?', options: [{ id: 'concentrate', label: 'A concentrate, diluted to serve' }, { id: 'ready', label: 'Ready to drink, nothing added' }] };
     case 'finish':
       return { id, text: 'How does a sip finish?', options: [{ id: 'sweet', label: 'Sweet and juicy, it lingers' }, { id: 'short', label: 'Sharp, then thin and gone' }, { id: 'drying', label: 'Dry and puckering' }] };
+    // The phin's questions: what Nguyen Coffee Supply names as the causes of a fast or stalled drip.
+    case 'press':
+      return { id, text: 'Which press does your phin have?', options: [{ id: 'gravity', label: 'It rests on the coffee' }, { id: 'screw', label: 'It screws down' }, { id: 'unsure', label: 'Not sure' }] };
+    case 'dose':
+      return { id, text: 'How much coffee went in?', options: [{ id: 'full', label: '14 g (about 2 tablespoons) or more' }, { id: 'less', label: 'Less than that' }, { id: 'unsure', label: 'I didn\'t measure' }] };
+    case 'dry':
+      return { id, text: 'Was the phin dry when you started?', options: [{ id: 'dry', label: 'Yes, dry' }, { id: 'wet', label: 'Still wet from washing' }, { id: 'unsure', label: 'Not sure' }] };
     case 'clean':
       // Espresso machines differ (the Bambino has no backflush; some makers name their own tablets), so ask
       // against the machine's manual, not a monthly norm (Wave D batch 7).
@@ -116,7 +131,9 @@ function question(id: QuestionId, method: MethodId): Question {
 function questionIds(state: DoctorState): QuestionId[] {
   const fam = familyOf(state.method);
   const esp = fam === 'espresso';
+  if (state.method === 'phin') return state.symptom === 'drip-fast' ? ['press', 'dose'] : state.symptom === 'drip-stall' ? ['press', 'dry'] : [];
   switch (state.symptom) {
+    case 'drip-fast': case 'drip-stall': return [];
     case 'sour': return esp ? ['shot', 'roast'] : fam === 'percolation' ? ['time', 'roast', 'grinder'] : ['time'];
     case 'bitter': return esp ? ['shot', 'roast'] : ['time', 'roast'];
     case 'weak': return fam === 'moka' ? [] : state.method === 'cold-brew' ? ['serve', 'measure', 'time'] : ['measure', 'time'];
@@ -139,7 +156,7 @@ export function questionsFor(state: DoctorState): Question[] {
   return questionIds(state).map((id) => question(id, state.method));
 }
 
-export type Variable = 'grind' | 'dose' | 'yield' | 'water' | 'temperature' | 'steep time' | 'pour' | 'heat' | 'dilution';
+export type Variable = 'grind' | 'dose' | 'yield' | 'water' | 'temperature' | 'steep time' | 'pour' | 'heat' | 'dilution' | 'press';
 const VARS: Record<Family, Variable[]> = {
   espresso: ['grind', 'dose', 'yield', 'temperature'],
   moka: ['grind', 'dose', 'water', 'heat'],
@@ -176,22 +193,43 @@ export interface Diagnosis {
 const S = ['synthesis', 'gagne', 'rao'];
 
 export function diagnose(state: DoctorState): Result<Diagnosis> {
-  const m = METHODS.some((x) => x.id === state.method) ? methodById(state.method) : undefined;
+  const phin = state.method === 'phin';
+  const m = METHODS.some((x) => x.id === state.method) || phin ? methodById(state.method) : undefined;
   if (!m) return failure('unknown-method', 'method', 'Choose how you brewed it.');
   const sym = SYMPTOMS.find((s) => s.id === state.symptom);
   if (!sym) return failure('unknown-symptom', 'symptom', 'Choose what tastes wrong.');
   const fam = familyOf(state.method);
   const esp = fam === 'espresso';
-  if ((esp && !sym.espresso) || (!esp && !sym.filter)) return failure('symptom-method', 'symptom', `That symptom doesn't apply to ${m.label}.`);
+  if (phin ? !sym.phin : (esp && !sym.espresso) || (!esp && !sym.filter)) return failure('symptom-method', 'symptom', `That symptom doesn't apply to ${m.label}.`);
   const missing = nextQuestion(state);
   if (missing) return failure('needs-answer', missing.id, missing.text);
   const a = state.answers;
   const cold = state.method === 'cold-brew';
   // Cold brew: no temperature to change, but the serving dilution is its own variable, unless it was brewed ready to drink.
-  const vars: Variable[] = cold ? [...VARS[fam].filter((v) => v !== 'temperature'), ...(a.serve === 'ready' ? [] : ['dilution' as const])] : VARS[fam];
+  // The phin's variables: Nguyen's recipe fixes the dose and water, and a screw-down press sets the drip speed.
+  const vars: Variable[] = phin ? ['grind', 'dose', 'water', 'temperature', 'press'] : cold ? [...VARS[fam].filter((v) => v !== 'temperature'), ...(a.serve === 'ready' ? [] : ['dilution' as const])] : VARS[fam];
   // Every diagnosis changes at most one brew variable and says what stays fixed.
-  const d = (x: Omit<Diagnosis, 'sourceIds' | 'hold' | 'placement'> & { hold?: Variable[]; placement?: Diagnosis['placement'] }): Result<Diagnosis> =>
-    success({ ...x, placement: x.placement ?? 'likely', hold: x.hold ?? (x.change ? vars.filter((v) => v !== x.change) : []), sourceIds: S });
+  const d = (x: Omit<Diagnosis, 'sourceIds' | 'hold' | 'placement'> & { hold?: Variable[]; placement?: Diagnosis['placement']; sourceIds?: string[] }): Result<Diagnosis> =>
+    success({ ...x, placement: x.placement ?? 'likely', hold: x.hold ?? (x.change ? vars.filter((v) => v !== x.change) : []), sourceIds: x.sourceIds ?? S });
+
+  // ── The phin: only the causes Nguyen Coffee Supply's troubleshooting gives (the phin guide, "When the drip runs
+  // too fast or too slow"). Its guide times the drip and gives no taste for it, so the map's dot is a guess. ──
+  if (phin) {
+    const N = ['nguyen-iced', 'nguyen-phin'];
+    const timing = 'The first drop falls at about 2:00 and the last around 5:00, as in Nguyen\'s guide; a little faster or slower is fine, Nguyen says.';
+    if (state.symptom === 'strong') return d({ cause: 'Nguyen\'s recipe makes a small, strong cup', why: 'The recipe fixes the coffee at 14 g for a 4 oz phin, and Nguyen Coffee Supply\'s answer to a cup that\'s too strong is to add water.', changeNow: 'Add hot water to the cup, or give the phin a second pour.', change: 'dilution', hold: ['grind', 'dose', 'water', 'temperature'], nextExperiment: 'Keep the 14 g: Nguyen says less than 2 tablespoons in a 4 oz phin may drip fast.', ruleOut: 'If it\'s only too strong black, try it the way Nguyen\'s recipe serves it, over condensed milk and ice.', zone: 'ideal-strong', placement: 'uncertain', placementNote: 'Strong for its water; Nguyen gives no extraction for its recipe, so the dot is a guess.', next: {}, sourceIds: N });
+    if (state.symptom === 'drip-fast') {
+      const note = { placement: 'uncertain' as const, placementNote: 'A fast drip is too little contact, but Nguyen gives no taste for it: the dot is a guess.' };
+      if (a.press === 'screw') return d({ cause: 'The screw-down press is set loose', why: 'Nguyen Coffee Supply says how tightly a screw-down press is turned sets how fast the phin drips, so adjust it before the grind.', changeNow: 'Screw the press down a little tighter on the next brew.', change: 'press', nextExperiment: 'If it still empties in about a minute, grind one step finer, as a separate change.', ruleOut: timing, zone: 'under-weak', ...note, next: {}, sourceIds: N });
+      if (a.dose === 'less') return d({ cause: 'Too little coffee for a 4 oz phin', why: 'Nguyen Coffee Supply says less than 2 tablespoons (14 g) in a 4 oz phin may drip fast.', changeNow: 'Use the full 14 g, about 2 tablespoons.', change: 'dose', nextExperiment: 'If it still rushes through, grind one step finer, as a separate change.', ruleOut: timing, zone: 'under-weak', ...note, next: {}, sourceIds: N });
+      return d({ cause: 'Probably a grind that\'s too coarse', why: 'Too coarse, Nguyen Coffee Supply says, and the coffee drips too fast; its recipe asks for a fine grind, "like sand".', changeNow: 'Grind one step finer.', change: 'grind', nextExperiment: a.dose === 'unsure' ? 'Weigh the coffee next time: less than 14 g can make it drip fast too.' : 'If it still rushes through, check that the bed is level before the press goes on: a lopsided bed lets water run down one side.', ruleOut: timing, zone: 'under-weak', ...note, next: { grind: 'finer' }, sourceIds: N });
+    }
+    // drip-stall
+    const note = { placement: 'uncertain' as const, placementNote: 'A stalled drip is too much contact, but Nguyen gives no taste for it: the dot is a guess.' };
+    if (a.dry === 'wet') return d({ cause: 'A wet phin blocking its own holes', why: 'Nguyen Coffee Supply says a phin that\'s still wet from washing can block its holes.', changeNow: 'Dry the phin completely before you brew.', nextExperiment: 'If it still stalls with a dry phin, lift the press for about 2 seconds to let trapped gas out.', ruleOut: timing, zone: 'over-ideal', ...note, next: {}, sourceIds: N });
+    if (a.press === 'screw') return d({ cause: 'The screw-down press is set tight', why: 'Nguyen Coffee Supply says how tightly a screw-down press is turned sets how fast the phin drips, so adjust it before the grind.', changeNow: 'Loosen the press a little on the next brew.', change: 'press', nextExperiment: 'If it still stalls, grind one step coarser, as a separate change.', ruleOut: timing, zone: 'over-ideal', ...note, next: {}, sourceIds: N });
+    return d({ cause: 'Trapped gas, or a grind that\'s too fine', why: 'Fresh coffee releases gas that can create suction in the chamber and stop the flow, Nguyen Coffee Supply says; a grind that\'s too fine slows it too.', changeNow: 'Lift the press with a spoon or chopstick for about 2 seconds to let the gas out.', nextExperiment: 'If it stalls again on the next brew, grind one step coarser, on its own.', ruleOut: 'If lifting the press starts the drip, it was the gas, not the grind.', zone: 'over-ideal', ...note, next: {}, sourceIds: N });
+  }
   // Hoffmann's long, unplunged settle is a French press brewed to its own recipe: judged as on target.
   const t = esp ? a.shot : a.time === 'settled' ? 'ok' : a.time;
   const settled = a.time === 'settled';
@@ -224,13 +262,13 @@ export function diagnose(state: DoctorState): Result<Diagnosis> {
     // "Not sure" of the shot time (Muse r4 F1): a fast and a slow bitter shot need opposite grind
     // changes, so don't guess; sour and too strong get the likeliest change, hedged, plus a timed shot.
     if (t === 'unsure') {
-      if (state.symptom === 'sour') return d({ cause: 'Probably under-extracted', why: 'Sour usually means the shot stopped before the sweeter compounds came out, most often because it ran fast. Without the shot time that\'s a best guess, so start with the change most likely to help.', changeNow: 'Grind one small step finer, and time the next shot from pressing the button.', change: 'grind', nextExperiment: 'Aim for about 25–30 s. If it\'s on time and still sour, pull a longer shot (more yield) as a separate change.', ruleOut: 'If it turns bitter or runs past 30 s, come back half a step.', zone: 'under-ideal', placement: 'uncertain', placementNote: 'Sour, but without the shot time the cause is a best guess.', next: { grind: 'finer' } });
+      if (state.symptom === 'sour') return d({ cause: 'Probably under-extracted', why: 'Sour usually means the shot was under-extracted, most often because it ran fast. Without the shot time that\'s a best guess, so start with the change most likely to help.', changeNow: 'Grind one small step finer, and time the next shot from pressing the button.', change: 'grind', nextExperiment: 'Aim for about 25–30 s. If it\'s on time and still sour, pull a longer shot (more yield) as a separate change.', ruleOut: 'If it turns bitter or runs past 30 s, come back half a step.', zone: 'under-ideal', placement: 'uncertain', placementNote: 'Sour, but without the shot time the cause is a best guess.', next: { grind: 'finer' } });
       if (state.symptom === 'bitter') return d({ cause: dark ? 'The roast or the shot time: time it first' : 'Bitter: the shot time decides the fix', why: 'A slow shot turns bitter from over-extraction, but a fast, uneven one can taste harsh too, and the two fixes go in opposite directions. One timed shot tells you which it is.', changeNow: 'Pull the same shot again and time it from pressing the button.', hold: vars, nextExperiment: 'Come back with the time: a slow shot wants a coarser grind, a fast one a finer grind, and a shot on time a shorter ratio.', ruleOut: 'A timed shot settles which way to go.', zone: 'over-ideal', placement: 'uncertain', placementNote: 'Bitter, but without the shot time it could be either end.', next: {} });
       if (state.symptom === 'strong') return d({ cause: 'Probably the ratio: espresso is intense by design', why: 'Strength comes mostly from how much liquid you take per gram of coffee. A shot that runs fast or slow changes it too, so time the next one.', changeNow: 'Pull a longer ratio, for example 1:2.5 instead of 1:2, and time the shot.', change: 'yield', nextExperiment: 'If the shot runs well outside 25–30 s, fix the timing first, as a separate change.', ruleOut: 'If the longer shot tastes thin, go halfway back.', zone: 'ideal-strong', placement: 'uncertain', placementNote: 'Without the shot time, strength and extraction can\'t be told apart.', next: { strength: 'lighter' } });
     }
     switch (state.symptom) {
       case 'sour':
-        if (t === 'fast') return d({ cause: 'Under-extracted: the shot ran fast', why: 'Acids dissolve first; a fast shot stops before the sweeter compounds come through.', changeNow: 'Grind one small step finer.', change: 'grind', nextExperiment: 'Aim for about 25–30 s. If two steps finer still runs fast, then add 0.5 g to the dose, on its own.', ruleOut: 'If it reaches 25–30 s and is still sour, the beans may be very light or very fresh; a longer shot (more yield) is the next thing to try.', zone: 'under-weak', next: { grind: 'finer' } });
+        if (t === 'fast') return d({ cause: 'Under-extracted: the shot ran fast', why: 'A fast shot stops early, and an under-extracted cup tends to taste sour and thin.', changeNow: 'Grind one small step finer.', change: 'grind', nextExperiment: 'Aim for about 25–30 s. If two steps finer still runs fast, then add 0.5 g to the dose, on its own.', ruleOut: 'If it reaches 25–30 s and is still sour, the beans may be very light or very fresh; a longer shot (more yield) is the next thing to try.', zone: 'under-weak', next: { grind: 'finer' } });
         if (t === 'slow') return d({ cause: 'Channeling: water found a path through the puck', why: 'A slow shot that still tastes sour suggests most of the coffee was bypassed while a few paths over-ran.', changeNow: 'Keep the recipe; break up clumps, distribute evenly and tamp level.', hold: vars, nextExperiment: 'If the next shot is still slow and sour, grind one step coarser, keeping dose and yield.', ruleOut: 'An even, wet puck and a steady, centered stream make channeling less likely.', zone: 'under-strong', placement: 'uncertain', placementNote: 'Uneven: most of the puck was bypassed while a few paths over-ran.', next: { tool: 'grind-guide' } });
         return d({ cause: light ? 'A light roast that needs more extraction' : 'Under-extracted at a normal shot time', why: 'On time but sour means the recipe, not the flow, is short: light and very fresh coffees often need more water through the puck.', changeNow: `Pull a longer shot: raise the yield by about a quarter (for example 36 g to 45 g).`, change: 'yield', nextExperiment: light ? 'If it is still sour, raise the brew temperature a couple of degrees, on its own.' : 'If it is still sour, grind one step finer, keeping the new yield.', ruleOut: 'If the longer shot turns thin or bitter, go halfway back.', zone: 'under-ideal', next: { strength: 'lighter' } });
       case 'bitter':
@@ -268,7 +306,7 @@ export function diagnose(state: DoctorState): Result<Diagnosis> {
   const timing = fam === 'immersion' ? 'time the steep' : state.method === 'drip-machine' ? 'time how long the machine runs' : 'time it from the first pour to the end of drawdown';
   if (t === 'unsure' && (fam === 'percolation' || fam === 'immersion') && (state.symptom === 'sour' || state.symptom === 'bitter')) {
     const hold = vars.filter((v) => v !== 'grind' && v !== 'steep time');
-    if (state.symptom === 'sour') return d({ cause: 'Probably under-extracted', why: 'Sour usually means the water stopped before the sweeter compounds came out. Without the brew time it\'s hard to say why, so start with the change most likely to help.', changeNow: `Grind one step finer, and ${timing} on the next brew.`, change: 'grind', hold, placement: 'uncertain', placementNote: 'Sour, but without the brew time the cause is a best guess.', nextExperiment: cold ? 'If it\'s on time and still sour, steep a few hours longer as a separate change.' : fam === 'immersion' ? 'If it\'s on time and still sour, go one more step finer.' : 'If it\'s on time and still sour, use hotter water as a separate change.', ruleOut: 'If it turns bitter, come back half a step.', zone: 'under-ideal', next: { grind: 'finer' } });
+    if (state.symptom === 'sour') return d({ cause: 'Probably under-extracted', why: 'Sour usually means the brew was under-extracted. Without the brew time it\'s hard to say why, so start with the change most likely to help.', changeNow: `Grind one step finer, and ${timing} on the next brew.`, change: 'grind', hold, placement: 'uncertain', placementNote: 'Sour, but without the brew time the cause is a best guess.', nextExperiment: cold ? 'If it\'s on time and still sour, steep a few hours longer as a separate change.' : fam === 'immersion' ? 'If it\'s on time and still sour, go one more step finer.' : 'If it\'s on time and still sour, use hotter water as a separate change.', ruleOut: 'If it turns bitter, come back half a step.', zone: 'under-ideal', next: { grind: 'finer' } });
     return d({ cause: 'Probably over-extracted, or the roast', why: 'Bitterness usually means too much came out, but dark roasts are bitter on their own. Without the brew time it\'s hard to tell which.', changeNow: `Grind one step coarser, and ${timing} on the next brew.`, change: 'grind', hold, nextExperiment: cold ? 'If it\'s on time and still bitter, steep a few hours less as a separate change.' : fam === 'immersion' ? 'Pour it off the grounds as soon as the steep ends; if it\'s still bitter, try a lighter roast.' : dark ? 'If it\'s on time and still bitter, try slightly cooler water as a separate change.' : 'If it\'s on time and still bitter, check for fines clogging the filter.', ruleOut: 'If it turns sour, come back half a step.', zone: 'over-ideal', placement: 'uncertain', placementNote: 'Bitter, but without the time it could be the roast rather than over-extraction.', next: { grind: 'coarser' } });
   }
 
@@ -277,7 +315,7 @@ export function diagnose(state: DoctorState): Result<Diagnosis> {
     switch (state.symptom) {
       case 'sour':
         if (t === 'slow') return d({ cause: 'Uneven extraction: a clogged bed', why: 'Slow and sour together usually mean fines clogged the filter, so water ran around most of the coffee.', changeNow: a.grinder === 'blade' ? 'A blade grinder makes dust and boulders together; until you have a burr grinder, grind one step coarser.' : 'Grind one step coarser to clear the clog.', change: 'grind', nextExperiment: state.method === 'drip-machine' ? 'Use the right filter size and level the bed before brewing.' : 'Pour gently, keep the bed flat with a light swirl, and don\'t pour onto the paper.', ruleOut: 'If the drawdown speeds up and the cup sweetens, it was the clog.', zone: 'under-strong', placement: 'uncertain', placementNote: 'Uneven: water ran around most of the coffee while some over-extracted.', next: { grind: 'coarser' } });
-        if (t === 'fast') return d({ cause: 'Under-extracted: the water ran through too fast', why: 'Acids dissolve first; the brew stopped before enough of the sweeter compounds came out.', changeNow: 'Grind one step finer.', change: 'grind', nextExperiment: light ? 'If it is still sour, go one step finer again; light roasts also want the hot end of the range, as a separate change.' : 'If it is still sour, go one step finer again.', ruleOut: 'If it turns bitter, you went too far: come back half a step.', zone: 'under-weak', next: { grind: 'finer' } });
+        if (t === 'fast') return d({ cause: 'Under-extracted: the water ran through too fast', why: 'Water that runs through fast extracts too little, which tends to taste sour and thin.', changeNow: 'Grind one step finer.', change: 'grind', nextExperiment: light ? 'If it is still sour, go one step finer again; light roasts also want the hot end of the range, as a separate change.' : 'If it is still sour, go one step finer again.', ruleOut: 'If it turns bitter, you went too far: come back half a step.', zone: 'under-weak', next: { grind: 'finer' } });
         return d({ cause: 'Under-extracted at a normal brew time', why: 'On time but sour usually means the water was too cool or the coffee is a dense, light roast.', changeNow: state.method === 'drip-machine' ? 'Grind one step finer; most machines don\'t let you change the temperature.' : `Use hotter water, about ${adjustedTempC(m, 'hotter', roastOf)} °C (right off the boil).`, change: state.method === 'drip-machine' ? 'grind' : 'temperature', nextExperiment: state.method === 'drip-machine' ? 'If it is still sour, go one more step finer; if it never sweetens, the machine may brew too cool, which the grind can only partly make up for.' : 'If it is still sour, grind one step finer as a separate change.', ruleOut: 'If it turns bitter, go halfway back.', zone: 'under-ideal', next: state.method === 'drip-machine' ? { grind: 'finer' } : { temp: 'hotter' } });
       case 'bitter':
         if (t === 'slow') return d({ cause: 'Over-extracted: the brew ran long', why: 'The last compounds to dissolve are the bitter, drying ones.', changeNow: 'Grind one step coarser.', change: 'grind', nextExperiment: dark ? 'With a dark roast, slightly cooler water can help too, as a separate change.' : 'If it is still bitter, check for fines clogging the filter.', ruleOut: 'If it turns sour, come back half a step.', zone: 'over-strong', next: { grind: 'coarser' } });
@@ -296,7 +334,7 @@ export function diagnose(state: DoctorState): Result<Diagnosis> {
   if (fam === 'immersion') {
     switch (state.symptom) {
       case 'sour':
-        if (t === 'fast') return d({ cause: 'Steeped too briefly', why: 'Acids dissolve first; a short steep stops before the sweeter compounds come out.', changeNow: steepLonger(state.method), change: 'steep time', nextExperiment: 'If it is still sour at the full steep, grind one step finer as a separate change.', ruleOut: 'If it tastes sweeter, keep the longer steep.', zone: 'under-weak', next: {} });
+        if (t === 'fast') return d({ cause: 'Steeped too briefly', why: 'A short steep extracts too little, and an under-extracted cup tends to taste sour.', changeNow: steepLonger(state.method), change: 'steep time', nextExperiment: 'If it is still sour at the full steep, grind one step finer as a separate change.', ruleOut: 'If it tastes sweeter, keep the longer steep.', zone: 'under-weak', next: {} });
         return d({ cause: 'Under-extracted', why: cold ? 'Cold water extracts slowly; a coarse grind or a cold room slows it further.' : t === 'slow' ? 'A long steep that is still sour usually means the grind is coarse or the water was cool.' : 'A full steep that is still sour usually means the grind is coarse or the water was cool.', changeNow: 'Grind one step finer.', change: 'grind', nextExperiment: cold ? 'If it is still sour, steep a few hours longer as a separate change.' : 'If it is still sour, go one more step finer.', ruleOut: 'If it turns bitter, come back half a step.', zone: 'under-ideal', next: { grind: 'finer' } });
       case 'bitter':
         if (t === 'slow') return d({ cause: 'Steeped too long', why: 'The longer coffee sits in water, the more of the bitter, drying compounds come out.', changeNow: `Steep for the recipe's ${fmt(steepWindow(state.method).recipe)}${cold ? '' : state.method === 'aeropress' ? ', then press straight away' : ', then pour it all off the grounds straight away'}.`, change: 'steep time', nextExperiment: state.method === 'french-press' ? 'Coffee left in the press keeps extracting: decant into a cup or carafe.' : 'If it is still bitter at the normal steep, grind one step coarser as a separate change.', ruleOut: 'If it tastes smoother, keep the shorter steep.', zone: 'over-strong', next: {} });
@@ -345,7 +383,7 @@ export function brewLinkFor(method: MethodId, d: Diagnosis, roast?: string): str
   const q = new URLSearchParams({ method });
   const r1 = (n: number) => String(Math.round(n * 10) / 10);
   const strength = d.next.strength ?? 'classic';
-  if (method === 'espresso' || method === 'moka') q.set('dose', method === 'espresso' ? '18' : '15');
+  if (method === 'espresso' || method === 'moka' || method === 'phin') q.set('dose', method === 'espresso' ? '18' : method === 'moka' ? '15' : '14');
   else {
     const sizes = method === 'cold-brew' || method === 'drip-machine' ? [32, 16] : method === 'aeropress' ? [8, 6] : [12, 10, 8];
     // "More (or less) coffee for the same water": keep the standard recipe's water, so only the coffee changes (Opus r4).
@@ -376,6 +414,7 @@ export type ZoneId = `${'under' | 'ideal' | 'over'}-${'weak' | 'ideal' | 'strong
 export const SYMPTOM_ZONE: Record<SymptomId, ZoneId | null> = {
   sour: 'under-ideal', bitter: 'over-ideal', weak: 'ideal-weak', strong: 'ideal-strong', 'harsh-mixed': 'under-strong',
   bright: 'ideal-ideal', flat: null, off: null, muddy: null, gushing: 'under-weak', choking: 'over-strong',
+  'drip-fast': 'under-weak', 'drip-stall': 'over-ideal',
 };
 export interface Zone { id: ZoneId; label: string; tastes: string; moves: string[] }
 

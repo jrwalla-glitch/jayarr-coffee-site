@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import ExtractionMap from './ExtractionMap.svelte';
-  import { METHODS, SYMPTOMS, SYMPTOM_ZONE, ZONES, nextQuestion, questionsFor, diagnose, methodById, brewLinkFor } from '../../lib/coffee/index.ts';
+  import { METHODS, PHIN, SYMPTOMS, SYMPTOM_ZONE, ZONES, nextQuestion, questionsFor, diagnose, methodById, brewLinkFor } from '../../lib/coffee/index.ts';
   import type { MethodId, SymptomId, ZoneId, QuestionId } from '../../lib/coffee/index.ts';
 
   // Taste "waveforms": shape is the taste, weight is the intensity (kept from the original tool).
@@ -17,7 +17,12 @@
     strong: { d: 'M0 10 Q10 -2 20 10 Q30 22 40 10', w: 4 },
     bright: { d: 'M0 12 Q5 4 10 12 Q15 4 20 12 Q25 4 30 12 Q35 4 40 12', w: 1.6 },
     off: { d: 'M0 10 L8 10 L12 4 L16 16 L20 10 L40 10', w: 1.6 },
+    'drip-fast': { d: 'M0 3 L40 17', w: 2.2 },
+    'drip-stall': { d: 'M0 10 L10 10 M20 10 L22 10 M34 10 L35 10', w: 2.6 },
   };
+  // The brewers it covers: the guide's nine and the phin, whose path is Nguyen Coffee Supply's troubleshooting (Wave F r1, B14).
+  const BREWERS = [...METHODS, PHIN];
+  const offered = (s: (typeof SYMPTOMS)[number], id: MethodId) => (id === 'phin' ? !!s.phin : id === 'espresso' ? s.espresso : s.filter);
   const ZONE_XY = (z: ZoneId) => {
     const [e, s] = z.split('-');
     return { x: e === 'under' ? 1 / 6 : e === 'over' ? 5 / 6 : 0.5, y: s === 'weak' ? 1 / 6 : s === 'strong' ? 5 / 6 : 0.5 };
@@ -36,8 +41,7 @@
   let answers = $state<Partial<Record<QuestionId, string>>>({});
   let mounted = $state(false);
 
-  let isEsp = $derived(method === 'espresso');
-  let symptoms = $derived(SYMPTOMS.filter((s) => (isEsp ? s.espresso : s.filter)));
+  let symptoms = $derived(method ? SYMPTOMS.filter((s) => offered(s, method!)) : []);
   let dstate = $derived(method && symptom ? { method, symptom, answers } : null);
   let qs = $derived(dstate ? questionsFor(dstate) : []);
   let current = $derived(dstate ? nextQuestion(dstate) : null);
@@ -53,7 +57,7 @@
   // says the recipe is a standard one for that roast with one change on top.
   let brewLink = $derived(dx && method ? brewLinkFor(method, dx, answers.roast) : null);
 
-  function pickMethod(id: MethodId) { method = id; if (symptom && !SYMPTOMS.find((s) => s.id === symptom && (id === 'espresso' ? s.espresso : s.filter))) symptom = null; answers = {}; }
+  function pickMethod(id: MethodId) { method = id; if (symptom && !SYMPTOMS.find((s) => s.id === symptom && offered(s, id))) symptom = null; answers = {}; }
   function pickSymptom(id: SymptomId) { symptom = id; answers = {}; }
   function answer(qid: QuestionId, v: string) { answers = { ...answers, [qid]: v }; }
   function back() {
@@ -69,10 +73,10 @@
   onMount(() => {
     const q = new URLSearchParams(location.search);
     const m = q.get('method') as MethodId | null, s = q.get('symptom') as SymptomId | null;
-    // Only brewers Fix My Coffee covers: the Brew Guide's phin isn't one yet.
-    if (m && METHODS.some((x) => x.id === m)) {
+    // Only brewers Fix My Coffee covers, and only symptoms it offers for that brewer.
+    if (m && BREWERS.some((x) => x.id === m)) {
       method = m;
-      if (s && SYMPTOMS.some((x) => x.id === s && (m === 'espresso' ? x.espresso : x.filter))) {
+      if (s && SYMPTOMS.some((x) => x.id === s && offered(x, m))) {
         symptom = s;
         const a: Partial<Record<QuestionId, string>> = {};
         for (const qq of questionsFor({ method: m, symptom: s, answers: {} })) { const v = q.get(qq.id); if (v && qq.options.some((o) => o.id === v)) a[qq.id] = v; }
@@ -138,7 +142,7 @@
     {#if step === 'method'}
       <h3 tabindex="-1">How did you brew it?</h3>
       <div class="grid3">
-        {#each METHODS as m (m.id)}<button type="button" class="opt" onclick={() => pickMethod(m.id)}>{m.label}</button>{/each}
+        {#each BREWERS as m (m.id)}<button type="button" class="opt" onclick={() => pickMethod(m.id)}>{m.label}</button>{/each}
       </div>
     {:else if step === 'symptom'}
       <h3 tabindex="-1">What's wrong with it?</h3>

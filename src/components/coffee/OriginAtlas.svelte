@@ -5,10 +5,10 @@
   import { countryPaths, TROPIC_CANCER_Y, TROPIC_CAPRICORN_Y, EQUATOR_Y } from '../../data/mapPaths.ts';
   import {
     ORIGINS, CONTINENTS, MONTHS_LONG, ARRIVAL_EXAMPLES, originById, harvestState, harvestText, harvestingIn, pickingElsewhereIn, bandText,
-    productionText, productionSource, sourceNames, project,
+    productionText, productionSource, sourceNames, project, ORIGIN_SOURCES,
   } from '../../lib/coffee/origins.ts';
   import type { Band, Continent, HarvestState, Origin } from '../../lib/coffee/origins.ts';
-  import { regionPoint } from '../../lib/coffee/mapPlace.ts';
+  import { compactPath, regionPoint } from '../../lib/coffee/mapPlace.ts';
   import { drawsEdge } from '../../lib/coffee/origins.ts';
   import HarvestRing from './art/HarvestRing.svelte';
   import AltitudeBand from './art/AltitudeBand.svelte';
@@ -19,15 +19,17 @@
   interface Props {
     /** Roasters' most-used words per origin, from the winter 2026 catalog sample. */
     roasterWords: Record<string, { words: { id: string; label: string; n: number }[]; lots: number }>;
-    sources: Record<string, { title: string; url: string; checked: string }>;
   }
-  let { roasterWords, sources }: Props = $props();
+  // The sources come from origins.ts, which the island loads anyway; passed as a prop they were sent twice (Wave F r1, B7).
+  let { roasterWords }: Props = $props();
 
   const FULL = [30, 42, 920, 272];
   // The open card's size on the map (desktop), so labels can keep clear of it.
   const TAG_W = 330, TAG_H = 210;
   const PHONE: Record<Continent, number[]> = { americas: [36, 78, 410, 283], africa: [520, 112, 196, 135], 'asia-pacific': [676, 98, 296, 204] };
   const COFFEE = new Set(ORIGINS.map((o) => o.id));
+  // The outlines as the page draws them: the same points, written as relative steps (about 40% less text).
+  const LAND = countryPaths.map((c) => ({ id: c.id, d: compactPath(c.path) }));
 
   let month = $state(10);
   let selId = $state<string | null>(null);
@@ -254,7 +256,7 @@
     if (sel?.id === id || vs?.id === id) return '#b0672b';
     return '#ddc9a8';
   }
-  const src = (id?: string) => (id && sources[id]) || null;
+  const src = (id?: string) => (id && ORIGIN_SOURCES[id]) || null;
   let arrival = $derived(sel ? ARRIVAL_EXAMPLES.find((a) => a.origin === sel!.name) ?? null : null);
 </script>
 
@@ -342,9 +344,9 @@
             <line x1="-50" x2="1050" y1={EQUATOR_Y} y2={EQUATOR_Y} class="eq" />
             <line x1="-50" x2="1050" y1={TROPIC_CAPRICORN_Y} y2={TROPIC_CAPRICORN_Y} />
           </g>
-          {#each countryPaths as c (c.id)}
+          {#each LAND as c (c.id)}
             {@const isCoffee = COFFEE.has(c.id)}
-            <path d={c.path} fill={fillFor(c.id)} stroke="#a89878" stroke-width={0.7 * upp} stroke-opacity=".7" class:cp={isCoffee}
+            <path d={c.d} fill={fillFor(c.id)} stroke="#a89878" stroke-width={0.7 * upp} stroke-opacity=".7" class:cp={isCoffee}
               onclick={isCoffee ? () => choose(c.id) : undefined} onmouseenter={isCoffee ? () => (hoverCountry = c.id) : undefined} onmouseleave={isCoffee ? () => (hoverCountry = null) : undefined} />
           {/each}
           <g class="mapnotes" style="font-size: {9.5 * upp}px">
@@ -404,6 +406,9 @@
                 {@const sp = marks.label.get(o.id)!}
                 <text x={mx + sp.dx * upp} y={my + sp.dy * upp} text-anchor={sp.anchor} class="olab" class:on={isSel} style="font-size: {(isSel ? 17 : 14) * upp}px; stroke-width: {3 * upp}px">{o.name}</text>
               {/if}
+              <!-- Keyboard focus: a solid copper ring clear of the marker, like the site's button focus ring (Wave F r1, B13). -->
+              <circle cx={mx} cy={my} r={(showRing ? 21 : isSel ? 18 : 13) * upp} class="fhalo" />
+              <circle cx={mx} cy={my} r={(showRing ? 21 : isSel ? 18 : 13) * upp} class="fring" />
             </g>
           {/each}
           <rect x="-50" y="-50" width="1100" height="470" fill="url(#oa-vignette)" pointer-events="none" />
@@ -579,7 +584,8 @@
     .alsoitem:not(.inreg) { display: none; }
     .alsoline:not(:has(.alsoitem.inreg)) { display: none; }
   }
-  .nowname { appearance: none; border: 0; background: none; padding: 0; font: 500 15px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; color: var(--ink); text-decoration: underline; text-decoration-color: #c9a46e; text-underline-offset: 3px; cursor: pointer; }
+  /* A 24 px target: the padding is taken back by the margin, so the line doesn't move (Wave F r1, B7). */
+  .nowname { appearance: none; border: 0; background: none; padding: 3px 0; margin: -3px 0; min-height: 24px; font: 500 15px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; color: var(--ink); text-decoration: underline; text-decoration-color: #c9a46e; text-underline-offset: 3px; cursor: pointer; }
   .nowname:hover { color: var(--crema-deep); }
   .cnt { font: 500 11.5px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; background: #f1e3cc; color: #6b3a12; border-radius: 999px; padding: 1px 6px; margin-left: 2px; }
   [aria-pressed='true'] .cnt { background: #f3ede3; color: #2a1d15; }
@@ -609,7 +615,12 @@
   .cp:hover { fill: #b9773c; }
   .marker { cursor: pointer; outline: none; }
   .map.near { cursor: pointer; }
-  .marker:focus-visible circle:first-of-type, .marker:focus-visible :global(.hring) { filter: drop-shadow(0 0 2px #2a1d15); }
+  .marker:focus-visible circle:first-of-type:not(.fring):not(.fhalo), .marker:focus-visible :global(.hring) { filter: drop-shadow(0 0 2px #2a1d15); }
+  /* The ring a focused marker shows: 2 px on screen at any zoom, the crema of the site's button focus ring (Wave F r1, B13). */
+  .fring, .fhalo { fill: none; stroke: none; pointer-events: none; }
+  .marker:focus-visible .fring { stroke: var(--crema-deep, #8f5d22); stroke-width: 2.5px; vector-effect: non-scaling-stroke; }
+  /* a cream band under the ring keeps it legible over the brown countries */
+  .marker:focus-visible .fhalo { stroke: #fbf6ee; stroke-width: 6px; vector-effect: non-scaling-stroke; }
   .olab { font-family: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; fill: #2a1d15; paint-order: stroke; stroke: #f3eee4; stroke-linejoin: round; letter-spacing: .02em; pointer-events: none; }
   .olab.on { font-weight: 400; fill: #6b3a12; }
   .rlab { font-family: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; font-style: italic; fill: #2a1d15; paint-order: stroke; stroke: #f3eee4; stroke-linejoin: round; }
@@ -619,7 +630,7 @@
   .mapkey .kt { font: 400 15px 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; color: #8f5d22; text-transform: uppercase; letter-spacing: .08em; }
   .mapbox { position: relative; }
   .pending { visibility: hidden; }
-  .marker:focus-visible circle:first-of-type { stroke: var(--crema-deep); stroke-width: 3px; }
+  .marker:focus-visible circle:first-of-type:not(.fring):not(.fhalo) { stroke: var(--crema-deep); stroke-width: 3px; }
   .nb { white-space: nowrap; }
   .artk { font: 500 11px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
   .which { position: absolute; z-index: 3; width: 150px; background: #fbf8f3; border: 1px solid #c17a3a; border-radius: 3px; box-shadow: 0 10px 24px -14px rgba(42, 29, 21, .6); padding: 6px; display: grid; gap: 4px; }

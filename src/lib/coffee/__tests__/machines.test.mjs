@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { chooseMachines, setupBand, fitsCounter, needsGrinder, bandText, neededHeight, unclearMaxCm } from '../machines.ts';
+import { chooseMachines, setupBand, fitsCounter, needsGrinder, bandText, neededHeight, unclearMaxCm, projectForChooser, tempKind, hasPressurizedBasket } from '../machines.ts';
 
 // Fixtures: shapes only, not real specs (the real data is checked separately).
 const m = (o) => ({ id: o.id, brand: 'X', name: o.id, models: [], status: 'current', category: 'semi-auto', heating: { system: 'thermoblock' }, milk: { type: 'manual-wand' }, grinder: { builtIn: false }, listPrice: { usd: 400 }, dims: { w: 20, d: 30, h: 30 }, ...o });
@@ -118,4 +118,56 @@ test('item 11: the Gaggia Classic E24 and Dedica DeLuxe carry the makers\' publi
   assert.ok(ded.sources.some((s) => s.field === 'pumpBar' && /delonghi\.com\/en-us\//.test(s.url)));
   // De'Longhi's US page prints no tank or wattage; non-US figures stay out.
   assert.equal(ded.tankL, null); assert.equal(ded.watts, null);
+});
+
+test('Wave F r1 B4: where the Amazon link and the price are different colors, each is named, and the code covers both', async () => {
+  const { readFileSync } = await import('node:fs');
+  const data = JSON.parse(readFileSync(new URL('../../../data/machines.json', import.meta.url), 'utf8'));
+  const by = (id) => data.machines.find((x) => x.id === id);
+  const lat = by('nespresso-lattissima-one');
+  assert.match(lat.code, /EN510W/); assert.match(lat.code, /EN510B/);
+  assert.match(lat.amazon.title, /Shadow Black/); assert.match(lat.amazon.variant, /Shadow Black \(EN510B\)/);
+  assert.match(lat.listPrice.url, /EN510W/); assert.match(lat.listPrice.variant, /Silky White \(EN510W\)/);
+  const e6 = by('jura-e6-nac-2022');
+  assert.match(e6.amazon.title, /15465/); assert.match(e6.amazon.variant, /15465/);
+  assert.match(e6.listPrice.url, /piano-white/); assert.match(e6.listPrice.variant, /Piano White \(15559\)/);
+  // Both or neither: a record names the link's variant only alongside the price's.
+  for (const m of data.machines) assert.equal(!!m.amazon?.variant, !!m.listPrice?.variant, m.id);
+});
+
+test('Wave F r1 B6.3: no name or label in the machine data carries a null turned into words ("None DF64 Gen 2")', async () => {
+  const { readFileSync } = await import('node:fs');
+  const data = JSON.parse(readFileSync(new URL('../../../data/machines.json', import.meta.url), 'utf8'));
+  const bad = [];
+  const walk = (x, at) => {
+    if (Array.isArray(x)) x.forEach((v, i) => walk(v, `${at}[${i}]`));
+    else if (x && typeof x === 'object') for (const [k, v] of Object.entries(x)) walk(v, `${at}.${k}`);
+    else if (typeof x === 'string' && /(^|\s)(None|null|undefined|NaN)(\s|$|[,.;:])/.test(x)) bad.push(`${at}: ${x}`);
+  };
+  walk(data, '');
+  assert.deepEqual(bad, []);
+  assert.equal(data.grinders.find((g) => g.id === 'df64-gen-2').name, 'DF64 Gen 2');
+});
+
+test('Wave F r1 B6.4: the Chooser ships machines.json projected to what it shows, and the projection is current', async () => {
+  const { readFileSync } = await import('node:fs');
+  const full = JSON.parse(readFileSync(new URL('../../../data/machines.json', import.meta.url), 'utf8'));
+  const shipped = JSON.parse(readFileSync(new URL('../../../data/machines-chooser.json', import.meta.url), 'utf8'));
+  assert.deepEqual(shipped, projectForChooser(full), 'run node scripts/project-machines.mjs');
+  assert.equal(shipped.machines.length, full.machines.length);
+  const text = JSON.stringify(shipped);
+  // What the page never shows stays behind: sources, research scope notes, raw listing strings.
+  for (const gone of ['"sources"', 'manualScope', '"models"', '"asin"', '"title"', 'dimsPublished', '"backflush"']) assert.ok(!text.includes(gone), gone);
+  assert.ok(text.length < JSON.stringify(full).length / 4, `${text.length} of ${JSON.stringify(full).length}`);
+  // What labels and links need stays: owner notes, prices and their seller, the variant names, the manual link.
+  const by = (id) => shipped.machines.find((m) => m.id === id);
+  assert.match(by('nespresso-lattissima-one').amazon.variant, /EN510B/);
+  assert.equal(by('gaggia-classic-e24').listPrice.seller, 'Gaggia North America (Importika Inc.)');
+  assert.ok(by('breville-bambino-bes450').owner.recipe && by('breville-bambino-bes450').pressurized === true);
+  assert.equal(by('rancilio-silvia-current').tempKind, 'thermostat');
+  for (const m of full.machines) assert.equal(by(m.id).tempKind ?? null, tempKind(m), m.id);
+  for (const m of full.machines) assert.equal(!!by(m.id).pressurized, hasPressurizedBasket(m), m.id);
+  // The Chooser's picks are the same from the projection as from the full records.
+  for (const n of [{ milk: 'most', cups: 5, effort: 'hands-on', budget: 2500 }, { milk: 'none', cups: 1, effort: 'button', budget: 300 }, { milk: 'some', cups: 3, effort: 'guided', budget: 1200, widthCm: 35, heightCm: 43 }])
+    assert.deepEqual(chooseMachines(shipped.machines, shipped.grinders, n).map((x) => x.machine.id), chooseMachines(full.machines, full.grinders, n).map((x) => x.machine.id), JSON.stringify(n));
 });

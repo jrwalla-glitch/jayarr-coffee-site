@@ -169,7 +169,8 @@ test('a card link tells unknown notes from notes over the limit', () => {
 
 test('the Clever Dripper is four minutes plus its drain; time differences of half again count', () => {
   const clever = ATLAS.find((m) => m.id === 'clever');
-  assert.equal(timeText(clever), '4:30–4:45');
+  // The guide's recipe: a 4-minute steep and about a minute to drain (Wave F r1, B3; was 4:30–4:45).
+  assert.equal(timeText(clever), '5 minutes');
   const v60 = ATLAS.find((m) => m.id === 'v60'), drip = ATLAS.find((m) => m.id === 'drip-machine'), chemex = ATLAS.find((m) => m.id === 'chemex');
   assert.ok(differences(v60, drip).includes('time'));
   assert.ok(!differences(v60, chemex).includes('time'));
@@ -273,8 +274,43 @@ test('review r5 (Muse): ratio and grind rows differ when they do; a large ratio 
   assert.deepEqual(recipeDiffers(by('phin'), by('v60')), { ratio: true, grind: true });
   assert.equal(recipeDiffers(by('v60'), by('french-press')).ratio, false);
   assert.equal(recipeDiffers(by('espresso'), by('moka')).ratio, true);
-  assert.match(differenceSentence(by('phin'), by('v60')), /the phin uses about twice the coffee for its water \(1:8\.6 against 1:16\)/);
+  assert.match(differenceSentence(by('phin'), by('v60')), /the phin uses about twice the coffee for its water \(1:8\.45 against 1:16\)/);
   assert.ok(by('clever').timeNote && by('aeropress').timeNote);
+});
+
+test('Wave F r1 B1: the phin star is the Brew Guide\'s phin (Nguyen\'s recipe), and its link opens it', () => {
+  const phin = ATLAS.find((m) => m.id === 'phin');
+  assert.equal(ratioText(phin), '1:8.45');
+  assert.equal(phin.grind, 'Fine');
+  assert.equal(phin.temp, '195–200°F (91–93°C)');
+  assert.equal(timeText(phin), '5 minutes');
+  assert.equal(phin.brewGuide, 'phin');
+  assert.equal(brewGuideHref(phin), '/tools/brew-ratio/?method=phin&dose=14');
+  assert.match(phin.recipeBy, /Nguyen Coffee Supply's phin recipe.*14 g of coffee to 4 oz \(118\.3 g\) of water, 1:8\.45 \(calculated\)/);
+  assert.deepEqual(phin.sourceIds, ['nguyen-iced']);
+  const r = buildRecipe(decodeBrew(brewGuideHref(phin).split('?')[1]).value);
+  assert.equal(r.ok, true);
+  assert.equal(r.value.doseG, 14);
+  assert.equal(Math.round(r.value.waterG * 10) / 10, 118.3);
+  // No other star's numbers moved: every °C the atlas prints from the engine is a whole number.
+  for (const m of ATLAS) assert.doesNotMatch(m.temp, /\d\.\d+°C|\d\.\d+–/, m.id);
+});
+
+test('Wave F r1 B3: the three stars the Brew Guide doesn\'t cover carry their own guides\' recipes', () => {
+  const by = (id) => ATLAS.find((m) => m.id === id);
+  // Turkish coffee guide: 1 g to 10 ml, extra fine, cold water warmed to 190–198°F (88–92°C) in 2½ to 3 minutes.
+  const tk = by('turkish');
+  assert.equal(ratioText(tk), '1:10'); assert.equal(timeText(tk), '2:30–3:00');
+  assert.match(tk.temp, /190–198°F \(88–92°C\)/); assert.match(tk.grind, /^Extra fine/);
+  // Clever Dripper guide: 20 g and 300 g (1:15), medium to coarse, 196–205°F, 4 minutes and about a minute to drain.
+  const cl = by('clever');
+  assert.equal(ratioText(cl), '1:15'); assert.equal(cl.temp, '196–205°F (91–96°C)'); assert.equal(cl.grind, 'Medium to coarse');
+  assert.match(cl.recipeBy, /20 g of coffee and 300 g of water/); assert.doesNotMatch(cl.recipeBy + cl.timeNote, /30–45/);
+  // Siphon guide (Easto's three-cup): 22 g and 300 g (1:13.6, calculated), 202°F (94°C), drained by about 1:55.
+  const si = by('siphon');
+  assert.equal(ratioText(si), '1:13.6'); assert.equal(timeText(si), '1:55'); assert.match(si.temp, /202°F \(94°C\)/);
+  assert.match(si.recipeBy, /22 g of coffee and 300 g of water/);
+  assert.match(describe(si), /in about 1:55\.$/);
 });
 
 test('review r6 (Opus): cold brew reads as a concentrate and compares as served; multiples are said exactly; a bag\'s "sour" isn\'t the flaw note', () => {
@@ -285,4 +321,30 @@ test('review r6 (Opus): cold brew reads as a concentrate and compares as served;
   assert.match(differenceSentence(by('phin'), by('v60')), /about twice the coffee/);
   const c = compareCard(['lemon'], 'sour, raw sugar');
   assert.ok(!c.bagOnly.some((id) => noteById(id)?.family === 'off' || noteById(id)?.flaw), c.bagOnly.join(','));
+});
+
+test('Wave F r1 B7: the Origins map\'s compact outlines draw exactly the stored points', async () => {
+  const { countryPaths } = await import('../../../data/mapPaths.ts');
+  const { compactPath } = await import('../mapPlace.ts');
+  // Decode M/L/l/z the way a browser does: absolute moveto, then relative steps.
+  const decode = (d) => {
+    const out = []; let cmd = '', x = 0, y = 0, ring = null;
+    const toks = d.match(/[MLlZz]|-?(?:\d+\.?\d*|\.\d+)/g);
+    for (let i = 0; i < toks.length;) {
+      if (/[MLlZz]/.test(toks[i])) { cmd = toks[i++]; continue; }
+      const a = Number(toks[i]), b = Number(toks[i + 1]); i += 2;
+      if (cmd === 'M') { x = a; y = b; ring = [[x, y]]; out.push(ring); cmd = 'L'; }
+      else if (cmd === 'L') { x = a; y = b; ring.push([x, y]); }
+      else { x += a; y += b; ring.push([x, y]); }
+    }
+    return out;
+  };
+  let before = 0, after = 0;
+  for (const c of countryPaths) {
+    const d = compactPath(c.path), o = decode(c.path), k = decode(d);
+    before += c.path.length; after += d.length;
+    assert.equal(k.length, o.length, c.id);
+    o.forEach((r, i) => { assert.equal(k[i].length, r.length, c.id); r.forEach(([x, y], j) => assert.ok(Math.abs(x - k[i][j][0]) < 1e-6 && Math.abs(y - k[i][j][1]) < 1e-6, `${c.id} ${i}:${j}`)); });
+  }
+  assert.ok(after < before * 0.65, `${after} of ${before}`);
 });

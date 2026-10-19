@@ -201,6 +201,9 @@ const SOURCE_NAMES: Record<string, string> = {
   'tcb-manual-2023': 'Tanzania Coffee Board', 'hamdan-yemen': 'Hamdan Coffee', 'movaci-thailand': 'Movaci', 'iniap-robusta-2017': 'INIAP',
   'coffee-board-india': 'Coffee Board of India', 'moka-cuba': 'Moka Trade', 'mzuzu': 'Mzuzu Coffee', 'shac-regions': 'Hawaii coffee growers',
 };
+/** Every source the atlas cites, by id: the island reads it from here rather than from a page prop, so the
+ *  list isn't shipped twice (Wave F r1, B7). */
+export const ORIGIN_SOURCES = sourcesData as Record<string, { title: string; url: string; checked: string }>;
 export function sourceNames(ids: string[] | undefined): string {
   const all = sourcesData as Record<string, { title: string }>;
   const names = [...new Set((ids ?? []).map((id) => SOURCE_NAMES[id] ?? all[id]?.title.split(' — ')[0]).filter((x): x is string => !!x))];

@@ -3,10 +3,10 @@
 // Contact (how water meets coffee), filter (what holds the grounds back), force (what moves the
 // water) and contact time are independent: espresso is percolation under pump pressure, the
 // AeroPress steeps and is then pushed by hand, a siphon steeps and is pulled down by a vacuum.
-// Where the Brew Guide covers a method, its numbers come from the engine (methods.ts), so the
-// atlas and the guide can't disagree. The other four use the recipe in the site's own guide to
-// that brewer, credited as such.
-import { METHODS } from './methods.ts';
+// Where the Brew Guide covers a method (the phin included), its numbers come from the engine
+// (methods.ts), so the atlas and the guide can't disagree. The other three use the recipe in the
+// site's own guide to that brewer, credited as such.
+import { GUIDE_METHODS, PHIN } from './methods.ts';
 import type { MethodId } from './types.ts';
 
 export type AtlasId = 'v60' | 'chemex' | 'kalita' | 'drip-machine' | 'phin' | 'french-press' | 'clever' | 'cold-brew' | 'siphon' | 'turkish' | 'espresso' | 'moka' | 'aeropress';
@@ -77,11 +77,12 @@ export interface AtlasMethod {
 }
 
 const fromEngine = (id: MethodId) => {
-  const m = METHODS.find((x) => x.id === id)!;
+  const m = GUIDE_METHODS.find((x) => x.id === id)!;
   return {
     ratio: { classic: m.ratio.classic, range: [m.ratio.stronger, m.ratio.lighter] as [number, number], ...(id === 'espresso' ? { yield: true } : {}) },
     grind: m.grindLabel,
-    temp: id === 'cold-brew' ? 'Cold or room temperature' : id === 'moka' ? 'Just-boiled water in the base' : `${Math.round(m.tempC.min * 9 / 5 + 32)}–${Math.round(m.tempC.max * 9 / 5 + 32)}°F (${m.tempC.min}–${m.tempC.max}°C)`,
+    // The phin's range is set in °F (195–200), so its °C is rounded: 91–93.
+    temp: id === 'cold-brew' ? 'Cold or room temperature' : id === 'moka' ? 'Just-boiled water in the base' : `${Math.round(m.tempC.min * 9 / 5 + 32)}–${Math.round(m.tempC.max * 9 / 5 + 32)}°F (${Math.round(m.tempC.min)}–${Math.round(m.tempC.max)}°C)`,
     timeS: [m.timeS.min, m.timeS.max] as [number, number],
     // The Guide's classic numbers are its own, adapted from the recipe it credits, not that recipe's exact ratio (review r7, Opus).
     recipeBy: m.base?.by ? `the Brew Guide's classic recipe (adapted from ${m.base.by})` : 'the Brew Guide\'s classic recipe',
@@ -122,12 +123,11 @@ export const ATLAS: AtlasMethod[] = [
   {
     id: 'phin', label: 'Phin', the: 'the phin', line: 'A small Vietnamese metal filter that drips slowly straight into the glass.',
     contact: 'percolation', filter: 'metal', force: 'gravity', attention: 2,
-    timeS: [240, 300], ratio: { classic: 8.6, range: [8.6, 8.6] }, grind: 'Medium-coarse', temp: '203–212°F (95–100°C)',
-    recipeBy: 'our phin guide: 14 g of coffee and 120 ml of water, dripping for 4–5 minutes',
-    brewGuide: null,
+    // The Brew Guide's phin is Nguyen Coffee Supply's recipe, numbers and all (Wave F r1, B1): 1:8.45, fine, 195–200°F, the last drop around 5:00.
+    ...fromEngine('phin'),
+    recipeBy: `Nguyen Coffee Supply's phin recipe, as the Brew Guide makes it: ${PHIN.base!.doseG} g of coffee to 4 oz (${PHIN.base!.waterG} g) of water, 1:${PHIN.ratio.classic} (calculated), with the last drop around 5:00`,
     guide: { slug: 'vietnamese-phin-guide', title: 'Vietnamese phin guide' },
-    sourceIds: [],
-    // Astra, 2026-10-15: the house 14 g / 120 ml is close to Nguyen's published phin method; a house choice, not a standard.
+    sourceIds: ['nguyen-iced'],
   },
   {
     id: 'french-press', label: 'French press', the: 'the French press', line: 'Coffee steeps in all the water; a metal mesh holds the grounds back.',
@@ -152,20 +152,23 @@ export const ATLAS: AtlasMethod[] = [
   {
     id: 'turkish', label: 'Turkish coffee', the: 'Turkish coffee', line: 'Powder-fine coffee heated with water in a cezve and poured unfiltered.',
     contact: 'immersion', filter: 'none', force: 'none', attention: 2,
-    brewVerb: 'heats the coffee in all the water to just short of the boil',
-    timeS: [120, 180], ratio: { classic: 10, range: [9, 10] }, grind: 'Powder (finer than espresso)', temp: 'Heated slowly to just below the boil',
-    recipeBy: 'our Turkish coffee guide: about 1:9 to 1:10, heated over 2–3 minutes',
+    // As the Turkish coffee guide gives it, from Türkiye's registered description (Wave F r1, B3): 1 g to
+    // 10 ml, extra fine, cold water warmed to 190–198°F in 2½ to 3 minutes and taken off as the foam forms.
+    brewVerb: 'heats the coffee in all the water until a foam forms',
+    timeS: [150, 180], ratio: { classic: 10, range: [10, 10] }, grind: 'Extra fine (like flour)', temp: 'Cold water, heated to 190–198°F (88–92°C)',
+    recipeBy: 'our Turkish coffee guide: 1 g of coffee to 10 ml of water, warmed to 190–198°F over 2½ to 3 minutes and taken off before it boils',
     brewGuide: null,
     guide: { slug: 'turkish-coffee-guide', title: 'Turkish coffee guide' },
     sourceIds: ['synthesis'],
-    // Astra, 2026-10-15: 2–3 min of slow heating matches Specialty Turkish Coffee's method (about 2–2½ min).
   },
   {
     id: 'clever', label: 'Clever Dripper', the: 'the Clever Dripper', line: 'A cone with a valve: it steeps like a press, then drains through paper.',
     contact: 'steep-drain', filter: 'paper', force: 'gravity', attention: 1,
-    timeS: [270, 285], ratio: { classic: 15, range: [15, 16] }, grind: 'Medium-coarse', temp: '199–205°F (93–96°C)',
-    timeNote: 'one recipe, our guide\'s: a 4-minute steep and a 30–45 second drain; many recipes steep for less',
-    recipeBy: 'our Clever Dripper guide: 20 g of coffee and 300 g of water, 4 minutes, then a 30–45 second drain',
+    // As the Clever Dripper guide's 2020 recipe gives it (Wave F r1, B3): 20 g to 300 g (1:15), medium to
+    // coarse, water just off the boil (the box said 196–205°F), a 4-minute steep and a minute or so to drain.
+    timeS: [300, 300], ratio: { classic: 15, range: [15, 15] }, grind: 'Medium to coarse', temp: '196–205°F (91–96°C)',
+    timeNote: 'one recipe, our guide\'s: a 4-minute steep and about a minute to drain; many recipes steep for less',
+    recipeBy: 'our Clever Dripper guide: 20 g of coffee and 300 g of water just off the boil, 4 minutes under the lid, then about a minute to drain',
     brewGuide: null,
     guide: { slug: 'the-clever-dripper-better-coffee-than-pour-over', title: 'The Clever Dripper' },
     sourceIds: ['synthesis'],
@@ -174,8 +177,10 @@ export const ATLAS: AtlasMethod[] = [
     id: 'siphon', label: 'Siphon', the: 'the siphon', line: 'Vapor pushes water up into the coffee; a vacuum pulls the brew back down.',
     contact: 'steep-drain', filter: 'cloth', force: 'vapor', attention: 3,
     filterNote: 'cloth in most siphons; paper and metal filters are made for them too',
-    timeS: [120, 180], ratio: { classic: 15, range: [15, 15] }, grind: 'Medium-fine', temp: '194–199°F (90–93°C)',
-    recipeBy: 'our siphon guide: 20 g of coffee and 300 g of water, a 60–90 second steep and a 60–90 second drawdown',
+    // As the siphon guide gives it, Jessica Easto's three-cup recipe (Wave F r1, B3): 22 g to 300 g (1:13.6,
+    // calculated), medium-fine, coffee in at 202°F, heat off at 1:20 and drained by about 1:55.
+    timeS: [115, 115], ratio: { classic: 13.6, range: [13.6, 13.6] }, grind: 'Medium-fine', temp: 'In the top chamber, 202°F (94°C)',
+    recipeBy: 'our siphon guide, Jessica Easto\'s three-cup recipe: 22 g of coffee and 300 g of water (1:13.6, calculated), the coffee in at 202°F, the heat off at 1:20 and the brew drained by about 1:55',
     brewGuide: null,
     guide: { slug: 'how-to-use-a-siphon-coffee-maker', title: 'How to use a siphon coffee maker' },
     sourceIds: ['synthesis'],
@@ -216,6 +221,8 @@ export function brewGuideHref(m: AtlasMethod): string | null {
   // V60 or Kalita, a 16 oz Chemex or French press, a 32 oz drip or cold-brew batch (review r2, Muse).
   if (m.brewGuide === 'espresso') return `/tools/brew-ratio/?method=espresso&dose=18`;
   if (m.brewGuide === 'moka') return `/tools/brew-ratio/?method=moka&dose=15`;
+  // The phin's one size: Nguyen's 14 g in a 4 oz phin, as the phin article's callout opens it.
+  if (m.brewGuide === 'phin') return `/tools/brew-ratio/?method=phin&dose=14`;
   const CUP: Record<string, number> = { aeropress: 236.6, v60: 354.9, kalita: 354.9, chemex: 473.2, 'french-press': 473.2, 'drip-machine': 946.4, 'cold-brew': 946.4 };
   return `/tools/brew-ratio/?method=${m.brewGuide}&cup=${CUP[m.brewGuide] ?? 354.9}`;
 }
@@ -226,7 +233,7 @@ export function timeText(m: AtlasMethod): string {
   if (a >= 3600) return a === b ? `${a / 3600} hours` : `${a / 3600}–${b / 3600} hours`;
   if (b < 60) return `${a}–${b} seconds`;
   if (a % 60 === 0 && b % 60 === 0) return a === b ? `${a / 60} minutes` : `${a / 60}–${b / 60} minutes`;
-  return `${mmss(a)}–${mmss(b)}`;
+  return a === b ? mmss(a) : `${mmss(a)}–${mmss(b)}`;
 }
 export function ratioText(m: AtlasMethod): string {
   const r = (x: number) => String(Math.round(x * 100) / 100);
@@ -248,11 +255,12 @@ export function differences(a: AtlasMethod, b: AtlasMethod): Axis[] {
   if (a.force !== b.force) out.push('force');
   // Time differs when the ranges don't overlap, or one typically runs at least half as long again as
   // the other (by the middle of each range), so 3–4 minutes against 4–8 counts and 3–4 against 3:30–4:30 doesn't.
-  const mid = (m: AtlasMethod) => Math.sqrt(m.timeS[0] * m.timeS[1]);
   const apart = a.timeS[1] < b.timeS[0] || b.timeS[1] < a.timeS[0];
-  if (apart || Math.max(mid(a), mid(b)) / Math.min(mid(a), mid(b)) >= 1.5) out.push('time');
+  if (apart || Math.max(midS(a), midS(b)) / Math.min(midS(a), midS(b)) >= 1.5) out.push('time');
   return out;
 }
+/** The middle of a brewer's time range (geometric, as the time axis is a log scale). */
+const midS = (m: AtlasMethod) => Math.sqrt(m.timeS[0] * m.timeS[1]);
 
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const FORCE_PHRASE: Record<Force, string> = {
@@ -312,18 +320,25 @@ export function differenceSentence(a: AtlasMethod, b: AtlasMethod): string {
     const [clear, full] = FILTER[a.filter].order <= FILTER[b.filter].order ? [a, b] : [b, a];
     parts.push(full.filter === 'none' ? `only ${clear.the} is filtered` : `${clear.the}'s ${FILTER_PHRASE[clear.filter]} gives the clearer cup`);
   }
-  if (d.includes('time') && parts.length < 2) {
+  let timePart: string | null = null;
+  if (d.includes('time')) {
     const [fast, slow] = a.timeS[1] <= b.timeS[1] ? [a, b] : [b, a];
-    parts.push(`${fast.the} takes ${timeText(fast)}, ${slow.the} ${timeText(slow)}`);
+    timePart = `${fast.the} takes ${timeText(fast)}, ${slow.the} ${timeText(slow)}`;
   }
   // A large ratio difference is often the one a reader notices most (phin against V60): say it when
   // there's room, for brewers measured the same way (review r5, Muse).
   const [strong, weak] = served(a) <= served(b) ? [a, b] : [b, a];
   const times = served(weak) / served(strong);
-  if (parts.length < 2 && !a.ratio.yield && !b.ratio.yield && !a.servedFactor && !b.servedFactor && times >= 1.5) {
+  let ratioPart: string | null = null;
+  if (!a.ratio.yield && !b.ratio.yield && !a.servedFactor && !b.servedFactor && times >= 1.5) {
     const r = (x: number) => String(Math.round(x * 100) / 100);
-    parts.push(`${strong.the} uses about ${times >= 1.85 && times < 2.15 ? 'twice' : `${times.toFixed(1)} times`} the coffee for its water (1:${r(strong.ratio.classic)} against 1:${r(weak.ratio.classic)})`);
+    ratioPart = `${strong.the} uses about ${times >= 1.85 && times < 2.15 ? 'twice' : `${times.toFixed(1)} times`} the coffee for its water (1:${r(strong.ratio.classic)} against 1:${r(weak.ratio.classic)})`;
   }
+  // Room for only one: say the bigger of the two, as a multiple. The phin's 5 minutes against a V60's
+  // 3–4 is about 1.4 times; its coffee is about twice (Wave F r1). The table marks both rows either way.
+  const timeTimes = Math.max(midS(a), midS(b)) / Math.min(midS(a), midS(b));
+  if (timePart && ratioPart && parts.length === 1) parts.push(times > timeTimes ? ratioPart : timePart);
+  else for (const p of [timePart, ratioPart]) if (p && parts.length < 2) parts.push(p);
   if (parts.length === 1 && d.includes('force') && d.includes('contact')) {
     const pushed = [a, b].filter((m) => m.force === 'hand' || m.force === 'steam' || m.force === 'pump' || m.force === 'vapor');
     if (pushed.length === 1) parts.push(`only ${pushed[0].the} ${FORCE_DO[pushed[0].force]}`);

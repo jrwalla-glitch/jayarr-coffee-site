@@ -1,0 +1,1852 @@
+{
+ "machines": [
+  {
+   "id": "breville-bambino-bes450",
+   "brand": "Breville",
+   "name": "Bambino",
+   "code": "BES450",
+   "status": "current",
+   "category": "semi-auto",
+   "tankL": 1.4,
+   "portafilterMm": 54,
+   "dimsUnclear": "11.9 × 6.1 × 13.5 in",
+   "clearanceCm": 30.48,
+   "owner": {
+    "dose": "Breville gives 18 g as the ideal dose for the 54 mm portafilter.",
+    "recipe": "The extraction guide gives 8–11 g for 1 Cup or 16–19 g for 2 Cup.",
+    "baskets": "Single-wall and dual-wall baskets are included for both 1 cup and 2 cup shots.",
+    "temperature": "PID controls brew temperature. Low-pressure pre-infusion is followed by extraction at 9 bar.",
+    "descale": "Cleaning and descaling are one combined cycle. Breville gives no fixed interval; the 2 Cup button flashes continuously when it is due.",
+    "clean": "Rinse the group head with the 2 Cup fresh-water flush. Cleaning and descaling share a combined cycle."
+   },
+   "heating": {
+    "system": "thermoblock",
+    "makerTerm": "ThermoJet® heating system",
+    "simultaneousBrewSteam": false,
+    "simultaneousBy": "design",
+    "heatUpSeconds": 3
+   },
+   "grinder": {},
+   "milk": {
+    "type": "manual-wand"
+   },
+   "listPrice": {
+    "usd": 299.95,
+    "kind": "price seen on the maker’s US site",
+    "url": "https://www.breville.com/en-us/product/bes450"
+   },
+   "amazon": {
+    "url": "https://www.amazon.com/dp/B0B1JPPG2L?tag=jayarrcoffee-20"
+   },
+   "care": {
+    "manualUrl": "https://assets.breville.com/BES450/BES450_USCM_IB_M26_LR.pdf"
+   },
+   "tempKind": "pid",
+   "pressurized": true
+  },
+  {
+   "id": "breville-bambino-plus-bes500",
+   "brand": "Breville",
+   "name": "Bambino Plus",
+   "code": "BES500",
+   "status": "current",
+   "category": "semi-auto",
+   "tankL": 1.9,
+   "portafilterMm": 54,
+   "dimsUnclear": "11.9 × 7.4 × 14.3 in",
+   "clearanceCm": 30.48,
+   "owner": {
+    "dose": "Breville gives an 18 g dose for the 54 mm portafilter.",
+    "recipe": "The extraction guide gives 8–11 g for 1 Cup or 16–19 g for 2 Cup.",
+    "baskets": "Single-wall and dual-wall baskets are included for both 1 cup and 2 cup shots.",
+    "temperature": "PID controls brew temperature. Low-pressure pre-infusion is adjustable.",
+    "descale": "Breville gives no fixed descaling interval; the 1 CUP+STEAM and 2 CUP buttons flash alternately for 15 seconds when it is due. Descaling uses descaling agent followed by a rinse cycle.",
+    "clean": "The flushing cycle is due after 200 extractions since the last cleaning; 1 CUP and 2 CUP flash alternately. Put the cleaning disc in the basket with one cleaning tablet on top."
+   },
+   "heating": {
+    "system": "thermoblock",
+    "makerTerm": "ThermoJet® heating system",
+    "simultaneousBrewSteam": false,
+    "simultaneousBy": "design",
+    "heatUpSeconds": 3
+   },
+   "grinder": {},
+   "milk": {
+    "type": "auto-wand"
+   },
+   "listPrice": {
+    "usd": 499.95,
+    "kind": "price seen on the maker’s US site",
+    "url": "https://www.breville.com/en-us/product/bes500"
+   },
+   "amazon": {
+    "url": "https://www.amazon.com/dp/B07JVD78TT?tag=jayarrcoffee-20"
+   },
+   "care": {
+    "manualUrl": "https://assets.breville.com/BES500/BES500_USCM_IB_Y25_LR.pdf"
+   },
+   "tempKind": "pid",
+   "pressurized": true
+  },
+  {
+   "id": "breville-barista-express-bes870",
+   "brand": "Breville",
+   "name": "Barista Express",
+   "code": "BES870",
+   "status": "current",
+   "category": "semi-auto-grinder",
+   "tankL": 2,
+   "portafilterMm": 54,
+   "dimsUnclear": "15.9 × 13.1 × 12.4 in",
+   "clearanceCm": 40.64,
+   "owner": {
+    "dose": null,
+    "recipe": "The extraction guide gives 8–11 g for 1 CUP or 16–19 g for 2 CUP, with a 25–30 second shot.",
+    "baskets": "Single-wall and dual-wall baskets are included for both 1 cup and 2 cup shots.",
+    "temperature": "PID lets you adjust the default brew temperature by ±4°F in 2°F increments. Low-pressure pre-infusion time is adjustable.",
+    "descale": "Breville gives no fixed interval; a solid CLEAN / DESCALE light signals descaling. Use Breville descaling solution for the coffee, steam, and hot-water components.",
+    "clean": "A flashing CLEAN / DESCALE light signals the backflush cycle, which is separate from descaling. Put the cleaning disc and one cleaning tablet in the 1 CUP basket; the cycle takes about 5 minutes."
+   },
+   "heating": {
+    "system": "thermoblock",
+    "makerTerm": "Thermocoil heating system (integrated stainless steel water coil)",
+    "simultaneousBrewSteam": false,
+    "simultaneousBy": "design"
+   },
+   "grinder": {
+    "builtIn": true,
+    "settings": "16 precision grind settings (product page); manual notes adjustable grind amount and grind size"
+   },
+   "milk": {
+    "type": "manual-wand"
+   },
+   "listPrice": {
+    "usd": 699.95,
+    "kind": "price seen on the maker’s US site",
+    "url": "https://www.breville.com/en-us/product/bes870"
+   },
+   "amazon": {
+    "url": "https://www.amazon.com/dp/B00CH9QWOU?tag=jayarrcoffee-20"
+   },
+   "care": {
+    "manualUrl": "https://assets.breville.com/BES870/BES870_USCM_IB_X26_LR.pdf"
+   },
+   "tempKind": "pid",
+   "pressurized": true
+  },
+  {
+   "id": "breville-barista-express-impress-bes876",
+   "brand": "Breville",
+   "name": "Barista Express Impress",
+   "code": "BES876",
+   "status": "current",
+   "category": "semi-auto-grinder",
+   "tankL": 2,
+   "portafilterMm": 54,
+   "dimsUnclear": "16.6 × 14.4 × 12.2 in",
+   "clearanceCm": 40.64,
+   "owner": {
+    "dose": null,
+    "recipe": "The extraction guide gives 8–11 g for 1 CUP or 16–19 g for 2 CUP, with a 25–30 second shot.",
+    "baskets": "Single-wall and dual-wall baskets are included for both 1 cup and 2 cup shots.",
+    "temperature": "PID lets you adjust the default temperature by ±4°F (2°C) in 2°F (1°C) increments. Hold 1 CUP or 2 CUP for the pre-infusion time you want.",
+    "descale": "Descaling uses descaling sachets or powder for the coffee, steam, and hot-water components. Breville gives no fixed interval.",
+    "clean": "A flashing CLEAN / DESCALE light signals the backflush cycle, which is separate from descaling. Put the cleaning disc and one cleaning tablet in the 1 CUP basket; the cycle takes about 5 minutes."
+   },
+   "heating": {
+    "system": "thermoblock",
+    "makerTerm": "Thermocoil system (integrated stainless steel water path)",
+    "simultaneousBrewSteam": false,
+    "simultaneousBy": "design"
+   },
+   "grinder": {
+    "builtIn": true,
+    "settings": "25 precision grind settings (product page)"
+   },
+   "milk": {
+    "type": "manual-wand"
+   },
+   "listPrice": {
+    "usd": 799.95,
+    "kind": "price seen on the maker’s US site",
+    "url": "https://www.breville.com/en-us/product/bes876"
+   },
+   "amazon": {
+    "url": "https://www.amazon.com/dp/B0BBYNPV33?tag=jayarrcoffee-20"
+   },
+   "care": {
+    "manualUrl": "https://assets.breville.com/BES876/BES876_USCM_IB_F26_LR.pdf"
+   },
+   "tempKind": "pid",
+   "pressurized": true
+  },
+  {
+   "id": "breville-barista-pro-bes878",
+   "brand": "Breville",
+   "name": "Barista Pro",
+   "code": "BES878",
+   "status": "current",
+   "category": "semi-auto-grinder",
+   "tankL": 2,
+   "portafilterMm": 54,
+   "dimsUnclear": "16.1 × 13.8 × 13.1 in",
+   "clearanceCm": 40.64,
+   "owner": {
+    "dose": null,
+    "recipe": "The dose guidance is 16–19 g for the 2-cup basket.",
+    "baskets": "Single-wall and dual-wall baskets are included for both 1 cup and 2 cup shots.",
+    "temperature": "PID controls brew temperature; adjust it through MENU > SHOT TEMP with HOTTER or COOLER. Low-pressure pre-infusion duration is programmable, followed by extraction at 9 bar.",
+    "descale": "Select DESCALE in MENU and use descaling powder.",
+    "clean": "The FLUSH cleaning cycle uses a cleaning disc and cleaning tablet. It is separate from descaling."
+   },
+   "heating": {
+    "system": "thermoblock",
+    "makerTerm": "ThermoJet® heating system",
+    "simultaneousBrewSteam": false,
+    "simultaneousBy": "design",
+    "heatUpSeconds": 3
+   },
+   "grinder": {
+    "builtIn": true,
+    "settings": "30 grind settings"
+   },
+   "milk": {
+    "type": "manual-wand"
+   },
+   "listPrice": {
+    "usd": 849.95,
+    "kind": "price seen on the maker’s US site",
+    "url": "https://www.breville.com/en-us/product/bes878"
+   },
+   "amazon": {
+    "url": "https://www.amazon.com/dp/B08133HX34?tag=jayarrcoffee-20"
+   },
+   "care": {
+    "manualUrl": "https://assets.breville.com/BES878/BES878_USCM_IB_Q26_LR.pdf"
+   },
+   "tempKind": "pid",
+   "pressurized": true
+  },
+  {
+   "id": "breville-barista-touch-bes880",
+   "brand": "Breville",
+   "name": "Barista Touch",
+   "code": "BES880",
+   "status": "current",
+   "category": "semi-auto-grinder",
+   "tankL": 2,
+   "portafilterMm": 54,
+   "dimsUnclear": "15.7 × 12.6 × 12.4 in",
+   "clearanceCm": 40.64,
+   "owner": {
+    "dose": null,
+    "recipe": "The 2-cup basket guidance is 16–19 g; Breville separately gives an ideal dose of 18 g. Shot volumes are programmable.",
+    "baskets": "The 54 mm single-wall and dual-wall baskets come in 1 cup and 2 cup sizes.",
+    "temperature": "PID controls brew temperature, with low-pressure pre-infusion followed by extraction at 9 bar. The 104–167°F temperature range is for milk.",
+    "descale": "Open Settings > Descale cycle and follow the on-screen steps.",
+    "clean": "The screen prompts you to run the backflush cleaning cycle. It is separate from descaling."
+   },
+   "heating": {
+    "system": "thermoblock",
+    "makerTerm": "ThermoJet® heating system",
+    "simultaneousBrewSteam": false,
+    "simultaneousBy": "design",
+    "heatUpSeconds": 3
+   },
+   "grinder": {
+    "builtIn": true,
+    "settings": "30 precision grind settings"
+   },
+   "milk": {
+    "type": "auto-wand"
+   },
+   "listPrice": {
+    "usd": 999.95,
+    "kind": "price seen on the maker’s US site",
+    "url": "https://www.breville.com/en-us/product/bes880"
+   },
+   "amazon": {
+    "url": "https://www.amazon.com/dp/B078WMLXXG?tag=jayarrcoffee-20"
+   },
+   "care": {
+    "manualUrl": "https://assets.breville.com/BES880/BES880_USCM_IB_AB26_LR.pdf"
+   },
+   "tempKind": "pid",
+   "pressurized": true
+  },
+  {
+   "id": "breville-oracle-bes980",
+   "brand": "Breville",
+   "name": "Oracle",
+   "code": "BES980",
+   "status": "discontinued",
+   "category": "super-auto",
+   "tankL": 2.5,
+   "portafilterMm": 58,
+   "dimsUnclear": "18 × 16 × 14.4 in",
+   "clearanceCm": 45.72,
+   "owner": {
+    "dose": "The machine automatically grinds, doses, and tamps 22 g into the 58 mm portafilter.",
+    "recipe": "Breville gives a 22 g dose separately from the 25–30 second balanced-shot guide. Defaults are 25 seconds for 1 CUP, 30 seconds for 2 CUP, and 200°F (93°C) for brewing.",
+    "baskets": "Single-wall baskets are included for 1 cup and 2 cup shots.",
+    "temperature": "PID brew temperature defaults to 200°F (93°C); low-pressure pre-infusion is programmable before extraction at 9 bar. Milk temperature defaults to 150°F (65°C), with a 104–167°F range.",
+    "descale": "Use the dESc procedure in the advanced menu, with the descale access point.",
+    "clean": "The cleaning cycle cleans the shower screen and backflushes the group head."
+   },
+   "heating": {
+    "system": "dual-boiler",
+    "makerTerm": "Dual Boiler heating system (stainless steel boilers, heated group head)",
+    "simultaneousBrewSteam": true,
+    "simultaneousBy": "maker"
+   },
+   "grinder": {
+    "builtIn": true,
+    "settings": "45 grind settings"
+   },
+   "milk": {
+    "type": "auto-wand"
+   },
+   "listPrice": {
+    "url": "https://www.breville.com/en-us/product/bes980"
+   },
+   "care": {
+    "manualUrl": "https://assets.breville.com/BES980/BES980_USCM_IB_AA26_LR.pdf"
+   },
+   "tempKind": "pid"
+  },
+  {
+   "id": "breville-dual-boiler-bes920",
+   "brand": "Breville",
+   "name": "Dual Boiler",
+   "code": "BES920",
+   "status": "current",
+   "category": "semi-auto",
+   "tankL": 2.5,
+   "portafilterMm": 58,
+   "dims": {
+    "w": 37.9,
+    "d": 40.3,
+    "h": 37.1
+   },
+   "clearanceCm": 40.64,
+   "owner": {
+    "dose": "Breville gives 22 g as the ideal dose for the 58 mm portafilter.",
+    "recipe": "Breville gives a 22 g dose separately from the 25–30 second balanced-shot guide. Defaults are 25 seconds for 1 CUP, 30 seconds for 2 CUP, and 200°F (93°C) for brewing.",
+    "baskets": "Single-wall and dual-wall baskets are included for both 1 cup and 2 cup shots.",
+    "temperature": "PID brew temperature defaults to 200°F (93°C), adjusts from 190–205°F (86–96°C), and has a recommended range of 194–203°F (90–95°C). Steam defaults to 275°F (135°C); low-pressure pre-infusion duration is programmable before extraction at 9 bar.",
+    "descale": "Select DESCALE (dESc) from the menu and use the descale access point.",
+    "clean": "The cleaning cycle cleans the shower screen and backflushes the group head."
+   },
+   "heating": {
+    "system": "dual-boiler",
+    "makerTerm": "Dual Boiler heating system (dedicated espresso boiler and steam boiler)",
+    "simultaneousBrewSteam": true,
+    "simultaneousBy": "maker"
+   },
+   "grinder": {
+    "builtIn": false
+   },
+   "milk": {
+    "type": "manual-wand"
+   },
+   "listPrice": {
+    "usd": 1599.95,
+    "kind": "price seen on the maker’s US site",
+    "url": "https://www.breville.com/en-us/product/bes920"
+   },
+   "care": {
+    "manualUrl": "https://assets.breville.com/BES920/BES920_USCM_IB_Y23_LR.pdf"
+   },
+   "tempKind": "pid",
+   "pressurized": true
+  },
+  {
+   "id": "delonghi-dinamica-ecam35025",
+   "brand": "De'Longhi",
+   "name": "Dinamica",
+   "code": "ECAM35025SB",
+   "status": "unconfirmed",
+   "category": "super-auto",
+   "tankL": 1.8,
+   "dims": {
+    "w": 24,
+    "d": 44,
+    "h": 36
+   },
+   "heating": {},
+   "grinder": {
+    "builtIn": true
+   },
+   "milk": {
+    "type": "panarello"
+   },
+   "listPrice": {},
+   "care": {
+    "manualUrl": "https://library.delonghigroup.com/assetbank-delonghi/action/directLinkImage?assetId=222402&download=true"
+   }
+  },
+  {
+   "id": "delonghi-stilosa-ec260",
+   "brand": "De'Longhi",
+   "name": "Stilosa",
+   "code": "EC260BK",
+   "status": "current",
+   "category": "semi-auto",
+   "dims": {
+    "w": 20.5,
+    "d": 34.3,
+    "h": 28.5
+   },
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": "Filters are included for single and double espresso.",
+    "temperature": null,
+    "descale": "Descale about every 200 coffees with De'Longhi descaler.",
+    "clean": null
+   },
+   "heating": {
+    "system": "single-boiler",
+    "makerTerm": "stainless steel boiler (product page marketing)",
+    "simultaneousBrewSteam": false,
+    "simultaneousBy": "design"
+   },
+   "grinder": {},
+   "milk": {
+    "type": "panarello"
+   },
+   "listPrice": {
+    "usd": 149.95,
+    "kind": "price seen on the maker’s US site",
+    "url": "https://www.delonghi.com/en-us/p/stilosa-stilosa-espresso-machine/EC260BK.html?pid=0132104209"
+   },
+   "care": {
+    "manualUrl": "https://library.delonghigroup.com/assetbank-delonghi/action/directLinkImage?assetId=373359&download=true"
+   }
+  },
+  {
+   "id": "delonghi-eletta-explore-ecam45086",
+   "brand": "De'Longhi",
+   "name": "Eletta Explore",
+   "code": "ECAM45086S",
+   "status": "current",
+   "category": "super-auto",
+   "dims": {
+    "w": 26,
+    "d": 44.5,
+    "h": 38.4
+   },
+   "heating": {},
+   "grinder": {
+    "builtIn": true,
+    "settings": "13 settings"
+   },
+   "milk": {
+    "type": "carafe"
+   },
+   "listPrice": {
+    "usd": 1799.95,
+    "kind": "price seen on the maker’s US site",
+    "url": "https://www.delonghi.com/en-us/p/eletta-explore-eletta-explore-espresso-machine/ECAM45086S+EX%3A4.html?pid=0132250196"
+   },
+   "amazon": {
+    "url": "https://www.amazon.com/dp/B0CGL7878G?tag=jayarrcoffee-20"
+   },
+   "care": {
+    "manualUrl": "https://library.delonghigroup.com/assetbank-delonghi/action/directLinkImage?assetId=293486&download=true"
+   }
+  },
+  {
+   "id": "delonghi-magnifica-s-ecam22110",
+   "brand": "De'Longhi",
+   "name": "Magnifica XS",
+   "code": "ECAM22110B",
+   "status": "unconfirmed",
+   "category": "super-auto",
+   "tankL": 1.8,
+   "dims": {
+    "w": 23.8,
+    "d": 43,
+    "h": 34
+   },
+   "heating": {},
+   "grinder": {
+    "builtIn": true,
+    "settings": "grinding adjustment dial A2"
+   },
+   "milk": {
+    "type": "panarello"
+   },
+   "listPrice": {
+    "url": "https://www.delonghi.com/en-us/p/magnifica-s-magnifica-xs-automatic-espresso-machine--cappuccino-maker---ecam22110b/ECAM22110B.html"
+   },
+   "amazon": {
+    "url": "https://www.amazon.com/dp/B00NE1XBY4?tag=jayarrcoffee-20"
+   },
+   "care": {
+    "manualUrl": "https://library.delonghigroup.com/assetbank-delonghi/action/directLinkImage?assetId=222455&download=true"
+   }
+  },
+  {
+   "id": "delonghi-dedica-ec685m",
+   "brand": "De'Longhi",
+   "name": "Dedica DeLuxe",
+   "code": "EC685M",
+   "status": "current",
+   "category": "semi-auto",
+   "dims": {
+    "w": 15,
+    "d": 33,
+    "h": 30.5
+   },
+   "heating": {
+    "system": "thermoblock",
+    "makerTerm": "thermoblock",
+    "simultaneousBrewSteam": false,
+    "simultaneousBy": "design"
+   },
+   "grinder": {},
+   "milk": {
+    "type": "panarello"
+   },
+   "listPrice": {
+    "usd": 279.95,
+    "kind": "price seen on the maker’s US site",
+    "url": "https://www.delonghi.com/en-us/p/dedica-manual-espresso-makers-dedica-deluxe-espresso-machine/EC685M.html"
+   }
+  },
+  {
+   "id": "delonghi-dedica-duo-ec890",
+   "brand": "De'Longhi",
+   "name": "Dedica Duo",
+   "code": "EC890M",
+   "status": "current",
+   "category": "semi-auto",
+   "tankL": 1.1,
+   "dims": {
+    "w": 14.9,
+    "d": 33,
+    "h": 30.5
+   },
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": null,
+    "temperature": null,
+    "descale": "Descale when the B5 indicator lights. The cycle takes about 30 minutes.",
+    "clean": null
+   },
+   "heating": {
+    "system": "thermoblock",
+    "simultaneousBrewSteam": false,
+    "simultaneousBy": "design"
+   },
+   "grinder": {},
+   "milk": {
+    "type": "manual-wand"
+   },
+   "listPrice": {
+    "usd": 249.95,
+    "kind": "list price",
+    "url": "https://www.delonghi.com/en-us/p/dedica-duo-dedica-duo-espresso-machine--metal/EC890M.html?pid=0132106347"
+   },
+   "amazon": {
+    "url": "https://www.amazon.com/dp/B0F3RZZZF9?tag=jayarrcoffee-20"
+   },
+   "care": {
+    "manualUrl": "https://library.delonghigroup.com/assetbank-delonghi/action/directLinkImage?assetId=325623&download=true"
+   }
+  },
+  {
+   "id": "philips-3200-latte-go-ep3241",
+   "brand": "Philips",
+   "name": "3200 LatteGo",
+   "code": "EP3241/54",
+   "status": "discontinued",
+   "category": "super-auto",
+   "tankL": 1.8,
+   "dims": {
+    "w": 24.6,
+    "d": 43.3,
+    "h": 37.1
+   },
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": null,
+    "temperature": null,
+    "descale": "The machine provides guided descaling and supports AquaClean filters.",
+    "clean": null
+   },
+   "heating": {},
+   "grinder": {
+    "builtIn": true,
+    "settings": "12"
+   },
+   "milk": {
+    "type": "carafe"
+   },
+   "listPrice": {
+    "url": "https://acc.usa.philips.com/c-p/EP3241_54/series-3200-fully-automatic-espresso-machines"
+   },
+   "amazon": {
+    "url": "https://www.amazon.com/dp/B07VFY4MXM?tag=jayarrcoffee-20"
+   }
+  },
+  {
+   "id": "gaggia-classic-pro-2019",
+   "brand": "Gaggia",
+   "name": "Classic Pro",
+   "status": "replaced",
+   "category": "semi-auto",
+   "heating": {
+    "system": "single-boiler",
+    "makerTerm": "single boiler",
+    "simultaneousBrewSteam": false,
+    "simultaneousBy": "design"
+   },
+   "grinder": {},
+   "milk": {
+    "type": "manual-wand"
+   },
+   "listPrice": {}
+  },
+  {
+   "id": "gaggia-classic-e24",
+   "brand": "Gaggia",
+   "name": "Classic E24",
+   "code": "RI9380/46",
+   "status": "current",
+   "category": "semi-auto",
+   "tankL": 2.1,
+   "portafilterMm": 58,
+   "dims": {
+    "w": 20.3,
+    "d": 24.1,
+    "h": 36.1
+   },
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": "The Crema perfetta filter serves 1 or 2 cups. Traditional filters are included for 1 cup and 2 cups.",
+    "temperature": null,
+    "descale": "Descale every 2 months using only Gaggia descaling product. Never use vinegar or other descaling agents.",
+    "clean": "Clean the brew group monthly with Gaggia Coffee Oil Remover tablets and the blind filter."
+   },
+   "heating": {
+    "system": "single-boiler",
+    "makerTerm": "single boiler",
+    "simultaneousBrewSteam": false,
+    "simultaneousBy": "design"
+   },
+   "grinder": {},
+   "milk": {
+    "type": "manual-wand"
+   },
+   "listPrice": {
+    "usd": 549,
+    "kind": "list price from Gaggia North America (Importika Inc.), the US importer",
+    "url": "https://www.gaggia-na.com/products/gaggia-classic-pro",
+    "seller": "Gaggia North America (Importika Inc.)"
+   },
+   "amazon": {
+    "url": "https://www.amazon.com/dp/B07RQ3NL76?tag=jayarrcoffee-20"
+   },
+   "care": {
+    "manualUrl": "https://www.gaggia.com/app/uploads/2023/10/6420-010-43466-MANUAL-GAG.-CLASSIC-E24-USA-Rev-00-6.pdf"
+   },
+   "pressurized": true
+  },
+  {
+   "id": "gaggia-classic-evo-pro",
+   "brand": "Gaggia",
+   "name": "Classic Evo Pro",
+   "status": "replaced",
+   "category": "semi-auto",
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": null,
+    "temperature": null,
+    "descale": "Descale every 2 months.",
+    "clean": null
+   },
+   "heating": {
+    "system": "single-boiler",
+    "makerTerm": "single boiler",
+    "simultaneousBrewSteam": false,
+    "simultaneousBy": "design"
+   },
+   "grinder": {},
+   "milk": {
+    "type": "manual-wand"
+   },
+   "listPrice": {},
+   "amazon": {
+    "url": "https://www.amazon.com/dp/B08JXH1BBM?tag=jayarrcoffee-20"
+   },
+   "care": {
+    "manualUrl": "https://cdn.shopify.com/s/files/1/0076/7649/3888/files/MANUAL_6420-010-01628_GAG._CLASSIC_PRO_USA_Rev_00.pdf"
+   }
+  },
+  {
+   "id": "rancilio-silvia-current",
+   "brand": "Rancilio",
+   "name": "Silvia",
+   "status": "current",
+   "category": "semi-auto",
+   "tankL": 2,
+   "dims": {
+    "w": 23.5,
+    "d": 29,
+    "h": 34
+   },
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": "Rancilio lists filter baskets as 8/16 g and 14/18 g.",
+    "temperature": "A thermostat controls temperature.",
+    "descale": null,
+    "clean": "For daily cleaning, use the blind filter disk and espresso-machine detergent. Turn the coffee switch on for 5 seconds and off for 10 seconds; repeat until the water runs clear."
+   },
+   "heating": {
+    "system": "single-boiler",
+    "simultaneousBrewSteam": false,
+    "simultaneousBy": "design"
+   },
+   "grinder": {},
+   "milk": {
+    "type": "manual-wand"
+   },
+   "listPrice": {
+    "usd": 995,
+    "kind": "minimum advertised price from Rancilio Group North America, the US importer",
+    "url": "https://www.ranciliogroupna.com/wp-content/uploads/2025/09/PRICING-RANCILIO-HL-MAP-NA-25-09.pdf",
+    "seller": "Rancilio Group North America"
+   },
+   "care": {
+    "manualUrl": "https://www.ranciliogroupna.com/wp-content/uploads/2025/05/460100001_MA_Silvia_AC_2024-03.pdf"
+   },
+   "tempKind": "thermostat"
+  },
+  {
+   "id": "rancilio-silvia-pro-x",
+   "brand": "Rancilio",
+   "name": "Silvia Pro X",
+   "status": "current",
+   "category": "semi-auto",
+   "tankL": 2,
+   "portafilterMm": 58,
+   "dims": {
+    "w": 25,
+    "d": 42,
+    "h": 39
+   },
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": "Rancilio lists filter baskets as 8/16 g.",
+    "temperature": "The machine has 2 PID temperature controllers. When enabled, Variable Soft Infusion soaks the coffee at low pressure for up to 6 seconds before normal brewing pressure.",
+    "descale": null,
+    "clean": "Use the F.01 washing cycle with the blind filter disk and detergent, following the CL1–CL3 screens. Rancilio gives no fixed cleaning interval."
+   },
+   "heating": {
+    "system": "dual-boiler",
+    "makerTerm": "Dual Boiler Technology",
+    "simultaneousBrewSteam": true,
+    "simultaneousBy": "maker"
+   },
+   "grinder": {},
+   "milk": {
+    "type": "manual-wand"
+   },
+   "listPrice": {
+    "usd": 2195,
+    "kind": "minimum advertised price from Rancilio Group North America, the US importer",
+    "url": "https://www.ranciliogroupna.com/wp-content/uploads/2025/09/PRICING-RANCILIO-HL-MAP-NA-25-09.pdf",
+    "seller": "Rancilio Group North America"
+   },
+   "care": {
+    "manualUrl": "https://www.ranciliogroupna.com/wp-content/uploads/2026/03/Manual-User-Silvia-Pro-X-2026-01.pdf"
+   },
+   "tempKind": "pid"
+  },
+  {
+   "id": "lelit-bianca-pl162t",
+   "brand": "Lelit",
+   "name": "Bianca",
+   "code": "PL162T-120",
+   "status": "current",
+   "category": "semi-auto",
+   "tankL": 2.5,
+   "dims": {
+    "w": 29,
+    "d": 58.5,
+    "h": 39
+   },
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": "Included IMS LELIT58 filters are 1 dose (9–11 g), 2 doses (14–18 g), 2 doses (18–21 g), and a blind filter.",
+    "temperature": "Use the LCC electronic control and OLED display to adjust coffee and steam temperatures. Low flow and pre-infusion time are adjustable, and pre-infusion can be enabled.",
+    "descale": null,
+    "clean": null
+   },
+   "heating": {
+    "system": "dual-boiler",
+    "makerTerm": "DUAL BOILER",
+    "simultaneousBrewSteam": true,
+    "simultaneousBy": "maker"
+   },
+   "grinder": {},
+   "milk": {
+    "type": "manual-wand"
+   },
+   "listPrice": {
+    "usd": 2999.95,
+    "kind": "price seen on the maker’s US site",
+    "url": "https://www.lelit.com/en-us/product/bianca-pesbn03?sku=PESBN03PSS1BXX1"
+   },
+   "tempKind": "pid"
+  },
+  {
+   "id": "lelit-elizabeth-pl92t",
+   "brand": "Lelit",
+   "name": "Elizabeth",
+   "code": "PL92T",
+   "status": "current",
+   "category": "semi-auto",
+   "tankL": 2.5,
+   "dims": {
+    "w": 32,
+    "d": 38,
+    "h": 38
+   },
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": "Included IMS LELIT58 filters are 1 dose (9–11 g), 2 doses (14–18 g), and a blind filter.",
+    "temperature": "The LCC electronic control has an OLED display and °F/°C units. Pre-infusion can be enabled.",
+    "descale": null,
+    "clean": null
+   },
+   "heating": {
+    "system": "dual-boiler",
+    "makerTerm": "dual boiler",
+    "simultaneousBrewSteam": true,
+    "simultaneousBy": "design"
+   },
+   "grinder": {},
+   "milk": {
+    "type": "manual-wand"
+   },
+   "listPrice": {
+    "usd": 1799.95,
+    "kind": "list price from LELIT US, the maker",
+    "url": "https://www.lelit.com/en-us/product/pesel01",
+    "seller": "LELIT US"
+   },
+   "tempKind": "pid"
+  },
+  {
+   "id": "profitec-go-original",
+   "brand": "Profitec",
+   "name": "GO",
+   "variant": "first edition",
+   "code": "CM500001-00",
+   "status": "replaced",
+   "category": "semi-auto",
+   "tankL": 2.8,
+   "dims": {
+    "w": 21,
+    "d": 36.2,
+    "h": 38.1
+   },
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": "Included filters are 1 cup (7 g), 2 cups (14 g), and a blind filter. A portafilter with 2 spouts is also included.",
+    "temperature": "PID controls brew and steam temperatures. Factory defaults are 93°C for coffee and 130°C for steam.",
+    "descale": "Preventive descaling may be needed, and Profitec recommends a water filter cartridge. If the machine is already calcified, only a specialized dealer may descale it because partial disassembly is required.",
+    "clean": null
+   },
+   "heating": {
+    "system": "single-boiler",
+    "makerTerm": "Single boiler espresso machine with ring brew group",
+    "simultaneousBrewSteam": false,
+    "simultaneousBy": "design",
+    "heatUpSeconds": 510
+   },
+   "grinder": {},
+   "milk": {
+    "type": "manual-wand"
+   },
+   "listPrice": {
+    "usd": 1199,
+    "kind": "list price from Whole Latte Love, an authorized US dealer",
+    "url": "https://www.wholelattelove.com/products/profitec-go-espresso-machine?variant=43046168297526",
+    "seller": "Whole Latte Love"
+   },
+   "care": {
+    "manualUrl": "https://web.archive.org/web/20251215041655/https://www.profitec-espresso.com/media/pages/produkte/go/2d6c2c0c60-1738234502/ba_go.pdf"
+   },
+   "tempKind": "pid"
+  },
+  {
+   "id": "profitec-go-2-0",
+   "brand": "Profitec",
+   "name": "GO 2.0",
+   "code": "CM500014-00",
+   "status": "current",
+   "category": "semi-auto",
+   "tankL": 2.8,
+   "dims": {
+    "w": 21,
+    "d": 36.2,
+    "h": 38.1
+   },
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": "A blind filter and a bottomless portafilter with silicone attachments are included.",
+    "temperature": "Set PID temperatures in the menu: brew defaults to 92°C, steam defaults to 128°C and adjusts from 115–134°C, and the offset is -10 to +10°C. Selectable pre-infusion runs the pump for 3 seconds, pauses for 8 seconds, then extracts at 9 bar.",
+    "descale": "Use only Profitec original descaler for menu-guided descaling. Have the blind filter and a receptacle holding at least 500 ml ready.",
+    "clean": "Automatic brew-group cleaning and a manual cleaning procedure are available."
+   },
+   "heating": {
+    "system": "single-boiler",
+    "makerTerm": "Single boiler espresso machine with ring brew group",
+    "simultaneousBrewSteam": false,
+    "simultaneousBy": "design",
+    "heatUpSeconds": 420
+   },
+   "grinder": {},
+   "milk": {
+    "type": "manual-wand"
+   },
+   "listPrice": {},
+   "care": {
+    "manualUrl": "https://www.profitec-espresso.com/media/pages/produkte/go-2-0/a08ca0b550-1781854461/ba_go.pdf"
+   },
+   "tempKind": "pid"
+  },
+  {
+   "id": "profitec-pro-400",
+   "brand": "Profitec",
+   "name": "PRO 400",
+   "code": "CM500004-00",
+   "status": "current",
+   "category": "semi-auto",
+   "tankL": 2.8,
+   "dims": {
+    "w": 22.8,
+    "d": 44.8,
+    "h": 37.2
+   },
+   "owner": {
+    "dose": null,
+    "recipe": "The dark-roast example uses 16.5 g and prints a 45 g yield, but its printed 1:2.5 ratio implies 41.25 g. After flushing, switch I gives about 90°C, II about 94°C, and III about 98°C; the separate boiler presets are 120°C, 124°C, and 128°C.",
+    "baskets": "Filters are included for 1 cup (7 g), 2 cups (14 g), and 21 g, plus a blind filter.",
+    "temperature": "The multifunction switch selects PID boiler presets of 120°C, 124°C, or 128°C. It also switches pre-infusion on or off.",
+    "descale": "Preventive descaling may be needed. If the machine is already calcified, only a specialized dealer may descale it.",
+    "clean": "Clean the brew group with the blind filter."
+   },
+   "heating": {
+    "system": "heat-exchanger",
+    "makerTerm": "Heat exchanger system",
+    "simultaneousBrewSteam": true,
+    "simultaneousBy": "design",
+    "heatUpSeconds": 1500
+   },
+   "grinder": {},
+   "milk": {
+    "type": "manual-wand"
+   },
+   "listPrice": {
+    "usd": 1599,
+    "kind": "sale price from Whole Latte Love, an authorized US dealer",
+    "url": "https://www.wholelattelove.com/products/profitec-pro-400-espresso-machine",
+    "seller": "Whole Latte Love"
+   },
+   "care": {
+    "manualUrl": "https://www.profitec-espresso.com/media/pages/produkte/pro-400/6f52c5c90c-1778593561/ba_pro400-jump.pdf"
+   },
+   "tempKind": "pid"
+  },
+  {
+   "id": "rocket-appartamento",
+   "brand": "Rocket",
+   "name": "Appartamento",
+   "status": "unconfirmed",
+   "category": "semi-auto",
+   "dims": {
+    "w": 27.4,
+    "d": 44,
+    "h": 36
+   },
+   "heating": {
+    "system": "heat-exchanger",
+    "makerTerm": "Heat exchanger Boiler System",
+    "simultaneousBrewSteam": true,
+    "simultaneousBy": "design"
+   },
+   "grinder": {},
+   "milk": {
+    "type": "manual-wand"
+   },
+   "listPrice": {}
+  },
+  {
+   "id": "rocket-appartamento-tca",
+   "brand": "Rocket",
+   "name": "Appartamento TCA",
+   "status": "current",
+   "category": "semi-auto",
+   "tankL": 1.9,
+   "dims": {
+    "w": 27,
+    "d": 44.8,
+    "h": 35.8
+   },
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": null,
+    "temperature": "Temperature Control Adjustment (TCA) lets you adjust temperature.",
+    "descale": null,
+    "clean": null
+   },
+   "heating": {
+    "system": "heat-exchanger",
+    "makerTerm": "System with heat exchanger",
+    "simultaneousBrewSteam": true,
+    "simultaneousBy": "design"
+   },
+   "grinder": {},
+   "milk": {
+    "type": "manual-wand"
+   },
+   "listPrice": {
+    "usd": 2300,
+    "kind": "list price from Seattle Coffee Gear, an authorized US dealer",
+    "url": "https://www.seattlecoffeegear.com/products/rocket-espresso-appartamento-tca-espresso-machine?variant=48308747764019",
+    "seller": "Seattle Coffee Gear"
+   },
+   "tempKind": "settable"
+  },
+  {
+   "id": "ascaso-steel-duo-pid",
+   "brand": "Ascaso",
+   "name": "Steel DUO PID",
+   "status": "current",
+   "category": "semi-auto",
+   "tankL": 2,
+   "dims": {
+    "w": 27,
+    "d": 31.5,
+    "h": 36
+   },
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": null,
+    "temperature": "The PID display lets you set coffee temperature from 80–110°C and steam from 110–165°C, both in 1°C increments. Pre-infusion is programmable from 0–5 seconds.",
+    "descale": "Use Coffee Washer monthly above 10 coffees a day, every 2 months at 5–10 coffees a day, or every 3 months at 1–5 coffees a day. Water-treatment filters are optional.",
+    "clean": "Backflush weekly with the blind filter, pressing the coffee switch for 10 seconds twice. The machine also has a CLn cleaning mode."
+   },
+   "heating": {
+    "system": "dual-thermoblock",
+    "makerTerm": "Independent thermoblocks (2); insulated thermoblock",
+    "simultaneousBrewSteam": true,
+    "simultaneousBy": "design"
+   },
+   "grinder": {},
+   "milk": {
+    "type": "manual-wand"
+   },
+   "listPrice": {
+    "usd": 2095,
+    "kind": "list price from Ascaso USA (Espresso Parts LLC), the US importer",
+    "url": "https://ascaso-usa.com/products/steel-duo-pid-programmable-espresso-machine-w-volumetric-conrtroller-dual-thermoblock-120v-black",
+    "seller": "Ascaso USA (Espresso Parts LLC)"
+   },
+   "care": {
+    "manualUrl": "https://ascaso.com/wp-content/uploads/2026/05/MANUAL%20USUARIO%20STEEL.zip"
+   },
+   "tempKind": "pid"
+  },
+  {
+   "id": "flair-58-plus-2",
+   "brand": "Flair",
+   "name": "58 Plus 2",
+   "status": "current",
+   "category": "manual-lever",
+   "portafilterMm": 58,
+   "owner": {
+    "dose": null,
+    "recipe": "Flair gives a standard dose of 16–20 g with the included baskets.",
+    "baskets": "Three baskets are included: high dose, low dose and pressurized.",
+    "temperature": "Preheat settings are low at about 185°F (85°C), medium at about 194°F (90°C), and high at about 203°F (95°C).",
+    "descale": null,
+    "clean": null
+   },
+   "heating": {
+    "system": "none",
+    "makerTerm": "Integrated Preheat Controller / Preheat Control System"
+   },
+   "grinder": {},
+   "milk": {
+    "type": "none"
+   },
+   "listPrice": {
+    "usd": 699,
+    "kind": "list price",
+    "url": "https://flairespresso.com/products/flair-58-plus-2"
+   },
+   "care": {
+    "manualUrl": "https://cdn.shopify.com/s/files/1/0983/8097/2334/files/flair_58_plus2_manual_sept_2024_v5_web.pdf?v=1778199865"
+   },
+   "tempKind": "settable",
+   "pressurized": true
+  },
+  {
+   "id": "flair-58-original",
+   "brand": "Flair",
+   "name": "58",
+   "status": "unconfirmed",
+   "category": "manual-lever",
+   "portafilterMm": 58,
+   "owner": {
+    "dose": "The low-flow basket accommodates 16–22 g.",
+    "recipe": null,
+    "baskets": "The base model has a chamfered low-flow 18 g basket. A straight-walled high-flow 18 g basket is optional.",
+    "temperature": "Choose from three heat settings.",
+    "descale": null,
+    "clean": null
+   },
+   "heating": {
+    "system": "none",
+    "makerTerm": "Preheat Controller / Preheat System"
+   },
+   "grinder": {},
+   "milk": {
+    "type": "none"
+   },
+   "listPrice": {
+    "url": "https://flairespresso.com/products/flair-58-refurbished"
+   },
+   "tempKind": "settable"
+  },
+  {
+   "id": "jura-e8-gen4-nac",
+   "brand": "JURA",
+   "name": "E8",
+   "variant": "2023 model (NAC)",
+   "status": "current",
+   "category": "super-auto",
+   "tankL": 1.9,
+   "dims": {
+    "w": 27.9,
+    "d": 44.7,
+    "h": 35.1
+   },
+   "owner": {
+    "dose": "The brewing unit has a variable 5–16 g dose. Coffee strength has 10 levels.",
+    "recipe": null,
+    "baskets": null,
+    "temperature": "Brewing temperature is individually programmable with 3 levels. Hot-water temperature also has 3 levels.",
+    "descale": "When prompted, dissolve 3 JURA descaling tablets in 500 ml water for the approximately 40-minute program. The machine does not prompt for descaling with a CLEARYL Smart+ filter.",
+    "clean": "Cleaning is prompted after 180 preparations or 80 switch-on rinses. Insert a JURA cleaning tablet in the filler funnel for the approximately 20-minute program."
+   },
+   "heating": {
+    "system": "thermoblock",
+    "makerTerm": "Thermoblock heating system",
+    "simultaneousBrewSteam": false,
+    "simultaneousBy": "design"
+   },
+   "grinder": {
+    "builtIn": true,
+    "settings": "7 levels individually programmable consistency of grind (spec tab); manual: grinder adjustment switch"
+   },
+   "milk": {
+    "type": "carafe"
+   },
+   "listPrice": {
+    "usd": 2599,
+    "kind": "price seen on the maker’s US site"
+   },
+   "amazon": {
+    "url": "https://www.amazon.com/dp/B0D3JH96ND?tag=jayarrcoffee-20"
+   },
+   "care": {
+    "manualUrl": "https://us.jura.com/-/media/global/pdf/manuals-na/Home/E8/download_manual_e8_nac.pdf?la=en"
+   },
+   "tempKind": "settable"
+  },
+  {
+   "id": "jura-e8-nad",
+   "brand": "JURA",
+   "name": "E8",
+   "variant": "2025 model (NAD)",
+   "status": "current",
+   "category": "super-auto",
+   "tankL": 1.9,
+   "dims": {
+    "w": 27,
+    "d": 44.6,
+    "h": 34.8
+   },
+   "owner": {
+    "dose": "The brewing unit has a variable 5–16 g dose. Coffee strength has 10 levels.",
+    "recipe": null,
+    "baskets": null,
+    "temperature": "Brewing temperature is individually programmable. Hot-water temperature has 3 levels.",
+    "descale": "Use 3 JURA descaling tablets in the water tank for the descaling program.",
+    "clean": "Use JURA cleaning tablets for the cleaning program."
+   },
+   "heating": {
+    "system": "thermoblock",
+    "makerTerm": "Thermoblock heating system",
+    "simultaneousBrewSteam": false,
+    "simultaneousBy": "design"
+   },
+   "grinder": {
+    "builtIn": true,
+    "settings": "7 levels individually programmable consistency of grind (spec tab)"
+   },
+   "milk": {
+    "type": "carafe"
+   },
+   "listPrice": {},
+   "care": {
+    "manualUrl": "https://us.jura.com/-/media/global/pdf/manuals-na/Home/E8-NAD/download_manual_e8_nad.pdf?la=en"
+   }
+  },
+  {
+   "id": "jura-e6-nac-2022",
+   "brand": "JURA",
+   "name": "E6",
+   "status": "current",
+   "category": "super-auto",
+   "tankL": 1.9,
+   "dims": {
+    "w": 28,
+    "d": 44.6,
+    "h": 35.1
+   },
+   "owner": {
+    "dose": "The brewing unit has a variable 5–16 g dose. Coffee strength has 10 individually programmable levels.",
+    "recipe": null,
+    "baskets": null,
+    "temperature": "Brewing and hot-water temperatures each have 3 levels.",
+    "descale": "Dissolve 3 JURA descaling tablets in the water tank for the approximately 40-minute program.",
+    "clean": "Insert 1 JURA cleaning tablet in the filler funnel for the approximately 20-minute cleaning program."
+   },
+   "heating": {
+    "system": "thermoblock",
+    "makerTerm": "Thermoblock heating system",
+    "simultaneousBrewSteam": false,
+    "simultaneousBy": "design"
+   },
+   "grinder": {
+    "builtIn": true
+   },
+   "milk": {
+    "type": "carafe"
+   },
+   "listPrice": {
+    "usd": 1899,
+    "kind": "price seen on the maker’s US shop",
+    "url": "https://shopjura.com/e6-piano-white-nac.html",
+    "variant": "Piano White (15559)"
+   },
+   "amazon": {
+    "url": "https://www.amazon.com/dp/B0BVMZRNZL?tag=jayarrcoffee-20",
+    "variant": "Platinum (15465)"
+   },
+   "care": {
+    "manualUrl": "https://us.jura.com/-/media/global/pdf/manuals-na/Home/E6/E6-NAC/download_manual_e6_nac.pdf?sc_lang=en&la=en"
+   },
+   "tempKind": "settable"
+  },
+  {
+   "id": "jura-e4-naa-2022",
+   "brand": "JURA",
+   "name": "E4",
+   "status": "current",
+   "category": "super-auto",
+   "tankL": 1.9,
+   "dims": {
+    "w": 28,
+    "d": 44.4,
+    "h": 34.6
+   },
+   "owner": {
+    "dose": "The brewing unit has a variable 5–16 g dose. Coffee strength has 3 levels on the symbol display.",
+    "recipe": null,
+    "baskets": null,
+    "temperature": null,
+    "descale": "Use 3 JURA descaling tablets in the water tank for the approximately 45-minute program.",
+    "clean": "Put 1 JURA cleaning tablet in the filler funnel for the approximately 20-minute cleaning program."
+   },
+   "heating": {
+    "system": "thermoblock",
+    "makerTerm": "Thermoblock heating system",
+    "simultaneousBrewSteam": false,
+    "simultaneousBy": "design"
+   },
+   "grinder": {
+    "builtIn": true
+   },
+   "milk": {
+    "type": "none"
+   },
+   "listPrice": {
+    "usd": 1399,
+    "kind": "price seen on the maker’s US shop",
+    "url": "https://shopjura.com/jura-at-home/e4-piano-white-naa.html"
+   },
+   "care": {
+    "manualUrl": "https://us.jura.com/-/media/global/pdf/manuals-na/Home/E4/download_manual_e4_naa.pdf?sc_lang=en&la=en"
+   }
+  },
+  {
+   "id": "jura-ena8-nac-2022",
+   "brand": "JURA",
+   "name": "ENA 8",
+   "status": "current",
+   "category": "super-auto",
+   "tankL": 1.1,
+   "dims": {
+    "w": 27.1,
+    "d": 44.5,
+    "h": 32.3
+   },
+   "owner": {
+    "dose": "The brewing unit has a variable 6–10 g dose. Coffee strength has 10 levels.",
+    "recipe": null,
+    "baskets": null,
+    "temperature": "Brewing and hot-water temperatures each have 3 levels.",
+    "descale": "Use 3 JURA descaling tablets in the water tank for the approximately 40-minute program.",
+    "clean": "Insert 1 JURA cleaning tablet in the powder chute for the approximately 20-minute cleaning program."
+   },
+   "heating": {
+    "system": "thermoblock",
+    "makerTerm": "Thermoblock heating system",
+    "simultaneousBrewSteam": false,
+    "simultaneousBy": "design"
+   },
+   "grinder": {
+    "builtIn": true
+   },
+   "milk": {
+    "type": "carafe"
+   },
+   "listPrice": {
+    "usd": 1899,
+    "kind": "price seen on the maker’s US site"
+   },
+   "amazon": {
+    "url": "https://www.amazon.com/dp/B0CD8Z6B3P?tag=jayarrcoffee-20"
+   },
+   "care": {
+    "manualUrl": "https://us.jura.com/-/media/global/pdf/manuals-na/Home/ENA-8/download_manual_ena8_nac.pdf?la=en"
+   },
+   "tempKind": "settable"
+  },
+  {
+   "id": "jura-ena4-nab-2022",
+   "brand": "JURA",
+   "name": "ENA 4",
+   "status": "current",
+   "category": "super-auto",
+   "tankL": 1.1,
+   "dims": {
+    "w": 27.1,
+    "d": 44.5,
+    "h": 32.3
+   },
+   "owner": {
+    "dose": "The brewing unit has a variable 6–10 g dose. Coffee strength has 3 levels on the symbol display.",
+    "recipe": null,
+    "baskets": null,
+    "temperature": null,
+    "descale": "Use 3 JURA descaling tablets in the water tank for the approximately 45-minute program.",
+    "clean": "Put 1 JURA cleaning tablet in the powder chute for the approximately 20-minute cleaning program."
+   },
+   "heating": {
+    "system": "thermoblock",
+    "makerTerm": "Thermoblock heating system",
+    "simultaneousBrewSteam": false,
+    "simultaneousBy": "design"
+   },
+   "grinder": {
+    "builtIn": true
+   },
+   "milk": {
+    "type": "none"
+   },
+   "listPrice": {
+    "usd": 1199,
+    "kind": "price seen on the maker’s US shop",
+    "url": "https://shopjura.com/jura-at-home/ena-4-full-nordic-white-15519.html"
+   },
+   "care": {
+    "manualUrl": "https://us.jura.com/-/media/global/pdf/manuals-na/Home/ENA-4/download_manual_ena4_naa.pdf?sc_lang=en&la=en"
+   }
+  },
+  {
+   "id": "jura-s8-nab-2023",
+   "brand": "JURA",
+   "name": "S8",
+   "status": "current",
+   "category": "super-auto",
+   "tankL": 1.9,
+   "dims": {
+    "w": 28,
+    "d": 44.6,
+    "h": 34.8
+   },
+   "owner": {
+    "dose": "The brewing unit has a variable 5–16 g dose. Coffee strength has 10 levels, and grind consistency has 7 levels.",
+    "recipe": null,
+    "baskets": null,
+    "temperature": "Brewing and hot-water temperatures each have 3 levels.",
+    "descale": "Dissolve 3 JURA descaling tablets in the water tank for the descaling program.",
+    "clean": "Put a JURA cleaning tablet in the filler funnel for the approximately 20-minute cleaning program."
+   },
+   "heating": {
+    "system": "thermoblock",
+    "makerTerm": "Thermoblock heating system",
+    "simultaneousBrewSteam": false,
+    "simultaneousBy": "design"
+   },
+   "grinder": {
+    "builtIn": true,
+    "settings": "7 levels individually programmable consistency of grind (spec tab)"
+   },
+   "milk": {
+    "type": "carafe"
+   },
+   "listPrice": {
+    "usd": 3299,
+    "kind": "price seen on the maker’s US shop",
+    "url": "https://shopjura.com/s8-chrome-15653.html"
+   },
+   "care": {
+    "manualUrl": "https://us.jura.com/-/media/global/pdf/manuals-na/Home/S8/S8-NAB/download_manual_S8_NAB.pdf?la=en"
+   },
+   "tempKind": "settable"
+  },
+  {
+   "id": "jura-j8-naa",
+   "brand": "JURA",
+   "name": "J8",
+   "status": "current",
+   "category": "super-auto",
+   "tankL": 1.9,
+   "dims": {
+    "w": 31.8,
+    "d": 44.6,
+    "h": 34.8
+   },
+   "owner": {
+    "dose": "The brewing unit has a variable 5–16 g dose. Coffee strength has 10 levels.",
+    "recipe": null,
+    "baskets": null,
+    "temperature": "Brewing and hot-water temperatures each have 3 levels.",
+    "descale": "Use 3 JURA descaling tablets in the water tank for the approximately 45-minute program.",
+    "clean": "Put a JURA cleaning tablet in the filler funnel for the approximately 20-minute cleaning program."
+   },
+   "heating": {
+    "system": "thermoblock",
+    "makerTerm": "Thermoblock heating system",
+    "simultaneousBrewSteam": false,
+    "simultaneousBy": "design"
+   },
+   "grinder": {
+    "builtIn": true,
+    "settings": "7 levels consistency of grind (spec tab)"
+   },
+   "milk": {
+    "type": "carafe"
+   },
+   "listPrice": {
+    "usd": 2599,
+    "kind": "price seen on the maker’s US shop",
+    "url": "https://shopjura.com/j8-midnight-silver-naa.html"
+   },
+   "care": {
+    "manualUrl": "https://us.jura.com/-/media/global/pdf/manuals-na/Home/J8/download_manual_j8_naa.pdf?sc_lang=en&la=en"
+   },
+   "tempKind": "settable"
+  },
+  {
+   "id": "jura-j8-twin-naa",
+   "brand": "JURA",
+   "name": "J8 twin",
+   "status": "current",
+   "category": "super-auto",
+   "tankL": 1.9,
+   "dims": {
+    "w": 31,
+    "d": 44.6,
+    "h": 36
+   },
+   "owner": {
+    "dose": "The variable dose is 5–16 g per grinder, with two grinders. Coffee strength has 8 levels per extraction.",
+    "recipe": null,
+    "baskets": null,
+    "temperature": "Brewing and hot-water temperatures each have 3 levels.",
+    "descale": "Dissolve 3 JURA descaling tablets in the water tank for the approximately 20-minute program.",
+    "clean": "Put a JURA cleaning tablet in the powder chute for the cleaning program."
+   },
+   "heating": {
+    "system": "thermoblock",
+    "makerTerm": "Thermoblock heating system",
+    "simultaneousBrewSteam": false,
+    "simultaneousBy": "design"
+   },
+   "grinder": {
+    "builtIn": true,
+    "settings": "6 levels consistency of grind per spec tab extraction"
+   },
+   "milk": {
+    "type": "carafe"
+   },
+   "listPrice": {
+    "usd": 3299,
+    "kind": "price seen on the maker’s US shop",
+    "url": "https://shopjura.com/j8-twin-diamond-white.html"
+   },
+   "care": {
+    "manualUrl": "https://us.jura.com/-/media/global/pdf/manuals-na/Home/J8-twin/download_manual_j8_twin_naa.pdf?la=en"
+   },
+   "tempKind": "settable"
+  },
+  {
+   "id": "jura-z10-nab-2026",
+   "brand": "JURA",
+   "name": "Z10",
+   "variant": "2026 model (NAB)",
+   "status": "current",
+   "category": "super-auto",
+   "tankL": 2.4,
+   "dims": {
+    "w": 32,
+    "d": 47,
+    "h": 36.3
+   },
+   "owner": {
+    "dose": "The brewing unit has a variable 5–16 g dose. Coffee strength has 10 levels.",
+    "recipe": null,
+    "baskets": null,
+    "temperature": "Brewing and hot-water temperatures each have 3 levels. Milk and milk-foam temperatures are individually programmable.",
+    "descale": "Use 3 JURA descaling tablets in the water tank for the descaling program.",
+    "clean": "Use 1 JURA cleaning tablet for the cleaning program."
+   },
+   "heating": {
+    "system": "thermoblock",
+    "makerTerm": "Thermoblock heating system",
+    "simultaneousBrewSteam": false,
+    "simultaneousBy": "design"
+   },
+   "grinder": {
+    "builtIn": true,
+    "settings": "7 levels individually programmable consistency of grind (spec tab)"
+   },
+   "milk": {
+    "type": "carafe"
+   },
+   "listPrice": {
+    "usd": 4499,
+    "kind": "price seen on the maker’s US shop",
+    "url": "https://shopjura.com/z-10-aluminum-black-15702-nab.html"
+   },
+   "care": {
+    "manualUrl": "https://us.jura.com/-/media/global/pdf/manuals-na/Home/Z10/download_manual_z10_nab.pdf?la=en"
+   },
+   "tempKind": "settable"
+  },
+  {
+   "id": "jura-z10-naa-2021",
+   "brand": "JURA",
+   "name": "Z10",
+   "variant": "2021 model (NAA)",
+   "status": "current",
+   "category": "super-auto",
+   "tankL": 2.4,
+   "dims": {
+    "w": 32,
+    "d": 47,
+    "h": 36.3
+   },
+   "owner": {
+    "dose": "Coffee strength has 10 levels.",
+    "recipe": null,
+    "baskets": null,
+    "temperature": "Hot-water temperature has 3 levels.",
+    "descale": "Use 3 JURA descaling tablets in the water tank for the approximately 45-minute program.",
+    "clean": "Put 1 JURA cleaning tablet in the filler funnel for the approximately 20-minute cleaning program."
+   },
+   "heating": {
+    "system": "thermoblock",
+    "makerTerm": "Thermoblock heating system",
+    "simultaneousBrewSteam": false,
+    "simultaneousBy": "design"
+   },
+   "grinder": {
+    "builtIn": true
+   },
+   "milk": {
+    "type": "carafe"
+   },
+   "listPrice": {
+    "usd": 4199,
+    "kind": "price seen on the maker’s US shop",
+    "url": "https://shopjura.com/z10-range/z-10-diamond-black-15822.html"
+   },
+   "care": {
+    "manualUrl": "https://us.jura.com/-/media/global/pdf/manuals-na/Home/Z10/download_manual_z10_naa.pdf?sc_lang=en&la=en"
+   }
+  },
+  {
+   "id": "nespresso-vertuo-next",
+   "brand": "Nespresso",
+   "name": "Vertuo Next",
+   "code": "BNV520",
+   "status": "current",
+   "category": "capsule",
+   "tankL": 1.1,
+   "dims": {
+    "w": 14.2,
+    "d": 42.9,
+    "h": 31.4
+   },
+   "capsuleLine": "vertuo",
+   "heating": {
+    "makerTerm": "Centrifusion",
+    "heatUpSeconds": 15
+   },
+   "grinder": {},
+   "milk": {
+    "type": "none"
+   },
+   "listPrice": {
+    "usd": 179.95,
+    "kind": "price seen on the maker’s US site",
+    "url": "https://www.breville.com/en-us/product/bnv520"
+   },
+   "amazon": {
+    "url": "https://www.amazon.com/dp/B0CFFSNQNT?tag=jayarrcoffee-20"
+   },
+   "care": {
+    "manualUrl": "https://www.nespresso.com/shared_res/mos/docs/us/US_VERTUO_NEXT_USER_MANUAL.pdf"
+   }
+  },
+  {
+   "id": "nespresso-vertuoplus",
+   "brand": "Nespresso",
+   "name": "VertuoPlus",
+   "code": "BNV420BLK1BUC1",
+   "status": "current",
+   "category": "capsule",
+   "dims": {
+    "w": 14.2,
+    "d": 42.4,
+    "h": 32.5
+   },
+   "capsuleLine": "vertuo",
+   "heating": {
+    "makerTerm": "Centrifusion",
+    "heatUpSeconds": 40
+   },
+   "grinder": {},
+   "milk": {
+    "type": "none"
+   },
+   "listPrice": {
+    "usd": 199.95,
+    "kind": "price seen on the maker’s US site",
+    "url": "https://www.breville.com/en-us/product/bnv420"
+   }
+  },
+  {
+   "id": "nespresso-vertuo-creatista",
+   "brand": "Nespresso",
+   "name": "Vertuo Creatista",
+   "code": "BVE850BSS",
+   "status": "current",
+   "category": "capsule",
+   "tankL": 2,
+   "dims": {
+    "w": 22.8,
+    "d": 41.7,
+    "h": 32.1
+   },
+   "capsuleLine": "vertuo",
+   "owner": {
+    "dose": null,
+    "recipe": null,
+    "baskets": null,
+    "temperature": null,
+    "descale": "Descaling uses 2 units of Nespresso liquid. Water-hardness settings run from 1–5.",
+    "clean": null
+   },
+   "heating": {
+    "makerTerm": "Centrifusion",
+    "heatUpSeconds": 30
+   },
+   "grinder": {},
+   "milk": {
+    "type": "auto-wand"
+   },
+   "listPrice": {
+    "usd": 699.95,
+    "kind": "list price",
+    "url": "https://www.breville.com/en-us/product/bve850"
+   },
+   "amazon": {
+    "url": "https://www.amazon.com/dp/B0BXPFSMPL?tag=jayarrcoffee-20"
+   },
+   "care": {
+    "manualUrl": "https://assets.breville.com/BVE850/BVE850_USCM_IB_120V_B23_FA.pdf"
+   }
+  },
+  {
+   "id": "nespresso-lattissima-one",
+   "brand": "Nespresso",
+   "name": "Lattissima One",
+   "code": "EN510W / EN510B",
+   "status": "current",
+   "category": "capsule",
+   "tankL": 1,
+   "dims": {
+    "w": 15.5,
+    "d": 32.5,
+    "h": 25.6
+   },
+   "capsuleLine": "original",
+   "heating": {},
+   "grinder": {},
+   "milk": {
+    "type": "carafe"
+   },
+   "listPrice": {
+    "usd": 429,
+    "kind": "price seen on the maker’s US site",
+    "url": "https://www.delonghi.com/en-us/p/lattissima-one-nespresso-lattissima-one-coffee-e-espresso-machine-by-de-longhi--white---en510wca/EN510W.html",
+    "variant": "Silky White (EN510W)"
+   },
+   "amazon": {
+    "url": "https://www.amazon.com/dp/B08VTG33NZ?tag=jayarrcoffee-20",
+    "variant": "Shadow Black (EN510B)"
+   }
+  },
+  {
+   "id": "nespresso-citiz",
+   "brand": "Nespresso",
+   "name": "CitiZ",
+   "status": "current",
+   "category": "capsule",
+   "tankL": 0.98,
+   "dims": {
+    "w": 13.2,
+    "d": 37.1,
+    "h": 27.7
+   },
+   "capsuleLine": "original",
+   "heating": {
+    "heatUpSeconds": 25
+   },
+   "grinder": {},
+   "milk": {
+    "type": "none"
+   },
+   "listPrice": {
+    "usd": 319.99,
+    "kind": "price seen on the maker’s US site",
+    "url": "https://www.nespresso.com/us/en/order/machines/original/nespresso-citiz-white-refresh"
+   }
+  },
+  {
+   "id": "nespresso-pixie-silver-redesign",
+   "brand": "Nespresso",
+   "name": "Pixie",
+   "variant": "Nespresso’s listing",
+   "status": "current",
+   "category": "capsule",
+   "tankL": 0.71,
+   "dims": {
+    "w": 11.8,
+    "d": 32.4,
+    "h": 23.46
+   },
+   "capsuleLine": "original",
+   "heating": {
+    "makerTerm": "high-pressure pump",
+    "heatUpSeconds": 25
+   },
+   "grinder": {},
+   "milk": {
+    "type": "none"
+   },
+   "listPrice": {
+    "usd": 239.99,
+    "kind": "price seen on the maker’s US site",
+    "url": "https://www.nespresso.com/us/en/order/machines/original/pixie-silver-coffee-machine"
+   }
+  },
+  {
+   "id": "delonghi-pixie-en124s",
+   "brand": "Nespresso",
+   "name": "Pixie",
+   "variant": "De’Longhi EN124S",
+   "code": "EN124S",
+   "status": "current",
+   "category": "capsule",
+   "capsuleLine": "original",
+   "heating": {
+    "system": "thermoblock",
+    "makerTerm": "Thermoblock",
+    "simultaneousBrewSteam": false,
+    "simultaneousBy": "design",
+    "heatUpSeconds": 25
+   },
+   "grinder": {},
+   "milk": {
+    "type": "none"
+   },
+   "listPrice": {},
+   "care": {
+    "manualUrl": "https://library.delonghigroup.com/assetbank-delonghi/action/directLinkImage?assetId=223487&download=true"
+   }
+  }
+ ],
+ "grinders": [
+  {
+   "id": "baratza-encore-esp",
+   "usd": 199.95
+  },
+  {
+   "id": "breville-smart-grinder-pro",
+   "usd": 199.95
+  },
+  {
+   "id": "df64-gen-2"
+  },
+  {
+   "id": "eureka-mignon-specialita"
+  },
+  {
+   "id": "niche-zero",
+   "usd": 689
+  },
+  {
+   "id": "1zpresso-j-max"
+  },
+  {
+   "id": "kingrinder-k6"
+  }
+ ]
+}

@@ -32,6 +32,8 @@ const counts = new Map<string, number>();
 const sample = hub.beans.filter((b) => inSample(b.name, b.flavor_notes));
 const allLots = originHubs.reduce((n, h) => n + h.beans.length, 0);
 const allRoasters = new Set(originHubs.flatMap((h) => h.beans.map((b) => b.roaster))).size;
+// The Flavor Bloom's sample, from the same rule: the single-origin lots, across every origin, that name a note (Wave F r1, B12).
+const bloomLots = originHubs.reduce((n, h) => n + h.beans.filter((b) => inSample(b.name, b.flavor_notes)).length, 0);
 for (const b of sample) for (const n of new Set(b.flavor_notes.flatMap((t) => notesInText(t, { roaster: true })))) counts.set(n, (counts.get(n) ?? 0) + 1);
 const words = [...counts.entries()].filter(([, n]) => n >= 2).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([id, n]) => ({ id, label: noteById(id)!.label, n }));
 const PROC: Record<string, string> = { washed: 'Washed', natural: 'Natural', honey: 'Honey', honey_white: 'White honey', honey_red: 'Red honey', anaerobic_washed: 'Anaerobic washed', anaerobic_natural: 'Anaerobic natural', 'semi-washed': 'Semi-washed', washed_ea_decaf: 'Washed, EA decaf', blend_washed_natural: 'Washed and natural blend', natural_and_washed_blend: 'Washed and natural blend' };
@@ -110,6 +112,7 @@ const neighbours = ORIGINS.filter((x) => x.id !== o.id && x.page).sort((a, b) =>
       <>
         <h2>Roasters' words</h2>
         <p>Roasters described {sample.length} single-origin {sample.length === 1 ? 'lot' : 'lots'} from {o.name} in our catalog sample ({allLots} lots from {allRoasters} specialty roasters, recorded January–March 2026); these are the notes they used most. Each opens in the <a href="/explore/flavors/">Flavor Bloom</a> with an exercise to train your nose on it.</p>
+        <p class="bp-note">Why two counts: the Flavor Bloom counts the {bloomLots} of those {allLots} lots that are single origins and name a tasting note, leaving out blends, co-ferments and descriptions that name no note. {o.name}'s {sample.length} are among them; {lots.length - sample.length > 1 ? `the other ${lots.length - sample.length} of its ${lots.length} lots aren't` : lots.length - sample.length === 1 ? `the other one of its ${lots.length} lots isn't` : `that is all ${lots.length} of its lots`}.</p>
         <ul class="op-words">{words.map((w) => <li><a href={`/explore/flavors/?note=${w.id}`}>{w.label}</a> <span>{w.n} lots</span></li>)}</ul>
       </>
     )}
