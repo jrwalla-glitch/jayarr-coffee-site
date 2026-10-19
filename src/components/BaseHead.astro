@@ -86,9 +86,9 @@ const breadcrumbSchema = {
 <!-- Canonical URL (none on a noindex page such as the 404) -->
 {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonicalURL} />}
 
-<!-- Preconnect to third-party origins used during initial render -->
-<link rel="preconnect" href="https://i.ytimg.com" crossorigin />
-<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+<!-- No sitewide preconnects: gtag.js loads only on the production host, after load, so a GA hint
+     would be wasted everywhere else and early even there; LiteYouTube adds the i.ytimg.com hint itself,
+     only on pages that embed a video. -->
 
 <!-- A notice beside any tool that fails to load (an island that never hydrates) -->
 <HydrationWatch />
