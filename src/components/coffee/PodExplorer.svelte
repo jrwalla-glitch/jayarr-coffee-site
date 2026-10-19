@@ -45,7 +45,34 @@
 
   let rows = $derived(line ? sizeRows(pods, line) : []);
   let all = $derived(line ? pods.filter((p) => p.line === line && (includeUnlisted || onSale(p))) : []);
-  let shown = $derived(line ? filterPods(pods, { line, query, roast, family, category, decaf, flavored, includeUnlisted }) : []);
+  // ── Your machine (Wave F r1, Opus) ──
+  // The Machine Chooser's "See its capsules" link passes machine=<machines.json id>. Some Vertuo capsules (the
+  // 355 ml XL Altos and Cold Brew Style) brew only on newer Vertuo machines; their notes in nespressoPods.json list
+  // which ("Nespresso lists compatibility with Vertuo Creatista, Lattissima, Next, Pop/Pop+ and Up; not the older
+  // Vertuo, Evoluo or VertuoPlus"). For a machine not on that list those capsules are marked, and hidden while
+  // "Only ones my machine brews" is on (on by default when a machine is given). Unknown ids are ignored.
+  const MACHINES: Record<string, { name: string; line: Line; model: string }> = {
+    'nespresso-vertuo-next': { name: 'Vertuo Next', line: 'vertuo', model: 'Next' },
+    'nespresso-vertuo-creatista': { name: 'Vertuo Creatista', line: 'vertuo', model: 'Creatista' },
+    'nespresso-vertuoplus': { name: 'VertuoPlus', line: 'vertuo', model: 'VertuoPlus' },
+    'nespresso-lattissima-one': { name: 'Lattissima One', line: 'original', model: 'Lattissima One' },
+    'nespresso-citiz': { name: 'CitiZ', line: 'original', model: 'CitiZ' },
+    'nespresso-pixie-silver-redesign': { name: 'Pixie', line: 'original', model: 'Pixie' },
+    'delonghi-pixie-en124s': { name: 'Pixie', line: 'original', model: 'Pixie' },
+  };
+  /** The Vertuo models a capsule's note says brew it, or null when the note sets no limit. */
+  function brewsOn(p: Pod): string[] | null {
+    const n = p.note ?? '';
+    const m = n.match(/compatibility with Vertuo ([^;.]+)/) ?? n.match(/newer Vertuo model \(([^)]+)\)/);
+    return m ? m[1].split(/,\s*|\s+and\s+|\s+or\s+|\//).map((x) => x.trim()).filter(Boolean) : null;
+  }
+  let machineId = $state<string | null>(null);
+  let myMachine = $derived(machineId && MACHINES[machineId] && MACHINES[machineId].line === line ? MACHINES[machineId] : null);
+  /** Whether the reader's own machine (when known) brews this capsule. */
+  const fits = (p: Pod) => !myMachine || p.line !== myMachine.line || (brewsOn(p)?.includes(myMachine.model) ?? true);
+  let onlyMine = $state(true);
+  let notMine = $derived(myMachine ? all.filter((p) => !fits(p)) : []);
+  let shown = $derived(line ? filterPods(pods, { line, query, roast, family, category, decaf, flavored, includeUnlisted }).filter((p) => !onlyMine || fits(p)) : []);
   let roastsHere = $derived(ROASTS.filter((r) => all.some((p) => p.roast_level === r)));
   let shownIds = $derived(new Set(shown.map((p) => p.id)));
   let placed = $derived(rows.length ? wall(all, rows) : []);
@@ -54,10 +81,11 @@
   let badLink = $state(false);
   let selected = $derived(selectedId ? pods.find((p) => p.id === selectedId) ?? null : null);
   let suggestion = $derived(selected ? tryAlso(pods, selected) : null);
-  // No editorial suggestion: the nearest capsule on the same row, labelled as such (design gate r2).
   // On sale with its own Nespresso order page in the data: that exact page is the primary buy link, and the
   // Amazon search becomes a secondary link (a search can surface the wrong line first; Wave F r1, Muse).
-  let ownPage = $derived(selected && onSale(selected) && !selected.source_label && /^https:\/\/www\.nespresso\.com\/us\/en\/order\/capsules\/(original|vertuo)\//.test(selected.source_url ?? '') ? selected.source_url! : null);
+  // Never for a capsule the reader's own machine can't brew.
+  let ownPage = $derived(selected && onSale(selected) && fits(selected) && !selected.source_label && /^https:\/\/www\.nespresso\.com\/us\/en\/order\/capsules\/(original|vertuo)\//.test(selected.source_url ?? '') ? selected.source_url! : null);
+  // No editorial suggestion: the nearest capsule on the same row, labelled as such (design gate r2).
   let near = $derived(selected && !suggestion ? similar(pods, selected) : null);
   // The flight is tasted mildest first, so it's shown in that order (unrated last).
   let flightPods = $derived(flight.map((id) => pods.find((p) => p.id === id)).filter((p): p is Pod => !!p && p.line === line).sort((a, b) => (a.intensity ?? 99) - (b.intensity ?? 99)));
@@ -81,6 +109,7 @@
     const active = document.activeElement;
     if (active instanceof HTMLElement && !panelEl?.contains(active)) opener = active;
     cleared = null;
+    if (selectedId !== p.id && p.line === line && !shownIds.has(p.id) && !fits(p)) onlyMine = false;
     if (selectedId !== p.id && p.line === line && !shownIds.has(p.id)) {
       // The wall and the detail never disagree: clear what hides it rather than open a capsule the wall has dropped.
       if (filtering) { clearFilters(); cleared = p.name; }
@@ -125,8 +154,11 @@
     try { flight = cleanFlight(pods, JSON.parse(readLocal('jayarr-pods-flight') ?? '[]')); } catch { /* unreadable flight */ }
     storageOk = canStore();
     // A pod in a link decides the system; otherwise the link's line, otherwise your machine from last time.
-    if (fromLink) { line = fromLink.line; selectedId = fromLink.id; if (!onSale(fromLink)) includeUnlisted = true; }
+    const mid = q.get('machine');
+    if (mid && MACHINES[mid]) machineId = mid;
+    if (fromLink) { line = fromLink.line; selectedId = fromLink.id; if (!onSale(fromLink)) includeUnlisted = true; if (!fits(fromLink)) onlyMine = false; }
     else if (l === 'original' || l === 'vertuo') line = l;
+    else if (machineId) line = MACHINES[machineId].line;
     else if (saved === 'original' || saved === 'vertuo') line = saved;
     const mq = matchMedia('(max-width: 640px)');
     filtersOpen = !mq.matches; narrow = mq.matches;
@@ -137,18 +169,19 @@
     if (!mounted) return;
     const q = new URLSearchParams();
     if (line) q.set('line', line);
+    if (myMachine) q.set('machine', machineId!);
     if (selected) q.set('pod', selected.slug);
     history.replaceState(history.state, '', q.toString() ? `${location.pathname}?${q}` : location.pathname);
   });
   // When a filter change removes the open capsule, close it: the details never show a capsule the wall has dropped.
   $effect(() => {
-    void [query, roast, family, category, decaf, flavored, includeUnlisted];
+    void [query, roast, family, category, decaf, flavored, includeUnlisted, onlyMine];
     untrack(() => { if (selectedId && line && !shownIds.has(selectedId)) selectedId = null; });
   });
   const fmtDate = (iso?: string) => iso ? new Date(`${iso}T12:00:00`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'October 2026';
   function onKey(e: KeyboardEvent) { if (e.key === 'Escape' && selectedId) closeDetail(); }
 
-  const label = (p: Pod) => `${p.name}: ${p.size}, ${p.ml} ml, ${p.intensity ? `intensity ${p.intensity}` : 'no intensity rating'}${STATUS_NOTE[p.status] ? `, ${STATUS_NOTE[p.status].toLowerCase()}` : ''}${flight.includes(p.id) ? ', in your tasting flight' : ''}`;
+  const label = (p: Pod) => `${p.name}: ${p.size}, ${p.ml} ml, ${p.intensity ? `intensity ${p.intensity}` : 'no intensity rating'}${STATUS_NOTE[p.status] ? `, ${STATUS_NOTE[p.status].toLowerCase()}` : ''}${flight.includes(p.id) ? ', in your tasting flight' : ''}${myMachine && !fits(p) ? `, not for your ${myMachine.name}` : ''}`;
   // Other cups Nespresso says the capsule makes, besides the one it sits under on the wall.
   const alsoBrews = (p: Pod) => (p.servings ?? []).filter((x) => !(x.cup_size === p.cup_size && x.ml === p.ml)).map((x) => `${sizeName(x).toLowerCase()} (${x.ml} ml)`);
 </script>
@@ -218,7 +251,7 @@
 
 {#snippet wallPod(x: { pod: Pod })}
   {#if shownIds.has(x.pod.id)}
-    <button type="button" class="pod" class:sel={selectedId === x.pod.id} class:gone={!onSale(x.pod)} class:inflight={flight.includes(x.pod.id)} aria-pressed={selectedId === x.pod.id} aria-label={label(x.pod)} onclick={() => pick(x.pod)}>{@render capsule(line!, x.pod.color_hex, 28)}<span class="tip" aria-hidden="true">{x.pod.name}</span></button>
+    <button type="button" class="pod" class:sel={selectedId === x.pod.id} class:gone={!onSale(x.pod)} class:nofit={!fits(x.pod)} class:inflight={flight.includes(x.pod.id)} aria-pressed={selectedId === x.pod.id} aria-label={label(x.pod)} onclick={() => pick(x.pod)}>{@render capsule(line!, x.pod.color_hex, 28)}<span class="tip" aria-hidden="true">{x.pod.name}</span></button>
   {:else}
     <span class="pod faded" aria-hidden="true">{@render capsule(line!, x.pod.color_hex, 28)}</span>
   {/if}
@@ -282,7 +315,9 @@
           <span><b>{LINES[l].label}</b><small>{LINES[l].short}</small></span>
         </button>
       {/each}
+      {#if myMachine && notMine.length}<label class="chk mine"><input type="checkbox" bind:checked={onlyMine} /> Only ones my {myMachine.name} brews</label>{/if}
     </div>
+    {#if myMachine && notMine.length}<p class="tag-note minenote">{onlyMine ? `Hiding ${notMine.length} capsule${notMine.length === 1 ? '' : 's'} your ${myMachine.name} can't brew: ${notMine.map((p) => p.name).join(', ')}.` : `Capsules your ${myMachine.name} can't brew are marked with a dashed ring.`}</p>{/if}
 
     <details class="filters" bind:open={filtersOpen}>
       <summary><span>Filters{filtering ? ' (on)' : ''}</span></summary>
@@ -412,12 +447,16 @@
             {:else if near}
               <p class="try"><span class="lbl">Similar on the wall</span><button type="button" class="trybtn" onclick={() => pick(near!)}>{@render capsule(near.line, near.color_hex, 20)}{near.name}<small>{near.intensity ? `intensity ${near.intensity}` : 'not rated'} · {near.aroma}</small></button><small class="quiet nearwhy">{selected.intensity ? 'Same cup size, the closest intensity and aroma.' : 'Same cup size and aroma family (Nespresso doesn\'t rate this one for intensity).'}</small></p>
             {/if}
+            {#if !fits(selected) && myMachine}<p class="full nofitnote" role="status">Your {myMachine.name} can't brew this capsule: Nespresso lists it for the Vertuo {brewsOn(selected)?.join(', ').replace(/, ([^,]*)$/, ' and $1')}.</p>{/if}
             <div class="actions">
-              {#if ownPage}<a class="go" href={ownPage} rel="noopener" target="_blank">Buy from Nespresso ↗</a>
+              {#if !fits(selected)}
+              {:else if ownPage}<a class="go" href={ownPage} rel="noopener" target="_blank">Buy from Nespresso ↗</a>
               {:else if onSale(selected)}<a class="go" href={buySearch(selected)} rel="sponsored noopener" target="_blank">Search Amazon for {LINES[selected.line].label} {selected.name} →</a>{/if}
               <button type="button" class="pill" aria-pressed={flight.includes(selected.id)} onclick={() => toggleFlight(selected!)}>{flight.includes(selected.id) ? 'In your flight ✓' : 'Add to a tasting flight'}</button>
             </div>
-            {#if ownPage}
+            {#if !fits(selected)}
+              {#if selected.source_url}<p class="disc"><a class="src" href={selected.source_url} rel="noopener" target="_blank">Nespresso's page for this capsule</a> lists the machines it brews on{selected.checked ? `, checked ${fmtDate(selected.checked)}` : ''}.</p>{/if}
+            {:else if ownPage}
               <p class="disc">Buy from Nespresso opens Nespresso's own US page for this {LINES[selected.line].label} capsule{selected.checked ? `, checked ${fmtDate(selected.checked)}` : ''}. Or <a class="src" href={buySearch(selected)} rel="sponsored noopener" target="_blank">search Amazon for {LINES[selected.line].label} {selected.name}</a>: that opens an Amazon search, not a checked listing, and as an Amazon Associate we earn from qualifying purchases.</p>
             {:else}
             {#if onSale(selected)}<p class="disc">The button opens an Amazon search for this {LINES[selected.line].label} capsule; as an Amazon Associate we earn from qualifying purchases.</p>{/if}
@@ -537,6 +576,11 @@
   .pod.inflight::after { content: ''; position: absolute; left: 7px; right: 7px; bottom: 0; height: 3px; border-radius: 2px; background: var(--crema); }
   .pod.gone :global(.cap) { opacity: .55; }
   .pod.faded { cursor: default; opacity: .22; filter: grayscale(.6); }
+  /* A capsule your own machine can't brew: a dashed ring, so it reads as "not for you" without colour alone. */
+  .pod.nofit { outline: 1.5px dashed var(--ink-3); outline-offset: -1px; }
+  .pod.nofit :global(.cap) { opacity: .6; }
+  .chk.mine { margin-left: 6px; }
+  .minenote { margin: 6px 0 0; }
   .tip { position: absolute; bottom: calc(100% + 4px); left: 50%; transform: translateX(-50%); white-space: nowrap; background: var(--ink); color: #f3ede3; font: 500 12px/1 'IBM Plex Sans', 'IBM Plex Sans Metrics', sans-serif; padding: 6px 8px; border-radius: 6px; pointer-events: none; opacity: 0; transition: opacity .15s; z-index: 3; }
   .pod:hover .tip, .pod:focus-visible .tip, .pod.sel .tip { opacity: 1; }
   .axis { display: flex; justify-content: space-between; gap: 8px; margin: 8px 0 0 var(--lab); font: 400 11.5px 'IBM Plex Mono', 'IBM Plex Mono Metrics', monospace; color: var(--ink-3); }
