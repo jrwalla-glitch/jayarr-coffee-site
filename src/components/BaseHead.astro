@@ -20,6 +20,7 @@ import '@fontsource-variable/jetbrains-mono';
 import type { ImageMetadata } from 'astro';
 import FallbackImage from '../assets/blog-placeholder-1.jpg';
 import { SITE_TITLE } from '../consts';
+import { TOOLS } from '../data/tools';
 import HydrationWatch from './HydrationWatch.astro';
 
 interface Props {
@@ -46,9 +47,23 @@ const ownTitle = title.replace(new RegExp(`\\s*[—|-]\\s*${SITE_TITLE}$`), '');
 const pageTitle = isHomepage ? SITE_TITLE : `${ownTitle} | ${SITE_TITLE}`;
 
 // Breadcrumb data from URL path. A segment with no page of its own is left out, so every crumb
-// resolves: the category pages read Home › Blog › Brewing, since /blog/category/ has no index
+// resolves: the category pages read Home › Articles › Brewing, since /blog/category/ has no index
 // (Wave F r1, Opus). tool_wave_f_check.mjs checks every BreadcrumbList item in dist/.
+// Each crumb is named as the page names itself (Wave F r2, Muse and Opus): a tool by the registry the
+// menus and the tools page read, a few pages by their own titles, the rest from the slug.
 const NO_PAGE = new Set(['/blog/category/']);
+const CRUMB_NAMES: Record<string, string> = {
+	...Object.fromEntries(TOOLS.map((t) => [t.href, t.name])),
+	// The registry's short "Coffee Origins" is a menu label; the page, its schema and the country pages'
+	// own crumbs all call it The Coffee Origins.
+	'/explore/origins/': 'The Coffee Origins',
+	'/blog/': 'Articles',
+	'/how-we-make-this/': 'How We Make JayArr Coffee',
+	'/privacy/': 'Privacy Policy',
+	'/terms/': 'Terms of Service',
+};
+const crumbName = (seg: string, path: string) =>
+	CRUMB_NAMES[path] ?? (/^\/blog\/\d+\/$/.test(path) ? `Page ${seg}` : seg.replace(/[-_]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()));
 const pathSegments = Astro.url.pathname.split('/').filter(Boolean);
 const breadcrumbs = [
 	{ name: 'Home', url: Astro.site?.href || 'https://jayarr.coffee/' },
@@ -56,7 +71,7 @@ const breadcrumbs = [
 		.map((seg, i) => ({ seg, path: '/' + pathSegments.slice(0, i + 1).join('/') + '/' }))
 		.filter(({ path }) => !NO_PAGE.has(path))
 		.map(({ seg, path }) => ({
-			name: seg.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+			name: crumbName(seg, path),
 			url: new URL(path, Astro.site || 'https://jayarr.coffee').href,
 		})),
 ];
