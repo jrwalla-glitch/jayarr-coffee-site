@@ -6,6 +6,28 @@ import { countryPaths } from '../../data/mapPaths.ts';
 import { project } from './origins.ts';
 
 type Ring = [number, number][];
+
+/**
+ * The same outline written compactly for the page: each ring starts with an absolute moveto and then
+ * gives every point as a relative step ("l-1 .1-1.2-2"), so "L628.2,66.7" becomes "-1 .1". The points are
+ * the stored ones exactly: both ends of a step are on the 0.1 grid, so each step is rounded to 0.1 to
+ * drop floating-point noise and nothing moves. Cuts the Origins map's path text roughly in half (Wave F r1, B7).
+ */
+export function compactPath(path: string): string {
+  const num = (v: number) => { const s = String(Math.round(v * 10) / 10); return s.replace(/^(-?)0\./, '$1.'); };
+  const join = (vals: number[]) => vals.map(num).reduce((out, s, i) => (i === 0 || s.startsWith('-') ? out + s : `${out} ${s}`), '');
+  let out = '', px = 0, py = 0;
+  for (const seg of path.split('M').filter(Boolean)) {
+    const pts = [...seg.matchAll(/(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/g)].map((m) => [Number(m[1]), Number(m[2])]);
+    if (!pts.length) continue;
+    [px, py] = pts[0];
+    const steps: number[] = [];
+    for (const [x, y] of pts.slice(1)) { steps.push(x - px, y - py); px = x; py = y; }
+    out += `M${join(pts[0])}${steps.length ? `l${join(steps)}` : ''}${/Z\s*$/i.test(seg) ? 'z' : ''}`;
+  }
+  return out;
+}
+
 const parse = (path: string): Ring[] => path.split('M').filter(Boolean).map((sp) => [...sp.matchAll(/(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/g)].map((m) => [Number(m[1]), Number(m[2])] as [number, number]));
 const cache = new Map<string, Ring[]>();
 function rings(id: string): Ring[] {

@@ -322,3 +322,29 @@ test('review r6 (Opus): cold brew reads as a concentrate and compares as served;
   const c = compareCard(['lemon'], 'sour, raw sugar');
   assert.ok(!c.bagOnly.some((id) => noteById(id)?.family === 'off' || noteById(id)?.flaw), c.bagOnly.join(','));
 });
+
+test('Wave F r1 B7: the Origins map\'s compact outlines draw exactly the stored points', async () => {
+  const { countryPaths } = await import('../../../data/mapPaths.ts');
+  const { compactPath } = await import('../mapPlace.ts');
+  // Decode M/L/l/z the way a browser does: absolute moveto, then relative steps.
+  const decode = (d) => {
+    const out = []; let cmd = '', x = 0, y = 0, ring = null;
+    const toks = d.match(/[MLlZz]|-?(?:\d+\.?\d*|\.\d+)/g);
+    for (let i = 0; i < toks.length;) {
+      if (/[MLlZz]/.test(toks[i])) { cmd = toks[i++]; continue; }
+      const a = Number(toks[i]), b = Number(toks[i + 1]); i += 2;
+      if (cmd === 'M') { x = a; y = b; ring = [[x, y]]; out.push(ring); cmd = 'L'; }
+      else if (cmd === 'L') { x = a; y = b; ring.push([x, y]); }
+      else { x += a; y += b; ring.push([x, y]); }
+    }
+    return out;
+  };
+  let before = 0, after = 0;
+  for (const c of countryPaths) {
+    const d = compactPath(c.path), o = decode(c.path), k = decode(d);
+    before += c.path.length; after += d.length;
+    assert.equal(k.length, o.length, c.id);
+    o.forEach((r, i) => { assert.equal(k[i].length, r.length, c.id); r.forEach(([x, y], j) => assert.ok(Math.abs(x - k[i][j][0]) < 1e-6 && Math.abs(y - k[i][j][1]) < 1e-6, `${c.id} ${i}:${j}`)); });
+  }
+  assert.ok(after < before * 0.65, `${after} of ${before}`);
+});

@@ -44,7 +44,7 @@ const sourceList = Object.entries(sources).sort((a, b) => a[1].title.localeCompa
   }]}
 >
   <Fragment slot="title">The Coffee Origins: <em>where and when it grows</em></Fragment>
-  <OriginAtlas client:load roasterWords={roasterWords} sources={sources} />
+  <OriginAtlas client:load roasterWords={roasterWords} />
   <noscript><p class="bp-noscript">The interactive map needs JavaScript. Every origin is listed in the table below.</p></noscript>
 
   <Fragment slot="body">
