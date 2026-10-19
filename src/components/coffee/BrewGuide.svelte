@@ -308,6 +308,24 @@
     adjustKept = !!adjust;
   }
 
+  // One polite sentence for screen readers once the numbers settle after a change: not one per keystroke or
+  // ratio tap, and not on load (the cue line has its own live region for brewing along; Wave F r1, Opus).
+  let liveText = $state('');
+  let liveSays = $derived(!recipe ? '' : method === 'espresso'
+    ? `${fmtG(recipe.doseG)} g of coffee in, ${r0(recipe.yieldG ?? 0)} g of espresso out.`
+    : method === 'moka' ? `${fmtG(recipe.doseG)} g of coffee; water to the valve, about ${r0(recipe.waterG ?? 0)} g.`
+    : `${fmtG(recipe.doseG)} g of coffee, ${r0(recipe.waterG ?? 0)} g of water, ${method === 'cold-brew' ? 'serves' : 'about'} ${cupText}${method === 'cold-brew' ? '' : ' in the cup'}, at 1 to ${Number.isInteger(recipe.ratio) ? recipe.ratio : Math.round(recipe.ratio * 100) / 100}.`);
+  let liveFirst = true;
+  let liveTimer: ReturnType<typeof setTimeout> | undefined;
+  $effect(() => {
+    const t = liveSays;
+    if (!mounted) return;
+    if (liveFirst) { liveFirst = false; return; }
+    clearTimeout(liveTimer);
+    if (t) liveTimer = setTimeout(() => { liveText = t; }, 700);
+    return () => clearTimeout(liveTimer);
+  });
+
   let linkProblem = $state(false);
   let copied = $state(false);
   async function share() {
@@ -330,6 +348,7 @@
 </script>
 
 <div class="cf" class:brewing={mode === 'brew'}>
+  <p class="sr" aria-live="polite">{liveText}</p>
   <div class="stage">
     <div class="readouts" aria-hidden="true">
       <div class="ro water"><span class="lbl">{method === 'espresso' ? 'In the cup' : 'Scale'}</span><span class="val">{r0(frame.scaleG)}<small>g</small></span></div>

@@ -296,9 +296,25 @@
     : carriedOnly
       ? `Nothing logged today yet; earlier drinks still count${atNow ? `, about ${rangeText(atNow.min, atNow.max)} mg in you now` : ''}, and about ${rangeText(atBed.min, atBed.max)} mg left at ${clock12(bedMin)}.`
       : 'No drinks yet.');
+
+  // One polite sentence for screen readers after the totals settle: not one per keystroke or tick, and not on
+  // load. "In you now" moves with the clock, so it isn't announced (Wave F r1, Opus).
+  let liveText = $state('');
+  let liveSays = $derived(`${mode === 'shared' ? 'Their total' : mode === 'example' ? 'Example total' : 'Today’s total'}: ${sorted.length ? `about ${mgText(shownDay)} mg` : 'no drinks'}; about ${rangeText(atBed.min, atBed.max)} mg left at ${clock12(bedMin)}.`);
+  let liveFirst = true;
+  let liveTimer: ReturnType<typeof setTimeout> | undefined;
+  $effect(() => {
+    const t = liveSays;
+    if (!mounted) return;
+    if (liveFirst) { liveFirst = false; return; }
+    clearTimeout(liveTimer);
+    liveTimer = setTimeout(() => { liveText = t; }, 700);
+    return () => clearTimeout(liveTimer);
+  });
 </script>
 
 <div class="cd">
+  <p class="sr" aria-live="polite">{liveText}</p>
   <div class="readouts">
     <div class="ro bed">
       <span class="lbl">{mode === 'shared' ? 'Left at their bedtime' : mode === 'example' ? 'Example: left at bedtime' : 'Left at bedtime'} · {clock12(bedMin)}</span>
@@ -481,6 +497,7 @@
     background: var(--card); border: 1px solid var(--rule); border-radius: 18px; overflow: hidden; color: var(--ink);
     font: 16px/1.5 var(--cf-sans); box-shadow: 0 30px 60px -40px rgba(60, 35, 15, .35);
   }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; margin: 0; }
   .readouts { display: grid; grid-template-columns: 1.3fr 1fr 1.2fr; border-bottom: 1px solid var(--rule); }
   .ro { padding: 20px 22px 16px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
   .ro + .ro { border-left: 1px solid var(--rule); }
