@@ -682,7 +682,8 @@
   .ghost { border: 1px solid var(--rule); background: #fff; color: var(--ink-2); border-radius: 999px; padding: 9px 13px; font: 500 14px/1.2 'IBM Plex Sans', 'IBM Plex Sans Metrics', sans-serif; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; cursor: pointer; }
   .none { background: #fff8ec; border: 1px solid #e9c48f; border-radius: 14px; padding: 14px 16px; display: grid; gap: 10px; justify-items: start; }
   .none p { margin: 0; }
-  .linkish { appearance: none; border: 0; background: none; padding: 0; color: var(--crema-deep); text-decoration: underline; text-underline-offset: 3px; font: inherit; cursor: pointer; text-align: left; }
+  /* Padding out to a 24 px target, taken back by the margin so the line and the look don't move (Wave F r1, B6.5). */
+  .linkish { appearance: none; border: 0; background: none; padding: 3px 0; margin: -3px 0; min-height: 24px; color: var(--crema-deep); text-decoration: underline; text-underline-offset: 3px; font: inherit; cursor: pointer; text-align: left; }
   .method { margin: 12px 0 0; font-size: 13px; color: var(--ink-3); }
   .own { display: grid; gap: 14px; }
   .pickm select { width: 100%; max-width: 560px; appearance: none; font: 500 16px 'IBM Plex Sans', 'IBM Plex Sans Metrics', sans-serif; padding: 10px 36px 10px 12px; border: 1px solid var(--rule); border-radius: 10px; color: var(--ink); min-height: 46px; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%235b4a3d' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 14px center; }
