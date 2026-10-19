@@ -134,3 +134,17 @@ test('Wave F r1 B4: where the Amazon link and the price are different colors, ea
   // Both or neither: a record names the link's variant only alongside the price's.
   for (const m of data.machines) assert.equal(!!m.amazon?.variant, !!m.listPrice?.variant, m.id);
 });
+
+test('Wave F r1 B6.3: no name or label in the machine data carries a null turned into words ("None DF64 Gen 2")', async () => {
+  const { readFileSync } = await import('node:fs');
+  const data = JSON.parse(readFileSync(new URL('../../../data/machines.json', import.meta.url), 'utf8'));
+  const bad = [];
+  const walk = (x, at) => {
+    if (Array.isArray(x)) x.forEach((v, i) => walk(v, `${at}[${i}]`));
+    else if (x && typeof x === 'object') for (const [k, v] of Object.entries(x)) walk(v, `${at}.${k}`);
+    else if (typeof x === 'string' && /(^|\s)(None|null|undefined|NaN)(\s|$|[,.;:])/.test(x)) bad.push(`${at}: ${x}`);
+  };
+  walk(data, '');
+  assert.deepEqual(bad, []);
+  assert.equal(data.grinders.find((g) => g.id === 'df64-gen-2').name, 'DF64 Gen 2');
+});
