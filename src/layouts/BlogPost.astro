@@ -148,7 +148,8 @@ const graph = {
 	.post-head { max-width: 760px; margin: 0 auto; padding: 112px 24px 18px; }
 	.crumbs ol { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 18px; padding: 0; font: 500 12px/1 'IBM Plex Mono', monospace; letter-spacing: .1em; text-transform: uppercase; }
 	.crumbs li + li::before { content: '/'; margin-right: 6px; color: #b3a493; }
-	.crumbs a { color: #75655a; text-decoration: none; }
+	/* 24 px tall to tap; the negative margin keeps the line where it was. */
+	.crumbs a { color: #75655a; text-decoration: none; display: inline-block; padding: 6px 0; margin: -6px 0; }
 	.crumbs a:hover { color: #8f5d22; }
 	h1 { font: 400 clamp(38px, 5.6vw, 60px)/1.02 'Instrument Serif', Georgia, serif; letter-spacing: -.01em; margin: 0 0 14px; }
 	.deck { font: 400 19px/1.5 'IBM Plex Sans', system-ui, sans-serif; color: #5b4a3d; margin: 0 0 16px; }
@@ -161,7 +162,7 @@ const graph = {
 	.toc details { background: #fbf8f3; border: 1px solid #d9cdbd; border-radius: 12px; padding: 12px 16px; }
 	.toc summary { cursor: pointer; font: 500 11px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: #75655a; }
 	.toc ol { margin: 12px 0 2px; padding-left: 20px; display: grid; gap: 6px; font-size: 15px; }
-	.toc :global(a) { color: #7a4e30; }
+	.toc :global(a) { color: #7a4e30; display: inline-block; padding: 3px 0; margin: -3px 0; }
 	.prose { padding: 34px 24px 16px; }
 	.after { max-width: 720px; margin: 0 auto; padding: 0 24px 72px; }
 	@media (max-width: 640px) { .post-head { padding: 92px 16px 14px; } .hero, .toc { padding: 0 12px; } .prose { padding: 26px 16px 12px; } .after { padding: 0 16px 56px; } }

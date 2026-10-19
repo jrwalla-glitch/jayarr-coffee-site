@@ -20,6 +20,7 @@ import '@fontsource-variable/jetbrains-mono';
 import type { ImageMetadata } from 'astro';
 import FallbackImage from '../assets/blog-placeholder-1.jpg';
 import { SITE_TITLE } from '../consts';
+import HydrationWatch from './HydrationWatch.astro';
 
 interface Props {
 	title: string;
@@ -30,24 +31,32 @@ interface Props {
 	updatedDate?: Date;
 	/** Emit the URL-derived BreadcrumbList. Pages with their own (articles) pass false: one owner per page. */
 	breadcrumbs?: boolean;
+	/** Keep the page out of search results (the 404 page): no canonical, robots noindex. */
+	noindex?: boolean;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description, image = FallbackImage, isArticle = false, pubDate, updatedDate, breadcrumbs: emitCrumbs = true } = Astro.props;
+const { title, description, image = FallbackImage, isArticle = false, pubDate, updatedDate, breadcrumbs: emitCrumbs = true, noindex = false } = Astro.props;
 
 // Differentiate <title> from <h1> — append site name unless this IS the homepage
 const isHomepage = title === SITE_TITLE;
 const pageTitle = isHomepage ? SITE_TITLE : `${title} | ${SITE_TITLE}`;
 
-// Breadcrumb data from URL path
+// Breadcrumb data from URL path. A segment with no page of its own is left out, so every crumb
+// resolves: the category pages read Home › Blog › Brewing, since /blog/category/ has no index
+// (Wave F r1, Opus). tool_wave_f_check.mjs checks every BreadcrumbList item in dist/.
+const NO_PAGE = new Set(['/blog/category/']);
 const pathSegments = Astro.url.pathname.split('/').filter(Boolean);
 const breadcrumbs = [
 	{ name: 'Home', url: Astro.site?.href || 'https://jayarr.coffee/' },
-	...pathSegments.map((seg, i) => ({
-		name: seg.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
-		url: new URL(pathSegments.slice(0, i + 1).join('/') + '/', Astro.site || 'https://jayarr.coffee').href,
-	})),
+	...pathSegments
+		.map((seg, i) => ({ seg, path: '/' + pathSegments.slice(0, i + 1).join('/') + '/' }))
+		.filter(({ path }) => !NO_PAGE.has(path))
+		.map(({ seg, path }) => ({
+			name: seg.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+			url: new URL(path, Astro.site || 'https://jayarr.coffee').href,
+		})),
 ];
 const breadcrumbSchema = {
 	'@context': 'https://schema.org',
@@ -61,7 +70,7 @@ const breadcrumbSchema = {
 };
 ---
 
-<!-- Global Metadata -->
+{/* Global Metadata */}
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -78,29 +87,49 @@ const breadcrumbSchema = {
 />
 <meta name="generator" content={Astro.generator} />
 
-<!-- Fonts are self-hosted via @fontsource (imported in frontmatter) -->
+{/* Fonts are self-hosted via @fontsource (imported in frontmatter) */}
 
-<!-- Canonical URL -->
-<link rel="canonical" href={canonicalURL} />
+{/* Canonical URL (none on a noindex page such as the 404) */}
+{noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonicalURL} />}
 
-<!-- Preconnect to third-party origins used during initial render -->
-<link rel="preconnect" href="https://i.ytimg.com" crossorigin />
-<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+{/* No sitewide preconnects: gtag.js loads only on the production host, after load, so a GA hint
+     would be wasted everywhere else and early even there; LiteYouTube adds the i.ytimg.com hint itself,
+     only on pages that embed a video. */}
 
-<!-- Vercel Analytics -->
-<script defer src="/_vercel/insights/script.js"></script>
+{/* A notice beside any tool that fails to load (an island that never hydrates) */}
+<HydrationWatch />
 
-<!-- Primary Meta Tags -->
+{/* Vercel Web Analytics: the script exists only where Vercel serves the site (jayarr.coffee and its
+     *.vercel.app previews), so other hosts don't request a path that 404s. Every event's address loses its
+     query string and hash before it's sent (beforeSend, in the queue form Vercel documents for a plain
+     script tag), so a shared tool link's settings never reach Vercel. */}
+<script is:inline>
+	if (location.hostname === 'jayarr.coffee' || /\.vercel\.app$/.test(location.hostname)) {
+		window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+		window.va('beforeSend', function (event) {
+			var u = new URL(event.url, location.href);
+			return Object.assign({}, event, { url: u.origin + u.pathname });
+		});
+		(function () {
+			var s = document.createElement('script');
+			s.defer = true;
+			s.src = '/_vercel/insights/script.js';
+			document.head.appendChild(s);
+		})();
+	}
+</script>
+
+{/* Primary Meta Tags */}
 <title>{pageTitle}</title>
 <meta name="title" content={pageTitle} />
 
-<!-- BreadcrumbList Schema -->
+{/* BreadcrumbList Schema */}
 {emitCrumbs && pathSegments.length > 0 && (
 	<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 )}
 <meta name="description" content={description} />
 
-<!-- Open Graph / Facebook -->
+{/* Open Graph / Facebook */}
 <meta property="og:type" content={isArticle ? 'article' : 'website'} />
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
@@ -114,25 +143,38 @@ const breadcrumbSchema = {
 )}
 <meta property="og:site_name" content={SITE_TITLE} />
 
-<!-- Twitter -->
+{/* Twitter */}
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image.src, Astro.url)} />
 
-<!-- Pinterest Domain Verification -->
+{/* Pinterest Domain Verification */}
 <meta name="p:domain_verify" content="54b67cdd8d98db76f65f872a6247cda4"/>
 
-<!-- Google Analytics: production hostname only, so local and preview builds send nothing.
-     page_location drops the query string: tool state never reaches analytics.
-     gtag.js loads after the page so it doesn't compete with the LCP image. -->
+{/* Google Analytics: production hostname only, so local and preview builds send nothing.
+     page_location and page_referrer drop the query string, so this code never sends tool state (GA's own
+     enhanced-measurement settings must be off too: see docs/MEASUREMENT.md).
+     gtag.js loads after the page so it doesn't compete with the LCP image.
+     Outbound clicks to a merchant send one event, outbound_click (public/js/outbound.js, loaded only on
+     this host). docs/MEASUREMENT.md has the plan. */}
 <script is:inline>
 	if (location.hostname === 'jayarr.coffee') {
 		window.dataLayer = window.dataLayer || [];
 		window.gtag = function () { dataLayer.push(arguments); };
 		gtag('js', new Date());
-		gtag('config', 'G-1N7FMBHFWV', { page_location: location.origin + location.pathname });
+		(function () {
+			var cfg = { page_location: location.origin + location.pathname };
+			var ref = document.referrer.split(/[?#]/)[0];
+			if (ref) cfg.page_referrer = ref;
+			gtag('config', 'G-1N7FMBHFWV', cfg);
+			// The outbound-click tracker and its merchant list, only here, so no other host pays for them.
+			var o = document.createElement('script');
+			o.async = true;
+			o.src = '/js/outbound.js';
+			document.head.appendChild(o);
+		})();
 		addEventListener('load', () => {
 			const s = document.createElement('script');
 			s.async = true;

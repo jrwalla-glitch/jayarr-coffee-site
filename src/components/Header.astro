@@ -17,7 +17,8 @@ const links = [
 ---
 
 <a href="#main" class="skip-link">Skip to content</a>
-<header class:list={['site-header', isHome && 'is-home']} id="site-header">
+{/* The menus repeat on every page, so search leaves them out of its index and excerpts. */}
+<header class:list={['site-header', isHome && 'is-home']} id="site-header" data-pagefind-ignore="all">
   <nav class="bar" aria-label="Main">
     <a href="/" class="brand">JayArr <em>Coffee</em></a>
     <ul class="links">
@@ -25,11 +26,27 @@ const links = [
         <button type="button" class:list={['tools-btn', toolsActive && 'on']} aria-expanded="false" aria-controls="tools-panel" id="tools-btn">
           Tools <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" /></svg>
         </button>
+        {/* The panel follows its button in the DOM, so Tab goes from the button straight into it (Wave F r1, Opus). */}
+        <div id="tools-panel" class="tools-panel" hidden>
+          <div class="tp-inner">
+            {TOOL_GROUPS.map((g) => (
+              <div class="tp-group">
+                <p class="tp-label">{g.label}</p>
+                <ul>
+                  {TOOLS.filter((t) => t.group === g.id).map((t) => (
+                    <li><a href={t.href}><span class="tp-name">{t.name}</span><span class="tp-blurb">{t.blurb}</span></a></li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+            <a href="/tools/" class="tp-all">All tools →</a>
+          </div>
+        </div>
       </li>
       {links.map((l) => <li><a href={l.href} class:list={[l.active && 'on']} aria-current={l.active ? 'page' : undefined}>{l.label}</a></li>)}
     </ul>
     <div class="icons">
-      <button id="search-btn" class="icon" aria-label="Search the site">
+      <button id="search-btn" type="button" class="icon" aria-label="Search the site" aria-haspopup="dialog" aria-controls="search-overlay">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="m21 21-5.2-5.2m0 0A7.5 7.5 0 1 0 5.2 5.2a7.5 7.5 0 0 0 10.6 10.6z" /></svg>
       </button>
       <a href="https://www.youtube.com/@jayarrcoffee" target="_blank" rel="noopener" class="icon yt" aria-label="JayArr Coffee on YouTube">
@@ -40,22 +57,6 @@ const links = [
       </button>
     </div>
   </nav>
-
-  <div id="tools-panel" class="tools-panel" hidden>
-    <div class="tp-inner">
-      {TOOL_GROUPS.map((g) => (
-        <div class="tp-group">
-          <p class="tp-label">{g.label}</p>
-          <ul>
-            {TOOLS.filter((t) => t.group === g.id).map((t) => (
-              <li><a href={t.href}><span class="tp-name">{t.name}</span><span class="tp-blurb">{t.blurb}</span></a></li>
-            ))}
-          </ul>
-        </div>
-      ))}
-      <a href="/tools/" class="tp-all">All tools →</a>
-    </div>
-  </div>
 
   <div id="mobile-menu" class="mobile-menu" hidden>
     <div class="mm-inner">
@@ -83,11 +84,11 @@ const links = [
   .brand { font: 400 26px/1 'Instrument Serif', 'Instrument Serif Metrics', Georgia, serif; color: #f3ede3; text-decoration: none; letter-spacing: .005em; white-space: nowrap; }
   .brand em { color: #d9a35e; }
   .links { display: flex; gap: 22px; list-style: none; margin: 0 0 0 auto; padding: 0; align-items: center; }
-  .links a, .tools-btn { font: 500 13px/1 'IBM Plex Sans', 'IBM Plex Sans Metrics', system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: rgba(243, 237, 227, .82); text-decoration: none; padding: 8px 0; border-bottom: 1.5px solid transparent; }
+  .links > li > a, .tools-btn { font: 500 13px/1 'IBM Plex Sans', 'IBM Plex Sans Metrics', system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: rgba(243, 237, 227, .82); text-decoration: none; padding: 8px 0; border-bottom: 1.5px solid transparent; }
   /* Links box like the Tools button, so every label sits on the same line. */
-  .links a { display: inline-flex; align-items: center; }
-  .links a:hover, .tools-btn:hover { color: #fff; }
-  .links a.on, .tools-btn.on { color: #fff; border-bottom-color: #d9a35e; }
+  .links > li > a { display: inline-flex; align-items: center; }
+  .links > li > a:hover, .tools-btn:hover { color: #fff; }
+  .links > li > a.on, .tools-btn.on { color: #fff; border-bottom-color: #d9a35e; }
   .tools-btn { appearance: none; background: none; border-top: 0; border-left: 0; border-right: 0; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
   .tools-btn svg { width: 11px; height: 11px; transition: transform .2s; }
   .tools-btn[aria-expanded='true'] svg { transform: rotate(180deg); }
@@ -96,7 +97,8 @@ const links = [
   .icon:hover { color: #fff; background: rgba(255, 255, 255, .06); }
   .icon svg { width: 20px; height: 20px; }
   .menu-btn { display: none; }
-  .tools-panel { background: #241a13; border-top: 1px solid rgba(255, 255, 255, .08); box-shadow: 0 24px 40px -24px rgba(0, 0, 0, .6); }
+  /* Out of the bar's flow, just below the header, full width (the header is its containing block). */
+  .tools-panel { position: absolute; left: 0; right: 0; top: 100%; background: #241a13; border-top: 1px solid rgba(255, 255, 255, .08); box-shadow: 0 24px 40px -24px rgba(0, 0, 0, .6); }
   .tp-inner { max-width: 1180px; margin: 0 auto; padding: 22px 24px 26px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 22px; position: relative; }
   .tp-label { font: 500 11px/1 'IBM Plex Mono', 'IBM Plex Mono Metrics', monospace; letter-spacing: .14em; text-transform: uppercase; color: #d9a35e; margin: 0 0 10px; }
   .tp-group ul, .mm-group ul, .mm-links { list-style: none; margin: 0; padding: 0; }
@@ -144,6 +146,11 @@ const links = [
     btn.addEventListener('click', () => set(btn.getAttribute('aria-expanded') !== 'true'));
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') set(false, true); });
     document.addEventListener('click', (e) => {
+      const t = e.target as Node;
+      if (btn.getAttribute('aria-expanded') === 'true' && !panel.contains(t) && !btn.contains(t)) set(false);
+    });
+    // Focus never sits behind an open panel: when it moves outside the button and the panel, the panel closes.
+    document.addEventListener('focusin', (e) => {
       const t = e.target as Node;
       if (btn.getAttribute('aria-expanded') === 'true' && !panel.contains(t) && !btn.contains(t)) set(false);
     });

@@ -38,7 +38,7 @@ const allSources = [...new Map(DRINKS.flatMap((d) => d.refs.flatMap((r) => [r.so
 				<h1>Every espresso drink, <em>layer by layer.</em></h1>
 				<p class="cf-lede">Put two drinks side by side in their own cups, at the same scale, from published recipes. A cortado in Madrid and a cortado at Starbucks are not the same drink, so each recipe says where it comes from.</p>
 			</section>
-			<section class="cf-tool" aria-label="Coffee Drinks"><CoffeeDrinks client:load /></section>
+			<section class="cf-tool" aria-label="Coffee Drinks"><CoffeeDrinks client:load /><noscript><p class="tool-noscript">The side-by-side cups need JavaScript. Every drink and its reference recipe is listed below.</p></noscript></section>
 
 			<article class="cf-body">
 				<h2>Types of coffee drinks</h2>

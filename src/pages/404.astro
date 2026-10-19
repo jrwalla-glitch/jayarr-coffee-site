@@ -1,0 +1,48 @@
+---
+// The site's own 404: Vercel serves dist/404.html for any missing path. Header, footer, a search
+// button that opens the site search, and the four ways in. Kept out of search results.
+// Removed pages, such as the Brew Dial-In bean pages retired in May 2026, land here on purpose
+// (MERGED_PLAN: "leave removed bean URLs removed").
+import BenchPage from '../layouts/BenchPage.astro';
+
+const ways = [
+  { href: '/tools/', name: 'The tools', blurb: 'Brew Guide, Fix My Coffee, Caffeine, Freshness and the rest' },
+  { href: '/explore/', name: 'Explore', blurb: 'Origins, brewing methods and the flavors in the cup' },
+  { href: '/blog/', name: 'Articles', blurb: 'Brewing guides, gear, origins and the video library' },
+  { href: '/deep-brew/', name: 'Deep Brew', blurb: 'Water, extraction and grind, with the research behind them' },
+];
+---
+
+<BenchPage
+  title="Page not found"
+  description="That page isn't on JayArr Coffee. Search the site, or start from the tools, Explore, the articles or Deep Brew."
+  kicker="404 · Page not found"
+  lede="It may have moved, been retired, or the link has a typo. Search for what you were after, or start from one of these."
+  breadcrumbs={false}
+  noindex
+>
+  <Fragment slot="title">That page <em>isn't here.</em></Fragment>
+  <div class="nf">
+    <button type="button" class="nf-search" data-open-search>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="m21 21-5.2-5.2m0 0A7.5 7.5 0 1 0 5.2 5.2a7.5 7.5 0 0 0 10.6 10.6z" /></svg>
+      Search the site
+    </button>
+    <ul class="nf-ways">
+      {ways.map((w) => <li><a href={w.href}><span class="nf-name">{w.name}</span><span class="nf-blurb">{w.blurb}</span></a></li>)}
+    </ul>
+  </div>
+</BenchPage>
+
+<style>
+  .nf { display: grid; gap: 22px; max-width: 920px; }
+  .nf-search { justify-self: start; appearance: none; display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 12px 22px; border: 0; border-radius: 999px; background: #2a1d15; color: #f3ede3; font: 600 15px/1 'IBM Plex Sans', 'IBM Plex Sans Fallback', system-ui, sans-serif; cursor: pointer; }
+  .nf-search:hover { background: #3b2a1f; }
+  .nf-search svg { width: 18px; height: 18px; }
+  .nf-ways { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .nf-ways a { display: grid; gap: 4px; height: 100%; box-sizing: border-box; padding: 16px 18px; background: #fbf8f3; border: 1px solid #d9cdbd; border-radius: 14px; text-decoration: none; color: #2a1d15; }
+  .nf-ways a:hover { border-color: #75655a; }
+  .nf-name { font: 400 26px/1.1 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; }
+  .nf-blurb { font: 400 14.5px/1.45 'IBM Plex Sans', 'IBM Plex Sans Fallback', system-ui, sans-serif; color: #5b4a3d; }
+  .nf-search:focus-visible, .nf-ways a:focus-visible { outline: 2px solid #8f5d22; outline-offset: 3px; }
+  @media (max-width: 640px) { .nf-ways { grid-template-columns: 1fr; } }
+</style>

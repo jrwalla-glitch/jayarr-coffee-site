@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { freshness, isRealDate } from '../../lib/coffee/index.ts';
+  import { readLocal, writeLocal } from '../../lib/storage.ts';
   import type { FreshUse, Storage, StageId } from '../../lib/coffee/index.ts';
 
   const isoLocal = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -54,11 +55,13 @@
   const SAVE_KEY = 'jayarr-freshness-v1';
   // Opened from someone's link: it doesn't replace your own saved bag until you change something (Muse r4).
   let skipSave = false;
+  // False once the browser refuses to keep the bag: the tool says so instead of failing quietly.
+  let storageOk = $state(true);
   onMount(() => {
     let q = new URLSearchParams(location.search);
     const fromLink = !!location.search;
     let ex = false;
-    if (!fromLink) { try { const last = localStorage.getItem(SAVE_KEY); if (last) q = new URLSearchParams(last); else ex = true; } catch { ex = true; } }
+    if (!fromLink) { const last = readLocal(SAVE_KEY); if (last) q = new URLSearchParams(last); else ex = true; }
     const rd = q.get('roast'); if (rd && isRealDate(rd)) roastDate = rd; else if (rd !== null && fromLink) { linkProblem = true; ex = true; badLinkDate = /^\d{4}-\d{2}-\d{2}$/.test(rd) ? rd : ''; }
     // An article's link sets storage or use but no roast date: the bag shown is an example, and says so (Wave D batch 2).
     else if (rd === null && fromLink) ex = true;
@@ -87,7 +90,7 @@
     history.replaceState(history.state, '', `${location.pathname}?${q}`);
     if (skipSave) { skipSave = false; return; }
     // Only a bag that makes sense is kept, so a half-typed date can't come back as "that link's date" (Opus r4).
-    if (result.ok) try { localStorage.setItem(SAVE_KEY, q.toString()); } catch { /* storage unavailable */ }
+    if (result.ok) storageOk = writeLocal(SAVE_KEY, q.toString());
   });
 </script>
 
@@ -167,6 +170,7 @@
 
   {#if r}
     <div class="advice">
+      {#if !storageOk}<p class="savenote" role="status">This browser isn't letting the page save, so this bag is gone when you leave. The address bar keeps it: bookmark or copy that link to come back to it.</p>{/if}
       {#if linkProblem}<p class="note">{badLinkDate ? `That link's roast date, ${badLinkDate}, doesn't exist, so here's an example bag.` : 'That link\'s roast date wasn\'t a date, so here\'s an example bag.'}</p>{/if}
       <p class="what">{storage === 'frozen' && !thawed ? (r.freezerCapped ? `Freezing slows staling but doesn't stop it. The tool leaves out up to a year in the freezer; past that the days count again, so these beans are at day ${r.effectiveDays}. Take out only what you'll use.` : `Freezing slows staling but doesn't stop it. The tool leaves the freezer days out, so these beans count as day ${r.effectiveDays}. Take out only what you'll use; from then, the usual stages apply.`) : r.stage.advice}</p>
       {#each r.notes.filter((n) => !(r.freezerCapped && storage === 'frozen' && !thawed && n.startsWith('After about a year'))) as n (n)}<p class="note">{n}</p>{/each}
@@ -212,6 +216,7 @@
   figcaption { font-size: 13px; color: var(--ink-3); padding: 0 6px 6px; }
   .advice { border-top: 1px solid var(--rule); padding: 16px 22px 20px; }
   .advice .what { font: 400 24px/1.25 'Instrument Serif', 'Instrument Serif Metrics', Georgia, serif; margin: 0 0 6px; }
+  .savenote { margin: 0 0 10px; font-size: 13.5px; color: var(--crema-deep); background: #fff8ec; border-radius: 8px; padding: 7px 10px; }
   .note { margin: 4px 0 0; font-size: 14.5px; color: var(--ink-2); }
   .note a { color: #7a4e30; }
   button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid var(--crema-deep); outline-offset: 2px; }

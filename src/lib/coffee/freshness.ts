@@ -107,7 +107,10 @@ export function freshness(input: FreshnessInput): Result<FreshnessResult> {
     if (inFreezer > FREEZER_PAUSE_MAX_DAYS) notes.push('After about a year even frozen beans lose quality, so time beyond a year in the freezer counts again.');
     notes.push(input.thawedOn ? 'The clock runs again from the day they came out. Don\'t refreeze them.' : 'Days in a sealed freezer bag barely count. Take out only what you need and don\'t refreeze it.');
   }
-  if (input.storage === 'opened') notes.push('Opened bags go stale faster than sealed ones. Squeeze the air out and reseal; keep it cool, dark and dry, and out of the fridge.');
+  // None of this tool's sources (Gagné, Rao, Hoffmann, the synthesis) gives an opened bag its own window, so the
+  // window doesn't change and the note says so plainly instead of implying it does (Wave F r1, Opus). Oxygen is
+  // one of Gagné's staling mechanisms, which is why the reseal advice stays.
+  if (input.storage === 'opened') notes.push('The window is the same for an opened bag: none of the sources here gives it a separate one. Air does speed staling, so squeeze the air out and reseal; keep it cool, dark and dry, and out of the fridge.');
   const st = stages(input.use);
   const eff = days - frozenDays;
   const stage = st.find((s) => eff >= s.from && eff < s.to) ?? st[st.length - 1];

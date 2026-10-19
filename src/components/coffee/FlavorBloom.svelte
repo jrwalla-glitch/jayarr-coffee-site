@@ -2,6 +2,7 @@
   import { onMount, tick } from 'svelte';
   import { Tween } from 'svelte/motion';
   import { cubicOut } from 'svelte/easing';
+  import { readLocal, writeLocal, canStore } from '../../lib/storage.ts';
   import {
     FAMILIES, OFF_GROUPS, ALL_NOTES, MAX_PINS, noteById, familyById, groupById, exercise, evidenceFor,
     compareCard, encodeCard, decodeCard, notesInText, familiesInText, genericIn, genericMeans, PROCESS_LABEL, ROAST_LABEL, ROASTER_SAMPLE,
@@ -186,12 +187,14 @@
 
   // While a shared card is shown unchanged, the reader's own card stays the stored one, Save included.
   let ownCurrent: { pins: string[]; bag: string } | null = null;
+  // False when the browser won't keep the card: then nothing says "saved" or "kept on this device".
+  let storageOk = $state(true);
   // "Unchanged" is judged here, from the card itself, not from linkCard (another effect clears that, and
   // may run after this one): the first edit to a shared card becomes the reader's own (review r6, Opus).
   function persist() {
     const shared = linkCard !== null && encodeCard({ pins, bag }) === linkCard;
     const current = shared ? ownCurrent ?? { pins: [], bag: '' } : { pins, bag };
-    try { localStorage.setItem(STORE, JSON.stringify({ current, saved })); } catch { /* storage unavailable */ }
+    storageOk = writeLocal(STORE, JSON.stringify({ current, saved }));
   }
   function saveCard() {
     if (!pins.length) return;
@@ -222,12 +225,13 @@
       pendingWhy = why;
     }
     try {
-      const s = JSON.parse(localStorage.getItem(STORE) ?? 'null');
+      const s = JSON.parse(readLocal(STORE) ?? 'null');
       if (s && Array.isArray(s.saved)) saved = s.saved.filter((c: { pins?: unknown }) => Array.isArray(c?.pins)).slice(0, 12);
       // Someone else's link never replaces your own card until you change it.
       if (fromLink && s?.current && Array.isArray(s.current.pins)) ownCurrent = { pins: s.current.pins, bag: typeof s.current.bag === 'string' ? s.current.bag : '' };
       if (!fromLink && s?.current && Array.isArray(s.current.pins)) { pins = s.current.pins.filter((p: string) => !!noteById(p)).slice(0, MAX_PINS); bag = typeof s.current.bag === 'string' ? s.current.bag : ''; }
-    } catch { /* storage unavailable */ }
+    } catch { /* unreadable card */ }
+    storageOk = canStore();
     if (fromLink) {
       // Say it's a shared card only when it holds something, and mention the reader's own only if they have one.
       const hasOwn = !!ownCurrent && (ownCurrent.pins.length > 0 || ownCurrent.bag.trim().length > 0);
@@ -485,6 +489,7 @@
           <path d={petal(78, 22, 0)} fill={mini && !lit?.has('off') ? '#e9ece2' : `url(#fb-wc-${key}-off)`} filter="url(#fb-soft-{key})" fill-opacity={mini ? 1 : sel ? 1 : 0.7} />
           <path d={petal(78, 22, 0)} fill="none" stroke="#2a1d15" stroke-opacity={mini ? 0.35 : sel ? 0.55 : 0.18} stroke-width={mini ? 2 : 1} />
           <path d="M0 -4 L0 -70" stroke="#2a1d15" stroke-width=".8" opacity=".3" />
+          {#if !mini}<path class="ring" d={petal(78, 22, 0)} />{/if}
         </g>
       {/each}
       {#if !mini}
@@ -507,6 +512,7 @@
             <path d="M0 {-CORE} L0 {-R + 14}" stroke="#2a1d15" stroke-width=".8" opacity={familyId === 'off' ? 0.08 : 0.28} />
             <path d="M0 {-R * 0.42} Q 12 {-R * 0.55} 18 {-R * 0.7} M0 {-R * 0.42} Q -12 {-R * 0.55} -18 {-R * 0.7}" fill="none" stroke="#2a1d15" stroke-width=".8" opacity={familyId === 'off' ? 0.06 : 0.2} />
             <path class="hit" d={hitSector(f.id)} fill="transparent" />
+            <path class="ring" d={petal(R, 46)} />
           {/if}
         </g>
       {/each}
@@ -541,6 +547,7 @@
           <path d={petal(SPRAY, 17, 0)} fill="url(#fb-wc-b-{fam.id})" filter="url(#fb-soft-b)" fill-opacity={on ? 1 : 0.62} />
           <path d={petal(SPRAY, 17, 0)} fill="none" stroke="#2a1d15" stroke-opacity={on ? 0.6 : 0.25} stroke-width={on ? 1.4 : 1} />
           <path d="M0 -4 L0 {-SPRAY + 10}" stroke="#2a1d15" stroke-width=".7" opacity=".3" />
+          <path class="ring" d={petal(SPRAY, 17, 0)} />
         </g>
       {/each}
     {/if}
@@ -574,6 +581,7 @@
             {/if}
           </g>
           {#if pinned}<circle cx={b.x} cy={b.y} r={2.8 * upp} fill="#fffaf2" stroke="#2a1d15" stroke-width={0.8 * upp} />{/if}
+          <circle class="ring" cx={b.x} cy={b.y} r={Math.max(b.r * 1.3, 16 * upp)} />
           <text x={b.x + b.lx} y={b.y + b.ly} text-anchor={b.anchor} class="blab" class:on={sel} style="font-size: {BFS() * upp}px; stroke-width: {4 * upp}px">{b.label}{#if !branch.off}<tspan class="bcount" dx={4 * upp} style="font-size: {(BFS() - 2.5) * upp}px">{b.count}</tspan>{/if}</text>
         </g>
       {/each}
@@ -714,7 +722,7 @@
           <div class="kinds">
             <p><b>Roasters say</b> Words counted from {lots.length} lot descriptions in {ROASTER_SAMPLE.label}.</p>
             <p><b>In general</b> Broad tendencies; their sources are listed at the foot of the page.</p>
-            <p><b>You noticed</b> Your own tasting card, kept on this device.</p>
+            <p><b>You noticed</b> Your own tasting card, {storageOk ? 'kept on this device' : 'kept until you leave'}.</p>
           </div>
         </div>
       {:else if !note}
@@ -849,14 +857,15 @@
       {:else if bag.trim()}
         <p class="quiet small">{bagPhrases.some(setAside) ? `Only flaw words, which a bag's reading sets aside (${bagPhrases.filter(setAside).map((t) => `“${t}”`).join(', ')}). Try the main fruit or sweet word on the bag.` : 'None of those words match a note on the wheel yet. Try the main fruit or sweet word on the bag.'}</p>
       {/if}
+      {#if !storageOk}<p class="savenote" role="status">This browser isn't letting the page save, so this card lasts only until you leave. Copy its link to keep it.</p>{/if}
       <div class="cardactions">
-        <button type="button" class="primary" disabled={!pins.length} onclick={saveCard}>Save on this device</button>
+        <button type="button" class="primary" disabled={!pins.length} onclick={saveCard}>{storageOk ? 'Save on this device' : 'Keep for this visit'}</button>
         <button type="button" class="ghost" disabled={!pins.length && !bag.trim()} onclick={share}>{copied ? 'Link copied' : 'Copy link'}</button>
         {#if pins.length || bag}<button type="button" class="linkish" onclick={newCard}>New card</button>{/if}
       </div>
       {#if saved.length}
         <details class="saved">
-          <summary>Saved cards ({saved.length})</summary>
+          <summary>{storageOk ? 'Saved cards' : 'Cards for this visit'} ({saved.length})</summary>
           <ul>
             {#each saved as c, i (c.made + c.pins.join() + i)}
               <li><button type="button" class="linkish" onclick={() => loadCard(c)}>{c.pins.map((p) => noteById(p)?.label ?? p).join(', ')}</button> <span class="mono quiet">{c.made}</span><button type="button" class="x" aria-label="Delete this saved card" onclick={() => removeSaved(i)}>×</button></li>
@@ -903,13 +912,11 @@
   .more { font-family: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; font-style: italic; fill: #4f5b49; paint-order: stroke; stroke: #e6ebde; stroke-linejoin: round; pointer-events: none; }
   .cue { font: italic 400 21px 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; fill: #4f5b49; }
   .bud { cursor: pointer; outline: none; }
-  .bud:focus-visible .budshape { stroke: var(--crema-deep); stroke-width: 3px; stroke-opacity: 1; }
   .bud:hover .budshape { fill-opacity: 1; }
   .blab { font-family: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; fill: #2a1d15; paint-order: stroke; stroke: #e6ebde; stroke-linejoin: round; }
   .blab.on { fill: #6b3a12; }
   .bcount { font-family: 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; fill: #6d6152; }
   .sub { cursor: pointer; outline: none; }
-  .sub:focus-visible path:nth-child(2) { stroke: var(--crema-deep); stroke-width: 3; stroke-opacity: 1; }
   .seg { display: flex; border: 1px solid var(--rule); border-radius: 999px; overflow: hidden; flex: none; }
   .seg button { appearance: none; border: 0; background: #fff; padding: 7px 14px; min-height: 36px; font: 500 13.5px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; color: var(--ink-2); cursor: pointer; }
   .seg button[aria-pressed='true'] { background: var(--ink); color: #f3ede3; }
@@ -925,7 +932,13 @@
   .petal .shape, .leaf path { transition: fill-opacity .3s, stroke-width .2s; }
   .petal { transition: opacity .3s; }
   .petal:hover .shape { fill-opacity: .95; }
-  .petal:focus-visible .shape, .leaf:focus-visible path:first-child { stroke: var(--crema-deep); stroke-width: 4; }
+  /* Keyboard focus on the painted controls (petals, leaves, group sprays, buds): the site's button focus ring,
+     2 px of crema-deep at any zoom, with a pale halo so it reads on every watercolor (Wave F r1, Opus). The old
+     stroke went on the soft-filtered fill and came out faint. */
+  .petal > .ring, .leaf > .ring, .sub > .ring, .bud > .ring { fill: none; stroke: none; pointer-events: none; transition: none; animation: none; }
+  .petal:focus-visible > .ring, .leaf:focus-visible > .ring, .sub:focus-visible > .ring, .bud:focus-visible > .ring {
+    stroke: var(--crema-deep); stroke-width: 2px; vector-effect: non-scaling-stroke; filter: drop-shadow(0 0 1.5px #fffaf2) drop-shadow(0 0 1px #fffaf2);
+  }
   .sub path { animation: grow .45s cubic-bezier(.2, .7, .2, 1) both; transform-origin: 0 0; }
   @keyframes grow { from { transform: scale(.82); opacity: 0; } to { transform: scale(1); opacity: 1; } }
   .flab { font: 400 25px 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; fill: #2a1d15; cursor: pointer; }
@@ -940,7 +953,9 @@
   .notethumb { display: none; }
   .lfam h3 { font: 400 26px/1.1 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; margin: 14px 0 4px; display: flex; gap: 10px; align-items: center; }
   .lgroup { font: 600 13px/1.3 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; color: var(--ink-2); margin: 10px 0 6px; }
-  .gbtn { display: block; appearance: none; border: 0; background: none; padding: 2px 0; cursor: pointer; text-align: left; }
+  /* 24 px tall to tap (WCAG 2.2 target size): the extra padding below the name comes out of the gap to the chips,
+     so neither the name nor the chips move. */
+  .gbtn { display: block; appearance: none; border: 0; background: none; padding: 2px 0 6px; margin: 10px 0 2px; cursor: pointer; text-align: left; }
   .gbtn.on { color: var(--ink); }
   .gbtn.on::before { content: ''; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--crema); margin-right: 7px; vertical-align: 1px; }
   .inl { appearance: none; border: 0; background: none; padding: 0; font: inherit; color: var(--crema-deep); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
@@ -1016,6 +1031,7 @@
   .cmp { margin: 12px 0 0; padding: 10px 14px; background: #f6efe4; border-radius: 12px; max-width: 520px; }
   .cmp p { margin: 0 0 4px; font-size: 15px; }
   .cmp b { font: 500 11px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--crema-deep); margin-right: 6px; }
+  .savenote { margin: 12px 0 0; font-size: 13.5px; color: var(--crema-deep); background: #fff8ec; border-radius: 8px; padding: 7px 10px; }
   .cardactions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 14px; }
   .saved { margin-top: 12px; font-size: 14.5px; }
   .saved summary { cursor: pointer; color: var(--ink-2); }

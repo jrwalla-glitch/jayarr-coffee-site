@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount, untrack } from 'svelte';
   import BrewStage from './BrewStage.svelte';
+  import { readLocal, writeLocal } from '../../lib/storage.ts';
   import {
     GUIDE_METHODS as METHODS, buildRecipe, simulate, encodeBrew, decodeBrew,
     cToF, mlToFlOz, flOzToMl, approxTablespoons,
@@ -140,7 +141,10 @@
   });
   // Only offer sizes this brewer can make at the chosen strength; bigger ones stay reachable through Custom.
   let choices = $derived(allChoices.filter((c) => buildRecipe({ ...input, target: c.t }).ok));
-  let tooBig = $derived(allChoices.length > choices.length);
+  // The "bigger amounts" hint shows only when the amount really is past what one brewer handles: an amount
+  // over its capacity (from Custom or a link), or an AeroPress cup topped up after pressing. A plain 12 oz V60
+  // no longer reads as too big (Wave F r1, Opus).
+  let overOne = $derived((!result.ok && result.errors.some((e) => e.code === 'over-capacity')) || (method === 'aeropress' && !!recipe?.steps.some((s) => s.kind === 'dilute')));
   // Same target within a link's 0.1 rounding, so a 12 oz cup stored as 354.9 still lights the 12 oz chip.
   const same = (a: Target, b: Target) => {
     const ka = Object.keys(a)[0], kb = Object.keys(b)[0];
@@ -176,7 +180,9 @@
     }
   }
   // A switch that moves the cup to the other system's marked size says so (Muse r5): the batch never changes silently.
-  let unitNote = $state<string | null>(null);
+  // The note belongs to the brewer, size and units it was written for: change any of them and it goes (Wave F r1, Opus).
+  let unitNote = $state<{ text: string; method: MethodId; target: Target; units: Units } | null>(null);
+  let unitNoteText = $derived(unitNote && unitNote.method === method && unitNote.units === units && same(unitNote.target, target) ? unitNote.text : null);
   function switchUnits(u: Units) {
     if (u === units) return;
     const wasPreset = !customOpen && 'cupMl' in target && allChoices.some((c) => same(c.t, target));
@@ -188,7 +194,7 @@
       const after = 'cupMl' in target ? target.cupMl : null;
       if (before != null && after != null && Math.abs(after - before) > 1) {
         const show = (ml: number, us: boolean) => (us ? `${r0(mlToFlOz(ml))} fl oz` : `${r0(ml)} ml`);
-        unitNote = `Now ${show(after, u === 'us')}, the usual ${u === 'us' ? 'US' : 'metric'} size; your cup was ${show(before, u !== 'us')} (${show(before, u === 'us')}). Use Custom for an exact amount.`;
+        unitNote = { text: `Now ${show(after, u === 'us')}, the usual ${u === 'us' ? 'US' : 'metric'} size; your cup was ${show(before, u !== 'us')} (${show(before, u === 'us')}). Use Custom for an exact amount.`, method, target: { ...target }, units: u };
       }
     }
   }
@@ -214,7 +220,7 @@
   // ── URL state ──
   onMount(() => {
     let store: { saved?: { name: string; q: string }[]; last?: string } = {};
-    try { store = JSON.parse(localStorage.getItem(SAVE_KEY) ?? '{}') ?? {}; } catch { /* storage unavailable */ }
+    try { store = JSON.parse(readLocal(SAVE_KEY) ?? '{}') ?? {}; } catch { /* unreadable save */ }
     if (Array.isArray(store.saved)) saved = store.saved.filter((x) => typeof x?.q === 'string' && decodeBrew(x.q).ok).slice(0, 8);
     const d = decodeBrew(location.search);
     if (d.ok) {
@@ -284,7 +290,9 @@
   // on every visit (Opus r4). The strength itself is part of the recipe and stays.
   let fullState = $derived({ ...input, units, ...(adjust === 'hotter' || adjust === 'cooler' ? { adjust } : {}) });
   let savedNow = $derived(saved.some((x) => x.q === encodeBrew(fullState)));
-  function persist() { try { localStorage.setItem(SAVE_KEY, JSON.stringify({ saved, last: encodeBrew(fullState) })); } catch { /* storage unavailable */ } }
+  // When the browser refuses the write, nothing says "Saved": the list is kept for this visit only, and says so.
+  let storageOk = $state(true);
+  function persist() { storageOk = writeLocal(SAVE_KEY, JSON.stringify({ saved, last: encodeBrew(fullState) })); }
   function saveRecipe() {
     if (!recipe) return;
     const amount = method === 'espresso' ? `${fmtG(recipe.doseG)} g in, ${r0(recipe.yieldG ?? 0)} g out` : byDose || 'doseG' in target ? `${fmtG(recipe.doseG)} g coffee` : cupText;
@@ -299,6 +307,24 @@
     roast = d.value.roast ?? 'medium'; units = d.value.units; ratioOverride = d.value.ratio; adjust = d.value.adjust; customOpen = false;
     adjustKept = !!adjust;
   }
+
+  // One polite sentence for screen readers once the numbers settle after a change: not one per keystroke or
+  // ratio tap, and not on load (the cue line has its own live region for brewing along; Wave F r1, Opus).
+  let liveText = $state('');
+  let liveSays = $derived(!recipe ? '' : method === 'espresso'
+    ? `${fmtG(recipe.doseG)} g of coffee in, ${r0(recipe.yieldG ?? 0)} g of espresso out.`
+    : method === 'moka' ? `${fmtG(recipe.doseG)} g of coffee; water to the valve, about ${r0(recipe.waterG ?? 0)} g.`
+    : `${fmtG(recipe.doseG)} g of coffee, ${r0(recipe.waterG ?? 0)} g of water, ${method === 'cold-brew' ? 'serves' : 'about'} ${cupText}${method === 'cold-brew' ? '' : ' in the cup'}, at 1 to ${Number.isInteger(recipe.ratio) ? recipe.ratio : Math.round(recipe.ratio * 100) / 100}.`);
+  let liveFirst = true;
+  let liveTimer: ReturnType<typeof setTimeout> | undefined;
+  $effect(() => {
+    const t = liveSays;
+    if (!mounted) return;
+    if (liveFirst) { liveFirst = false; return; }
+    clearTimeout(liveTimer);
+    if (t) liveTimer = setTimeout(() => { liveText = t; }, 700);
+    return () => clearTimeout(liveTimer);
+  });
 
   let linkProblem = $state(false);
   let copied = $state(false);
@@ -322,6 +348,7 @@
 </script>
 
 <div class="cf" class:brewing={mode === 'brew'}>
+  <p class="sr" aria-live="polite">{liveText}</p>
   <div class="stage">
     <div class="readouts" aria-hidden="true">
       <div class="ro water"><span class="lbl">{method === 'espresso' ? 'In the cup' : 'Scale'}</span><span class="val">{r0(frame.scaleG)}<small>g</small></span></div>
@@ -369,7 +396,7 @@
           {/each}
           <button type="button" aria-pressed={customOpen || !choices.some((c) => same(c.t, target))} aria-expanded={customOpen} onclick={openCustom}>Custom</button>
         </div>
-        {#if tooBig}<p class="hint">{method === 'aeropress' ? 'Bigger cups need two presses (or try Custom).' : method === 'drip-machine' ? 'Bigger batches are more than a typical drip machine holds: brew twice, or try Custom.' : `Bigger amounts are more than one ${/^(Cold|Moka)/.test(m.label) ? m.label.toLowerCase() : m.label} handles well at this strength: brew twice, or try Custom.`}</p>{/if}
+        {#if overOne}<p class="hint">{method === 'aeropress' ? 'Bigger cups need two presses (or try Custom).' : method === 'drip-machine' ? 'For more than a typical drip machine holds, brew twice.' : `For more than one ${/^(Cold|Moka)/.test(m.label) ? m.label.toLowerCase() : m.label} handles well at this strength, brew twice.`}</p>{/if}
         {#if customOpen}
           <div class="custom">
             <label class="cfld"><span class="sr">Amount</span><input type="number" inputmode="decimal" min="0" step="0.1" value={customVal} oninput={(e) => { const raw = (e.currentTarget as HTMLInputElement).value.trim(); setCustom(raw === '' ? NaN : Number(raw), customKind); }} /></label>
@@ -386,7 +413,7 @@
           <button type="button" aria-pressed={units === 'us'} onclick={() => switchUnits('us')}>US</button>
           <button type="button" aria-pressed={units === 'metric'} onclick={() => switchUnits('metric')}>Metric</button>
         </div>
-        {#if unitNote}<p class="unitnote" role="status">{unitNote}</p>{/if}
+        {#if unitNoteText}<p class="unitnote" role="status">{unitNoteText}</p>{/if}
       </fieldset>
     </div>
 
@@ -480,12 +507,13 @@
         <button type="button" class="ghost" onclick={() => play(method === 'cold-brew' ? 3600 : 8)}>{method === 'cold-brew' ? 'Watch the steep' : 'Watch it fast'}</button>
         {#if mode === 'brew'}<button type="button" class="ghost" onclick={reset}>Reset</button>{/if}
         <button type="button" class="ghost" onclick={share}>{copied ? 'Link copied' : 'Share'}</button>
-        <button type="button" class="ghost" onclick={saveRecipe} disabled={savedNow}>{savedNow ? 'Saved' : 'Save'}</button>
+        <button type="button" class="ghost" onclick={saveRecipe} disabled={savedNow}>{savedNow ? (storageOk ? 'Saved' : 'Kept for now') : 'Save'}</button>
         <button type="button" class="ghost" onclick={() => window.print()}>Print</button>
       </div>
+      {#if !storageOk}<p class="savenote" role="status">This browser isn't letting the page save, so recipes kept here last only until you leave. Share copies this recipe's link instead.</p>{/if}
       {#if saved.length}
-        <div class="saved" role="group" aria-label="Your saved recipes, on this device">
-          <span class="lbl">Saved on this device</span>
+        <div class="saved" role="group" aria-label={storageOk ? 'Your saved recipes, on this device' : 'Your recipes, until you leave'}>
+          <span class="lbl">{storageOk ? 'Saved on this device' : 'Kept until you leave'}</span>
           {#each saved as sv, k (sv.q)}
             <span class="sv"><button type="button" class="load" onclick={() => loadSaved(sv.q)}>{sv.name}</button><button type="button" class="x" aria-label={`Delete ${sv.name}`} onclick={() => removeSaved(k)}>×</button></span>
           {/each}
@@ -556,6 +584,7 @@
   .hint { font-size: 13.5px; color: #75655a; margin: 6px 0 0; }
   .mokahint { align-self: flex-end; max-width: 19.2em; /* 32ch of Plex */ }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .savenote { margin: 0; font-size: 13.5px; color: var(--crema-deep); background: #fff8ec; border-radius: 8px; padding: 7px 10px; }
   .saved { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 10px; }
   .saved .lbl { width: 100%; }
   .sv { display: inline-flex; align-items: center; border: 1px solid var(--rule, #d9cdbd); border-radius: 999px; background: #fff; }
