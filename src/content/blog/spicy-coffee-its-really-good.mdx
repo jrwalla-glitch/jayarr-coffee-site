@@ -1,168 +1,151 @@
 ---
-title: "How to Make Spicy Coffee: A Simple Recipe That Tastes Amazing"
-description: "Adding spices to coffee is one of the simplest ways to transform an ordinary cup. A guide to which spices work, how to use them, and recipes from Turkish to Mexican traditions."
+title: "Spicy Coffee: How to Add Cinnamon, Cardamom and Other Spices, Plus Café de Olla"
+description: "Mix spices into the grounds, stir them into the cup or simmer them with the coffee. Starting amounts for eight spices, a spiced French press, café de olla, and coffees that taste spicy on their own."
 pubDate: "Mar 31 2020"
-updatedDate: "Feb 16 2026"
+updatedDate: "Oct 15 2026"
 heroImage: "../../assets/blog/wQhXOziJnvc.jpg"
 category: "Recipes"
 ---
 
+import AnswerBox from '../../components/AnswerBox.astro';
 import RecipeSchema from '../../components/RecipeSchema.astro';
-import ReferenceGuide from '../../components/infographics/ReferenceGuide.astro';
-import FAQ from '../../components/FAQ.astro';
+import ToolCallout from '../../components/ToolCallout.astro';
 import LiteYouTube from '../../components/LiteYouTube.astro';
 
 <RecipeSchema
-  title="Mexican Cafe de Olla (Spiced Coffee)"
-  description="Traditional Mexican spiced coffee brewed with cinnamon, cloves, star anise, and piloncillo. Rich, warming, and perfect for sharing."
-  videoId="wQhXOziJnvc"
-  prepTime="PT5M"
-  cookTime="PT15M"
-  totalTime="PT20M"
-  recipeYield="4 servings"
+  title="Spiced French Press Coffee with Cinnamon and Cardamom"
+  description="A 12 oz French press with ¼ teaspoon of ground cinnamon and one crushed green cardamom pod mixed into the grounds: 27.3 g of coffee, 409 g of water at 205°F (96°C) and an eight-minute steep."
+  prepTime="PT2M"
+  cookTime="PT8M"
+  totalTime="PT10M"
+  recipeYield="1 mug, about 12 US fl oz (355 ml)"
   recipeCategory="Beverage"
-  recipeCuisine="Mexican"
+  recipeCuisine="American"
   recipeIngredient={[
-    "6 cups water",
-    "1/2 cup medium-ground coffee",
-    "1 cinnamon stick",
-    "4 whole cloves",
-    "1 star anise",
-    "1/3 cup piloncillo or brown sugar"
+    "27.3 g coffee, ground extra coarse",
+    "¼ teaspoon ground cinnamon",
+    "1 green cardamom pod, crushed",
+    "409 g water at 205°F (96°C)"
   ]}
   recipeInstructions={[
-    "Bring 6 cups of water to a boil with the cinnamon stick, cloves, and star anise.",
-    "Add piloncillo or brown sugar and stir until dissolved.",
-    "Add the ground coffee and return to a boil.",
-    "Remove from heat and let the grounds settle for 5 minutes.",
-    "Strain and serve. Rich, warming, and best shared."
+    "Warm the French press, then add the coffee, the cinnamon and the crushed cardamom pod, and stir them together.",
+    "Start a timer and pour in all 409 g of water, wetting all the grounds.",
+    "At 0:30, stir gently to sink the crust.",
+    "Put the lid on with the plunger up and leave it until 8:00.",
+    "Press gently and pour it all out straight away."
   ]}
-  nutrition={{
-    calories: "63 calories",
-    servingSize: "1 cup (6 oz)",
-    fatContent: "0 g",
-    carbohydrateContent: "15 g",
-    sugarContent: "14 g",
-    proteinContent: "0 g",
-    sodiumContent: "5 mg",
-  }}
 />
 
-Adding spices to coffee isn't a modern trend — Turkish, Ethiopian, and Mexican coffee traditions have been doing it for centuries. Spices like cinnamon, cardamom, and cayenne complement coffee's natural flavors rather than masking them, creating a warming, aromatic cup with layers of depth that plain coffee can't match.
+<AnswerBox answer="The simplest way is to mix the spice into the ground coffee before you brew: for a 12 oz French press, our recipe starts with ¼ teaspoon of ground cinnamon and one crushed green cardamom pod in 27.3 g of coffee. You can also stir a pinch of ground spice into the finished cup, or simmer whole spices with the coffee, as Mexico's café de olla does with cinnamon, cloves and piloncillo. Start small, especially with clove and cayenne, and add more next time." />
 
-<LiteYouTube videoId="wQhXOziJnvc" title="Spicy Coffee? It" />
+Some coffee traditions add spice. In parts of Ethiopia, Jeff Koehler writes, wild cardamom or a clove is sometimes pounded with the roasted beans, a curl of cinnamon bark near the Sudan border, or fresh wild ginger in Kafa; our [Ethiopian coffee ceremony guide](/blog/ethiopian-coffee-ceremony-explained/) has more. In Mexico, café de olla is brewed with cinnamon and piloncillo. Not every coffee tradition uses spice, though: Türkiye's registered description of Turkish coffee, and UNESCO's description of it, name only coffee, water and sugar.
 
-## The Spice Guide
+This page is about adding spice: how, how much, and four recipes. The amounts are our starting points, not anyone's standard, so adjust them to taste.
 
-<ReferenceGuide
-  title="Coffee Spice Pairing Guide"
-  subtitle="Centuries of tradition — one cup at a time"
-  scaleLabel={{ start: "Mild", end: "Intense" }}
-  items={[
-    {
-      label: "Cinnamon",
-      description: "Sweet warmth. Gateway spice — start here. Ceylon is more delicate than cassia.",
-      value: "¼ tsp per cup",
-      dotScale: 0.35
-    },
-    {
-      label: "Cardamom",
-      description: "Warm, floral, luxurious. The secret weapon. Whole crushed pods beat ground.",
-      value: "Pinch (2-3 pods)",
-      dotScale: 0.5
-    },
-    {
-      label: "Ginger",
-      description: "Bright heat. Excellent in pour-over and French press. Fresh slice works too.",
-      value: "⅛ tsp per cup",
-      dotScale: 0.45
-    },
-    {
-      label: "Nutmeg",
-      description: "Warm, woody, sweet. Best in milk-based spiced drinks.",
-      value: "⅛ tsp per cup",
-      dotScale: 0.4
-    },
-    {
-      label: "Star Anise",
-      description: "Subtle licorice. Works best with medium-dark roasts.",
-      value: "1 small piece",
-      dotScale: 0.55
-    },
-    {
-      label: "Black Pepper",
-      description: "Complex spiciness. Surprisingly good in Turkish-style coffee.",
-      value: "A few grinds",
-      dotScale: 0.6
-    },
-    {
-      label: "Clove",
-      description: "Deep, warming, potent. Dominates quickly — use sparingly.",
-      value: "1-2 whole",
-      dotScale: 0.75
-    },
-    {
-      label: "Cayenne",
-      description: "Subtle back-palate heat. Start smaller than you think. Builds slowly.",
-      value: "1/16 tsp per cup",
-      dotScale: 0.9
-    }
-  ]}
-  footnote="Start with one spice. Perfect it over a week. Then build combinations. Replace any jar open more than a year."
-/>
+Our March 2020 video is about a different kind of spicy coffee: coffees whose own flavor has spice notes, with no spice added. That's covered [near the end of this page](#when-coffee-tastes-spicy-on-its-own).
 
-## Three Methods
+<LiteYouTube videoId="wQhXOziJnvc" title="Spicy Coffee? It's REALLY good!" />
 
-**Direct add:** Mix whole or ground spices into your coffee grounds before brewing. Deepest flavor integration. Works with any brewer — especially good in a [French press](/blog/how-to-use-a-french-press-the-most-amazing-coffee-youve-ever-had/).
+## Three ways to add spice
 
-**Stir-in:** Add ground spices to your finished cup. Most convenient for experimenting. Spices may settle at the bottom (like Turkish coffee — that's fine).
+- **In the grounds.** Mix ground or crushed whole spice into the coffee before you add the water, and it brews with the coffee. Our recipe below does this in a French press, where the spice sits in the water for the whole steep.
+- **In the cup.** Stir a pinch of ground spice into the finished coffee. It's the quickest way to try a spice, but ground spice doesn't dissolve, so some settles at the bottom of the cup.
+- **Simmered.** Heat whole spices in the water, then add the coffee, as café de olla does. It takes longer and makes a sweet, spiced pot to share.
 
-**Latte method:** Brew spiced coffee, add steamed milk and honey. Milk softens the intensity while the spice-coffee combination becomes more luxurious. Pairs naturally with a [homemade coffee creamer](/blog/how-to-make-homemade-coffee-creamer-3-easy-recipes/) — the hazelnut or vanilla base works beautifully with cinnamon and cardamom.
+## How much of each spice
 
-## Four Recipes
+Our starting amounts for a 12 oz mug's worth of coffee:
 
-### Simple Spiced Latte (Daily Go-To)
-8 oz coffee + 6 oz steamed milk + ¼ tsp cinnamon + pinch of cardamom + ½ tsp honey. Five minutes.
+| Spice | Start with | Best added |
+|---|---|---|
+| Cinnamon | ¼ tsp ground, or half a stick | In the grounds, or simmered |
+| Cardamom | 1 green pod, crushed, or a pinch ground | In the grounds |
+| Ginger | ⅛ tsp ground, or a thin slice of fresh | In the grounds or the cup |
+| Nutmeg | A small pinch, freshly grated | In the cup or the milk |
+| Clove | 1 whole clove, or a tiny pinch ground | In the grounds, or simmered |
+| Star anise | 1 point broken from a pod | In the grounds, or simmered |
+| Black pepper | A few grinds | In the grounds |
+| Cayenne | A tiny pinch, about 1/16 tsp | In the cup |
 
-### Mexican Café de Olla
-6 cups water + ½ cup medium-ground coffee + 1 cinnamon stick + 4 whole cloves + 1 star anise + ⅓ cup piloncillo (or brown sugar). Boil water with spices, add piloncillo until dissolved, add coffee, return to boil, remove and settle 5 minutes. Strain. Serves 4-6. Rich, warming, perfect for special mornings.
+Start at the low end, especially with clove, star anise and cayenne, and try one spice at a time before you combine them.
 
-### Turkish Cardamom Coffee
-8 oz cold water + 2 tbsp finely ground coffee + 3-4 crushed green cardamom pods + honey to taste. Combine in a <a href="https://www.amazon.com/s?k=cezve+turkish+coffee+pot&tag=jayarrcoffee-20" rel="sponsored noopener">cezve or small saucepan</a>, heat until foam rises, pour. Intensely aromatic.
+**Keeping spices.** USDA's FoodKeeper gives ground spices 2 to 3 years in the pantry for best quality, and whole spices 3 to 4 years. Whole spices, ground or crushed as you need them, last longer.
 
-### Ginger-Cayenne Wake-Up Call
-8 oz dark roast coffee + ¼ tsp ground ginger + 1/16 tsp cayenne + splash of cream + ½ tsp honey. Invigorating — ginger brings brightness, cayenne builds a subtle heat.
+## Our spiced French press
 
-## Origin Pairing Tips
+Our own recipe, built on our Brew Guide's French press for a 12 oz mug, which follows Jessica Easto's eight-minute method:
 
-- **Ethiopian/Central American** (fruity, floral) — cardamom, lighter spices
-- **Brazilian/Indonesian** (earthy, chocolatey) — cinnamon, clove
-- **Dark roasts** — clove, star anise, black pepper
-- **Light roasts** — cinnamon, ginger, cardamom
+- **Coffee:** 27.3 g, ground extra coarse.
+- **Spice:** ¼ teaspoon ground cinnamon and 1 green cardamom pod, crushed.
+- **Water:** 409 g at 205°F&nbsp;(96°C), a ratio of 1:15.
+- **Makes:** about 12 US fl oz (355 ml), since the grounds hold back about 2 g of water per gram of coffee, the figure the Brew Guide uses.
+- **Time:** about 10 minutes, 8 of them steeping.
 
-Spiced coffee also translates well into holiday drinks. Many of the [Christmas coffee recipes](/blog/6-amazing-christmas-coffee-recipes/) and the [gingerbread coffee](/blog/gingerbread-coffee-a-christmas-miracle/) use the same spice logic — layering warm notes that complement coffee's inherent bitterness. And if you enjoy complex flavors, the [mocha guide](/blog/making-a-mocha-with-and-without-espresso-machine/) shows how chocolate and coffee interact in a similar way.
+1. Warm the French press, then add the coffee, the cinnamon and the crushed cardamom pod, and stir them together.
+2. Start a timer and pour in all 409 g of water, wetting all the grounds.
+3. At 0:30, stir gently to sink the crust.
+4. Put the lid on with the plunger up and leave it until 8:00.
+5. Press gently and pour it all out straight away.
 
-Start with one spice (cinnamon is safest), perfect it over a week, then build combinations. Fresh <a href="https://www.amazon.com/s?k=whole+spices+coffee+set&tag=jayarrcoffee-20" rel="sponsored noopener">spices</a> make a dramatic difference — replace any jar that's been open for more than a year.
+<ToolCallout tool="brew" preset={{ method: 'french-press', cup: 354.9 }} cta="Open the Brew Guide for a 12 oz French press" context="Opens the Brew Guide on a 12 oz French press: 27.3 g of coffee to 409 g of water (1:15), a 205°F (96°C) kettle and an extra-coarse grind of about 900–1,200 µm, with Jessica Easto's eight-minute steep timed step by step. It doesn't add spice: mix the cinnamon and cardamom into the grounds yourself." />
 
----
+For more on the brewer itself, see our [French press guide](/blog/how-to-use-a-french-press-the-most-amazing-coffee-youve-ever-had/).
 
-<FAQ items={[
-  {
-    question: "What spice is best to add to coffee for beginners?",
-    answer: "Cinnamon. It's universally pleasant, hard to overdo, and adds sweet warmth without changing the coffee's character. Start with ¼ teaspoon per cup, either mixed into your grounds before brewing or stirred into the finished cup. Use Ceylon cinnamon if you can find it — it's more delicate and aromatic than common cassia. Once you're comfortable with cinnamon, try adding a pinch of cardamom alongside it."
-  },
-  {
-    question: "Does adding cayenne pepper to coffee taste good?",
-    answer: "Surprisingly yes — but the amount is critical. Use only 1/16 teaspoon (a tiny pinch) per cup. It doesn't make the coffee taste hot the way you'd expect. Instead, it builds a subtle warmth on the back of your palate that pairs well with dark chocolate notes in medium-dark roasts. Add a splash of cream and honey to round it out. Start with less than you think you need."
-  },
-  {
-    question: "What is café de olla?",
-    answer: "A traditional Mexican spiced coffee brewed with a cinnamon stick, whole cloves, star anise, and piloncillo (unrefined brown sugar). Everything simmers together in a clay pot (the olla), then the coffee grounds are added and the mixture is strained. The result is rich, warming, and deeply aromatic — spicier and sweeter than typical American coffee. It's meant to be shared and serves 4-6 people per batch."
-  },
-  {
-    question: "Should you add spices before or during brewing?",
-    answer: "Both work, with different results. Adding spices to your grounds before brewing produces deeper, more integrated flavor — the spice compounds extract alongside the coffee. Stirring spices into the finished cup is more convenient and lets you adjust to taste, but some ground spices settle at the bottom. For the deepest flavor, mix directly with grounds. For easy experimentation, stir into the cup."
-  }
-]} />
+## Café de olla
 
-*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*
+Café de olla is Mexico's "pot coffee." USDA's Mexico City office describes it as roasted coffee prepared with cinnamon and sweetened, sold at breakfast time from street tricycles in Mexico City and other cities. El Universal, citing *Claridades Agropecuarias*, traces it to the Mexican Revolution, when, it says, the *adelitas* mixed coffee in water with spices to lift the fighters' spirits.
+
+This is El Universal's recipe, in its own amounts:
+
+- **Water:** 6 cups (about 1,420 ml, calculated).
+- **Piloncillo:** one 200 g piece. Piloncillo is unrefined cane sugar; if you can't find it, dark brown sugar is our stand-in.
+- **Cinnamon:** 2 sticks.
+- **Cloves:** 2.
+- **Ground coffee:** 6 tablespoons.
+
+1. Put the water in a pot. El Universal recommends a clay pot (*olla de barro*), but a saucepan works.
+2. Add the piloncillo, cinnamon and cloves, and stir until the piloncillo dissolves.
+3. Boil it for 5 minutes.
+4. Add the coffee, turn the heat down and keep it hot, without boiling, for 5 minutes, stirring.
+5. Strain it, or let the grounds settle for a moment, and serve.
+
+By weight, it's a light coffee. Six tablespoons of ground coffee is about 42 g, at about 7 g per tablespoon (the figure in Nguyen Coffee Supply's phin recipe), so the pot runs about 1:34 coffee to water by weight before any boils off (calculated). That's far more water per gram of coffee than a 1:15 French press. For a stronger pot, add more coffee; for a less sweet one, use less piloncillo.
+
+Our [Mexican coffee guide](/blog/whats-the-flavor-of-mexican-coffee/) covers the coffee itself and where it grows.
+
+## Cardamom coffee in a cezve
+
+Turkish coffee's registered method uses no spice, but cardamom is an easy addition. Follow our [Turkish coffee guide](/blog/turkish-coffee-guide/) for one small cup, 6 g of extra-fine coffee to 60 ml of cold water, and add 1 green cardamom pod, crushed, or a small pinch of ground cardamom with the coffee. Heat it slowly and take it off as the foam starts to form, before it boils. The cardamom is our variation, not part of the registered recipe.
+
+## Ginger and cayenne, stirred in
+
+For one 8 oz cup of hot coffee, stir in ¼ teaspoon of ground ginger, a tiny pinch of cayenne (about 1/16 teaspoon), ½ teaspoon of honey and a splash of cream. Stir again before the last sip, since the ground spice settles. Cayenne brings heat, so add it a little at a time.
+
+## A spiced latte
+
+Brew spiced coffee by any method above, or stir a pinch of cinnamon and cardamom into espresso, then add steamed milk and a little honey. Our [milk steaming guide](/blog/how-to-steam-milk-for-lattes/) covers the milk. Our [homemade coffee creamer](/blog/how-to-make-homemade-coffee-creamer-3-easy-recipes/) has a spiced maple version too, and the same warm spices turn up in our [gingerbread coffee](/blog/gingerbread-coffee-a-christmas-miracle/) and [Christmas coffee recipes](/blog/6-amazing-christmas-coffee-recipes/).
+
+## When coffee tastes spicy on its own
+
+On a bag of unflavored coffee, spice notes aren't added spice: they describe the coffee itself, and they're what our video is about. World Coffee Research's Sensory Lexicon, which WCR says is the basis for the revised Coffee Taster's Flavor Wheel, groups them under spices:
+
+- **Brown spice:** "the sweet, brown aromatic associated with spices such as cinnamon, clove, nutmeg, and allspice," with cinnamon, clove, nutmeg and anise as attributes of their own.
+- **Pepper:** the aromatic "characteristic of ground black pepper."
+- **Pungent:** "a sharp, physically penetrating sensation in the nasal cavity."
+
+A note like "cinnamon" on a bag describes what the roaster's tasters found in that coffee, so treat it as what the coffee *can* taste like, not a promise. To learn to pick these notes out, smell the spice itself, then sip the coffee and breathe out through your nose.
+
+<ToolCallout tool="flavors" preset={{ family: 'spices' }} cta="Open Flavor Bloom on the spice family" context="Opens Flavor Bloom on the flavor wheel's spice family: brown spice, with cinnamon, clove, nutmeg and anise (plus cardamom and baking spice, two roasters' words it adds), then pepper and pungent. Pick a note to see a reference to smell before you sip, and how often roasters name it in 272 lot descriptions from early 2026." />
+
+## Sources
+
+- JayArr Coffee, "Spicy Coffee? It's REALLY good!", YouTube, March 31, 2020 (spice notes and the flavor wheel): [youtube.com](https://www.youtube.com/watch?v=wQhXOziJnvc)
+- Jeff Koehler, *Where the Wild Coffee Grows* (Bloomsbury, 2017), ch. 6, "Gift for King and Country" (spices pounded with the beans in parts of Ethiopia)
+- Türk Patent ve Marka Kurumu (TÜRKPATENT), traditional product name registration no. G8, *Türk Kahvesi / Turkish Coffee*, registered March 10, 2026 (preparation: water, coffee, then sugar to taste), in Turkish: [registration (PDF)](https://ci.turkpatent.gov.tr/Files/GeographicalSigns/e6a9967f-4501-40fb-a040-4675c9600fb6.pdf)
+- UNESCO Intangible Cultural Heritage, "Turkish coffee culture and tradition," Representative List, inscribed 2013: [ich.unesco.org](https://ich.unesco.org/en/RL/turkish-coffee-culture-and-tradition-00645)
+- El Universal, "Receta para preparar café de olla tradicional," May 20, 2020, updated March 14, 2023 (the recipe, and the Revolution-era origin citing *Claridades Agropecuarias*): [eluniversal.com.mx](https://www.eluniversal.com.mx/menu/receta-para-preparar-cafe-de-olla)
+- USDA Foreign Agricultural Service, *Mexico: Coffee Annual*, report MX2026-0026, May 13, 2026 (café de olla and how it's sold): [apps.fas.usda.gov](https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Coffee%20Annual_Mexico%20City_Mexico_MX2026-0026)
+- Nguyen Coffee Supply, "Vietnamese Iced Coffee," brew guide by Sahra Nguyen, November 14, 2018 (2 tablespoons = 14 g of coffee): [nguyencoffeesupply.com](https://nguyencoffeesupply.com/blogs/vietnamese-coffee-brew-guide/vietnamese-iced-coffee)
+- Jessica Easto, *Craft Coffee: A Manual* (Agate Surrey, 2017), pp. 212–214, "The Eight-Minute French Press Method," as scaled by our Brew Guide
+- World Coffee Research, *Sensory Lexicon*, 2nd ed., version 2.0 (2017), "Spices," pp. 39–40: [worldcoffeeresearch.org (PDF)](https://worldcoffeeresearch.org/download/5806d8c7-cd7c-4882-a81a-2850bd6fbd36), and WCR's Sensory Lexicon page (the lexicon as the basis for the revised flavor wheel), checked October 18, 2026: [worldcoffeeresearch.org](https://worldcoffeeresearch.org/work/sensory-lexicon)
+- USDA Food Safety and Inspection Service, FoodKeeper data, version 128 (September 6, 2018), entries for "Spice/spices, ground" and "Spice/spices, whole," retrieved October 18, 2026: [fsis.usda.gov](https://www.fsis.usda.gov/shared/data/EN/foodkeeper.json)
