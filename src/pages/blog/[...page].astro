@@ -17,6 +17,11 @@ export const getStaticPaths = (async ({ paginate }) => {
 }) satisfies GetStaticPaths;
 
 const { page } = Astro.props;
+// Astro's page.url.prev and .next have no trailing slash ("/blog/2"), which Vercel 301s to "/blog/2/".
+// Link the final URL directly, as the numbered links do.
+const slash = (u: string | undefined) => (u ? u.replace(/\/?$/, '/') : u);
+const prevUrl = slash(page.url.prev);
+const nextUrl = slash(page.url.next);
 ---
 
 <!doctype html>
@@ -117,9 +122,9 @@ const { page } = Astro.props;
 			     screens keep one row. -->
 			{page.lastPage > 1 && (
 				<nav class="flex flex-wrap items-center justify-center gap-2 mt-16" aria-label="Pagination">
-					{page.url.prev ? (
+					{prevUrl ? (
 						<a
-							href={page.url.prev}
+							href={prevUrl}
 							class="px-4 py-2 text-sm border border-charcoal/20 text-charcoal hover:bg-charcoal hover:text-cream transition-colors rounded-sm"
 						>
 							&larr; Previous
@@ -146,9 +151,9 @@ const { page } = Astro.props;
 						))}
 					</div>
 
-					{page.url.next ? (
+					{nextUrl ? (
 						<a
-							href={page.url.next}
+							href={nextUrl}
 							class="px-4 py-2 text-sm border border-charcoal/20 text-charcoal hover:bg-charcoal hover:text-cream transition-colors rounded-sm"
 						>
 							Next &rarr;

@@ -7,7 +7,9 @@ export async function GET(context) {
 	return rss({
 		title: 'Deep Brew | JayArr Coffee',
 		description: 'Long-form coffee science articles grounded in peer-reviewed research.',
-		site: context.site,
+		// The channel's own page is Deep Brew, not the homepage. Item links are root-relative, so they
+		// still resolve against the site's origin.
+		site: new URL('/deep-brew/', context.site).href,
 		items: posts.map((post) => ({
 			...post.data,
 			link: `/deep-brew/research/${post.id}/`,
