@@ -10,11 +10,11 @@ import BaseHead from '../../../components/BaseHead.astro';
 import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
 import GrindGuide from '../../../components/coffee/GrindGuide.svelte';
-import { METHODS, SOURCES } from '../../../lib/coffee/index.ts';
+import { GUIDE_METHODS as METHODS, SOURCES } from '../../../lib/coffee/index.ts';
 
 const title = 'Coffee Grind Size Chart: The Right Grind for Every Brewer';
 const description = 'See what each grind should look like, from Turkish and espresso to French press and cold brew, with micrometer ranges, what too fine and too coarse taste like, and why a burr grinder matters.';
-const order = ['espresso', 'moka', 'aeropress', 'v60', 'kalita', 'chemex', 'drip-machine', 'cold-brew', 'french-press'];
+const order = ['espresso', 'moka', 'phin', 'aeropress', 'v60', 'kalita', 'chemex', 'drip-machine', 'cold-brew', 'french-press'];
 const rows = order.map((id) => METHODS.find((m) => m.id === id)!);
 ---
 
@@ -44,12 +44,13 @@ const rows = order.map((id) => METHODS.find((m) => m.id === id)!);
 					<table>
 						<thead><tr><th scope="col">Brewer</th><th scope="col">Grind</th><th scope="col" class="feel">Feels like</th><th scope="col">About</th></tr></thead>
 						<tbody>
-							<tr><th scope="row">Turkish</th><td>Extra fine<span class="feel-inline">like flour</span></td><td class="feel">flour</td><td>100–200 µm</td></tr>
-							{rows.map((m) => <tr><th scope="row">{m.label}</th><td>{m.grindLabel}<span class="feel-inline">like {m.texture}</span></td><td class="feel">{m.texture}</td><td>{m.grindMicrons.min}–{m.grindMicrons.max} µm</td></tr>)}
+							<tr><th scope="row">Turkish</th><td>Extra fine<span class="feel-inline">like flour</span></td><td class="feel">flour</td><td>75–125 µm<sup>1</sup></td></tr>
+							{rows.map((m) => <tr><th scope="row">{m.label}</th><td>{m.grindLabel}<span class="feel-inline">like {m.texture}</span></td><td class="feel">{m.texture}</td><td>{m.grindMicrons.min}–{m.grindMicrons.max} µm{m.grindNote ? <sup>2</sup> : null}</td></tr>)}
 						</tbody>
 					</table>
 				</div>
 				<p class="cf-note">A micrometer (µm) is a thousandth of a millimeter. Ranges are typical starting points; every grinder's numbers differ, so use the <a href="/deep-brew/calibrator/">Grind Calibrator</a> for your model, then adjust by taste and brew time.</p>
+				<p class="cf-note"><sup>1</sup> Türkiye's registration of Turkish Coffee as a traditional product name (TÜRKPATENT, No. G8, 2026) sets the ground coffee's average particle size at 75–125 µm. <sup>2</sup> Our estimate: Nguyen Coffee Supply's phin recipe asks for a fine grind, "like sand", and likens it to a moka pot grind, so the phin borrows the moka pot's range.</p>
 
 				<h2>Why grind size matters so much</h2>
 				<p>Grinding sets how much surface the water can reach and how fast it flows. Finer grounds extract faster and slow the water down; coarser grounds extract slower and let it run. That's why the same beans can taste sour from one grind and bitter from another, and why brew time is a useful clue to whether you're too fine or too coarse.</p>
@@ -74,7 +75,7 @@ const rows = order.map((id) => METHODS.find((m) => m.id === id)!);
 
 				<h2>Sources</h2>
 				<ul class="cf-sources">
-					{['gagne', 'easto', 'rao', 'synthesis'].map((id) => SOURCES[id]).map((s) => <li>{s.author}, <cite>{s.title}</cite>{s.year ? ` (${s.year})` : ''}.</li>)}
+					{['gagne', 'easto', 'rao', 'turkpatent-g8', 'nguyen-iced', 'synthesis'].map((id) => SOURCES[id]).map((s) => <li>{s.author}, <cite>{s.title}</cite>{s.year ? ` (${s.year})` : ''}.</li>)}
 				</ul>
 			</article>
 		</main>
@@ -100,6 +101,7 @@ const rows = order.map((id) => METHODS.find((m) => m.id === id)!);
 	th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid #e6dccd; white-space: nowrap; }
 	thead th { font: 500 11px/1 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; }
 	td:last-child { font-family: 'IBM Plex Mono', monospace; font-size: 14px; }
+	sup { font-size: 10px; line-height: 0; }
 	tr:last-child th, tr:last-child td { border-bottom: 0; }
 	.cf-note, .cf-sources { font-size: 14.5px; color: #5b4a3d; }
 	.feel-inline { display: none; }

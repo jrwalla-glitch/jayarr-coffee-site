@@ -5,21 +5,26 @@
 
   // Method bands come from the engine (methods.ts). The loupe is illustrative: particle sizes are
   // drawn in proportion to the method's micron band; a blade grinder adds dust and boulders.
-  type Row = { id: string; label: string; grindLabel: string; texture: string; grindMicrons: { min: number; max: number }; brew: boolean };
-  // Turkish coffee has no Brew Guide recipe yet, so it is a grind-only row (range to verify).
+  // brew: a Brew Guide recipe; doctor: Fix My Coffee covers it; calibrator: the Grind Calibrator has maker settings for it.
+  type Row = { id: string; label: string; grindLabel: string; texture: string; grindMicrons: { min: number; max: number }; brew: boolean; doctor: boolean; calibrator: boolean; note?: string };
+  // Turkish coffee has no Brew Guide recipe yet, so it is a grind-only row. Its band is TÜRKPATENT's: the Turkish Coffee
+  // traditional-product-name registration (No. G8, 2026) sets an average particle size of 75–125 µm (FOLLOWUPS_2 item 40).
+  // The Grind Calibrator has no Turkish rows (its maker research didn't record them), so there's no calibrator link (item 12).
   const ROWS: Row[] = [
-    { id: 'turkish', label: 'Turkish', grindLabel: 'Extra fine', texture: 'flour', grindMicrons: { min: 100, max: 200 }, brew: false },
-    ...(['espresso', 'moka', 'aeropress', 'v60', 'kalita', 'chemex', 'drip-machine', 'cold-brew', 'french-press'] as MethodId[]).map((id) => { const x = methodById(id)!; return { id, label: x.label, grindLabel: x.grindLabel, texture: x.texture, grindMicrons: x.grindMicrons, brew: true }; }),
+    { id: 'turkish', label: 'Turkish', grindLabel: 'Extra fine', texture: 'flour', grindMicrons: { min: 75, max: 125 }, brew: false, doctor: false, calibrator: false, note: 'the average particle size in Türkiye\'s Turkish Coffee registration (TÜRKPATENT, 2026)' },
+    ...(['espresso', 'moka', 'phin', 'aeropress', 'v60', 'kalita', 'chemex', 'drip-machine', 'cold-brew', 'french-press'] as MethodId[]).map((id) => { const x = methodById(id)!; return { id, label: x.label, grindLabel: x.grindLabel, texture: x.texture, grindMicrons: x.grindMicrons, brew: true, doctor: id !== 'phin', calibrator: id !== 'phin', note: x.grindNote }; }),
   ];
   const rowById = (id: string) => ROWS.find((r) => r.id === id)!;
   const RULER_MAX = 1300;
   // Common signs, tied to the selected recipe's own target time. Taste is the judge: other things
-  // (water, freshness, pouring) cause the same tastes, so these are hedged and point to the Doctor.
+  // (water, freshness, pouring) cause the same tastes, so these are hedged and point to Fix My Coffee.
   const mmss = (sec: number) => (sec >= 3600 ? `${Math.round(sec / 3600)} h` : `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`);
   function tooText(id: string): { fine: string; coarse: string } {
     const x = methodById(id as MethodId);
     // Turkish is already the finest setting, so "too fine" is the grinder's limit, not a brewing mistake (Muse r4).
     if (id === 'turkish') return { fine: 'There is no useful finer setting: if the grinder clogs or the powder cakes, that is its limit.', coarse: 'The cup can taste thin, and the grounds feel gritty instead of silky.' };
+    // Nguyen Coffee Supply's phin troubleshooting (How to Use & Clean, 2020; its FAQ), timed against its own recipe.
+    if (id === 'phin') return { fine: 'It drips very slowly or stalls. A phin still wet from washing, or gas trapped under the press, can stall it too: Nguyen says to lift the press for about 2 seconds.', coarse: 'It rushes through well before Nguyen\'s 5:00. Less than 2 tablespoons (14 g) in a 4 oz phin can drip fast too, Nguyen says.' };
     if (!x) return { fine: '', coarse: '' };
     const t = x.timeS;
     if (id === 'espresso') return { fine: `The shot usually runs longer than about ${t.max} s at the same dose and yield, and can taste bitter or harsh.`, coarse: `The shot usually runs faster than about ${t.min} s, and can taste sour or thin.` };
@@ -125,6 +130,7 @@
     <div class="head">
       <p class="name">{m.grindLabel}</p>
       <p class="sub">like {m.texture} · about {m.grindMicrons.min}–{m.grindMicrons.max} µm</p>
+      {#if m.note}<p class="src">The micron range is {m.note}.</p>{/if}
     </div>
     <div class="seg" role="group" aria-label="Grinder type">
       <button type="button" aria-pressed={grinder === 'burr'} onclick={() => (grinder = 'burr')}>Burr grinder</button>
@@ -135,10 +141,17 @@
       <div><dt>Signs it's too fine</dt><dd>{too.fine}</dd></div>
       <div><dt>Signs it's too coarse</dt><dd>{too.coarse}</dd></div>
     </dl>
-    <p class="hint">Taste is the judge: water, freshness and pouring cause the same tastes. The <a href={`/tools/fix-my-coffee/${m.brew ? `?method=${method}` : ''}`}>Coffee Doctor</a> helps sort it out.</p>
+    {#if m.doctor}
+      <p class="hint">Taste is the judge: water, freshness and pouring cause the same tastes. <a href={`/tools/fix-my-coffee/${m.brew ? `?method=${method}` : ''}`}>Fix My Coffee</a> helps sort it out.</p>
+    {:else if method === 'phin'}
+      <p class="hint">Fix My Coffee doesn't cover the phin yet; Nguyen's troubleshooting is in our <a href="/blog/vietnamese-phin-guide/">phin guide</a>.</p>
+    {:else}
+      <p class="hint">Taste is the judge: water, freshness and pouring cause the same tastes. <a href="/tools/fix-my-coffee/">Fix My Coffee</a> helps sort it out.</p>
+    {/if}
+    {#if !m.calibrator}<p class="hint">{method === 'phin' ? 'The Grind Calibrator has no phin settings; its moka pot settings are a place to start, since Nguyen likens the two grinds.' : 'The Grind Calibrator has no Turkish settings yet; your grinder\'s manual may list one.'}</p>{/if}
     <div class="actions">
-      <a class="go" href={`/deep-brew/calibrator/?method=${method}`}>Find the setting on your grinder</a>
-      {#if m.brew}<a class="ghost" href={`/tools/brew-ratio/?method=${method}${method === 'espresso' ? '&dose=18' : method === 'moka' ? '&dose=15' : '&cup=355'}`}>Brew Guide</a>{:else}<a class="ghost" href="/blog/turkish-coffee-guide/">Turkish coffee guide</a>{/if}
+      {#if m.calibrator}<a class="go" href={`/deep-brew/calibrator/?method=${method}`}>Find the setting on your grinder</a>{:else if method === 'phin'}<a class="go" href="/deep-brew/calibrator/?method=moka">Moka pot settings for your grinder</a>{/if}
+      {#if m.brew}<a class="ghost" href={`/tools/brew-ratio/?method=${method}${method === 'espresso' ? '&dose=18' : method === 'moka' ? '&dose=15' : method === 'phin' ? '&dose=14' : '&cup=355'}`}>Brew Guide</a>{:else}<a class="ghost" href="/blog/turkish-coffee-guide/">Turkish coffee guide</a>{/if}
     </div>
   </div>
 
@@ -175,6 +188,7 @@
   .chips button[aria-pressed='true'], .seg button[aria-pressed='true'] { background: var(--ink); color: #f3ede3; border-color: var(--ink); }
   .name { font: 400 44px/1 'Instrument Serif', Georgia, serif; margin: 6px 0 0; }
   .sub { font: 400 14px 'IBM Plex Mono', monospace; color: var(--ink-2); margin: 6px 0 0; }
+  .src { font-size: 12.5px; color: var(--ink-3); margin: 4px 0 0; }
   .warn { margin: 0; font-size: 14px; color: var(--crema-deep); background: rgba(195, 135, 58, .08); border-left: 2px solid var(--crema); padding: 8px 12px; }
   .too { margin: 0; display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
   .too div { padding: 10px 0; }
