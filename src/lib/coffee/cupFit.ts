@@ -47,6 +47,9 @@ export interface Fit {
   verdict: 'fits' | 'too-large' | 'too-small';
   /** The scaled parts alone don't fit the cup. */
   overflow: boolean;
+  /** Where the recipe gives its cup and every other part but not the shot's volume: the room its own cup
+   *  leaves for the shot (cup less the rest), in ml, made twice when the recipe is. It counts toward the fit. */
+  shotRoomMl?: [number, number];
 }
 
 export type CupFit = Fit | { ok: false; why: FitBlock };
@@ -61,6 +64,23 @@ export function referenceSize(ref: DrinkRef): { ml: number; range: [number, numb
     return { ml: (lo + hi) / 2, range: [lo, hi], basis: 'drink' };
   }
   return null;
+}
+
+/**
+ * The room a recipe's own cup leaves for a shot whose volume it doesn't publish: the cup, less every other
+ * part it does publish (Wave F r2, Opus). Cimbali's flat white puts 125–130 ml of frothed milk in a 150–160 ml
+ * cup, which leaves 20–35 ml for its double shot. The shot doesn't shrink with a smaller cup, so this room
+ * counts toward the fit; without it a 4 oz cup was given 95–100 ml of milk plus a shot it can't hold.
+ * Null where the recipe gives the shot's volume, no cup, or another part without a volume.
+ */
+export function shotRoom(ref: DrinkRef): [number, number] | null {
+  const e = ref.layers.find((l) => l.kind === 'espresso');
+  if (!e || e.ml || e.g || !ref.vessel.capacityMl) return null;
+  const rest = ref.layers.filter((l) => l !== e);
+  if (!rest.every((l) => l.ml)) return null;
+  const lo = ref.vessel.capacityMl[0] - rest.reduce((t, l) => t + l.ml![1], 0);
+  const hi = ref.vessel.capacityMl[1] - rest.reduce((t, l) => t + l.ml![0], 0);
+  return hi > 0 ? [Math.max(0, lo), hi] : null;
 }
 
 /** A recipe can be made twice only when it is one shot (or a stated espresso volume, like Hoffmann's 30 ml). */
@@ -86,12 +106,17 @@ export function fitToCup(ref: DrinkRef, cupMl: number, times: 1 | 2 = 1): CupFit
     return { kind: l.kind, fixed: true, ml: l.ml, g: l.g, amount: l.amount, unspecified: l.unspecified, basis: l.basis };
   });
   const totalMl = layers.every((l) => l.ml) ? layers.reduce((t, l) => t + mid(l.ml!), 0) : undefined;
-  // What's known has to fit; a part whose volume isn't published can only make it fuller.
-  const knownMl = layers.reduce((t, l) => t + (l.ml ? mid(l.ml) : 0), 0);
-  const overflow = knownMl > cupMl + 0.5;
+  // What's known has to fit; a part whose volume isn't published can only make it fuller. An unpublished shot
+  // takes the room the recipe's own cup leaves for it, once per shot.
+  const room = shotRoom(ref);
+  const shotRoomMl: [number, number] | undefined = room ? [room[0] * times, room[1] * times] : undefined;
+  const knownMl = layers.reduce((t, l) => t + (l.ml ? mid(l.ml) : 0), 0) + (shotRoomMl ? mid(shotRoomMl) : 0);
+  // An estimated shot gets 1% of the cup as slack, so a cup at the low end of the recipe's own size range
+  // (150 ml for Cimbali's 150–160 ml) still fits, to the brim.
+  const overflow = knownMl > cupMl + (shotRoomMl ? Math.max(0.5, cupMl * 0.01) : 0.5);
   const perShot = factor / times;
   const verdict = overflow || perShot < FIT_RANGE.min ? 'too-small' : perShot > FIT_RANGE.max ? 'too-large' : 'fits';
-  return { ok: true, factor, basis: size.basis, refMl: size.ml, refRange: size.range, times, layers, totalMl, perShot, verdict, overflow };
+  return { ok: true, factor, basis: size.basis, refMl: size.ml, refRange: size.range, times, layers, totalMl, perShot, verdict, overflow, shotRoomMl };
 }
 
 /** Rounded for a kitchen: to the nearest 5 ml (1 ml under 20 ml), never pretending to more precision than that. */

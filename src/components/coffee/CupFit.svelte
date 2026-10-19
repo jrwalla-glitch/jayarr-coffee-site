@@ -29,9 +29,11 @@
   function openCustom() { customOpen = true; customNum = cupMl ? inUnits(cupMl, units) : null; }
   // Switching units converts a custom size rather than clearing it.
   function switchUnits(u: 'us' | 'metric') { if (u === units) return; if (customOpen && cupMl) customNum = inUnits(cupMl, u); units = u; }
-  // A typed size sets the cup, unless it is just the cup already set, shown in the other units.
+  // A typed size sets the cup, unless it is just the cup already set, shown in the other units. An empty box
+  // clears the cup, so no result (and no cup in the link) is left from the size typed before (Wave F r2, Astra).
   $effect(() => {
-    if (!customOpen || customNum === null || customNum === undefined) return;
+    if (!customOpen) return;
+    if (customNum === null || customNum === undefined || (customNum as unknown) === '') { cupMl = null; return; }
     if (cupMl && inUnits(cupMl, units) === Number(customNum)) return;
     setCup(units === 'us' ? flOzToMl(Number(customNum)) : Number(customNum));
   });
@@ -107,7 +109,7 @@
     out.push(shown.times === 2
       ? `Made twice: two shots, and the ${grown} scaled by ${times(shown.factor)} to fit your cup, so ${per}.`
       : `The ${grown} ${grown.includes(' and ') ? 'are' : 'is'} scaled by ${times(shown.factor)} to fit your cup; the ${shot} stays as the recipe has it, so that's ${per}.`);
-    if (shown.layers.some((l) => l.kind === 'espresso' && !l.ml)) out.push(`The recipe doesn't give the shot's volume, so leave room for it: the ${grown} alone comes to about ${roundMl(knownOf(shown))} ml of your cup's ${Math.round(cupMl ?? 0)} ml.`);
+    if (shown.layers.some((l) => l.kind === 'espresso' && !l.ml)) out.push(`The recipe doesn't give the shot's volume, so leave room for it: ${shown.shotRoomMl ? `its own cup leaves about ${span(shown.shotRoomMl[0], shown.shotRoomMl[1], 'ml')} for the ${shown.times === 2 ? 'two shots' : shot}, and ` : ''}the ${grown} alone comes to about ${roundMl(knownOf(shown))} ml of your cup's ${Math.round(cupMl ?? 0)} ml.`);
     else if (shown.totalMl) out.push(`In all about ${roundMl(shown.totalMl)} ml, in a cup that holds ${Math.round(cupMl ?? 0)} ml${shown.totalMl >= (cupMl ?? 0) * 0.95 ? ': that is to the brim, so pour a little less milk to leave room' : ''}.`);
     return out.join(' ');
   });
@@ -119,6 +121,12 @@
     if (fit.verdict === 'too-large') {
       const tw = twice && twice.ok ? ` Even made twice, with two shots, it would be ${times(twice.perShot)} times the recipe's ${grown} per shot.` : r.shots === 'double' ? ' A double stays a double here.' : '';
       return `Your cup holds ${times(fit.factor)} times ${what}. Keeping its ${shot}, filling it would take ${times(fit.perShot)} times the recipe's ${grown} per shot, more than twice, so it would no longer be this recipe.${tw}`;
+    }
+    // An unpublished shot takes the room the recipe's own cup leaves for it (lib/coffee/cupFit.ts, shotRoom).
+    if (fit.overflow && fit.shotRoomMl) {
+      const m = fit.layers.filter((l) => !l.fixed && l.ml), lo = m.reduce((t, l) => t + l.ml![0], 0), hi = m.reduce((t, l) => t + l.ml![1], 0);
+      const all = knownOf(fit) + (fit.shotRoomMl[0] + fit.shotRoomMl[1]) / 2;
+      return `The recipe doesn't give its ${shot}'s volume, but its own ${span(r.vessel.capacityMl![0], r.vessel.capacityMl![1], 'ml')} cup leaves about ${span(fit.shotRoomMl[0], fit.shotRoomMl[1], 'ml')} for it. With the ${grown} in proportion, ${span(roundMl(lo), roundMl(hi), 'ml')}, that comes to about ${roundMl(all)} ml, more than your cup's ${Math.round(cupMl ?? 0)} ml.`;
     }
     if (fit.overflow) return `The recipe's ${shot} with its ${grown} in proportion comes to about ${roundMl(knownOf(fit))} ml, more than your cup's ${Math.round(cupMl ?? 0)} ml.`;
     return `Your cup holds under half of ${what}. Keeping its ${shot}, the ${grown} would be less than half the recipe's per shot, so it would no longer be this recipe.`;
