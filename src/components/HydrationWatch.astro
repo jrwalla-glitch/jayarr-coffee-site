@@ -5,10 +5,11 @@
 // notice just before it. If it hydrates later on a slow connection, the notice goes away.
 ---
 
-<script is:inline>
+<script>
+	// Bundled and minified by Astro, so the watch costs every page as little as possible.
 	(function () {
 		var GRACE = 3000;
-		function flag(island) {
+		function flag(island: Element) {
 			var prev = island.previousElementSibling;
 			if (prev && prev.classList.contains('tool-load-notice')) return;
 			var n = document.createElement('div');

@@ -1,6 +1,6 @@
 # Measurement on jayarr.coffee
 
-What the site measures, what it deliberately doesn't, how to read the numbers given the bot traffic its sister sites see, and how to check that the events work. The code is in `src/components/BaseHead.astro`; the local checks are in `makeover-2026-10/tools/tool_wave_f_check.mjs`.
+What the site measures, what it deliberately doesn't, how to read the numbers given the bot traffic its sister sites see, and how to check that the events work. The code is in `src/components/BaseHead.astro` and `public/js/outbound.js`; the local checks are in `makeover-2026-10/tools/tool_wave_f_check.mjs`.
 
 ## What is measured
 
@@ -9,7 +9,7 @@ What the site measures, what it deliberately doesn't, how to read the numbers gi
 - **Page views.** `page_location` is the page's origin and path with the query string removed. `page_referrer` also has its query string removed, so a link from a tool page (for example `/tools/brew-ratio/?method=espresso&dose=18`) doesn't carry its settings into analytics. gtag.js is loaded after the page's `load` event.
 - **`outbound_click`**: one event when a reader clicks (or middle-clicks) a link to a merchant:
   - any link with `rel~="sponsored"` (today, the Amazon links); or
-  - a link to Amazon (its main regional stores), or to a host on the `MAKERS` list in `BaseHead.astro`: Nespresso and the equipment makers and stores the tools and articles link to (grinders, espresso machines, brewers, scales and kettles: Breville, Baratza, Fellow, Hario, Acaia, De'Longhi, Rancilio, Seattle Coffee Gear, Whole Latte Love and so on, 84 hosts). A maker counts even where an article cites it for a spec, because the reader lands in its store. Add a host there when a new buying link goes to a store that isn't on the list.
+  - a link to Amazon (its main regional stores), or to a host on the `MAKERS` list in `public/js/outbound.js` (loaded only on `jayarr.coffee`): Nespresso and the equipment makers and stores the tools and articles link to (grinders, espresso machines, brewers, scales and kettles: Breville, Baratza, Fellow, Hario, Acaia, De'Longhi, Rancilio, Seattle Coffee Gear, Whole Latte Love and so on, 84 hosts). A maker counts even where an article cites it for a spec, because the reader lands in its store. Add a host there when a new buying link goes to a store that isn't on the list.
 
   It carries exactly two parameters:
 

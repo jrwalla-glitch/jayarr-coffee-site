@@ -1,7 +1,10 @@
-<!-- Site search: a modal dialog opened by the header's search button, any [data-open-search] button,
-     or Cmd/Ctrl+K. While it's open the rest of the page is inert and Tab stays inside; Escape, the
-     close button and the backdrop close it and return focus to whatever opened it. If Pagefind can't
-     load or a search fails, the results area says so and offers the article and tool indexes. -->
+---
+// Site search: a modal dialog opened by the header's search button, any [data-open-search] button,
+// or Cmd/Ctrl+K. While it's open the rest of the page is inert and Tab stays inside; Escape, the
+// close button and the backdrop close it and return focus to whatever opened it. If Pagefind can't
+// load or a search fails, the results area says so and offers the article and tool indexes.
+---
+
 <div id="search-overlay" class="so" data-pagefind-ignore="all" role="dialog" aria-modal="true" aria-label="Search the site" hidden>
 	<div id="search-backdrop" class="so-backdrop"></div>
 	<div class="so-wrap">
@@ -22,142 +25,35 @@
 
 <script is:inline>
 	(function () {
-		var overlay = document.getElementById('search-overlay');
-		var backdrop = document.getElementById('search-backdrop');
-		var input = document.getElementById('search-input');
-		var results = document.getElementById('search-results');
-		var status = document.getElementById('search-status');
-		var closeBtn = document.getElementById('search-close');
-		if (!overlay || !input || !results) return;
-
-		var pagefind = null;
-		var opener = null;
-		var madeInert = [];
-		var seq = 0;
-		var timer;
-
-		function esc(s) {
-			return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; });
+		// The dialog's behaviour (public/js/search-dialog.js) loads the first time a reader reaches for search,
+		// so no page carries it up front; pointing at or focusing a search button starts the download early.
+		// If it can't load, the panel still opens and says search couldn't load.
+		var p, SEL = '#search-btn, [data-open-search]';
+		function load() {
+			return p || (p = new Promise(function (ok, no) {
+				var s = document.createElement('script');
+				s.src = '/js/search-dialog.js';
+				s.onload = function () { window.jaSearch ? ok(window.jaSearch) : no(); };
+				s.onerror = function () { p = null; s.remove(); no(); };
+				document.head.appendChild(s);
+			}));
 		}
-		// Which part of the site a result is from, as the pages' own kickers name it.
-		function kind(url) {
-			var p = String(url || '');
-			return /^\/tools\//.test(p) ? 'Tool' : /^\/deep-brew\//.test(p) ? 'Deep Brew' : /^\/explore\//.test(p) ? 'Explore' : /^\/blog\//.test(p) ? 'Article' : 'Page';
+		function fallback(from) {
+			var o = document.getElementById('search-overlay'), r = document.getElementById('search-results'), c = document.getElementById('search-close');
+			if (!o || !r) return;
+			o.hidden = false;
+			r.innerHTML = '<div class="so-msg so-fail"><p class="so-msg-h">Search couldn\u2019t load.</p><p>Try reloading the page, or browse the <a href="/blog/">blog index</a> and the <a href="/tools/">tools page</a>.</p></div>';
+			function shut() { o.hidden = true; r.innerHTML = ''; document.removeEventListener('keydown', key, true); if (from && from.focus) from.focus(); }
+			function key(e) { if (e.key === 'Escape') shut(); }
+			if (c) { c.addEventListener('click', shut, { once: true }); c.focus(); }
+			document.getElementById('search-backdrop').addEventListener('click', shut, { once: true });
+			document.addEventListener('keydown', key, true);
 		}
-		function announce(text) {
-			if (!status) return;
-			status.textContent = '';
-			setTimeout(function () { status.textContent = text; }, 50);
-		}
-		function initPagefind() {
-			if (!pagefind) {
-				pagefind = import('/pagefind/pagefind.js').then(function (pf) { return Promise.resolve(pf.init && pf.init()).then(function () { return pf; }); });
-				// A failed load can be tried again on the next search.
-				pagefind.catch(function () { pagefind = null; });
-			}
-			return pagefind;
-		}
-		function showFailure() {
-			results.innerHTML = '<div class="so-msg so-fail"><p class="so-msg-h">Search couldn’t load.</p>' +
-				'<p>Try reloading the page. Meanwhile, every article is on the <a href="/blog/">blog index</a> and every tool on the <a href="/tools/">tools page</a>.</p></div>';
-			announce('Search couldn’t load. Try reloading the page.');
-		}
-		function isOpen() { return !overlay.hidden; }
-		function focusables() {
-			return Array.prototype.filter.call(overlay.querySelectorAll('a[href], button, input, [tabindex]:not([tabindex="-1"])'), function (el) {
-				return !el.disabled && el.getClientRects().length > 0;
-			});
-		}
-
-		function openSearch(from) {
-			if (isOpen()) return;
-			opener = from || document.activeElement;
-			// The dialog sits directly in <body>, so everything else can be made inert while it's open.
-			if (overlay.parentElement !== document.body) document.body.appendChild(overlay);
-			madeInert = [];
-			Array.prototype.forEach.call(document.body.children, function (el) {
-				if (el === overlay || el.inert || el.tagName === 'SCRIPT') return;
-				el.inert = true;
-				madeInert.push(el);
-			});
-			overlay.hidden = false;
-			document.body.style.overflow = 'hidden';
-			input.focus();
-			initPagefind().catch(showFailure);
-		}
-
-		function closeSearch() {
-			if (!isOpen()) return;
-			overlay.hidden = true;
-			document.body.style.overflow = '';
-			madeInert.forEach(function (el) { el.inert = false; });
-			madeInert = [];
-			clearTimeout(timer);
-			seq++;
-			input.value = '';
-			results.innerHTML = '';
-			if (status) status.textContent = '';
-			var back = opener;
-			opener = null;
-			if (back && back.isConnected && typeof back.focus === 'function' && back !== document.body) back.focus();
-		}
-
-		// Openers: the header's search button and any [data-open-search] button (the 404 page has one).
-		document.addEventListener('click', function (e) {
-			var t = e.target && e.target.closest ? e.target.closest('#search-btn, [data-open-search]') : null;
-			if (t) { e.preventDefault(); openSearch(t); }
-		});
-		if (closeBtn) closeBtn.addEventListener('click', closeSearch);
-		if (backdrop) backdrop.addEventListener('click', closeSearch);
-
-		document.addEventListener('keydown', function (e) {
-			if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) {
-				e.preventDefault();
-				if (isOpen()) closeSearch(); else openSearch(document.activeElement);
-				return;
-			}
-			// Nothing else here acts while search is closed.
-			if (!isOpen()) return;
-			if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); closeSearch(); return; }
-			if (e.key === 'Tab') {
-				var f = focusables();
-				if (!f.length) return;
-				var first = f[0], last = f[f.length - 1];
-				var inside = overlay.contains(document.activeElement);
-				if (e.shiftKey && (document.activeElement === first || !inside)) { e.preventDefault(); last.focus(); }
-				else if (!e.shiftKey && (document.activeElement === last || !inside)) { e.preventDefault(); first.focus(); }
-			}
-		}, true);
-
-		input.addEventListener('input', function () {
-			clearTimeout(timer);
-			timer = setTimeout(function () {
-				var query = input.value.trim();
-				var mine = ++seq;
-				if (!query) { results.innerHTML = ''; if (status) status.textContent = ''; return; }
-				initPagefind()
-					.then(function (pf) { return pf.search(query); })
-					.then(function (search) { return Promise.all(search.results.slice(0, 8).map(function (r) { return r.data(); })); })
-					.then(function (items) {
-						if (mine !== seq) return;
-						if (items.length === 0) {
-							results.innerHTML = '<div class="so-msg"><p>No results found. Try a brewer, a drink or an origin.</p></div>';
-							announce('No results');
-							return;
-						}
-						results.innerHTML = items.map(function (item) {
-							var title = item.meta && item.meta.title ? item.meta.title : 'Untitled';
-							return '<a class="so-hit" href="' + esc(item.url) + '"><span class="so-kind">' + kind(item.url) + '</span>' +
-								'<span class="so-title">' + esc(title) + '</span>' +
-								// Pagefind's excerpt is escaped by Pagefind, with <mark> around the matches.
-								'<span class="so-excerpt">' + item.excerpt + '</span>' +
-								'</a>';
-						}).join('');
-						announce(items.length === 1 ? '1 result' : items.length + ' results');
-					})
-					.catch(function () { if (mine === seq) showFailure(); });
-			}, 200);
-		});
+		function go(from, toggle) { load().then(function (d) { toggle ? d.toggle(from) : d.open(from); }, function () { fallback(from); }); }
+		function hit(e) { return e.target && e.target.closest ? e.target.closest(SEL) : null; }
+		document.addEventListener('click', function (e) { var t = hit(e); if (t) { e.preventDefault(); go(t); } });
+		document.addEventListener('keydown', function (e) { if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) { e.preventDefault(); go(document.activeElement, true); } });
+		['pointerover', 'focusin', 'touchstart'].forEach(function (t) { document.addEventListener(t, function (e) { if (hit(e)) load().catch(function () {}); }, { passive: true }); });
 	})();
 </script>
 

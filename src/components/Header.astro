@@ -17,7 +17,7 @@ const links = [
 ---
 
 <a href="#main" class="skip-link">Skip to content</a>
-<!-- The menus repeat on every page, so search leaves them out of its index and excerpts. -->
+{/* The menus repeat on every page, so search leaves them out of its index and excerpts. */}
 <header class:list={['site-header', isHome && 'is-home']} id="site-header" data-pagefind-ignore="all">
   <nav class="bar" aria-label="Main">
     <a href="/" class="brand">JayArr <em>Coffee</em></a>
@@ -26,7 +26,7 @@ const links = [
         <button type="button" class:list={['tools-btn', toolsActive && 'on']} aria-expanded="false" aria-controls="tools-panel" id="tools-btn">
           Tools <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" /></svg>
         </button>
-        <!-- The panel follows its button in the DOM, so Tab goes from the button straight into it (Wave F r1, Opus). -->
+        {/* The panel follows its button in the DOM, so Tab goes from the button straight into it (Wave F r1, Opus). */}
         <div id="tools-panel" class="tools-panel" hidden>
           <div class="tp-inner">
             {TOOL_GROUPS.map((g) => (

@@ -70,7 +70,7 @@ const breadcrumbSchema = {
 };
 ---
 
-<!-- Global Metadata -->
+{/* Global Metadata */}
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -87,22 +87,22 @@ const breadcrumbSchema = {
 />
 <meta name="generator" content={Astro.generator} />
 
-<!-- Fonts are self-hosted via @fontsource (imported in frontmatter) -->
+{/* Fonts are self-hosted via @fontsource (imported in frontmatter) */}
 
-<!-- Canonical URL (none on a noindex page such as the 404) -->
+{/* Canonical URL (none on a noindex page such as the 404) */}
 {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonicalURL} />}
 
-<!-- No sitewide preconnects: gtag.js loads only on the production host, after load, so a GA hint
+{/* No sitewide preconnects: gtag.js loads only on the production host, after load, so a GA hint
      would be wasted everywhere else and early even there; LiteYouTube adds the i.ytimg.com hint itself,
-     only on pages that embed a video. -->
+     only on pages that embed a video. */}
 
-<!-- A notice beside any tool that fails to load (an island that never hydrates) -->
+{/* A notice beside any tool that fails to load (an island that never hydrates) */}
 <HydrationWatch />
 
-<!-- Vercel Web Analytics: the script exists only where Vercel serves the site (jayarr.coffee and its
+{/* Vercel Web Analytics: the script exists only where Vercel serves the site (jayarr.coffee and its
      *.vercel.app previews), so other hosts don't request a path that 404s. Every event's address loses its
      query string and hash before it's sent (beforeSend, in the queue form Vercel documents for a plain
-     script tag), so a shared tool link's settings never reach Vercel. -->
+     script tag), so a shared tool link's settings never reach Vercel. */}
 <script is:inline>
 	if (location.hostname === 'jayarr.coffee' || /\.vercel\.app$/.test(location.hostname)) {
 		window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -119,17 +119,17 @@ const breadcrumbSchema = {
 	}
 </script>
 
-<!-- Primary Meta Tags -->
+{/* Primary Meta Tags */}
 <title>{pageTitle}</title>
 <meta name="title" content={pageTitle} />
 
-<!-- BreadcrumbList Schema -->
+{/* BreadcrumbList Schema */}
 {emitCrumbs && pathSegments.length > 0 && (
 	<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 )}
 <meta name="description" content={description} />
 
-<!-- Open Graph / Facebook -->
+{/* Open Graph / Facebook */}
 <meta property="og:type" content={isArticle ? 'article' : 'website'} />
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
@@ -143,22 +143,22 @@ const breadcrumbSchema = {
 )}
 <meta property="og:site_name" content={SITE_TITLE} />
 
-<!-- Twitter -->
+{/* Twitter */}
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image.src, Astro.url)} />
 
-<!-- Pinterest Domain Verification -->
+{/* Pinterest Domain Verification */}
 <meta name="p:domain_verify" content="54b67cdd8d98db76f65f872a6247cda4"/>
 
-<!-- Google Analytics: production hostname only, so local and preview builds send nothing.
-     page_location and page_referrer drop the query string: tool state never reaches analytics.
+{/* Google Analytics: production hostname only, so local and preview builds send nothing.
+     page_location and page_referrer drop the query string, so this code never sends tool state (GA's own
+     enhanced-measurement settings must be off too: see docs/MEASUREMENT.md).
      gtag.js loads after the page so it doesn't compete with the LCP image.
-     Outbound clicks to a merchant (an affiliate link, rel~="sponsored", or a store or maker host)
-     send one event, outbound_click, with only the merchant's host and this page's path: no query
-     strings, tool inputs, search text or anything about the reader. docs/MEASUREMENT.md has the plan. -->
+     Outbound clicks to a merchant send one event, outbound_click (public/js/outbound.js, loaded only on
+     this host). docs/MEASUREMENT.md has the plan. */}
 <script is:inline>
 	if (location.hostname === 'jayarr.coffee') {
 		window.dataLayer = window.dataLayer || [];
@@ -169,37 +169,11 @@ const breadcrumbSchema = {
 			var ref = document.referrer.split(/[?#]/)[0];
 			if (ref) cfg.page_referrer = ref;
 			gtag('config', 'G-1N7FMBHFWV', cfg);
-			// Merchants: Amazon in its main regions, plus the equipment makers and stores the tools and articles
-			// link to for buying. A maker counts even when it's cited for a spec, since the reader lands in its store.
-			var AMAZON = /^amazon\.(?:com|ca|co\.uk|de|fr|it|es|com\.au|co\.jp)$/;
-			var MAKERS = [
-				'1zpresso.coffee', 'acaia.co', 'aeropress.com', 'ascaso-usa.com', 'ascaso.com', 'atago.net', 'baratza.com', 'behmor.com', 'bellmanespresso.com',
-				'bialetti.com', 'blackanddeckerappliances.com', 'breville.com', 'cafeappliances.com', 'capresso.com', 'chemexcoffeemaker.com', 'cimbali.com',
-				'cleverbrewing.coffee', 'clivecoffee.com', 'coffeesock.com', 'comandantegrinder.com', 'cosori.com', 'crateandbarrel.com', 'cuisinart.com',
-				'decentespresso.com', 'delonghi.com', 'ecm.de', 'ember.com', 'espressoparts.com', 'espro.com', 'etekcity.com', 'eureka.co.it',
-				'fellowproducts.com', 'flairespresso.com', 'gaggia-na.com', 'gaggia.com', 'geappliances.com', 'global.hario.com', 'gourmia.com',
-				'hario-europe.com', 'hario-usa.com', 'hario.com', 'harioaustralia.com.au', 'homeroastingsupplies.com', 'instantpot.com', 'kalita.co.jp',
-				'kalitausa.com', 'kingrinder.com', 'kinugrinders.com', 'krupsusa.com', 'kruveinc.com', 'lamarzocco.com', 'lelit.com', 'loveramics.com',
-				'nespresso.com', 'nichecoffee.co.uk', 'normcorewares.com', 'notneutral.com', 'oxo.com', 'ozeri.com', 'profitec-espresso.com', 'puckpuck.me',
-				'ranciliogroup.com', 'ranciliogroupna.com', 'rocket-espresso.com', 'seattlecoffeegear.com', 'shop.greatergoods.com', 'shopjura.com',
-				'shoponline.melitta.com', 'slowpoursupply.co', 'steepshot.com', 'subminimal.com', 'timemore.cn', 'timemore.com', 'toddycafe.com',
-				'turingrinders.com', 'us.jura.com', 'us.moccamaster.com', 'usa.philips.com', 'wacaco.com', 'walmart.com', 'weberworkshops.com',
-				'webstaurantstore.com', 'wholelattelove.com', 'williams-sonoma.com'
-			];
-			function outbound(e) {
-				if (e.type === 'auxclick' && e.button !== 1) return;
-				var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
-				if (!a) return;
-				var u;
-				try { u = new URL(a.href, location.href); } catch (err) { return; }
-				if (!/^https?:$/.test(u.protocol) || u.hostname === location.hostname) return;
-				var host = u.hostname.replace(/^www\./, '');
-				var sponsored = /(^|\s)sponsored(\s|$)/i.test(a.getAttribute('rel') || '');
-				if (!sponsored && !AMAZON.test(host) && MAKERS.indexOf(host) < 0) return;
-				gtag('event', 'outbound_click', { merchant_host: host, page_path: location.pathname });
-			}
-			document.addEventListener('click', outbound, true);
-			document.addEventListener('auxclick', outbound, true);
+			// The outbound-click tracker and its merchant list, only here, so no other host pays for them.
+			var o = document.createElement('script');
+			o.async = true;
+			o.src = '/js/outbound.js';
+			document.head.appendChild(o);
 		})();
 		addEventListener('load', () => {
 			const s = document.createElement('script');
