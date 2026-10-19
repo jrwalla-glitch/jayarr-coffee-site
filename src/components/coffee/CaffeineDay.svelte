@@ -106,9 +106,11 @@
   let bedCompare = $derived.by(() => { const m = (atBed.min + atBed.max) / 2; return m < 20 ? 'Close to nothing left.' : m < 50 ? 'About a cup of black tea’s worth still in you.' : m < 90 ? 'About a shot of espresso’s worth still in you.' : 'Like a cup of coffee at bedtime.'; });
 
   // ── chart geometry ──
-  // Drawn at the container's real width so text stays legible on phones.
-  let chartW = $state(1000);
-  let W = $derived(Math.max(320, Math.min(1100, chartW)));
+  // Drawn at the container's real width so text stays legible on phones. Until the box is measured
+  // (0), it's drawn 1000 wide in a box held at the height the measured chart will have (.unsized), so
+  // the caption and the lists below don't move when the tool starts.
+  let chartW = $state(0);
+  let W = $derived(Math.max(320, Math.min(1100, chartW || 1000)));
   let narrow = $derived(W < 600);
   const H = 300, PADL = 46, PADR = 16, TOP = 24, BASE = 246;
   let yMax = $derived(Math.max(150, Math.ceil((peak.max * 1.1) / 50) * 50));
@@ -321,7 +323,7 @@
   </div>
 
   <figure class="chart" bind:clientWidth={chartW}>
-    <svg viewBox="0 0 {W} {H}" role="img" aria-label={summary}>
+    <svg viewBox="0 0 {W} {H}" role="img" aria-label={summary} class:unsized={!chartW}>
       <defs>
         <linearGradient id="cd-band" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c3873a" stop-opacity=".55" /><stop offset="1" stop-color="#c3873a" stop-opacity=".12" /></linearGradient>
       </defs>
@@ -475,7 +477,7 @@
 <style>
   .cd {
     --card: #fbf8f3; --ink: #2a1d15; --ink-2: #5b4a3d; --ink-3: #75655a; --rule: #d9cdbd; --crema: #c3873a; --crema-deep: #8f5d22;
-    --cf-display: 'Instrument Serif', Georgia, serif; --cf-sans: 'IBM Plex Sans', system-ui, sans-serif; --cf-mono: 'IBM Plex Mono', ui-monospace, monospace;
+    --cf-display: 'Instrument Serif', 'Instrument Serif Metrics', Georgia, serif; --cf-sans: 'IBM Plex Sans', 'IBM Plex Sans Metrics', system-ui, sans-serif; --cf-mono: 'IBM Plex Mono', 'IBM Plex Mono Metrics', ui-monospace, monospace;
     background: var(--card); border: 1px solid var(--rule); border-radius: 18px; overflow: hidden; color: var(--ink);
     font: 16px/1.5 var(--cf-sans); box-shadow: 0 30px 60px -40px rgba(60, 35, 15, .35);
   }
@@ -500,6 +502,12 @@
 
   .chart { margin: 0; padding: 14px 16px 8px; }
   .chart svg { width: 100%; height: auto; display: block; }
+  /* The measured chart's height at each width (299.5 px from 1180 px wide, 288–291 below that, 293–297
+     on phones, where the chart's side padding is 4 px). */
+  .chart svg.unsized { height: 299.5px; }
+  @media (max-width: 1179px) { .chart svg.unsized { height: 290px; } }
+  @media (max-width: 820px) { .chart svg.unsized { height: 295px; } }
+  @media (max-width: 359px) { .chart svg.unsized { height: 278px; } }
   .grid { stroke: #e6dccd; stroke-width: 1; }
   .axis { font: 400 12px var(--cf-mono); fill: var(--ink-3); }
   .axis.strong { fill: var(--ink); }
@@ -546,11 +554,11 @@
     li .mg { grid-column: 2; grid-row: 2; }
     .chart { padding: 10px 4px 4px; }
   }
-  .mg .basis { display: block; font: 400 10.5px/1.2 'IBM Plex Mono', monospace; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3, #75655a); }
+  .mg .basis { display: block; font: 400 10.5px/1.2 'IBM Plex Mono', 'IBM Plex Mono Metrics', monospace; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3, #75655a); }
   .shared { background: #eef4f5; border: 1px solid #c6dade; border-radius: 10px; padding: 10px 12px; margin: 0 0 10px; font-size: 14px; }
   .shared p { margin: 0 0 8px; }
   .carried { font-size: 13px; color: var(--ink-3, #75655a); margin: 10px 0 4px; }
   .carried-list { list-style: none; margin: 0 0 6px; padding: 0; display: grid; gap: 4px; }
   .carried-list li { display: grid; grid-template-columns: 62px 1fr auto 32px; gap: 8px; align-items: center; font-size: 14px; color: var(--ink-2, #5b4a3d); opacity: .85; }
-  .carried-list .t { font: 400 13px 'IBM Plex Mono', monospace; }
+  .carried-list .t { font: 400 13px 'IBM Plex Mono', 'IBM Plex Mono Metrics', monospace; }
 </style>

@@ -105,10 +105,10 @@
 
 <style>
   .map { width: 100%; height: auto; display: block; }
-  .sweet { font: 400 15px 'Instrument Serif', Georgia, serif; fill: var(--t-crema-deep, #8f5d22); letter-spacing: .02em; }
-  .ax { font: 500 11px 'IBM Plex Mono', monospace; letter-spacing: .1em; text-transform: uppercase; fill: var(--t-ink-2, #5b4a3d); }
-  .ax2 { font: 400 11px 'IBM Plex Mono', monospace; fill: var(--t-ink-3, #75655a); }
-  .num { font: 500 12px 'IBM Plex Mono', monospace; fill: var(--t-ink, #2a1d15); }
+  .sweet { font: 400 15px 'Instrument Serif', 'Instrument Serif Metrics', Georgia, serif; fill: var(--t-crema-deep, #8f5d22); letter-spacing: .02em; }
+  .ax { font: 500 11px 'IBM Plex Mono', 'IBM Plex Mono Metrics', monospace; letter-spacing: .1em; text-transform: uppercase; fill: var(--t-ink-2, #5b4a3d); }
+  .ax2 { font: 400 11px 'IBM Plex Mono', 'IBM Plex Mono Metrics', monospace; fill: var(--t-ink-3, #75655a); }
+  .num { font: 500 12px 'IBM Plex Mono', 'IBM Plex Mono Metrics', monospace; fill: var(--t-ink, #2a1d15); }
   /* Phones: the map scales down, so its axis text scales up to stay readable. */
   @media (max-width: 640px) { .num { font-size: 15px; } .ax { font-size: 14px; } .ax2 { font-size: 13px; } }
   .dot { transition: transform .6s cubic-bezier(.2, .7, .2, 1); }
