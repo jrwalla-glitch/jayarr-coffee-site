@@ -1,356 +1,142 @@
 ---
 title: "Japanese Iced Coffee vs Cold Brew vs Kyoto Slow Drip: All 3 Cold Methods"
-description: "Flash brew, immersion cold brew, and Kyoto slow drip produce three chemically distinct cold coffees — not one method made three ways. Here's what the research actually says about acidity, extraction kinetics, caffeine, shelf life, equipment, and which method suits which coffee."
+description: "Japanese iced coffee, cold brew and Kyoto-style slow drip compared glass for glass: the coffee each needs for 12 fl oz, how ice and dilution count, acidity, brew time and how long each keeps."
 pubDate: "Mar 13 2026"
-updatedDate: "May 2 2026"
+updatedDate: "Oct 15 2026"
 heroImage: "../../assets/blog/japanese-iced-coffee-vs-cold-brew.jpg"
 category: "Brewing"
 ---
 
 import RecipeSchema from '../../components/RecipeSchema.astro';
 import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
-import FAQ from '../../components/FAQ.astro';
 import AnswerBox from '../../components/AnswerBox.astro';
 import ToolCallout from '../../components/ToolCallout.astro';
-import DeepBrewCallout from '../../components/DeepBrewCallout.astro';
 
 <RecipeSchema
-  title="Japanese Iced Coffee (Flash Brew)"
-  description="Hot pour-over brewed directly over ice to preserve the full acid and aromatic profile of the coffee while serving it cold. Bright, complex, and ready in 5 minutes."
-  prepTime="PT2M"
-  cookTime="PT3M"
-  totalTime="PT5M"
-  recipeYield="1 serving"
+  title="Japanese Iced Coffee by Weight (12 fl oz)"
+  description="A V60 brewed hot straight onto ice: 25.3 g of coffee, 244 g of hot water and 162 g of ice, which together match the Brew Guide's 12 fl oz V60 at 1:16."
+  prepTime="PT3M"
+  cookTime="PT4M"
+  totalTime="PT7M"
+  recipeYield="About 355 g once the ice has melted (12 US fl oz, 355 ml)"
   recipeCategory="Beverage"
-  recipeCuisine="American"
   recipeIngredient={[
-    "20g coffee ground slightly finer than normal pour over",
-    "180g hot water at 96°C (205°F)",
-    "120g ice"
+    "25.3 g coffee, ground medium-fine",
+    "244 g water, just off the boil, plus extra for rinsing the filter",
+    "162 g ice",
+    "1 V60 paper filter"
   ]}
   recipeInstructions={[
-    "Place 120g of ice in your server or carafe.",
-    "Set up your pour-over dripper (V60 or similar) on top of the server with a rinsed paper filter.",
-    "Add 20g of coffee ground slightly finer than your usual pour-over setting.",
-    "Bloom with 40-50g of hot water at 96°C for 30-45 seconds.",
-    "Pour the remaining water in slow concentric circles to reach 180g total hot water.",
-    "Let the coffee drip directly onto the ice. The ice melts instantly, chilling the coffee and locking in volatile aromatics.",
-    "Swirl to incorporate any remaining ice. Serve immediately over fresh ice if desired."
+    "Rinse the paper filter in the V60 over a sink or a mug, and pour the rinse away.",
+    "Weigh 162 g of ice into the server. Set the V60 on top, add 25.3 g of coffee ground medium-fine, shake it level and tare the scale.",
+    "Start the timer and pour about 65 g of water to wet every ground. Wait until 0:45.",
+    "Pour slowly in small circles at the center until the scale reads 244 g.",
+    "Let it drain onto the ice, lift the V60 off, and swirl the server until the ice has melted.",
+    "Serve straight away, over fresh ice if you like."
   ]}
-  nutrition={{
-    calories: "5 calories",
-    servingSize: "1 cup (10 oz)",
-    fatContent: "0 g",
-    carbohydrateContent: "0 g",
-    proteinContent: "0 g",
-    sodiumContent: "5 mg",
-  }}
 />
 
-<RecipeSchema
-  title="Immersion Cold Brew Concentrate"
-  description="Coarse-ground coffee steeped in cold water for 12 to 14 hours produces a smooth, low-acid concentrate that keeps for weeks refrigerated. The simplest cold-coffee method."
-  prepTime="PT5M"
-  cookTime="PT14H"
-  totalTime="PT14H5M"
-  recipeYield="6 servings (concentrate)"
-  recipeCategory="Beverage"
-  recipeCuisine="American"
-  recipeIngredient={[
-    "100g coarsely ground coffee (~1000–1400 μm, French press range)",
-    "750g cold filtered water"
-  ]}
-  recipeInstructions={[
-    "Combine 100g of coarsely ground coffee and 750g of cold filtered water in a 32oz mason jar or dedicated cold brew brewer.",
-    "Stir gently to ensure all grounds are saturated.",
-    "Cover and refrigerate for 12 to 14 hours (Cordoba et al. 2019 sensory data favors 14 hours over 22).",
-    "Strain through a paper filter to remove sediment and fines — paper-strained cold brew is cleaner and stays cleaner in storage than mesh-strained.",
-    "Store the concentrate refrigerated in airtight glass; safe for up to 42 days per Lopane (2024).",
-    "To serve, dilute concentrate 1:1 to 1:2 with water or milk over ice."
-  ]}
-  nutrition={{
-    calories: "5 calories",
-    servingSize: "1 cup (10 oz, diluted)",
-    fatContent: "0 g",
-    carbohydrateContent: "0 g",
-    proteinContent: "0 g",
-    sodiumContent: "5 mg",
-  }}
-/>
+<AnswerBox answer="Japanese iced coffee is pour-over brewed hot straight onto ice, so the melting ice is part of the recipe's water; cold brew steeps in cold water for hours and is diluted to serve; Kyoto-style slow drip drips cold water through the coffee over 3 to 5 hours. For the same 12 fl oz glass, our worked examples take about 25 g of coffee for Japanese iced coffee, about 42 g for cold brew and about 37 g for slow drip at Hario's ratio (calculated). Iced pour-over takes minutes and is made to drink; the other two take hours and keep in the fridge." />
 
-<RecipeSchema
-  title="Kyoto Slow Drip (Dutch Coffee)"
-  description="Cold water dripped through a coffee bed one drop at a time over 3 to 5 hours. Continuous-fresh-water percolation produces a clean, floral, bright cup that's closer to chilled pour-over than to jar cold brew."
-  prepTime="PT5M"
-  cookTime="PT4H"
-  totalTime="PT4H5M"
-  recipeYield="2–3 servings (500 mL ready-to-drink)"
-  recipeCategory="Beverage"
-  recipeCuisine="Japanese"
-  recipeIngredient={[
-    "50g medium-fine ground coffee (~400–600 μm, V60 range)",
-    "500g cold filtered water"
-  ]}
-  recipeInstructions={[
-    "Place a paper filter in the middle chamber of the slow-drip tower and dose 50g of medium-fine ground coffee.",
-    "Wet the bed gently with a small amount of cold water until the grounds are evenly saturated.",
-    "Add 500g of cold filtered water to the top reservoir.",
-    "Adjust the drip valve to 45 to 90 drops per minute (roughly one drop every 1 to 1.5 seconds).",
-    "Allow the brew to drip for 3 to 5 hours until the top reservoir empties into the bottom carafe.",
-    "Serve immediately or refrigerate. Volatile aromatics oxidize faster than in immersion cold brew — drink within 48 hours for best flavor."
-  ]}
-  nutrition={{
-    calories: "5 calories",
-    servingSize: "1 cup (8 oz)",
-    fatContent: "0 g",
-    carbohydrateContent: "0 g",
-    proteinContent: "0 g",
-    sodiumContent: "5 mg",
-  }}
-/>
+All three make cold coffee, but they spend coffee, water and time very differently. The fair way to compare them is glass for glass, counting every gram of water that ends up in the drink: the ice that melts into Japanese iced coffee, the water that dilutes cold brew concentrate, and the water the grounds keep back.
 
-<AnswerBox answer="There are three serious cold-coffee methods, and they produce chemically different cups. Flash brew (Japanese iced coffee) is hot-brewed pour-over poured directly over ice — it preserves the full acid and aromatic profile, bright and fruit-forward. Immersion cold brew steeps coarse grounds in cold water for 12–18 hours — 28–50% lower titratable acidity (pH is nearly identical), fewer volatile aromatics, smooth and chocolatey. Kyoto slow drip percolates cold water through a coffee bed one drop at a time over 3–5 hours — clean, floral, closer to chilled pour-over than to jar cold brew. Flash brew suits light-roast single origins; immersion suits medium/dark roasts and batch service; slow drip suits light single origins when you want cold-brew smoothness without cold-brew heaviness." />
+## The three methods, glass for glass
 
-The conventional wisdom on iced coffee is wrong in one important direction. Most people believe cold brew is "less acidic" than hot coffee. It's true — but not for the reason usually given. And once you understand why, the picture broadens beyond "hot vs cold" to three legitimate cold-coffee traditions, each with its own chemistry, equipment, and ideal coffee.
-
-## Three Methods, Three Chemistries
-
-**Japanese iced coffee (flash brew)** is exactly what it sounds like: you brew hot coffee directly over ice. The ice is weighed and counted as part of the total water volume, so when hot coffee meets the ice, it chills instantly. You end up with full-temperature extraction followed by immediate cold temperature — all the volatile aromatics and organic acids that hot water extracts are captured in the cup before they can dissipate.
-
-**Immersion cold brew** never touches hot water. Ground coffee steeps in room temperature or cold water for hours. Cold water extracts differently than hot water — not just slower, but selectively differently. Some compounds extract readily at any temperature. Others require heat to solubilize. The resulting beverage is chemically distinct from hot-brewed coffee, not merely the same coffee at lower temperature.
-
-**Kyoto slow drip (Dutch coffee)** is also cold throughout, but the mechanism is percolation rather than diffusion. Cold water drips through a vertical coffee bed one drop at a time over 3 to 5 hours, controlled by a valve at the top of a tall glass tower. Because fresh, unsaturated water is always meeting the coffee, slow drip extracts a different compound profile than immersion does — brighter, more floral, more like a chilled pour-over than like jar cold brew.
-
-So flash brew is hot-brewed coffee served cold. Immersion cold brew is a fundamentally different beverage produced by static cold extraction. And slow drip is a third, distinct beverage produced by continuous cold percolation. Three traditions, three chemistries, three best uses.
-
-## The Acidity Paradox
-
-Here's where the conventional wisdom goes sideways.
-
-Cold brew is widely described as "less acidic" than hot coffee. True. But the common assumption — that lower acid means lower pH — is incorrect.
-
-Research by Rao and Fuller (2018) measured both cold brew and hot brew and found nearly identical pH levels: approximately **4.85–5.13 for both methods**. The pH range overlaps almost entirely. Cold brew is not meaningfully less acidic by pH.
-
-What it *does* have is significantly lower **titratable acidity** — a measure of total dissolved acid content, not hydrogen ion concentration. Titratable acidity is 28–50% lower in cold brew than in hot brew at equivalent concentrations. These are different measurements of different things.
-
-The distinction matters because titratable acidity is what produces the physical sensation of acidity in your mouth — the brightness, the tartness, the sensation that makes a wine or coffee feel lively. pH tells you how corrosive a liquid is. Titratable acidity tells you how much acid is present to interact with your taste receptors.
-
-Cold brew's "smoothness" and "low acidity" comes from lower total dissolved acid content, not from lower pH. The two measures just aren't the same thing, and most popular coverage conflates them.
-
-**Why cold brew has less titratable acidity:**
-
-- **Less quinic acid.** Quinic acid forms from the hydrolysis of chlorogenic acids (CGAs) — but that hydrolysis is temperature-dependent. Hot water catalyzes it; cold water largely doesn't. Cold brew contains significantly less quinic acid as a result.
-- **Fewer melanoidins.** Melanoidins are large, complex browning compounds produced during roasting. They're poorly soluble in cold water, so they extract minimally in cold brew. In hot coffee, they're a significant component that contributes both bitterness and perceived acidity.
-- **Fewer volatile compounds overall.** GC-MS analysis shows cold brew contains 36 identified volatile aroma compounds. Of those, 25 were higher in concentration in hot brew. Heat drives volatile extraction; cold water captures far fewer.
-
-## Cold Brew Extraction Kinetics: When to Stop
-
-Cold brew extraction doesn't proceed uniformly from start to finish. Research on extraction kinetics shows distinct phases:
-
-**0–3 hours: Rapid surface extraction.** The most soluble compounds — primarily sugars and some organic acids — dissolve quickly from the surface of each particle. This is the fast phase.
-
-**3–7 hours: Slower diffusion.** Extraction continues as water diffuses into the interior of particles and soluble compounds diffuse outward. Rate slows significantly.
-
-**~6–7 hours: Caffeine and chlorogenic acid equilibrium.** These compounds reach approximate equilibrium between coffee and water — steeping beyond this point produces diminishing returns for caffeine and CGA extraction.
-
-The practical implication: steeping cold brew beyond 7 hours is not adding meaningfully to the chemical complexity of the brew. It is, however, adding time for less desirable compounds to continue extracting.
-
-Cordoba et al. (2019) tested this directly. They compared cold brew brewed for 14 hours against cold brew brewed for 22 hours and had trained evaluators score both. The 14-hour brew scored **higher** than the 22-hour brew for sweetness, fruity/floral character, and creamy body. The 22-hour brew scored higher for bitterness. Steeping longer didn't make the coffee better — it made it more bitter and less fruity.
-
-This runs directly counter to the common home brewer assumption that "longer is more flavorful." More time extracts more bitter compounds. 14 hours — not 24, not overnight-plus — is closer to the optimum.
-
-## Grind Size, Time, and Concentration: The Variables
-
-Cold brew has three dimensions to dial: **grind size**, **steep time**, and **ratio** (coffee to water).
-
-**Grind size × time relationship:**
-
-| Grind Size | Particle Range | Optimal Steep Time |
-|---|---|---|
-| Coarse (most forgiving) | 1,000–1,400μm | 12–18 hours |
-| Medium | 600–1,000μm | 8–12 hours |
-| Medium-fine | 400–600μm | 6–8 hours |
-
-Coarser grinds extract more slowly and give you the widest timing window — harder to over-extract accidentally. Medium and medium-fine grinds extract faster and taste brighter and more complex, but the timing window narrows considerably. Medium-fine cold brew that steeps 18 hours will taste like it was left out too long.
-
-**Concentration ratios:**
-
-- **Concentrate (for dilution):** 1:4 to 1:8 coffee to water by weight. A 1:4 concentrate diluted 1:1 with water produces a 1:8 ready-to-drink ratio — similar strength to strong hot coffee.
-- **Ready-to-drink (RTD):** 1:12 to 1:15 coffee to water by weight. This is roughly the [pour-over brewing ratio](/blog/coffee-to-water-ratio-guide/) range, so you're comparing similar strength levels.
-
-Making concentrate is efficient for batch production — you brew less volume and dilute at serving time, which extends refrigerator storage and allows flexibility for different serving styles (straight, over ice, with milk, with sparkling water).
-
-**Shelf life (Lopane, 2024):** Refrigerated cold brew concentrate is safe to drink for up to **42 days**. Flavor quality degrades more quickly than safety — most people notice deterioration starting around 4–6 weeks. Diluted ready-to-drink cold brew should be consumed within **2–3 days** — once diluted, microbial activity can proceed faster and flavor degrades quickly.
-
-<ToolCallout tool="brew-ratio" context="Use our Brew Ratio Calculator to dial in exact coffee-to-water amounts for flash brew, cold brew concentrate, or any other method." />
-
-## Flash Brew: The Method for Light Roast Single Origins
-
-Flash brew's chemistry makes it the correct method for showcasing light-roast single origins. Hot extraction preserves the full acid and aromatic profile — the citric acidity of a washed [Ethiopian](/blog/ethiopian-coffee-flavors-and-varieties/), the malic brightness of a [Kenyan](/blog/kenyan-coffee-flavor-notes-and-best-coffees/), the delicate floral notes that cold water never extracts — while the instant chilling locks those volatiles in before they dissipate.
-
-The result: iced coffee that tastes like a great hot coffee served cold. The flavors are bright, complex, and distinct. This is why specialty cafés that serve single-origin light roasts almost universally use flash brew rather than cold brew for their iced coffee.
-
-Cold brew, by contrast, is better suited to medium and dark roasts. The suppressed acidity and lower volatile content of cold brew translates well into chocolate, caramel, and nutty profiles — dark roast flavors that benefit from the smoothing that cold extraction provides. A light-roast single origin brewed cold often tastes muted and flat because cold water simply can't extract what makes that coffee interesting.
-
-## Kyoto Slow Drip: The Third Cold Coffee Tradition
-
-If you've only ever made cold brew by dumping coarse grounds into a mason jar or a Toddy, you've been making exactly one kind of cold brew. It's a good kind — dense, chocolatey, low-acid, nearly impossible to ruin — but it isn't the only cold-coffee tradition, and it isn't the tradition that top specialty cafes pour when they want to serve a cold cup that tastes like a light-roast Ethiopian on a summer afternoon.
-
-The other tradition is slow drip. A glass tower, sometimes tall enough to be furniture, drips cold water one drop at a time through a bed of medium-fine coffee for three to five hours. The resulting carafe tastes almost nothing like jar cold brew. It is cleaner, brighter, more floral — closer to a chilled pour-over than to what most Americans think of as "cold brew."
-
-### Kyoto, Dutch, or Both? A Contested Origin
-
-A typical Kyoto-style tower is tall (often 20 to 30 inches), made of borosilicate glass, and built in three chambers: a top water reservoir with a manually adjustable drip valve, a middle chamber containing a coffee bed on top of a filter, and a bottom carafe to catch the finished brew. A drop of water falls every second or two, soaks into the coffee bed, percolates downward, and emerges as finished brew below. A full cycle takes three to five hours and produces 400 to 700 mL of ready-to-drink coffee.
-
-The name "Kyoto style" is widely used in English-language specialty coffee, but the history is more complicated than the name suggests. The most commonly cited origin is 17th-century Dutch colonial Indonesia, where Dutch traders are said to have used a slow-drip method to brew coffee that could be stored at room temperature without the instability of hot-brewed coffee. By that account the technique traveled back to the Netherlands and to Japan along Dutch trade routes, which is why "Dutch coffee" remains the dominant name for it across much of East Asia.
-
-Other historians treat that origin story as romantic embellishment and credit modern engineers — most often a 20th-century Kyoto coffee shop owner working with a chemistry student and a medical-equipment supplier — with designing the actual three-chamber tower apparatus that today's cafes use. What is uncontested is Japan's contribution: the ritual. Tower cold drip became embedded in the kissaten coffeehouses that flourished in 20th-century Japan as spaces for quiet, contemplative coffee. The glass was beautiful, the drip was hypnotic, the waiting was part of the experience, and that aesthetic is what carried the method into the third wave under the "Kyoto" name. "Dutch coffee," "Kyoto drip," "Kyoto-style cold drip," and "slow drip" all refer to the same brew.
-
-### The Physics of Slow Drip vs Immersion
-
-The reason slow-drip and immersion produce different cups isn't mystical. It's hydraulic.
-
-In immersion, the water surrounding the coffee grounds rapidly approaches local saturation. Once the liquid near a particle contains a high concentration of the compounds that are diffusing out of it, the driving force for further extraction drops. Extraction slows. Time becomes the currency — you have to wait for diffusion to do its work, and that's why immersion recipes run 12 to 18 hours. Surface-fast compounds (some acids, caffeine, lighter melanoidins) pull quickly; deeper-matrix compounds (lipids, higher-molecular-weight melanoidins, certain volatiles) pull slowly over hours.
-
-In slow drip, the water contacting the coffee bed is always fresh — or close to it. A single drop falls, wets a small region of coffee, carries dissolved material downward, and is immediately replaced by another drop of unsaturated water. The driving force for extraction stays high throughout the brew, so a given volume of water extracts more per unit of time than the same volume sitting still in an immersion jar. The limiting factor isn't saturation; it's how long the drip takes.
-
-The flavor consequence is specific. Slow drip favors compounds that benefit from continuous fresh-water contact — bright acids, floral aromatics, and clarity-associated compounds. Immersion favors compounds that dissolve more slowly over long residence times — melanoidins, lipids, and the heavy brown-sugar / chocolate / nutty character that defines jar cold brew. Neither is wrong. They are brewing for different flavor targets, which is why they suit different roasts.
-
-### Slow Drip Equipment Tiers (Honest Pricing)
-
-The equipment market for slow-drip towers is wide, and the price-to-quality ratio is not linear.
-
-- **Specialty tier — $250 to $500.** Hario's "Clear" Slow Drip Coffee Brewer (WDC-6, 780 mL) lists at $250 directly from Hario USA when in stock. Yama Glass offers slow-drip towers across several capacities, with the popular 6–8 cup bamboo-frame model around $300 to $315 at specialty retailers. These are the towers you actually see in third-wave cafes when the cafe is pouring cold drip for customers rather than displaying it.
-- **Commercial / large-format tier — $500 and up.** Yama's 25-cup commercial towers (32 to 100 oz) and other large-batch glass towers run $500 to $1,000-plus depending on capacity, glass quality, and frame finish. (Note: Alpha Dominche's "Steampunk" — once a high-end siphon-style brewer some operators stretched into a cold-drip role — is no longer in production. The company ceased operations in December 2018.)
-- **Budget tier — $30 to $80.** Smaller slow-drip setups from less-prestigious brands exist and can be functional. The differences at this tier are glass quality, drip-valve precision, and aesthetics. A bad valve jumps around; a good one lets you set 45 to 90 drops per minute reliably and hold it.
-- **DIY tier — under $25.** A medical IV drip bag rigged above a pour-over cone works. A repurposed Chemex with a slow-drip rig above it works. Ugly and fiddly, but the chemistry is the chemistry.
-
-The honest price-to-quality breakdown: a $250 tower with a precise drip valve produces coffee that is essentially indistinguishable in the cup from a $500 tower of similar capacity. Above that, you're paying for size, aesthetics, build quality, and bragging rights, not flavor.
-
-### Slow Drip Recipe
-
-A home slow-drip brew is straightforward once the tower is set up.
-
-- **Ratio:** 1:10 coffee to water by weight. For a 500 mL brew, use 50 g of coffee and 500 mL of cold filtered water.
-- **Grind:** Medium-fine — finer than an immersion cold brew grind, closer to a V60 pour-over grind. The finer grind compensates for the shorter total extraction time.
-- **Drip rate:** **45 to 90 drops per minute.** Faster than one drop per second is usually too fast and produces under-extracted coffee; slower than 30 drops per minute increases oxidation without flavor benefit.
-- **Total time:** 3 to 5 hours for a 500 mL carafe.
-- **Water:** Filtered, room temperature. Some towers allow ice to sit on top of the coffee bed for a slow thermal gradient — most modern recipes skip this because the thermal effect is marginal and ice dilutes the brew unpredictably.
-- **Serving:** Immediately or refrigerated. Slow-drip coffee degrades faster than immersion cold brew because more volatile aromatics make it into the cup, and those volatiles are also the compounds that oxidize first. Drink within 48 hours for best flavor.
-
-### Who Should Actually Own a Slow Drip Tower
-
-Most people will never own a $250-plus slow-drip tower, and that's fine. Immersion cold brew is 95 percent as enjoyable for 10 percent of the cost. A $25 Toddy makes cold brew that is genuinely delicious, extremely low-maintenance, and matches the chocolate-and-nut profile most cold brew drinkers gravitate toward anyway.
-
-A slow-drip tower becomes worth the investment in one specific scenario: you drink cold coffee daily, you prefer light-roast single origins, and you would otherwise pay $6 to $9 per cup at a specialty cafe several times a week. In that case, a home tower pays for itself in a couple of months, and the flavor profile is genuinely different from anything immersion can produce — brighter, more floral, more complex, closer to chilled pour-over than to jar cold brew.
-
-For everyone else, immersion isn't a compromise. It's the better tool for the job they actually want it to do. The contrast between immersion cold brew and slow drip is striking enough that side-by-side tasting of the same coffee through both methods is one of the most educational experiments in home coffee brewing.
-
-## Caffeine: The Counterintuitive Numbers
-
-Cold brew's reputation as a concentrated, high-caffeine beverage is accurate — but the mechanism is counterintuitive.
-
-A standard ready-to-drink (RTD) cold brew in a 16-oz serving contains approximately **200–280mg of caffeine**. Compare that to an equivalent 16oz of hot-brewed pour over coffee at around 200–250mg. The numbers are similar for RTD. But most commercial cold brew is sold as or derived from concentrate — and a 16oz serving of concentrate (undiluted or lightly diluted) can contain significantly more.
-
-How? Cold water extracts caffeine efficiently despite extracting many other compounds less efficiently. Caffeine reaches near-equilibrium in cold water within 6–7 hours, and the high coffee-to-water ratios used for cold brew concentrate pack more caffeine per volume than a standard pour over ratio. Per fluid ounce, cold brew concentrate has dramatically more caffeine than hot coffee — it's just typically consumed diluted.
-
-The practical note: if you're drinking cold brew RTD from a can or bottle, pay attention to serving size. Many commercial RTD cold brews are sold in 8oz or 11oz bottles with 200+ mg caffeine — not 16oz, as assumed above. The per-can caffeine can be higher than you expect. See our full [caffeine guide](/blog/caffeine-in-coffee-guide/) for more on caffeine by brew method.
-
-## Flash Brew Protocol
-
-Flash brew requires adjusting your recipe to account for the ice volume:
-
-**Standard approach:**
-- Decide your final beverage weight (e.g., 300g)
-- Split: 60% hot water (180g), 40% ice (120g)
-- Dose: same as your standard [pour over ratio](/blog/coffee-to-water-ratio-guide/) applied to total water (e.g., 1:15 = 20g coffee for 300g total water)
-- Grind: slightly finer than usual pour over — compensating for lower extraction from the reduced hot-water volume
-- Brew: normal [pour-over technique](/blog/ultimate-pour-over-coffee-guide-and-best-v60-technique/), directly over pre-weighed ice in your server
-- Temperature: use 205°F / 96°C water — slightly hotter than usual, again compensating for lower volume
-
-The ratio split is flexible. 60/40 hot/ice is a common starting point. More ice produces a lighter, more diluted cup; less ice produces a stronger but slightly warmer serving temperature. If your flash brew tastes sour or thin, grind finer or increase the hot-water proportion. If it tastes bitter or harsh, grind coarser or increase the ice proportion.
+Each column makes about 355 g, 12 US fl oz, before any ice in the glass. The amounts are calculated, using the Brew Guide's working figure of about 2 g of water kept back per gram of coffee.
 
 <ComparisonTable
-  title="Japanese Iced Coffee vs Cold Brew vs Kyoto Drip"
-  subtitle="What the chemistry and research actually say"
-  columns={["Japanese Iced (Flash Brew)", "Cold Brew (Immersion)", "Kyoto Tower (Cold Drip)"]}
-  rowLabel="Category"
+  title="Three cold coffees, one 12 fl oz glass"
+  subtitle="Calculated from each method's source recipe; before any ice in the glass"
+  columns={["Japanese iced", "Cold brew", "Kyoto slow drip"]}
+  rowLabel="For one glass"
   rows={[
-    { name: "Brewing Mechanic", values: ["Hot extraction over ice — percolation", "Cold water immersion steep", "Cold water drop-by-drop percolation"] },
-    { name: "Brew Time", values: ["3–5 minutes (pour over speed)", "8–18 hours (grind-dependent)", "3–5 hours (drip-rate controlled)"] },
-    { name: "Water Temperature", values: ["96°C / 205°F brew, instantly chilled", "Room temp or refrigerator (~20°C or 4°C)", "Cold or room temperature (~4–20°C)"] },
-    { name: "pH", values: ["4.85–5.13 (Rao & Fuller 2018)", "4.85–5.13 (nearly identical to hot brew)", "Similar to immersion cold brew"] },
-    { name: "Titratable Acidity", values: ["Full — equivalent to hot coffee", "28–50% lower than hot brew", "Low — similar advantage to immersion"] },
-    { name: "Volatile Aromatics", values: ["Full profile — 36+ compounds captured", "Reduced — 25 of 36 higher in hot brew (GC-MS)", "Moderate — percolation extracts more than immersion"] },
-    { name: "Quinic Acid", values: ["Normal — heat catalyzes CGA hydrolysis", "Significantly lower — cold suppresses CGA hydrolysis", "Lower — similar to immersion cold brew"] },
-    { name: "Cup Profile", values: ["Bright, complex, fruit-forward, full aromatic range", "Smooth, low-acid, chocolate/nutty, heavy body", "Floral, fruity, clean — closer to flash brew"] },
-    { name: "Best For", values: ["Light roast single origins, showcasing acidity", "Medium/dark roasts, milk drinks, batch concentrate", "Light-medium roasts, slow-sip appreciation"] },
-    { name: "Caffeine (16 oz RTD)", values: ["~200–250mg", "~200–280mg (concentrate more)", "Variable with ratio"] },
-    { name: "Shelf Life", values: ["2–3 days (brewed to order preferred)", "Concentrate: 42 days safe (Lopane 2024)", "~48 hours — volatiles stale faster"] },
-    { name: "Equipment", values: ["Pour over setup + scale + ice", "Jar / Toddy / dedicated brewer ($10–35)", "Glass tower (Hario ~$250, Yama $300+)"] }
+    { name: "How it brews", values: ["Hot pour-over dripping onto ice", "Coffee steeped in cold water, then diluted", "Cold water dripped through the coffee"] },
+    { name: "Coffee", values: ["25.3 g", "41.8 g", "About 37 g"] },
+    { name: "Water", values: ["244 g hot + 162 g ice", "261 g to steep + 177 g to dilute", "About 428 g, cold"] },
+    { name: "Time", values: ["A few minutes", "12 hours or more", "3 to 5 hours"] },
+    { name: "Ready to drink?", values: ["Yes, once the ice melts", "No: mix one to one first", "Yes, as it drips"] },
+    { name: "Keeps", values: ["Made per glass", "1 to 2 weeks as concentrate (Easto)", "About 3 days (Hario)"] },
+    { name: "Based on", values: ["The Brew Guide's 12 fl oz V60, 1:16", "Easto's cold brew, via the Brew Guide", "Hario's Water Dripper manual"] }
   ]}
-  footnote="pH data: Rao & Fuller (2018). Volatile aromatics: GC-MS comparison, hot vs. cold brew. Optimal steep time: Cordoba et al. (2019). Shelf life: Lopane (2024)."
+  footnote="Cold brew uses the most coffee for the same glass: about 65% more than the iced pour-over (calculated: 41.8 ÷ 25.3). Ice in the glass dilutes all three further as it melts."
 />
 
-## Which Method for Which Coffee
+## Japanese iced coffee: the recipe by weight
 
-**Use flash brew for:**
-- Light-roast single origins from [Ethiopia](/blog/ethiopian-coffee-flavors-and-varieties/), [Kenya](/blog/kenyan-coffee-flavor-notes-and-best-coffees/), [Colombia](/blog/single-origin-colombian-coffee-what-flavor-notes-to-expect/), [Panama](/blog/panama-coffee-guide-geisha-boquete/)
-- Coffees you love hot and want to experience cold without changing the flavor profile
-- Any situation where you want to taste the origin character clearly in an iced format
-- Coffees with distinctive floral or fruity aromatics that cold water would suppress
+Japanese iced coffee, also called flash brew, is an ordinary hot pour-over brewed onto ice. The trick is to count the ice as part of the water. Our example starts from the Brew Guide's 12 fl oz V60: 25.3 g of coffee and 406 g of water at 1:16. It pours 244 g of that water hot and puts the other 162 g, about 40%, in the server as ice. This split is our worked example, not a published recipe.
 
-**Use cold brew (immersion) for:**
-- Medium and [dark roasts](/blog/coffee-roast-levels-explained/)
-- Coffees destined for milk-based iced drinks (lattes, RTD drinks)
-- Batch production — cold brew concentrate scales better than flash brew
-- Coffees where you want to reduce perceived acidity and increase body and chocolatey character
+- **Coffee:** 25.3 g, ground medium-fine, like table salt
+- **Water:** 244 g, just off the boil, plus 162 g of ice in the server
+- **Temperature:** the Brew Guide's V60 kettle temperature: 201°F&nbsp;(94°C) for a medium roast, 205°F&nbsp;(96°C) for a light one. Hario's own iced-coffee instructions use boiling water.
+- **Time:** about 3 minutes to set up; the brew itself is shorter than the hot recipe's 3 to 4 minutes, because less water goes through the coffee; up to about 7 minutes in all
+- **Makes:** about 355 g, 12 US fl oz (355 ml), once the ice has melted. That's calculated: 244 g of hot water, less about 51 g held back by the grounds, gives about 193 g of coffee, plus 162 g of melted ice.
 
-**Use Kyoto slow drip for:**
-- Light-roast single origins from [Ethiopia](/blog/ethiopian-coffee-flavors-and-varieties/), [Kenya](/blog/kenyan-coffee-flavor-notes-and-best-coffees/), Rwanda, Costa Rica, [Colombia](/blog/single-origin-colombian-coffee-what-flavor-notes-to-expect/) — washed coffees prized for floral and stone-fruit character
-- Daily-driver cold coffee when you'd otherwise be paying $6 to $9 a cup at a specialty cafe
-- Slow-sip appreciation — the visual experience of a tower is part of the ritual
-- The most technically refined cold coffee experience you can produce at home
+1. Rinse the paper filter in the V60 over a sink or a mug, and pour the rinse away.
+2. Weigh 162 g of ice into the server. Set the V60 on top, add 25.3 g of coffee ground medium-fine, shake it level and tare the scale.
+3. Start the timer and pour about 65 g of water to wet every ground. Wait until 0:45.
+4. Pour slowly in small circles at the center until the scale reads 244 g.
+5. Let it drain onto the ice, lift the V60 off, and swirl the server until the ice has melted.
+6. Serve straight away, over fresh ice if you like.
 
-## Cold Brew at Home: The Simplest Approach
+**Why about 40% ice.** Melting ice soaks up a lot of heat, so the share of ice decides how cold the drink ends up. Assuming the coffee reaches the ice at 160–195°F&nbsp;(70–90°C), 40% ice melts completely and leaves the drink at about 35–55°F&nbsp;(2–13°C). With a third of the water as ice, the same coffee would end up at about 55–78°F&nbsp;(13–25°C), or about 66°F&nbsp;(19°C) if it arrives at 175°F&nbsp;(80°C): cool rather than cold. With much more ice, some is left unmelted, and less hot water passes through the coffee. (Calculated from the standard heat values for water and melting ice, assuming ice at 32°F&nbsp;(0°C) and no heat lost to the server or the room; the arrival temperature is our assumption.)
 
-The simplest home cold brew setup: a 32oz mason jar, a kitchen scale, and a fine-mesh strainer or a Hario V60 with paper filter for straining.
+**Taste and adjust.** Only 244 g of hot water passes through the coffee, against 406 g in the hot recipe. Writing about espresso, Scott Rao notes that running more water through the grounds raises extraction; by the same reasoning, less water through a pour-over tends to lower it. If the iced cup tastes sour or thin, grind a step finer next time; if it's simply weak, use the Brew Guide's stronger 1:15, 27.1 g of coffee for the same water (calculated: 406 ÷ 15). Hario suggests adjusting both the grind and the amount of coffee to taste.
 
-**Basic recipe:** 100g medium-coarse ground coffee, 750g cold filtered water. Steep 12–14 hours in the refrigerator. Strain through paper filter (removes sediment and fines that cloud the cup). Dilute 1:1 to 1:2 with water or milk when serving.
+**Hario's own method** for its V60 iced-coffee maker works by the marks on its server rather than by weight: about 150 g of ice in the ice chamber for four cups, a spoonful of coffee (about 12 g) per cup, a 30-second bloom with boiling water, brewing until the coffee reaches the 500 mark, then topping up with ice to the 700 mark.
 
-The paper-filter straining step is worth doing — cold brew strained through metal mesh contains more suspended particles that cloud and slightly bitter the cup. Paper-filter cold brew is cleaner and stays cleaner during storage.
+<ToolCallout tool="brew" preset={{ method: 'v60', cup: 354.9 }} cta="Open the Brew Guide: 12 fl oz V60" context="Opens the Brew Guide on a hot 12 fl oz V60: 25.3 g of coffee and 406 g of water, the numbers this iced recipe starts from. It doesn't make iced coffee itself: pour 244 g of that water hot and weigh the other 162 g as ice." />
 
-For a dedicated cold brew brewer, the <a href="https://www.amazon.com/s?k=Hario+cold+brew+coffee+maker+pitcher&tag=jayarrcoffee-20" rel="sponsored noopener">Hario Mizudashi cold brew pitcher</a> is the most recommended entry-level option. It has a built-in mesh strainer and a convenient serving spout, and costs around $25–35. Serious cold brew enthusiasts may want a dedicated <a href="https://www.amazon.com/s?k=Toddy+cold+brew+system&tag=jayarrcoffee-20" rel="sponsored noopener">Toddy cold brew system</a>, which uses paper filters and produces an exceptionally clean concentrate.
+## Cold brew, glass for glass
 
-[Water quality](/blog/why-water-matters-more-than-your-coffee-beans/) matters for cold brew as much as for hot. Cold extraction amplifies mineral character that heat-based methods partially mask — soft water produces flat cold brew, excessively hard water produces harsh cold brew. The [coffee water recipe guide](/blog/coffee-water-recipes-compared/) covers water mineral targets for cold brew specifically.
+Cold brew has to be diluted, so its glass is made in two steps. The Brew Guide's cold brew, which is Jessica Easto's recipe, steeps coffee at 1:6.25 for 12 hours and mixes the concentrate one to one. For a 12 fl oz glass it takes 41.8 g of coffee and 261 g of cold water, which give about 177 g of concentrate, topped up with 177 g of cold water or milk.
 
-## The Bottom Line
+That's about 65% more coffee than the iced pour-over for the same glass. The Brew Guide estimates the two at similar strength: about 1.2–1.6% total dissolved solids for the cold brew once mixed, and about 1.36–1.50% for a hot V60 at 1:16. It has no estimate for the iced version, which may extract a little less.
 
-Flash brew, immersion cold brew, and Kyoto slow drip are not interchangeable techniques for the same goal. They produce three chemically different beverages suited to different coffees and different use cases.
+Ice affects the two differently. In Japanese iced coffee, the ice is part of the recipe, and the drink is at its intended strength once it has melted. Cold brew is diluted with water, and any ice in the glass dilutes it further. Easto points out that cold brew is already cold, so ice dilutes it less than it dilutes hot coffee poured over ice.
 
-**Flash brew:** hot extraction preserves the full acid and aromatic profile. Use it for light-roast single origins where you want to taste the coffee clearly. It's fast (5 minutes), technique-sensitive, and best made to order.
+Our [cold brew concentrate guide](/blog/cold-brew-concentrate-guide/) has the full recipe, serving strengths and storage.
 
-**Immersion cold brew:** cold extraction produces lower titratable acidity (28–50% less), fewer volatiles, and a smooth, chocolate-nutty profile. The lower acidity is real — it's just not from lower pH, as commonly claimed. Optimal steep time is around 14 hours, not 24. Concentrate keeps safely for 42 days refrigerated.
+<ToolCallout tool="brew" preset={{ method: 'cold-brew', cup: 354.9 }} cta="Open the Brew Guide: 12 fl oz of cold brew" context="Opens the Brew Guide's cold brew for 12 fl oz to serve: 41.8 g of coffee steeped in 261 g of cold water for 12 hours, then mixed one to one with about 177 g of water or milk." />
 
-**Kyoto slow drip:** continuous-fresh-water percolation extracts a third profile — clean, floral, bright, closer to chilled pour-over than to jar cold brew. Best for light-roast single origins when you want cold-coffee smoothness without cold-coffee heaviness. Costs more upfront ($250-plus for a real tower) and is more finicky than immersion (drip rate must be dialed), but gives you a cup no other method produces.
+## Kyoto-style slow drip
 
-The "less acidic" claim for cold brew is real but misunderstood. The pH data shows hot and cold brew are nearly identical. What cold brew has is less total dissolved acid, which means less of the sensory experience of acidity. For dark-roast lovers and people with acid sensitivity, that's a genuine advantage. For light-roast enthusiasts who want to taste what makes a coffee interesting, flash brew or slow drip preserves what immersion cold brew suppresses.
+A slow-drip tower holds cold water in a top bowl, lets it drip through a bed of coffee in the middle, and collects the coffee below. Hario's version is its Water Dripper; Hario USA lists the clear-frame model (WDCR-6) at 780 ml. Hario's manual gives the method:
 
-<DeepBrewCallout tool="extraction" context="Explore how different compounds dissolve at different stages of extraction — and why temperature changes what ends up in your cup." />
+- **Coffee:** one level spoon, about 12 g, per cup; the coffee bowl holds enough for 2 to 6 cups. Hario recommends a deep roast, finely ground.
+- **Water:** fill the top bowl to the mark for your number of cups, about 140 ml per mark. That's a ratio of about 1:11.7 (calculated: 140 ÷ 12).
+- **Prepare:** moisten the coffee evenly, stirring as you pour in a little water; Hario warns that coffee left dry can make a weak brew. Then lay a paper filter on top and wet it, which spreads the drips over the coffee.
+- **Drip rate:** about 1 to 1.5 drops per second, set with the tap. The drip slows as the top bowl empties, so Hario suggests starting a little fast.
+- **Time:** about 3 to 5 hours.
+- **Keep:** stir before serving. Hario says the coffee keeps for about 3 days in its lidded pot in the fridge.
 
----
+For four cups, that's 48 g of coffee and about 560 ml of water, which makes about 464 g of coffee, about 15¾ US fl oz (calculated, at 2 g kept per gram of coffee). It's ready to drink as it is. For a stronger cup, Hario suggests more coffee, a finer grind, less water and a slower drip; for a lighter one, the reverse.
 
-<FAQ items={[
-  { question: "Is cold brew actually less acidic than hot coffee?", answer: "Partially true — but not for the reason usually stated. Cold brew has nearly identical pH to hot coffee (4.85–5.13 for both, per Rao & Fuller 2018). What cold brew has is 28–50% lower titratable acidity — a measure of total dissolved acid content, not hydrogen ion concentration. Titratable acidity is what produces the sensory experience of acidity in your mouth. Cold brew is smoother and less tangy because it contains less total acid, not because it's less corrosive. The popular claim that cold brew is 'less acidic' conflates two different measurements." },
-  { question: "How long should cold brew steep?", answer: "14 hours, not 24. Cordoba et al. (2019) found that 14-hour cold brew scored higher than 22-hour cold brew for sweetness, fruity/floral character, and creamy body. The 22-hour brew scored higher for bitterness. Caffeine and chlorogenic acids reach near-equilibrium in cold water around 6–7 hours — steeping beyond that adds bitter compounds without adding the aromatic complexity many home brewers assume they're gaining. For coarse-ground cold brew, 12–18 hours is the practical sweet spot." },
-  { question: "What is Japanese iced coffee (flash brew)?", answer: "Flash brew — also called Japanese iced coffee — is pour-over brewed directly over ice. The ice is weighed and counted as part of the total water, so when hot coffee hits the ice, it chills instantly. This method preserves the full acid and aromatic profile of hot coffee while delivering it cold. Flash brew retains 25+ volatile compounds that cold brew suppresses, makes bright citrus and floral notes more perceptible, and takes 5 minutes instead of 12–18 hours. It's the correct method for light-roast single origins served cold." },
-  { question: "Does cold brew have more caffeine than regular coffee?", answer: "Per fluid ounce of concentrate, yes — significantly more. Per 16oz ready-to-drink serving, approximately the same: 200–280mg for cold brew RTD versus 200–250mg for hot pour over. Cold water extracts caffeine efficiently despite extracting many other compounds less well. The high coffee-to-water ratio in cold brew concentrate means a lot of caffeine per volume, but when diluted to drinking strength, the caffeine levels converge with hot coffee. Many commercial RTD cold brews are sold in smaller-than-expected volumes — check the serving size." },
-  { question: "How long does cold brew last in the fridge?", answer: "Refrigerated concentrate is safe for up to 42 days per Lopane (2024). Flavor quality degrades before safety becomes a concern — most people notice deterioration at 4–6 weeks. Diluted ready-to-drink cold brew should be consumed within 2–3 days; once diluted, microbial activity proceeds faster and flavor degrades quickly. Keep concentrate separate from water until serving to maximize shelf life." },
-  { question: "Is cold brew or flash brew better for light roast coffee?", answer: "Flash brew, decisively — though Kyoto slow drip is a third strong option for light roasts if you have a tower. Light roasts are characterized by the floral and fruit aromatics, bright organic acids, and delicate complexity that come from origin and processing rather than roasting. Cold water in immersion extracts these compounds significantly less well than hot water — GC-MS analysis shows 25 of 36 volatile aroma compounds are higher in concentration in hot brew. Flash brew captures the full light-roast flavor profile and serves it cold. Slow drip extracts more of those compounds than immersion does because of continuous-fresh-water contact, so it splits the difference: cold-coffee smoothness with a brighter, more floral cup. Immersion cold brew's profile (smooth, chocolatey, low-acid, heavy body) is a better match for medium and dark roasts." },
-  { question: "Is Kyoto slow drip actually from Kyoto?", answer: "The name is Japanese; the method probably isn't, at least not entirely. Coffee history broadly attributes the slow-drip technique to 17th-century Dutch colonial Indonesia, from which it spread back to the Netherlands and to Japan along Dutch trade routes — which is why \"Dutch coffee\" remains the dominant name across much of East Asia. Other historians treat that origin story as romantic embellishment and credit 20th-century Japanese engineers with designing the actual three-chamber tower apparatus. What's uncontested is Japan's contribution: the kissaten coffeehouse tradition adopted cold drip as a visual and temporal centerpiece, and that aesthetic carried the method into the third wave under the \"Kyoto\" name." },
-  { question: "How long does Kyoto slow drip coffee keep in the fridge?", answer: "Less than you'd expect — around 48 hours for best flavor. Slow drip degrades faster than immersion cold brew because its continuous-fresh-water extraction pulls more volatile aromatics, and those volatiles are also the compounds that oxidize first and go stale fastest. Immersion cold brew concentrate, by contrast, stays microbiologically safe for up to 42 days refrigerated in airtight storage (Lopane 2024), with flavor degradation being the practical limit at around six weeks. The trade-off for slow drip's brighter, more floral cup is shorter shelf life." },
-  { question: "What grind size should I use in a slow drip tower?", answer: "Medium-fine — noticeably finer than the coarse grind you'd use for immersion cold brew. A V60 pour-over grind (around 400–600 μm) is roughly the right neighborhood. The finer grind compensates for the shorter total extraction time of slow drip; a coarse immersion grind in a slow-drip tower will taste watery and under-extracted even at five hours. Going too fine, on the other hand, will clog the filter and either stall the drip or over-extract the cup into bitterness." },
-  { question: "Is slow drip coffee stronger than immersion cold brew?", answer: "Not necessarily — it depends on the ratio. A typical slow drip recipe (1:10 coffee to water) produces a ready-to-drink carafe at a strength similar to a 1:12 to 1:15 immersion cold brew without dilution. Both styles are calibrated to be drinking strength straight from the brewer. Where strength comparisons get confusing is that immersion recipes are often made as concentrates (1:4 to 1:8) that get diluted before drinking, while slow drip is almost always brewed at drinking strength from the start." }
-]} />
+## Acidity: what the studies measured
 
-*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*
+Cold brew is often called less acidic. Two studies measured it against hot coffee made from the same beans, and found that it depends on what you measure.
+
+- **Total acid is lower.** Niny Rao and Megan Fuller brewed six coffees both ways at the same ratio, 35 g to 350 ml: cold for 7 hours at room temperature, and hot for 6 minutes in a French press with boiling water. Every cold brew had less titratable acidity, the total amount of acid, than its hot version: roughly 10 to 40 percent less, depending on the coffee and the endpoint (calculated from their tables). Cordoba and colleagues also found less titratable acidity in every cold brew they made, and their three trained tasters scored the cold brews' acidity lower, 1.0–1.7 against 3.0 on a 0-to-5 scale.
+- **pH is a different matter.** pH measures how acidic the liquid is, not how much acid it holds. Rao and Fuller found it comparable: 4.96–5.13 for cold brew and 4.85–5.10 for hot. Cordoba measured a higher pH for cold brew, 4.81–4.92 against 4.36–4.44, so slightly less acidic.
+
+Neither study tested Japanese iced coffee. It's brewed hot, so it starts with hot coffee's acids, but how it compares once chilled wasn't measured.
+
+## Caffeine
+
+Caffeine follows the coffee and the dilution. Per 100 ml, the Caffeine Calculator puts cold brew mixed one to one at 45–95 mg, about the same as drip coffee. A large glass of cold brew carries more mainly because it's a large glass. Our [caffeine guide](/blog/caffeine-in-coffee-guide/) has the table.
+
+## Which to choose
+
+- **For a glass now, from coffee you already brew hot:** Japanese iced coffee. It uses the least coffee per glass, and your usual pour-over gear.
+- **For a week of glasses from one batch:** cold brew. It takes a few minutes of work and a night in the fridge, and Easto finds it forgiving; it uses the most coffee.
+- **For ready-to-drink cold coffee in an afternoon:** slow drip, if you have a tower. It needs a drip rate you keep an eye on, and it keeps for about 3 days.
+
+How each tastes depends on the coffee, so the best test is the same beans brewed two ways side by side. Easto suggests exactly that for cold brew and hot coffee. Our [V60 guide](/blog/ultimate-pour-over-coffee-guide-and-best-v60-technique/) covers the pour-over technique the iced version builds on, and our [ratio guide](/blog/coffee-to-water-ratio-guide/) explains the strengths.
+
+## Sources
+
+- Hario, *V60 Glass Iced Coffee Maker* (VIG-02T) instruction manual, "How to make iced coffee": [Hario Europe (PDF)](https://cdn.shopify.com/s/files/1/0310/1560/0172/files/VIG-02T_manual.pdf?v=1723213075)
+- Hario, *Water Dripper* instruction manual, WDCR-6 / WDW-6 (2023), "How to use," steps 2 to 8: [global.hario.com (PDF)](https://global.hario.com/product/WD.pdf); capacity from Hario USA's "Clear" Slow Drip Coffee Brewer (WDCR-6) listing, checked October 15, 2026: [hario-usa.com](https://www.hario-usa.com/products/slow-drip-coffee-water-dripper-clear-1)
+- Jessica Easto, *Craft Coffee: A Manual* (Agate Surrey, 2017), p. 60, "Cold Brew," and pp. 217–218, "The French Press Cold Brew Method," adapted for the Brew Guide
+- Niny Z. Rao and Megan Fuller, "Acidity and Antioxidant Activity of Cold Brew Coffee," *Scientific Reports* 8 (2018): 16030, Methods and Tables 2 and 4: [doi.org/10.1038/s41598-018-34392-w](https://doi.org/10.1038/s41598-018-34392-w)
+- N. Cordoba, L. Pataquiva, C. Osorio, F. L. Moreno Moreno and R. Y. Ruiz, "Effect of grinding, extraction time and type of coffee on the physicochemical and flavour characteristics of cold brew coffee," *Scientific Reports* 9 (2019): 8440, Tables 1 and 2: [doi.org/10.1038/s41598-019-44886-w](https://doi.org/10.1038/s41598-019-44886-w)
+- Scott Rao, *Espresso Extraction: Measurement and Mastery* (2013), chapter 13, "Brewing Ratio" (running more water through espresso grounds raises extraction)

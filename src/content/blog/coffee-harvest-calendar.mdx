@@ -1,183 +1,141 @@
 ---
-title: "Coffee Harvest Calendar: When Every Major Origin Is Picked, Shipped, and Freshest"
-description: "A country-by-country guide to coffee harvest seasons, processing timelines, and arrival windows. Learn when to buy each origin for peak freshness and how to keep fresh coffee in your rotation year-round."
+title: "Coffee Harvest Calendar: When Each Major Origin Is Picked and When It Arrives"
+description: "Harvest months for 20 coffee origins from Hoffmann's World Atlas and producer bodies, set against when a US importer expects each to land, and how to use the calendar to buy fresher coffee."
 pubDate: "Mar 10 2026"
-updatedDate: "May 02 2026"
+updatedDate: "Oct 15 2026"
 heroImage: "../../assets/blog/coffee-harvest-calendar.jpg"
 category: "Origins"
 ---
+import AnswerBox from '../../components/AnswerBox.astro';
+import ToolCallout from '../../components/ToolCallout.astro';
 import HarvestCalendar from '../../components/infographics/HarvestCalendar.astro';
-import FAQ from '../../components/FAQ.astro';
 
-Most specialty coffee drinkers know that roast date matters. Fewer know that the green coffee sitting inside that bag has its own timeline — one that started months before roasting, in a harvest season on the other side of the world. Understanding that timeline is the difference between drinking vibrant, lively coffee and drinking something that peaked three months ago.
+<AnswerBox answer="Most northern-hemisphere coffee, from Central America, Mexico, Ethiopia and India, is picked between about October and March, and so is Kenya's main crop. Brazil, Peru, Rwanda, Burundi and Papua New Guinea mostly pick between March and September, and Colombia and Kenya have a second crop. The green coffee then takes months to reach the US. Every window shifts with the region, the altitude and the year's weather, so treat them as typical." />
 
-Coffee is an agricultural product with a shelf life that starts long before it reaches your grinder. Here's how to read that clock.
+Coffee is a seasonal crop that most of us buy like a pantry staple. Knowing when each origin is picked, and roughly when it lands, helps you read a "new crop" label and spot a coffee that has been sitting in a warehouse for a long time.
 
-## Three Dates That Define Your Coffee's Freshness
+## Three dates that shape your coffee
 
-Every bag of coffee has three dates worth caring about. Most roasters only print one of them.
+- **The harvest, or crop year.** When the cherries were picked. The International Coffee Organization (ICO) counts producing countries' crop years from April 1, July 1 or October 1, depending on when their harvests fall. A "2025/26" Ethiopian coffee, for example, was picked from about October 2025 into early 2026.
+- **The arrival.** When the green coffee reached an importer in the country where it will be roasted. Processing, drying, milling and shipping take months.
+- **The roast date,** the one printed on retail bags. Our Freshness tool treats about 7 to 21 days after roasting as the usual best window and about a month as the end of the good window for whole beans: typical windows rather than a forecast for your bag.
 
-**Crop year** is when the coffee cherry was harvested. A "2025/26 crop" Ethiopian coffee was picked between October 2025 and January 2026. This is the starting gun for the freshness clock on the green (unroasted) bean.
+A fresh roast date tells you nothing about the green coffee's age. A roaster can roast an old crop today and print today's date on the bag. The best bags are fresh at all three stages.
 
-**Arrival date** is when the green coffee landed at the importer's warehouse in the destination country. For most origins, this is 3–5 months after harvest begins — processing, dry-milling, export logistics, and ocean freight all take time. Arrival date is what importers and roasters track. It tells you how long that green coffee has been sitting in a warehouse.
+<ToolCallout tool="freshness" preset={{ storage: 'sealed-bag' }} cta="Open Freshness for a sealed bag" context="Opens the Freshness tool for a sealed bag of whole beans brewed as filter. It starts on a bag roasted ten days ago: enter the roast date from yours to see its stage and its usual best dates." />
 
-**Roast date** is the one printed on retail bags. It matters for the roasted bean's freshness window (peak at 7–21 days post-roast, usable for about a month). But roast date tells you nothing about whether the green coffee was fresh when it was roasted. A roaster can roast stale green coffee today and slap today's date on the bag. It'll still taste flat.
+## How long green coffee stays fresh
 
-The best coffee is fresh at every stage: recently harvested, recently arrived, recently roasted. Knowing the harvest calendar tells you when each origin is at its peak — and when it's running on borrowed time.
+Green coffee ages slowly, but it does age. The Specialty Coffee Association's "Coffee Decoded" series describes how it goes: some coffees lose their spark in a few months, while others keep their character for 14 or 16 months. As they age, flavors mute, aromas become less lively, and a washed coffee's color fades from gray-green toward pale beige. Cool, dry storage slows it, sealed plastic or mylar bags help, and deep-freezing nearly stops it.
 
-## What Happens When Green Coffee Ages
+By the time the next harvest arrives, the trade calls the previous year's coffee "past crop." That's why timing matters when you buy. A "new arrival" Kenyan coffee in April fits the calendar: Kenya's main crop is picked October to December, and the importer Café Imports lists typical Kenyan arrivals from March to May. A "new arrival" Kenyan in September deserves a question about which crop it came from.
 
-Green coffee doesn't last forever. Stored properly in climate-controlled warehouses (cool, stable humidity, sealed in GrainPro bags), high-quality Arabica holds well for about 6–9 months after arrival. Past that window, degradation accelerates.
+## The calendar
 
-The signs of past-crop coffee are unmistakable once you know them. Acidity fades first — the bright, lively notes that define great Kenyan or Ethiopian coffee gradually flatten out. Aromatics dull. What replaces them are woody, papery, or cardboard-like flavors. Body may remain, but the coffee loses its spark. Some roasters describe it as the difference between fresh-squeezed orange juice and juice from concentrate. Technically the same fruit, but the life is gone.
-
-This is why origin harvest timing matters to you as a buyer. If someone is selling you a "new arrival" Kenyan coffee in February, that checks out — Kenya's main harvest runs October through December, and fresh arrivals typically land in the US by January–March. If they're selling a "new arrival" Kenyan in August, be skeptical.
+Harvest months below come from James Hoffmann's *World Atlas of Coffee*, which lists them region by region; where a country's regions differ, the bar spans its main producing regions. Arrival months are Café Imports' typical US arrival windows, checked on October 15, 2026. They're one importer's schedule, not a fixed shipping time, and other importers' coffee can land earlier or later.
 
 <HarvestCalendar
-  title="Global Coffee Harvest Calendar"
-  subtitle="Harvest windows and peak US arrival months for 20+ origins"
+  title="Coffee Harvest and Arrival Calendar"
+  subtitle="Harvest: Hoffmann's World Atlas of Coffee, by region. Arrival: Café Imports' typical US arrival windows, checked October 15, 2026"
   origins={[
-    { name: "Ethiopia", group: "Africa", harvest: [10, 11, 12, 1], arrival: [2, 3, 4, 5, 6] },
-    { name: "Kenya (main)", group: "Africa", harvest: [10, 11, 12], arrival: [2, 3, 4, 5] },
-    { name: "Kenya (fly crop)", group: "Africa", harvest: [6, 7, 8], arrival: [9, 10] },
-    { name: "Rwanda / Burundi", group: "Africa", harvest: [3, 4, 5, 6, 7], arrival: [9, 10, 11, 12] },
-    { name: "Tanzania", group: "Africa", harvest: [7, 8, 9, 10, 11, 12], arrival: [12, 1, 2, 3, 4] },
-    { name: "Guatemala", group: "Central America", harvest: [12, 1, 2, 3], arrival: [5, 6, 7, 8] },
-    { name: "Costa Rica", group: "Central America", harvest: [11, 12, 1, 2, 3], arrival: [5, 6, 7, 8] },
-    { name: "Honduras", group: "Central America", harvest: [11, 12, 1, 2, 3, 4], arrival: [5, 6, 7, 8, 9] },
-    { name: "El Salvador", group: "Central America", harvest: [11, 12, 1, 2, 3], arrival: [5, 6, 7, 8] },
-    { name: "Panama", group: "Central America", harvest: [12, 1, 2, 3], arrival: [5, 6, 7, 8] },
-    { name: "Mexico", group: "Central America", harvest: [11, 12, 1, 2, 3], arrival: [5, 6, 7] },
-    { name: "Brazil", group: "South America", harvest: [5, 6, 7, 8, 9], arrival: [9, 10, 11, 12, 1] },
-    { name: "Colombia (main)", group: "South America", harvest: [10, 11, 12, 1], arrival: [2, 3, 4, 5] },
-    { name: "Colombia (mitaca)", group: "South America", harvest: [4, 5, 6], arrival: [8, 9, 10] },
-    { name: "Peru", group: "South America", harvest: [4, 5, 6, 7, 8, 9], arrival: [9, 10, 11, 12] },
-    { name: "Sumatra (main)", group: "Asia & Oceania", harvest: [9, 10, 11, 12], arrival: [1, 2, 3, 4] },
-    { name: "Java / Sulawesi", group: "Asia & Oceania", harvest: [6, 7, 8, 9], arrival: [11, 12, 1] },
-    { name: "India", group: "Asia & Oceania", harvest: [11, 12, 1, 2], arrival: [5, 6, 7, 8] },
-    { name: "Yemen", group: "Asia & Oceania", harvest: [10, 11, 12], arrival: [3, 4, 5, 6] },
-    { name: "Papua New Guinea", group: "Asia & Oceania", harvest: [4, 5, 6, 7, 8, 9], arrival: [9, 10, 11, 12] },
-    { name: "Hawaii / Kona", group: "Asia & Oceania", harvest: [9, 10, 11, 12, 1], arrival: [11, 12, 1, 2, 3] }
+    { name: "Ethiopia", group: "Africa", harvest: [10, 11, 12, 1], arrival: [4, 5, 6] },
+    { name: "Kenya (main crop)", group: "Africa", harvest: [10, 11, 12], arrival: [3, 4, 5] },
+    { name: "Kenya (fly crop)", group: "Africa", harvest: [6, 7, 8], arrival: [] },
+    { name: "Rwanda", group: "Africa", harvest: [3, 4, 5, 6], arrival: [9, 10, 11, 12] },
+    { name: "Burundi", group: "Africa", harvest: [4, 5, 6, 7], arrival: [10, 11, 12] },
+    { name: "Tanzania", group: "Africa", harvest: [6, 7, 8, 9, 10, 11, 12], arrival: [1, 2, 3, 4] },
+    { name: "Malawi", group: "Africa", harvest: [4, 5, 6, 7, 8, 9], arrival: [11, 12, 1, 2] },
+    { name: "Guatemala", group: "Central America", harvest: [12, 1, 2, 3, 4], arrival: [6] },
+    { name: "Costa Rica", group: "Central America", harvest: [11, 12, 1, 2, 3], arrival: [5, 6, 7] },
+    { name: "Honduras", group: "Central America", harvest: [11, 12, 1, 2, 3, 4], arrival: [5, 6, 7] },
+    { name: "El Salvador", group: "Central America", harvest: [10, 11, 12, 1, 2, 3], arrival: [5, 6, 7] },
+    { name: "Nicaragua", group: "Central America", harvest: [12, 1, 2, 3], arrival: [4, 5, 6, 7] },
+    { name: "Panama", group: "Central America", harvest: [12, 1, 2, 3], arrival: [4, 5, 6, 7] },
+    { name: "Mexico", group: "Central America", harvest: [11, 12, 1, 2, 3], arrival: [5, 6] },
+    { name: "Brazil", group: "South America", harvest: [5, 6, 7, 8, 9], arrival: [10, 11, 12, 1] },
+    { name: "Colombia (Huila, Caldas)", group: "South America", harvest: [9, 10, 11, 12, 4, 5], arrival: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
+    { name: "Colombia (Cauca, Tolima)", group: "South America", harvest: [3, 4, 5, 6, 10, 11, 12], arrival: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
+    { name: "Peru", group: "South America", harvest: [3, 4, 5, 6, 7, 8, 9], arrival: [1, 2, 3, 4, 5, 6] },
+    { name: "Bolivia (Yungas)", group: "South America", harvest: [7, 8, 9, 10, 11], arrival: [1, 2, 3, 4] },
+    { name: "Sumatra", group: "Asia & Oceania", harvest: [9, 10, 11, 12], arrival: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
+    { name: "Java", group: "Asia & Oceania", harvest: [7, 8, 9], arrival: [11, 12] },
+    { name: "Sulawesi", group: "Asia & Oceania", harvest: [5, 6, 7, 8, 9, 10, 11], arrival: [9, 10, 11, 12] },
+    { name: "India", group: "Asia & Oceania", harvest: [10, 11, 12, 1, 2], arrival: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
+    { name: "Yemen", group: "Asia & Oceania", harvest: [10, 11, 12], arrival: [] },
+    { name: "Papua New Guinea", group: "Asia & Oceania", harvest: [4, 5, 6, 7, 8, 9], arrival: [10, 11] },
+    { name: "Hawaii (Kona)", group: "Asia & Oceania", harvest: [8, 9, 10, 11, 12, 1], arrival: [12, 1, 2, 3] }
   ]}
-  tips={[
-    { label: "Q1 (Jan–Mar)", buy: "Ethiopia, Kenya, Colombia", arriving: "African new crops, Colombian main crop" },
-    { label: "Q2 (Apr–Jun)", buy: "Guatemala, Costa Rica, Honduras, Panama", arriving: "Central American new crops, Colombia mitaca" },
-    { label: "Q3 (Jul–Sep)", buy: "Brazil, Rwanda, Burundi, Peru, PNG", arriving: "Southern hemisphere new crops" },
-    { label: "Q4 (Oct–Dec)", buy: "Sumatra, Java, India, Brazil", arriving: "Asian origins, Brazilian late arrivals" }
-  ]}
-  footnote="With careful sourcing and rotation, you can keep most cups within peak crop-year freshness — though storage, freezing, and origin availability all play a role too."
+  footnote="Harvests shift with altitude, rainfall and each year's weather. Colombia's two rows are two regional patterns; a Colombian main crop in one region overlaps the second crop in another. Café Imports gives no arrival window for Kenya's fly crop and says Yemen's varies."
 />
 
-## The Harvest Calendar: Country by Country
+## Origin by origin
 
-Coffee grows between the Tropics of Cancer and Capricorn, and harvest timing depends on hemisphere, altitude, and rainfall patterns. Southern hemisphere countries generally harvest in their winter/dry season (April–September), while northern hemisphere origins harvest October through March. Countries on or near the equator sometimes manage two harvests per year.
+Most coffee grows between the tropics. Broadly, origins north of the equator pick from about October to March, and those south of it from about April to September, with exceptions such as Sumatra and Tanzania. Countries near the equator, like Colombia and Kenya, can have two crops a year. These are the calendars behind the chart, with the arrival windows Café Imports publishes.
 
 ### Africa
 
-**Ethiopia** (October–January)
-The birthplace of coffee and the source of some of the most complex, aromatic lots in the world. Main harvest runs October through January, though timing varies across its many growing regions. Washed coffees process faster (2–4 weeks), while naturals can take 3–6 weeks on drying beds. Expect fresh Ethiopian arrivals in the US between February and May. Peak buying window: **March–June**.
+- **Ethiopia:** October to January in Sidama and Yirgacheffe, November to January in Limu and Jima, and February to April in Ghimbi and Lekempti in the west, says Hoffmann. Café Imports lists April to June arrivals.
+- **Kenya:** Hoffmann gives every region a main crop from October to December and a smaller fly crop from June to August. Café Imports' calendar is wider: August to January for the main crop and April to July for the early crop, with arrivals from March to May. Our [Kenyan coffee guide](/blog/kenyan-coffee-flavor-notes-and-best-coffees/) covers what that crop tastes like.
+- **Rwanda:** one crop a year. NAEB, Rwanda's agricultural export board, says picking starts in late February on the shores of Lake Kivu and early March elsewhere, and runs until August in some northern areas. Hoffmann gives March to June. Café Imports lists September to December arrivals. See our [Rwandan coffee guide](/blog/rwandan-coffee-a-story-of-rebuilding/).
+- **Burundi:** April to July (Hoffmann), arriving October to December.
+- **Tanzania:** July to December in the northern regions around Kilimanjaro and Arusha, June to October in the southern highlands (Hoffmann). Café Imports lists January to April arrivals.
+- **Malawi:** April to September in every northern district Hoffmann lists, and Café Imports gives the same; the Mzuzu Coffee Planters Cooperative Union, the smallholders' union in the north, says May to October. Café Imports lists November to February arrivals. See our [Malawi coffee guide](/blog/malawi-coffee-africas-hidden-gem/).
 
-**Kenya** (October–December main / June–August fly crop)
-Kenya's main harvest runs October through December, with a smaller secondary "fly crop" mid-year (typically June through August, with some regions picking as early as April). The country's meticulous wet-processing and weekly auction system add time, but quality control is exceptional. Fresh main-crop arrivals typically land February–April. The smaller mid-year harvest arrives August–October. Peak buying window: **March–June** (main crop). For more on what makes Kenyan coffee special, see our [Kenyan coffee flavor guide](/blog/ethiopian-coffee-flavors-and-varieties/).
+### Central America and Mexico
 
-**Rwanda and Burundi** (March–July)
-These neighboring Bourbon-growing countries harvest March through July. Fully washed processing is standard. Arrivals in the US typically begin in August and run through October. Peak buying window: **September–December**.
+These harvests cluster in the northern dry season, so the region's new crops tend to land together in late spring and summer.
 
-**Tanzania** (July–December for Arabica)
-A long harvest window stretching July through December, with the famous peaberry lots often among the earlier picks. Arrivals begin around November and extend into March. Peak buying window: **December–April**.
-
-### Central America
-
-Central American harvests cluster tightly in the Northern Hemisphere dry season. The timing overlap means these origins often compete for attention — and shelf space — in the same months.
-
-**Guatemala** (December–March)
-One of the most celebrated Central American origins. High-altitude regions like Huehuetenango and Antigua harvest December through March. Fresh arrivals land April–July. Peak buying window: **May–August**.
-
-**Costa Rica** (November–March)
-The micro-mill revolution means lots ship in smaller batches, sometimes arriving faster than other Central Americans. Harvest runs November through March; arrivals April–July. [Costa Rica's honey-process innovation](/blog/costa-rica-possibly-the-best-single-origin-coffee/) means you'll often find yellow, red, and black honey lots arriving during this window. Peak buying window: **May–August**.
-
-**Honduras** (November–April)
-Central America's largest producer by volume. The longer harvest window means arrivals are spread across April–August. Peak buying window: **May–September**.
-
-**El Salvador** (November–March)
-Known for Bourbon and the striking Pacamara variety. Harvest November–March, arrivals April–July. Peak buying window: **May–August**.
-
-**Nicaragua** (November–March)
-Rapidly improving in quality. Same general timeline as its neighbors: harvest November–March, arrivals April–July. Peak buying window: **May–August**.
-
-**Panama** (December–March)
-Home of the legendary Geisha variety. Small production, premium lots. Harvest December–March, arrivals April–June. Peak buying window: **May–August**.
-
-**Mexico** (November–March)
-Major organic producer, with Chiapas as the standout region. Harvest November–March, arrivals April–July. Peak buying window: **May–August**.
+- **Guatemala:** December to March in most regions, January to April in Huehuetenango and January to March in Antigua (Hoffmann). Café Imports lists June arrivals. See our [Guatemalan coffee guide](/blog/guatemala-coffee-review-regional-differences-and-best-coffees/).
+- **Costa Rica:** November to March in Tarrazú, the Central Valley and Tres Ríos, but from as early as July or August in Turrialba, Brunca, Orosi and Guanacaste (Hoffmann); arrivals May to July. Our [Costa Rican coffee guide](/blog/what-does-costa-rican-coffee-taste-like/) has the regional table.
+- **Honduras:** from November in Copán and Opalaca and from December elsewhere, finishing between February and April (Hoffmann); arrivals May to July. See our [Honduras coffee guide](/blog/honduras-coffee-guide-marcala-comayagua/).
+- **El Salvador:** October to March across its mountain ranges (Hoffmann); arrivals May to July. See our [El Salvador coffee guide](/blog/el-salvador-coffee-guide-pacamara/).
+- **Nicaragua:** December to March (Hoffmann); arrivals April to July.
+- **Panama:** December to March in Boquete, Volcán-Candela and Renacimiento (Hoffmann); arrivals April to July. See our [Panama coffee guide](/blog/panama-coffee-guide-geisha-boquete/).
+- **Mexico:** November to March in Chiapas, December to March in Oaxaca and Veracruz (Hoffmann); arrivals May to June.
 
 ### South America
 
-**Brazil** (May–September)
-The giant. Brazil produces roughly one-third of the world's coffee, and its harvest runs May through September — peaking June–August. Machine harvesting and massive infrastructure mean processing is fast. Fresh arrivals land in the US August–December. Brazilian coffee's naturally low acidity means it holds up longer in storage than brighter African lots, but fresh-crop Brazilian still has a sweetness and clarity that past-crop lacks. Peak buying window: **September–January**.
-
-**Colombia** (October–January main / April–June mitaca)
-Colombia's geography is unique: three Andes mountain ranges create microclimates that support two distinct harvests. The main harvest runs October–January, the secondary "mitaca" harvest April–June. This dual cycle means fresh Colombian coffee is available in the US nearly year-round — main crop arrivals land February–May, mitaca arrivals August–October. Peak buying window: **virtually year-round**. If you want to understand the regional character within Colombia, our [single-origin Colombian coffee guide](/blog/what-is-single-origin-coffee/) covers what to expect from different departments.
-
-**Peru** (April–September)
-A major organic and Fair Trade producer with enormous potential that's still being realized. Harvest April–September, arrivals August–December. Peak buying window: **September–January**.
+- **Brazil:** May to September in every region Hoffmann lists. In 2026 the ICO reported that a survey by the consultancy Safras & Mercado found the harvest 97 percent complete by August 26. Café Imports lists October to January arrivals. See our [Brazilian coffee guide](/blog/is-brazilian-coffee-any-good/).
+- **Colombia:** two crops, and which is "main" depends on the region. Studies at six of Cenicafé's research stations in the central coffee zone (Cenicafé is the research center of Colombia's coffee growers' federation) found the main harvest starting in August, building from September and falling off sharply in December, with the second crop, the *traviesa* or *mitaca*, usually picked from March to May. Hoffmann's regional tables put the main crop at September to December in Huila, Caldas, Antioquia and Risaralda, but March to June in Cauca, Tolima and Cundinamarca. Café Imports lists Colombian arrivals as year-round. See our [Colombian coffee guide](/blog/single-origin-colombian-coffee-what-flavor-notes-to-expect/).
+- **Peru:** March to September in Cajamarca, Junín, Cusco and San Martín (Hoffmann). Café Imports lists January to June arrivals. See our [Peruvian coffee guide](/blog/peru-coffee-guide-chanchamayo/).
+- **Bolivia:** July to November in the Yungas, which grows about 95 percent of the crop (Hoffmann). Café Imports lists January to April arrivals. See our [Bolivian coffee guide](/blog/bolivia-coffee-rare-hidden-gem/).
 
 ### Asia and Oceania
 
-**Indonesia — Sumatra** (September–December main / March–June secondary)
-Sumatra's unique Giling Basah (wet-hulling) process creates its signature earthy, herbal, heavy-bodied profile. Main harvest September–December, with a secondary crop March–June. Main-crop arrivals typically land January–April. Peak buying window: **February–June**.
+- **Indonesia:** each island has its own season. Hoffmann gives September to December for Sumatra, July to September for Java and May to November for Sulawesi. Café Imports lists Sumatran arrivals as year-round, Java's in November and December and Sulawesi's from September to December. See our [Sumatra coffee reviews](/blog/7-sumatra-coffees-reviewed-best-and-worst/).
+- **India:** October to February across the regions Hoffmann lists; Café Imports lists arrivals from March to December. See our [Indian coffee guide](/blog/what-is-coffee-from-india-like/).
+- **Yemen:** October to December (Hoffmann). Café Imports says its arrivals vary. See our [Yemen coffee guide](/blog/yemen-coffee-guide-mocha-origin/).
+- **Papua New Guinea:** April to September in the highlands (Hoffmann); arrivals October to November.
+- **Hawaii:** August to January in Kona and the Big Island's other districts, with other islands from September or October (Hoffmann). Café Imports lists US arrivals from December to March. See our [Kaʻū coffee guide](/blog/ka-u-hawaii-specialty-coffee-region/).
 
-**Indonesia — Java and Sulawesi** (June–September)
-Different islands, different timing. Java and Sulawesi harvest June–September, and their processing methods differ from Sumatra's — you'll find more fully washed lots here, with cleaner and more balanced profiles. Arrivals October–January. Peak buying window: **November–February**.
+<ToolCallout tool="origins" cta="Open Coffee Origins on this month" context="Opens Coffee Origins with its month dial on the current month: it lists the origins harvesting now, and picking one draws its year as a ring with the uncertain edges marked. Turn the dial to any month. Its calendars come from importers' published windows, so some months differ from Hoffmann's." />
 
-**India** (November–February)
-India's Monsooned Malabar is a special case — the monsoon exposure process adds months to the timeline. Standard Indian Arabica harvests November–February, with arrivals reaching the US by April–June. Peak buying window: **May–August**.
+## What's newly arriving, season by season
 
-**Yemen** (October–December)
-Tiny production, sky-high prices, and a flavor profile unlike anything else. Harvest October–December. Limited, erratic supply due to ongoing conflict. When it arrives (typically March–June), it goes fast. Peak buying window: **whenever you can find it**.
+Reading across the arrival windows above (Café Imports' typical US arrivals):
 
-**Papua New Guinea** (April–September)
-Excellent but underrated. PNG coffees at their best show complex, bright profiles that rival East African lots, at a fraction of the price. Harvest April–September, arrivals August–December. Peak buying window: **September–January**.
+- **January to March:** Brazil's last arrivals, then Kenya's main crop from March. Tanzania, Peru and Hawaii are landing, and Colombia and Sumatra arrive year-round.
+- **April to June:** Ethiopia, the rest of Kenya's main crop and most of Central America and Mexico. Peru is still landing.
+- **July to September:** the tail of the Central American arrivals, then Rwanda and Sulawesi from September. India's window runs from March to December.
+- **October to December:** Brazil's new crop, Burundi, Rwanda, Papua New Guinea, Java and Sulawesi, with Hawaii from December.
 
-**Hawaii / Kona** (September–January)
-The only US-grown origin of commercial significance. Harvest September–January. Because there's no ocean shipping delay, fresh Kona is available almost immediately after processing — a rare luxury in an industry where months of transit are the norm. Peak buying window: **November–March**.
+There's almost always something newly arrived. Rotating origins with the seasons is one way to keep the green coffee in your cup recent.
 
-## The Year-Round Fresh Coffee Strategy
+## Buying with the seasons
 
-The global harvest calendar has a beautiful feature: it never stops. At any point in the year, something fresh is arriving somewhere.
+- **Ask about the harvest and arrival.** A good specialty roaster knows when its green coffee was picked and when it landed.
+- **Watch for "new crop" and "fresh arrival."** Roasters and importers announce new crops because freshness sells. Check the claim against the calendar above.
+- **Question the same single origin all year.** A roaster offering the same Kenyan lot in March and September may be roasting from the same green coffee for months. Colombia, with its two regional crops and year-round arrivals, is the usual exception.
+- **Freeze what you love.** Roasted coffee keeps far longer in the freezer: our Freshness tool pauses the clock for up to about a year of freezing. Our [guide to freezing coffee beans](/blog/how-to-freeze-coffee-beans/) covers the method.
 
-**January–March:** Fresh Ethiopian and Kenyan arrivals start landing. Colombian main crop is arriving. This is one of the best windows of the year for bright, complex African coffees.
+Coffee is closer to fruit than to rice: it has seasons. Asking "what's newly arrived?" is a simple way to put fresher coffee in your cup.
 
-**April–June:** Central American coffees flood the market — Guatemala, Costa Rica, Honduras, El Salvador, Panama. This is peak Central American season. Colombian mitaca is being harvested. Ethiopian and Kenyan arrivals are still fresh.
+## Sources
 
-**July–September:** Brazilian new crop starts arriving. Rwandan and Burundian coffees are fresh. Colombian mitaca arrivals begin. Peru and PNG lots are landing. Central Americans are still in their sweet spot.
-
-**October–December:** Brazilian arrivals are strong. Sumatran main crop is fresh. Java and Sulawesi lots are arriving. Colombian main harvest begins. Fresh Indian coffee starts processing. Ethiopian and Kenyan harvests are just starting — anticipation builds for the next wave.
-
-The key insight: with careful sourcing, you rarely *need* to drink obviously past-crop coffee. By rotating origins with the seasons, most bags you buy can land within or close to their peak freshness window. Frozen reserves of a favorite origin and good roaster sourcing fill in the gaps when an origin is between harvests.
-
-## Practical Tips for Buying Seasonally
-
-**Ask your roaster about arrival dates.** Good specialty roasters know when their green coffee arrived and will tell you. If a roaster is evasive about this, it could mean they're sitting on old inventory.
-
-**Watch for "new crop" and "fresh arrival" language.** Reputable roasters and importers announce new arrivals because it's a selling point. When you see these announcements, that's your signal to buy.
-
-**Be skeptical of year-round single-origin offerings.** If a roaster sells the same Kenyan coffee in March (plausible — fresh arrival) and September (suspect — that green is 6+ months old), the September version won't taste the same. Colombia is the notable exception — its dual harvest supports genuine year-round availability.
-
-**Subscription services can help.** Good subscription roasters rotate their offerings seasonally, which means they're doing the harvest-tracking work for you. You get whatever is freshest, which is often something you wouldn't have picked yourself. A <a href="https://www.amazon.com/s?k=specialty+coffee+subscription+single+origin&tag=jayarrcoffee-20" rel="sponsored noopener">specialty coffee subscription</a> from a roaster that publishes arrival dates is worth considering.
-
-**Stock up and freeze.** When your favorite origin hits its peak season, buy extra and freeze it. Properly sealed and frozen, roasted coffee retains its freshness for months — far longer than it would sitting in a cabinet. This is the best way to enjoy peak-season Kenyan or Ethiopian coffee outside their arrival window.
-
-Coffee is a seasonal product that the industry has trained us to treat as a pantry staple. The big commercial brands want you to think of coffee the way you think of rice — always available, always the same. But specialty coffee is closer to stone fruit or tomatoes. There's a season when it's incredible, and a season when it's just okay. Once you start asking "what's in season right now?" instead of "what brand do I usually buy?" your average cup quality goes up immediately. No new gear required. Just better timing.
-
----
-
-<FAQ items={[
-  { question: "When is coffee harvested in most countries?", answer: "It depends on the hemisphere. Northern hemisphere origins (Central America, Mexico, Ethiopia, India) generally harvest October through March during their dry season. Southern hemisphere origins (Brazil, Peru, Papua New Guinea) harvest April through September. Countries near the equator, like Colombia and Kenya, can produce two harvests per year, which is why Colombian coffee is available fresh almost year-round." },
-  { question: "How long after harvest does coffee arrive in the US?", answer: "Typically 3–5 months. After picking, coffee goes through processing (1–4 weeks for washed, up to 6 weeks for naturals), dry-milling, quality grading, export paperwork, and ocean freight. A coffee harvested in December in Guatemala will usually arrive at a US importer by April or May. Some origins with faster infrastructure (Brazil, Colombia) can move more quickly; others with logistical challenges (Ethiopia, Papua New Guinea) sometimes take longer." },
-  { question: "What does past-crop coffee taste like?", answer: "Stale green coffee loses acidity first — the bright, fruity, floral notes fade and flatten. What remains is a woody, papery, or cardboard-like character with muted aromatics. Body may persist, but the coffee loses its liveliness and complexity. High-quality Arabica stored in climate-controlled warehouses holds well for about 6–9 months after arrival, but after that, degradation is noticeable even to casual drinkers." },
-  { question: "Which coffee origins are freshest right now?", answer: "It rotates through the year. January–March brings fresh Ethiopian, Kenyan, and Colombian main-crop arrivals. April–June is peak Central American season (Guatemala, Costa Rica, Honduras). July–September features new-crop Brazil, Rwanda, Burundi, and Peru. October–December brings fresh Sumatran, Javan, and Indian lots. Following what specialty roasters label as 'new arrivals' or 'fresh crop' is the easiest way to stay in season." },
-  { question: "Is crop year or roast date more important?", answer: "Both matter, but they measure different things. Roast date tells you how fresh the roasted bean is — aim for 7–21 days post-roast for peak flavor. Crop year tells you how fresh the green coffee was before roasting. A coffee roasted yesterday from past-crop green beans will have today's roast date but won't taste as good as the same coffee roasted from current-crop green. The best bags are recent crop year, recently arrived green, and recently roasted." }
-]} />
-
-*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*
+- James Hoffmann, *The World Atlas of Coffee*, 2nd ed. (Octopus/Mitchell Beazley, 2018): country chapters' "Growing regions" entries, harvest months for each region (Ethiopia, Kenya, Rwanda, Burundi, Tanzania, Malawi, Guatemala, Costa Rica, Honduras, El Salvador, Nicaragua, Panama, Mexico, Brazil, Colombia, Peru, Bolivia, Indonesia, India, Yemen, Papua New Guinea, Hawaii)
+- Café Imports, origin pages, "Coffee Profile" fields "Harvest Period/s" and "Typical Arrival" for each origin above, checked October 15, 2026: [cafeimports.com](https://www.cafeimports.com/north-america/kenya)
+- Mzuzu Coffee Planters Cooperative Union, home page (harvest months), checked October 18, 2026: [mzuzucoffee.org](http://www.mzuzucoffee.org/)
+- National Agricultural Export Development Board (NAEB), Rwanda, "About Rwanda coffee," checked October 15, 2026: [naeb.gov.rw](https://www.naeb.gov.rw/rwanda-coffee/about-rwanda-coffee)
+- Gabriel Alvarado-Alvarado and Germán Moreno-Ruiz, "¿Cómo se distribuye anualmente la cosecha de las variedades Caturra y Colombia?," *Avances Técnicos Cenicafé* 260 (February 1999), p. 3: [cenicafe.org (PDF)](https://biblioteca.cenicafe.org/bitstream/10778/4172/3/avt0260.pdf)
+- International Coffee Organization, *Coffee Market Report*, September 2026: p. 3 (Brazil's harvest progress) and the explanatory note to Table 3 (coffee years and crop years beginning April 1, July 1 and October 1): [ico.org (PDF)](https://www.ico.org/documents/cy2025-26/cmr-0926-e.pdf)
+- Specialty Coffee Association, "Coffee Decoded: What is 'fresh crop' coffee?," SCA News, checked October 15, 2026: [sca.coffee](https://sca.coffee/sca-news/coffee-decoded-10-fresh-green-coffee)

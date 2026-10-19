@@ -1,212 +1,118 @@
 ---
-title: "Pressure Profiling Espresso: The 3-Phase Guide"
-description: "Pressure profiling explained — Rao's 3-phase model (preinfusion, full pressure, decline), why it beats flat 9-bar, and how to start on any machine."
+title: "Pressure Profiling Espresso: Rao's Three-Phase Shot, Explained"
+description: "Pressure profiling changes the pressure on the puck during an espresso shot. Here's Scott Rao's three-phase model, how pressure and flow differ, which machines can do it and how to start."
 pubDate: "Apr 11 2026"
-updatedDate: "Apr 11 2026"
+updatedDate: "Oct 15 2026"
 heroImage: "../../assets/blog/pressure-profiling-espresso-guide.jpg"
 category: "Brewing"
 ---
 
-import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
-import FAQ from '../../components/FAQ.astro';
 import AnswerBox from '../../components/AnswerBox.astro';
-import ArticleSchema from '../../components/ArticleSchema.astro';
-import HowToSchema from '../../components/HowToSchema.astro';
+import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
 import ToolCallout from '../../components/ToolCallout.astro';
 
-<ArticleSchema
-  title="Pressure Profiling Espresso: The 3-Phase Guide"
-  description="Pressure profiling explained — Rao's 3-phase model (preinfusion, full pressure, decline), why it beats flat 9-bar, and how to start on any machine."
-  pubDate="2026-04-11"
-  updatedDate="2026-04-11"
-  heroImage="../../assets/blog/pressure-profiling-espresso-guide.jpg"
-  category="Brewing"
-/>
+<AnswerBox answer="Pressure profiling means changing the pressure on the coffee during a shot instead of holding it flat. Scott Rao's model ramps up through 10 to 12 seconds of preinfusion, holds the pressure that gives your machine its highest flow for 6 to 9 seconds, then lets it decline for 15 to 18 seconds, about 31 to 39 seconds in all (calculated); he found it allowed a finer grind and longer, higher-extraction shots than a flat profile. It needs a machine that can vary pressure or flow during the shot; on one that can't, preinfusion and puck prep are what you control." />
 
-<AnswerBox answer="Pressure profiling means changing water pressure during an espresso shot instead of holding a constant 9 bar. Rao's 3-phase model — preinfusion at 3.5-4.5 bar (10-12 seconds), full pressure at 7-9 bar (6-9 seconds), then a linear decline (15-18 seconds) — produces more consistent shots with better clarity and sweetness. The gentle start lets the puck self-organize, reducing channeling. Grind finer than your flat-profile setting and dose to within 0.1g." />
+A typical espresso machine pushes water at one set pressure from the start of a shot to the end. Pressure profiling changes it as the shot runs: gentle at first, full in the middle, easing off at the end. Lever machines have long done a version of this, and Rao calls the end of his model a "lever-style" decline.
 
-<HowToSchema
-  name="How to Optimize Espresso Pump Pressure (Rao's 5-Step Protocol)"
-  description="Find the optimal pump pressure for your specific espresso machine using Rao's systematic flow-rate optimization protocol. Requires an espresso machine with adjustable pump pressure, a scale accurate to 0.1g, and a timer."
-  totalTime="PT30M"
-  steps={[
-    { name: "Set pump to 7.5 bar", text: "Set the pump pressure to 7.5 bar (approximately 7.0 bar at the group head). Pull 3 shots at exactly 30 seconds with identical dose weighed to within 0.1g. Average the shot weights." },
-    { name: "Increase to 8.0 bar and repeat", text: "Increase pump pressure to 8.0 bar (approximately 7.5 bar at group head). Pull 3 more shots at exactly 30 seconds with identical dose. Average the shot weights." },
-    { name: "Continue in 0.5 bar increments", text: "Continue increasing pump pressure in 0.5 bar increments, pulling 3 shots at each setting and averaging the weights." },
-    { name: "Identify when shot weight decreases", text: "When average shot weight decreases compared to the previous setting, the previous pressure was your optimal point — the pressure at which flow rate through the coffee bed peaks." },
-    { name: "Refine with 0.2 bar increments", text: "Fine-tune by testing 0.2 bar increments around the optimal point identified in step 4 to dial in the exact best pressure for your machine and coffee." }
-  ]}
-/>
+This page assumes you can already pull a consistent flat shot. If not, start with our [dial-in guide](/blog/how-to-dial-in-espresso/); profiling makes small inconsistencies bigger, not smaller.
 
-Pressure profiling means deliberately changing the water pressure during an espresso shot instead of holding it constant at 9 bar from start to finish. The idea is simple: different phases of extraction benefit from different pressures. A gentle start lets the coffee bed organize itself. Full pressure maximizes extraction. A declining tail improves clarity and reduces harsh compounds in the final drops.
+## Pressure and flow are two different controls
 
-This isn't theoretical. Scott Rao developed a 3-phase pressure profiling model that he validated with consulting clients — none of whom improved upon it. Jonathan Gagne's puck physics research explains why it works at a physical level. And every lever machine ever built has done some version of this by default, because springs naturally produce declining pressure.
+Pressure is how hard the machine pushes. Flow is how fast water actually passes through the puck. The puck's resistance links the two, and that resistance changes during the shot.
 
-Here's what pressure profiling actually does, why it produces better espresso than a flat 9-bar profile, and how to start practicing it regardless of your machine.
+- **More pressure isn't always more flow.** Rao writes that flow rises with pressure until somewhere between 7 and 9 bar at the group head; beyond that, the extra pressure compacts the bed more than it pushes water through.
+- **Your gauge may not show the group.** Rao notes that almost every built-in gauge reads pressure at the pump. Pressure at the group is a little lower, by an amount that varies from machine to machine.
+- **The puck wears as the shot runs.** Rao explains that holding the pump pressure constant shows up as a slow fall in pressure at the group, because the bed resists less as it erodes. Decent, which makes a programmable machine, describes the same thing from the other side: hold the pressure fixed and the flow speeds up near the end of the shot.
 
-## Why Flat 9-Bar Profiles Are a Compromise
+That gives two ways to shape a shot. A **pressure profile** sets the pressure and lets the flow follow the puck. A **flow profile** sets the flow and lets the pressure follow; Decent notes that with flow capped, the pressure falls on its own as the puck breaks down. Decent's guidance uses flow control for preinfusion, because a dry puck that is still soaking up water gives no meaningful pressure reading.
 
-Most espresso machines apply a constant pump pressure for the entire shot — typically 9 bar. This is simple and reproducible, but it forces the coffee puck to handle everything at once: initial wetting, full-speed extraction, and the dilute tail end all happen at the same pressure.
+The two views overlap more than they differ. Holding the flow steady makes the pressure fall as the puck breaks down, which is the shape of Rao's decline. Decent's documentation adds that a flow that falls at the end of a shot tastes flat and muted to them, so how fast you let the pressure drop matters. Both are practitioners' views, not settled findings.
 
-The problem is that the puck changes throughout the shot. At the beginning, it's dry and disorganized. Under sudden high pressure, fines migrate downward, clogging the bottom of the puck and creating uneven resistance. Some areas channel while others are barely touched. By the end of the shot, the puck is eroded and offering less resistance, meaning the last drops come through too fast and too dilute — contributing harsh, astringent flavors.
+## Rao's three-phase model
 
-A flat profile doesn't cause bad espresso. It causes inconsistent espresso. Some shots channel badly; others hit right. Rao's observation was that preinfusion "will not necessarily make your best shot better, but it will almost certainly result in a much higher frequency of great shots." Pressure profiling doesn't raise the ceiling as much as it raises the floor.
-
-## The 3-Phase Model: Preinfusion, Full Pressure, Decline
-
-Rao's model divides the shot into three phases, each with a specific purpose and pressure range. This is the framework most commonly referenced in the specialty espresso community, and it's the starting point for nearly all advanced profiling.
+Rao set out this profile in *Espresso Extraction* (2013). He's candid about its origins: he designed it before he had much experience with profiling machines, then suggested versions to consulting clients. None of them, he writes, claimed to have improved on it, and their experience taught him two things: the best shot times were longer with a ramp-up and a declining finish, and the profile allowed higher extraction than a flat one.
 
 <ProcessFlow
-  title="The 3-Phase Espresso Pressure Profile"
-  subtitle="Rao's model — preinfusion, peak, decline"
+  title="Rao's three-phase profile"
+  subtitle="An example to start from, not a prescription · times are his ranges · adjust by taste"
   steps={[
     {
-      label: "Phase 1: Preinfusion",
-      sublabel: "10-12 seconds · 3.5-4.5 bar",
-      description: "Low pressure gently saturates the puck. Grounds swell, fines become adhesive, and the bed self-organizes into uniform resistance. Prevents channeling.",
-      detail: "Set line pressure to 3.5-4.5 bar. Wait for first drops to appear. Add a 10-second pause after first drops for full puck equilibration."
+      label: "Preinfusion",
+      sublabel: "10–12 seconds",
+      description: "Raise the pressure gradually from zero, so the grounds are wetted at low pressure and slow flow.",
+      detail: "Rao: the grounds swell, settle and stick together before full pressure, which reduces channeling and fines migration and allows a finer grind."
     },
     {
-      label: "Phase 2: Full Pressure",
-      sublabel: "6-9 seconds · 7-9 bar at group",
-      description: "Pressure ramps to the machine's optimal flow-rate point. This is the main extraction engine — maximum soluble extraction from the organized puck.",
-      detail: "Optimal pressure is where flow rate peaks (not necessarily 9 bar). Use Rao's 5-step protocol: test in 0.5 bar increments, stop when shot weight decreases."
+      label: "Full pressure",
+      sublabel: "6–9 seconds",
+      description: "Hold the pressure that gave your machine its highest flow in a flat shot; in Rao's example it is near 8 bar.",
+      detail: "Rao: a few seconds here maximise total extraction. Expect the reading to sag slightly as the puck erodes."
     },
     {
-      label: "Phase 3: Declining Pressure",
-      sublabel: "15-18 seconds · linear decline to ~2 bar",
-      description: "Pressure drops steadily, matching the puck's declining resistance. Prevents thin, harsh late-extraction liquid from rushing through the eroded bed.",
-      detail: "Mimics a lever machine's spring decompression. Improves clarity and sweetness in the finish. The longest phase — most of the shot's character is shaped here."
+      label: "Declining pressure",
+      sublabel: "15–18 seconds",
+      description: "Let the pressure fall steadily to the end of the shot, as a spring lever does.",
+      detail: "Rao: depending on how fast it falls, it can raise or lower total extraction; he finds it improves clarity, presumably by letting fewer fines into the cup."
     }
   ]}
-  compare={[
-    {
-      title: "Flat 9-Bar Profile",
-      points: [
-        "Constant pressure entire shot",
-        "Higher channeling risk at start",
-        "Harsh, fast tail at end",
-        "Shot time: 25-30 seconds",
-        "Dose tolerance: ±0.4g"
-      ]
-    },
-    {
-      title: "3-Phase Profiled Shot",
-      points: [
-        "Pressure changes with puck state",
-        "Preinfusion organizes puck first",
-        "Declining tail matches puck erosion",
-        "Shot time: 25-40 seconds",
-        "Dose tolerance: ±0.1g"
-      ]
-    }
-  ]}
-  footnote="Based on Rao's Espresso Extraction (2013) and Gagne's puck physics research (2025). Timings are starting points — adjust by taste."
+  footnote="In Rao's example chart, pressure reaches about 8 bar at around 10 seconds and falls to roughly 5½ bar by about 35 seconds. Those figures are read off the chart, so they're approximate."
 />
 
-### Phase 1: Preinfusion (10-12 seconds)
+Rao's preinfusion is a ramp, not a hold at a fixed low pressure: the curve climbs steeply from zero to full pressure over those first seconds. The decline is much gentler than the ramp.
 
-Preinfusion means starting at low pressure — typically 3.5-4.5 bar rather than a full 9 — and slowly ramping up. During this phase, water gently saturates the coffee puck.
+## Finding your machine's full pressure
 
-**What happens physically:** The grounds swell as they absorb water. This swelling reorganizes the puck, filling small voids and creating a more uniform resistance profile. Fines — tiny particles that cause most [channeling](/blog/fix-channeling-uneven-extraction/) problems — become adhesive when wet and stick in place rather than migrating downward. The puck essentially self-organizes into a more even, more predictable extraction bed.
+This applies only if your machine lets you set the pump pressure. Rao's test finds the pressure that gives the most flow through your coffee, which he uses as the starting point for the full-pressure phase.
 
-**Why it matters:** Micro-CT imaging research (Foster et al., 2025) using real-time X-rays showed that puck saturation time varies from less than 4 seconds to about 10 seconds. Standard preinfusion on most machines is far shorter than this. Gagne found that adding a 10-second pause after preinfusion "drastically reduced the peak in bed resistance" — the puck needs time to fully equilibrate before you hit it with full pressure.
+1. Fit a blind filter and, with the pump running, set it to 7.5 bar on the machine's gauge (7.0 bar if you measure at the group).
+2. Pull three shots with the same dose, weighed to 0.1 g, and the same prep. Stop each at exactly 30 seconds, weigh it, and average the three.
+3. Raise the pressure by 0.5 bar and repeat.
+4. When the average shot weight falls, stop. The best pressure is the one that gave the heaviest average.
+5. If you like, retest around it in smaller steps, such as 0.2 bar.
 
-**Practical preinfusion settings:** Set line pressure to 3.5-4.5 bar. Sample preinfusion times between 3-10 seconds. You'll need to grind finer than you would for a flat profile, because the gentler start means less mechanical extraction in the early phase.
+Don't change the grind during the test, and throw out any shot that channels.
 
-### Phase 2: Full Pressure (6-9 seconds)
+## What profiling changes in your routine
 
-After the puck is saturated and organized, pressure ramps to the machine's optimal flow-rate pressure. This is the main extraction phase — the engine of the shot.
+- **Dose to 0.1 g.** Rao found that with a ramp-up and decline, raising the dose from 18.0 to 18.5 g can cut the shot weight by perhaps 3 to 4 g, so he recommends keeping every dose within 0.1 g of the target.
+- **Tamp the same way every time.** Rao notes that tamping pressure changes the space above the puck, which delays full pressure and distorts the curve the machine is meant to follow. If several people share the machine, agree on one tamp.
+- **Grind finer.** A gentle start needs a finer grind for the same flow; Rao sees that as one of preinfusion's benefits.
+- **Expect longer shots.** Rao's time range for espresso is 25 to 40 seconds: flat profiles at the low end, profiling machines at the top. Our Brew Guide and Fix My Coffee time a flat shot at 25 to 30 seconds, so a profiled shot will run past their target without anything being wrong.
+- **Log every shot,** with the profile you used. Our [shot log](/blog/how-to-dial-in-espresso/) works for this too: change one phase at a time and taste.
 
-**The optimal pressure isn't necessarily 9 bar.** Rao discovered that flow rate through the coffee bed increases with pressure until 7-9 bar at the group head, then actually declines as bed compression outpaces flow promotion. The right pressure is the one that produces the highest flow rate for your specific machine and coffee.
+## Preinfusion without a profiling machine
 
-Most machine pressure gauges read pump pressure, not group-head pressure. Group pressure is always lower — the gap varies by machine. If your gauge reads 9 bar, your actual group-head pressure might be 7-8 bar, which could be near-optimal already.
+You can't shape the whole curve without the hardware, but many machines can preinfuse. Rao's rule of thumb in *The Professional Barista's Handbook* is that low-pressure infusion followed by an uninterrupted rise in pressure is probably worth using. He describes four methods:
 
-**Rao's 5-step pressure optimization protocol:**
-1. Set pump to 7.5 bar (about 7.0 at group). Pull 3 shots at exactly 30 seconds with identical dose (within 0.1g). Average the shot weights.
-2. Increase to 8.0 bar (7.5 group). Repeat.
-3. Continue in 0.5 bar increments.
-4. When average shot weight decreases, the previous setting was optimal.
-5. Refine with 0.2 bar increments around the optimum.
+- **Manual preinfusion.** You start at low pressure and decide when full pressure begins; lever machines and some semi-automatics do this. For a machine fed at mains line pressure, his starting point is a line pressure of 3.5 to 4.5 bar (51 to 65 psi) and preinfusion times of 3 to 10 seconds.
+- **Progressive preinfusion.** A spring-loaded chamber at the group lets the pressure on the coffee build gradually.
+- **Flow restriction.** A small restrictor, or gicleur, slows the water to the group, delaying full pressure.
+- **Pulsed (electronic) preinfusion.** The pump switches on and off in the first seconds. Rao found it doesn't wet the bed properly and didn't recommend it.
 
-### Phase 3: Declining Pressure (15-18 seconds)
+Your machine's manual says which kind it has, if any. With any preinfusion, expect to grind a little finer for the same flow.
 
-After the main extraction, pressure gradually drops — mimicking the natural behavior of a lever machine's spring. This is the longest phase and the one that most affects cup clarity.
+## Which machines can profile
 
-**Why declining pressure improves clarity:** As the puck erodes during extraction, its resistance drops. On a flat-profile machine, this means the last drops come through faster and faster — thin, dilute, and carrying extracted compounds that taste harsh and astringent. A declining pressure profile matches the declining puck resistance, keeping flow rate more constant and preventing those harsh late-extraction flavors from dominating.
+These examples show the main ways machines give you control during a shot, as published by the makers:
 
-**The decline is linear** — a steady ramp down from peak to about 2 bar over 15-18 seconds. This is exactly what happens when a lever machine's spring decompresses. It's not a coincidence that many baristas describe lever shots as having exceptional clarity.
+- **Manual levers.** Your arm sets the pressure. Flair describes its Flair 58 Plus 2 as a direct-lever manual machine with an integrated pressure gauge.
+- **Flow control at the group.** Lelit describes the Bianca's paddle as changing the water flow on the coffee until the highest pressure is reached, with a group gauge that reads the actual extraction pressure.
+- **Programmable machines.** Decent's DE1 lets you draw either a pressure curve or a flow curve on its tablet, and reports pressure at the puck.
+- **Fixed-pressure machines,** with or without a preinfusion stage, can't change the curve during a shot.
 
-**The extraction trade-off:** Declining pressure may increase or decrease total [extraction yield](/blog/coffee-extraction-yield-explained/) depending on the decline rate. A steep decline extracts less; a gentle decline extracts more. The point isn't to maximize extraction — it's to maximize the quality of what gets extracted.
+If your machine can't profile, even distribution and a level tamp are what Rao relies on to prevent channeling; our [channeling guide](/blog/fix-channeling-uneven-extraction/) covers both.
 
-## What Pressure Profiling Changes About Your Workflow
+## Is it worth it?
 
-Pressure profiling isn't just a set-and-forget upgrade. It changes several aspects of how you [dial in](/blog/how-to-dial-in-espresso/) and maintain consistency.
+Rao's verdict on preinfusion was that it won't necessarily make your best shot better, but it will almost certainly make great shots much more frequent. Profiling adds control, and it adds variables. If your shots are already consistent and you enjoy experimenting, it's a rewarding next step; if they aren't, puck prep and a steady dial-in will help more.
 
-**Dose sensitivity is amplified.** With flat profiles, a 0.5g dose change might shift beverage weight by 1-2g. With pressure profiling, that same 0.5g change can shift output by 3-4g. Rao recommends dosing to within 0.1g for pressure profiling — tighter than the 0.4g tolerance acceptable for flat profiles. This means weighing every dose, not relying on timer-based grinding.
+<ToolCallout tool="extraction" preset={{ mode: 'measured', kind: 'espresso' }} cta="Open the Extraction Map for espresso" context="Opens the Extraction Map's measured mode for espresso, on a labeled example shot until you enter your own dose, shot weight and TDS reading. Enter a flat shot and a profiled one from the same coffee and dose to compare their extraction yields, which is how Rao judged his profile." />
 
-**Grind finer.** The gentle preinfusion start means you're not relying on high initial pressure to push water through the puck. Grind finer to maintain appropriate flow rate. This is actually a benefit — finer grinds at the same flow rate extract more, which is the whole point. A capable [burr grinder](/blog/conical-vs-flat-burr-grinders/) is essential.
+## Sources
 
-**Shot times are longer.** Expect 25-40 seconds total versus 25-30 seconds for flat profiles. The extended preinfusion and gradual decline add time, but the extraction quality per second is higher.
-
-**Tamping consistency matters more.** Tamping pressure affects the amount of headspace above the puck, which affects when pressure from preinfusion reaches the coffee surface, which affects the timing of everything downstream. If multiple people use the same machine, everyone needs to calibrate to a common tamp pressure. That said, once you're consistent, [tamping pressure itself barely matters](/blog/how-to-dial-in-espresso/) — the pump's approximately 533 pounds of force dwarfs your 20-30 pounds.
-
-<ToolCallout tool="fix-my-coffee" context="Pressure profiling changed your shot and something tastes off? Diagnose whether it's extraction, concentration, or channeling." />
-
-## Machines That Can Pressure Profile
-
-Not every espresso machine supports pressure profiling, and the level of control varies enormously.
-
-**Manual lever machines (<a href="https://www.amazon.com/s?k=Flair+58+espresso+maker&tag=jayarrcoffee-20" rel="sponsored noopener">Flair 58</a>, Cafelat Robot, La Pavoni):** These are natural pressure profilers. You control pressure directly with your arm — pull gently for preinfusion, full pull for peak extraction, and the spring (or your controlled release) provides the declining phase. Lever machines are the most intuitive way to learn profiling because you physically feel the puck resistance change throughout the shot. The Flair 58 (about $580) is the most accessible dedicated profiling machine.
-
-**Flow-control paddle machines (<a href="https://www.amazon.com/s?k=Lelit+Bianca+espresso+machine&tag=jayarrcoffee-20" rel="sponsored noopener">Lelit Bianca</a>, Profitec Pro 800):** A needle valve restricts flow to the group head. Opening it slowly mimics preinfusion; full open provides peak pressure; closing it gradually creates the declining phase. The Bianca (about $2,800-3,200) is the most popular mid-range profiling machine. The paddle is intuitive and the dual boiler handles steaming simultaneously.
-
-**Software-controlled machines (<a href="https://www.amazon.com/s?k=Decent+DE1+espresso+machine&tag=jayarrcoffee-20" rel="sponsored noopener">Decent DE1</a>):** The Decent DE1 (about $3,700) controls pressure, flow, and temperature via a tablet interface. You can draw arbitrary pressure curves, save profiles, and replay them exactly. Gagne developed a 20-step adaptive profile for the DE1 that scans flow rates and automatically locks onto the optimal one for whatever coffee is in the basket. This is the most precise and reproducible profiling available, but the machine is a significant investment.
-
-**Pump dimmer/OPV mods:** Some machines (<a href="https://www.amazon.com/s?k=Gaggia+Classic+Pro+espresso&tag=jayarrcoffee-20" rel="sponsored noopener">Gaggia Classic</a>, Rancilio Silvia) can be modified with a dimmer switch on the vibratory pump or an adjustable over-pressure valve to reduce and control pressure. This provides crude profiling — you can do preinfusion at lower pressure and manual decline — but it's not as precise or repeatable as dedicated profiling hardware. It's a $20-50 modification that lets you experiment.
-
-**Machines that cannot profile:** Any machine with a fixed vibratory or rotary pump and no adjustable OPV is locked at whatever pressure the manufacturer set (usually 15 bar at the pump, about 9-10 at the group after the OPV bleeds off excess). Most [sub-$500 machines](/blog/best-espresso-machines-under-500-2026-7-picks-for-every-budget/) fall into this category. Some have a built-in preinfusion pause, which helps, but you can't control the pressure curve during the shot.
-
-## A Starter Profile to Try
-
-If your machine can profile, here's a conservative starting point based on Rao's model.
-
-**Dose:** 18g, ground finer than your normal flat-profile setting
-**Preinfusion:** Ramp from 0 to 4 bar over 3 seconds. Hold at 4 bar until first drops appear in the cup (typically 8-12 seconds total). Pause for 3-5 seconds after first drops.
-**Full pressure:** Ramp to 8-9 bar over 2 seconds. Hold for 6-8 seconds.
-**Decline:** Linear ramp down from peak to about 2 bar over 15-18 seconds.
-**Target output:** 36g (1:2 ratio)
-**Expected total time:** 30-40 seconds
-
-Taste the shot. Compare it directly to a flat-profile shot from the same coffee and dose. The profiled shot should have noticeably more clarity and sweetness, with less bitterness and harshness in the finish. If it's sour, the preinfusion was too long or the [grind is too coarse](/blog/coffee-grind-size-guide-what-grind-for-every-brew-method/). If it's bitter and harsh, the decline phase may need to be steeper (shorter).
-
-## Common Mistakes When Starting
-
-**Using your flat-profile grind setting.** The whole point of profiling is that the gentle start lets you grind finer and extract more cleanly. If you don't adjust your grind, you'll underextract because the low preinfusion pressure can't push water through at a reasonable rate.
-
-**Skipping preinfusion pause.** The data shows puck saturation takes up to 17 seconds. Rushing straight from preinfusion to full pressure defeats the purpose — the puck hasn't had time to organize. Gagne found that even a 10-second pause after preinfusion nearly eliminates the resistance spike that causes early-shot channeling.
-
-**Inconsistent dosing.** At 0.5g tolerance, your shots will wander. Weigh your dose after grinding and before tamping. For serious profiling, Rao recommends 0.1g consistency — which means using a [quality grinder](/blog/conical-vs-flat-burr-grinders/) with low retention and weighing the dose into the portafilter.
-
-**Profiling dark roasts.** Dark roasts are already easy to extract and produce less resistance. Aggressive profiling with very fine grinds can push dark roasts into overextraction territory quickly. Start with medium to light roasts where the benefits of high, even extraction are most apparent.
-
-## Is Pressure Profiling Worth It?
-
-If you're already pulling good flat-profile shots with a consistent workflow, profiling raises the average quality of your shots more than it raises the peak quality. Your best shot might be marginally better. But your worst shots will be significantly better, because the gentle preinfusion phase prevents the catastrophic channeling events that ruin shots on flat-profile machines.
-
-The investment depends on where you are. If you own a lever machine, you're already profiling — you just need to be more intentional about the three phases. If you're considering a machine upgrade, flow-control paddle machines like the Bianca offer profiling as a core feature at the prosumer price point. If you're on a [budget espresso setup](/blog/best-espresso-machines-under-200/), focus on [distribution and puck prep](/blog/fix-channeling-uneven-extraction/) first — those fundamentals matter more than pressure profiling until your workflow is consistent.
-
-The three-phase model isn't the only way to profile. It's the best-documented starting point. Once you understand what each phase does and why, you can experiment with longer preinfusions, stepped declines, or Gagne's adaptive flow profiles. But start with Rao's model, learn what each phase tastes like, and adjust from there.
-
----
-
-<FAQ items={[
-  { question: "What is pressure profiling in espresso?", answer: "Pressure profiling means deliberately changing the water pressure during an espresso shot instead of holding it constant at 9 bar. Rao's 3-phase model uses low-pressure preinfusion (3.5-4.5 bar for 10-12 seconds) to organize the puck, full pressure (7-9 bar at the group head for 6-9 seconds) for maximum extraction, and a linear declining phase (15-18 seconds) that improves clarity by matching the puck's decreasing resistance. The result is more consistent shots with better sweetness and less harshness." },
-  { question: "Does pressure profiling work with pre-ground coffee?", answer: "Technically yes, but it's not practical. Pressure profiling's main benefit comes from grinding finer than normal and using the gentle preinfusion to manage the fine grind without channeling. Pre-ground espresso coffee is ground for a generic flat-profile shot. You can't adjust the grind to take advantage of profiling, which removes most of the benefit. If you're using pre-ground, focus on distribution and consistent tamping instead — those improvements are free and don't require grind adjustments." },
-  { question: "Can I pressure profile on a Breville Bambino or Gaggia Classic?", answer: "The Bambino has a built-in preinfusion (low-pressure pulse at the start of the shot), which is a form of basic profiling. You can't control the curve or the declining phase. The Gaggia Classic can be modified with an OPV adjustment and a dimmer switch on the vibratory pump — this gives crude manual control over pressure. It's not precise, but it lets you experiment with preinfusion duration and rough pressure shaping. Neither machine supports true programmatic profiling like a Decent DE1 or flow-control like a Bianca paddle." },
-  { question: "What's the difference between pressure profiling and flow profiling?", answer: "They're related but not identical. Pressure profiling controls the pump pressure at each point in the shot. Flow profiling controls the volumetric flow rate of water through the puck. On some machines (like the Decent DE1), you can choose either mode. In practice, they're interconnected — restricting flow reduces effective pressure, and reducing pressure reduces flow. The key difference is what you're targeting: pressure profiling optimizes for puck conditions (compression, channeling), while flow profiling optimizes for extraction rate directly. Most home baristas start with pressure profiling because it maps more intuitively to the 3-phase model." },
-  { question: "How do I know if my shots are actually better with profiling?", answer: "The clearest signal is in the aftertaste. A well-profiled shot should have a cleaner, sweeter finish with less lingering bitterness or astringency compared to a flat-profile shot from the same coffee and dose. If you own a refractometer, you can measure extraction yield — profiled shots typically achieve higher EY (19-21%) with better flavor quality than flat shots at the same yield. Without a refractometer, do a direct comparison: pull two shots back-to-back from the same dose, one flat and one profiled, and taste them side by side." },
-  { question: "Is the declining pressure phase really necessary?", answer: "Preinfusion alone captures most of the consistency benefit — it prevents early channeling and lets the puck organize. The declining phase adds clarity by preventing thin, harsh late-extraction liquid from dominating the end of the shot. If your machine supports preinfusion but not declining pressure, you're still getting the biggest single improvement. The full 3-phase profile is the gold standard, but preinfusion plus flat is a meaningful step up from pure flat 9-bar." }
-]} />
-
-*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*
+- Scott Rao, *Espresso Extraction: Measurement and Mastery* (2013), chapter 1 ("What Is an Ideal Extraction?," the time range), chapter 3 ("Pump Pressure" and "How to Optimize Pump Pressure") and chapter 11 ("Pressure Profiling," including the model profile chart and "Quirks to Consider When Using Pressure Profiling")
+- Scott Rao, *The Professional Barista's Handbook* (2008), pp. 27–30 ("Preinfusion," "Why Preinfusion Works," "Common Preinfusion Methods" and "Other Considerations")
+- Decent Espresso, "Pressure vs. flow profiling, and how to convert into an advanced shot" (documentation, updated July 2026) and "Decent Espresso Overview," checked October 15, 2026: [decentespresso.com/docs](https://decentespresso.com/docs/pressure_vs_flow_profiling_and_how_to_convert_into_an_advanced_shot) and [decentespresso.com/overview](https://www.decentespresso.com/overview)
+- Lelit, "Bianca PL162T-EU" product page, checked October 15, 2026: [lelit.com](https://www.lelit.com/products/bianca)
+- Flair Espresso, "Flair 58 Plus 2" product page, checked October 15, 2026: [flairespresso.com](https://flairespresso.com/product/flair-58/)

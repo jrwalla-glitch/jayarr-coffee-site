@@ -1,250 +1,141 @@
 ---
-title: "How to Align Coffee Grinder Burrs: DIY Marker Test Guide"
-description: "Check and fix burr alignment in 15 minutes with a dry-erase marker and aluminum foil. Tighter particle distribution means better extraction from every cup."
+title: "How to Align Coffee Grinder Burrs: The Marker Test, and When Not To"
+description: "What burr alignment is, how the marker test checks it, when shimming is worth the risk, which makers say not to touch their burr mounts, and why new burrs change as they season."
 pubDate: "Mar 30 2026"
-updatedDate: "Mar 30 2026"
+updatedDate: "Oct 15 2026"
 heroImage: "../../assets/blog/burr-alignment-guide.jpg"
 category: "Equipment"
 ---
 
 import AnswerBox from '../../components/AnswerBox.astro';
 import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
-import FAQ from '../../components/FAQ.astro';
-import ArticleSchema from '../../components/ArticleSchema.astro';
-import HowToSchema from '../../components/HowToSchema.astro';
 import ToolCallout from '../../components/ToolCallout.astro';
 
-<ArticleSchema
-  title="How to Align Coffee Grinder Burrs: DIY Marker Test Guide"
-  description="Check and fix burr alignment in 15 minutes with a dry-erase marker and aluminum foil. Tighter particle distribution means better extraction from every cup."
-  pubDate="Mar 30 2026"
-  updatedDate="Mar 30 2026"
-  heroImage="/assets/blog/burr-alignment-guide.jpg"
-  category="Equipment"
-/>
+<AnswerBox answer="Burr alignment is how evenly a grinder's two burrs face each other: parallel, and centered on the same axis. The marker test checks it by coloring a burr face, closing the burrs to light contact and seeing where the ink rubbed off; shims under the low side are the fix, and Turin, for one, suggests both only if you want its DF64 as close to perfect as possible. Check your maker's rules before you open anything: Comandante says undoing the C40's burr mounting screws can damage the grinder and void the warranty." />
 
-<HowToSchema
-  name="How to Align Coffee Grinder Burrs with the Marker Test"
-  description="A 15-minute DIY procedure to check and correct burr parallelism using a dry-erase marker and aluminum foil shims."
-  totalTime="PT15M"
-  steps={[
-    { name: "Clean and Inspect the Burrs", text: "Remove the upper burr carrier. Clean both burr surfaces with a dry brush or compressed air. Remove trapped grounds from the mounting area. Inspect burr edges for chips, cracks, or excessive wear." },
-    { name: "Apply the Dry-Erase Marker", text: "Color the entire outer flat edge of the stationary (lower) burr with a dry-erase marker. Use full, even coverage with no gaps." },
-    { name: "Find the Chirp Point", text: "Reassemble the upper burr carrier. With the grinder unplugged, slowly close the grind adjustment toward the finest setting until you hear a faint chirp — the sound of the two burr surfaces just barely touching." },
-    { name: "Read the Wipe Pattern", text: "Remove the upper burr carrier and examine the stationary burr. Full even wipe means aligned. Partial wipe (one side wiped, other intact) means tilted. The wiped side is the tight side." },
-    { name: "Shim with Aluminum Foil", text: "Cut a small strip of aluminum foil. Place it under the stationary burr on the low side (where marker ink was NOT wiped). Reseat the burr and tighten screws. Typical corrections need 1-3 layers of foil (16-48 microns)." },
-    { name: "Verify and Iterate", text: "Reapply marker, reassemble, find the chirp point, and check the wipe pattern again. Repeat until you achieve a full, even wipe around the entire circumference. Usually takes 2-4 iterations." }
-  ]}
-/>
+Alignment problems are real, but they're one cause among several for an uneven grind, and the fix means taking the burrs apart. This guide separates the check from the repair, and sets out what makers and published sources say about each.
 
-<AnswerBox answer="Burr alignment is the parallelism between your grinder's two cutting surfaces. The DIY marker test takes 15 minutes: coat the stationary burr's outer flat edge with dry-erase marker, close to the chirp point, then read the wipe pattern. A partial wipe means the burrs are tilted. Fix it by placing aluminum foil shims (about 16 microns per layer) under the low side of the stationary burr. Repeat until you get a full, even wipe. Hand-aligned grinders produce measurably tighter particle size distributions, meaning better extraction and cleaner cups." />
+## What alignment means
 
-Burr alignment is the parallelism between the two grinding surfaces in your coffee grinder. Even fractions of a millimeter of misalignment cause one side of the burr set to cut closer than the other, producing an uneven particle size distribution -- more fines on one side, more boulders on the other. The result is a cup where some particles are overextracted while others are underextracted, producing both sour and bitter flavors simultaneously even when your average [extraction yield](/blog/coffee-extraction-yield-explained/) falls within the "ideal" range.
+Barista Hustle wrote in 2017 that grinding burrs "need to be parallel, and concentrically and radially aligned to work properly", and that a misalignment of about 0.05 mm (50 µm) noticeably changes the coffee a grinder makes.
 
-Hand-aligned grinders produce measurably tighter particle size distributions. Jonathan Gagne's 300 PSD analysis across 24 grinders noted that "there is no way of knowing whether grinders are well aligned or not" without actually checking -- burr alignment is a confounding variable that makes every comparison between grinders unreliable unless both are verified. Scott Rao identified divergent (non-parallel) burrs as the most common structural grinder problem, noting that even 1-2 ground coffee particles trapped under a burr during reseating can tilt it enough to degrade quality.
+Scott Rao, in *Espresso Extraction*, describes three structural problems he has met in grinders:
 
-The good news is that checking and improving alignment is straightforward. The dry-erase marker test takes about 15 minutes and requires nothing more than a marker, aluminum foil, and a screwdriver. If you own a [burr grinder](/blog/conical-vs-flat-burr-grinders/) -- especially one you have upgraded with aftermarket burrs -- checking alignment is one of the highest-impact things you can do for cup quality.
+1. **Divergent burrs,** the most common in his experience. It usually happened when a barista reseated the burrs after cleaning: one or two ground particles left under a burr can tilt it enough to degrade the grind.
+2. **Burrs not lined up with each other.** Some professional grinders hold their burrs with screws in holes wider than the screws, so a burr can sit 1 to 2 mm off center from its partner.
+3. **A bent motor shaft,** which he found only when a friend with a machine shop measured the wobble.
 
-## Why Alignment Matters More Than You Think
+How common this is varies by grinder. Rao estimated that at most 10% of the more than 100 Mahlkönig EK grinders he had used were well aligned out of the box. Turin, by contrast, doesn't think alignment is needed in most cases on its own grinders.
 
-All grinders produce a distribution of particle sizes rather than uniform particles. This distribution is measured by key percentile values: D10 (10th percentile), D50 (median), and D90 (90th percentile). The span -- calculated as (D90 - D10) / D50 -- measures overall uniformity.
+Alignment also muddies grinder comparisons. In his 2023 analysis of 24 espresso grinders, Jonathan Gagné cautions that there was no way of knowing whether the grinders measured were well aligned, which could plausibly affect how evenly they ground.
 
-Here is the critical insight from Gagne's research: **the D10 value, not the average or median, determines the coffee bed's hydraulic resistance.** A particle 10 times smaller has 1,000 times less volume but enormously more surface area per unit mass. Fine particles extract faster, clog filters, and dominate flow resistance. When your burrs are misaligned, you get more fines from the tight side and more boulders from the wide side. The fines increase flow resistance and extraction on their portion of the bed, while the boulders underextract. Your [grind size setting](/blog/coffee-grind-size-guide-what-grind-for-every-brew-method/) cannot compensate because the problem is not the average size -- it is the spread.
+## Is it alignment? Check the simple things first
 
-For espresso, this matters enormously. Rao found that larger burrs produce narrower particle size distributions, fewer fines, and less heat damage than smaller burrs. A large-burr grinder can produce delicious 21% extraction yield espresso with minimal bitterness and astringency, while a small-burr grinder may cap out at 19.5% before the cup becomes unacceptable. That 1.5 percentage point gap translates to approximately 7% bean cost savings. But if the large burrs are misaligned, you throw away much of that advantage.
+Turin's troubleshooting guide lists four suspects for an inconsistent grind or wild shot times. Work through them from the cheapest to check:
 
-For [pour-over](/blog/best-pour-over-coffee-makers/) and [filter brewing](/blog/flat-bottom-vs-cone-pour-over/), misalignment shows up as inconsistent draw-down times and a muddier cup. If your V60 brews vary wildly in total time despite identical dose, grind setting, and technique, misalignment is a likely culprit. For more on diagnosing extraction issues, see the [channeling and uneven extraction guide](/blog/fix-channeling-uneven-extraction/).
+- **New burrs still seasoning.** See [below](#alignment-isnt-seasoning-or-wear).
+- **Retention and static.** Purge the grinder and clean the chute; Turin also suggests a drop or two of water on the beans, the [Ross Droplet Technique](/blog/rdt-ross-droplet-technique-grinding/).
+- **Worn or chipped burrs.** Inspect the edges.
+- **Alignment.**
 
-## The Three Structural Grinder Problems
+Before any of these, clean the burr faces and the surfaces they sit on, since grounds trapped under a burr can tilt it. For a scraping noise, Turin points to grounds or a pinched burr seal under the burr, or a carrier that isn't fully seated. And if a burr seems to wobble as it spins, Turin says that on many grinders, its own included, the screw holding the lower carrier creates the illusion; cover the screw and watch the outer edge.
 
-Rao identified three categories of structural issues in grinders, listed from most to least common:
+## Check your maker's rules first
 
-**1. Divergent (non-parallel) burrs:** The most frequent problem. The burr faces are not perfectly parallel, meaning one point of contact is tighter than the rest. This can happen from the factory, from worn mounting surfaces, or from particles trapped under the burr during reassembly. Even a tiny tilt -- a few coffee particles' worth -- creates measurable unevenness in the grind.
+Some makers align the burrs at the factory and tell you not to touch the mounts. Others leave it to you. Here is what each maker says, checked October 15, 2026, with its exact words in quotation marks:
 
-**2. Burr alignment offset:** Some grinders have mounting holes slightly larger than the mounting screws, allowing the burr to shift up to 1-2 millimeters off-center. When the upper and lower burrs are not concentrically aligned, the cutting geometry changes around the circumference, producing inconsistent particle sizes.
+| Grinder | What the maker says |
+|---|---|
+| Comandante C40 | Don't unscrew the three mounting screws around the burr: they are tightened by hand at the factory to calibrate the grinder, and undoing them "can damage your grinder and void warranty". Some burr contact at fine settings is normal, because the inner cone "floats" on the axle. |
+| Timemore Chestnut C | "It's not recommended that customers disassemble or replace any part of it." |
+| 1Zpresso JX-Pro | Don't take apart the central shaft and burr, the burr ring unit and outer burr, or the bearings. 1Zpresso says its grinders come apart for cleaning "without re-calibrating the burr". |
+| Kinu M47 Classic | Kinu describes its burrs as "perfectly aligned, auto-centered", thanks to a Morse-cone design. |
+| Turin DF64 Gen 2 | Alignment isn't needed in most cases; if you want it as close to perfect as possible, do a marker test and shim if necessary. Aftermarket SSP burrs "require installation and alignment". |
+| Niche Zero | The manual covers cleaning and recalibrating the dial's zero mark, not burr alignment. |
 
-**3. Bent motor shaft:** The motor shaft does not spin true, causing the burr to oscillate. This creates a cyclically varying gap between the burrs and an inconsistent grind. This is less common but also harder to fix -- it usually requires professional service or motor replacement.
+So for the hand grinders here, alignment is the maker's job. The marker test is mainly for flat-burr electrics like the DF64, especially after a burr swap. If your grinder isn't listed, read its manual and warranty first.
 
-The marker test addresses the first two problems. A bent shaft requires a dial indicator to diagnose and is beyond DIY scope.
+## The marker test: a check, not a fix
 
-## What You Need
-
-- Dry-erase marker (any color that contrasts with your burr material -- blue or red works well on steel)
-- Aluminum foil (standard kitchen foil, not heavy-duty)
-- Screwdriver or hex key to remove your upper burr carrier
-- A cloth or paper towel
-- 10-15 minutes
-
-Optional but helpful: a flashlight or phone light to inspect the wipe pattern closely, and scissors for cutting precise foil shims.
-
-## Step 1: Clean and Inspect the Burrs
-
-Remove the upper burr carrier according to your grinder's instructions. Clean both burr surfaces thoroughly with a dry brush or compressed air. Remove any trapped grounds from the mounting area -- this is important because even a few particles under the burr can create the tilt you are trying to fix.
-
-Inspect the burr edges for visible chips, cracks, or excessive wear. If the cutting edges are rounded or damaged, alignment will not fix the fundamental problem -- you need new burrs. Sharp burrs are the single most important grinder feature according to Rao, and as burrs dull, both fines and boulders increase simultaneously, always resulting in decreased flow rate and less extraction.
-
-## Step 2: Apply the Marker
-
-Using the dry-erase marker, color the outer flat edge of the stationary (lower) burr. Cover the entire outer ring with a solid, even layer of ink. You want full coverage -- do not leave gaps. The ink should be thick enough to be clearly visible but not so thick that it pools.
-
-Some guides recommend marking the outer flat edge of the rotating (upper) burr instead. Either approach works. The principle is the same: you are creating a visual indicator that will be wiped away wherever the two burr surfaces make contact.
+Turin points DF64 owners to the marker test, and a 2019 guest post on Scott Rao's blog describes marker alignment as a method that relies on the user's own observations. The idea is simple: ink rubs off wherever two burr faces touch.
 
 <ProcessFlow
-  title="DIY Burr Alignment: The Marker Test"
-  subtitle="15-minute procedure to check and correct burr parallelism"
+  title="The marker test"
+  subtitle="Checks where the burr faces touch; it doesn't change anything"
   steps={[
     {
-      label: "Step 1: Clean & Inspect",
-      sublabel: "Remove upper burr carrier",
-      description: "Remove the upper burr carrier per your grinder's instructions. Clean both burr surfaces with a dry brush or compressed air. Remove any trapped grounds from the mounting area — even a few particles can create tilt.",
-      detail: "Inspect burr edges for chips, cracks, or excessive wear. Dull burrs need replacement, not alignment."
+      label: "Unplug and open",
+      sublabel: "Before you start",
+      description: "Unplug the grinder and remove the upper burr carrier as your manual describes.",
+      detail: "Note the carrier's position, so it goes back the same way."
     },
     {
-      label: "Step 2: Apply Marker",
-      sublabel: "Dry-erase ink on the outer flat edge",
-      description: "Color the entire outer flat edge of the stationary (lower) burr with dry-erase marker. Full, even coverage — no gaps. The ink will be wiped away wherever the two surfaces make contact.",
-      detail: "Use blue or red marker for contrast against steel burrs."
+      label: "Clean",
+      sublabel: "Burr faces and seats",
+      description: "Brush the burr faces and the surfaces they sit on, so no grounds are trapped under a burr.",
+      detail: "Rao found one or two particles enough to tilt a burr."
     },
     {
-      label: "Step 3: Find the Chirp Point",
-      sublabel: "Motor OFF for electric grinders",
-      description: "Reassemble the upper burr carrier. With the grinder unplugged, slowly close the grind adjustment toward finest until you hear a faint chirp — the burr surfaces just barely touching.",
-      detail: "Never run the motor with burrs in contact. For hand grinders, feel for the first hint of resistance."
+      label: "Mark",
+      sublabel: "One burr face",
+      description: "Color the flat outer rim of one burr face with a dry-erase marker."
     },
     {
-      label: "Step 4: Read the Wipe Pattern",
-      sublabel: "Remove upper burr and examine",
-      description: "Check where marker ink was removed. Full even wipe = aligned. Partial wipe (one side wiped, other side intact) = tilted. The wiped side is tight; the intact side is the gap.",
-      detail: "Patchy wipe may indicate debris under burr or warped mounting surface."
+      label: "Close to contact",
+      sublabel: "Motor off",
+      description: "Refit the carrier in the same position and close the grind until the burrs just touch. Where the design lets you, turn the burr gently by hand; don't run the motor.",
+      detail: "Turin warns that running the grinder with the burrs touching can damage them."
     },
     {
-      label: "Step 5: Shim the Low Side",
-      sublabel: "Aluminum foil (~16 microns/layer)",
-      description: "Cut a small strip of aluminum foil. Place it under the stationary burr on the LOW side (where ink was NOT wiped). Reseat burr, tighten screws. Typical corrections need 1-3 layers.",
-      detail: "Go slowly — over-shimming flips the problem to the other side."
-    },
-    {
-      label: "Step 6: Retest Until Full Wipe",
-      sublabel: "Usually 2-4 iterations",
-      description: "Reapply marker, reassemble, chirp point, check wipe. Repeat until you achieve a full, even wipe around the entire circumference. Lock screws firmly. Run a small amount of coffee to confirm.",
-      detail: "A full even wipe means uniform contact across all burr surfaces."
+      label: "Read the ink",
+      sublabel: "Carrier off again",
+      description: "Ink rubbed off all the way round means the faces touched evenly. Ink rubbed off on one side only means that side sits closer, and the other side is the gap.",
+      detail: "It shows contact at one closed position; it doesn't measure the grind."
     }
   ]}
-  footnote="Materials needed: dry-erase marker, aluminum foil, screwdriver/hex key. Total time: ~15 minutes. Alignment produces measurably tighter particle size distributions (Gagne, Rao). Check after any burr removal, swap, or deep cleaning."
+  footnote="Turin notes that refitting the carrier in a different position can shift the grinder's zero."
 />
 
-## Step 3: Find the Chirp Point
+## Shimming: the invasive part
 
-Reassemble the upper burr carrier. With the grinder unplugged (for electric grinders) or the handle ready (for hand grinders), slowly close the grind adjustment toward the finest setting until you hear a faint chirp -- the sound of the two burr surfaces just barely touching each other. This is the chirp point.
+Shimming means putting thin shim material under the burr on the side that didn't touch, to raise it, then repeating the marker test. Do it only where your maker allows it. A few rules from the makers and published sources:
 
-**For electric grinders:** Do this with the motor OFF. Turn the adjustment ring slowly and carefully by hand. You can feel and hear the burrs touch. Never run the motor with the burrs in contact -- it damages the cutting edges.
+- **One change at a time.** Shim, reassemble and test again before adding more.
+- **Tighten evenly.** Turin recommends a cross pattern, a little on each screw until all are firmly tight, and warns that overtightening can strip the screws or the aluminum screw holes.
+- **Uneven seating.** Turin notes that unevenly tightened screws can leave the burrs out of line. Its advice is to loosen the screws slightly and shift the burr back and forth while retightening each screw a little at a time, round and round.
+- **Expect to repeat it.** Rao wrote in 2019 that home realignment methods take an hour or two each time the burrs are removed or replaced.
 
-**For hand grinders:** Turn the adjustment until you feel resistance when you try to rotate the handle. The first hint of resistance where the burrs engage is the chirp point.
+His blog also hosted a more permanent method for EK43-style grinders: sanding the burr mounting surfaces flat to the drive shaft. Rao expected it to take three to four hours but not to need repeating, and its author, Mitchell Hale, warns that it changes the grinder's zero significantly. Rao hadn't tried it, and told readers to try it at their own risk. A bent shaft is beyond any of this: Rao needed a machine shop to find his.
 
-## Step 4: Read the Wipe Pattern
+## Alignment isn't seasoning, or wear
 
-Remove the upper burr carrier again and examine the stationary burr where you applied the marker. The pattern of ink removal tells you exactly what is happening:
+New burrs change as they wear in, and that can look like an alignment problem:
 
-**Full, even wipe around the entire circumference:** Congratulations. Your burrs are well aligned. The surfaces are making uniform contact. No shimming needed.
+- Niche says the Niche Zero grinds well from the start and reaches peak consistency after about 10 kg of coffee.
+- Turin says new burrs need about 10 lb (4.5 kg, calculated) to stabilize, and recommends using the grinder normally rather than wasting coffee on seasoning.
+- In Gagné's 2019 measurements, his new burrs ground coarser at first, then more evenly, over 24 lb of coffee; he couldn't say whether that holds for all burrs. More in our [burr seasoning](/blog/burr-seasoning-grind-quality/) post.
 
-**Partial wipe -- ink removed on one side, intact on the other:** The burrs are tilted (non-parallel). The side where ink was wiped is the tight side. The opposite side where ink remains is the wide side. This is the most common finding and is what you will fix with shims.
+Worn burrs are a different problem again. Rao writes that as burrs dull, they make both more fines and more boulders, and the net result is always slower flow and less extraction. Makers rate burr life differently: Eureka gives 300 kg for the Mignon Silenzio 55's burrs, and Niche says the Niche Zero's last more than 750 kg. Alignment can't restore a dull edge.
 
-**Uneven or patchy wipe:** Multiple high and low spots. This can indicate a warped mounting surface, inconsistent burr machining, or debris under the burr. Clean everything again and retest. If the pattern persists, shimming at multiple points may be needed.
+## After any change, find your zero again
 
-**No wipe at all:** You did not reach the chirp point, or the marker layer was too thick. Reapply and try again, adjusting finer.
+Reseating, shimming or sanding can all move the point where the burrs touch, so re-find zero and dial in again from your maker's starting setting. Our [espresso dial-in guide](/blog/how-to-dial-in-espresso/) and [grind size guide](/blog/coffee-grind-size-guide-what-grind-for-every-brew-method/) cover the next steps.
 
-## Step 5: Shim with Aluminum Foil
+<ToolCallout tool="calibrator" preset={{ grinder: 'df64-gen2', method: 'espresso' }} cta="Open the Calibrator on the DF64" context="Opens the Grind Calibrator on the Turin DF64 Gen 2 for espresso. Turin publishes no chart, so the tool shows a secondary guide's range, labeled as a secondary source. After shimming, your zero may have moved, so treat any number as a place to start." />
 
-If the wipe pattern shows a tilt, you need to raise the low side. Standard kitchen aluminum foil is approximately 0.016 millimeters (16 microns) thick -- thin enough for precise adjustments.
+## Sources
 
-1. Cut a small strip of aluminum foil, roughly the size and shape of the gap between one mounting screw and the burr edge.
-2. Remove the stationary burr (the one with the marker).
-3. Place the foil strip under the burr on the **low side** -- the side where the marker ink was NOT wiped away.
-4. Reseat the burr and tighten the mounting screws.
-5. Reapply the marker.
-6. Reassemble and test the chirp point again.
-7. Check the new wipe pattern.
+Makers' pages and manuals were checked on October 15, 2026.
 
-One layer of foil may be enough. If the wipe is still uneven, add another layer. Typical corrections need 1-3 layers of foil (16-48 microns). Go slowly. Over-shimming flips the problem to the other side.
-
-## Step 6: Verify and Iterate
-
-Repeat the marker test after each shimming adjustment until you achieve a full, even wipe around the entire circumference. This typically takes 2-4 iterations. Patience here directly translates to grind quality.
-
-Once you have a clean full wipe:
-
-1. Lock the burr mounting screws firmly. Shims should not shift during operation.
-2. Run a small amount of coffee through the grinder to confirm the adjustment holds under actual grinding conditions.
-3. Test the chirp point one final time -- it should feel crisp and uniform rather than catching on one side.
-
-## Addressing Concentricity (Burr Offset)
-
-If your grinder has mounting holes larger than the screws, the burr can shift laterally. The marker test primarily reveals parallelism (tilt), but concentricity issues also show up as uneven wipe patterns -- specifically, a wipe that is tight on one side of the circumference and loose on the opposite side, even after shimming eliminates tilt.
-
-To fix offset:
-
-1. Loosen the mounting screws slightly -- enough that the burr can shift but not rotate freely.
-2. Tap the burr gently toward the side where the gap is widest (where ink was not wiped).
-3. Retighten the screws.
-4. Retest with the marker.
-
-Some grinder modders use thin tape or Teflon thread seal tape on one side of the mounting holes to center the burrs and eliminate play. This is more permanent than relying on careful positioning alone.
-
-<ToolCallout tool="grind-guide" context="Once your burrs are aligned, dial in the right grind size for your brew method." />
-
-## Which Grinders Benefit Most
-
-**High-impact candidates:**
-- [DF64 and similar 64mm flat platforms](/blog/conical-vs-flat-burr-grinders/) with aftermarket SSP burrs. The DF64's stock mounting system has enough play that alignment checking after a burr swap is essentially mandatory.
-- Eureka Mignon series. The mounting system is good but benefits from verification.
-- Any grinder where you have recently replaced or reseated the burrs.
-- Baratza Encore and Virtuoso after heavy use, where internal wear can introduce tilt.
-
-**Lower-impact candidates:**
-- Hand grinders like the Comandante C40, 1Zpresso JX-Pro, or Kinu M47. These typically have tighter tolerances from the factory, and the conical burr design is less sensitive to minor misalignment. Some hand grinder modders still align, but the gains are smaller. For more on hand grinder models, see the [manual grinders guide](/blog/top-10-best-manual-coffee-grinders/).
-- Grinders with precision-machined mounting systems (Lagom P64, Weber EG-1) that ship with factory alignment verified. Checking is still worthwhile but corrections are less likely to be needed.
-
-## After Alignment: What to Expect
-
-A well-aligned grinder will show improvements in:
-
-**Consistency:** Draw-down times for pour-over and shot times for espresso become more predictable. If your V60 brews previously ranged from 2:30 to 4:00 on the same recipe, alignment can tighten that to a narrow band. For espresso-specific dialing, see [how to dial in espresso](/blog/how-to-dial-in-espresso/).
-
-**Clarity:** With a narrower particle size distribution, you get less simultaneous over- and under-extraction. Flavors become cleaner and more distinct. The "muddy" or "confused" quality that comes from uneven extraction diminishes.
-
-**Extraction ceiling:** You may be able to grind finer without stalling (for espresso) or without the cup becoming harsh (for filter). The tighter PSD means fewer fines clogging the bed at a given average grind size, giving you more room to push extraction before negative flavors appear. See the [grind size micron chart](/blog/coffee-grind-size-micron-chart/) for specific particle size ranges by brew method.
-
-**Reduced waste:** [Better extraction efficiency](/blog/coffee-extraction-yield-explained/) means more flavor from the same dose of coffee. Rao quantified this: the gap between a large-burr grinder at 21% yield and a small-burr grinder capped at 19.5% equals approximately 7% bean savings, roughly $0.80 per pound at $11 per pound. Alignment does not give you the same magnitude of improvement as a burr upgrade, but it moves your existing burrs closer to their theoretical performance.
-
-The marker test is one of the simplest modifications in the coffee equipment world. Fifteen minutes and a dry-erase marker can meaningfully improve every cup your grinder produces. For the price of a marker and a few inches of aluminum foil, it is one of the highest return-on-investment adjustments available.
-
-<FAQ items={[
-  {
-    question: "Will aligning my burrs void my grinder's warranty?",
-    answer: "It depends on the manufacturer. Most warranties cover defects in materials and workmanship, not user-performed adjustments. Opening the burr chamber to clean it is standard maintenance that every manufacturer expects, and adding foil shims does not permanently modify the grinder — you can remove them and return to stock at any time. If you damage mounting threads or burr surfaces during the process, that would not be covered. For grinders like the DF64 where aftermarket burr swaps are the entire point of the platform, alignment is considered a normal part of setup."
-  },
-  {
-    question: "How often should I check burr alignment?",
-    answer: "Check alignment whenever you remove and reseat burrs — after cleaning, burr replacement, or any maintenance involving the burr carrier. For normal daily use without disassembly, alignment does not drift on its own. The burrs are bolted to machined surfaces, and the mounting does not move during grinding. The exception is if you drop the burr carrier or if mounting screws loosen over time. A quick marker test once or twice a year is reasonable for daily-use grinders."
-  },
-  {
-    question: "Does this work for conical burr grinders?",
-    answer: "The marker test is primarily designed for flat burr grinders, where the two parallel faces should make uniform contact around the entire circumference. Conical burrs have a different geometry — an inner cone sits inside an outer ring, and alignment refers to concentricity (whether the cone is centered) rather than parallelism. You can adapt the marker test by applying ink to the outer surface of the inner conical burr and checking for even contact, but the technique is less standardized and the gains are typically smaller."
-  },
-  {
-    question: "Can I use something other than aluminum foil for shims?",
-    answer: "Aluminum foil is the standard because it is universally available, consistent in thickness (about 16 microns), soft enough to compress for a snug fit, and food-safe. Alternatives include brass shim stock from machining supply stores, thin Teflon tape, or strips cut from aluminum cans (about 100 microns — useful for larger corrections). Avoid materials that fragment, corrode, or compress over time. Paper and cardboard are not recommended."
-  },
-  {
-    question: "My grind quality is already fine — is alignment worth the effort?",
-    answer: "If your V60 draw-down times are consistent, your espresso shots are predictable, and your cup tastes clean with distinct flavors, your burrs may already be well aligned. The marker test takes 15 minutes to check, which is minimal even if it just confirms everything is fine. The biggest gains come from grinders with swapped burrs (especially aftermarket SSP burrs in a DF64), grinders heavily used for years, or grinders where you have noticed increasing inconsistency."
-  },
-  {
-    question: "What does the chirp point sound like?",
-    answer: "The chirp point is a faint, high-pitched scraping sound when the two burr surfaces make their first light contact. On an electric grinder with the motor off, you will hear and feel a slight catch as you turn the adjustment ring toward the finest setting. On a hand grinder, you will feel resistance when turning the handle. The chirp should be light — if you have to force the adjustment, you have gone too far."
-  },
-  {
-    question: "How do I know if my burrs are too dull for alignment to help?",
-    answer: "Inspect the cutting edges under good light. Sharp burrs have well-defined, crisp edges. Dull burrs show rounded, smooth edges where the cutting teeth should be sharp. As burrs dull, both fines and boulders increase simultaneously — if your flow rates have been steadily decreasing and grind quality degrading over thousands of doses, replacement may be needed before alignment can make a meaningful difference."
-  }
-]} />
+- Barista Hustle, "A Wide Thought Distribution About Grinding," January 30, 2017, section 2, "Alignment is Key": [baristahustle.com](https://www.baristahustle.com/a-wide-thought-distribution-about-grinding/)
+- Scott Rao, *Espresso Extraction: Measurement and Mastery* (2013), ch. 9, "Grinding": "Burr sharpness" and "Structural grinder problems"
+- Scott Rao, "A more effective way to align your grinder," with a guest post by Mitchell Hale, *Scott Rao* blog, January 9, 2019: [scottrao.com](https://www.scottrao.com/blog/2019/1/9/a-more-effective-way-to-align-your-grinder)
+- Jonathan Gagné, "What I Learned from Analyzing 300 Particle Size Distributions for 24 Espresso Grinders," *Coffee ad Astra*, 2023: [coffeeadastra.com](https://coffeeadastra.com/2023/09/21/what-i-learned-from-analyzing-300-particle-size-distributions-for-24-espresso-grinders/)
+- Jonathan Gagné, "Seasoning Grinder Burrs and Grind Quality," *Coffee ad Astra*, 2019: [coffeeadastra.com](https://coffeeadastra.com/2019/05/27/seasoning-grinder-burrs-and-grind-quality-2/)
+- Turin, "Troubleshooting Guide for the Turin DF54, DF64 Gen 2 and DF83 Gen 2," August 20, 2025, "Safety first", "Inconsistent grind / wild shot times", "Loud scraping" and "Strange vibrations / wobble": [turingrinders.com](https://www.turingrinders.com/blogs/news/troubleshooting-guide-for-the-turin-df54-df64-gen-2-and-df83-gen-2); and DF64 Gen 2.7 product page, burr options: [turingrinders.com](https://www.turingrinders.com/products/turin-df64-gen-2-single-dose-coffee-grinder-1)
+- Comandante, FAQ, cleaning and "My grinder's burrs are touching — is this normal?": [comandantegrinder.com](https://comandantegrinder.com/pages/faq)
+- Timemore, *Chestnut C Coffee Grinder User Manual* (Chinese and English, 2020), "Caution": [Timemore manual (PDF)](https://www.timemore.cn/wp-content/uploads/2020/03/%E6%B3%B0%E6%91%A9%E6%A0%97%E5%AD%90C%E7%A3%A8%E8%B1%86%E6%9C%BA%E8%AF%B4%E6%98%8E%E4%B9%A6-%E4%B8%AD%E8%8B%B1%E6%96%87.pdf)
+- 1Zpresso, "User Manual – JX-Pro," March 25, 2021, "Warning": [1zpresso.coffee](https://1zpresso.coffee/manual-jxpro-en/); and J Series page: [1zpresso.coffee](https://1zpresso.coffee/j/)
+- Kinu, M47 Classic product page, features: [kinugrinders.com](https://www.kinugrinders.com/products/m47-classic)
+- Niche Coffee, *Niche Zero Instructions for Use*, "Care and cleaning" and "Additional information": [Niche manual (PDF)](https://cdn.shopify.com/s/files/1/0081/2076/2450/files/Niche_Zero_IFU.pdf?v=1617928737)
+- Eureka, Mignon Silenzio 55 product page, technical specifications (burr lifespan): [eureka.co.it](https://www.eureka.co.it/en/products/eureka+1920/prosumer+grinders/silent+range/19/)

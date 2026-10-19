@@ -75,6 +75,66 @@
       "source": "/blog/ultimate-pour-over-coffee-guide/",
       "destination": "/blog/ultimate-pour-over-coffee-guide-and-best-v60-technique/",
       "permanent": true
+    },
+    {
+      "source": "/blog/single-dose-coffee-freezing-guide",
+      "destination": "/blog/how-to-freeze-coffee-beans/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/single-dose-coffee-freezing-guide/",
+      "destination": "/blog/how-to-freeze-coffee-beans/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/what-does-kenyan-coffee-taste-like",
+      "destination": "/blog/kenyan-coffee-flavor-notes-and-best-coffees/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/what-does-kenyan-coffee-taste-like/",
+      "destination": "/blog/kenyan-coffee-flavor-notes-and-best-coffees/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/costa-rica-possibly-the-best-single-origin-coffee",
+      "destination": "/blog/what-does-costa-rican-coffee-taste-like/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/costa-rica-possibly-the-best-single-origin-coffee/",
+      "destination": "/blog/what-does-costa-rican-coffee-taste-like/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/coffee-scores-what-they-taste-like",
+      "destination": "/blog/coffee-scoring-system-explained/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/coffee-scores-what-they-taste-like/",
+      "destination": "/blog/coffee-scoring-system-explained/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/coffee-varieties-explained",
+      "destination": "/blog/coffee-varietal-guide/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/coffee-varieties-explained/",
+      "destination": "/blog/coffee-varietal-guide/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/4-more-single-origin-coffees-you-need-to-know",
+      "destination": "/blog/what-is-single-origin-coffee/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/4-more-single-origin-coffees-you-need-to-know/",
+      "destination": "/blog/what-is-single-origin-coffee/",
+      "permanent": true
     }
   ]
 }

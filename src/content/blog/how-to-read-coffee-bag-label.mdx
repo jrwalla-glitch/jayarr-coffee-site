@@ -1,225 +1,164 @@
 ---
 title: "How to Read a Coffee Bag Label"
-description: "A complete guide to decoding specialty coffee bag labels. Learn what origin, varietal, process, altitude, roast date, and cup score actually predict about flavor — and which red flags mean you should keep walking."
+description: "What each line on a specialty coffee bag tells you, from the roast date and process to origin, altitude, variety and score, and which claims on the bag are marketing rather than information."
 pubDate: "Mar 10 2026"
-updatedDate: "Jan 14 2026"
+updatedDate: "Oct 15 2026"
 heroImage: "../../assets/blog/how-to-read-coffee-bag-label.jpg"
 category: "Science"
 ---
-import ReferenceGuide from '../../components/infographics/ReferenceGuide.astro';
+import AnswerBox from '../../components/AnswerBox.astro';
 import ComparisonTable from '../../components/infographics/ComparisonTable.astro';
-import FAQ from '../../components/FAQ.astro';
+import ToolCallout from '../../components/ToolCallout.astro';
 
-A specialty coffee bag is trying to tell you something. Origin, varietal, processing method, altitude, roast date, cup score — every data point on that label is a clue about what's in your cup. The problem is that most people don't know how to read the clues. They see "Ethiopia Yirgacheffe" and think "fancy," but they can't tell you why that matters or what it predicts about flavor.
+<AnswerBox answer="Start with the roast date: whole beans are usually at their best about 7 to 21 days after roasting and worth finishing by about day 30, a little later for espresso. Then read the process (washed, natural or honey), the origin and how traceable it is, and the roast level. Altitude, variety, tasting notes and a score add detail; a 'best by' date, a strength number or '100% arabica' tells you very little." />
 
-This is your field guide. Every element on a specialty coffee bag, what it means, what it predicts, and what's missing that should be there.
+A specialty coffee bag packs a lot onto a small label: where the coffee grew, what plant it came from, how it was processed and roasted, and when. Each line is a clue about the cup, and some lines are just marketing. Here's how to tell them apart.
 
-<ReferenceGuide
-  title="Coffee Bag Label Decoder"
-  subtitle="12 label elements — what each one tells you about your cup"
-  items={[
-    { label: "Roaster Name", description: "The roaster's style shapes every cup. Two roasters can buy the same green coffee and produce wildly different results.", value: "Develop preferences for specific roasters over time — like winemakers." },
-    { label: "Origin Country", description: "Broadest flavor predictor. Africa = bright and fruity. Americas = balanced and clean. Asia = earthy and heavy.", value: "A reliable first filter — not a verdict." },
-    { label: "Region", description: "Narrows the flavor profile. Regions have distinct microclimates and soil that produce consistent flavor differences.", value: "E.g., Yirgacheffe vs. Antigua — same country, different cup." },
-    { label: "Farm or Washing Station", description: "Traceability to a single producer means the coffee was good enough to stand on its own.", value: "Single-farm = intentional sourcing and quality control." },
-    { label: "Varietal (Cultivar)", description: "The genetic fingerprint. Different varietals produce different flavor profiles, like grape varieties in wine.", value: "SL-28 = blackcurrant intensity. Gesha = jasmine, bergamot, tea-like." },
-    { label: "Processing Method", description: "How the cherry becomes a green bean. Washed = clean and bright. Natural = fruity and full. Honey = in between.", value: "Often the biggest flavor predictor on the entire label." },
-    { label: "Altitude", description: "Higher altitude = slower maturation = denser beans = more complex flavor and brighter acidity.", value: "Above 1,500m = excellent. Above 1,800m = exceptional." },
-    { label: "Cup Score", description: "SCA rating on a 100-point scale. 80+ = specialty. 85+ = excellent. 90+ = outstanding and rare.", value: "A quality floor — your results depend on how you brew it." },
-    { label: "Tasting Notes", description: "The roaster's suggestion, not a guarantee. Your water, grinder, and brew method will shift the profile.", value: "The category of flavors (fruity, floral, chocolatey) is usually accurate." },
-    { label: "Roast Date", description: "THE most important freshness indicator. Coffee peaks 7–21 days after roasting. No roast date = red flag.", value: "Check the math: how many days since this date?" },
-    { label: "Net Weight", description: "Standard reference. 12 oz (340g) is the most common specialty bag size.", value: "Use for calculating cost-per-cup comparisons." },
-    { label: "Lot Number", description: "Most granular identifier. Means the roaster tracks this coffee to a specific batch or harvest.", value: "Extreme traceability = quality signal at every step of the chain." }
-  ]}
-  footnote="The more a label tells you, the more confident you can be in what's inside."
-/>
+## An example label, line by line
 
-## The Roaster
+This label is invented for illustration; the farm and roaster don't exist. Its details are typical of a washed Kenyan coffee.
 
-The roaster's name matters more than most people realize. Two roasters can buy the same green coffee from the same farm and produce wildly different cups — every decision about development time, temperature, and roast level shapes the final flavor. Over time, you'll develop preferences for specific roasters the way you develop preferences for specific winemakers. If you love one coffee from a roaster, you'll likely enjoy their others.
+| On the bag | What it tells you |
+|---|---|
+| **Kenya · Nyeri** | The country and the region. A starting point for flavor, not a promise |
+| **Example Factory** | A named washing station (in Kenya, a "factory"), so the coffee is traceable beyond its country |
+| **SL28, SL34** | The varieties. World Coffee Research rates both "Exceptional" for quality potential at high altitude |
+| **Washed** | The process. Washed coffees tend toward more acidity and a cleaner cup |
+| **1,700–1,900 masl** | The growing altitude, in meters above sea level |
+| **Roasted on:** a day, month and year | The most useful line on the bag for freshness |
+| **Blackcurrant, grapefruit, black tea** | What the roaster tasted. What it *can* taste like, not a guarantee |
+| **340 g (12 oz)** | The net weight |
 
-## Origin Country
+The roast date tells you where the beans are in their life. Our Freshness tool counts the days from it.
 
-This is the broadest flavor predictor on the bag. Coffee-growing countries produce recognizable flavor profiles because of shared climate, soil, altitude ranges, and dominant processing methods.
+<ToolCallout tool="freshness" preset={{ storage: 'sealed-bag' }} cta="Check a roast date in Freshness" context="Opens the Freshness tool for a sealed bag of whole beans brewed as filter. It starts on a bag roasted ten days ago: enter the roast date printed on yours to see whether it's still resting, at its usual best or fading, with the dates of its best window. Switch to espresso for the longer rest." />
 
-**Africa** (Ethiopia, Kenya, Rwanda, Burundi, Tanzania): Bright acidity, fruit-forward flavors, complexity. Ethiopian coffees are famous for florals, citrus, and candied fruit. Kenyan coffees deliver intense blackcurrant and berry with juicy acidity. If you want to go deeper, our [Ethiopian coffee guide](/blog/ethiopian-coffee-flavors-and-varieties/) and [what Kenyan coffee tastes like](/blog/what-does-kenyan-coffee-taste-like/) break down each origin in detail.
+The origin, region and altitude are easier to judge against the country they came from. Coffee Origins shows each country's growing-altitude band, harvest months, common varieties and processing.
 
-**Central and South America** (Colombia, Guatemala, Costa Rica, El Salvador, Brazil): Balanced, clean, approachable. Colombian coffees tend toward nutty caramel. Brazilian coffees lean chocolatey and low-acid with heavy body.
+<ToolCallout tool="origins" preset={{ o: 'kenya' }} cta="Open Coffee Origins on Kenya" context="Opens Coffee Origins on Kenya: its harvest year drawn as a ring with the uncertain edges marked, its growing-altitude band, USDA's production forecast, its regions, and its common varieties and processing. Pick another country to compare the line on your own bag." />
 
-**Asia-Pacific** (Indonesia, India, Papua New Guinea): Heavier body, lower acidity, earthy and herbal notes — especially Indonesian coffees processed with Giling Basah (semi-washed).
+## The roast date
 
-Origin country is a starting point, not a verdict. But as a first filter, it's reliable.
+Look for the actual date the coffee was roasted. James Hoffmann's rules in *The World Atlas of Coffee* start there: buy coffee with a clear roast date, try to buy within two weeks of roasting, and buy only enough for a couple of weeks at a time.
 
-## Region, Farm, and Cooperative
+A "best by" date doesn't do the same job. Hoffmann notes that supermarket coffee often carries a best-before date 12 to 24 months after roasting, because coffee is safe to drink that long, not because it tastes good.
 
-Below the country, you'll often see increasingly specific geography:
+Once you have the date, these are the typical windows our Freshness tool uses for whole beans brewed as filter coffee:
 
-**Region** (e.g., Yirgacheffe, Huehuetenango, Nyeri) narrows the flavor profile. Regions have distinct microclimates and soil — a coffee from Huehuetenango, Guatemala tastes different from Antigua, Guatemala.
+| Days since roasting | Stage | What to do |
+|---|---|---|
+| 0–3 | Probably still resting | Wait a few days: trapped carbon dioxide can make it brew unevenly |
+| 4–6 | Opening up | Ready to brew; most coffees keep getting sweeter |
+| 7–21 | Likely at its best | Brew it |
+| 22–30 | Probably still good | Finish it soon, or freeze what you won't use |
+| 31–59 | Likely fading | Taste it; buy fresher next time |
+| 60 and up | Likely stale | Fine for cold brew or baking |
 
-**Farm or Estate** (e.g., Finca El Injerto, Hacienda La Esmeralda) means the roaster traces the coffee to a single producer. Single-farm coffees are the equivalent of single-vineyard wines. For a deeper look at what this kind of traceability means, see our [single origin coffee guide](/blog/what-is-single-origin-coffee/).
+For espresso, the tool keeps beans in the resting stage through day 6. These are typical windows, not a forecast for your bag: roast level, the bag and how you store it can move them by days to weeks. The bag itself matters. Hoffmann explains that sealed foil bags with a one-way valve let gas out without letting air in, that bags flushed with nitrogen stale slowest of all, and that once a bag is opened, staling speeds up. Our guides to [coffee freshness](/blog/coffee-freshness-roast-to-stale/), [storing beans](/blog/how-to-store-coffee-beans/) and [freezing them](/blog/how-to-freeze-coffee-beans/) go further.
 
-**Cooperative or Washing Station** (e.g., Kochere Washing Station) is common where smallholder farmers pool harvests. One step less specific than a single farm, but still far more traceable than a generic country blend.
+## Origin, region and farm
 
-**Lot Number** (e.g., Lot 47, Micro Lot B) is the most granular identifier. A single farm might produce multiple lots with different processing or harvest dates.
+The more specific the place, the more you know about the coffee. Hoffmann's best buying advice is to buy as traceable a coffee as possible, and he explains why it matters: keeping a lot traceable through the whole supply chain adds cost, so it usually only pays for high-quality coffee.
 
-The general rule: the more specific the geography, the more intentional the sourcing.
+- **Country:** the broadest clue. Each origin has flavors it's known for, but they vary with region, process and roast. Coffee Origins lists the flavor tendencies importers describe for each country, with the conditions that change them.
+- **Region:** a narrower clue, such as Nyeri in Kenya or Huehuetenango in Guatemala.
+- **Farm, washing station or cooperative:** a named source. Hoffmann notes that in much of Latin America coffee can be traced to a single small farm, while elsewhere land ownership or trade rules make that harder, so a cooperative or washing station may be as specific as a coffee gets.
+- **Lot:** the most specific line. One farm can sell several lots, harvested or processed differently.
+
+Hoffmann also suggests that a coffee kept traceable, with the producer's, farm's or cooperative's name on the bag, has probably earned the farmer a better price. For what the seals on a bag mean, see our guide to [coffee certifications](/blog/coffee-certifications-decoded/).
 
 ## Altitude
 
-Usually listed in meters above sea level (masl). You'll see numbers like 1,400-1,800 masl or "SHG" (Strictly High Grown, typically above 1,200m).
+Altitude is usually printed in meters above sea level (masl), sometimes as a range. Some bags use an altitude grade instead, and those differ by country. In Hoffmann's country chapters:
 
-Altitude matters because it directly affects bean density. Higher altitude means cooler temperatures, which slows cherry maturation. Slower maturation allows more complex sugars and organic acids to develop. The result: denser beans with more concentrated flavor, brighter acidity, and greater complexity.
+- **Guatemala:** "Strictly Hard Bean" (SHB) means grown above 1,300 m (4,300 ft), "Hard Bean" 1,220 to 1,300 m.
+- **El Salvador:** "Strictly High Grown" (SHG) means above 1,200 m (3,900 ft), "High Grown" above 900 m.
+- **Honduras:** SHG means above 1,200 m, "High Grown" above 1,000 m.
 
-Research shows that approximately 25% of the variation in extraction yield can be explained by elevation alone. Higher-altitude coffees simply have more flavor to give.
+So the same initials don't mean the same height everywhere. Hoffmann adds that in El Salvador the grades have no relation to quality or traceability, and that in Honduras they're most often seen on less traceable lots.
 
-As a rough guide:
+Altitude still matters. Hoffmann writes that great coffee requires altitude, and some varieties do better high up: he notes that Caturra's quality increases with altitude while its yield drops, and that SL-28 performs better at higher altitudes. But a number on its own isn't a quality grade, and what counts as high depends on the country, so compare it with that country's band in Coffee Origins. Our [altitude guide](/blog/coffee-altitude-guide/) explains the reasons.
 
-- **Below 1,000m:** Lower acidity, simpler flavor, heavier body
-- **1,000-1,500m:** Moderate complexity, balanced acidity
-- **1,500m+:** Bright acidity, complex flavors, lighter body, more aromatic
+## Variety
 
-## Varietal (Cultivar)
+A variety is the type of coffee plant. (Hoffmann reserves "varietal" for a specific instance of a variety, such as one farm's 100 percent Bourbon.) Plenty of coffee is sold without one, because it's traded by origin; a named variety means someone kept track.
 
-This is the coffee plant variety — the genetic fingerprint. Different varietals produce different flavor profiles, just like Pinot Noir and Cabernet Sauvignon taste different even when grown side by side.
+World Coffee Research publishes a catalog of varieties with a rating for each one's quality potential at high altitude. Here are some you'll often see on specialty bags:
 
-Varietals you'll commonly see on specialty bags:
+| Variety | WCR quality potential at high altitude | What Hoffmann says |
+|---|---|---|
+| Typica | Very Good | The original variety; capable of excellent quality, with a small yield |
+| Bourbon | Very Good | Many in specialty believe it has a distinctive sweetness |
+| Caturra | Good | A Bourbon mutation; quality considered good, rising with altitude |
+| SL28 | Exceptional | Capable of a distinct fruit flavor, often described as blackcurrant |
+| SL34 | Exceptional | Generally considered inferior to SL-28 in cup quality |
+| Geisha (WCR's Panama entry) | Exceptional | Considered exceptionally aromatic and floral |
+| Pacamara | Exceptional | Can taste of chocolate and fruit, but can also be herbal or onion-like |
 
-- **Bourbon:** Sweet, complex, crisp acidity. One of the most prized traditional varietals.
-- **Typica:** Clean, sweet, apple-like acidity. The original cultivar.
-- **SL-28 / SL-34:** Kenyan selections famous for blackcurrant intensity and exceptional sweetness.
-- **Gesha (Geisha):** Jasmine, bergamot, tropical fruit, tea-like body. Commands the highest prices in specialty.
-- **Caturra:** Bright citric acidity, lighter body. A dwarf Bourbon mutation common in Colombia and Central America.
-- **Pacamara:** Floral, complex, high acidity. El Salvador's signature varietal.
-- **Castillo:** Colombia's rust-resistant workhorse. Cup quality controversial but improving.
-- **Ethiopian Heirloom:** Essentially means "we don't know which specific varieties." Ethiopia's genetic diversity is enormous and mostly uncatalogued, but these coffees are consistently interesting.
+The two sources don't always agree: WCR rates SL34 as highly as SL28, while Hoffmann reports that most consider SL34 the lesser of the two. A rating is a potential, not a promise about one bag. Hoffmann deliberately gives few flavor descriptions for varieties, because so many factors affect the cup and so little organized research separates out the variety.
 
-When a bag lists a specific varietal, it signals the roaster is paying attention to genetics and flavor — not just buying commodity coffee.
+Many Ethiopian coffees are labeled "heirloom" or "landrace" instead of a variety. Hoffmann explains that many Ethiopian trees aren't selected cultivars but indigenous varieties whose diversity has barely been catalogued. Our guide to [Ethiopian heirloom and named varieties](/blog/ethiopian-heirloom-vs-named-varietals/) explains what those labels mean, and our [variety guide](/blog/coffee-varietal-guide/) covers more varieties.
 
-## Processing Method
+## Process
 
-Processing is how the coffee cherry is transformed from fruit into green bean. It's one of the biggest flavor determinants on the label.
+The process note says how the cherry became a green bean, and it's one of the most useful lines for predicting flavor. In Hoffmann's account:
 
-**Washed (Wet Process):** Cherry skin removed, beans fermented in water tanks for 12-72 hours, then washed and dried. Produces clean, bright, high-acidity cups that let terroir and varietal shine through. Dominant in East Africa, Colombia, and Central America.
+- **Washed:** the fruit is removed before drying; washed coffees tend toward more acidity, more complexity and a cleaner cup.
+- **Natural:** the coffee dries inside the whole cherry; it often adds fruit flavors, and sometimes wild, fermented ones.
+- **Honey or pulped natural:** the skin comes off but some of the sticky flesh stays on during drying, which tends to add sweetness and body.
+- **Semi-washed or wet-hulled:** common in Indonesia; lower acidity, more body, and earthy, woody flavors.
 
-**Natural (Dry Process):** Whole cherries dried intact on patios or raised beds. Produces fruity, full-bodied, sometimes wild cups. Common in Ethiopia, Brazil, and Yemen. When done well, naturals are explosively fruity. When done poorly, they taste fermented and dirty.
+A label that says "anaerobic" or "carbonic maceration" describes an extra fermentation step, not the whole process; a careful roaster also names the base method and how long the step lasted. Our [processing guide](/blog/coffee-processing-methods-explained/) explains every method.
 
-**Honey / Miel Process:** Skin removed but sticky mucilage left on during drying. Graded by mucilage amount: white honey (least, more washed-like) through black honey (most, more natural-like). Costa Rica pioneered this approach.
+## Roast level
 
-**Pulped Natural:** Brazil's version of honey processing. More body than washed, cleaner than natural.
+Not every roaster prints one, and "light" or "dark" alone doesn't say everything: Hoffmann points out that a roast is the product of the final color and how long it took to get there, and the two can taste quite different at the same color. In general, he writes, acidity falls the longer a coffee is roasted, bitterness rises the darker it goes, and sweetness peaks somewhere in between. Very dark roasts, sold as French or Italian roast, tend to be heavy in body and bitterness, with many of the raw coffee's characteristics lost.
 
-**Giling Basah (Semi-Washed):** Unique to Indonesia. Parchment removed while still wet, then dried further. This is why Sumatran coffee tastes earthy, herbal, and heavy-bodied.
+That's why a dark roast on a coffee sold for its farm and variety is worth a second look: the roast may hide much of what you're paying for. Our guide to [roast levels](/blog/coffee-roast-levels-explained/) goes further.
 
-If a bag says "washed," expect clarity. If it says "natural," expect fruit. If it says "honey," expect something in between.
+## Cup score
 
-## Roast Date
+Some bags print a score out of 100. Under the Specialty Coffee Association's 2004 cupping protocol, the scoring key called 90 to 100 "outstanding", 85 to 89.99 "excellent" and 80 to 84.99 "very good", all specialty, and below 80 "below specialty quality". The SCA notes that most coffees cupped that way scored between 80 and 88.
 
-The single most important freshness indicator on any coffee bag. Look for an actual date — not a "best by" date, not a "use by" date, but the date the coffee was roasted.
+The system has changed. On November 4, 2024 the SCA adopted its Coffee Value Assessment as its official cupping standard, superseding the 2004 protocol and form. On the new scale, a coffee rated neither high nor low on every attribute scores 79, so the same number can mean a different judgment. Either way, a score is a trained taster's rating of one sample, cupped in a standard way; your bag may be roasted and brewed differently. Our guide to [coffee scores](/blog/coffee-scoring-system-explained/) explains both systems.
 
-Coffee peaks between 7-21 days after roasting. It needs a few days to degas, then hits a sweet spot of maximum aromatic expression. After about a month, staling becomes noticeable. After two months, you're drinking a shadow of what the roaster produced.
+## Tasting notes
 
-If there's no roast date on the bag, the roaster doesn't want you to know how old the coffee is. That's a red flag.
+"Blackcurrant, dark chocolate, honey" describes what the roaster tasted, and what the coffee *can* taste like. Most of those flavors are smells, Hoffmann explains: we detect acidity, sweetness and bitterness on the tongue, but chocolate, berries or caramel through the nose. Your grinder, water and brewing will shift them. Treat the notes as a direction: a bag that says citrus, floral and tea-like is pointing somewhere different from one that says chocolate, nuts and caramel.
 
-## Roast Level
+## Claims that tell you little
 
-Sometimes stated explicitly (Light, Medium, Medium-Dark, Dark), sometimes implied by the roaster's brand identity. Roast level determines the balance between origin character and roast character. If you want to understand what happens inside the roaster that produces these levels, our [complete coffee roasting guide](/blog/how-is-coffee-roasted/) explains the full process.
+- **"100% arabica":** it means no robusta, and nothing about quality. Arabica isn't rare: USDA forecasts 105.9 million of the world's 189.7 million bags for 2026/27 to be arabica, about 56 percent (calculated). It does mean less caffeine: Hoffmann notes robusta has about twice the caffeine of arabica.
+- **A strength number:** Hoffmann explains that the strength guides on many supermarket bags have nothing to do with strength, which depends on how much coffee you brew with. They mostly reflect roast level, and so how bitter the coffee is likely to be, and he avoids coffees that carry them.
+- **A "best by" date without a roast date:** see above.
 
-- **Light roasts** (pulled shortly after first crack): Maximum origin transparency. You taste the terroir, the varietal, the processing. Bright acidity, complex aromatics, lighter body.
-- **Medium roasts:** The balance point. Origin character present, with added caramel and chocolate from Maillard reactions. Sweetness often peaks here.
-- **Dark roasts** (at or past second crack): Roast character dominates. Smoky, bittersweet, heavy body. As George Howell put it: light roast is the meat, dark roast is the heavy sauce.
+## What's often missing
 
-Neither is inherently better. But if a bag lists an exotic origin and specific varietal alongside a dark roast, that's a contradiction — you're paying for provenance you can't taste.
-
-## Cup Score
-
-Some specialty bags list an SCA (Specialty Coffee Association) cup score, typically between 80 and 100 — assigned by trained Q-graders who evaluate aroma, flavor, aftertaste, acidity, body, balance, sweetness, and clean cup.
-
-- **80-84:** Specialty grade. Good, clean, interesting.
-- **85-89:** Excellent. Distinctive, complex, memorable.
-- **90+:** Outstanding. Rare and usually expensive.
-
-A cup score is a useful quality floor, but it's a professional assessment of the green coffee under controlled conditions. A 90-point coffee brewed carelessly will taste worse than an 84-point coffee brewed well. Grind consistency and [grind size](/blog/coffee-grind-size-guide-what-grind-for-every-brew-method/) are among the biggest variables between a cupping lab and your kitchen.
-
-## Tasting Notes
-
-Those flavor descriptors — "blackberry, dark chocolate, honey" — are the roaster's suggestion, not a guarantee. They represent what trained tasters identified when cupping this coffee under controlled conditions.
-
-Your experience will differ. Your water chemistry, grinder, brew method, and palate will shift the profile. That "blackberry" might show up as a generic fruitiness. The "honey" sweetness might be barely perceptible if you're using hard water that mutes acidity.
-
-Treat tasting notes as directional guides. A bag that says "citrus, floral, tea-like" will taste bright and delicate — even if you don't taste lemon specifically. One that says "chocolate, walnut, caramel" will be rounder and sweeter. The category of flavors is usually accurate even when the specific descriptors don't land perfectly.
-
-## What's NOT on the Label (But Should Be)
-
-Even good specialty bags leave out useful information:
-
-**Crop Year:** A bag roasted last week might contain beans harvested 18 months ago. Past-crop coffee loses vibrancy. Knowing the crop year — like knowing a wine's vintage — lets you assess how fresh the green coffee was before roasting.
-
-**Days Since Roast:** Some roasters include a "best after" date alongside the roast date, giving you a ready-to-brew window. More should do this.
-
-**Green Coffee Importer:** The importer is the link between farm and roaster. Companies like Royal Coffee or Cafe Imports do quality control and build the direct relationships that roasters benefit from. Listing the importer signals supply chain transparency.
-
-## Red Flags vs. Green Flags
+- **The harvest date.** The roast date says nothing about when the green coffee was harvested, and green coffee ages too: Hoffmann cites early research that coffees dried too quickly can lose their good qualities within months, or even weeks, of reaching the roaster. Some roasters print the harvest; our [harvest calendar](/blog/coffee-harvest-calendar/) shows when each origin is picked.
+- **The importer.** Some roasters name the company that brought the coffee in, which adds another link to the chain you can check.
 
 <ComparisonTable
-  title="Coffee Bag: Red Flags vs. Green Flags"
-  subtitle="What to look for — and what to avoid — on any specialty coffee bag"
-  rowLabel="What You See"
-  columns={["Red Flag", "Green Flag"]}
+  title="Coffee bag: what to look for"
+  subtitle="Lines that tell you something, and lines that don't"
+  rowLabel="On the bag"
+  columns={["Tells you little", "Tells you more"]}
   rows={[
-    { name: "Date on bag", values: ["'Best by' date only (9-12 months out) — optimizes for shelf life, not freshness", "Actual roast date — coffee peaks 7-21 days after roasting"] },
-    { name: "Origin info", values: ["Roast level (e.g., 'Dark Roast') with no origin details — selling a style, not a coffee", "Single farm or lot number — traceable to a specific producer and batch"] },
-    { name: "Quality claim", values: ["'100% Arabica' as headline — about 60% of all coffee is Arabica, so this is the bare minimum", "Cup score printed — professionally evaluated; roaster is accountable"] },
-    { name: "Name on bag", values: ["Flavor concept name ('Breakfast Blend,' 'Donut Shop') — marketing, not a coffee description", "Specific varietal listed — roaster tracks genetics and expects you to care about flavor"] },
-    { name: "Supply chain", values: ["No processing method, altitude, or farm details — the roaster isn't telling you much", "Farm, region, altitude, process, and importer listed — maximum transparency"] },
-    { name: "Roast freshness", values: ["Oily beans visible through bag window — oils have migrated out and begun oxidizing", "Roast date within 2-3 weeks — coffee is in its prime; inventory managed for freshness"] }
+    { name: "Date", values: ["A 'best by' date only, often 12–24 months after roasting", "The roast date"] },
+    { name: "Origin", values: ["A roast style with no origin, or just a country", "A region, and a named farm, cooperative or washing station"] },
+    { name: "Quality", values: ["'100% arabica' as the headline", "A variety, a process, and a score with who scored it"] },
+    { name: "Strength", values: ["A strength number", "A roast level, with what to expect in the cup"] },
+    { name: "Name", values: ["A blend name such as 'Breakfast Blend' with nothing else", "The components of the blend, or the lot it came from"] }
   ]}
-  footnote="The more a label tells you, the more confident you can be in what's inside."
+  footnote="The more a label tells you, and the more of it you could check, the more confident you can be in what's inside."
 />
 
-## Bag Label Decoder: Putting It All Together
+Two lines matter most when you're standing in front of the shelf: the roast date and the process. Start there.
 
-Here's how to read real-world label combinations and predict what's in the cup:
+## Sources
 
-**Label 1:** *Kenya, Nyeri County, Karatina, SL-28, Washed, 1,800 masl, 87 points*
-**Prediction:** Blackcurrant acidity, juicy body, clean finish. SL-28 at high altitude delivers intense sweetness. Washed process lets the varietal shine. The 87-point score confirms excellent specialty coffee. Bright and electric — not a mellow morning sipper.
-
-**Label 2:** *Ethiopia, Yirgacheffe, Kochere Washing Station, Heirloom, Natural, 1,950 masl*
-**Prediction:** Explosive fruit — blueberry, strawberry, tropical notes. Natural processing in Yirgacheffe at nearly 2,000 meters produces some of the most aromatic coffees on earth. Fruity, full-bodied, and potentially polarizing if you're used to clean, balanced coffees. For a deeper look at Ethiopian label complexity, see our [Ethiopian heirloom vs. named varietals guide](/blog/ethiopian-heirloom-vs-named-varietals/).
-
-**Label 3:** *Brazil, Cerrado Mineiro, Fazenda Santa Ines, Yellow Bourbon, Pulped Natural, 1,100 masl*
-**Prediction:** Chocolate, nutty sweetness, low acidity, heavy body. Brazilian Yellow Bourbon with pulped natural processing is the archetype of a smooth, approachable coffee. Excellent for espresso.
-
-**Label 4:** *Colombia, Huila, Finca El Paraiso, Pink Bourbon, Washed, 1,750 masl, 89 points*
-**Prediction:** Floral complexity, sweetness, bright but balanced acidity. Pink Bourbon (genetically an Ethiopian landrace despite the name) has a reputation for exceptional cup quality. An 89-point score signals coffee near the top of the specialty range.
-
-## The Bottom Line
-
-A coffee bag label is a compressed story — where the coffee came from, what plant it grew on, how it was processed, how it was roasted, and how fresh it is. Once you can read that story, you stop buying coffee blind and start making predictions.
-
-You don't need to memorize every varietal or origin profile. Start with two things: always check the roast date, and pay attention to the processing method. Those two data points alone will improve every coffee purchase you make.
-
-*Some links in this post are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*
-
----
-
-<FAQ items={[
-  {
-    question: "What does 'washed process' mean on a coffee bag?",
-    answer: "Washed (or wet process) means the coffee cherry's skin was removed, the beans were fermented in water tanks for 12-72 hours to break down the remaining fruit mucilage, then washed clean and dried. This produces a clean, bright cup with high acidity where the varietal and terroir characteristics come through clearly. It's the dominant processing method in East Africa, Colombia, and Central America. If you see 'washed' on a bag, expect clarity and brightness rather than heavy fruitiness."
-  },
-  {
-    question: "Why doesn't my coffee bag have a roast date?",
-    answer: "If a coffee bag shows a 'best by' date instead of a roast date, the roaster is prioritizing shelf life over freshness transparency. This is standard for commodity and grocery-store coffee but a red flag in specialty coffee. Every serious specialty roaster prints the actual roast date because coffee peaks between 7-21 days after roasting and declines noticeably after a month. A 'best by' date 9-12 months out tells you nothing about when the coffee was roasted or how fresh it is right now."
-  },
-  {
-    question: "What does the cup score on a coffee bag mean?",
-    answer: "A cup score is a professional quality rating on a 100-point scale, assessed by SCA-certified Q-graders who evaluate aroma, flavor, acidity, body, balance, sweetness, and other attributes. Anything 80 or above qualifies as specialty grade. Scores of 85-89 are excellent, and 90+ is outstanding and rare. The score reflects the green coffee's quality under controlled cupping conditions — your results at home will depend on roast freshness, grind quality, water chemistry, and brewing method."
-  },
-  {
-    question: "Are tasting notes on coffee bags accurate?",
-    answer: "Tasting notes are the roaster's informed suggestion, not a guarantee. They represent what trained tasters identified when cupping this coffee under specific, controlled conditions. Your water chemistry, grinder, brew method, dose, and personal palate will shift the flavor profile. The specific descriptors ('blackberry,' 'honeycomb') may not land exactly, but the general flavor category usually holds — a bag that says 'citrus, floral, tea-like' will taste bright and delicate, even if you don't pinpoint lemon specifically."
-  },
-  {
-    question: "Does '100% Arabica' mean the coffee is high quality?",
-    answer: "No. Arabica accounts for roughly 60% of all world coffee production. Labeling coffee '100% Arabica' simply means it contains no Robusta — it says nothing about the quality of the Arabica used. There is enormous variation within Arabica, from commodity-grade blends to competition-winning single lots. If '100% Arabica' is the most specific claim on a bag, with no origin details, varietal, or roast date, the coffee is almost certainly commodity-grade."
-  }
-]} />
+- James Hoffmann, *The World Atlas of Coffee*, 2nd ed. (Octopus/Mitchell Beazley, 2018): "Buying and Storing Coffee" (strength guides, traceability, golden rules for fresh coffee, freshness and best-before dates, packaging); "How Coffee is Traded" (advice to consumers); "Coffee Varieties"; "Processing"; "Harvesting Coffee"; "Coffee Roasting"; "Tasting and Describing Coffee"; "Arabica and Robusta"; "Guatemala", "El Salvador" and "Honduras" (altitude grades); "Kenya" (washing stations, or factories)
+- World Coffee Research, *Coffee Varieties Catalog*, entries for Typica, Bourbon, Caturra, SL28, SL34, Geisha (Panama) and Pacamara ("Quality potential at high altitude"), checked October 15, 2026: [varieties.worldcoffeeresearch.org](https://varieties.worldcoffeeresearch.org/varieties/sl28)
+- Specialty Coffee Association, "Protocols & Best Practices" (Cupping Protocols: Final Scoring and the scoring key), sca.coffee, as archived December 15, 2019: [web.archive.org](https://web.archive.org/web/20191215115833/https://sca.coffee/research/protocols-best-practices/)
+- Specialty Coffee Association, *A System to Assess Coffee Value: Understanding the Specialty Coffee Association's Coffee Value Assessment*, June 2024, §8.5, "The Cupping Score" (pp. 40–41)
+- Specialty Coffee Association, "The SCA Officially Adopts CVA Descriptive and Affective Assessments as New Cupping Standards," November 4, 2024: [sca.coffee](https://sca.coffee/sca-news/sca-new-cva-cupping-standards-7ga28)
+- USDA Foreign Agricultural Service, *Coffee: World Markets and Trade*, July 2026, p. 7, Coffee Summary (arabica and robusta production, 2026/27 forecast): [apps.fas.usda.gov](https://apps.fas.usda.gov/psdonline/circulars/coffee.pdf)

@@ -1,293 +1,144 @@
 ---
 title: "Coffee Processing Methods Explained: From Washed to Carbonic Maceration"
-description: "A complete guide to how coffee is processed after picking — washed, natural, honey, anaerobic, carbonic maceration, thermal shock, and more. What each method does to flavor, and why it matters when you're buying beans."
+description: "How coffee cherries become green beans: washed, natural, honey, wet-hulled, anaerobic and carbonic maceration explained, with the flavors each method tends to give and how to read them on a bag."
 pubDate: "Mar 10 2026"
-updatedDate: "Dec 12 2025"
+updatedDate: "Oct 15 2026"
 heroImage: "../../assets/blog/coffee-processing-methods-explained.jpg"
 category: "Science"
 ---
+import AnswerBox from '../../components/AnswerBox.astro';
 import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
-import MethodCards from '../../components/infographics/MethodCards.astro';
-import FAQ from '../../components/FAQ.astro';
-import ExploreCallout from '../../components/ExploreCallout.astro';
+import ToolCallout from '../../components/ToolCallout.astro';
 
-The label on your coffee bag says "washed" or "natural" or "anaerobic carbonic maceration" — and you're supposed to know what that means. Most people don't. Processing is the most underappreciated variable in coffee flavor. It determines more about what ends up in your cup than roast level, and arguably as much as the varietal itself.
+<AnswerBox answer="Processing is how a coffee cherry becomes a dry green bean. Washed coffees have the fruit removed before drying and tend toward a cleaner, brighter cup; naturals dry inside the whole fruit and often taste fruitier; honey coffees keep some of the sticky mucilage as they dry and land in between. Anaerobic fermentation and carbonic maceration are extra steps added to one of those methods. All of these are tendencies, not guarantees of flavor." />
 
-Processing is everything that happens between picking a ripe coffee cherry and producing a dried green bean ready for export. The cherry is a fruit — a thin skin, a layer of sweet sticky mucilage, parchment, silverskin, and finally two seeds inside. How you remove those layers, and what you allow to ferment along the way, creates radically different flavor outcomes from the same raw material.
+The label on your coffee bag says "washed" or "natural" or "anaerobic carbonic maceration", and you're supposed to know what that means. Processing is everything that happens between picking a ripe cherry and shipping a dry green bean. The cherry is a fruit, with a skin, a sweet and sticky flesh, a papery parchment and a thin silver skin around two seeds; our [cherry anatomy guide](/blog/coffee-cherry-anatomy-explained/) shows each layer. How and when those layers come off, and what's allowed to ferment along the way, changes the coffee.
 
-Here's every major processing method, what it does, and what to expect when you see it on a bag.
+It's worth knowing why most producers choose a method. James Hoffmann points out in *The World Atlas of Coffee* that for most of them the goal isn't a particular flavor: it's to avoid defects and protect the coffee's value. Cost, water and climate decide a lot. A small but growing number of skilled producers do steer processing for flavor, and those are the coffees with the long processing notes.
+
+## From cherry to green bean
 
 <ProcessFlow
-  title="From Cherry to Bean"
-  subtitle="How processing shapes flavor at every stage"
+  title="From cherry to green bean"
+  subtitle="The steps most coffees go through, as Hoffmann describes them. The methods below differ in step 2."
   steps={[
     {
       label: "Harvest",
-      sublabel: "The starting point",
-      description: "Ripe coffee cherries are picked — by hand (selective picking) or by strip harvesting entire branches at once. Quality begins here: only ripe cherries produce great coffee.",
-      detail: "Every method below starts with the same ripe cherry. The difference is how and when the fruit layers are removed."
+      sublabel: "Ripe cherries",
+      description: "Ripe cherries are picked by hand or by machine. Ripeness matters, because it's tied to the sugar in the fruit.",
+      detail: "Cherries don't ripen all at once, so selective picking takes several passes."
     },
     {
-      label: "Washed (Fully Washed)",
-      sublabel: "Clean · Bright · Acidic",
-      description: "Cherry skin is mechanically removed within hours of picking. Beans ferment in water tanks for 12–72 hours, then are washed clean and dried on raised beds to about 11% moisture.",
-      detail: "Flavor: transparent — lets terroir and varietal character speak clearly. Origins: Ethiopia, Kenya, Colombia, Central America. Water use: high (15–20 L/kg)."
+      label: "Remove the fruit, or don't",
+      sublabel: "The method",
+      description: "Washed coffees lose the skin and flesh before drying. Honey and pulped natural coffees lose the skin but keep some flesh. Naturals keep the whole fruit.",
+      detail: "Microbes work on the fruit at this stage: in a fermentation tank for washed coffees, and on the drying fruit for the others."
     },
     {
-      label: "Natural (Dry Process)",
-      sublabel: "Fruity · Full Body · Wine-Like",
-      description: "Whole cherries are spread on raised beds and sun-dried intact for 2–4 weeks. The fruit ferments around the bean as it dries. The dried husk is mechanically removed at the end.",
-      detail: "Flavor: bold fruit, blueberry, strawberry, wine-like. Origins: Ethiopia, Brazil, Yemen. Water use: near zero. Defect risk: high — mold and over-fermentation are constant threats."
+      label: "Dry",
+      sublabel: "From about 60% to 11–12% moisture",
+      description: "On brick patios, on raised beds that let air flow around the coffee, or in mechanical dryers. The coffee is raked and turned so it dries evenly and doesn't go moldy.",
+      detail: "Hoffmann notes early research suggesting that slow, even drying helps a coffee keep its quality longer."
     },
     {
-      label: "Honey Process",
-      sublabel: "Sweet · Caramel · Stone Fruit",
-      description: "Cherry skin is removed but mucilage is left on the bean during drying. The color grade indicates mucilage retained: Yellow (~25%), Red (~50%), Black (~100%). More mucilage means more body and fruit character.",
-      detail: "Flavor: spectrum from 'washed-plus' (yellow) to 'clean natural' (black). Origins: Costa Rica, El Salvador, Brazil. Lower water use than washed — a popular middle ground."
+      label: "Rest in parchment",
+      sublabel: "Traditionally 30–60 days",
+      description: "The dry coffee is stored in its parchment, a step called reposo. The parchment protects it.",
+      detail: "Wet-hulled coffees are the exception: their parchment comes off part-way through drying."
     },
     {
-      label: "Wet-Hulled (Giling Basah)",
-      sublabel: "Earthy · Heavy · Herbal",
-      description: "Unique to Indonesia. Cherries are pulped, briefly fermented, then sold while still at 30–35% moisture. The parchment is removed while the bean is still wet — far earlier than any other method — then dried to finish.",
-      detail: "Flavor: heavy body, earthy, cedary, herbal. Origins: Sumatra, Sulawesi, Flores. The early wet hulling causes beans to swell and partially crack — responsible for the dark, bluish-green look of Sumatran beans."
-    },
-    {
-      label: "Anaerobic Fermentation",
-      sublabel: "Intense Fruit · Tropical · Candy",
-      description: "Coffee (whole cherry or pulped) is sealed in airtight vessels. CO2 produced during fermentation purges oxygen. Anaerobic yeasts and lactic acid bacteria take over, producing more esters and lactic acid. Fermentation runs 24–96 hours at controlled temperatures.",
-      detail: "Flavor: intensely fruity, passion fruit, mango, red wine. The same origin processed traditionally vs. anaerobically can taste like two completely different coffees. Cost: high — requires sealed tanks, valves, and monitoring equipment."
-    },
-    {
-      label: "Carbonic Maceration",
-      sublabel: "Perfumed · Confectionery · Ester-Rich",
-      description: "Borrowed from Beaujolais winemaking. Whole intact cherries are sealed in tanks flushed with CO2. Fermentation begins inside each cherry at the cellular level (intracellular fermentation) before the skin ruptures. Pioneered in coffee by Sasa Sestic, who won the 2015 World Barista Championship using a CM-processed lot.",
-      detail: "Flavor: confectionery sweetness, tropical fruit esters, perfumed floral complexity. Structurally different flavor compounds than standard anaerobic — not just 'more fruity' but chemically distinct. Cost: very high."
-    },
-    {
-      label: "Thermal Shock & Emerging Methods",
-      sublabel: "Aromatic · Complex · Frontier",
-      description: "Thermal shock: after anaerobic fermentation, beans are washed with hot water (~40°C) then immediately plunged into cold water (~12°C) to lock in volatile aromatics. Used by 2024 WBC Champion Mikael Jasin. Other emerging methods include nitrogen maceration (2025 WBC), lactic fermentation (LAB inoculation for creamy body), and frozen cherry (slow 8-day fermentation at 5–8°C).",
-      detail: "Flavor: thermal shock produces simultaneously complex and clean cups with high aromatic clarity. Lactic: creamy, yogurt-like, smooth. These methods represent the current frontier — rare, expensive, and genuinely novel."
+      label: "Hull, sort and bag",
+      sublabel: "At a dry mill",
+      description: "The parchment, or the dried husk of a natural, comes off by machine. The beans are graded by size, sorted for defects by machine and by hand, and bagged for export."
     }
   ]}
-  footnote="Competition benchmark: every WBC winner since 2015 has used experimental processing — Sestic (CM, 2015), Um (anaerobic, 2023), Jasin (thermal shock, 2024), Simpson (nitrogen, 2025)."
 />
 
-## The Traditional Methods
+## Washed
 
-### Washed (Fully Washed / Wet Process)
+**The process:** a depulper strips off the skin and most of the flesh. The coffee then goes into a tank or trough, where fermentation breaks down the rest of the flesh, which is full of pectin and clings to the seed, until it can be washed away. Then it's dried.
 
-**The process:** Ripe cherries are pulped — the skin is mechanically removed within hours of picking. The beans, still coated in mucilage, go into fermentation tanks filled with water. Over 12–72 hours, naturally occurring microbes break down the mucilage. The beans are then washed clean and dried on raised beds or patios to about 11% moisture content.
-
-**Flavor profile:** Clean, bright, high acidity. Floral and citrus notes come through clearly. Washed processing is often described as a "transparent" method — it lets terroir and varietal characteristics speak without adding much of its own voice. This is why most [single-origin specialty coffees](/blog/what-is-single-origin-coffee/) from East Africa, Central America, and Colombia are washed.
-
-**Defect risk:** Low when done well — the washing stage removes floaters and over-fermented beans. But if fermentation runs too long, you get "stinker" beans with a rotten chemical taste.
-
-**Water/cost:** High water use — roughly 15–20 liters per kilogram of green coffee. Acidic wastewater creates pollution problems near processing stations. Requires pulping machinery, fermentation tanks, clean water supply, and labor to monitor timing.
-
-**On the bag:** If a bag just says the origin with no processing note, it's almost certainly washed. Expect clarity, brightness, and acidity.
-
-### Natural (Dry Process)
-
-**The process:** The oldest method. Whole cherries are spread on raised beds or concrete patios and dried intact in the sun for 2–4 weeks, turned regularly to prevent mold. The fruit ferments around the bean as it dries. Once the moisture drops to about 11%, the dried husk is mechanically removed.
-
-**Flavor profile:** Fruity, full-bodied, lower perceived acidity. Blueberry, strawberry, tropical fruit, wine-like, sometimes funky or fermented. The extended contact with the fruit sugars during drying imparts flavors that washed processing strips away. [Ethiopia](/blog/ethiopian-coffee-flavors-and-varieties/) and Brazil produce the most celebrated naturals.
-
-**Defect risk:** High. Uneven drying, mold, over-fermentation, and insect damage are constant threats. The line between "pleasantly funky" and "defective" is thin. Naturals were historically considered inferior because most were defective — modern raised-bed drying and careful sorting have changed that.
-
-**Water/cost:** Near-zero water use. Low infrastructure cost but high labor (constant turning and sorting over weeks). Risk of total crop loss if rain hits during drying.
-
-**On the bag:** Expect bold fruit. If a reputable roaster is selling a natural, they've already sorted out the defects. These coffees are meant to be expressive.
-
-### Honey Process (Miel)
-
-**The process:** A Costa Rican innovation that splits the difference between washed and natural. The cherry skin is removed by pulping, but some or all of the mucilage is left on the bean during drying. The amount of mucilage retained determines the "color":
-
-- **Yellow honey:** about 25% mucilage left. Dries fastest (often in direct sun). Closest to washed — bright, clean, with a touch more body.
-- **Red honey:** about 50% mucilage. Slower drying, partial shade. Noticeable sweetness and fruit layered over clean acidity.
-- **Black honey:** about 100% mucilage retained. Slowest drying (up to 2 weeks), requiring shade and constant attention. Heaviest body, most fruit-forward — approaching natural territory.
+How long fermentation takes depends on altitude and temperature: the hotter it is, the faster it goes. Hoffmann describes two checks producers use: rubbed coffee squeaks once the flesh has broken down, and a stick stands up in the tank's gelatinous water. Left too long, the coffee picks up off-flavors.
 
-**Flavor profile:** The spectrum runs from "washed-plus" (yellow) to "clean natural" (black). Common notes: caramel, brown sugar, stone fruit, honey sweetness. The mucilage contributes body and sweetness without the wild fermentation character of a full natural.
+**What it tends to do:** in Hoffmann's account, washed coffees tend toward higher acidity, more complexity and a "cleaner" cup, meaning one without off-tastes or harshness. That's why many specialty producers wash their coffee: removing the flesh before drying sharply reduces the chance of something going wrong.
 
-**Water/cost:** Much less water than washed (pulping only, no tanks). Higher labor than washed — sticky beans are difficult to handle and must be turned frequently.
+**The cost:** it's the most expensive method, it uses water, and the wastewater can be toxic, which raises environmental concerns.
 
-**On the bag:** Expect sweetness. Honey coffees are crowd-pleasers — accessible fruit and body without the polarizing funk of naturals. [Costa Rica](/blog/costa-rica-possibly-the-best-single-origin-coffee/) is the pioneer here.
+## Natural
 
-### Wet-Hulled (Giling Basah)
+**The process:** the oldest method. Whole cherries are spread out to dry in the sun on patios or raised beds and turned regularly to prevent mold, unwanted fermentation and rot. Once dry, the husk of skin and dried fruit is removed by machine.
 
-**The process:** Unique to Indonesia — primarily Sumatra, Sulawesi, and surrounding islands. Cherries are pulped and briefly fermented by the farmer, then sold to a collector while still at about 30–35% moisture (far wetter than other methods). The collector removes the parchment layer while the bean is still soft and wet, then finishes drying to about 11%. This early parchment removal while wet is what distinguishes Giling Basah from every other method.
+**What it tends to do:** Hoffmann writes that the natural process often adds fruit flavors, usually described as blueberry, strawberry or tropical fruit, whatever the variety or place, and sometimes wilder notes such as ferment or barnyard. Carefully made naturals divide the coffee world: some love how fruity they can be, others find the wild flavors unpleasant.
 
-**Flavor profile:** Heavy body, earthy, herbal, low acidity, cedary, sometimes mushroomy or tobacco-like. The wet parchment removal causes the bean to swell and partially crack, creating the characteristic dark, bluish-green color of Sumatran beans. Polarizing: some love the depth, others find it muddy.
+**Where you'll see it:** where water is scarce it may be the only option, which is why Hoffmann names Ethiopia and parts of Brazil. Much natural coffee is cheap and low quality, but high-quality naturals cost more to make, because careful drying takes more labor.
 
-**Water/cost:** Moderate water use. Low cost — the method exists because it's fast. Farmers need cash quickly and the humid climate makes prolonged drying impractical. It's an economic adaptation, not a flavor-driven choice.
+## Honey and pulped natural
 
-**On the bag:** If it says Sumatra, Sulawesi, or Flores, it's almost certainly wet-hulled. Expect earthy depth, not bright fruit.
+**The process:** the skin and some of the flesh are stripped off by machine, and the coffee goes straight out to dry with the rest of its sticky mucilage still on.
 
-## The Experimental Methods
+- **Pulped natural** is mainly Brazilian. Hoffmann says it came from experiments by the equipment maker Pinhalense, aiming for quality with less water than washing. With less fruit around the bean there's less risk of defects, but enough sugar remains for a noticeable increase in sweetness and body.
+- **Honey** (*miel*, the Spanish word for the mucilage) is very similar and used in Central America, including Costa Rica and El Salvador. Depulpers can be set to leave a chosen share of the flesh on, so a coffee might be called "100 percent honey" or "20 percent honey". The more flesh left on, the higher the risk of fermentation defects in drying.
 
-The last decade has seen an explosion of processing innovation, largely borrowed from winemaking and fermentation science. These methods share a common principle: controlling the fermentation environment to steer flavor development.
+**The colors:** yellow, red and black honey aren't a standard measure. The importer Café Imports reports that some mills set the color by how much mucilage they remove before drying, while others leave all of it on and change the drying instead. Our [honey process guide](/blog/honey-process-colors-explained/) and our [Costa Rica guide](/blog/what-does-costa-rican-coffee-taste-like/) go further.
 
-<MethodCards
-  title="Experimental Processing Methods"
-  subtitle="Controlled fermentation — and what it does to flavor"
-  methods={[
-    {
-      name: "Anaerobic",
-      metrics: [
-        { label: "Fermentation", value: "Sealed", color: "#6B4226" },
-        { label: "Duration", value: "24–96 hrs" },
-        { label: "Cost", value: "$$$" }
-      ],
-      notes: [
-        "Oxygen purged by CO2 produced during fermentation",
-        "Yeasts + lactic acid bacteria dominate",
-        "Intensely fruity, tropical, candy-like",
-        "Available from most specialty roasters"
-      ]
-    },
-    {
-      name: "Carbonic Maceration",
-      metrics: [
-        { label: "Fermentation", value: "Intracellular", color: "#6B4226" },
-        { label: "Duration", value: "24–72 hrs" },
-        { label: "Cost", value: "$$$$" }
-      ],
-      notes: [
-        "Whole cherries sealed in CO2-flushed tanks",
-        "Fermentation starts inside each cherry",
-        "Perfumed, confectionery, ester-rich",
-        "Sasa Sestic won 2015 WBC with CM coffee"
-      ]
-    },
-    {
-      name: "Thermal Shock",
-      metrics: [
-        { label: "Fermentation", value: "Anaerobic +", color: "#6B4226" },
-        { label: "Hot/Cold", value: "40°/12°C" },
-        { label: "Cost", value: "$$$$" }
-      ],
-      notes: [
-        "Anaerobic fermentation followed by rapid thermal cycling",
-        "Locks in volatile aromatic compounds",
-        "Simultaneously complex and clean",
-        "2024 WBC Champion Mikael Jasin used thermal shock"
-      ]
-    },
-    {
-      name: "Lactic & Emerging",
-      metrics: [
-        { label: "Dominant Microbe", value: "LAB", color: "#6B4226" },
-        { label: "Profile", value: "Creamy" },
-        { label: "Status", value: "Frontier" }
-      ],
-      notes: [
-        "Lactic acid bacteria (same as yogurt, sourdough) dominate fermentation",
-        "Produces smooth, creamy, dairy-like mouthfeel",
-        "Nitrogen maceration: 2025 WBC (Simpson)",
-        "Frozen cherry and co-fermentation also emerging"
-      ]
-    }
-  ]}
-  footnote="Experimental coffees are flavor-direction signals, not quality guarantees. A well-executed washed Ethiopian beats a poorly controlled anaerobic from anywhere."
-/>
+## Wet-hulled (giling basah)
 
-<ExploreCallout piece="flavors" context="See how processing affects flavor in our interactive tasting guide." />
+**The process:** common in Indonesia. The coffee is depulped and dried only to 30 to 35 percent moisture instead of 11 to 12. Then it's hulled out of its parchment while still soft, and the bare beans are dried again. It's the one common method that doesn't keep the parchment on until just before export, and the second drying turns the beans what Hoffmann calls a deep swamp-green.
 
-### Anaerobic Processing (Washed or Natural)
+**What it tends to do:** lower acidity and more body, with flavors such as wood, earth, mustiness, spice, tobacco and leather. Hoffmann notes strong disagreement over whether that's desirable: many feel the process hides how Indonesian coffees really taste, which is why fully washed Indonesian lots, labeled as such, are worth looking for. Our guide to [Indonesian coffee](/blog/what-does-indonesian-coffee-taste-like/) goes further.
 
-**The process:** Coffee — either whole cherries (anaerobic natural) or pulped beans in mucilage (anaerobic washed) — is sealed in airtight vessels. Steel tanks, plastic drums, or even GrainPro bags with one-way valves are used. As naturally present microbes consume sugars, they produce CO2, which purges the remaining oxygen. Fermentation proceeds in this oxygen-free environment for 24–96 hours, sometimes longer, at controlled temperatures.
+## What fermentation does
 
-**Why it matters:** Without oxygen, aerobic bacteria are suppressed. Anaerobic yeasts and lactic acid bacteria take over, producing different metabolic byproducts — more esters, more lactic acid, less acetic acid. The result is intensified fruit character and a distinctly "juicy" mouthfeel.
+Every method involves microbes feeding on the fruit's sugars. What they make depends on the conditions, and some of it ends up in the bean. In a 2017 case study, De Bruyn and colleagues followed arabica cherries through wet and dry processing. Lactic acid bacteria dominated the wet processing, and several of their products formed in the mucilage (lactic acid, acetic acid and mannitol) were also found inside the bean. In dry processing, acetic acid bacteria and yeasts dominated, and their products built up in the drying outer layers of the cherry. Both methods changed the composition of the finished green beans.
 
-**Flavor profile:** Intensely fruity, tropical, wine-like, confectionery. Passion fruit, mango, strawberry candy, red wine, cinnamon. The same origin processed traditionally versus anaerobically can taste like two completely different coffees.
+That's what the newer methods try to steer: fewer variables left to chance, and more control over which microbes win. Cacao beans are fermented too; our sister site explains <a href="https://jayarrchocolate.com/blog/cacao-fermentation-science/" target="_blank" rel="noopener">cacao fermentation</a>.
 
-**Cost to producer:** High. Sealed vessels, pressure-release valves, pH and Brix meters, and technical knowledge to monitor fermentation curves. Not available to most smallholders without cooperative infrastructure.
+## Anaerobic fermentation
 
-### Carbonic Maceration
+**What it is:** a fermentation *environment*, not a processing method of its own. The importer Café Imports defines it as coffee "fermented in a low-oxygen environment for some period of time", and stresses that anaerobic coffees "are still processed as washed, honey, or natural." An "anaerobic natural" is a natural with an anaerobic step.
 
-**The process:** Borrowed directly from Beaujolais winemaking. Whole, intact cherries are placed in sealed tanks that are then flushed with CO2 to create an entirely oxygen-free environment (rather than relying on fermentation to purge oxygen, as in standard anaerobic). The key difference: because the cherries are intact, fermentation begins *inside* each cherry at the cellular level (intracellular fermentation) before the skin eventually ruptures. This produces a distinct set of aromatic esters not found in other methods.
+**How it's done:** fresh coffee goes into a container that's then sealed: a stainless-steel or thick plastic tank, a tied-off plastic bag such as GrainPro, or, on a budget, a food-service barrel or pail with a tight lid. Carbon dioxide from the fruit builds up and pushes out the oxygen; purpose-built tanks often have one-way valves that let gas out but not back in. There's no fixed time. Café Imports says pH, Brix, temperature and visual or sensory cues are likely more important guides than the clock, and that practices vary widely: coffee may be pre-fermented for 24 hours first, and yeasts or other modifiers may be added to the tank.
 
-Sasa Sestic, founder of ONA Coffee in Australia, pioneered carbonic maceration in coffee and won the 2015 World Barista Championship using a CM-processed coffee. That single competition result launched a global wave of processing experimentation.
+**What it tends to do:** Café Imports says producers and buyers are seeing "unique flavor profiles", but that "it's difficult to empirically say what anaerobic fermentation does to the final cup", because so many other variables change at the same time.
 
-**Flavor profile:** Confectionery sweetness, tropical fruit esters, floral complexity. CM coffees often have a "perfumed" quality and a round, syrupy body. The intracellular fermentation creates flavor compounds chemically distinct from external fermentation.
+## Carbonic maceration
 
-### Thermal Shock
+**What it is:** a form of anaerobic processing borrowed from winemaking. Taya Brown, a coffee production researcher at Café Imports, explained to *Barista Magazine* that in coffee the term currently means whole cherries sealed in a container with carbon dioxide actively pumped in. The CO₂ pushes oxygen out and, she says, is thought to favor a different metabolism than open-air fermentation and may reduce oxidation of the fruit and seed.
 
-**The process:** Pioneered by Diego Samuel Bermudez at Finca El Paraiso in Cauca, Colombia. After anaerobic fermentation, beans are washed with hot water (about 40°C) to expand the cellular pores, then immediately plunged into cold water (about 12°C). The rapid contraction is theorized to "lock in" volatile flavor compounds that would otherwise dissipate during drying. 2024 World Barista Champion Mikael Jasin used a thermal-shocked coffee in his winning routine.
+**What it tends to do:** Brown says carbonic maceration coffees often have "intense flavor profiles, with boozy and cooked fruit flavors", though some are sweeter and some more acidic, and when it goes wrong they risk astringency, dryness and bitterness.
 
-**Flavor profile:** Intensely aromatic with high flavor clarity — the thermal shock reportedly preserves delicate floral and fruit volatiles, creating coffees that are simultaneously complex and clean.
+**The cost:** sealable tanks, one-way valves and CO₂ are an investment, and Brown points out that experimenting is hard for producers who can't cup their own results.
 
-### Lactic Fermentation
+**Why you've heard of it:** Saša Šestić won the 2015 World Barista Championship in Seattle with Sudan Rume coffee, and Sprudge's report at the time describes part of his routine as a washed carbonic-maceration coffee.
 
-**The process:** Coffee is fermented under conditions that favor lactic acid bacteria (LAB) — the same organisms that produce yogurt, sourdough, and kimchi. Producers can inoculate with specific LAB strains (such as *Lactobacillus*). 2024 World Brewers Cup champion Martin Wolfl used a two-stage fermentation: first wine yeast (*Saccharomyces cerevisiae*), then lactobacilli. Recent research shows that co-inoculation (yeast + LAB simultaneously) produced the highest cup scores.
+## Thermal shock and co-fermentation
 
-**Flavor profile:** Creamy, yogurt-like body. Stone fruit, tropical fruit, but with a distinctive smooth, almost dairy-like mouthfeel. Less aggressive acidity than standard anaerobic.
+**Thermal shock** is a name roasters use for lots from producers such as Diego Bermúdez at Finca El Paraíso, in Cauca, Colombia. As one roaster's education director describes it, coffee is warmed in its own fermentation liquid near the end of fermentation, then rinsed in cold water; it's one step in a longer, intensive process. He adds that scientific research is still needed to work out where its flavor impact comes from. There's no standard recipe.
 
-### Other Emerging Methods
+**Co-fermented** and **infused** coffees are fermented or flavored with added fruit or other ingredients, which can make a coffee taste of something that didn't come from the coffee. Competitions have pushed back. In 2024 the Specialty Coffee Association of Panama disqualified Best of Panama entries it said had undergone fruit infusions or co-fermentation; its president called the terms "co-fermented" and "thermal shock" deceptive and proposed a separate category for "altered or infused coffees".
 
-**Nitrogen maceration:** 2025 World Barista Champion Jack Simpson used nitrogen gas instead of CO2 to create the anaerobic environment. Nitrogen is less reactive than CO2 and creates different fermentation dynamics. Still extremely rare at commercial scale.
+## Reading processing on a bag
 
-**Frozen cherry:** Cherries cooled to 5–8°C and fermented slowly over about 8 days. The low temperature dramatically extends fermentation time, allowing slow flavor development.
+Treat processing as a direction, not a quality score:
 
-**Co-fermentation:** Coffee fermented alongside fruit pulp (passion fruit, pineapple, mango) or cacao. This sits in a gray area between "processing" and "flavoring" — the 2024 Best of Panama excluded coffees "altered from their natural DNA expression by foreign additives."
+- **Washed:** expect clarity and acidity, with the origin and variety easier to taste.
+- **Natural:** expect fruit, and accept more variation from lot to lot.
+- **Honey or pulped natural:** expect more sweetness and body than a washed coffee, with less wildness than many naturals.
+- **Wet-hulled:** expect body and earthy, woody flavors rather than bright fruit.
+- **Anaerobic or carbonic maceration:** look for the base method too. Both Café Imports and Brown suggest the honest way to describe these coffees is the method plus the step and its length, for example "a natural fermented in an anaerobic environment for 48 hours". A label that just says "anaerobic" leaves the rest out.
+- **Co-fermented or infused:** some of the flavor may come from what was added.
 
-## The Fermentation Science (Briefly)
+The most useful experiment is to taste one origin processed two ways, a washed and a natural from the same country, side by side.
 
-All coffee processing involves fermentation. Even washed coffee ferments in the tank. The question is always: which microbes, for how long, under what conditions?
+<ToolCallout tool="origins" preset={{ o: 'ethiopia' }} cta="Open Coffee Origins on Ethiopia" context="Opens Coffee Origins on Ethiopia, where both washed and natural coffees are common: its harvest year drawn as a ring, its growing-altitude band, USDA's production forecast, its varieties and processing, and the flavor tendencies importers describe, with floral and citrus notes more often from washed lots and fruit from naturals." />
 
-**What the microbes are doing:** Yeasts and bacteria consume the sugars in coffee mucilage (glucose, fructose, sucrose) and produce organic acids, alcohols, esters, and CO2 as metabolic byproducts. Those byproducts penetrate the parchment and the bean, creating flavor precursors that survive roasting. Cacao undergoes <a href="https://jayarrchocolate.com/blog/cacao-fermentation-science/" target="_blank" rel="noopener">an even more extended version of this microbial fermentation</a> — five to seven days versus coffee's 12–96 hours — and the same yeast-to-LAB succession determines whether the chocolate will be worth eating.
+## Sources
 
-**Why oxygen control matters:** In the presence of oxygen, *Acetobacter* bacteria convert alcohol to acetic acid (vinegar). In oxygen-free environments, yeasts and lactic acid bacteria dominate, producing ethanol, lactic acid, and aromatic esters instead. Controlling oxygen is controlling which metabolic pathway wins.
-
-**Temperature effects:** Fermentation rate roughly doubles for every 10°C increase. At 35°C and above, fermentation is so rapid that it's nearly impossible to stop before defects develop. At 15–20°C, fermentation is slow and controllable. This is why altitude matters for processing — cooler temperatures at higher elevations give producers more control. Understanding these variables is part of what goes into [how coffee is roasted](/blog/how-is-coffee-roasted/) as well — the flavor precursors set during processing survive through the roast.
-
-## The Controversy: Innovation or Gimmick?
-
-Not everyone is celebrating. The specialty coffee world is split on whether experimental processing is genuine innovation or a shortcut that masks terroir.
-
-**The case for:** A conventionally washed lot from Colombia might sell for $3–5/lb green. The same farm's anaerobic or CM lot can fetch $15–50/lb. For farmers on razor-thin margins, processing innovation is economic survival. And the flavors are real — these methods produce genuinely different chemical compounds, not artificial flavoring.
-
-**The case against:** When processing dominates flavor so completely, does origin matter? An anaerobic natural from Colombia and one from Kenya can taste more similar to each other than either does to a washed coffee from the same farm. Critics argue this erodes specialty coffee's core promise: the connection between place and cup.
-
-**Where the industry landed (so far):** The 2024 Best of Panama excluded coffees "altered from their natural DNA expression by foreign additives." The SCA changed WBC rules in 2023 to allow co-fermented coffees, then by 2025 specified no additives after the green coffee stage. The line is still being drawn.
-
-The competition data tells its own story. Every recent WBC winner used experimental processing: Sestic (2015, carbonic maceration), Boram Um (2023, anaerobic Geisha), Mikael Jasin (2024, thermal shock), Jack Simpson (2025, nitrogen maceration). Traditional processing is no longer competitive at the absolute top.
-
-The best experimental coffees are extraordinary. The worst are expensive gimmicks. Processing method signals flavor *direction*, not quality. A well-processed washed [Ethiopian](/blog/ethiopian-coffee-flavors-and-varieties/) will always beat a poorly executed anaerobic from anywhere.
-
-## Origins and Their Signature Processes
-
-- **Ethiopia:** Washed (Yirgacheffe, Sidamo) and natural (Harrar, Guji). Both methods have deep tradition here.
-- **Colombia:** Washed traditionally, now the global leader in experimental processing. Finca El Paraiso is ground zero for thermal shock.
-- **Brazil:** Natural and pulped natural dominate. Growing experimental sector.
-- **Costa Rica:** Honey process pioneers. Yellow, red, and black honey widely available.
-- **Kenya:** Almost exclusively washed. Complex, wine-like acidity.
-- **Indonesia (Sumatra, Sulawesi):** Wet-hulled (Giling Basah). Earthy, full-bodied.
-- **Panama:** Washed Gesha dominates the auction circuit.
-- **Yemen:** Natural process with unique local fermentation traditions.
-
-## What to Look For When Buying
-
-The processing method on a bag isn't a quality guarantee — it's a flavor direction signal. Here's how to use it:
-
-1. **If you want clarity and origin character:** Washed. Let the bean speak.
-2. **If you want fruit and body:** Natural. Accept some variability.
-3. **If you want sweetness without wildness:** Honey. The accessible middle ground.
-4. **If you want intensity and novelty:** Anaerobic or CM. Be prepared for flavors that don't taste like "traditional" coffee.
-5. **If you want earthy depth:** Wet-hulled Indonesian. A completely different experience.
-
-The best approach is to try the same origin processed two different ways — a washed and a natural Ethiopian, for example. That comparison teaches you more about processing impact than any article can. You can browse a solid selection of <a href="https://www.amazon.com/s?k=specialty+natural+washed+coffee+single+origin&tag=jayarrcoffee-20" rel="sponsored noopener">naturally processed and washed coffees from specialty roasters</a> to run your own comparison.
-
-If you're building out your understanding of what goes into a great cup, [coffee grind size](/blog/coffee-grind-size-guide-what-grind-for-every-brew-method/) is the next variable worth mastering — grind consistency amplifies the differences processing creates.
-
----
-
-<FAQ items={[
-  { question: "What is the difference between natural and washed coffee?", answer: "Washed coffee has its cherry skin and mucilage removed before drying — the bean ferments in water tanks for 12–72 hours, then is washed clean. Natural coffee dries inside the whole cherry for 2–4 weeks, fermenting as it dries. The result: washed coffees taste clean, bright, and acidic with clear origin character. Naturals taste fruity, full-bodied, and sometimes funky, because the prolonged contact with fruit sugars adds flavor the washing stage strips away. Neither is inherently better — they're fundamentally different flavor directions from the same raw material." },
-  { question: "What does anaerobic coffee mean?", answer: "Anaerobic coffee is fermented in sealed, oxygen-free containers — steel tanks, plastic drums, or sealed bags with one-way CO2 valves. Removing oxygen suppresses acetic acid bacteria and lets yeasts and lactic acid bacteria dominate, producing different flavor compounds (more esters, more lactic acid). The result is intensely fruity, tropical, wine-like, and often confectionery-sweet coffee that tastes dramatically different from the same bean processed traditionally. Fermentation times typically run 24–96 hours at controlled temperatures. It's the most common experimental processing method and increasingly available from specialty roasters." },
-  { question: "What is carbonic maceration coffee?", answer: "Carbonic maceration is a technique borrowed from Beaujolais winemaking. Whole intact coffee cherries are sealed in tanks flushed with CO2 gas, creating an oxygen-free environment. The key difference from standard anaerobic: because the cherries are unbroken, fermentation starts inside each cherry at the cellular level (intracellular fermentation) before the skin ruptures. This produces distinctive aromatic esters and a perfumed, confectionery sweetness not found in other methods. Sasa Sestic won the 2015 World Barista Championship using carbonic maceration coffee, launching a global wave of processing experimentation." },
-  { question: "Why are some specialty coffees so expensive because of processing?", answer: "Experimental processing methods like anaerobic fermentation, carbonic maceration, and thermal shock require sealed vessels, CO2 or nitrogen tanks, temperature monitoring equipment, pH and Brix meters, and the technical knowledge to use them. A conventionally washed lot might sell for $3–5/lb green, while the same farm's anaerobic or CM lot can fetch $15–50/lb. The higher price reflects genuine additional cost and risk — an experimental fermentation that goes wrong can destroy an entire lot. That said, processing method alone doesn't guarantee quality. A well-executed washed coffee from a great origin will always beat a poorly controlled anaerobic from anywhere." },
-  { question: "What is honey-processed coffee?", answer: "Honey process — developed in Costa Rica — removes the cherry skin but leaves some or all of the sticky mucilage on the bean during drying. It has nothing to do with actual honey. The amount of mucilage retained determines the color grade: yellow honey (about 25% mucilage, cleanest), red honey (about 50%, balanced sweetness), and black honey (about 100%, most fruit-forward, closest to natural). Honey coffees split the difference between washed and natural — more body and sweetness than washed, cleaner and more consistent than natural. They're excellent entry points if you want to explore how processing affects flavor." }
-]} />
-
-*Some links above are affiliate links. If you purchase through them, we earn a small commission at no extra cost to you.*
+- James Hoffmann, *The World Atlas of Coffee*, 2nd ed. (Octopus/Mitchell Beazley, 2018): "Processing" (why producers choose a method; defects; the natural, washed, pulped natural, honey and semi-washed processes; drying speed; *reposo*; hulling and sorting); "Harvesting Coffee"; "Indonesia" (giling basah)
+- F. De Bruyn, S. J. Zhang, V. Pothakos and others, "Exploring the impacts of postharvest processing on the microbiota and metabolite profiles during green coffee bean production," *Applied and Environmental Microbiology* 83, no. 1 (2017): e02398-16, abstract: [doi.org/10.1128/AEM.02398-16](https://doi.org/10.1128/AEM.02398-16)
+- Café Imports, "Anaerobic Fermentation," January 30, 2023, updated May 9, 2024: [cafeimports.com](https://www.cafeimports.com/europe/blog/2023/01/30/anaerobic-fermentation/)
+- Café Imports, "Costa Rica" origin page (honey processing), checked October 15, 2026: [cafeimports.com](https://www.cafeimports.com/north-america/costa-rica)
+- Tanya Nanetti, "Understanding the Process: Carbonic Maceration," *Barista Magazine*, February 8, 2023 (interview with Taya Brown of Café Imports): [baristamagazine.com](https://www.baristamagazine.com/understanding-the-process-carbonic-maceration/)
+- Jordan Michelman, "Sasa Sestic of Australia Wins the 2015 World Barista Championship," *Sprudge*, April 13, 2015: [sprudge.com](https://sprudge.com/sasa-sestic-of-australia-wins-the-2015-world-barista-championship-75365.html)
+- Trevor Clark, "What Does Thermal Shock Process Mean?", Black & White Coffee Roasters, August 2024: [blackwhiteroasters.com](https://www.blackwhiteroasters.com/pages/what-does-thermal-shock-process-mean)
+- Zac Cadwalader, "The Specialty Coffee Association of Panama Doesn't Care for Co-Fermentation," *Sprudge*, June 21, 2024: [sprudge.com](https://sprudge.com/the-specialty-coffee-associations-of-panama-doesnt-care-for-co-fermentation-247748.html)
