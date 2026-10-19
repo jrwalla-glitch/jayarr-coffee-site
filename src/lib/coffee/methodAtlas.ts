@@ -284,10 +284,11 @@ export function describe(m: AtlasMethod): string {
  *  uses at least a third more coffee for its water, or only one is measured as drink out (espresso); the
  *  grind when the grinds differ (review r5, Muse and Opus). */
 const baseGrind = (m: AtlasMethod) => m.grind.split(' (')[0];
-// Ratios compare as served: a concentrate diluted 1:1 drinks like twice its water.
+// The table compares the brewing ratios it shows, as its note says; a concentrate's is labelled as one
+// where it shows, so cold brew's 1:6.25 is highlighted against a V60's 1:16 (review r7, Astra).
 const served = (m: AtlasMethod) => m.ratio.classic * (m.servedFactor ?? 1);
 export function recipeDiffers(a: AtlasMethod, b: AtlasMethod): { ratio: boolean; grind: boolean } {
-  const ratio = !!a.ratio.yield !== !!b.ratio.yield || Math.max(served(a), served(b)) / Math.min(served(a), served(b)) >= 4 / 3;
+  const ratio = !!a.ratio.yield !== !!b.ratio.yield || Math.max(a.ratio.classic, b.ratio.classic) / Math.min(a.ratio.classic, b.ratio.classic) >= 4 / 3;
   return { ratio, grind: baseGrind(a) !== baseGrind(b) };
 }
 export function differenceSentence(a: AtlasMethod, b: AtlasMethod): string {

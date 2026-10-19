@@ -77,11 +77,12 @@
   // A family's own word ("floral") reads as that family, not as a word the wheel lacks.
   const famLabel = (f: string) => `the ${familyById(f as FamilyId)!.label} family`;
   let bagReadAs = $derived(bagPhrases.flatMap((t) => {
-    if (!notesInText(t).length && !familiesInText(t).length && genericIn(t).length) { const g = genericMeans(genericIn(t)[0]); return [`“${t}” as ${g.notes.length ? 'several notes' : 'no single note on the wheel'}${g.family ? ` (${famLabel(g.family)})` : ''}, so it isn't counted as one`]; }
-    const labels = [...notesInText(t).map((id) => noteById(id)!.label), ...familiesInText(t).map(famLabel)];
+    if (!notesInText(t, { roaster: true }).length && !familiesInText(t).length && genericIn(t).length) { const g = genericMeans(genericIn(t)[0]); return [`“${t}” as ${g.notes.length ? 'several notes' : 'no single note on the wheel'}${g.family ? ` (${famLabel(g.family)})` : ''}, so it isn't counted as one`]; }
+    // Read as the comparison reads a bag (roasters' words: flaw words set aside), so the two agree (review r7, Astra).
+    const labels = [...notesInText(t, { roaster: true }).map((id) => noteById(id)!.label), ...familiesInText(t).map(famLabel)];
     return labels.length && !(labels.length === 1 && labels[0].toLowerCase() === t.toLowerCase()) ? [`“${t}” as ${labels.join(' and ')}`] : [];
   }));
-  let bagUnmatched = $derived(bagPhrases.filter((t) => !notesInText(t).length && !familiesInText(t).length && !genericIn(t).length));
+  let bagUnmatched = $derived(bagPhrases.filter((t) => !notesInText(t, { roaster: true }).length && !familiesInText(t).length && !genericIn(t).length));
   const nearBecause = (x: string) => { const g = genericIn(bag).find((w) => genericMeans(w).notes.includes(x)); if (g) return `the bag's “${g}” covers it`; const f = noteById(x)?.family, b = cmp.bagNotes.find((n) => noteById(n)?.family === f); return b ? `same family as the bag's ${noteById(b)!.label.toLowerCase()}` : `the bag names ${famLabel(f as string)}`; };
   let thinOrigins = $derived(note && ev?.thin ? [...new Set(lots.filter((l) => l.notes.some((t) => notesInText(t, { roaster: true }).includes(note.id))).map((l) => originName(l.o)))] : []);
   let originName = (id: string) => origins.find((o) => o.id === id)?.name ?? id;
