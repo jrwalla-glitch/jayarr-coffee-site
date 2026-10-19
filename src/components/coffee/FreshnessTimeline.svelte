@@ -165,7 +165,7 @@
       <p class="what">{storage === 'frozen' && !thawed ? (r.freezerCapped ? `Freezing slows staling but doesn't stop it. The tool leaves out up to a year in the freezer; past that the days count again, so these beans are at day ${r.effectiveDays}. Take out only what you'll use.` : `Freezing slows staling but doesn't stop it. The tool leaves the freezer days out, so these beans count as day ${r.effectiveDays}. Take out only what you'll use; from then, the usual stages apply.`) : r.stage.advice}</p>
       {#each r.notes.filter((n) => !(r.freezerCapped && storage === 'frozen' && !thawed && n.startsWith('After about a year'))) as n (n)}<p class="note">{n}</p>{/each}
       <p class="note">{r.uncertainty}</p>
-      {#if r.stage.id === 'fading' || r.stage.id === 'stale'}<p class="note">Tasting flat? The <a href="/tools/fix-my-coffee/?method=v60&symptom=flat">Coffee Doctor</a> can tell freshness from water problems.</p>{/if}
+      {#if r.stage.id === 'fading' || r.stage.id === 'stale'}<p class="note">Tasting flat? <a href="/tools/fix-my-coffee/?method=v60&symptom=flat">Fix My Coffee</a> can tell freshness from water problems.</p>{/if}
     </div>
   {/if}
 </div>

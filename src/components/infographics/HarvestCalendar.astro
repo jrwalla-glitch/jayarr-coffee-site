@@ -18,11 +18,15 @@ interface Props {
 	origins: Origin[];
 	tips?: QuarterTip[];
 	footnote?: string;
+	/** The legend's name for the arrival months, with their source, e.g. "Typical arrival (Café Imports)" (item 19). */
+	arrivalLabel?: string;
 }
 
-const { title, subtitle, origins, tips, footnote } = Astro.props;
+const { title, subtitle, origins, tips, footnote, arrivalLabel = 'Typical arrival' } = Astro.props;
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+// In a narrow box (a phone) the months shrink to one letter and the table fits its box instead of scrolling
+// 600 px wide (round 3, B5); screen readers still hear the three-letter name.
 
 // Group origins by region
 const groups = [...new Set(origins.map((o) => o.group))];
@@ -38,7 +42,7 @@ const groups = [...new Set(origins.map((o) => o.group))];
 	<!-- Legend -->
 	<div class="cal-legend">
 		<span class="legend-item"><span class="legend-dot legend-harvest"></span> Harvest</span>
-		<span class="legend-item"><span class="legend-dot legend-arrival"></span> Peak Arrival</span>
+		<span class="legend-item"><span class="legend-dot legend-arrival"></span> {arrivalLabel}</span>
 	</div>
 
 	<!-- Calendar Grid -->
@@ -46,8 +50,8 @@ const groups = [...new Set(origins.map((o) => o.group))];
 		<table class="cal-table" role="grid">
 			<thead>
 				<tr>
-					<th class="col-origin">Origin</th>
-					{months.map((m) => <th class="col-month">{m}</th>)}
+					<th class="col-origin" scope="col">Origin</th>
+					{months.map((m) => <th class="col-month" scope="col"><span class="m3">{m}</span><span class="m1" aria-hidden="true">{m[0]}</span></th>)}
 				</tr>
 			</thead>
 			<tbody>
@@ -75,11 +79,11 @@ const groups = [...new Set(origins.map((o) => o.group))];
 												]}
 												aria-label={
 													isHarvest && isArrival
-														? `${origin.name} ${months[i]}: harvest and arrival`
+														? `${origin.name} ${months[i]}: harvest and typical arrival`
 														: isHarvest
 															? `${origin.name} ${months[i]}: harvest`
 															: isArrival
-																? `${origin.name} ${months[i]}: arrival`
+																? `${origin.name} ${months[i]}: typical arrival`
 																: undefined
 												}
 											>
@@ -114,6 +118,7 @@ const groups = [...new Set(origins.map((o) => o.group))];
 
 <style>
   .infographic-calendar {
+    container: cal / inline-size;
     box-sizing: border-box;
     min-width: 0;
     max-width: 720px;
@@ -160,4 +165,17 @@ const groups = [...new Set(origins.map((o) => o.group))];
   .tip-label { display: block; font: 500 11px/1.4 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--color-crema-deep, #8F5D22); margin-bottom: .5rem; }
   .tip-buy, .tip-arriving { font-size: .875rem; color: var(--color-ink-2, #5B4A3D); margin: .3rem 0; line-height: 1.5; }
   @media (max-width: 480px) { .cal-tips { grid-template-columns: 1fr; } }
+  .m1 { display: none; }
+
+  /* Narrow box: the whole year fits. One-letter months, a narrower origin column whose names wrap, tighter cells. */
+  @container cal (max-width: 599px) {
+    .cal-table { min-width: 0; table-layout: fixed; }
+    .cal-table th { padding: .6rem 0; letter-spacing: 0; }
+    .cal-table .col-origin { width: 32%; min-width: 0; position: static; letter-spacing: .08em; }
+    .col-month { width: auto; }
+    .m3 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .m1 { display: inline; }
+    .cal-table .origin-name { white-space: normal; position: static; font-size: .75rem; line-height: 1.3; padding: .45rem .35rem .45rem 0; overflow-wrap: break-word; }
+    .cal-table .cal-cell { padding: .35rem 0; font-size: .6875rem; }
+  }
 </style>

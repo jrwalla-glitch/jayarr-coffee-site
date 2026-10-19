@@ -48,7 +48,7 @@ const description = 'See where your water sits among the well-known coffee water
 				<h2>Well-known coffee water recipes</h2>
 				<div class="cf-table-wrap">
 					<table>
-						<thead><tr><th scope="col">Recipe</th><th scope="col">GH</th><th scope="col">KH</th><th scope="col">Character</th><th scope="col">Good for</th></tr></thead>
+						<thead><tr><th scope="col">Recipe</th><th scope="col">GH</th><th scope="col">KH</th><th scope="col">Minerals</th><th scope="col">Good for</th></tr></thead>
 						<tbody>{WATER_RECIPES.map((r) => <tr><th scope="row">{r.name}{r.untraced ? <small> (original not traced)</small> : ''}</th><td>{r.gh}{r.ghEstimated ? <small> (Builder's estimate)</small> : ''}</td><td>{r.kh}</td><td>{r.profile}</td><td>{r.bestFor}</td></tr>)}</tbody>
 					</table>
 				</div>

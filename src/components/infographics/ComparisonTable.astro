@@ -15,6 +15,10 @@ interface Props {
 }
 
 const { title, subtitle, columns, rows, rowLabel = '', footnote } = Astro.props;
+const hasResult = rows[0]?.result !== undefined;
+// Narrow boxes (a phone: under the 560 px the table needs) show each row as a stacked card, every value under its
+// column's name, instead of a 560 px table that scrolls sideways (round 3, B4). The explicit roles keep the table's
+// semantics when the stacked layout changes its display.
 ---
 
 <aside class="infographic-comparison" role="complementary" aria-label={title}>
@@ -24,23 +28,21 @@ const { title, subtitle, columns, rows, rowLabel = '', footnote } = Astro.props;
     <p class="ig-subtitle">{subtitle}</p>
   </header>
 
-  <p class="scroll-hint" aria-hidden="true">Scroll sideways for the whole table →</p>
   <div class="table-wrapper" tabindex="0" role="region" aria-label={`${title} table`}>
-    <table>
-      <thead>
-        <tr>
-          {rowLabel && <th class="col-name">{rowLabel}</th>}
-          {!rowLabel && <th class="col-name"></th>}
-          {columns.map((col) => <th>{col}</th>)}
-          {rows[0]?.result !== undefined && <th class="col-result">Result</th>}
+    <table role="table">
+      <thead role="rowgroup">
+        <tr role="row">
+          <th class="col-name" scope="col" role="columnheader">{rowLabel}</th>
+          {columns.map((col) => <th scope="col" role="columnheader">{col}</th>)}
+          {hasResult && <th class="col-result" scope="col" role="columnheader">Result</th>}
         </tr>
       </thead>
-      <tbody>
+      <tbody role="rowgroup">
         {rows.map((row) => (
-          <tr>
-            <td class="cell-name">{row.name}</td>
-            {row.values.map((val) => <td>{val}</td>)}
-            {row.result !== undefined && <td class="cell-result">{row.result}</td>}
+          <tr role="row">
+            <th class="cell-name" scope="row" role="rowheader">{row.name}</th>
+            {row.values.map((val, i) => <td role="cell"><span class="cell-label" aria-hidden="true">{columns[i]}</span>{val}</td>)}
+            {row.result !== undefined && <td class="cell-result" role="cell"><span class="cell-label" aria-hidden="true">Result</span>{row.result}</td>}
           </tr>
         ))}
       </tbody>
@@ -53,6 +55,7 @@ const { title, subtitle, columns, rows, rowLabel = '', footnote } = Astro.props;
 
 <style>
   .infographic-comparison {
+    container: cmp / inline-size;
     box-sizing: border-box;
     min-width: 0;
     max-width: 720px;
@@ -82,15 +85,32 @@ const { title, subtitle, columns, rows, rowLabel = '', footnote } = Astro.props;
       linear-gradient(to left, var(--color-card, #FBF8F3) 30%, transparent) right / 40px 100% no-repeat local,
       radial-gradient(farthest-side at 0 50%, rgba(0, 0, 0, .28), transparent) left / 14px 100% no-repeat scroll,
       radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, .28), transparent) right / 14px 100% no-repeat scroll; }
-  .scroll-hint { display: none; margin: 0 0 6px; font: 500 11px/1.4 var(--font-mono); letter-spacing: .08em; color: var(--color-ink-3, #75655A); }
-  @media (max-width: 640px) { .scroll-hint { display: block; } }
   .table-wrapper:focus-visible { outline: 2px solid var(--color-crema-deep, #8F5D22); outline-offset: 3px; }
   .table-wrapper table { width: 100%; min-width: 560px; border-collapse: collapse; margin: 0; font-size: .875rem; line-height: 1.5; overflow-wrap: normal; }
-  .table-wrapper th { min-width: 7rem; font: 500 11px/1.4 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--color-crema-deep, #8F5D22); padding: .75rem .625rem; text-align: left; border-bottom: 2px solid var(--color-rule, #D9CDBD); }
+  .table-wrapper thead th { min-width: 7rem; font: 500 11px/1.4 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--color-crema-deep, #8F5D22); padding: .75rem .625rem; text-align: left; border-bottom: 2px solid var(--color-rule, #D9CDBD); }
   .table-wrapper td { padding: 1rem .625rem; color: var(--color-ink-2, #5B4A3D); vertical-align: top; border-bottom: 1px solid var(--color-rule, #D9CDBD); }
   .table-wrapper tbody tr:last-child td { border-bottom: 0; }
   .table-wrapper tbody tr:hover { background: var(--color-paper, #F3EDE3); }
-  .table-wrapper .cell-name { font: 400 1.25rem/1.25 var(--font-serif); color: var(--color-ink, #2A1D15); min-width: 8rem; }
+  /* A row header now (th scope=row), so it undoes the blog's global th label style (.prose th) and reads as before. */
+  .table-wrapper .cell-name { font: 400 1.25rem/1.25 var(--font-serif); text-transform: none; letter-spacing: normal; color: var(--color-ink, #2A1D15); min-width: 8rem; text-align: left; vertical-align: top; padding: 1rem .625rem; border-bottom: 1px solid var(--color-rule, #D9CDBD); }
+  .table-wrapper tbody tr:last-child .cell-name { border-bottom: 0; }
+  .cell-label { display: none; }
   .table-wrapper .col-result, .table-wrapper .cell-result { text-align: right; }
   .table-wrapper .cell-result { color: var(--color-crema-deep, #8F5D22); }
+
+  /* Stacked cards in a narrow box: the row's name, then each value under its column's name. */
+  @container cmp (max-width: 559px) {
+    .table-wrapper { overflow-x: visible; background: none; }
+    .table-wrapper table { display: block; min-width: 0; }
+    .table-wrapper thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .table-wrapper tbody, .table-wrapper tr, .table-wrapper td, .table-wrapper .cell-name { display: block; }
+    .table-wrapper tbody tr { padding: .95rem 0; border-bottom: 1px solid var(--color-rule, #D9CDBD); }
+    .table-wrapper tbody tr:first-child { padding-top: .2rem; }
+    .table-wrapper tbody tr:last-child { border-bottom: 0; padding-bottom: 0; }
+    .table-wrapper tbody tr:hover { background: none; }
+    .table-wrapper .cell-name { min-width: 0; padding: 0 0 .45rem; border: 0; }
+    .table-wrapper td { padding: .3rem 0 .45rem; border: 0; }
+    .table-wrapper .cell-result { text-align: left; }
+    .cell-label { display: block; font: 500 10.5px/1.4 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--color-crema-deep, #8F5D22); margin-bottom: .15rem; }
+  }
 </style>

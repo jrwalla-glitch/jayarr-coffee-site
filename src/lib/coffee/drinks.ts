@@ -19,6 +19,8 @@ export interface Layer {
   basis?: string;
   /** The source doesn't give this layer's amount. */
   unspecified?: boolean;
+  /** An amount the source gives in its own terms, not ml or g ("4 pumps of mocha sauce"); the drawing treats it as unknown. */
+  amount?: string;
 }
 
 export interface DrinkRef {
@@ -30,16 +32,25 @@ export interface DrinkRef {
   vessel: { name: string; capacityMl?: [number, number] };
   foamCm?: [number, number];
   note?: string;
-  source: { name: string; url: string };
+  /** Where the recipe's numbers come from. A printed source (a book, a brochure) has no link and names its pages. */
+  source: { name: string; url?: string };
+  /** A current web page for the same recipe, when the numbers themselves come from a printed source. */
+  also?: { name: string; url: string };
 }
 
 export interface Drink { id: string; name: string; definition: string; refs: DrinkRef[] }
 
 const S = {
-  inei: { name: 'Istituto Nazionale Espresso Italiano, The Certified Italian Espresso and Cappuccino (2006), pp. 7–10', url: 'https://iei.coffee/en/espresso-italiano-certificato' },
+  // The technical figures are the INEI brochure's (a December 2006 supplement to L'Assaggio no. 16): espresso p. 7,
+  // cappuccino pp. 8–10, as read in the drinks research (2026-10-15). INEI's current page carries only "approximately
+  // 25 milliliters" and "25 milliliters of espresso and 100 milliliters of steamed milk" (checked 2026-10-18; item 41).
+  ineiEspresso: { name: 'Istituto Nazionale Espresso Italiano, The Certified Italian Espresso and Cappuccino (brochure, 2006), p. 7' },
+  ineiCappuccino: { name: 'Istituto Nazionale Espresso Italiano, The Certified Italian Espresso and Cappuccino (brochure, 2006), pp. 8–10' },
+  ineiPage: { name: 'INEI, Espresso Italiano Certificato (current page)', url: 'https://iei.coffee/en/espresso-italiano-certificato' },
+  hoffmann: { name: 'James Hoffmann, The World Atlas of Coffee, revised edition (2018), p. 117, "Cortado"' },
   illyDoppio: { name: 'illy, Espresso Preparation Guide (2020)', url: 'https://www.illy.com/content/dam/channels/website/professional/usa/professional-standtogether/Espresso-Preparation-Guide-Beans_5-2020.pdf' },
   breville: { name: 'Breville, Ristretto', url: 'https://www.breville.com/us/en/coffee-journey/recipes/ristretto.html' },
-  coffeegeek: { name: 'CoffeeGeek, How to Make an Espresso Lungo (archived 2025-01-09)', url: 'https://web.archive.org/web/20250109115226/https://coffeegeek.com/guides/howtos/espresso-lungo-how-to/' },
+  coffeegeek: { name: 'Mark Prince, CoffeeGeek, How to Make an Espresso Lungo (updated September 13, 2020)', url: 'https://coffeegeek.com/guides/howtos/espresso-lungo-how-to/' },
   lavazzaAmericano: { name: 'Lavazza USA, Americano: definition and origins', url: 'https://www.lavazzausa.com/en/recipes-and-coffee-hacks/americano-coffee-definition-vocabulary-curiosities' },
   lavazzaLongBlack: { name: 'Lavazza USA, How to make a long black', url: 'https://www.lavazzausa.com/en/recipes-and-coffee-hacks/how-to-make-long-black-coffee' },
   lavazzaRedEye: { name: 'Lavazza USA, Red Eye coffee recipe', url: 'https://www.lavazzausa.com/en/recipes-and-coffee-hacks/red-eye-coffee-recipe' },
@@ -58,6 +69,8 @@ const S = {
   sbuxLatte: { name: 'Starbucks, Caffè Latte', url: 'https://www.starbucks.com/menu/product/407/hot' },
   illyAffogato: { name: 'illy, Affogato al caffè', url: 'https://www.illy.com/it-it/caffe/ricette-caffe/affogato-al-caffe-ricetta' },
   breveMocha: { name: 'Breville, Mocha', url: 'https://www.breville.com/us/en/coffee-journey/recipes/mocha.html' },
+  // Grande defaults on Starbucks' own page, signed out, checked 2026-10-18 (B2).
+  sbuxMocha: { name: 'Starbucks, Caffè Mocha (Grande defaults, checked 2026-10-18)', url: 'https://www.starbucks.com/menu/product/408/hot' },
   cafeDuMonde: { name: 'Café du Monde, Coffee Demonstration', url: 'https://shop.cafedumonde.com/coffee/coffee-demonstration' },
 };
 
@@ -65,7 +78,7 @@ const esp = (a: number, b = a): Layer => ({ kind: 'espresso', ml: [a, b] });
 
 export const DRINKS: Drink[] = [
   { id: 'espresso', name: 'Espresso', definition: 'A small, concentrated coffee made by forcing hot water under pressure through finely ground coffee, served under its crema.', refs: [
-    { id: 'espresso-inei', label: 'Italy · INEI', where: 'Italy', shots: 'single', layers: [{ kind: 'espresso', ml: [22.5, 27.5], basis: 'including crema' }], vessel: { name: 'Demitasse', capacityMl: [50, 100] }, note: 'The SCA\'s older definition allowed 25–35 ml and the 2026 World Barista Championship says around 30 ml.', source: S.inei },
+    { id: 'espresso-inei', label: 'Italy · INEI', where: 'Italy', shots: 'single', layers: [{ kind: 'espresso', ml: [22.5, 27.5], basis: 'including crema' }], vessel: { name: 'Demitasse', capacityMl: [50, 100] }, note: 'INEI\'s current page says about 25 ml. The SCA\'s older definition allowed 25–35 ml and the 2026 World Barista Championship says around 30 ml.', source: S.ineiEspresso, also: S.ineiPage },
   ] },
   { id: 'doppio', name: 'Doppio', definition: 'A double serving of espresso, not a single stretched longer.', refs: [
     { id: 'doppio-illy', label: 'illy', where: 'Italy', shots: 'double', layers: [esp(50)], vessel: { name: 'Espresso cup' }, note: 'Modern specialty recipes are usually set by weight instead, e.g. 19 g of coffee to 38 g in the cup.', source: S.illyDoppio },
@@ -86,11 +99,13 @@ export const DRINKS: Drink[] = [
     { id: 'redeye-lavazza', label: 'Lavazza', where: 'Italian brand', shots: 'single', layers: [{ kind: 'brewed', ml: [250, 250] }, { kind: 'espresso', unspecified: true }], vessel: { name: 'Mug' }, note: 'Two shots make a black eye; many US cafés use a double.', source: S.lavazzaRedEye },
   ] },
   { id: 'macchiato', name: 'Macchiato', definition: 'An espresso "marked" with a little milk foam: a small drink, not the tall sweet chain drink with the same name.', refs: [
-    { id: 'macchiato-illy', label: 'illy', where: 'Italy', shots: 'single', layers: [esp(20, 25), { kind: 'foam', unspecified: true, basis: 'foam from about 28 ml milk, spooned on' }], vessel: { name: 'Small glass or demitasse', capacityMl: [59, 89] }, source: S.illyMacchiato },
+    { id: 'macchiato-illy', label: 'illy', where: 'Italy', shots: 'single', layers: [esp(20, 25), { kind: 'foam', unspecified: true, basis: 'foam from about 28 ml milk, poured on until the cup is almost full' }], vessel: { name: 'Small glass or demitasse', capacityMl: [59, 89] }, source: S.illyMacchiato },
   ] },
   { id: 'cortado', name: 'Cortado', definition: 'Espresso "cut" with a small amount of warm milk. How much milk depends a lot on where you order it.', refs: [
     { id: 'cortado-sabora', label: 'Spain · common style', where: 'Spain', shots: 'single', layers: [esp(30), { kind: 'milk', ml: [10, 10], basis: 'the 75/25 coffee-to-milk split Sabora calls common; it ranges from a few drops to equal parts' }], vessel: { name: 'Small glass or espresso cup' }, source: S.sabora },
     { id: 'cortado-ineffable', label: 'Spain · specialty', where: 'Spain', shots: 'double', layers: [{ kind: 'espresso', g: [40, 40] }, { kind: 'milk', g: [5, 40] }], vessel: { name: 'Small glass' }, note: 'Measured by weight; the milk can be anywhere in that range.', source: S.ineffable },
+    // Hoffmann's equal parts (B2): "about 30ml of espresso is combined with an equal quantity of steamed milk", in a glass.
+    { id: 'cortado-hoffmann', label: 'Hoffmann · equal parts', where: 'Spain', shots: 'not stated', layers: [esp(30), { kind: 'milk', ml: [30, 30], basis: 'steamed milk, an equal quantity' }], vessel: { name: 'Glass' }, note: 'Hoffmann gives the espresso by volume, about 30 ml, not as a shot count, and says Spain brews it a little longer and weaker than Italy.', source: S.hoffmann },
     { id: 'cortado-sbux', label: 'Starbucks', where: 'US chain', shots: 'three ristretto', layers: [{ kind: 'espresso', unspecified: true }, { kind: 'milk', unspecified: true }], vessel: { name: 'Short cup, 8 fl oz', capacityMl: [237, 237] }, note: 'Three blonde ristretto shots with steamed whole milk.', source: S.sbuxCortado },
   ] },
   { id: 'gibraltar', name: 'Gibraltar', definition: 'A small espresso-and-steamed-milk drink named after the 4½ oz Libbey Gibraltar glass Blue Bottle served it in; its founder calls it really a cortado.', refs: [
@@ -104,7 +119,7 @@ export const DRINKS: Drink[] = [
     { id: 'flat-sbux', label: 'Starbucks', where: 'US chain', shots: '2 (Tall) or 3 (Grande) ristretto', layers: [{ kind: 'espresso', unspecified: true }, { kind: 'milk', unspecified: true }], vessel: { name: 'Tall cup, 12 fl oz', capacityMl: [355, 355] }, source: S.sbuxFlat },
   ] },
   { id: 'cappuccino', name: 'Cappuccino', definition: 'Espresso with steamed milk under a deep cap of fine foam. The "equal thirds" rule has no historical basis.', refs: [
-    { id: 'capp-inei', label: 'Italy · INEI', where: 'Italy', shots: 'single', layers: [esp(25), { kind: 'frothed', ml: [125, 125], basis: '100 ml cold milk steamed to about 125 ml, foam included' }], vessel: { name: 'Cappuccino cup', capacityMl: [150, 160] }, source: S.inei },
+    { id: 'capp-inei', label: 'Italy · INEI', where: 'Italy', shots: 'single', layers: [esp(25), { kind: 'frothed', ml: [125, 125], basis: 'the brochure\'s 100 ml of cold milk, steamed to about 125 ml, foam included' }], vessel: { name: 'Cappuccino cup', capacityMl: [150, 160] }, note: 'INEI\'s current page puts it as 25 ml of espresso and 100 ml of steamed milk; its brochure measures the milk cold, before steaming, and says it rises to about 125 ml.', source: S.ineiCappuccino, also: S.ineiPage },
     { id: 'capp-cimbali', label: 'Cimbali', where: 'Italy', shots: 'single', layers: [{ kind: 'espresso', unspecified: true }, { kind: 'frothed', ml: [125, 125], basis: 'hot frothed milk, foam included' }], foamCm: [1, 1], vessel: { name: 'Cappuccino cup', capacityMl: [150, 160] }, source: S.cimbaliCapp },
   ] },
   { id: 'latte', name: 'Latte', definition: 'Espresso with a larger amount of heated milk; Italian recipes may have no foam, cafés usually add a thin layer.', refs: [
@@ -117,6 +132,7 @@ export const DRINKS: Drink[] = [
   ] },
   { id: 'mocha', name: 'Mocha', definition: 'Espresso and steamed milk with chocolate, sometimes topped with whipped cream.', refs: [
     { id: 'mocha-breville', label: 'Breville', where: 'Home recipe', shots: 'single', layers: [{ kind: 'chocolate', unspecified: true, basis: 'two teaspoons of drinking chocolate' }, { kind: 'espresso', unspecified: true }, { kind: 'milk', unspecified: true }], vessel: { name: 'Glass or mug' }, source: S.breveMocha },
+    { id: 'mocha-sbux', label: 'Starbucks', where: 'US chain', shots: '2 (Grande)', layers: [{ kind: 'chocolate', unspecified: true, amount: '4 pumps of mocha sauce' }, { kind: 'espresso', unspecified: true }, { kind: 'milk', unspecified: true, basis: 'steamed 2% milk by default' }, { kind: 'cream', unspecified: true, basis: 'whipped cream on top' }], vessel: { name: 'Grande cup, 16 fl oz', capacityMl: [473, 473] }, note: 'Grande defaults on Starbucks\' page: 2 shots and 4 pumps of mocha sauce. Other sizes change both.', source: S.sbuxMocha },
   ] },
   { id: 'affogato', name: 'Affogato', definition: 'A scoop of gelato or ice cream "drowned" in a hot shot of espresso.', refs: [
     { id: 'affogato-illy', label: 'illy', where: 'Italy', shots: 'single', layers: [{ kind: 'gelato', g: [40, 40], basis: 'about one 40 g scoop' }, esp(20, 25)], vessel: { name: 'Glass or small bowl' }, source: S.illyAffogato },

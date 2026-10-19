@@ -6,27 +6,35 @@ import LiteYouTube from '../components/LiteYouTube.astro';
 import { SITE_TITLE } from '../consts';
 import { getCollection } from 'astro:content';
 
-// Extract YouTube video IDs from blog posts by checking heroImage filenames
-// (which match YouTube video IDs) and post content for iframe embeds
+// Every YouTube video in each post, not just its first (round 3, item 21): LiteYouTube embeds and plain
+// youtube.com/embed iframes, in page order. A video embedded in more than one post is listed once, under the post
+// that carries it as its own front-matter videoId (the earliest such post), else under the earliest post.
 const allPosts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 
-// Extract YouTube embeds from post body content
-const videoPosts: { title: string; videoId: string; slug: string }[] = [];
-
+const attr = (tag: string, name: string) =>
+	tag.match(new RegExp(`\\b${name}=(?:"([^"]*)"|\\{\\s*'((?:[^'\\\\]|\\\\.)*)'\\s*\\}|\\{\\s*"((?:[^"\\\\]|\\\\.)*)"\\s*\\})`))?.slice(1).find((v) => v !== undefined)?.replace(/\\(.)/g, '$1');
+const found: { videoId: string; videoTitle: string; post: (typeof allPosts)[number]; order: number }[] = [];
 for (const post of allPosts) {
 	const body = post.body || '';
-	const match = body.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]+)/) ||
-		body.match(/LiteYouTube\s+videoId="([a-zA-Z0-9_-]+)"/);
-	if (match) {
-		videoPosts.push({
-			title: post.data.title,
-			videoId: match[1],
-			slug: post.id,
-		});
+	let order = 0;
+	for (const m of body.matchAll(/<LiteYouTube\b[^>]*>|youtube(?:-nocookie)?\.com\/embed\/([a-zA-Z0-9_-]+)/g)) {
+		const id = m[1] ?? attr(m[0], 'videoId');
+		if (!id || !/^[a-zA-Z0-9_-]+$/.test(id)) continue;
+		found.push({ videoId: id, videoTitle: (m[1] ? '' : attr(m[0], 'title')) || post.data.title, post, order: order++ });
 	}
 }
+const owner = new Map<string, (typeof found)[number]>();
+for (const f of found) {
+	const cur = owner.get(f.videoId);
+	const own = (x: (typeof found)[number]) => x.post.data.videoId === x.videoId;
+	const better = !cur || (own(f) && !own(cur)) || (own(f) === own(cur) && f.post.data.pubDate.valueOf() < cur.post.data.pubDate.valueOf());
+	if (better) owner.set(f.videoId, f);
+}
+const videoPosts = [...owner.values()]
+	.sort((a, b) => b.post.data.pubDate.valueOf() - a.post.data.pubDate.valueOf() || a.order - b.order)
+	.map((f) => ({ title: f.videoTitle, postTitle: f.post.data.title, videoId: f.videoId, slug: f.post.id }));
 ---
 
 <!doctype html>
@@ -60,7 +68,7 @@ for (const post of allPosts) {
 							<h3 class="font-serif text-base font-bold text-charcoal group-hover:text-copper transition-colors leading-snug">
 								{video.title}
 							</h3>
-							<span class="text-xs text-copper mt-1 inline-block">Read article &rarr;</span>
+							<span class="text-xs text-crema-deep mt-1 inline-block">{video.title === video.postTitle ? 'Read article' : `Read the article: ${video.postTitle}`} &rarr;</span>
 						</a>
 					</div>
 				))}

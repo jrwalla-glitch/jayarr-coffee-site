@@ -108,3 +108,13 @@ test('R7: Third Wave Water GH is labeled the Builder\'s estimate, and Holy Water
   // Every other recipe is labeled with its plain numbers.
   for (const r of WATER_RECIPES.filter((x) => !x.ghEstimated && !x.untraced)) { assert.equal(recipeNumbers(r), `GH ${r.gh} · KH ${r.kh}`); assert.equal(r.provenance, undefined); }
 });
+
+test('item 25: recipe chips describe minerals, not unsourced flavors', () => {
+  for (const r of WATER_RECIPES) {
+    assert.doesNotMatch(r.profile, /acidity|clarity|clean|bright|sweet|balanced|round|smooth|complex|delicate|body/i, r.id);
+    assert.match(r.profile, /soft|hard|alkalinity|target/i, r.id);
+  }
+  // The words follow the numbers: the hardest recipes say hard, the softest say soft.
+  const by = (id) => WATER_RECIPES.find((r) => r.id === id).profile;
+  assert.match(by('melbourne'), /^Very soft/); assert.match(by('tww-classic'), /^Hard/); assert.match(by('tww-espresso'), /high alkalinity/);
+});

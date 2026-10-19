@@ -107,3 +107,15 @@ test('an unclear listing never claims fit below its largest figure, even when th
   // Where the clearance is the larger, it still decides.
   assert.equal(neededHeight({ ...bes450, dimsUnclear: '15.9 × 13.1 × 12.4 in', clearanceCm: 40.64 }), 40.64);
 });
+
+test('item 11: the Gaggia Classic E24 and Dedica DeLuxe carry the makers\' published specs, each with its source', async () => {
+  const { readFileSync } = await import('node:fs');
+  const data = JSON.parse(readFileSync(new URL('../../../data/machines.json', import.meta.url), 'utf8'));
+  const e24 = data.machines.find((x) => x.id === 'gaggia-classic-e24'), ded = data.machines.find((x) => x.id === 'delonghi-dedica-ec685m');
+  assert.deepEqual([e24.portafilterMm, e24.tankL, e24.pumpBar, e24.watts], [58, 2.1, 15, 1350]);
+  for (const f of ['portafilterMm', 'tankL', 'pumpBar', 'watts']) assert.ok(e24.sources.some((s) => s.field === f && /gaggia\.com/.test(s.url) && s.checked === '2026-10-18'), f);
+  assert.equal(ded.pumpBar, 15);
+  assert.ok(ded.sources.some((s) => s.field === 'pumpBar' && /delonghi\.com\/en-us\//.test(s.url)));
+  // De'Longhi's US page prints no tank or wattage; non-US figures stay out.
+  assert.equal(ded.tankL, null); assert.equal(ded.watts, null);
+});

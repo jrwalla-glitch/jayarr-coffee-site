@@ -71,8 +71,8 @@ export const methods: BrewMethod[] = [
       { methodId: 'clever', relationship: 'Both use paper filters for clarity, but Clever removes the pour technique variable' },
     ],
     articles: [
-      { slug: 'ultimate-pour-over-coffee-guide-and-best-v60-technique', title: 'Pour Over Coffee Guide: V60 Technique and Brew Science' },
-      { slug: 'making-coffee-with-the-oxo-brew-pour-over', title: 'OXO Brew Pour Over Review: Best Beginner Pour-Over Brewer?' },
+      { slug: 'ultimate-pour-over-coffee-guide-and-best-v60-technique', title: 'Pour-Over Coffee Guide: V60 Technique and Brew Science' },
+      { slug: 'making-coffee-with-the-oxo-brew-pour-over', title: 'OXO Brew Pour-Over with Water Tank: How to Use It and Who It Suits' },
       { slug: 'coffee-grind-size-guide-what-grind-for-every-brew-method', title: 'Coffee Grind Size Guide: Right Grind for Every Brew Method' },
     ],
   },
@@ -95,7 +95,7 @@ export const methods: BrewMethod[] = [
       { methodId: 'french-press', relationship: 'Opposite ends of the clarity spectrum — Chemex strips oils, French Press keeps them all' },
     ],
     articles: [
-      { slug: 'ultimate-pour-over-coffee-guide-and-best-v60-technique', title: 'Pour Over Coffee Guide: V60 Technique and Brew Science' },
+      { slug: 'ultimate-pour-over-coffee-guide-and-best-v60-technique', title: 'Pour-Over Coffee Guide: V60 Technique and Brew Science' },
       { slug: 'coffee-grind-size-guide-what-grind-for-every-brew-method', title: 'Coffee Grind Size Guide: Right Grind for Every Brew Method' },
     ],
   },
@@ -118,7 +118,7 @@ export const methods: BrewMethod[] = [
       { methodId: 'clever', relationship: 'Similar forgiveness level but different physics — Kalita is percolation, Clever is immersion' },
     ],
     articles: [
-      { slug: 'ultimate-pour-over-coffee-guide-and-best-v60-technique', title: 'Pour Over Coffee Guide: V60 Technique and Brew Science' },
+      { slug: 'ultimate-pour-over-coffee-guide-and-best-v60-technique', title: 'Pour-Over Coffee Guide: V60 Technique and Brew Science' },
       { slug: 'coffee-grind-size-guide-what-grind-for-every-brew-method', title: 'Coffee Grind Size Guide: Right Grind for Every Brew Method' },
     ],
   },
@@ -141,7 +141,7 @@ export const methods: BrewMethod[] = [
       { methodId: 'v60', relationship: 'V60 gives more control and brightness, but a good drip machine matches it in consistency' },
     ],
     articles: [
-      { slug: '7-popular-grind-and-brew-drip-coffee-makers-reviewed-a-buying-guide', title: 'Best Grind and Brew Coffee Makers: 7 Popular Models Ranked' },
+      { slug: '7-popular-grind-and-brew-drip-coffee-makers-reviewed-a-buying-guide', title: 'Grind and Brew Coffee Makers: Our 2021 Ranking of Seven, and What\'s Sold Now' },
     ],
   },
   {
@@ -163,7 +163,7 @@ export const methods: BrewMethod[] = [
       { methodId: 'french-press', relationship: 'Both use metal filters for body, but phin is gravity percolation, not immersion' },
     ],
     articles: [
-      { slug: 'vietnamese-phin-guide', title: 'How to Brew Vietnamese Phin Coffee: The Complete Guide to Ca Phe Sua Da' },
+      { slug: 'vietnamese-phin-guide', title: 'How to Brew Vietnamese Phin Coffee and Cà Phê Sữa Đá' },
     ],
   },
 
@@ -190,7 +190,7 @@ export const methods: BrewMethod[] = [
       { methodId: 'chemex', relationship: 'Opposite ends — French Press is oils-in, Chemex is oils-out' },
     ],
     articles: [
-      { slug: 'how-to-use-a-french-press-the-most-amazing-coffee-youve-ever-had', title: 'How to Use a French Press: Complete Guide to Perfect Coffee' },
+      { slug: 'how-to-use-a-french-press-the-most-amazing-coffee-youve-ever-had', title: 'How to Use a French Press: Hoffmann\'s No-Plunge Method, Ratios and Grind' },
       { slug: 'coffee-grind-size-guide-what-grind-for-every-brew-method', title: 'Coffee Grind Size Guide: Right Grind for Every Brew Method' },
     ],
   },
@@ -213,7 +213,7 @@ export const methods: BrewMethod[] = [
       { methodId: 'v60', relationship: 'Similar cup clarity but Clever removes the pour technique variable entirely' },
     ],
     articles: [
-      { slug: 'the-clever-dripper-better-coffee-than-pour-over', title: 'Clever Dripper Review: Immersion + Pour Over in One Brewer' },
+      { slug: 'the-clever-dripper-better-coffee-than-pour-over', title: 'Clever Dripper vs Pour-Over: How It Works, How to Brew It, and Our Review' },
       { slug: 'coffee-grind-size-guide-what-grind-for-every-brew-method', title: 'Coffee Grind Size Guide: Right Grind for Every Brew Method' },
     ],
   },
@@ -221,14 +221,15 @@ export const methods: BrewMethod[] = [
     id: 'cold-brew',
     name: 'Cold Brew',
     branch: 'immersion',
-    oneLiner: 'Coarse grounds steeped in cold water for 12–24 hours',
+    // Matches the Brew Guide's recipe: about 12 hours in the fridge (methods.ts; round 3, item 24).
+    oneLiner: 'Coarse grounds steeped in cold water, about 12 hours in the fridge',
     physics: 'Cold water extracts coffee compounds much more slowly than hot. The extended steep time compensates, but cold water is selective — it extracts sugars and smooth compounds while leaving behind many bitter and acidic molecules.',
-    whatMakesItUnique: 'Cold brew\'s low acidity and natural sweetness come from the physics of cold extraction. It\'s not just "iced coffee" — it\'s a fundamentally different extraction that produces a smooth, chocolatey concentrate. Makes excellent batch coffee that keeps for up to two weeks refrigerated.',
+    whatMakesItUnique: 'Cold brew\'s low acidity and natural sweetness come from the physics of cold extraction. It\'s not just "iced coffee" — it\'s a fundamentally different extraction that produces a smooth, chocolatey concentrate. Makes batch coffee: the Brew Guide says the concentrate keeps 1–2 weeks in the fridge.',
     parameters: {
       ratio: '1:5 – 1:8 (concentrate)',
       grindSize: 'Extra coarse',
-      waterTemp: 'Room temp or cold',
-      brewTime: '12 – 24 hours',
+      waterTemp: 'Cold, steeped in the fridge',
+      brewTime: '12 – 18 hours',
       difficulty: 1,
     },
     comparisons: [
@@ -236,10 +237,10 @@ export const methods: BrewMethod[] = [
       { methodId: 'aeropress', relationship: 'Puck Puck attachment turns AeroPress into a slow-drip cold brewer' },
     ],
     articles: [
-      { slug: 'whats-great-about-cold-brew-toddy-cold-brew-tutorial', title: 'Cold Brew Coffee Guide: Toddy System Tutorial + Science' },
-      { slug: 'cold-brew-coffeewith-an-instant-pot', title: 'Instant Pot Cold Brew: Coffee Concentrate in 5 Minutes' },
-      { slug: 'cold-brewing-coffee-with-the-coffeesock', title: 'CoffeeSock Cold Brew Review: Reusable Filter That Works' },
-      { slug: 'puck-puck-amazing-aeropress-cold-brew-coffee', title: 'Puck Puck Review: Slow Drip Cold Brew with Your AeroPress' },
+      { slug: 'whats-great-about-cold-brew-toddy-cold-brew-tutorial', title: 'Toddy Cold Brew System: How to Use It, Serve It and Store It' },
+      { slug: 'cold-brew-coffeewith-an-instant-pot', title: 'Instant Pot Cold Brew? How to Pressure-Brew Coffee for Iced Coffee' },
+      { slug: 'cold-brewing-coffee-with-the-coffeesock', title: 'CoffeeSock Cold Brew Review: How to Brew With It and How Long It Lasts' },
+      { slug: 'puck-puck-amazing-aeropress-cold-brew-coffee', title: 'Puck Puck Review: Slow-Drip Cold Brew Through Your AeroPress' },
     ],
   },
   {
@@ -261,7 +262,7 @@ export const methods: BrewMethod[] = [
       { methodId: 'v60', relationship: 'Similar cup clarity, but siphon\'s full immersion gives more body and different flavor development' },
     ],
     articles: [
-      { slug: 'how-to-use-a-siphon-coffee-maker', title: 'How to Use a Siphon Coffee Maker: Complete Brewing Guide' },
+      { slug: 'how-to-use-a-siphon-coffee-maker', title: 'How to Use a Siphon Coffee Maker: Recipe, Physics and Safe Handling' },
     ],
   },
   {
@@ -283,7 +284,7 @@ export const methods: BrewMethod[] = [
       { methodId: 'espresso', relationship: 'Both produce concentrated, intense coffee — Turkish through long contact time, espresso through pressure' },
     ],
     articles: [
-      { slug: 'turkish-coffee-guide', title: 'How to Make Turkish Coffee: The World\'s Oldest Brewing Method, Done Right' },
+      { slug: 'turkish-coffee-guide', title: 'How to Make Turkish Coffee in a Cezve: Grind, Ratio, Heat and Foam' },
     ],
   },
 
@@ -296,7 +297,7 @@ export const methods: BrewMethod[] = [
     branch: 'pressure',
     oneLiner: '9 bars of pressure forcing water through a fine coffee puck',
     physics: '9 bars (130 PSI) of pressure forces near-boiling water through a precisely ground, compressed puck of coffee in 25–30 seconds. This extreme pressure emulsifies oils and creates crema — the golden foam that carries aromatic compounds.',
-    whatMakesItUnique: 'Espresso is the most concentrated coffee extraction — roughly 10x stronger than drip. The pressure creates textures and flavors impossible with gravity alone: crema, syrupy body, and an intensity that makes it the base for lattes, cappuccinos, and americanos. It\'s also the most demanding method — grind, dose, tamp, and timing all must be precise.',
+    whatMakesItUnique: 'Espresso is the most concentrated way to brew coffee, many times stronger than drip. The pressure creates textures and flavors impossible with gravity alone: crema, syrupy body, and an intensity that makes it the base for lattes, cappuccinos, and americanos. It\'s also the most demanding method — grind, dose, tamp, and timing all must be precise.',
     parameters: {
       ratio: '1:2 – 1:2.5',
       grindSize: 'Very fine',
@@ -305,13 +306,13 @@ export const methods: BrewMethod[] = [
       difficulty: 3,
     },
     comparisons: [
-      { methodId: 'moka-pot', relationship: 'Both use pressure, but espresso\'s 9 bars vs Moka\'s 1.5 bars creates crema and more intensity' },
-      { methodId: 'aeropress', relationship: 'AeroPress with Prismo attachment mimics espresso concentration but at much lower pressure' },
+      { methodId: 'moka-pot', relationship: 'Both use pressure, but a moka pot\'s steam pressure is far below an espresso machine\'s, so no true crema' },
+      { methodId: 'aeropress', relationship: 'Valve caps such as Fellow\'s Prismo make a concentrated, espresso-style AeroPress coffee, not espresso' },
     ],
     articles: [
       { slug: 'best-espresso-machines-under-500-2026-7-picks-for-every-budget', title: 'Best Espresso Machines Under $500: What to Look For, and 8 Machines Compared' },
-      { slug: 'espresso-battle-royale-reviews-of-gaggia-breville-bambino-and-phillips-3200', title: 'Gaggia vs Breville vs Philips: Which Espresso Machine?' },
-      { slug: 'whats-different-about-ristretto-or-lungo-espresso-shots', title: 'Ristretto vs Lungo vs Normal Espresso' },
+      { slug: 'espresso-battle-royale-reviews-of-gaggia-breville-bambino-and-phillips-3200', title: 'Gaggia Classic Pro vs Breville Bambino Plus vs Philips 3200: Which Espresso Machine Should You Buy?' },
+      { slug: 'whats-different-about-ristretto-or-lungo-espresso-shots', title: 'Ristretto vs. Lungo vs. Normal Espresso: What\'s the Difference?' },
     ],
   },
   {
@@ -319,8 +320,9 @@ export const methods: BrewMethod[] = [
     name: 'Moka Pot',
     branch: 'pressure',
     oneLiner: 'Stovetop brewer using steam pressure to push water upward through coffee',
-    physics: 'Heating water in the sealed lower chamber creates steam pressure (~1.5 bars) that forces water up through a basket of ground coffee into the upper chamber. Lower pressure than espresso but still produces a strong, concentrated brew.',
-    whatMakesItUnique: 'The Moka Pot is the espresso of the people — invented in 1933 Italy, found in 90% of Italian households. It produces a strong, bold cup without electricity or expensive equipment. The flavor is intense and slightly smoky, distinct from true espresso but sharing its concentrated character.',
+    // No "~1.5 bars": only secondary sources give a moka pressure (Wave D batch 9; round 3, item 24).
+    physics: 'Heating water in the sealed lower chamber builds steam pressure that forces water up through a basket of ground coffee into the upper chamber. Far lower pressure than espresso, but still a strong, concentrated brew.',
+    whatMakesItUnique: 'The Moka Pot is the espresso of the people: Alfonso Bialetti invented it in 1933 (Hoffmann, World Atlas of Coffee). It produces a strong, bold cup without electricity or expensive equipment. The flavor is intense and slightly smoky, distinct from true espresso but sharing its concentrated character.',
     parameters: {
       ratio: '1:7 – 1:10',
       grindSize: 'Fine (but coarser than espresso)',
@@ -329,7 +331,7 @@ export const methods: BrewMethod[] = [
       difficulty: 2,
     },
     comparisons: [
-      { methodId: 'espresso', relationship: 'Similar concentrated output, but ~1.5 bars vs 9 bars means no crema and different body' },
+      { methodId: 'espresso', relationship: 'Similar concentrated output, but far less pressure than espresso means no true crema and a different body' },
       { methodId: 'aeropress', relationship: 'Both produce concentrated coffee with manual pressure, very different technique' },
     ],
     articles: [
@@ -342,8 +344,8 @@ export const methods: BrewMethod[] = [
     name: 'AeroPress',
     branch: 'pressure',
     oneLiner: 'Portable plunger brewer combining immersion steep with hand pressure',
-    physics: 'Coffee steeps briefly in the chamber (immersion), then hand pressure (~0.5 bars) forces the brew through a paper or metal filter. This hybrid approach extracts quickly while the filter controls clarity. The low pressure is gentler than espresso but faster than gravity.',
-    whatMakesItUnique: 'The Swiss Army knife of coffee. Depending on your recipe, it can produce anything from espresso-like concentrate to clean pour-over style cups. It\'s virtually unbreakable, weighs 6oz, and has spawned its own World Championship. The most versatile single brewer you can own.',
+    physics: 'Coffee steeps briefly in the chamber (immersion), then hand pressure forces the brew through a paper or metal filter. This hybrid approach extracts quickly while the filter controls clarity. The low pressure is gentler than espresso but faster than gravity.',
+    whatMakesItUnique: 'The Swiss Army knife of coffee. Depending on your recipe, it can produce anything from an espresso-style concentrate to clean pour-over style cups. It has spawned its own World Championship.',
     parameters: {
       ratio: '1:6 – 1:16 (varies widely)',
       grindSize: 'Medium-fine to fine',
@@ -353,15 +355,15 @@ export const methods: BrewMethod[] = [
     },
     comparisons: [
       { methodId: 'french-press', relationship: 'Both can do immersion, but AeroPress adds pressure and paper filtration for a cleaner cup' },
-      { methodId: 'espresso', relationship: 'AeroPress + Prismo approximates espresso concentration at a fraction of the cost' },
+      { methodId: 'espresso', relationship: 'With a valve cap such as the Prismo it makes a concentrated, espresso-style coffee; AeroPress says it isn\'t real espresso' },
       { methodId: 'cold-brew', relationship: 'With a Puck Puck attachment, AeroPress becomes a slow-drip cold brewer' },
     ],
     articles: [
-      { slug: 'why-and-how-you-should-use-an-aeropress', title: 'AeroPress Brewing Guide: Standard and Inverted Methods' },
-      { slug: 'world-aeropress-championships-best-recipe-of-last-5-years', title: 'World AeroPress Championship Recipes: Best of 5 Years Tested' },
-      { slug: 'whats-the-best-metal-filter-for-an-aeropress', title: 'Best AeroPress Metal Filter: 3 Filters Tested vs Paper' },
-      { slug: 'aeropress-accessories-prismo-blind-taste-test-an-honest-review', title: 'Fellow Prismo Review: Blind Taste Test Results' },
-      { slug: 'puck-puck-amazing-aeropress-cold-brew-coffee', title: 'Puck Puck Review: Slow Drip Cold Brew with AeroPress' },
+      { slug: 'why-and-how-you-should-use-an-aeropress', title: 'AeroPress Brewing Guide: Upright vs Inverted, and How to Dial It In' },
+      { slug: 'world-aeropress-championships-best-recipe-of-last-5-years', title: 'World AeroPress Championship Recipes: Five Winners, 2015–2019, Brewed Side by Side' },
+      { slug: 'whats-the-best-metal-filter-for-an-aeropress', title: 'What\'s the Best Metal Filter for an AeroPress? Three Compared With Paper' },
+      { slug: 'aeropress-accessories-prismo-blind-taste-test-an-honest-review', title: 'Fellow Prismo Review: Our Blind Taste Test Against the AeroPress' },
+      { slug: 'puck-puck-amazing-aeropress-cold-brew-coffee', title: 'Puck Puck Review: Slow-Drip Cold Brew Through Your AeroPress' },
     ],
   },
 ];

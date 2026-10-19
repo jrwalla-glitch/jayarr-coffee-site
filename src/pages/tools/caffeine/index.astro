@@ -10,7 +10,7 @@ import BaseHead from '../../../components/BaseHead.astro';
 import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
 import CaffeineDay from '../../../components/coffee/CaffeineDay.svelte';
-import { METHODS, CAFFEINE, GUIDANCE, SOURCES, buildRecipe, intakeMg, espressoMg, flOzToMl } from '../../../lib/coffee/index.ts';
+import { METHODS, CAFFEINE, GUIDANCE, SOURCES, buildRecipe, intakeMg, espressoMg, flOzToMl, shownMg, mgText } from '../../../lib/coffee/index.ts';
 
 const title = 'Caffeine Calculator: How Much Is Still in You at Bedtime';
 const description = 'Add the coffees you drink and see your caffeine total for the day and how much is still in your body at bedtime, with caffeine by brew method, espresso shot and cup size.';
@@ -28,7 +28,12 @@ const rows = METHODS.filter((m) => !['espresso', 'moka', 'cold-brew'].includes(m
 });
 const cold = cupMg('cold-brew', flOzToMl(16));
 const single = espressoMg(1), double = espressoMg(2);
-const fmt = (r: { min: number; max: number } | null) => (r ? `${Math.round(r.min / 5) * 5}–${Math.round(r.max / 5) * 5} mg` : '—');
+// The calculator's own display rounding (nearest 5 mg), so the table and a diary row read the same (B1).
+const fmt = (r: { min: number; max: number } | null) => (r ? `${mgText(shownMg(r))} mg` : '—');
+// Decaf, 8 oz: the FDA's own figures, 2–15 mg, shown as given rather than rounded to 5.
+const decafMg = intakeMg({ kind: 'decaf', cupMl: eightOz, atMin: 0 });
+const decaf = decafMg.ok ? decafMg.value : null;
+const fmtExact = (r: { min: number; max: number } | null) => (r ? `${mgText(shownMg(r, true))} mg` : '—');
 const fda = GUIDANCE.find((g) => g.id === 'fda-adult-daily')!;
 const acog = GUIDANCE.find((g) => g.id === 'acog-pregnancy')!;
 const efsa = GUIDANCE.find((g) => g.id === 'efsa-single-dose')!;
@@ -58,7 +63,7 @@ const efsa = GUIDANCE.find((g) => g.id === 'efsa-single-dose')!;
 
 			<article class="cf-body">
 				<h2>How much caffeine is in a cup of coffee?</h2>
-				<p>It depends mostly on how much coffee went into the cup. A typical 8 oz cup brewed at a 1:16 ratio uses about 15–17 g of coffee, and arabica beans are roughly 1% caffeine by weight, most of which ends up in the cup. That puts most home-brewed 8 oz cups at about 100–200 mg. Robusta beans carry roughly twice the caffeine.</p>
+				<p>It depends mostly on how much coffee went into the cup. A typical 8 oz cup brewed at a 1:16 ratio uses about 15–17 g of coffee, and arabica beans are roughly 1% caffeine by weight, most of which ends up in the cup. That puts most home-brewed 8 oz cups at about 100–200 mg. Robusta beans carry roughly twice the caffeine: Adriana Farah's tables put arabica at 0.9–1.3% of the bean's weight and robusta at 1.5–2.5%. The calculator's Beans setting covers robusta and blends.</p>
 				<div class="cf-table-wrap">
 					<table>
 						<thead><tr><th scope="col">Drink</th><th scope="col">Serving</th><th scope="col">Caffeine (estimate)</th></tr></thead>
@@ -67,11 +72,11 @@ const efsa = GUIDANCE.find((g) => g.id === 'efsa-single-dose')!;
 							<tr><th scope="row">Cold brew</th><td>16 oz, diluted 1:1</td><td>{fmt(cold)}</td></tr>
 							<tr><th scope="row">Espresso</th><td>single shot (about 1 oz)</td><td>{fmt(single)}</td></tr>
 							<tr><th scope="row">Double espresso, latte or cappuccino</th><td>two shots</td><td>{fmt(double)}</td></tr>
-							<tr><th scope="row">Decaf</th><td>6 oz</td><td>{CAFFEINE.decafPer6Oz.min}–{CAFFEINE.decafPer6Oz.max} mg</td></tr>
+							<tr><th scope="row">Decaf</th><td>8 oz (the FDA's typical range)</td><td>{fmtExact(decaf)}</td></tr>
 						</tbody>
 					</table>
 				</div>
-				<p class="cf-note">Estimates for arabica at the Brew Guide's classic ratios; a stronger ratio or robusta beans push them up. Café cups are often larger and stronger.</p>
+				<p class="cf-note">Estimates for arabica at the Brew Guide's classic ratios, rounded to the nearest 5 mg; a stronger ratio or robusta beans push them up. Café cups are often larger and stronger. The FDA says decaf "typically has 2 to 15 milligrams in an 8-fluid-ounce cup," so it isn't caffeine free.</p>
 
 				<h2>Does espresso have more caffeine than drip coffee?</h2>
 				<p>Per sip, yes; per drink, usually not. A single shot holds about {CAFFEINE.espressoShotMg.typical} mg in about an ounce (the USDA lists espresso at 212 mg per 100 g, which is 62.8 mg per fluid ounce, calculated), so it is far more concentrated, but an 8 oz cup of drip coffee carries more in total. A latte or cappuccino made with a double shot lands near {Math.round(double.min)}–{Math.round(double.max)} mg, close to a cup of drip.</p>
@@ -100,7 +105,8 @@ const efsa = GUIDANCE.find((g) => g.id === 'efsa-single-dose')!;
 				<h2>Sources</h2>
 				<ul class="cf-sources">
 					<li>{SOURCES['usda-fdc-espresso'].author}, <cite>{SOURCES['usda-fdc-espresso'].title}</cite> ({SOURCES['usda-fdc-espresso'].year}): {SOURCES['usda-fdc-espresso'].where}.</li>
-					<li>U.S. Food and Drug Administration, <cite>Spilling the Beans: How Much Caffeine is Too Much?</cite>, consumer update, content current as of August 28, 2024; European Food Safety Authority, scientific opinion on the safety of caffeine (2015); American College of Obstetricians and Gynecologists, <cite>Committee Opinion No. 462: Moderate Caffeine Consumption During Pregnancy</cite> (2010, reaffirmed).</li>
+					<li>Adriana Farah, <cite>Coffee Constituents</cite>, in Yi-Fang Chu (ed.), <cite>Coffee: Emerging Health Effects and Disease Prevention</cite> (Wiley-Blackwell, 2012), chapter 2: Table 2.1, p. 28, and Table 2.2, p. 38 (caffeine in arabica and robusta beans).</li>
+					<li>U.S. Food and Drug Administration, <cite>Spilling the Beans: How Much Caffeine is Too Much?</cite>, consumer update, content current as of August 28, 2024 (the 400 mg figure and decaf's 2 to 15 mg); European Food Safety Authority, scientific opinion on the safety of caffeine (2015); American College of Obstetricians and Gynecologists, <cite>Committee Opinion No. 462: Moderate Caffeine Consumption During Pregnancy</cite> (2010, reaffirmed).</li>
 					{['iom-2001', 'knutti-1981', 'knutti-1982', 'gardiner-2025'].map((id) => SOURCES[id]).map((s) => <li>{s.author}, <cite>{s.title}</cite> ({s.year}): {s.where}.</li>)}
 					<li>{SOURCES.synthesis.author}, <cite>{SOURCES.synthesis.title}</cite>: §15 caffeine absorption, §17 caffeine by brew method.</li>
 				</ul>

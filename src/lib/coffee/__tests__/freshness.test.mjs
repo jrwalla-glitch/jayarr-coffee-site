@@ -88,3 +88,18 @@ test('Muse r4: the window dates shown sit inside their stages; ten calendar year
   assert.equal(ok(freshness({ roastDate: '2016-10-16', today: '2026-10-15', use: 'filter', storage: 'opened' })).daysSinceRoast, 3651);
   assert.equal(freshness({ roastDate: '2016-10-14', today: '2026-10-15', use: 'filter', storage: 'opened' }).ok, false);
 });
+
+test('item 23: filter beans in their first days are very fresh and fine to brew; espresso still rests (Rao 2013, Hoffmann p. 65)', () => {
+  const f = freshnessStages('filter').find((s) => s.id === 'resting'), e = freshnessStages('espresso').find((s) => s.id === 'resting');
+  assert.equal(f.label, 'Very fresh'); assert.equal(f.to, 4, 'the window itself is unchanged');
+  assert.match(f.advice, /^Fine to brew/); assert.match(f.advice, /Rao/); assert.match(f.advice, /Hoffmann/);
+  assert.doesNotMatch(f.advice, /unevenly|too fresh/);
+  assert.match(e.label, /resting/); assert.match(e.advice, /pushes back against the water/); assert.doesNotMatch(e.advice, /unevenly/);
+});
+
+test('item 26: Marin 2008 is a full reference in the source registry', async () => {
+  const { SOURCES } = await import('../index.ts');
+  const m = SOURCES['marin-2008'];
+  assert.match(m.title, /Food Technology and Biotechnology 46, no\. 4: 442–447/);
+  assert.match(m.author, /Marin.*Požrl.*Zlatić.*Plestenjak/);
+});
