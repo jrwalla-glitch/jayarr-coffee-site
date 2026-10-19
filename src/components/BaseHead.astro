@@ -93,8 +93,19 @@ const breadcrumbSchema = {
 <!-- A notice beside any tool that fails to load (an island that never hydrates) -->
 <HydrationWatch />
 
-<!-- Vercel Analytics -->
-<script defer src="/_vercel/insights/script.js"></script>
+<!-- Vercel Web Analytics: the script exists only where Vercel serves the site (jayarr.coffee and its
+     *.vercel.app previews), so other hosts don't request a path that 404s. -->
+<script is:inline>
+	// No global named `va`: that's the name Vercel's own script uses for its queue.
+	if (location.hostname === 'jayarr.coffee' || /\.vercel\.app$/.test(location.hostname)) {
+		(function () {
+			var s = document.createElement('script');
+			s.defer = true;
+			s.src = '/_vercel/insights/script.js';
+			document.head.appendChild(s);
+		})();
+	}
+</script>
 
 <!-- Primary Meta Tags -->
 <title>{pageTitle}</title>
