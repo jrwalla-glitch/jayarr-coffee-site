@@ -152,20 +152,23 @@ export const ATLAS: AtlasMethod[] = [
   {
     id: 'turkish', label: 'Turkish coffee', the: 'Turkish coffee', line: 'Powder-fine coffee heated with water in a cezve and poured unfiltered.',
     contact: 'immersion', filter: 'none', force: 'none', attention: 2,
-    brewVerb: 'heats the coffee in all the water to just short of the boil',
-    timeS: [120, 180], ratio: { classic: 10, range: [9, 10] }, grind: 'Powder (finer than espresso)', temp: 'Heated slowly to just below the boil',
-    recipeBy: 'our Turkish coffee guide: about 1:9 to 1:10, heated over 2–3 minutes',
+    // As the Turkish coffee guide gives it, from Türkiye's registered description (Wave F r1, B3): 1 g to
+    // 10 ml, extra fine, cold water warmed to 190–198°F in 2½ to 3 minutes and taken off as the foam forms.
+    brewVerb: 'heats the coffee in all the water until a foam forms',
+    timeS: [150, 180], ratio: { classic: 10, range: [10, 10] }, grind: 'Extra fine (like flour)', temp: 'Cold water, heated to 190–198°F (88–92°C)',
+    recipeBy: 'our Turkish coffee guide: 1 g of coffee to 10 ml of water, warmed to 190–198°F over 2½ to 3 minutes and taken off before it boils',
     brewGuide: null,
     guide: { slug: 'turkish-coffee-guide', title: 'Turkish coffee guide' },
     sourceIds: ['synthesis'],
-    // Astra, 2026-10-15: 2–3 min of slow heating matches Specialty Turkish Coffee's method (about 2–2½ min).
   },
   {
     id: 'clever', label: 'Clever Dripper', the: 'the Clever Dripper', line: 'A cone with a valve: it steeps like a press, then drains through paper.',
     contact: 'steep-drain', filter: 'paper', force: 'gravity', attention: 1,
-    timeS: [270, 285], ratio: { classic: 15, range: [15, 16] }, grind: 'Medium-coarse', temp: '199–205°F (93–96°C)',
-    timeNote: 'one recipe, our guide\'s: a 4-minute steep and a 30–45 second drain; many recipes steep for less',
-    recipeBy: 'our Clever Dripper guide: 20 g of coffee and 300 g of water, 4 minutes, then a 30–45 second drain',
+    // As the Clever Dripper guide's 2020 recipe gives it (Wave F r1, B3): 20 g to 300 g (1:15), medium to
+    // coarse, water just off the boil (the box said 196–205°F), a 4-minute steep and a minute or so to drain.
+    timeS: [300, 300], ratio: { classic: 15, range: [15, 15] }, grind: 'Medium to coarse', temp: '196–205°F (91–96°C)',
+    timeNote: 'one recipe, our guide\'s: a 4-minute steep and about a minute to drain; many recipes steep for less',
+    recipeBy: 'our Clever Dripper guide: 20 g of coffee and 300 g of water just off the boil, 4 minutes under the lid, then about a minute to drain',
     brewGuide: null,
     guide: { slug: 'the-clever-dripper-better-coffee-than-pour-over', title: 'The Clever Dripper' },
     sourceIds: ['synthesis'],
@@ -174,8 +177,10 @@ export const ATLAS: AtlasMethod[] = [
     id: 'siphon', label: 'Siphon', the: 'the siphon', line: 'Vapor pushes water up into the coffee; a vacuum pulls the brew back down.',
     contact: 'steep-drain', filter: 'cloth', force: 'vapor', attention: 3,
     filterNote: 'cloth in most siphons; paper and metal filters are made for them too',
-    timeS: [120, 180], ratio: { classic: 15, range: [15, 15] }, grind: 'Medium-fine', temp: '194–199°F (90–93°C)',
-    recipeBy: 'our siphon guide: 20 g of coffee and 300 g of water, a 60–90 second steep and a 60–90 second drawdown',
+    // As the siphon guide gives it, Jessica Easto's three-cup recipe (Wave F r1, B3): 22 g to 300 g (1:13.6,
+    // calculated), medium-fine, coffee in at 202°F, heat off at 1:20 and drained by about 1:55.
+    timeS: [115, 115], ratio: { classic: 13.6, range: [13.6, 13.6] }, grind: 'Medium-fine', temp: 'In the top chamber, 202°F (94°C)',
+    recipeBy: 'our siphon guide, Jessica Easto\'s three-cup recipe: 22 g of coffee and 300 g of water (1:13.6, calculated), the coffee in at 202°F, the heat off at 1:20 and the brew drained by about 1:55',
     brewGuide: null,
     guide: { slug: 'how-to-use-a-siphon-coffee-maker', title: 'How to use a siphon coffee maker' },
     sourceIds: ['synthesis'],
@@ -228,7 +233,7 @@ export function timeText(m: AtlasMethod): string {
   if (a >= 3600) return a === b ? `${a / 3600} hours` : `${a / 3600}–${b / 3600} hours`;
   if (b < 60) return `${a}–${b} seconds`;
   if (a % 60 === 0 && b % 60 === 0) return a === b ? `${a / 60} minutes` : `${a / 60}–${b / 60} minutes`;
-  return `${mmss(a)}–${mmss(b)}`;
+  return a === b ? mmss(a) : `${mmss(a)}–${mmss(b)}`;
 }
 export function ratioText(m: AtlasMethod): string {
   const r = (x: number) => String(Math.round(x * 100) / 100);
