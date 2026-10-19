@@ -489,6 +489,7 @@
           <path d={petal(78, 22, 0)} fill={mini && !lit?.has('off') ? '#e9ece2' : `url(#fb-wc-${key}-off)`} filter="url(#fb-soft-{key})" fill-opacity={mini ? 1 : sel ? 1 : 0.7} />
           <path d={petal(78, 22, 0)} fill="none" stroke="#2a1d15" stroke-opacity={mini ? 0.35 : sel ? 0.55 : 0.18} stroke-width={mini ? 2 : 1} />
           <path d="M0 -4 L0 -70" stroke="#2a1d15" stroke-width=".8" opacity=".3" />
+          {#if !mini}<path class="ring" d={petal(78, 22, 0)} />{/if}
         </g>
       {/each}
       {#if !mini}
@@ -511,6 +512,7 @@
             <path d="M0 {-CORE} L0 {-R + 14}" stroke="#2a1d15" stroke-width=".8" opacity={familyId === 'off' ? 0.08 : 0.28} />
             <path d="M0 {-R * 0.42} Q 12 {-R * 0.55} 18 {-R * 0.7} M0 {-R * 0.42} Q -12 {-R * 0.55} -18 {-R * 0.7}" fill="none" stroke="#2a1d15" stroke-width=".8" opacity={familyId === 'off' ? 0.06 : 0.2} />
             <path class="hit" d={hitSector(f.id)} fill="transparent" />
+            <path class="ring" d={petal(R, 46)} />
           {/if}
         </g>
       {/each}
@@ -545,6 +547,7 @@
           <path d={petal(SPRAY, 17, 0)} fill="url(#fb-wc-b-{fam.id})" filter="url(#fb-soft-b)" fill-opacity={on ? 1 : 0.62} />
           <path d={petal(SPRAY, 17, 0)} fill="none" stroke="#2a1d15" stroke-opacity={on ? 0.6 : 0.25} stroke-width={on ? 1.4 : 1} />
           <path d="M0 -4 L0 {-SPRAY + 10}" stroke="#2a1d15" stroke-width=".7" opacity=".3" />
+          <path class="ring" d={petal(SPRAY, 17, 0)} />
         </g>
       {/each}
     {/if}
@@ -578,6 +581,7 @@
             {/if}
           </g>
           {#if pinned}<circle cx={b.x} cy={b.y} r={2.8 * upp} fill="#fffaf2" stroke="#2a1d15" stroke-width={0.8 * upp} />{/if}
+          <circle class="ring" cx={b.x} cy={b.y} r={Math.max(b.r * 1.3, 16 * upp)} />
           <text x={b.x + b.lx} y={b.y + b.ly} text-anchor={b.anchor} class="blab" class:on={sel} style="font-size: {BFS() * upp}px; stroke-width: {4 * upp}px">{b.label}{#if !branch.off}<tspan class="bcount" dx={4 * upp} style="font-size: {(BFS() - 2.5) * upp}px">{b.count}</tspan>{/if}</text>
         </g>
       {/each}
@@ -908,13 +912,11 @@
   .more { font-family: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; font-style: italic; fill: #4f5b49; paint-order: stroke; stroke: #e6ebde; stroke-linejoin: round; pointer-events: none; }
   .cue { font: italic 400 21px 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; fill: #4f5b49; }
   .bud { cursor: pointer; outline: none; }
-  .bud:focus-visible .budshape { stroke: var(--crema-deep); stroke-width: 3px; stroke-opacity: 1; }
   .bud:hover .budshape { fill-opacity: 1; }
   .blab { font-family: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; fill: #2a1d15; paint-order: stroke; stroke: #e6ebde; stroke-linejoin: round; }
   .blab.on { fill: #6b3a12; }
   .bcount { font-family: 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; fill: #6d6152; }
   .sub { cursor: pointer; outline: none; }
-  .sub:focus-visible path:nth-child(2) { stroke: var(--crema-deep); stroke-width: 3; stroke-opacity: 1; }
   .seg { display: flex; border: 1px solid var(--rule); border-radius: 999px; overflow: hidden; flex: none; }
   .seg button { appearance: none; border: 0; background: #fff; padding: 7px 14px; min-height: 36px; font: 500 13.5px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; color: var(--ink-2); cursor: pointer; }
   .seg button[aria-pressed='true'] { background: var(--ink); color: #f3ede3; }
@@ -930,7 +932,13 @@
   .petal .shape, .leaf path { transition: fill-opacity .3s, stroke-width .2s; }
   .petal { transition: opacity .3s; }
   .petal:hover .shape { fill-opacity: .95; }
-  .petal:focus-visible .shape, .leaf:focus-visible path:first-child { stroke: var(--crema-deep); stroke-width: 4; }
+  /* Keyboard focus on the painted controls (petals, leaves, group sprays, buds): the site's button focus ring,
+     2 px of crema-deep at any zoom, with a pale halo so it reads on every watercolor (Wave F r1, Opus). The old
+     stroke went on the soft-filtered fill and came out faint. */
+  .petal > .ring, .leaf > .ring, .sub > .ring, .bud > .ring { fill: none; stroke: none; pointer-events: none; transition: none; animation: none; }
+  .petal:focus-visible > .ring, .leaf:focus-visible > .ring, .sub:focus-visible > .ring, .bud:focus-visible > .ring {
+    stroke: var(--crema-deep); stroke-width: 2px; vector-effect: non-scaling-stroke; filter: drop-shadow(0 0 1.5px #fffaf2) drop-shadow(0 0 1px #fffaf2);
+  }
   .sub path { animation: grow .45s cubic-bezier(.2, .7, .2, 1) both; transform-origin: 0 0; }
   @keyframes grow { from { transform: scale(.82); opacity: 0; } to { transform: scale(1); opacity: 1; } }
   .flab { font: 400 25px 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; fill: #2a1d15; cursor: pointer; }
