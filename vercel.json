@@ -135,6 +135,16 @@
       "source": "/blog/4-more-single-origin-coffees-you-need-to-know/",
       "destination": "/blog/what-is-single-origin-coffee/",
       "permanent": true
+    },
+    {
+      "source": "/blog/coffee-butter-a-nudge-review",
+      "destination": "/blog/caffeine-in-coffee-guide/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/coffee-butter-a-nudge-review/",
+      "destination": "/blog/caffeine-in-coffee-guide/",
+      "permanent": true
     }
   ]
 }
