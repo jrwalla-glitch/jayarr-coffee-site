@@ -198,7 +198,7 @@ export const ATLAS: AtlasMethod[] = [
     sourceIds: ['hoffmann', 'synthesis'],
   },
   {
-    id: 'espresso', label: 'Espresso', the: 'espresso', line: 'A pump pushes hot water through a tamped puck in under half a minute.',
+    id: 'espresso', label: 'Espresso', the: 'espresso', line: 'A pump pushes hot water through a tamped puck in about half a minute.',
     contact: 'percolation', filter: 'metal', force: 'pump', attention: 3,
     ...fromEngine('espresso'),
     guide: { slug: 'how-to-dial-in-espresso', title: 'How to dial in espresso' },
