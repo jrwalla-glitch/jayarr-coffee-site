@@ -614,7 +614,7 @@
       <section class="improve" aria-labelledby="improve-h">
         <p class="kick">Improve what you have</p>
         <h3 id="improve-h">Better coffee from your {own.brand} {own.name}</h3>
-        <div class="note"><p class="lbl">What limits it</p><ul class="lim">{#each limitsOf(own) as t (t)}<li>{t}</li>{/each}</ul></div>
+        <div class="note"><p class="lbl">What it can and can't do</p><ul class="lim">{#each limitsOf(own) as t (t)}<li>{t}</li>{/each}</ul></div>
         <div class="note"><p class="lbl">What a better grinder changes</p>{#each grinderNote(own) as t (t)}<p>{t}</p>{/each}</div>
         <div class="note"><p class="lbl">When a new machine would help</p>{#each replaceNote(own) as t (t)}<p>{t}</p>{/each}</div>
         <div class="acts">
