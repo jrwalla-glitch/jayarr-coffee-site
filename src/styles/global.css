@@ -40,6 +40,85 @@
   line-gap-override: 0%;
 }
 
+/* Metric-matched stand-ins for the tool pages, the header and footer, and the theme's font stacks:
+   the same idea as the Fallback faces above, measured more closely, and each limited to the
+   characters its web font draws (the glyphs in the latin and latin-ext files the site loads, listed
+   in unicode-range). A character the web font lacks, such as an arrow or a subscript 2, skips the
+   stand-in and goes to the next font in the stack (Georgia, system-ui, monospace), the font it gets
+   with no stand-in, so a page looks the same once the web fonts are in. The Fallback faces above stay
+   as they are because the Wave C pages were reviewed with them; there a missing glyph is drawn by the
+   scaled face.
+
+   Instrument Serif: widths measured on the h1s of the tools, the toolkit, home and water pages, 75.8%
+   of Georgia roman and 78.5% italic (the Fallback italic's 75.4% runs 4% short). The overrides keep
+   its ascent and descent (0.99 and 0.31 em) after the size adjustment. */
+@font-face {
+  font-family: 'Instrument Serif Metrics';
+  src: local('Georgia'), local('Times New Roman');
+  unicode-range: U+0020-007E,U+00A0-00A3,U+00A5,U+00A7-00AB,U+00AE-00B0,U+00B4,U+00B6-00B8,U+00BA-00BB,U+00BF-0107,U+010A-0113,U+0116-011B,U+011E-0123,U+0126-0127,U+012A-012B,U+012E-0133,U+0136-0137,U+0139-013E,U+0141-0148,U+014A-014D,U+0150-015B,U+015E-0161,U+0164-0165,U+016A-017E,U+01CD-01CE,U+0218-021B,U+0237,U+02C6-02C7,U+02DA,U+02DC-02DD,U+0304,U+0308,U+1E80-1E85,U+1E9E,U+1EF2-1EF3,U+2013-2014,U+2018-201A,U+201C-201E,U+2022,U+2026,U+2039-203A,U+20AC,U+2122,U+2212;
+  font-style: normal;
+  size-adjust: 75.8%;
+  ascent-override: 130.6%;
+  descent-override: 40.9%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Instrument Serif Metrics';
+  src: local('Georgia Italic'), local('Georgia-Italic'), local('Times New Roman Italic');
+  unicode-range: U+0020-007E,U+00A0-00A3,U+00A5,U+00A7-00AB,U+00AE-00B0,U+00B4,U+00B6-00B8,U+00BA-00BB,U+00BF-0107,U+010A-0113,U+0116-011B,U+011E-0123,U+0126-0127,U+012A-012B,U+012E-0133,U+0136-0137,U+0139-013E,U+0141-0148,U+014A-014D,U+0150-015B,U+015E-0161,U+0164-0165,U+016A-017E,U+01CD-01CE,U+0218-021B,U+0237,U+02C6-02C7,U+02DA,U+02DC-02DD,U+0304,U+0308,U+1E80-1E85,U+1E9E,U+1EF2-1EF3,U+2013-2014,U+2018-201A,U+201C-201E,U+2022,U+2026,U+2039-203A,U+20AC,U+2122,U+2212;
+  font-style: italic;
+  size-adjust: 78.5%;
+  ascent-override: 126.1%;
+  descent-override: 39.5%;
+  line-gap-override: 0%;
+}
+/* IBM Plex Sans: its medium and semibold run wider than its regular (measured on the tools' own text:
+   500 is 2.3% wider than Arial, 600 is 3.3% narrower than Arial Bold), so each weight has its own
+   face; with one regular face, a row of 500-weight buttons wrapped differently once Plex arrived
+   (Drink Builder). The overrides keep Plex's ascent and descent (1.025 and 0.275 em).
+   A width in ch also changes when Plex arrives (a ch is the zero's width: 0.6 em in Plex, 0.56 em in
+   Arial), so on the tool pages a Plex text width is given in em at Plex's value (60ch = 36em): the
+   same width once Plex is in, and no extra line before it. */
+@font-face {
+  font-family: 'IBM Plex Sans Metrics';
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans');
+  unicode-range: U+0020-007E,U+00A0-017F,U+018F,U+0192,U+01A0-01A1,U+01AF-01B0,U+01CD-01DC,U+01FA-01FF,U+0218-021B,U+0237,U+0259,U+02BB-02BC,U+02C6-02C7,U+02DA,U+02DC-02DD,U+0304,U+0308,U+1E80-1E85,U+1E9E,U+1EF2-1EF9,U+2002,U+2009,U+200B,U+2013-2014,U+2018-201A,U+201C-201E,U+2020,U+2022,U+2026,U+2032-2033,U+2039-203A,U+2044,U+20A1,U+20A4,U+20A6,U+20A8-20AE,U+20B1-20B2,U+20B4-20B5,U+20B8-20BA,U+20BD,U+20BF,U+2113,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+  font-weight: 400;
+  size-adjust: 100.5%;
+  ascent-override: 102%;
+  descent-override: 27.4%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'IBM Plex Sans Metrics';
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans');
+  unicode-range: U+0020-007E,U+00A0-017F,U+018F,U+0192,U+01A0-01A1,U+01AF-01B0,U+01CD-01DC,U+01FA-01FF,U+0218-021B,U+0237,U+0259,U+02BB-02BC,U+02C6-02C7,U+02DA,U+02DC-02DD,U+0304,U+0308,U+1E80-1E85,U+1E9E,U+1EF2-1EF9,U+2002,U+2009,U+200B,U+2013-2014,U+2018-201A,U+201C-201E,U+2020,U+2022,U+2026,U+2032-2033,U+2039-203A,U+2044,U+20A1,U+20A4,U+20A6,U+20A8-20AE,U+20B1-20B2,U+20B4-20B5,U+20B8-20BA,U+20BD,U+20BF,U+2113,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+  font-weight: 500;
+  size-adjust: 102.3%;
+  ascent-override: 100.2%;
+  descent-override: 26.9%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'IBM Plex Sans Metrics';
+  src: local('Arial Bold'), local('Arial-BoldMT'), local('Helvetica Bold'), local('Liberation Sans Bold');
+  unicode-range: U+0020-007E,U+00A0-017F,U+018F,U+0192,U+01A0-01A1,U+01AF-01B0,U+01CD-01DC,U+01FA-01FF,U+0218-021B,U+0237,U+0259,U+02BB-02BC,U+02C6-02C7,U+02DA,U+02DC-02DD,U+0304,U+0308,U+1E80-1E85,U+1E9E,U+1EF2-1EF9,U+2002,U+2009,U+200B,U+2013-2014,U+2018-201A,U+201C-201E,U+2020,U+2022,U+2026,U+2032-2033,U+2039-203A,U+2044,U+20A1,U+20A4,U+20A6,U+20A8-20AE,U+20B1-20B2,U+20B4-20B5,U+20B8-20BA,U+20BD,U+20BF,U+2113,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+  font-weight: 600 900;
+  size-adjust: 96.7%;
+  ascent-override: 106%;
+  descent-override: 28.4%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'IBM Plex Mono Metrics';
+  src: local('Menlo'), local('Consolas'), local('Courier New');
+  unicode-range: U+0020-007E,U+00A0-017F,U+018F,U+0192,U+01A0-01A1,U+01AF-01B0,U+01CD-01DC,U+01FA-01FF,U+0218-021B,U+0237,U+0259,U+02BB-02BC,U+02C6-02C7,U+02DA,U+02DC-02DD,U+0304,U+0308,U+1E80-1E85,U+1E9E,U+1EF2-1EF9,U+2013-2014,U+2018-201A,U+201C-201E,U+2020,U+2022,U+2026,U+2032-2033,U+2039-203A,U+2044,U+20A1,U+20A4,U+20A6,U+20A8-20AE,U+20B1-20B2,U+20B4-20B5,U+20B8-20BA,U+20BD,U+20BF,U+2113,U+2122,U+2191,U+2193,U+2212,U+2215;
+  size-adjust: 100%;
+  ascent-override: 102%;
+  descent-override: 27%;
+  line-gap-override: 0%;
+}
+
 @theme {
   /* Coffee Roastery Palette — "The Roasted Archive" */
 
@@ -66,9 +145,9 @@
   --color-warm-gray-light: #9B9590;
 
   /* Typography */
-  --font-serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
-  --font-sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
+  --font-serif: 'Instrument Serif', 'Instrument Serif Metrics', Georgia, 'Times New Roman', serif;
+  --font-sans: 'IBM Plex Sans', 'IBM Plex Sans Metrics', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'IBM Plex Mono Metrics', ui-monospace, 'SFMono-Regular', monospace;
 
   /* Substance colours (DESIGN_DIRECTION.md): colour means substance everywhere */
   --color-ink: #2A1D15;
@@ -139,7 +218,7 @@ html {
 .cf-body ol { list-style: decimal; }
 .cf-body li { margin: 0 0 .45em; }
 .cf-body li::marker { color: var(--t-ink-3, #75655a); }
-.cf-body h3 { font: 400 24px/1.2 'Instrument Serif', Georgia, serif; margin: 1.6em 0 .4em; }
+.cf-body h3 { font: 400 24px/1.2 'Instrument Serif', 'Instrument Serif Metrics', Georgia, serif; margin: 1.6em 0 .4em; }
 
 body {
   font-family: var(--font-sans);

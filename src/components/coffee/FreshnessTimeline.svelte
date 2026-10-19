@@ -12,8 +12,10 @@
   let linkProblem = $state(false);
   // The link's own impossible date, named in the note, since a date box can't show it (Muse r4).
   let badLinkDate = $state('');
-  // First visit: the bag shown is an example until the reader enters theirs (Opus r4).
-  let example = $state(false);
+  // First visit: the bag shown is an example until the reader enters theirs (Opus r4). The page is
+  // built showing the example, as a first visit does, so its note doesn't push the chart down when the
+  // tool starts; a saved bag or a link with a real roast date clears it on mount.
+  let example = $state(true);
   let use = $state<FreshUse>('filter');
   let storage = $state<Storage>('opened');
   let frozenOn = $state(daysAgo(3));
@@ -25,9 +27,11 @@
   let r = $derived(result.ok ? result.value : null);
 
   // ── timeline ──
-  // Drawn at the container's real width so labels stay legible on phones.
-  let boxW = $state(1000);
-  let W = $derived(Math.max(320, Math.min(1100, boxW)));
+  // Drawn at the container's real width so labels stay legible on phones. Until the box is measured
+  // (0), it's drawn 1000 wide in a box held at the height the measured timeline will have (.unsized),
+  // so the caption and advice below don't move when the tool starts.
+  let boxW = $state(0);
+  let W = $derived(Math.max(320, Math.min(1100, boxW || 1000)));
   const L = 20, TOP = 70, BASE = 210, DAYS = 60;
   let R = $derived(W - 20);
   let x = $derived((d: number) => L + (Math.min(d, DAYS) / DAYS) * (R - L));
@@ -53,10 +57,12 @@
   onMount(() => {
     let q = new URLSearchParams(location.search);
     const fromLink = !!location.search;
-    if (!fromLink) { try { const last = localStorage.getItem(SAVE_KEY); if (last) q = new URLSearchParams(last); else example = true; } catch { example = true; } }
-    const rd = q.get('roast'); if (rd && isRealDate(rd)) roastDate = rd; else if (rd !== null && fromLink) { linkProblem = true; example = true; badLinkDate = /^\d{4}-\d{2}-\d{2}$/.test(rd) ? rd : ''; }
+    let ex = false;
+    if (!fromLink) { try { const last = localStorage.getItem(SAVE_KEY); if (last) q = new URLSearchParams(last); else ex = true; } catch { ex = true; } }
+    const rd = q.get('roast'); if (rd && isRealDate(rd)) roastDate = rd; else if (rd !== null && fromLink) { linkProblem = true; ex = true; badLinkDate = /^\d{4}-\d{2}-\d{2}$/.test(rd) ? rd : ''; }
     // An article's link sets storage or use but no roast date: the bag shown is an example, and says so (Wave D batch 2).
-    else if (rd === null && fromLink) example = true;
+    else if (rd === null && fromLink) ex = true;
+    example = ex;
     if (q.get('use') === 'espresso') use = 'espresso';
     const s = q.get('storage'); if (s === 'sealed-bag' || s === 'opened' || s === 'frozen') storage = s;
     const f = q.get('frozen'); if (f && isRealDate(f)) frozenOn = f;
@@ -125,7 +131,7 @@
   </div>
 
   <figure class="tl" bind:clientWidth={boxW}>
-    <svg viewBox="0 0 {W} 300" role="img" aria-label={r ? `Freshness timeline: day ${r.daysSinceRoast}, ${r.stage.label}. Peak from ${fmt(r.peakFrom)} to ${fmt(r.peakTo)}.` : 'Freshness timeline'}>
+    <svg viewBox="0 0 {W} 300" class:unsized={!boxW} role="img" aria-label={r ? `Freshness timeline: day ${r.daysSinceRoast}, ${r.stage.label}. Peak from ${fmt(r.peakFrom)} to ${fmt(r.peakTo)}.` : 'Freshness timeline'}>
       {#if r}
         {#each r.stages as s (s.id)}
           <rect x={x(s.from)} y={TOP} width={x(Math.min(s.to, DAYS)) - x(s.from)} height={BASE - TOP} fill={FILL[s.id]} />
@@ -172,26 +178,32 @@
 
 <style>
   .fr { --rule: #d9cdbd; --ink: #2a1d15; --ink-2: #5b4a3d; --ink-3: #75655a; --crema-deep: #8f5d22;
-    background: #fbf8f3; border: 1px solid var(--rule); border-radius: 18px; overflow: hidden; color: var(--ink); font: 16px/1.5 'IBM Plex Sans', system-ui, sans-serif; box-shadow: 0 30px 60px -40px rgba(60, 35, 15, .35); }
+    background: #fbf8f3; border: 1px solid var(--rule); border-radius: 18px; overflow: hidden; color: var(--ink); font: 16px/1.5 'IBM Plex Sans', 'IBM Plex Sans Metrics', system-ui, sans-serif; box-shadow: 0 30px 60px -40px rgba(60, 35, 15, .35); }
   .top { display: grid; grid-template-columns: 1.4fr 1fr; border-bottom: 1px solid var(--rule); }
   .inputs { padding: 20px 22px; display: flex; flex-wrap: wrap; gap: 16px 22px; align-items: flex-end; }
   .read { padding: 20px 22px; border-left: 1px solid var(--rule); display: flex; flex-direction: column; gap: 4px; justify-content: center; }
-  .lbl { font: 500 11px/1 'IBM Plex Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); display: block; }
+  .lbl { font: 500 11px/1 'IBM Plex Mono', 'IBM Plex Mono Metrics', monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); display: block; }
   .fld { display: flex; flex-direction: column; gap: 8px; }
-  .stage { font: 400 52px/1 'Instrument Serif', Georgia, serif; }
-  .sub { font: 400 14px 'IBM Plex Mono', monospace; color: var(--ink-2); }
+  .stage { font: 400 52px/1 'Instrument Serif', 'Instrument Serif Metrics', Georgia, serif; }
+  .sub { font: 400 14px 'IBM Plex Mono', 'IBM Plex Mono Metrics', monospace; color: var(--ink-2); }
   .sub.ex { color: #8f5d22; }
   .err { color: #9a3b1c; }
-  input[type='date'] { font: 400 15px 'IBM Plex Mono', monospace; padding: 8px 10px; border: 1px solid var(--rule); border-radius: 8px; background: #fff; color: var(--ink); min-height: 42px; }
+  input[type='date'] { font: 400 15px 'IBM Plex Mono', 'IBM Plex Mono Metrics', monospace; padding: 8px 10px; border: 1px solid var(--rule); border-radius: 8px; background: #fff; color: var(--ink); min-height: 42px; }
   .seg { display: flex; flex-wrap: wrap; gap: 4px; }
-  .seg button { appearance: none; border: 1px solid var(--rule); background: #fff; border-radius: 999px; padding: 8px 13px; min-height: 40px; font: 500 13.5px/1 'IBM Plex Sans', sans-serif; color: var(--ink-2); cursor: pointer; }
+  .seg button { appearance: none; border: 1px solid var(--rule); background: #fff; border-radius: 999px; padding: 8px 13px; min-height: 40px; font: 500 13.5px/1 'IBM Plex Sans', 'IBM Plex Sans Metrics', sans-serif; color: var(--ink-2); cursor: pointer; }
   .seg button[aria-pressed='true'] { background: var(--ink); color: #f3ede3; border-color: var(--ink); }
   .tl { margin: 0; padding: 14px 16px 6px; }
   .tl svg { width: 100%; height: auto; display: block; }
-  .band { font: 500 12px 'IBM Plex Mono', monospace; fill: var(--ink-3); text-transform: uppercase; letter-spacing: .06em; }
+  /* The measured timeline's height at each width (299.5 px from 1180 px wide, 284–291 below that,
+     271–284 on phones). */
+  .tl svg.unsized { height: 299.5px; }
+  @media (max-width: 1179px) { .tl svg.unsized { height: 288px; } }
+  @media (max-width: 640px) { .tl svg.unsized { height: 274px; } }
+  @media (max-width: 359px) { .tl svg.unsized { height: 255px; } }
+  .band { font: 500 12px 'IBM Plex Mono', 'IBM Plex Mono Metrics', monospace; fill: var(--ink-3); text-transform: uppercase; letter-spacing: .06em; }
   .band.on { fill: var(--ink); font-weight: 600; }
-  .tick { font: 400 12px 'IBM Plex Mono', monospace; fill: var(--ink-3); }
-  .curve { font: 400 14px 'Instrument Serif', Georgia, serif; fill: var(--ink); }
+  .tick { font: 400 12px 'IBM Plex Mono', 'IBM Plex Mono Metrics', monospace; fill: var(--ink-3); }
+  .curve { font: 400 14px 'Instrument Serif', 'Instrument Serif Metrics', Georgia, serif; fill: var(--ink); }
   .curve.teal { fill: #2f7484; }
   .here { transition: transform .5s cubic-bezier(.2, .7, .2, 1); }
   .puff { animation: puff 2.4s ease-out infinite; }
@@ -199,7 +211,7 @@
   @keyframes puff { 0% { opacity: 0; transform: translateY(4px); } 30% { opacity: .9; } 100% { opacity: 0; transform: translateY(-10px); } }
   figcaption { font-size: 13px; color: var(--ink-3); padding: 0 6px 6px; }
   .advice { border-top: 1px solid var(--rule); padding: 16px 22px 20px; }
-  .advice .what { font: 400 24px/1.25 'Instrument Serif', Georgia, serif; margin: 0 0 6px; }
+  .advice .what { font: 400 24px/1.25 'Instrument Serif', 'Instrument Serif Metrics', Georgia, serif; margin: 0 0 6px; }
   .note { margin: 4px 0 0; font-size: 14.5px; color: var(--ink-2); }
   .note a { color: #7a4e30; }
   button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid var(--crema-deep); outline-offset: 2px; }
