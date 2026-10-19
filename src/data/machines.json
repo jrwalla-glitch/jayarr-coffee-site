@@ -3203,7 +3203,7 @@
     "type": null,
     "range": null
    },
-   "pumpBar": null,
+   "pumpBar": 15,
    "preInfusion": null,
    "portafilterMm": null,
    "baskets": [],
@@ -3265,6 +3265,11 @@
      "url": "https://www.delonghi.com/en-us/p/dedica-manual-espresso-makers-dedica-deluxe-espresso-machine/EC685M.html",
      "checked": "2026-10-15",
      "basis": "Editorial classification of the maker-described preparation and dispensing workflow, not necessarily a verbatim manufacturer label."
+    },
+    {
+     "field": "pumpBar",
+     "url": "https://www.delonghi.com/en-us/p/dedica-manual-espresso-makers-dedica-deluxe-espresso-machine/EC685M.html",
+     "checked": "2026-10-18"
     }
    ],
    "axisFlag": false,
@@ -3752,9 +3757,9 @@
     "type": null,
     "range": null
    },
-   "pumpBar": null,
+   "pumpBar": 15,
    "preInfusion": null,
-   "portafilterMm": null,
+   "portafilterMm": 58,
    "baskets": [
     "Crema perfetta filter for 1 or 2 cups (manual)",
     "Traditional filter for 1 cup (manual)",
@@ -3770,7 +3775,7 @@
     "type": null,
     "settings": null
    },
-   "tankL": null,
+   "tankL": 2.1,
    "plumbable": null,
    "dims": {
     "w": 20.3,
@@ -3778,7 +3783,7 @@
     "h": 36.1
    },
    "weightKg": null,
-   "watts": null,
+   "watts": 1350,
    "recipe": null,
    "care": {
     "descale": "Use Gaggia descaling product only; never use vinegar or other descaling agents. Descaling should be performed every 2 months (manual, Descaling section).",
@@ -3862,6 +3867,26 @@
      "field": "care.descale",
      "url": "https://www.gaggia.com/app/uploads/2023/10/6420-010-43466-MANUAL-GAG.-CLASSIC-E24-USA-Rev-00-6.pdf",
      "checked": "2026-10-15"
+    },
+    {
+     "field": "pumpBar",
+     "url": "https://www.gaggia.com/manual-machines/new-classic-e24/",
+     "checked": "2026-10-18"
+    },
+    {
+     "field": "tankL",
+     "url": "https://www.gaggia.com/manual-machines/new-classic-e24/",
+     "checked": "2026-10-18"
+    },
+    {
+     "field": "portafilterMm",
+     "url": "https://www.gaggia.com/manual-machines/new-classic-e24/",
+     "checked": "2026-10-18"
+    },
+    {
+     "field": "watts",
+     "url": "https://www.gaggia.com/manual-machines/new-classic-e24/",
+     "checked": "2026-10-18"
     }
    ],
    "axisFlag": false,
