@@ -148,14 +148,53 @@ const breadcrumbSchema = {
 <meta name="p:domain_verify" content="54b67cdd8d98db76f65f872a6247cda4"/>
 
 <!-- Google Analytics: production hostname only, so local and preview builds send nothing.
-     page_location drops the query string: tool state never reaches analytics.
-     gtag.js loads after the page so it doesn't compete with the LCP image. -->
+     page_location and page_referrer drop the query string: tool state never reaches analytics.
+     gtag.js loads after the page so it doesn't compete with the LCP image.
+     Outbound clicks to a merchant (an affiliate link, rel~="sponsored", or a store or maker host)
+     send one event, outbound_click, with only the merchant's host and this page's path: no query
+     strings, tool inputs, search text or anything about the reader. docs/MEASUREMENT.md has the plan. -->
 <script is:inline>
 	if (location.hostname === 'jayarr.coffee') {
 		window.dataLayer = window.dataLayer || [];
 		window.gtag = function () { dataLayer.push(arguments); };
 		gtag('js', new Date());
-		gtag('config', 'G-1N7FMBHFWV', { page_location: location.origin + location.pathname });
+		(function () {
+			var cfg = { page_location: location.origin + location.pathname };
+			var ref = document.referrer.split(/[?#]/)[0];
+			if (ref) cfg.page_referrer = ref;
+			gtag('config', 'G-1N7FMBHFWV', cfg);
+			// Merchants: Amazon in its main regions, plus the equipment makers and stores the tools and articles
+			// link to for buying. A maker counts even when it's cited for a spec, since the reader lands in its store.
+			var AMAZON = /^amazon\.(?:com|ca|co\.uk|de|fr|it|es|com\.au|co\.jp)$/;
+			var MAKERS = [
+				'1zpresso.coffee', 'acaia.co', 'aeropress.com', 'ascaso-usa.com', 'ascaso.com', 'atago.net', 'baratza.com', 'behmor.com', 'bellmanespresso.com',
+				'bialetti.com', 'blackanddeckerappliances.com', 'breville.com', 'cafeappliances.com', 'capresso.com', 'chemexcoffeemaker.com', 'cimbali.com',
+				'cleverbrewing.coffee', 'clivecoffee.com', 'coffeesock.com', 'comandantegrinder.com', 'cosori.com', 'crateandbarrel.com', 'cuisinart.com',
+				'decentespresso.com', 'delonghi.com', 'ecm.de', 'ember.com', 'espressoparts.com', 'espro.com', 'etekcity.com', 'eureka.co.it',
+				'fellowproducts.com', 'flairespresso.com', 'gaggia-na.com', 'gaggia.com', 'geappliances.com', 'global.hario.com', 'gourmia.com',
+				'hario-europe.com', 'hario-usa.com', 'hario.com', 'harioaustralia.com.au', 'homeroastingsupplies.com', 'instantpot.com', 'kalita.co.jp',
+				'kalitausa.com', 'kingrinder.com', 'kinugrinders.com', 'krupsusa.com', 'kruveinc.com', 'lamarzocco.com', 'lelit.com', 'loveramics.com',
+				'nespresso.com', 'nichecoffee.co.uk', 'normcorewares.com', 'notneutral.com', 'oxo.com', 'ozeri.com', 'profitec-espresso.com', 'puckpuck.me',
+				'ranciliogroup.com', 'ranciliogroupna.com', 'rocket-espresso.com', 'seattlecoffeegear.com', 'shop.greatergoods.com', 'shopjura.com',
+				'shoponline.melitta.com', 'slowpoursupply.co', 'steepshot.com', 'subminimal.com', 'timemore.cn', 'timemore.com', 'toddycafe.com',
+				'turingrinders.com', 'us.jura.com', 'us.moccamaster.com', 'usa.philips.com', 'wacaco.com', 'walmart.com', 'weberworkshops.com',
+				'webstaurantstore.com', 'wholelattelove.com', 'williams-sonoma.com'
+			];
+			function outbound(e) {
+				if (e.type === 'auxclick' && e.button !== 1) return;
+				var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+				if (!a) return;
+				var u;
+				try { u = new URL(a.href, location.href); } catch (err) { return; }
+				if (!/^https?:$/.test(u.protocol) || u.hostname === location.hostname) return;
+				var host = u.hostname.replace(/^www\./, '');
+				var sponsored = /(^|\s)sponsored(\s|$)/i.test(a.getAttribute('rel') || '');
+				if (!sponsored && !AMAZON.test(host) && MAKERS.indexOf(host) < 0) return;
+				gtag('event', 'outbound_click', { merchant_host: host, page_path: location.pathname });
+			}
+			document.addEventListener('click', outbound, true);
+			document.addEventListener('auxclick', outbound, true);
+		})();
 		addEventListener('load', () => {
 			const s = document.createElement('script');
 			s.async = true;
