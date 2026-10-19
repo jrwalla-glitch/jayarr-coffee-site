@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte';
   import data from '../../data/machines.json';
-  import { chooseMachines, fitsCounter, needsGrinder, neededHeight, unclearMaxCm, CATEGORY_LABEL } from '../../lib/coffee/machines.ts';
+  import { chooseMachines, fitsCounter, needsGrinder, neededHeight, simultaneous, unclearMaxCm, CATEGORY_LABEL } from '../../lib/coffee/machines.ts';
   import type { Machine, GrinderPrice, Needs, Category, Heating, Match } from '../../lib/coffee/machines.ts';
 
   // Choose a machine for your counter, budget (grinder included), milk and effort; then, if you own
@@ -40,6 +40,9 @@
     return [...all.filter((x) => !x.misses.length)].sort((a, b) => a.band!.low - b.band!.low)[0] ?? all[0] ?? null;
   });
   let own = $derived(byId(ownId) ?? machines[0]);
+  // "My machine isn't listed": general advice, nothing said about a machine the guide doesn't hold (Wave F r1, B6.1).
+  const NOT_LISTED = 'not-listed';
+  let notListed = $derived(ownId === NOT_LISTED);
   // Machines a width ruled out only because their published size is unclear, which would otherwise be shortlisted:
   // said where the answer is, not in a footnote (gate r2).
   let hiddenByWidth = $derived(needs.widthCm ? chooseMachines(machines, grinders, { ...needs, widthCm: null }).map((x) => x.machine as M).filter((m) => !m.dims && m.dimsUnclear) : []);
@@ -100,6 +103,66 @@
   const brands = [...new Set(machines.map((m) => m.brand))].sort();
   const CATS: Category[] = ['capsule', 'super-auto', 'semi-auto-grinder', 'semi-auto', 'manual-lever'];
   const makesEspressoByHand = (m: M) => m.category === 'semi-auto' || m.category === 'semi-auto-grinder' || m.category === 'manual-lever';
+
+  // ── Improve what you own: what limits the machine, what a grinder changes, when a new machine helps ──
+  // Built only from the record (heating, steam, baskets, temperature control, grinder) and the sources in the
+  // site's grinder guide (Hoffmann, Breville's manual); nothing is claimed about a machine the record doesn't say (Wave F r1, B6.1).
+  const pressurized = (m: M) => /dual[ -]wall|pressuri[sz]ed|crema perfetta/i.test([...(m.baskets ?? []), m.owner?.baskets ?? ''].join(' '));
+  type TempKind = 'pid' | 'settable' | 'thermostat' | null;
+  function tempKind(m: M): TempKind {
+    const t = m.tempControl?.type ?? '';
+    if (/PID|LCC/.test(t)) return 'pid';
+    if (/no brewing-temp|not captured/i.test(t)) return null;
+    if (/thermostat/i.test(t)) return 'thermostat';
+    return /temperature|TCA|preheat|heat settings/i.test(t) ? 'settable' : null;
+  }
+  const grindSteps = (m: M) => { const n = String(m.grinder.settings ?? '').match(/^(\d+)\s+(precision\s+)?(grind\s+)?(settings|levels)/); return n ? Number(n[1]) : null; };
+  function limitsOf(m: M): string[] {
+    const out: string[] = [];
+    if (m.category === 'capsule') out.push(`It takes Nespresso ${LINE[m.capsuleLine ?? ''] ?? ''} capsules, which set the coffee, the grind and the dose.`.replace('Nespresso  capsules', 'capsules'));
+    if (m.milk.type === 'none') out.push('No steam wand or milk system: milk needs a separate frother.');
+    else if (m.category !== 'capsule') {
+      const sim = simultaneous(m), heat = m.heating.system && m.heating.system !== 'none' ? ` (${HEAT[m.heating.system].toLowerCase()})` : '';
+      out.push(sim === true ? `Brews and steams at the same time${heat}.` : sim === false ? `Brews and steams one after the other${heat}.` : 'Whether it brews and steams at the same time isn\'t published.');
+    }
+    if (m.category !== 'capsule') {
+      const k = tempKind(m);
+      out.push(k === 'pid' ? 'Its brew temperature is held by a PID or similar electronic control, as the maker lists it.' : k === 'settable' ? 'Its brew temperature can be set, as the maker lists it.' : k === 'thermostat' ? 'A thermostat, not a PID, controls its temperature, as the maker lists it.' : 'The maker\'s materials we checked don\'t say how its brew temperature is controlled.');
+    }
+    if (pressurized(m)) out.push('It comes with a pressurized basket as well as standard ones.');
+    if (m.grinder.builtIn) { const n = grindSteps(m); out.push(`Its grinder is built in${n ? `, with ${n} grind settings` : ''}.`); }
+    else if (needsGrinder(m)) out.push('It needs a separate grinder.');
+    return out;
+  }
+  const HOFFMANN = 'James Hoffmann recommends upgrading the grinder before the machine. An espresso grinder has two jobs: grinding fine enough, and adjusting in very small steps. The machine can only push water through what\'s in the basket, so with a blade grinder or pre-ground coffee, the grinder is the first thing to change.';
+  const basketsNote = (breville: boolean) => `Once your grinder can grind for espresso, use the standard (single-wall) baskets: a pressurized basket evens out the grind, which also mutes the effect of changing it. Breville's manual gives that advice${breville ? '' : ' for its own machines'}.`;
+  function grinderNote(m: M): string[] {
+    if (m.category === 'capsule') return ['A grinder won\'t change what it brews: the capsule holds the ground coffee. Trying other capsules is the change it allows.'];
+    if (m.category === 'super-auto') { const n = grindSteps(m); return [`It grinds for itself, so a separate grinder won't change its drinks. Its grind setting${n ? ` (${n} steps)` : ''} and the beans you buy are what you can change.`]; }
+    const out = m.category === 'semi-auto-grinder'
+      ? ['If its grinder can\'t grind fine enough to slow the shot to your recipe\'s time, or its steps are too big to fine-tune, a separate espresso grinder can fill the same portafilter. Those are the two jobs James Hoffmann gives an espresso grinder.']
+      : [HOFFMANN];
+    if (pressurized(m)) out.push(basketsNote(m.brand === 'Breville'));
+    return out;
+  }
+  function replaceNote(m: M): string[] {
+    const out: string[] = [];
+    if (m.category === 'capsule') {
+      out.push('If you want to brew your own beans: that takes a different kind of machine, not a newer capsule machine.');
+      return out;
+    }
+    if (m.category === 'super-auto') out.push('If you want to choose the dose and pull the shot yourself: that takes a semi-automatic machine and a grinder. A newer super-automatic still decides those for you.');
+    if (m.milk.type === 'none' && m.category === 'manual-lever') out.push('If you want milk drinks: it has no steam.');
+    if (m.milk.type && m.milk.type !== 'none' && simultaneous(m) === false) out.push('If you make several milk drinks in a row: it brews and steams one after the other, while a heat exchanger or a dual boiler does both at once.');
+    if (m.category !== 'super-auto') {
+      const k = tempKind(m);
+      if (k === null && m.heating.system === 'thermoblock') out.push('If you want a steadier brew temperature: Hoffmann writes that thermoblock machines don\'t hold a very consistent water temperature, and the maker\'s materials we checked list no temperature control for this one.');
+      else if (k === null) out.push('If you want a brew temperature you can set: the maker\'s materials we checked don\'t list one for it.');
+      else if (k === 'thermostat') out.push('If you want a steadier brew temperature: a thermostat lets the boiler cycle, which is why some owners time each shot to the same point in the heating cycle.');
+      out.push('Otherwise, put the money into the grinder first, as Hoffmann advises. If the grinder already does its two jobs, look at puck preparation and the beans before the machine.');
+    }
+    return out;
+  }
 
   // ── Cards: why each ranks where it does, a trade-off on every card, and the counter fit ──
   const CATEGORY_TRADE: Record<Category, string> = {
@@ -193,7 +256,7 @@
     const w = Number(q.get('w')); if (w > 0) widthIn = w; else if (q.get('w')) bad.push('the counter width');
     const h = Number(q.get('h')); if (h > 0) heightIn = h; else if (q.get('h')) bad.push('the cabinet height');
     badRoute = bad;
-    const m = q.get('m'); if (byId(m)) ownId = m!; else if (m) badOwnLink = true;
+    const m = q.get('m'); if (byId(m) || m === NOT_LISTED) ownId = m!; else if (m) badOwnLink = true;
     const mq = matchMedia('(max-width: 640px)'); narrow = mq.matches; mq.addEventListener('change', (e) => (narrow = e.matches));
     mounted = true;
   });
@@ -301,7 +364,7 @@
   // The explainer follows what's on screen: your machine in "I own one", the top match in "Find".
   let followed = '';
   $effect(() => {
-    const m = mode === 'own' ? own : mode === 'find' ? matches.find((x) => x.machine.heating.system && (HEATS.includes(x.machine.heating.system) || x.machine.heating.system === 'dual-thermoblock'))?.machine : null;
+    const m = mode === 'own' ? (notListed ? null : own) : mode === 'find' ? matches.find((x) => x.machine.heating.system && (HEATS.includes(x.machine.heating.system) || x.machine.heating.system === 'dual-thermoblock'))?.machine : null;
     const key = m ? `${mode}:${m.id}` : '';
     // Twin thermoblocks work like a dual boiler: one heater for brewing, one for steam (WB2 Astra M3).
     const tab = m?.heating.system === 'dual-thermoblock' ? 'dual-boiler' : m?.heating.system;
@@ -509,8 +572,23 @@
       <label class="pickm"><span class="lbl">Your machine</span>
         <select bind:value={ownId} onchange={() => (badOwnLink = false)}>
           {#each brands as b (b)}<optgroup label={b}>{#each machines.filter((m) => m.brand === b) as m (m.id)}<option value={m.id}>{m.brand} {m.name}{m.variant ? `, ${m.variant}` : ''}{m.code ? ` · ${m.code}` : ''}</option>{/each}</optgroup>{/each}
+          <option value={NOT_LISTED}>My machine isn't listed</option>
         </select>
       </label>
+      {#if notListed}
+        <section class="improve" aria-labelledby="improve-h">
+          <p class="kick">Improve what you have</p>
+          <h3 id="improve-h" tabindex="-1">Better coffee from the machine you own</h3>
+          <p class="quiet">We can't say what limits a machine that isn't in this guide, so this is the advice that holds for most espresso machines.</p>
+          <div class="note"><p class="lbl">What a better grinder changes</p><p>{HOFFMANN}</p><p>If your machine came with a pressurized basket: {lowerFirst(basketsNote(false))}</p></div>
+          <div class="note"><p class="lbl">When a new machine would help</p><p>When the limit is the machine itself: it brews and steams one after the other and you make several milk drinks in a row (how each heating system works is below), or it gives you no way to set the brew temperature. Otherwise, put the money into the grinder first.</p></div>
+          <div class="acts">
+            <a class="go" href="/blog/why-grinder-matters-more-than-machine/">Why the grinder matters</a>
+            <a class="ghost" href="/deep-brew/calibrator/?method=espresso">Find your grinder's espresso setting</a>
+            <button type="button" class="ghost" onclick={() => (mode = 'find')}>Compare machines</button>
+          </div>
+        </section>
+      {:else}
       <div class="ownbody">
         <div class="ownhead">
           <p class="ck">{own.category ? CATEGORY_LABEL[own.category] : 'Category not established'}{statusNote(own) ? ` · ${statusNote(own)}` : ''}</p>
@@ -537,6 +615,21 @@
           <p class="fine">From the maker's own pages and manual, checked October 15, 2026. Machine water and descaling follow the maker's specification.</p>
         </div>
       </div>
+      <section class="improve" aria-labelledby="improve-h">
+        <p class="kick">Improve what you have</p>
+        <h3 id="improve-h">Better coffee from your {own.brand} {own.name}</h3>
+        <div class="note"><p class="lbl">What limits it</p><ul class="lim">{#each limitsOf(own) as t (t)}<li>{t}</li>{/each}</ul></div>
+        <div class="note"><p class="lbl">What a better grinder changes</p>{#each grinderNote(own) as t (t)}<p>{t}</p>{/each}</div>
+        <div class="note"><p class="lbl">When a new machine would help</p>{#each replaceNote(own) as t (t)}<p>{t}</p>{/each}</div>
+        <div class="acts">
+          {#if own.category === 'capsule' && own.capsuleLine}<a class="go" href={`/tools/nespresso-pods/?line=${own.capsuleLine}&machine=${own.id}`}>See its capsules</a>
+          {:else if own.category !== 'super-auto'}<a class="go" href="/blog/why-grinder-matters-more-than-machine/">Why the grinder matters</a>
+            <a class="ghost" href="/deep-brew/calibrator/?method=espresso">Find your grinder's espresso setting</a>{/if}
+          <button type="button" class="ghost" onclick={() => (mode = 'find')}>Compare machines</button>
+        </div>
+        <p class="fine">From this machine's record above and the sources in our <a href="/blog/why-grinder-matters-more-than-machine/">grinder guide</a> (Hoffmann's <cite>World Atlas of Coffee</cite>; Breville's manual on baskets).</p>
+      </section>
+      {/if}
     </div>
   {:else}
     <div class="all">
@@ -567,7 +660,7 @@
   {/if}
 
   <!-- No steam explainer where it doesn't apply: an all-capsule shortlist, or an owner's capsule, lever or no-steam machine (WB2 Opus). -->
-  {#if !(mode === 'find' && matches.length && matches.every((x) => x.machine.category === 'capsule')) && !(mode === 'own' && (own.category === 'capsule' || own.category === 'manual-lever' || own.milk.type === 'none' || !own.heating.system))}
+  {#if !(mode === 'find' && matches.length && matches.every((x) => x.machine.category === 'capsule')) && !(mode === 'own' && !notListed && (own.category === 'capsule' || own.category === 'manual-lever' || own.milk.type === 'none' || !own.heating.system))}
   <section class="heat" id="how-it-heats" aria-label="How each heating system brews and steams">
     <p class="kick">How it brews and steams</p>
     <div class="htabs" role="tablist" aria-label="Heating system">
@@ -724,6 +817,11 @@
   .note p { margin: 0; font-size: 14.5px; color: var(--ink-2); }
   .note p + p { margin-top: 4px; }
   .note .lbl { margin-bottom: 4px; }
+  /* Improve what you have: the owner card's notes, in one card under it (Wave F r1, B6.1). */
+  .improve { background: #fff; border: 1px solid var(--rule); border-radius: 16px; padding: 16px 18px; }
+  .improve h3 { margin-bottom: 10px; }
+  .improve .lim { margin: 0; padding-left: 18px; list-style: disc; display: grid; gap: 3px; font-size: 14.5px; color: var(--ink-2); }
+  .improve .fine a { color: var(--crema-deep); }
   .quiet { color: var(--ink-3); font-size: 14px; margin: 0 0 10px; }
   .cath { font: 400 24px 'Instrument Serif', 'Instrument Serif Metrics', Georgia, serif; margin: 18px 0 6px; }
   .cath span { font: 500 12px 'IBM Plex Mono', 'IBM Plex Mono Metrics', monospace; color: var(--ink-3); }
