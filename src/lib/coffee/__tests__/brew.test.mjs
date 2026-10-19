@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildRecipe, METHODS, SOURCES, cToF, fToC, gToOz, ozToG, mlToFlOz, flOzToMl } from '../index.ts';
+import { buildRecipe, METHODS, GUIDE_METHODS, EY_BY_METHOD, SOURCES, cToF, fToC, gToOz, ozToG, mlToFlOz, flOzToMl, diagnose } from '../index.ts';
 
 const ok = (r) => { assert.equal(r.ok, true, JSON.stringify(r)); return r.value; };
 const near = (a, b, eps = 1e-9) => assert.ok(Math.abs(a - b) < eps, `${a} != ${b}`);
@@ -13,10 +13,12 @@ test('unit conversions round-trip exactly', () => {
 });
 
 test('every method preset is complete, sourced and internally consistent', () => {
-  for (const m of METHODS) {
+  for (const m of GUIDE_METHODS) {
     assert.ok(m.sourceIds.length > 0, m.id);
     for (const id of m.sourceIds) assert.ok(SOURCES[id], `${m.id} cites unknown source ${id}`);
-    assert.ok(m.ratio.stronger < m.ratio.classic && m.ratio.classic < m.ratio.lighter, `${m.id} ratio order`);
+    // A brewer that sets its own strength (moka, phin) needs no lighter or stronger step; the others need both.
+    if (m.fixedRatio) assert.ok(m.ratio.stronger <= m.ratio.classic && m.ratio.classic <= m.ratio.lighter, `${m.id} ratio order`);
+    else assert.ok(m.ratio.stronger < m.ratio.classic && m.ratio.classic < m.ratio.lighter, `${m.id} ratio order`);
     assert.ok(m.tempC.min <= m.tempC.default && m.tempC.default <= m.tempC.max, `${m.id} temp`);
     assert.ok(m.grindMicrons.min < m.grindMicrons.max, `${m.id} grind`);
     const times = m.steps.map((s) => s.atS);
@@ -182,4 +184,95 @@ test('R11: the extraction-yield ranges no longer credit the Newcastle 2018 study
   const doc = src.slice(src.lastIndexOf('/**', src.indexOf('export const EY_BY_METHOD')), src.indexOf('export const EY_BY_METHOD'));
   assert.match(doc, /synthesis §17/);
   assert.doesNotMatch(src, /Newcastle/);
+});
+
+// ── Round 3 follow-ups, group A ──
+
+test('item 29: the phin follows Nguyen Coffee Supply\'s recipe (14 g, 4 oz at 195–200°F, 45 s bloom with 1 oz, last drop about 5:00)', () => {
+  const phin = GUIDE_METHODS.find((m) => m.id === 'phin');
+  assert.ok(phin && !METHODS.some((m) => m.id === 'phin'), 'phin is a Brew Guide brewer, not one Fix My Coffee or the Caffeine Calculator lists');
+  assert.deepEqual(phin.sourceIds, ['nguyen-iced', 'nguyen-phin']);
+  const r = ok(buildRecipe({ method: 'phin', target: { doseG: 14 } }));
+  near(r.waterG, 118.3, 1e-9); assert.equal(Math.round(mlToFlOz(r.waterG) * 10) / 10, 4);
+  near(r.cupMl, 118.3 - 28, 1e-9); // the grounds keep about 2 g per g, as for every brewer
+  const f = (c) => Math.round(cToF(c));
+  assert.equal(f(phin.tempC.min), 195); assert.equal(f(phin.tempC.max), 200);
+  for (const roast of ['light', 'medium', 'dark']) { const t = f(ok(buildRecipe({ method: 'phin', target: { doseG: 14 }, roast })).tempC); assert.ok(t >= 195 && t <= 200, `${roast} ${t}`); }
+  const bloom = r.steps.find((s) => s.kind === 'bloom');
+  near(bloom.toG, flOzToMl(1), 1e-9); assert.equal(bloom.untilS, 45);
+  assert.equal(r.steps.at(-1).atS, 300);
+  assert.match(r.steps.find((s) => s.kind === 'drawdown').cue, /first drop falls within about 2:00 and the last around 5:00/);
+  assert.match(r.by, /Nguyen Coffee Supply/);
+  // The fine grind is Nguyen's; the micron range is borrowed from the moka pot and says so.
+  assert.equal(r.grind.label, 'Fine'); assert.equal(r.grind.texture, 'sand'); assert.match(r.grind.note, /our estimate/);
+  // No source gives a phin extraction band, so there is no strength estimate.
+  assert.equal(EY_BY_METHOD.phin, undefined); assert.equal(r.strength, undefined);
+});
+
+test('item 29: the phin\'s strength is the recipe\'s, and a 4 oz phin takes 14 g', () => {
+  for (const extra of [{ strength: 'stronger' }, { strength: 'lighter' }, { ratio: 12 }]) assert.equal(ok(buildRecipe({ method: 'phin', target: { doseG: 14 }, ...extra })).ratio, 8.45, JSON.stringify(extra));
+  const big = buildRecipe({ method: 'phin', target: { doseG: 20 } });
+  assert.equal(big.ok, false); assert.match(big.errors[0].message, /14 g in a 4 oz phin/); assert.deepEqual(big.errors[0].patch, { target: { doseG: 14 } });
+  ok(buildRecipe({ method: 'phin', ...big.errors[0].patch }));
+  const small = buildRecipe({ method: 'phin', target: { doseG: 10 } });
+  assert.match(small.warnings.map((w) => w.message).join(' '), /less than 2 tablespoons \(14 g\) in a 4 oz phin may drip fast/);
+  // Fix My Coffee doesn't diagnose a phin yet.
+  assert.equal(diagnose({ method: 'phin', symptom: 'sour', answers: { time: 'fast', roast: 'medium', grinder: 'burr' } }).ok, false);
+});
+
+test('item 30: a French press at exactly 1,000 g of water builds; over it, the message says "French press"', () => {
+  // (1000 / 15) × 15 is a hair over 1,000 in floating point; stronger (1:14) needs 71.4 g, past the 70 g dose limit, so it isn't tested here.
+  for (const strength of ['lighter', 'classic']) ok(buildRecipe({ method: 'french-press', target: { waterG: 1000 }, strength }));
+  const r = buildRecipe({ method: 'french-press', target: { waterG: 1001 } });
+  assert.equal(r.ok, false); assert.match(r.errors[0].message, /a typical French press holds/);
+});
+
+test('A5: cold brew opens a full Toddy batch (340 g), says "cold brew" in lower case, and an 8 oz glass gets no "cools quickly"', () => {
+  const toddy = ok(buildRecipe({ method: 'cold-brew', target: { doseG: 340 }, ratio: 5.5 }));
+  near(toddy.waterG, 1870, 1e-9);
+  const big = buildRecipe({ method: 'cold-brew', target: { doseG: 400 } });
+  assert.equal(big.ok, false); assert.match(big.errors[0].message, /a full home cold brew batch \(Toddy's home system takes 340 g\)/); assert.doesNotMatch(big.errors[0].message, /Cold brew/);
+  ok(buildRecipe({ method: 'cold-brew', ...big.errors[0].patch }));
+  const glass = buildRecipe({ method: 'cold-brew', target: { cupMl: flOzToMl(8) } });
+  assert.equal(glass.ok, true); assert.ok(glass.value.doseG < 30); assert.doesNotMatch(glass.warnings.map((w) => w.message).join(' '), /cools quickly/);
+  assert.doesNotMatch(buildRecipe({ method: 'cold-brew', target: { doseG: 2 } }).errors[0].message, /a Cold brew/);
+});
+
+test('item 32: cold brew\'s ratio range is a concentrate\'s, and an out-of-range ratio says so', () => {
+  const r = buildRecipe({ method: 'cold-brew', target: { cupMl: 500 }, ratio: 11 });
+  assert.equal(r.ok, false); assert.match(r.errors[0].message, /brews it as a concentrate/); assert.equal(r.errors[0].patch.ratio, 6.25);
+});
+
+test('A7: a drip machine holds a 12-cup machine\'s 60 fl oz (Breville BDC450), not an unsourced 1,800 g', () => {
+  const drip = GUIDE_METHODS.find((m) => m.id === 'drip-machine');
+  near(drip.capacity.maxWaterG, flOzToMl(60), 1e-9); assert.ok(drip.sourceIds.includes('breville-bdc450'));
+  ok(buildRecipe({ method: 'drip-machine', target: { waterG: flOzToMl(60) } }));
+  const r = buildRecipe({ method: 'drip-machine', target: { waterG: 1800 } });
+  assert.equal(r.ok, false); assert.match(r.errors[0].message, /12-cup drip machine holds \(60 fl oz/);
+  // An 8 oz mug builds, so the drip machine can offer it as a size.
+  ok(buildRecipe({ method: 'drip-machine', target: { cupMl: flOzToMl(8) } }));
+});
+
+test('item 31: the AeroPress recipe is credited as adapted from Easto\'s Classic AeroPress Method', () => {
+  assert.equal(ok(buildRecipe({ method: 'aeropress', target: { doseG: 16 } })).by, "Jessica Easto's Classic AeroPress Method, adapted");
+});
+
+test('item 42: espresso temperature follows the ratio (Rao: cooler for lungo, hotter for ristretto); the time stays 25–30 s', () => {
+  const t = (strength, roast = 'medium') => ok(buildRecipe({ method: 'espresso', target: { doseG: 18 }, strength, roast })).tempC;
+  assert.equal(t('classic'), 93); assert.equal(t('classic', 'light'), 95); assert.equal(t('classic', 'dark'), 91);
+  assert.ok(t('lighter') < t('classic') && t('classic') < t('stronger'));
+  for (const s of ['lighter', 'classic', 'stronger']) for (const roast of ['light', 'medium', 'dark']) {
+    const r = ok(buildRecipe({ method: 'espresso', target: { doseG: 18 }, strength: s, roast }));
+    assert.ok(r.tempC >= 91 && r.tempC <= 95, `${s}/${roast} ${r.tempC}`);
+    assert.deepEqual(r.timeS, { min: 25, max: 30 });
+  }
+  const custom = ok(buildRecipe({ method: 'espresso', target: { doseG: 18 }, ratio: 3 })).tempC;
+  assert.equal(custom, 91, 'past 1:2.5 stays at the bottom of the range');
+});
+
+test('item 27: the extraction bands are labeled the guide\'s estimates in the engine', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const src = await readFile(new URL('../methods.ts', import.meta.url), 'utf8');
+  const doc = src.slice(src.lastIndexOf('/**', src.indexOf('export const EY_BY_METHOD')), src.indexOf('export const EY_BY_METHOD'));
+  assert.match(doc, /the guide's own estimates/);
 });

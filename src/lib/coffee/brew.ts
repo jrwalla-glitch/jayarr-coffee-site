@@ -11,6 +11,7 @@ const RATIO_BOUNDS: Record<Method['family'] | 'espresso' | 'cold', Range> = {
 };
 
 function ratioBounds(m: Method): Range {
+  if (m.fixedRatio) return { min: m.ratio.classic, max: m.ratio.classic };
   if (m.id === 'espresso') return RATIO_BOUNDS.espresso;
   if (m.id === 'cold-brew') return RATIO_BOUNDS.cold;
   return RATIO_BOUNDS[m.family];
@@ -22,11 +23,28 @@ function ratioBounds(m: Method): Range {
  * Cold brew's tempC (20 °C) is that water, not the steep: the steep is in the fridge (Easto; Wave D batch 9),
  * and no number the guide shows is computed from it (the card says "Cold"; strength uses EY_BY_METHOD).
  */
-function tempFor(m: Method, roast: Roast): number {
+function tempFor(m: Method, roast: Roast, ratio: number = m.ratio.classic): number {
   if (m.id === 'moka' || m.id === 'cold-brew') return m.tempC.default;
+  if (m.id === 'espresso') return espressoTempC(m, roast, ratio);
   if (roast === 'light') return m.tempC.max;
   if (roast === 'dark') return m.tempC.min;
   return m.tempC.default;
+}
+
+/**
+ * Espresso follows the ratio as well as the roast. Rao (Espresso Extraction ch. 1): 91–95 °C at the group, "the lower
+ * temperatures in that range should be used for higher brewing ratios (more lungo), and higher temperatures … with
+ * lower ratios (more ristretto)". So 1:1.5 sits at 95 °C, 1:2 at 93 and 1:2.5 at 91, in a straight line between; the
+ * roast then moves it as it does for every brewer (light to the hot end, dark to the cool end), never past 91–95 °C.
+ * At 1:2 this is exactly the old roast-only rule (95 / 93 / 91 °C).
+ */
+function espressoTempC(m: Method, roast: Roast, ratio: number): number {
+  const { min, max } = m.tempC;
+  const lo = m.ratio.stronger, hi = m.ratio.lighter;
+  const p = Math.max(0, Math.min(1, (ratio - lo) / (hi - lo)));
+  const byRatio = max - p * (max - min);
+  const shift = roast === 'light' ? (max - min) / 2 : roast === 'dark' ? -(max - min) / 2 : 0;
+  return Math.max(min, Math.min(max, byRatio + shift));
 }
 
 /** Light roasts toward the fine half of the band, dark toward the coarse half. */
@@ -43,8 +61,8 @@ function grindFor(m: Method, roast: Roast): Range {
  * cooler is 3 °C down (blind Opus r3: AeroPress dark and V60 light were already at the target).
  * Cold brew and moka have no temperature to change.
  */
-export function adjustedTempC(m: Method, adjust: 'hotter' | 'cooler', roast: Roast = 'medium'): number {
-  const base = tempFor(m, roast);
+export function adjustedTempC(m: Method, adjust: 'hotter' | 'cooler', roast: Roast = 'medium', ratio?: number): number {
+  const base = tempFor(m, roast, ratio);
   if (m.id === 'cold-brew' || m.id === 'moka') return base;
   return adjust === 'hotter' ? Math.min(100, Math.max(base + 2, m.tempC.max)) : base - 3;
 }
@@ -52,11 +70,19 @@ export function adjustedTempC(m: Method, adjust: 'hotter' | 'cooler', roast: Roa
 /** "a V60", "an AeroPress", "an espresso machine". */
 export const withArticle = (label: string) => `${/^[aeiou]/i.test(label) ? 'an' : 'a'} ${label}`;
 
+/** A brewer's name mid-sentence: common nouns in lower case, names as written ("a cold brew batch", "a French press"; Wave D batches 13 and 36). */
+const IN_SENTENCE: Partial<Record<Method['id'], string>> = { 'cold-brew': 'cold brew batch', 'drip-machine': 'drip machine', espresso: 'espresso basket', moka: 'moka pot', phin: 'phin' };
+export const nameInSentence = (m: Pick<Method, 'id' | 'label'>) => IN_SENTENCE[m.id] ?? m.label;
+
+/** Limits compare with a little slack, so 1,000 g of water at 1:15 ((1000 / 15) × 15) isn't refused for a rounding error (Wave D batch 13). */
+const over = (v: number, limit: number) => v > limit * (1 + 1e-9);
+
 /** Grams in a message: to 0.1 g under 100 g, as the recipe shows them, so "32.3 g … about 32 g" never reads "32 g … about 32 g". */
 const gramsText = (g: number) => (g < 100 ? String(Math.round(g * 10) / 10) : Math.round(g).toLocaleString('en-US'));
 
-export function estimateStrength(methodId: Recipe['method'], doseG: number, beverageG: number): StrengthEstimate {
+export function estimateStrength(methodId: Recipe['method'], doseG: number, beverageG: number): StrengthEstimate | undefined {
   const ey = EY_BY_METHOD[methodId];
+  if (!ey) return undefined;
   return {
     eyPct: { ...ey },
     tdsPct: { min: (ey.min * doseG) / beverageG, max: (ey.max * doseG) / beverageG },
@@ -76,10 +102,15 @@ export function buildRecipe(input: RecipeInput): Result<Recipe> {
   const m = methodById(input?.method);
   if (!m) return failure('unknown-method', 'method', 'Choose a brewer.');
   const roast: Roast = input.roast ?? 'medium';
-  const ratio = finite(input.ratio) ? input.ratio : m.ratio[input.strength ?? 'classic'];
+  // A brewer that sets its own strength (moka, phin) brews at its recipe's ratio whatever a link asks for.
+  const ratio = m.fixedRatio ? m.ratio.classic : finite(input.ratio) ? input.ratio : m.ratio[input.strength ?? 'classic'];
   const bounds = ratioBounds(m);
   if (!finite(ratio) || ratio < bounds.min || ratio > bounds.max) {
-    return failure('ratio-out-of-range', 'ratio', `Use a ratio between 1:${bounds.min} and 1:${bounds.max} for ${m.label}.`, { ratio: m.ratio.classic });
+    // Cold brew's range is for a concentrate, diluted to serve: a ready-to-drink ratio (CoffeeSock's is about 1:11) is outside it (Wave D batch 13).
+    const message = m.id === 'cold-brew'
+      ? `Use a ratio between 1:${bounds.min} and 1:${bounds.max} for cold brew. The guide brews it as a concentrate and dilutes it when you serve, so a ready-to-drink ratio is outside this range.`
+      : `Use a ratio between 1:${bounds.min} and 1:${bounds.max} for ${m.label}.`;
+    return failure('ratio-out-of-range', 'ratio', message, { ratio: m.ratio.classic });
   }
 
   const t = input.target ?? {};
@@ -113,24 +144,33 @@ export function buildRecipe(input: RecipeInput): Result<Recipe> {
     cupMl = waterG - r * doseG;
   }
 
-  if (doseG > m.capacity.maxDoseG) {
+  if (over(doseG, m.capacity.maxDoseG)) {
     const maxCup = m.id === 'espresso' ? m.capacity.maxDoseG * ratio : m.capacity.maxDoseG * (ratio - r) * (m.id === 'cold-brew' ? 2 : 1);
     const message = m.id === 'aeropress'
       ? `That needs ${gramsText(doseG)} g of coffee; one AeroPress takes about ${m.capacity.maxDoseG} g. Make two presses, or choose a smaller cup.`
-      : `That needs ${gramsText(doseG)} g of coffee, more than ${withArticle(m.label)} handles well (about ${m.capacity.maxDoseG} g).`;
-    // Dose-set brewers (espresso, moka) get a dose back; the others a cup size.
-    return failure('over-capacity', field, message, { target: m.id === 'espresso' || m.id === 'moka' ? { doseG: m.capacity.maxDoseG } : { cupMl: Math.floor(maxCup) } });
+      : m.id === 'phin'
+      ? `That needs ${gramsText(doseG)} g of coffee; Nguyen Coffee Supply's recipe puts ${m.capacity.maxDoseG} g in a 4 oz phin. Brew two phins, or a larger phin: Nguyen keeps about 1 tablespoon per 2 oz there and adds a second pour, which this recipe doesn't time.`
+      : m.id === 'cold-brew'
+      ? `That needs ${gramsText(doseG)} g of coffee, more than a full home cold brew batch (Toddy's home system takes ${m.capacity.maxDoseG} g). Make two batches, or choose a smaller amount.`
+      : `That needs ${gramsText(doseG)} g of coffee, more than ${withArticle(nameInSentence(m))} handles well (about ${m.capacity.maxDoseG} g).`;
+    // Dose-set brewers (espresso, moka, phin) get a dose back; the others a cup size.
+    return failure('over-capacity', field, message, { target: m.id === 'espresso' || m.id === 'moka' || m.id === 'phin' ? { doseG: m.capacity.maxDoseG } : { cupMl: Math.floor(maxCup) } });
   }
-  if (m.capacity.maxWaterG && m.id !== 'aeropress' && waterG && waterG > m.capacity.maxWaterG) {
-    return failure('over-capacity', field, `That's ${gramsText(waterG)} g of water, more than a typical ${m.label.toLowerCase()} holds.`, { target: { waterG: m.capacity.maxWaterG } });
+  if (m.capacity.maxWaterG && m.id !== 'aeropress' && waterG && over(waterG, m.capacity.maxWaterG)) {
+    const message = m.id === 'drip-machine'
+      ? `That's ${gramsText(waterG)} g of water, more than a 12-cup drip machine holds (60 fl oz, about ${gramsText(m.capacity.maxWaterG)} g). Check your machine's maximum, or brew twice.`
+      : `That's ${gramsText(waterG)} g of water, more than a typical ${nameInSentence(m)} holds.`;
+    return failure('over-capacity', field, message, { target: { waterG: m.capacity.maxWaterG } });
   }
   // Far below the brewer's smallest sensible dose there's no recipe worth following.
   // Moka baskets have a real minimum (the smallest pots take about 6–7 g), so no half-size there.
   if (doseG < (m.id === 'moka' ? m.capacity.minDoseG : m.capacity.minDoseG / 2)) {
-    return failure('too-small', field, `That's too little coffee for ${withArticle(m.label)} to brew well (${doseG < 1 ? 'under 1' : gramsText(doseG)} g). Try at least ${m.capacity.minDoseG} g.`, { target: { doseG: m.capacity.minDoseG } });
+    return failure('too-small', field, `That's too little coffee for ${withArticle(nameInSentence(m))} to brew well (${doseG < 1 ? 'under 1' : gramsText(doseG)} g). Try at least ${m.capacity.minDoseG} g.`, { target: { doseG: m.capacity.minDoseG } });
   }
-  if (doseG < m.capacity.minDoseG) {
-    const msg = m.family === 'percolation' ? `Below about ${m.capacity.minDoseG} g the bed is shallow and drains fast; expect to grind a little finer.`
+  // Cold brew steeps cold for hours, so a small batch doesn't "cool quickly": no warning there (Wave D batch 41).
+  if (doseG < m.capacity.minDoseG && m.id !== 'cold-brew') {
+    const msg = m.id === 'phin' ? `Nguyen Coffee Supply says less than 2 tablespoons (${m.capacity.minDoseG} g) in a 4 oz phin may drip fast; grind a little finer, or use the full ${m.capacity.minDoseG} g.`
+      : m.family === 'percolation' ? `Below about ${m.capacity.minDoseG} g the bed is shallow and drains fast; expect to grind a little finer.`
       : m.id === 'espresso' ? `Below about ${m.capacity.minDoseG} g most baskets are too deep for the puck; use a smaller basket if you have one.`
       : m.id === 'moka' ? `Below about ${m.capacity.minDoseG} g the basket is mostly empty; a smaller pot suits a dose this size.`
       : `Below about ${m.capacity.minDoseG} g the batch is small for this brewer and cools quickly; a smaller brewer suits it better.`;
@@ -188,10 +228,10 @@ export function buildRecipe(input: RecipeInput): Result<Recipe> {
     yieldG,
     cupMl,
     ratio,
-    tempC: input.tempAdjust ? adjustedTempC(m, input.tempAdjust, roast) : tempFor(m, roast),
+    tempC: input.tempAdjust ? adjustedTempC(m, input.tempAdjust, roast, ratio) : tempFor(m, roast, ratio),
     timeS: { ...m.timeS },
     steps,
-    grind: { microns: grindFor(m, roast), label: m.grindLabel, texture: m.texture },
+    grind: { microns: grindFor(m, roast), label: m.grindLabel, texture: m.texture, ...(m.grindNote ? { note: m.grindNote } : {}) },
     dilution,
     strength: estimateStrength(m.id, doseG, beverageG),
     by: m.base.by,
