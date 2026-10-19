@@ -2,7 +2,9 @@
 // Every tool is a client:load island. If its bundle fails or is blocked, the server-rendered
 // controls look live but do nothing, and a shared link shows the tool's defaults (Wave F r1, Astra).
 // After the page's load event and a grace period, an island still marked `ssr` (not hydrated) gets a
-// notice just before it. If it hydrates later on a slow connection, the notice goes away.
+// notice just before it, and the island itself is marked inactive: inert (no focus, no clicks, out of the
+// accessibility tree) and dimmed, so its controls no longer look live (Wave F r2, Astra). If it hydrates
+// later on a slow connection, the notice and the marking go away.
 ---
 
 <script>
@@ -22,8 +24,10 @@
 			a.addEventListener('click', function (e) { e.preventDefault(); location.reload(); });
 			n.firstChild.appendChild(a);
 			island.parentNode.insertBefore(n, island);
+			island.setAttribute('inert', '');
+			island.classList.add('tool-inactive');
 			var mo = new MutationObserver(function () {
-				if (!island.hasAttribute('ssr')) { mo.disconnect(); n.remove(); }
+				if (!island.hasAttribute('ssr')) { mo.disconnect(); n.remove(); island.removeAttribute('inert'); island.classList.remove('tool-inactive'); }
 			});
 			mo.observe(island, { attributes: true, attributeFilter: ['ssr'] });
 		}
@@ -47,4 +51,6 @@
 	.tool-load-notice p { margin: 0; }
 	.tool-load-notice a { color: #7a4e30; font-weight: 600; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
 	.tool-noscript { background: #fbf8f3; border: 1px solid #d9cdbd; }
+	/* An island is display: contents, so the dimming goes on what it holds. */
+	astro-island.tool-inactive > * { opacity: .5; filter: grayscale(.4); }
 </style>
