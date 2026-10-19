@@ -13,20 +13,14 @@ import { SITE_TITLE } from '../consts';
 	<h3>Google Analytics 4</h3>
 	<ul>
 		<li><strong>Page views.</strong> When a page loads, our setup sends Google the page's address, and the address of the page you came from, without their query strings (the part after "?", where the tools keep their settings).</li>
-		<li><strong>Google's automatic measurement</strong> is switched on for this site, and it records more than that: when you scroll to the bottom of a page, file downloads, clicks on links to other sites with the full link address (for an Amazon search, the search words), and a new page view each time a tool rewrites the page's address as you change its settings. That address includes the settings, for example the two drinks you are comparing. It is also set to look for an email address, phone number or postal address typed into a form; no page here asks for any of them.</li>
+		<li><strong>Google's automatic measurement</strong> is also on. It records when you scroll to the bottom of a page, start or send a form (that it happened, not what you typed), download a file, play an embedded video where YouTube reports it, and use a site search that puts its words in the page address (this site's search doesn't). It doesn't log a new page view when a tool updates the page's address as you change its settings, and it isn't set to look for email addresses, phone numbers or postal addresses.</li>
 		<li><strong>Our shop-link event.</strong> When you follow a link to a shop (Amazon, Nespresso or a maker's own site), the site sends an <code>outbound_click</code> event with only the shop's host name, such as amazon.com, and the path of the page you were on. It carries no query strings, nothing you entered in a tool and no search text, and it is sent only from jayarr.coffee.</li>
 		<li><strong>Cookies and IP addresses.</strong> Google Analytics sets its own cookies (<code>_ga</code>) to tell visits apart. Google says Google Analytics 4 does not log or store IP addresses.</li>
 		<li><strong>Opting out.</strong> Install the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics opt-out browser add-on</a>, or block cookies or scripts for this site in your browser. See <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's privacy policy</a>.</li>
 	</ul>
 
-	<h3>Vercel Web Analytics</h3>
-	<p>Vercel hosts the site, and its Web Analytics script (<code>/_vercel/insights/script.js</code>) counts page views. According to <a href="https://vercel.com/docs/analytics/privacy-policy" target="_blank" rel="noopener">Vercel's documentation</a>:</p>
-	<ul>
-		<li>it uses no cookies; a visit is told apart by a hash made from the incoming request, and the hash is discarded after 24 hours;</li>
-		<li>each page view records the time, the page's address, the site you came from, a rough location (country, region and city), your operating system and browser with their versions, and the device type;</li>
-		<li>it collects no personal identifiers, and the figures are used in aggregate.</li>
-	</ul>
-	<p>Our setup removes the query string and the part after "#" from the address before Vercel records it, so the tool settings in a shared link, such as a Brew Guide recipe or a caffeine day, aren't part of it. The address of the page you came from is recorded as your browser sends it, and when you move from one page of this site to another, that can include the settings in the previous page's address.</p>
+	<h3>Hosting</h3>
+	<p>Vercel hosts the site, so its servers handle each request for a page, which includes your IP address and the address you asked for. The site runs no Vercel analytics. <a href="https://vercel.com/legal/privacy-notice" target="_blank" rel="noopener">Vercel's privacy notice</a> covers how it handles requests.</p>
 
 	<h2>What the tools keep in your browser</h2>
 	<p>The site sets no cookies of its own. Tools that remember things keep them in your browser's local storage, on this device only. None of it is sent to us, and we can't see it:</p>
@@ -51,7 +45,7 @@ import { SITE_TITLE } from '../consts';
 	<p>Some links are Amazon affiliate links (see the <a href="/affiliate-disclosure/">affiliate disclosure</a>). Once you follow a link to Amazon, Nespresso or a maker's site, that site's own privacy policy and cookies apply.</p>
 
 	<h2>Data retention</h2>
-	<p>Google Analytics keeps event-level data for 2 months and user-level data for 14 months, after which Google deletes it automatically; its summary reports aren't affected. Vercel discards the visitor hash after 24 hours.</p>
+	<p>Google Analytics keeps event-level data for 2 months and user-level data for 14 months, after which Google deletes it automatically; its summary reports aren't affected.</p>
 
 	<h2>Your choices</h2>
 	<ul>
