@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildRecipe, METHODS, GUIDE_METHODS, EY_BY_METHOD, SOURCES, cToF, fToC, gToOz, ozToG, mlToFlOz, flOzToMl, diagnose } from '../index.ts';
+import { buildRecipe, METHODS, GUIDE_METHODS, EY_BY_METHOD, SOURCES, cToF, fToC, gToOz, ozToG, mlToFlOz, flOzToMl, diagnose, approxTablespoons } from '../index.ts';
 
 const ok = (r) => { assert.equal(r.ok, true, JSON.stringify(r)); return r.value; };
 const near = (a, b, eps = 1e-9) => assert.ok(Math.abs(a - b) < eps, `${a} != ${b}`);
@@ -275,4 +275,10 @@ test('item 27: the extraction bands are labeled the guide\'s estimates in the en
   const src = await readFile(new URL('../methods.ts', import.meta.url), 'utf8');
   const doc = src.slice(src.lastIndexOf('/**', src.indexOf('export const EY_BY_METHOD')), src.indexOf('export const EY_BY_METHOD'));
   assert.match(doc, /the guide's own estimates/);
+});
+
+test('A6: whole-bean tablespoons use Easto\'s 11.5 g = 2 tbsp, so the phin\'s 14 g reads about 2 tbsp, as Nguyen says', () => {
+  near(approxTablespoons(11.5, 'whole'), 2, 1e-9);
+  assert.equal(Math.round(approxTablespoons(14, 'whole')), 2);
+  assert.equal(Math.round(approxTablespoons(25.4, 'whole')), 4);
 });

@@ -29,7 +29,7 @@ function strengthFromParam(method: MethodId, v: string): Strength | null {
 
 /**
  * A US-units link stores its cup in ml to a tenth (12 oz is 354.9), and articles round it to whole ml (355, 237).
- * Within half a millilitre of a whole fluid ounce, it is that many ounces exactly, so `cup=237` and the 8 oz chip
+ * Within half a milliliter of a whole fluid ounce, it is that many ounces exactly, so `cup=237` and the 8 oz chip
  * give the same recipe and the same top-up (Wave D batch 19: 46 g against 47 g). Metric links are left alone.
  */
 function snapUsCup(ml: number): number {
