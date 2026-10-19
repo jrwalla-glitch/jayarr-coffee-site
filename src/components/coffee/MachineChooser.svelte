@@ -13,6 +13,17 @@
   const machines = data.machines as unknown as M[];
   const grinders = data.grinders as unknown as GrinderPrice[];
   const byId = (id: string | null) => (id ? machines.find((m) => m.id === id) ?? null : null);
+  // Both tablists follow the ARIA tabs pattern: one tab in the Tab order (the selected one), and Left, Right,
+  // Home and End move to another tab and select it (Wave F r2, Opus).
+  const MODES = ['find', 'own', 'all'] as const;
+  function tabKeys(e: KeyboardEvent, ids: readonly string[], cur: string, pick: (id: string) => void, prefix: string) {
+    const i = ids.indexOf(cur), n = ids.length;
+    const to = e.key === 'ArrowRight' ? (i + 1) % n : e.key === 'ArrowLeft' ? (i + n - 1) % n : e.key === 'Home' ? 0 : e.key === 'End' ? n - 1 : -1;
+    if (to < 0) return;
+    e.preventDefault();
+    pick(ids[to]);
+    document.getElementById(prefix + ids[to])?.focus();
+  }
 
   let mode = $state<'find' | 'own' | 'all'>('find');
   let milk = $state<Needs['milk']>('some');
@@ -420,13 +431,14 @@
 
 <div class="mc">
   <div class="modes" role="tablist" aria-label="What you want to do">
-    <button type="button" role="tab" aria-selected={mode === 'find'} onclick={() => (mode = 'find')}>Find one</button>
-    <button type="button" role="tab" aria-selected={mode === 'own'} onclick={() => (mode = 'own')}>I own one</button>
-    <button type="button" role="tab" aria-selected={mode === 'all'} onclick={() => (mode = 'all')}>All {machines.length}</button>
+    {#each MODES as md (md)}
+      <button type="button" role="tab" id="mc-tab-{md}" aria-selected={mode === md} aria-controls="mc-panel" tabindex={mode === md ? 0 : -1}
+        onclick={() => (mode = md)} onkeydown={(e) => tabKeys(e, MODES, mode, (id) => (mode = id as typeof mode), 'mc-tab-')}>{md === 'find' ? 'Find one' : md === 'own' ? 'I own one' : `All ${machines.length}`}</button>
+    {/each}
   </div>
 
   {#if mode === 'find'}
-    <div class="find">
+    <div class="find" id="mc-panel" role="tabpanel" aria-labelledby="mc-tab-find">
       <!-- On a phone the answer comes first, in one line, before the questions. -->
       {#if matches.length}<a class="peek" href="#chooser-results"><span class="lbl">Best fit</span><b>{matches[0].machine.brand} {matches[0].machine.name}</b><span>about {band(matches[0].band)}{needsGrinder(matches[0].machine) ? ' with a grinder' : ''} ↓</span></a>
       {:else}<a class="peek" href="#chooser-results"><span class="lbl">Nothing fits yet</span><span>See what would ↓</span></a>{/if}
@@ -563,7 +575,7 @@
       </section>
     </div>
   {:else if mode === 'own'}
-    <div class="own">
+    <div class="own" id="mc-panel" role="tabpanel" aria-labelledby="mc-tab-own">
       {#if badOwnLink}<p class="widthnote" role="status">That link named a machine this guide doesn't include. Pick yours below; the care notes that follow are for the machine shown.</p>{/if}
       <label class="pickm"><span class="lbl">Your machine</span>
         <select bind:value={ownId} onchange={() => (badOwnLink = false)}>
@@ -628,7 +640,7 @@
       {/if}
     </div>
   {:else}
-    <div class="all">
+    <div class="all" id="mc-panel" role="tabpanel" aria-labelledby="mc-tab-all">
       <p class="quiet">All {machines.length} machines in this guide, from the makers' published specs, checked October 15, 2026. Pick a machine for its dose and care.</p>
       <p class="key"><span class="ne">n/e</span> not established: the maker's materials we checked don't say · <span class="ne">n/a</span> doesn't apply · <span class="ne">unclear</span> the maker's listed size conflicts with its own guidance</p>
       {#each [...CATS, null] as cat (cat ?? 'none')}
@@ -660,9 +672,10 @@
   <section class="heat" id="how-it-heats" aria-label="How each heating system brews and steams">
     <p class="kick">How it brews and steams</p>
     <div class="htabs" role="tablist" aria-label="Heating system">
-      {#each HEATS as k (k)}<button type="button" role="tab" aria-selected={heatTab === k} onclick={() => pickHeat(k)}>{HEAT[k as Heating]}</button>{/each}
+      {#each HEATS as k (k)}<button type="button" role="tab" id="heat-tab-{k}" aria-selected={heatTab === k} aria-controls="heat-panel" tabindex={heatTab === k ? 0 : -1}
+        onclick={() => pickHeat(k)} onkeydown={(e) => tabKeys(e, HEATS, heatTab, pickHeat, 'heat-tab-')}>{HEAT[k as Heating]}</button>{/each}
     </div>
-    <div class="hbody">
+    <div class="hbody" id="heat-panel" role="tabpanel" aria-labelledby="heat-tab-{heatTab}">
       <svg viewBox="0 0 360 230" class="schem" role="img" aria-label="{HEAT[heatTab as Heating]}: {TOGETHER[heatTab][1]} Now: {seq[step]?.[1] ?? ''}" data-phase={ph}>
         <!-- can it brew and steam at the same time: readable in a still -->
         <text x="14" y="20" class="badgek">Brew + steam together</text>

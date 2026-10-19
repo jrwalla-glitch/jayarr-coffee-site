@@ -137,7 +137,7 @@
   <div class="doors" role="tablist" aria-label="What are you here to do?">
     {#each DOORS as d (d.id)}
       <button type="button" role="tab" id="hs-tab-{d.id}" aria-selected={door === d.id} aria-controls="hs-panel" tabindex={door === d.id ? 0 : -1} onclick={() => pick(d.id)}
-        onkeydown={(e) => { const i = DOORS.findIndex((x) => x.id === door); if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); const n = DOORS[(i + (e.key === 'ArrowRight' ? 1 : DOORS.length - 1)) % DOORS.length].id; pick(n); document.getElementById(`hs-tab-${n}`)?.focus(); } }}>{d.label}</button>
+        onkeydown={(e) => { const i = DOORS.findIndex((x) => x.id === door), L = DOORS.length; const to = e.key === 'ArrowRight' ? (i + 1) % L : e.key === 'ArrowLeft' ? (i + L - 1) % L : e.key === 'Home' ? 0 : e.key === 'End' ? L - 1 : -1; if (to >= 0) { e.preventDefault(); const n = DOORS[to].id; pick(n); document.getElementById(`hs-tab-${n}`)?.focus(); } }}>{d.label}</button>
     {/each}
   </div>
 
