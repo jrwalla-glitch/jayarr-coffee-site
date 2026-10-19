@@ -412,3 +412,19 @@ test('A4: Fix My Coffee\'s espresso links use the shot words', async () => {
   const v60 = ok(diagnose({ method: 'v60', symptom: 'weak', answers: { measure: 'scale', time: 'ok' } }));
   assert.match(brewLinkFor('v60', v60), /strength=stronger/);
 });
+
+test('Wave F r1 B2: no diagnosis teaches a fixed acids-then-sugars-then-bitters order', () => {
+  // The Deep Brew note on the extraction sequence finds no fixed acid, sugar and bitter phases.
+  const fixed = /acids dissolve first|sweeter compounds|then (the )?sugars|dissolve in an order/i;
+  const whys = new Set();
+  for (const m of METHODS) for (const s of SYMPTOMS) {
+    if (!(m.id === 'espresso' ? s.espresso : s.filter)) continue;
+    for (const answers of allPaths(m.id, s.id)) {
+      const d = ok(diagnose({ method: m.id, symptom: s.id, answers }));
+      assert.doesNotMatch(text(d), fixed, `${m.id}/${s.id}/${JSON.stringify(answers)}`);
+      whys.add(d.why);
+    }
+  }
+  // The fast-shot, fast-drawdown and short-steep diagnoses say what is supported: too little extracted tends to taste sour.
+  for (const w of ['A fast shot stops early, and an under-extracted cup tends to taste sour and thin.', 'Water that runs through fast extracts too little, which tends to taste sour and thin.', 'A short steep extracts too little, and an under-extracted cup tends to taste sour.']) assert.ok(whys.has(w), w);
+});
