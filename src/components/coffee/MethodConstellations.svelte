@@ -219,6 +219,8 @@
     {#if sel}<circle r={r * 1.25 + 9} fill="none" stroke="#F5D78E" stroke-width="1.6" class="ring" />{/if}
     {#if vs}<circle r={r * 1.25 + 9} fill="none" stroke="#F5D78E" stroke-width="1.6" stroke-dasharray="4 4" />{/if}
     <circle r={Math.max(20, r + 12)} fill="transparent" />
+    <!-- Keyboard focus: a solid ring outside the star, like the site's button focus ring (Wave F r1, B13). -->
+    <circle r={r * 1.25 + 14} class="fring" />
     <text x={p.lx} y={p.ly} text-anchor={p.anchor} class="slab" class:on={lit}>{m.label}</text>
   </g>
 {/snippet}
@@ -498,6 +500,10 @@
   .star:hover .core { fill: #F0D070; }
   .star:hover .slab, .star:focus-visible .slab { fill: #F5F0E8; }
   .star:focus-visible .core { stroke: #F5D78E; stroke-width: 2; }
+  /* The ring a focused star shows: 2 px on screen at any size, in the copper the site's focus ring uses on dark grounds. */
+  .fring { fill: none; stroke: none; pointer-events: none; }
+  .star:focus-visible .fring { stroke: #d9a35e; stroke-width: 2px; vector-effect: non-scaling-stroke; }
+  .star:focus { outline: none; }
   .star:focus-visible .slab { text-decoration: underline; }
   /* A sky-colored halo behind each name breaks the constellation line where it passes. */
   .slab { font: 600 18px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; letter-spacing: .02em; fill: #C0C8D8; transition: fill .2s; paint-order: stroke; stroke: #12203A; stroke-width: 6px; stroke-linejoin: round; }

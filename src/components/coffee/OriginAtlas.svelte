@@ -406,6 +406,9 @@
                 {@const sp = marks.label.get(o.id)!}
                 <text x={mx + sp.dx * upp} y={my + sp.dy * upp} text-anchor={sp.anchor} class="olab" class:on={isSel} style="font-size: {(isSel ? 17 : 14) * upp}px; stroke-width: {3 * upp}px">{o.name}</text>
               {/if}
+              <!-- Keyboard focus: a solid copper ring clear of the marker, like the site's button focus ring (Wave F r1, B13). -->
+              <circle cx={mx} cy={my} r={(showRing ? 21 : isSel ? 18 : 13) * upp} class="fhalo" />
+              <circle cx={mx} cy={my} r={(showRing ? 21 : isSel ? 18 : 13) * upp} class="fring" />
             </g>
           {/each}
           <rect x="-50" y="-50" width="1100" height="470" fill="url(#oa-vignette)" pointer-events="none" />
@@ -612,7 +615,12 @@
   .cp:hover { fill: #b9773c; }
   .marker { cursor: pointer; outline: none; }
   .map.near { cursor: pointer; }
-  .marker:focus-visible circle:first-of-type, .marker:focus-visible :global(.hring) { filter: drop-shadow(0 0 2px #2a1d15); }
+  .marker:focus-visible circle:first-of-type:not(.fring):not(.fhalo), .marker:focus-visible :global(.hring) { filter: drop-shadow(0 0 2px #2a1d15); }
+  /* The ring a focused marker shows: 2 px on screen at any zoom, the crema of the site's button focus ring (Wave F r1, B13). */
+  .fring, .fhalo { fill: none; stroke: none; pointer-events: none; }
+  .marker:focus-visible .fring { stroke: var(--crema-deep, #8f5d22); stroke-width: 2.5px; vector-effect: non-scaling-stroke; }
+  /* a cream band under the ring keeps it legible over the brown countries */
+  .marker:focus-visible .fhalo { stroke: #fbf6ee; stroke-width: 6px; vector-effect: non-scaling-stroke; }
   .olab { font-family: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; fill: #2a1d15; paint-order: stroke; stroke: #f3eee4; stroke-linejoin: round; letter-spacing: .02em; pointer-events: none; }
   .olab.on { font-weight: 400; fill: #6b3a12; }
   .rlab { font-family: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; font-style: italic; fill: #2a1d15; paint-order: stroke; stroke: #f3eee4; stroke-linejoin: round; }
@@ -622,7 +630,7 @@
   .mapkey .kt { font: 400 15px 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; color: #8f5d22; text-transform: uppercase; letter-spacing: .08em; }
   .mapbox { position: relative; }
   .pending { visibility: hidden; }
-  .marker:focus-visible circle:first-of-type { stroke: var(--crema-deep); stroke-width: 3px; }
+  .marker:focus-visible circle:first-of-type:not(.fring):not(.fhalo) { stroke: var(--crema-deep); stroke-width: 3px; }
   .nb { white-space: nowrap; }
   .artk { font: 500 11px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
   .which { position: absolute; z-index: 3; width: 150px; background: #fbf8f3; border: 1px solid #c17a3a; border-radius: 3px; box-shadow: 0 10px 24px -14px rgba(42, 29, 21, .6); padding: 6px; display: grid; gap: 4px; }
