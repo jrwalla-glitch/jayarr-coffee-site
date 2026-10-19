@@ -16,7 +16,7 @@ export interface Range { min: number; max: number }
 
 export type MethodId =
   | 'v60' | 'chemex' | 'kalita' | 'french-press' | 'aeropress'
-  | 'cold-brew' | 'drip-machine' | 'espresso' | 'moka';
+  | 'cold-brew' | 'drip-machine' | 'espresso' | 'moka' | 'phin';
 
 export type MethodFamily = 'percolation' | 'immersion' | 'pressure';
 export type Roast = 'light' | 'medium' | 'dark';
@@ -46,6 +46,10 @@ export interface Method {
   grindMicrons: Range;
   grindLabel: string;
   texture: string;
+  /** Where the micron band is the guide's own estimate rather than a source's figure, said in the UI. */
+  grindNote?: string;
+  /** The brewer sets the strength (a moka pot's basket and valve, a phin recipe's fixed dose and chamber): no lighter or stronger choice. */
+  fixedRatio?: boolean;
   /** Water held back by the spent grounds, g per g of coffee. */
   retentionGPerG: number;
   /** The published recipe the steps come from. */
@@ -67,7 +71,7 @@ export interface RecipeInput {
   /** Explicit water:coffee (espresso yield:dose) ratio; overrides strength. */
   ratio?: number;
   roast?: Roast;
-  /** A one-off temperature change carried from the Coffee Doctor: hotter = top of the range, cooler = about 90 °C or the bottom. */
+  /** A one-off temperature change carried from Fix My Coffee: hotter = top of the range, cooler = about 90 °C or the bottom. */
   tempAdjust?: 'hotter' | 'cooler';
 }
 
@@ -93,10 +97,11 @@ export interface Recipe {
   tempC: number;
   timeS: Range;
   steps: Step[];
-  grind: { microns: Range; label: string; texture: string };
+  grind: { microns: Range; label: string; texture: string; note?: string };
   /** Cold brew and iced drinks: what to add after brewing. */
   dilution?: { waterG: number; servedMl: number };
-  strength: StrengthEstimate;
+  /** Absent where the guide has no extraction band for the brewer (the phin). */
+  strength?: StrengthEstimate;
   by: string;
   sourceIds: string[];
 }

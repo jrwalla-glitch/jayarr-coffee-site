@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import ExtractionMap from './ExtractionMap.svelte';
-  import { METHODS, SYMPTOMS, ZONES, nextQuestion, questionsFor, diagnose, methodById, brewLinkFor } from '../../lib/coffee/index.ts';
+  import { METHODS, SYMPTOMS, SYMPTOM_ZONE, ZONES, nextQuestion, questionsFor, diagnose, methodById, brewLinkFor } from '../../lib/coffee/index.ts';
   import type { MethodId, SymptomId, ZoneId, QuestionId } from '../../lib/coffee/index.ts';
 
   // Taste "waveforms": shape is the taste, weight is the intensity (kept from the original tool).
@@ -22,7 +22,9 @@
     const [e, s] = z.split('-');
     return { x: e === 'under' ? 1 / 6 : e === 'over' ? 5 / 6 : 0.5, y: s === 'weak' ? 1 / 6 : s === 'strong' ? 5 / 6 : 0.5 };
   };
-  const GUESS: Record<SymptomId, ZoneId> = { sour: 'under-ideal', bitter: 'over-ideal', weak: 'ideal-weak', 'harsh-mixed': 'under-strong', flat: 'ideal-weak', muddy: 'over-strong', gushing: 'under-weak', choking: 'over-strong', strong: 'ideal-strong', bright: 'ideal-ideal', off: 'ideal-ideal' };
+  // Before any answers the map shows where a symptom usually sits, labeled as that, never as "probably" this cup (Wave D
+  // batch 32). Flat, off and muddy are never extraction problems here, so they start off the map, with what usually causes them.
+  const USUAL_CAUSE: Partial<Record<SymptomId, string>> = { flat: 'Usually the beans or the water', off: 'Usually the equipment, the water or the beans', muddy: 'Usually fine particles getting into the cup' };
   const TOOL_LINK: Record<string, { href: string; label: string }> = {
     'grind-guide': { href: '/tools/grind-guide/', label: 'See what the grind should look like' },
     freshness: { href: '/tools/freshness/', label: 'Check how fresh your beans are' },
@@ -41,7 +43,9 @@
   let current = $derived(dstate ? nextQuestion(dstate) : null);
   let result = $derived(dstate && !current ? diagnose(dstate) : null);
   let dx = $derived(result && result.ok ? result.value : null);
-  let zone = $derived<ZoneId>(dx ? dx.zone : symptom ? GUESS[symptom] : 'ideal-ideal');
+  let guess = $derived<ZoneId | null>(symptom ? SYMPTOM_ZONE[symptom] : null);
+  let zone = $derived<ZoneId>(dx ? dx.zone : guess ?? 'ideal-ideal');
+  let offMap = $derived(dx ? dx.placement === 'other' : !!symptom && !guess);
   let pos = $derived(ZONE_XY(zone));
   let answeredCount = $derived(qs.filter((q) => answers[q.id] !== undefined).length);
   let step = $derived(!method ? 'method' : !symptom ? 'symptom' : current ? 'questions' : 'result');
@@ -65,7 +69,8 @@
   onMount(() => {
     const q = new URLSearchParams(location.search);
     const m = q.get('method') as MethodId | null, s = q.get('symptom') as SymptomId | null;
-    if (m && methodById(m)) {
+    // Only brewers Fix My Coffee covers: the Brew Guide's phin isn't one yet.
+    if (m && METHODS.some((x) => x.id === m)) {
       method = m;
       if (s && SYMPTOMS.some((x) => x.id === s && (m === 'espresso' ? x.espresso : x.filter))) {
         symptom = s;
@@ -95,17 +100,25 @@
 
 <div class="dr">
   <div class="stage">
-    <ExtractionMap x={pos.x} y={pos.y} {zone} showArrow={step === 'result' && dx?.placement === 'likely'} empty={dx?.placement === 'other'} emptyText="not an extraction problem" uncertain={dx?.placement === 'uncertain'} label={dx?.placement === 'other' ? `Not placed on the extraction map: ${dx.placementNote}` : dx?.placement === 'uncertain' ? `Your cup's position is uncertain: ${dx.placementNote}` : `By taste, your cup probably sits in the ${ZONES[zone].label.toLowerCase()} zone.`} />
+    <ExtractionMap x={pos.x} y={pos.y} {zone} showArrow={step === 'result' && dx?.placement === 'likely'} empty={offMap} emptyText={dx ? 'not an extraction problem' : 'usually not an extraction problem'} uncertain={dx ? dx.placement === 'uncertain' : !!symptom} label={dx?.placement === 'other' ? `Not placed on the extraction map: ${dx.placementNote}` : dx?.placement === 'uncertain' ? `Your cup's position is uncertain: ${dx.placementNote}` : dx ? `By taste, your cup probably sits in the ${ZONES[zone].label.toLowerCase()} zone.` : symptom && guess ? `Before your answers: this taste usually sits in the ${ZONES[guess].label.toLowerCase()} zone.` : symptom ? 'Before your answers: this is usually not an extraction problem.' : 'The extraction map.'} />
     <p class="mini-axes" aria-hidden="true">Left under-extracted (sour), right over-extracted (bitter) · low weak, high strong</p>
     <div class="zone">
       {#if symptom && dx && dx.placement !== 'likely'}
         <span class="lbl">{dx.placement === 'other' ? 'Not an extraction problem' : 'Position uncertain'}</span>
         <p class="zl small">{dx.placementNote}</p>
-        <p class="zt">{dx.placement === 'other' ? 'Grind, time and ratio won\'t fix this one; the change below will.' : 'Taste and time can\'t place this one precisely, so the dot is a best guess.'}</p>
-      {:else if symptom}
-        <span class="lbl">{step === 'result' ? 'Your cup, probably' : 'Probably'}</span>
+        <p class="zt">{dx.placement === 'other' ? 'It isn\'t about extraction, so the map can\'t place it; the change below goes after the cause.' : 'Taste and time can\'t place this one precisely, so the dot is a best guess.'}</p>
+      {:else if symptom && dx}
+        <span class="lbl">Your cup, probably</span>
         <p class="zl">{ZONES[zone].label}</p>
         <p class="zt">{ZONES[zone].tastes}</p>
+      {:else if symptom && guess}
+        <span class="lbl">Where this taste usually sits</span>
+        <p class="zl">{ZONES[guess].label}</p>
+        <p class="zt">{ZONES[guess].tastes}. Your answers will place your cup.</p>
+      {:else if symptom}
+        <span class="lbl">Usually not an extraction problem</span>
+        <p class="zl small">{USUAL_CAUSE[symptom] ?? 'Usually something other than extraction'}</p>
+        <p class="zt">Your answers will narrow it down.</p>
       {:else}
         <span class="lbl">The extraction map</span>
         <p class="zt">Sour cups sit to the left, bitter to the right; weak at the bottom, strong at the top. Tell us what's wrong and we'll place yours.</p>

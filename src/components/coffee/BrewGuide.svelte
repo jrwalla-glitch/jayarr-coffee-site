@@ -2,7 +2,7 @@
   import { onMount, untrack } from 'svelte';
   import BrewStage from './BrewStage.svelte';
   import {
-    METHODS, buildRecipe, simulate, encodeBrew, decodeBrew,
+    GUIDE_METHODS as METHODS, buildRecipe, simulate, encodeBrew, decodeBrew,
     cToF, mlToFlOz, flOzToMl, approxTablespoons,
   } from '../../lib/coffee/index.ts';
   import type { MethodId, Roast, Strength, Units, RecipeInput, Frame, Adjust } from '../../lib/coffee/index.ts';
@@ -14,12 +14,17 @@
   const CUPS_METRIC = [180, 240, 300, 350, 475];
   const BATCH_US = [16, 32, 48, 64];
   const BATCH_METRIC = [500, 1000, 1500, 2000];
+  // A drip machine also brews a single mug, so it offers 8 oz (250 ml) as well (Wave D batch 13).
+  const DRIP_US = [8, 16, 32, 48, 64];
+  const DRIP_METRIC = [250, 500, 1000, 1500, 2000];
   const ESPRESSO_DOSES = [14, 16, 18, 20, 22];
   const MOKA_DOSES = [10, 15, 20, 30];
+  // Nguyen Coffee Supply's recipe: 14 g in a 4 oz phin.
+  const PHIN_DOSES = [14];
   const DEFAULTS: Record<MethodId, Target> = {
     v60: { cupMl: flOzToMl(12) }, chemex: { cupMl: flOzToMl(16) }, kalita: { cupMl: flOzToMl(12) },
     'french-press': { cupMl: flOzToMl(16) }, aeropress: { cupMl: flOzToMl(8) }, 'cold-brew': { cupMl: flOzToMl(32) },
-    'drip-machine': { cupMl: flOzToMl(32) }, espresso: { doseG: 18 }, moka: { doseG: 15 },
+    'drip-machine': { cupMl: flOzToMl(32) }, espresso: { doseG: 18 }, moka: { doseG: 15 }, phin: { doseG: 14 },
   };
   const STRENGTH_LABEL: Record<Strength, string> = { lighter: 'Lighter', classic: 'Classic', stronger: 'Stronger' };
   const ESPRESSO_LABEL: Record<Strength, string> = { lighter: 'Longer 1:2.5', classic: 'Classic 1:2', stronger: 'Shorter 1:1.5' };
@@ -39,13 +44,14 @@
   // A moka pot's or cold brew's water temperature isn't adjustable, so a temperature change claims nothing there.
   let adjustText = $derived(!adjust || !recipe || ((adjust === 'hotter' || adjust === 'cooler') && (method === 'moka' || method === 'cold-brew')) || (adjust === 'ratio' && strength === 'classic') ? '' : adjust === 'finer' ? 'Grind one step finer than last time.' : adjust === 'coarser' ? 'Grind one step coarser than last time.'
     : adjust === 'ratio' ? (method === 'espresso' ? `${strength === 'lighter' ? 'A longer shot' : 'A shorter shot'} this time: 1:${recipe.ratio}, shown below.` : `${strength === 'stronger' ? 'More' : 'Less'} coffee for the same water this time: 1:${recipe.ratio}, shown below.`)
-    : `${adjust === 'hotter' ? (adjustKept ? 'Hotter water, kept from an earlier Coffee Doctor visit' : 'Hotter water this time') : (adjustKept ? 'Cooler water, kept from an earlier Coffee Doctor visit' : 'Cooler water this time')}: about ${units === 'us' ? `${r0(cToF(recipe.tempC))}°F` : `${r0(recipe.tempC)}°C`}, shown below.`);
+    : `${adjust === 'hotter' ? (adjustKept ? 'Hotter water, kept from an earlier Fix My Coffee visit' : 'Hotter water this time') : (adjustKept ? 'Cooler water, kept from an earlier Fix My Coffee visit' : 'Cooler water this time')}: about ${units === 'us' ? `${r0(cToF(recipe.tempC))}°F` : `${r0(recipe.tempC)}°C`}, shown below.`);
 
   let m = $derived(METHODS.find((x) => x.id === method)!);
-  let byDose = $derived(method === 'espresso' || method === 'moka');
+  let byDose = $derived(method === 'espresso' || method === 'moka' || method === 'phin');
   let isBatch = $derived(method === 'cold-brew' || method === 'drip-machine');
-  // Moka's strength is set by the pot: a link's strength or ratio doesn't apply (blind Opus r3).
-  let input = $derived<RecipeInput>({ method, target, strength: method === 'moka' ? 'classic' : strength, roast, ...(ratioOverride !== undefined && method !== 'moka' ? { ratio: ratioOverride } : {}), ...(adjust === 'hotter' || adjust === 'cooler' ? { tempAdjust: adjust } : {}) });
+  // Moka's strength is set by the pot, the phin's by Nguyen's recipe: a link's strength or ratio doesn't apply (blind Opus r3).
+  let fixed = $derived(!!m.fixedRatio);
+  let input = $derived<RecipeInput>({ method, target, strength: fixed ? 'classic' : strength, roast, ...(ratioOverride !== undefined && !fixed ? { ratio: ratioOverride } : {}), ...(adjust === 'hotter' || adjust === 'cooler' ? { tempAdjust: adjust } : {}) });
   let result = $derived(buildRecipe(input));
   let recipe = $derived(result.ok ? result.value : null);
   let sim = $derived(recipe ? simulate(recipe) : null);
@@ -100,10 +106,18 @@
     if (method === 'cold-brew') return 'Cold or room-temperature water';
     if (method === 'moka') return 'Just boiled, into the base';
     if (method === 'drip-machine') return 'Set by the machine';
-    if (method === 'espresso') return 'Set on the machine';
-    const base = recipe.tempC >= 95 ? 'Just off the boil' : recipe.tempC >= 90 ? 'Off the boil, rested about 30 seconds' : 'Off the boil, cooled a few minutes (a thermometer helps)';
-    // A Doctor temperature change outranks the roast's usual note, so the two never point opposite ways (Opus r4).
-    if (adjust === 'hotter' || adjust === 'cooler') return `${base}; ${adjust} this time, from the Coffee Doctor`;
+    if (method === 'espresso') {
+      // Rao: cooler for longer ratios, hotter for shorter ones (Espresso Extraction ch. 1); the roast moves it too.
+      const shot = recipe.ratio > m.ratio.classic ? 'cooler suits a longer shot' : recipe.ratio < m.ratio.classic ? 'hotter suits a shorter shot' : '';
+      const beans = roast === 'light' ? 'hotter suits light roasts' : roast === 'dark' ? 'cooler suits dark roasts' : '';
+      const why = [shot, beans].filter(Boolean).join(', ');
+      return why ? `Set on the machine; ${why}` : 'Set on the machine';
+    }
+    const base = method === 'phin'
+      ? `Nguyen gives ${units === 'us' ? `${r0(cToF(m.tempC.min))}–${r0(cToF(m.tempC.max))}°F` : `${r0(m.tempC.min)}–${r0(m.tempC.max)}°C`}`
+      : recipe.tempC >= 95 ? 'Just off the boil' : recipe.tempC >= 90 ? 'Off the boil, rested about 30 seconds' : 'Off the boil, cooled a few minutes (a thermometer helps)';
+    // A Fix My Coffee temperature change outranks the roast's usual note, so the two never point opposite ways (Opus r4).
+    if (adjust === 'hotter' || adjust === 'cooler') return `${base}; ${adjust} this time, from Fix My Coffee`;
     return roast === 'light' ? `${base}; hotter suits light roasts` : roast === 'dark' ? `${base}; cooler suits dark roasts` : base;
   });
 
@@ -119,8 +133,9 @@
 
   // ── target choices ──
   let allChoices = $derived.by(() => {
+    if (method === 'phin') return PHIN_DOSES.map((g) => ({ label: `${g} g · 4 oz phin`, t: { doseG: g } as Target }));
     if (byDose) return (method === 'espresso' ? ESPRESSO_DOSES : MOKA_DOSES).map((g) => ({ label: `${g} g`, t: { doseG: g } as Target }));
-    if (isBatch) return (units === 'us' ? BATCH_US : BATCH_METRIC).map((v) => ({ label: units === 'us' ? `${v} oz` : `${v / 1000} L`, t: { cupMl: units === 'us' ? flOzToMl(v) : v } as Target }));
+    if (isBatch) return batchSizes(method, units).map((v) => ({ label: units === 'us' ? `${v} oz` : v < 1000 ? `${v} ml` : `${v / 1000} L`, t: { cupMl: units === 'us' ? flOzToMl(v) : v } as Target }));
     return (units === 'us' ? CUPS_US : CUPS_METRIC).map((v) => ({ label: units === 'us' ? `${v} oz` : `${v} ml`, t: { cupMl: units === 'us' ? flOzToMl(v) : v } as Target }));
   });
   // Only offer sizes this brewer can make at the chosen strength; bigger ones stay reachable through Custom.
@@ -135,12 +150,17 @@
   // Each brewer's default in each unit system, checked against what it can make at the chosen
   // strength; if it doesn't fit, the largest size that does (Astra r4: 350 mL was too much for one AeroPress).
   const METRIC_DEFAULTS: Partial<Record<MethodId, number>> = { v60: 350, chemex: 475, kalita: 350, 'french-press': 475, aeropress: 240, 'cold-brew': 1000, 'drip-machine': 1000 };
+  function batchSizes(id: MethodId, u: Units): number[] {
+    if (id === 'drip-machine') return u === 'us' ? DRIP_US : DRIP_METRIC;
+    return u === 'us' ? BATCH_US : BATCH_METRIC;
+  }
   function defaultTarget(id: MethodId, u: Units): Target {
-    if (id === 'espresso' || id === 'moka') return DEFAULTS[id];
+    if (id === 'espresso' || id === 'moka' || id === 'phin') return DEFAULTS[id];
     const want: Target = u === 'us' ? DEFAULTS[id] : { cupMl: METRIC_DEFAULTS[id] ?? 350 };
     const st = id === 'moka' ? 'classic' : strength;
     if (buildRecipe({ method: id, target: want, strength: st, roast }).ok) return want;
-    const sizes = (u === 'us' ? (id === 'cold-brew' || id === 'drip-machine' ? BATCH_US : CUPS_US).map((v) => flOzToMl(v)) : id === 'cold-brew' || id === 'drip-machine' ? BATCH_METRIC : CUPS_METRIC);
+    const batch = id === 'cold-brew' || id === 'drip-machine';
+    const sizes = (u === 'us' ? (batch ? batchSizes(id, u) : CUPS_US).map((v) => flOzToMl(v)) : batch ? batchSizes(id, u) : CUPS_METRIC);
     const fits = sizes.filter((ml) => buildRecipe({ method: id, target: { cupMl: ml }, strength: st, roast }).ok);
     return fits.length ? { cupMl: Math.max(...fits) } : want;
   }
@@ -177,7 +197,7 @@
   // Metric readers get metric sizes.
   function pickMethod(id: MethodId) {
     method = id; ratioOverride = undefined; customOpen = false; adjust = undefined;
-    if (id === 'moka') strength = 'classic';
+    if (METHODS.find((x) => x.id === id)?.fixedRatio) strength = 'classic';
     target = defaultTarget(id, units);
   }
   function nudgeRatio(d: number) {
@@ -297,6 +317,7 @@
     'drip-machine': 'M6 4h18v5H6z M18 9h6v15h-6z M8 11h9l-2 5H10z M8 19h9v6H8z',
     espresso: 'M5 5h20v8H5z M12 13h6v3h-6z M10 20h10l-1 5h-8z',
     moka: 'M9 16h12l-1 10H10z M11 16l2-9h4l2 9 M13 7h4V5h-4z',
+    phin: 'M10 4h10v2H10z M11 6h8v9h-8z M6 15h18v2H6z M10 17h10l-1 9h-8z',
   };
 </script>
 
@@ -341,7 +362,7 @@
 
     <div class="row">
       <fieldset class="field grow">
-        <legend class="lbl">{method === 'moka' ? 'What your basket holds, level' : byDose ? 'Coffee in the basket' : isBatch ? 'How much to make' : 'Your cup'}</legend>
+        <legend class="lbl">{method === 'moka' ? 'What your basket holds, level' : method === 'phin' ? 'Coffee in the phin' : byDose ? 'Coffee in the basket' : isBatch ? 'How much to make' : 'Your cup'}</legend>
         <div class="chips">
           {#each choices as c (c.label)}
             <button type="button" aria-pressed={!customOpen && same(c.t, target)} onclick={() => { customOpen = false; target = c.t; }}>{c.label}</button>
@@ -373,6 +394,9 @@
       {#if method === 'moka'}
         <!-- A moka pot's basket and valve fix the dose and water, so there's no strength to choose. -->
         <p class="hint mokahint">The pot sets a moka's strength. For a milder cup, add hot water to it.</p>
+      {:else if method === 'phin'}
+        <!-- Nguyen's recipe fixes the dose and the water; its answer to "too strong" is hot water in the cup. -->
+        <p class="hint mokahint">Nguyen Coffee Supply's recipe sets a phin's strength. For a milder cup, add hot water to it, as Nguyen suggests.</p>
       {:else}
       <fieldset class="field">
         <legend class="lbl">Strength</legend>
@@ -402,10 +426,10 @@
       </div>
     {:else if recipe}
       {#if adjustText}
-        <div class="adjust" role="status"><span class="chip">From the Coffee Doctor</span><span>{adjustText} <span class="adjust-note">Shown on a standard {m.label} recipe{roast !== 'medium' ? ` for a ${roast} roast` : ''}: keep your own amounts, change only this.</span></span><button type="button" class="x" aria-label="Dismiss" onclick={() => (adjust = undefined)}>×</button></div>
+        <div class="adjust" role="status"><span class="chip">From Fix My Coffee</span><span>{adjustText} <span class="adjust-note">Shown on a standard {m.label} recipe{roast !== 'medium' ? ` for a ${roast} roast` : ''}: keep your own amounts, change only this.</span></span><button type="button" class="x" aria-label="Dismiss" onclick={() => (adjust = undefined)}>×</button></div>
       {/if}
       <div class="numbers">
-        <div class="coffee"><span class="k">Coffee</span><span class="v">{fmtG(recipe.doseG)}<small>g</small></span><span class="sub">about {r0(approxTablespoons(recipe.doseG, 'whole'))} tbsp beans</span></div>
+        <div class="coffee"><span class="k">Coffee</span><span class="v">{fmtG(recipe.doseG)}<small>g</small></span><span class="sub">roughly {r0(approxTablespoons(recipe.doseG, 'whole'))} tbsp beans; spoons vary</span></div>
         {#if method === 'espresso'}
           <div class="water"><span class="k">Yield</span><span class="v">{r0(recipe.yieldG ?? 0)}<small>g</small></span><span class="sub">liquid in the cup</span></div>
         {:else}
@@ -421,16 +445,17 @@
 
       <div class="ratio">
         <span class="lbl">Ratio</span>
-        {#if method !== 'moka'}<button type="button" class="nudge" aria-label="Stronger: less water per gram" onclick={() => nudgeRatio(-1)}>−</button>{/if}
+        {#if !fixed}<button type="button" class="nudge" aria-label="Stronger: less water per gram" onclick={() => nudgeRatio(-1)}>−</button>{/if}
         <span class="rv">1 : {Number.isInteger(recipe.ratio) ? recipe.ratio : String(Math.round(recipe.ratio * 100) / 100)}</span>
-        {#if method !== 'moka'}<button type="button" class="nudge" aria-label="Lighter: more water per gram" onclick={() => nudgeRatio(1)}>+</button>{/if}
-        <!-- No moka strength: its ≈ 1.88–2.38% had no primary source (Wave D batch 9). -->
-        {#if method !== 'moka'}<span class="tds">≈ {recipe.strength.tdsPct.min.toFixed(method === 'espresso' ? 0 : 2)}–{recipe.strength.tdsPct.max.toFixed(method === 'espresso' ? 0 : 2)}% strength (TDS){method === 'cold-brew' ? ' once diluted' : ''}, illustrative</span>{/if}
+        {#if !fixed}<button type="button" class="nudge" aria-label="Lighter: more water per gram" onclick={() => nudgeRatio(1)}>+</button>{/if}
+        <!-- No moka strength: its ≈ 1.88–2.38% had no primary source (Wave D batch 9). No phin strength: no source gives a phin extraction band.
+             The others are the guide's estimates from its assumed extraction bands, with no primary source (R11), and say so. -->
+        {#if method !== 'moka' && recipe.strength}<span class="tds">≈ {recipe.strength.tdsPct.min.toFixed(method === 'espresso' ? 0 : 2)}–{recipe.strength.tdsPct.max.toFixed(method === 'espresso' ? 0 : 2)}% strength (TDS){method === 'cold-brew' ? ' once diluted' : ''}, our estimate</span>{/if}
       </div>
       <!-- Above the SCA 2019 reference (1.15–1.45%) isn't a fault: strength and extraction are different things (Astra R9). -->
-      {#if method !== 'espresso' && method !== 'moka' && recipe.strength.tdsPct.max > 1.45}<p class="hint">Estimated, assuming {r0(recipe.strength.eyPct.min)}–{r0(recipe.strength.eyPct.max)}% extraction: a fuller-strength starting recipe. It can sit above reference ranges without being over-extracted; if it tastes too strong, add a little water to the cup.</p>{/if}
+      {#if method !== 'espresso' && method !== 'moka' && recipe.strength && recipe.strength.tdsPct.max > 1.45}<p class="hint">Our estimate, from the {r0(recipe.strength.eyPct.min)}–{r0(recipe.strength.eyPct.max)}% extraction the guide assumes for this brewer (not a measurement): a fuller-strength starting recipe. It can sit above reference ranges without being over-extracted; if it tastes too strong, add a little water to the cup.</p>{/if}
 
-      <p class="grind"><span class="chip">Grind</span><span><b>{recipe.grind.label}</b>, like {recipe.grind.texture} · about {r0(recipe.grind.microns.min)}–{r0(recipe.grind.microns.max)} µm</span></p>
+      <p class="grind"><span class="chip">Grind</span><span><b>{recipe.grind.label}</b>, like {recipe.grind.texture} · about {r0(recipe.grind.microns.min)}–{r0(recipe.grind.microns.max)} µm{#if recipe.grind.note}<span class="gnote">The micron range is {recipe.grind.note}.</span>{/if}</span></p>
 
       {#each result.warnings as w (w.code)}<p class="warn">{w.message}</p>{/each}
 
@@ -542,6 +567,7 @@
   .tds { font-size: 12.5px; color: var(--ink-3); }
   .grind { display: flex; gap: 12px; align-items: baseline; font-size: 14px; color: var(--ink-2); margin: 0; }
   .grind b { color: var(--ink); font-weight: 600; }
+  .gnote { display: block; font-size: 12.5px; color: var(--ink-3); margin-top: 2px; }
   .chip { font: 500 11px/1 var(--cf-mono); text-transform: uppercase; letter-spacing: .1em; border: 1px solid var(--rule); border-radius: 6px; padding: 5px 7px; background: #fff; }
   .adjust { display: flex; gap: 10px; align-items: center; background: #fff8ec; border: 1px solid #e3c79f; border-radius: 10px; padding: 9px 10px 9px 12px; font-size: 14.5px; }
   .adjust-note { display: block; font-size: 13px; color: var(--ink-3, #75655a); margin-top: 2px; }

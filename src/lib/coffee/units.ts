@@ -10,9 +10,13 @@ export const flOzToMl = (flOz: number) => flOz * ML_PER_FL_OZ;
 export const cToF = (c: number) => c * 9 / 5 + 32;
 export const fToC = (f: number) => (f - 32) * 5 / 9;
 
-/** Rough kitchen-spoon equivalent. Whole beans pour lighter than ground coffee; always approximate. */
+/**
+ * Rough kitchen-spoon equivalent, always labeled rough in the UI. Whole beans: Easto's Classic AeroPress Method puts
+ * "11.5 grams (2 tablespoons)" of whole coffee in the press, 5.75 g a tablespoon (Craft Coffee, p. 220), and she warns
+ * that a tablespoon of one bean can weigh a gram or more than another's (pp. 24–25). Ground: unsourced and unused by the UI.
+ */
 export function approxTablespoons(g: number, form: 'whole' | 'ground'): number {
-  return g / (form === 'whole' ? 5.5 : 5);
+  return g / (form === 'whole' ? 5.75 : 5);
 }
 
 export const finite = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v);

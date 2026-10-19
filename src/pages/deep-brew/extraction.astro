@@ -49,8 +49,8 @@ const description = 'Describe how your coffee tastes and feels, see where it lan
 					{Object.values(ZONES).map((z) => <li><strong>{z.label}</strong> tends to taste {z.tastes.toLowerCase()}. Move: {z.moves.join('; ').toLowerCase()}.</li>)}
 				</ul>
 
-				<h2>Typical extraction by brew method</h2>
-				<p>Published measurements put each method in a typical band; the map is centred on the sweet spot rather than any one method.</p>
+				<h2>Estimated extraction by brew method</h2>
+				<p>These bands are our estimates, the ones the Brew Guide uses for its strength figures, not published measurements; the map is centered on the sweet spot rather than any one method.</p>
 				<ul>
 					{METHODS.map((m) => <li>{m.label}: about {EY_BY_METHOD[m.id].min}–{EY_BY_METHOD[m.id].max}%</li>)}
 				</ul>

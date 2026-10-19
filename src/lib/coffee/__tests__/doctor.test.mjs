@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { SYMPTOMS, METHODS, nextQuestion, questionsFor, diagnose, placeOnMap, ZONES, buildRecipe, familyOf } from '../index.ts';
+import { SYMPTOMS, METHODS, nextQuestion, questionsFor, diagnose, placeOnMap, ZONES, buildRecipe, familyOf, decodeBrew, SYMPTOM_ZONE } from '../index.ts';
 
 const ok = (r) => { assert.equal(r.ok, true, JSON.stringify(r)); return r.value; };
 
@@ -166,7 +166,7 @@ test('Opus blind review: moka bitter is one change; cold brew strength changes t
     const d = ok(diagnose({ method: 'moka', symptom: 'bitter', answers: { time, roast: 'medium' } }));
     assert.equal(d.change, 'heat'); assert.doesNotMatch(d.changeNow, /hot water in the base/);
   }
-  const weak = ok(diagnose({ method: 'cold-brew', symptom: 'weak', answers: { measure: 'scale', time: 'ok' } }));
+  const weak = ok(diagnose({ method: 'cold-brew', symptom: 'weak', answers: { serve: 'concentrate', measure: 'scale', time: 'ok' } }));
   assert.equal(weak.change, 'dilution'); assert.ok(weak.hold.includes('water') && !weak.hold.includes('dilution')); assert.deepEqual(weak.next, {});
   for (const m of METHODS) for (const sy of SYMPTOMS) {
     const applies = m.id === 'espresso' ? sy.espresso : sy.filter; if (!applies) continue;
@@ -239,7 +239,11 @@ test('Muse r4: every Doctor link opens a recipe that builds (a stronger 8 oz Aer
       // "Same water, more coffee" holds the water; a machine-set dose sends no strength change (Opus r4).
       if (d.change === 'dose' && d.next.strength && !q.has('dose')) assert.ok(q.has('water'), `${m.id}/${sy.id} holds the water`);
       if (answers.measure === 'machine') assert.equal(q.get('strength'), null);
-      const r = buildRecipe({ method: m.id, target, strength: q.get('strength') ?? 'classic', roast: q.get('roast') ?? 'medium' });
+      // Through the Brew Guide's own decoder, as a click would (espresso's strength keys are shorter and longer).
+      const dec = decodeBrew(q.toString());
+      assert.equal(dec.ok, true, `${m.id}/${sy.id}/${JSON.stringify(answers)} → ${q}`);
+      assert.deepEqual(dec.value.target, target.cupMl !== undefined ? dec.value.target : target);
+      const r = buildRecipe(dec.value);
       assert.equal(r.ok, true, `${m.id}/${sy.id}/${JSON.stringify(answers)} → ${q}`);
     }
   }
@@ -341,4 +345,70 @@ test('grinder advice makes no unsourced superlatives: no "#1 upgrade", "dramatic
   const all = [...said].join(' | ');
   assert.match(all, /A burr grinder makes fewer fines than a blade\./);
   assert.doesNotMatch(all, /#1|number one|dramatically|far fewer|single biggest/i);
+});
+
+// ── Round 3 follow-ups, group A ──
+
+test('item 33: weak cold brew asks concentrate or ready to drink; ready to drink never says "add less water"', () => {
+  assert.equal(nextQuestion({ method: 'cold-brew', symptom: 'weak', answers: {} }).id, 'serve');
+  for (const answers of allPaths('cold-brew', 'weak')) {
+    const d = ok(diagnose({ method: 'cold-brew', symptom: 'weak', answers }));
+    if (answers.serve === 'ready') {
+      assert.doesNotMatch(text(d), /less water|concentrate when you serve/i, JSON.stringify(answers));
+      assert.notEqual(d.change, 'dilution', JSON.stringify(answers)); assert.ok(!d.hold.includes('dilution'), JSON.stringify(answers));
+    }
+  }
+  const ready = ok(diagnose({ method: 'cold-brew', symptom: 'weak', answers: { serve: 'ready', measure: 'scale', time: 'ok' } }));
+  assert.equal(ready.change, 'dose'); assert.match(ready.changeNow, /more coffee for the same water/);
+  const conc = ok(diagnose({ method: 'cold-brew', symptom: 'weak', answers: { serve: 'concentrate', measure: 'scale', time: 'ok' } }));
+  assert.equal(conc.change, 'dilution');
+  // Other brewers don't get the question.
+  assert.ok(!questionsFor({ method: 'french-press', symptom: 'weak', answers: {} }).some((q) => q.id === 'serve'));
+});
+
+test('item 35: dark roasts are never said to extract quickly or easily (Gagné §9.2: darker roasts extract lower in filter brewing)', () => {
+  for (const m of METHODS) for (const sy of SYMPTOMS) {
+    const applies = m.id === 'espresso' ? sy.espresso : sy.filter; if (!applies) continue;
+    for (const answers of allPaths(m.id, sy.id)) {
+      const d = ok(diagnose({ method: m.id, symptom: sy.id, answers }));
+      assert.doesNotMatch(text(d), /extract(s)? (quickly|easily)|over-extract easily|channelling|flavour|mineralised/i, `${m.id}/${sy.id}/${JSON.stringify(answers)}`);
+    }
+  }
+});
+
+test('item 37: Hoffmann\'s unplunged 9–12 minute French press is its own answer, never "steeped too long"', () => {
+  const q = nextQuestion({ method: 'french-press', symptom: 'bitter', answers: {} });
+  assert.ok(q.options.some((o) => o.id === 'settled' && /Hoffmann/.test(o.label)));
+  assert.ok(!nextQuestion({ method: 'aeropress', symptom: 'bitter', answers: {} }).options.some((o) => o.id === 'settled'));
+  for (const symptom of ['sour', 'bitter', 'weak']) for (const answers of allPaths('french-press', symptom)) {
+    if (answers.time !== 'settled') continue;
+    const d = ok(diagnose({ method: 'french-press', symptom, answers }));
+    const same = ok(diagnose({ method: 'french-press', symptom, answers: { ...answers, time: 'ok' } }));
+    assert.doesNotMatch(d.cause, /too long/i); assert.notEqual(d.change, 'steep time');
+    assert.equal(d.cause, same.cause, `${symptom}: judged as on target`);
+    assert.doesNotMatch(text(d), /as soon as you press/);
+  }
+});
+
+test('A3: the map\'s starting guess: flat, off and muddy have none, because every diagnosis puts them off the map', () => {
+  for (const sy of SYMPTOMS) {
+    const zones = new Set(), placements = new Set();
+    for (const m of METHODS) {
+      const applies = m.id === 'espresso' ? sy.espresso : sy.filter; if (!applies) continue;
+      for (const answers of allPaths(m.id, sy.id)) { const d = ok(diagnose({ method: m.id, symptom: sy.id, answers })); zones.add(d.zone); placements.add(d.placement); }
+    }
+    const guess = SYMPTOM_ZONE[sy.id];
+    if (guess === null) assert.deepEqual([...placements], ['other'], sy.id);
+    else { assert.ok(ZONES[guess], sy.id); assert.ok(zones.has(guess), `${sy.id}: ${guess} is one of its diagnoses' zones`); assert.ok([...placements].some((p) => p !== 'other'), sy.id); }
+  }
+});
+
+test('A4: Fix My Coffee\'s espresso links use the shot words', async () => {
+  const { brewLinkFor } = await import('../index.ts');
+  const bitter = ok(diagnose({ method: 'espresso', symptom: 'bitter', answers: { shot: 'ok', roast: 'medium' } }));
+  assert.match(brewLinkFor('espresso', bitter), /strength=shorter/);
+  const strong = ok(diagnose({ method: 'espresso', symptom: 'strong', answers: { shot: 'ok' } }));
+  assert.match(brewLinkFor('espresso', strong), /strength=longer/);
+  const v60 = ok(diagnose({ method: 'v60', symptom: 'weak', answers: { measure: 'scale', time: 'ok' } }));
+  assert.match(brewLinkFor('v60', v60), /strength=stronger/);
 });

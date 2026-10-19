@@ -1,8 +1,9 @@
 import type { Method, MethodId, Range } from './types.ts';
+import { fToC, flOzToMl } from './units.ts';
 
 // Each method carries the published recipe its steps come from. Steps are scaled to the
 // user's dose and water by brew.ts: the bloom scales with the coffee, pours with the water.
-// Extraction ranges (for the illustrative strength estimate) are from synthesis §17.
+// Extraction ranges (for the strength estimate) are the guide's own estimates, from synthesis §17 (R11, below).
 
 export const METHODS: Method[] = [
   {
@@ -95,7 +96,9 @@ export const METHODS: Method[] = [
     // Names run in micron order: coarser than the moka pot's band, so not "Fine" (Opus r4, Muse r4; names still R13).
     grindMicrons: { min: 350, max: 500 }, grindLabel: 'Medium-fine', texture: 'fine sand',
     retentionGPerG: 2,
-    base: { doseG: 11.5, waterG: 138, by: "Jessica Easto's standard AeroPress" },
+    // Easto's Classic AeroPress Method is 11.5 g to 138 g, 1:12, fine, 185°F, 50–90 s (Craft Coffee, pp. 219–221);
+    // the guide's 1:14, medium-fine is an adaptation of it, so it says "adapted from" (Wave D batch 13).
+    base: { doseG: 11.5, waterG: 138, by: "Jessica Easto's Classic AeroPress Method, adapted" },
     steps: [
       { kind: 'prep', atS: 0, text: 'Rinse a paper filter in the cap, lock it on, stand the AeroPress on your mug, add the coffee and tare.', cue: 'Upright, on a sturdy mug.' },
       { kind: 'pour', atS: 0, untilS: 10, toG: 138, text: 'Start the timer and pour the water.', cue: '' },
@@ -125,10 +128,11 @@ export const METHODS: Method[] = [
       { kind: 'press', atS: 12 * 3600, text: 'Press or filter out the grounds. This is concentrate.', cue: 'Keeps 1–2 weeks in the fridge.' },
       { kind: 'dilute', atS: 12 * 3600, text: 'Serve it mixed one to one with cold water or milk, over ice.', cue: '' },
     ],
-    capacity: { minDoseG: 30, maxDoseG: 300 },
+    // Up to a full Toddy home batch, 340 g (12 oz) of coffee (Toddy's brewing guide, version 8-2026; Wave D batch 31).
+    capacity: { minDoseG: 30, maxDoseG: 340 },
     filter: 'metal',
-    sourceIds: ['easto', 'synthesis'],
-    verify: ['retention for coarse cold brew'],
+    sourceIds: ['easto', 'toddy', 'synthesis'],
+    verify: ['retention for coarse cold brew', 'minDoseG 30 g is a practical floor, not a sourced figure'],
   },
   {
     id: 'drip-machine', label: 'Drip machine', family: 'percolation',
@@ -145,10 +149,11 @@ export const METHODS: Method[] = [
       { kind: 'stir', atS: 240, text: 'Stir once more when the spray head stops.', cue: 'Evens out the bed.' },
       { kind: 'serve', atS: 300, text: 'Serve within 30 minutes.', cue: 'Keeping it on a hot plate stews it.' },
     ],
-    // About a 12-cup reservoir (blind Opus r3); varies by machine (verify, R22).
-    capacity: { minDoseG: 15, maxDoseG: 130, maxWaterG: 1800 },
+    // A 12-cup machine's 60 fl oz (1,774 g): Breville sells its Precision Brewer as a "60 oz." 12-cup drip coffee
+    // maker (product page, checked 2026-10-18). Machines vary, so the message says to check your own (was 1,800 g, R22).
+    capacity: { minDoseG: 15, maxDoseG: 130, maxWaterG: flOzToMl(60) },
     filter: 'paper',
-    sourceIds: ['rao', 'synthesis'],
+    sourceIds: ['rao', 'breville-bdc450', 'synthesis'],
     verify: ['drip micron band'],
   },
   {
@@ -161,6 +166,9 @@ export const METHODS: Method[] = [
     retentionGPerG: 0,
     // 18 g → 36 g in 25–30 s at 91–95 °C sits inside Rao's normale ranges (Espresso Extraction ch. 1:
     // 14–22 g, 1.5–2.0× the dose, 25–40 s, 91–95 °C) but is narrower, so it isn't credited as his recipe.
+    // Time stays 25–30 s at every ratio: Rao's 25–40 s applies to ristretto and lungo alike, and he puts
+    // "flat" pressure profiles at its low end. Temperature follows the ratio (brew.ts): Rao uses the lower
+    // temperatures for higher ratios (more lungo) and the higher ones for lower ratios (Wave D batch 22).
     base: { doseG: 18, waterG: 36, by: "a recipe within Scott Rao's published ranges" },
     steps: [
       { kind: 'prep', atS: 0, text: 'Grind, dose into the basket, level it and tamp flat.', cue: 'Level puck, no gaps at the edge.' },
@@ -180,6 +188,7 @@ export const METHODS: Method[] = [
     // The steps are Hoffmann's technique; the 1:10 is our estimate (synthesis §23.1), not his: the World Atlas
     // (p. 91) prints "Ratio: 200g/l", about 1:5 (Wave D batch 9).
     base: { doseG: 17, waterG: 170, by: "James Hoffmann's moka technique, at the Brew Guide's estimated 1:10 ratio" },
+    fixedRatio: true,
     steps: [
       { kind: 'prep', atS: 0, text: 'Fill the basket level with coffee. Don\'t tamp.', cue: 'Level with the rim.' },
       { kind: 'pour', atS: 0, toG: 170, text: 'Fill the base with just-boiled water to just below the valve, then screw it together with a towel.', cue: 'Pre-boiled water keeps the grounds from cooking.' },
@@ -195,8 +204,9 @@ export const METHODS: Method[] = [
 
 /** Extraction yield ranges by method, from synthesis §17's comparison table (claims register R11). The table credits
  *  no study for its yield column; its one study credit covers the caffeine concentrations, and that study no longer
- *  backs any engine figure (R1). */
-export const EY_BY_METHOD: Record<MethodId, Range> = {
+ *  backs any engine figure (R1). No primary source was found, so these are the guide's own estimates, and every
+ *  page that shows them (or a strength computed from them) says so. The phin has no band: no source gives one. */
+export const EY_BY_METHOD: Partial<Record<MethodId, Range>> = {
   v60: { min: 19, max: 21 },
   chemex: { min: 18, max: 20 },
   kalita: { min: 19, max: 21 },
@@ -208,4 +218,39 @@ export const EY_BY_METHOD: Record<MethodId, Range> = {
   moka: { min: 15, max: 19 },
 };
 
-export const methodById = (id: MethodId) => METHODS.find((m) => m.id === id);
+/**
+ * Vietnamese phin, from Nguyen Coffee Supply's published recipe (Wave D batch 30; FOLLOWUPS_2 item 29): 14 g
+ * (2 tbsp) of coffee "fine, like sand" to 4 oz of water at 195–200°F, a 45-second bloom with 1 oz of water, the
+ * first drop before 2:00 and the last around 5:00. 4 US fl oz is 118.3 g, so 1:8.45 (calculated). The recipe
+ * fixes the strength (Nguyen: add hot water if it's too strong), and a 4 oz phin holds the 14 g: larger phins
+ * keep about 1 tbsp per 2 oz and take a second pour, which this recipe doesn't cover.
+ *
+ * Kept out of METHODS, which Fix My Coffee and the Caffeine Calculator list: neither models a phin yet.
+ */
+export const PHIN: Method = {
+  id: 'phin', label: 'Phin', family: 'percolation', fixedRatio: true,
+  ratio: { lighter: 8.45, classic: 8.45, stronger: 8.45 },
+  tempC: { default: fToC(197.5), min: fToC(195), max: fToC(200) },
+  timeS: { min: 300, max: 300 },
+  // Nguyen gives no microns: it likens a phin grind to a moka pot's, so the band is the guide's moka band, labeled as our estimate.
+  grindMicrons: { min: 300, max: 450 }, grindLabel: 'Fine', texture: 'sand',
+  grindNote: "our estimate: Nguyen Coffee Supply likens a phin grind to a moka pot's, so this is the guide's moka pot range",
+  retentionGPerG: 2,
+  base: { doseG: 14, waterG: 118.3, by: "Nguyen Coffee Supply's Vietnamese iced coffee recipe" },
+  steps: [
+    { kind: 'prep', atS: 0, text: 'Spoon condensed milk into a heatproof glass if you take it, and set the phin\'s plate and chamber on top. Add the coffee, shake it level, set the press on it and tare.', cue: 'The press goes on before the water.' },
+    { kind: 'bloom', atS: 0, untilS: 45, toG: flOzToMl(1), text: 'Start the timer and pour about 1 oz of water, enough to cover the press by about ½ inch.', cue: 'Let it bloom for 45 seconds.' },
+    { kind: 'pour', atS: 45, untilS: 55, toG: 118.3, text: 'Fill the chamber with the rest of the water and put the lid on.', cue: '' },
+    { kind: 'drawdown', atS: 55, untilS: 300, text: 'Let it drip.', cue: 'In Nguyen\'s guide the first drop falls within about 2:00 and the last around 5:00. Rushing through: grind finer. Stalled: lift the press for about 2 seconds to let trapped gas out.' },
+    { kind: 'serve', atS: 300, text: 'Lift the phin off onto its upturned lid, stir, and pour over ice if you like.', cue: 'Or drink it black, hot or iced.' },
+  ],
+  capacity: { minDoseG: 14, maxDoseG: 14 },
+  filter: 'metal',
+  sourceIds: ['nguyen-iced', 'nguyen-phin'],
+  verify: ['the fill at 0:45–0:55 is our schedule: Nguyen times the bloom and the drip, not the fill', 'retention 2 g/g, as for the other brewers', 'micron band borrowed from the moka pot'],
+};
+
+/** Every brewer the Brew Guide and Grind Guide offer: METHODS plus the phin. */
+export const GUIDE_METHODS: Method[] = [...METHODS, PHIN];
+
+export const methodById = (id: MethodId) => GUIDE_METHODS.find((m) => m.id === id);
