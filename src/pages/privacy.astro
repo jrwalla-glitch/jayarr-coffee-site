@@ -12,7 +12,7 @@ import { SITE_TITLE } from '../consts';
 
 	<h3>Google Analytics 4</h3>
 	<ul>
-		<li><strong>Page views.</strong> When a page loads, our setup sends Google the page's address without its query string (the part after "?", where the tools keep their settings).</li>
+		<li><strong>Page views.</strong> When a page loads, our setup sends Google the page's address, and the address of the page you came from, without their query strings (the part after "?", where the tools keep their settings).</li>
 		<li><strong>Google's automatic measurement</strong> is switched on for this site, and it records more than that: when you scroll to the bottom of a page, file downloads, clicks on links to other sites with the full link address (for an Amazon search, the search words), and a new page view each time a tool rewrites the page's address as you change its settings. That address includes the settings, for example the two drinks you are comparing. It is also set to look for an email address, phone number or postal address typed into a form; no page here asks for any of them.</li>
 		<li><strong>Our shop-link event.</strong> When you follow a link to a shop (Amazon, Nespresso or a maker's own site), the site sends an <code>outbound_click</code> event with only the shop's host name, such as amazon.com, and the path of the page you were on. It carries no query strings, nothing you entered in a tool and no search text, and it is sent only from jayarr.coffee.</li>
 		<li><strong>Cookies and IP addresses.</strong> Google Analytics sets its own cookies (<code>_ga</code>) to tell visits apart. Google says Google Analytics 4 does not log or store IP addresses.</li>
@@ -26,7 +26,7 @@ import { SITE_TITLE } from '../consts';
 		<li>each page view records the time, the page's address, the site you came from, a rough location (country, region and city), your operating system and browser with their versions, and the device type;</li>
 		<li>it collects no personal identifiers, and the figures are used in aggregate.</li>
 	</ul>
-	<p>The address it records is the page's full address when the page opens. If you open a link that carries tool settings, such as a shared Brew Guide recipe or caffeine day, those settings are part of that address. Changes you make after the page opens are not sent.</p>
+	<p>Our setup removes the query string and the part after "#" from the address before Vercel records it, so the tool settings in a shared link, such as a Brew Guide recipe or a caffeine day, aren't part of it. The address of the page you came from is recorded as your browser sends it, and when you move from one page of this site to another, that can include the settings in the previous page's address.</p>
 
 	<h2>What the tools keep in your browser</h2>
 	<p>The site sets no cookies of its own. Tools that remember things keep them in your browser's local storage, on this device only. None of it is sent to us, and we can't see it:</p>
