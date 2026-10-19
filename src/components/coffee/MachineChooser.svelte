@@ -1,13 +1,15 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte';
-  import data from '../../data/machines.json';
+  // machines.json projected to the fields shown here (projectForChooser; scripts/project-machines.mjs), so the
+  // island doesn't ship every record's sources and research notes. The page fails the build if it's stale (Wave F r1, B6.4).
+  import data from '../../data/machines-chooser.json';
   import { chooseMachines, fitsCounter, needsGrinder, neededHeight, simultaneous, unclearMaxCm, CATEGORY_LABEL } from '../../lib/coffee/machines.ts';
-  import type { Machine, GrinderPrice, Needs, Category, Heating, Match } from '../../lib/coffee/machines.ts';
+  import type { Machine, GrinderPrice, Needs, Category, Heating, Match, TempKind } from '../../lib/coffee/machines.ts';
 
   // Choose a machine for your counter, budget (grinder included), milk and effort; then, if you own
   // one, what its maker says about dose, temperature and care. Every spec is the maker's, dated.
   type Owner = { dose?: string | null; recipe?: string | null; baskets?: string | null; temperature?: string | null; descale?: string | null; clean?: string | null };
-  type M = Machine & { fullName?: string; variant?: string | null; code?: string | null; owner?: Owner | null };
+  type M = Machine & { fullName?: string; variant?: string | null; code?: string | null; owner?: Owner | null; pressurized?: boolean; tempKind?: TempKind };
   const machines = data.machines as unknown as M[];
   const grinders = data.grinders as unknown as GrinderPrice[];
   const byId = (id: string | null) => (id ? machines.find((m) => m.id === id) ?? null : null);
@@ -107,15 +109,9 @@
   // ── Improve what you own: what limits the machine, what a grinder changes, when a new machine helps ──
   // Built only from the record (heating, steam, baskets, temperature control, grinder) and the sources in the
   // site's grinder guide (Hoffmann, Breville's manual); nothing is claimed about a machine the record doesn't say (Wave F r1, B6.1).
-  const pressurized = (m: M) => /dual[ -]wall|pressuri[sz]ed|crema perfetta/i.test([...(m.baskets ?? []), m.owner?.baskets ?? ''].join(' '));
-  type TempKind = 'pid' | 'settable' | 'thermostat' | null;
-  function tempKind(m: M): TempKind {
-    const t = m.tempControl?.type ?? '';
-    if (/PID|LCC/.test(t)) return 'pid';
-    if (/no brewing-temp|not captured/i.test(t)) return null;
-    if (/thermostat/i.test(t)) return 'thermostat';
-    return /temperature|TCA|preheat|heat settings/i.test(t) ? 'settable' : null;
-  }
+  // Both read at build time from the full record (machines.ts), so the island gets a flag, not the raw listing.
+  const pressurized = (m: M) => !!m.pressurized;
+  const tempKind = (m: M): TempKind => m.tempKind ?? null;
   const grindSteps = (m: M) => { const n = String(m.grinder.settings ?? '').match(/^(\d+)\s+(precision\s+)?(grind\s+)?(settings|levels)/); return n ? Number(n[1]) : null; };
   function limitsOf(m: M): string[] {
     const out: string[] = [];

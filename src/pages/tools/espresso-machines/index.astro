@@ -11,10 +11,17 @@ import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
 import MachineChooser from '../../../components/coffee/MachineChooser.svelte';
 import machineData from '../../../data/machines.json';
+import chooserData from '../../../data/machines-chooser.json';
+import { projectForChooser } from '../../../lib/coffee/machines.ts';
 
 const title = 'Espresso Machine Chooser: The Right Machine for Your Counter, Budget and Milk';
 const description = 'Tell us how you take your coffee, your budget with a grinder included and the space you have, and see two or three machines that fit, with the makers’ own specs and how each one brews and steams.';
 const count = machineData.machines.length;
+// The island ships machines-chooser.json, the full records projected to the fields it shows (Wave F r1, B6.4).
+// The build stops here if that projection is stale: run `node scripts/project-machines.mjs` after editing machines.json.
+if (JSON.stringify(projectForChooser(machineData as any)) !== JSON.stringify(chooserData)) {
+  throw new Error('src/data/machines-chooser.json is out of date with machines.json: run node scripts/project-machines.mjs');
+}
 // Breville machines whose listed size is unclear, current ones counted apart from discontinued (Muse WB2 M-9c).
 const unclear = machineData.machines.filter((m: any) => m.dimsUnclear);
 const unclearCurrent = unclear.filter((m: any) => m.status === 'current').length;

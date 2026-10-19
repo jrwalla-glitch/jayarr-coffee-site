@@ -188,6 +188,52 @@ function milkWhy(m: Machine): string {
   return 'A manual steam wand: the most control over milk texture, with practice.';
 }
 
+/**
+ * What the Chooser reads of each record, projected at build time by the page (Wave F r1, B6.4): the full
+ * machines.json carries every field's sources, the research's care notes and manual scope, and the maker's
+ * raw listing strings, none of which the page shows. Only the fields a label, a test or a link needs are kept.
+ */
+type Rec = Record<string, unknown>;
+// Kept keys whose value is set; a missing key reads as undefined, which the Chooser treats as it treats null.
+const pick = (o: unknown, keys: string[]): Rec => (o && typeof o === 'object' ? Object.fromEntries(keys.filter((k) => (o as Rec)[k] != null).map((k) => [k, (o as Rec)[k]])) : {});
+const nonEmpty = (o: Rec) => (Object.keys(o).length ? o : undefined);
+export const CHOOSER_FIELDS = ['id', 'brand', 'name', 'variant', 'code', 'status', 'category', 'tankL', 'portafilterMm', 'dims', 'dimsUnclear', 'clearanceCm', 'capsuleLine', 'owner'];
+
+/** A pressurized (dual-wall) basket in the box, from the maker's basket list or the owner note: Breville's
+ *  "dual wall", Gaggia's "Crema perfetta", Flair's "pressurized basket" (Wave F r1, B6.1). */
+export const hasPressurizedBasket = (m: { baskets?: string[] | null; owner?: { baskets?: string | null } | null }) =>
+  /dual[ -]wall|pressuri[sz]ed|crema perfetta/i.test([...(m.baskets ?? []), m.owner?.baskets ?? ''].join(' '));
+/** How the maker says the brew temperature is controlled, read from the research's wording: an electronic
+ *  controller (PID, Lelit's LCC), a setting you choose, a thermostat, or nothing stated. */
+export type TempKind = 'pid' | 'settable' | 'thermostat' | null;
+export function tempKind(m: { tempControl?: { type?: string | null } | null }): TempKind {
+  const t = m.tempControl?.type ?? '';
+  if (/PID|LCC/.test(t)) return 'pid';
+  if (/no brewing-temp|not captured/i.test(t)) return null;
+  if (/thermostat/i.test(t)) return 'thermostat';
+  return /temperature|TCA|preheat|heat settings/i.test(t) ? 'settable' : null;
+}
+
+export function projectForChooser(data: { machines: Rec[]; grinders: Rec[] }): { machines: Rec[]; grinders: Rec[] } {
+  return {
+    machines: data.machines.map((m) => {
+      const out: Rec = {
+        ...pick(m, CHOOSER_FIELDS),
+        heating: pick(m.heating, ['system', 'makerTerm', 'simultaneousBrewSteam', 'simultaneousBy', 'heatUpSeconds']),
+        grinder: pick(m.grinder, ['builtIn', 'settings']),
+        milk: pick(m.milk, ['type']),
+        listPrice: pick(m.listPrice, ['usd', 'kind', 'url', 'seller', 'variant']),
+        amazon: nonEmpty(pick(m.amazon, ['url', 'variant'])),
+        care: nonEmpty(pick(m.care, ['manualUrl'])),
+        tempKind: tempKind(m as never) ?? undefined,
+        pressurized: hasPressurizedBasket(m as never) || undefined,
+      };
+      return Object.fromEntries(Object.entries(out).filter(([, v]) => v !== undefined));
+    }),
+    grinders: data.grinders.map((g) => pick(g, ['id', 'usd'])),
+  };
+}
+
 /** "$650–$1,350" for a band. */
 export function bandText(b: { low: number; high: number }): string {
   const f = (v: number) => `$${Math.round(v).toLocaleString('en-US')}`;
