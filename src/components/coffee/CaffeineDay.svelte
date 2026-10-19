@@ -61,8 +61,9 @@
   const toClock = (hhmm: string) => { const [h, m] = hhmm.split(':').map(Number); return h * 60 + m; };
   const hhmm = (min: number) => { const m = ((Math.round(min) % 1440) + 1440) % 1440; return `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`; };
   const clock12 = (min: number) => { const m = ((Math.round(min) % 1440) + 1440) % 1440; const h = Math.floor(m / 60), mm = m % 60; return `${((h + 11) % 12) + 1}${mm ? ':' + String(mm).padStart(2, '0') : ''} ${h < 12 ? 'am' : 'pm'}`; };
-  // Estimates are shown to the nearest 5 mg, as in the page's table, so a row, the table and the total agree (B1, item 36).
-  const rangeText = (lo: number, hi: number) => mgText(shownMg({ min: lo, max: hi }));
+  // The curve's readouts (bedtime, now, peak) stay in whole mg. Drinks and the day's total are shown to the nearest
+  // 5 mg, as in the page's table, so a row, the table and the total agree (B1, item 36).
+  const rangeText = (lo: number, hi: number) => mgText(shownMg({ min: lo, max: hi }, true));
   const rowText = (i: Intake) => { const r = shownIntakeMg(i); return r ? mgText(r) : '—'; };
   // A cup size as the reader picked it: whole ounces from the buttons, and a link's 200 ml as 6.8 oz rather than "7 oz".
   const ozLabel = (ml: number) => { const oz = mlToFlOz(ml); return Math.abs(oz - Math.round(oz)) < 0.05 ? `${Math.round(oz)} oz` : `${oz.toFixed(1)} oz (${Math.round(ml)} ml)`; };
