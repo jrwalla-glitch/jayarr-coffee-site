@@ -69,7 +69,7 @@ const description = 'Three instruments for measuring coffee: mix brewing water t
       <p class="ik"><span>01</span> Water</p>
       <h2><a href="/deep-brew/water/">Water Recipe Builder</a></h2>
       <p class="bring">You bring distilled water, Epsom salt and baking soda.</p>
-      <svg viewBox="0 0 260 150" class="fig" role="img" aria-label="Two stock bottles, A and B, poured into a one-litre jug: {mlA} mL of A and {mlB} mL of B.">
+      <svg viewBox="0 0 260 150" class="fig" role="img" aria-label={`Two stock bottles, A and B, poured into a one-litre jug: ${mlA} mL of A and ${mlB} mL of B.`}>
         <g class="bottle"><rect x="18" y="34" width="46" height="96" rx="8" /><rect x="31" y="20" width="20" height="16" rx="3" /><rect x="22" y={130 - mlA * 0.9} width="38" height={mlA * 0.9 - 4} rx="5" class="liq a" /><text x="41" y="146" text-anchor="middle">A</text></g>
         <g class="bottle"><rect x="80" y="34" width="46" height="96" rx="8" /><rect x="93" y="20" width="20" height="16" rx="3" /><rect x="84" y={130 - mlB * 0.9} width="38" height={mlB * 0.9 - 4} rx="5" class="liq b" /><text x="103" y="146" text-anchor="middle">B</text></g>
         <path d="M150 30 L240 30 L232 132 L158 132 Z" class="jug" /><line x1="150" y1="44" x2="240" y2="44" class="fillline" /><text x="236" y="40" text-anchor="end" class="small">1 L line</text>
@@ -83,7 +83,7 @@ const description = 'Three instruments for measuring coffee: mix brewing water t
       <p class="ik"><span>02</span> Extraction</p>
       <h2><a href="/deep-brew/extraction/">Extraction Map</a></h2>
       <p class="bring">You bring a refractometer reading, the dose and the brew weight.</p>
-      <svg viewBox="0 0 260 150" class="fig" role="img" aria-label="The SCA brewing chart: 20 g of coffee, 300 g of brew at 1.30% TDS sits at {ey}% extraction, inside the {chart.eyIdeal[0]} to {chart.eyIdeal[1]}% box.">
+      <svg viewBox="0 0 260 150" class="fig" role="img" aria-label={`The SCA brewing chart: 20 g of coffee, 300 g of brew at 1.30% TDS sits at ${ey}% extraction, inside the ${chart.eyIdeal[0]} to ${chart.eyIdeal[1]}% box.`}>
         <rect x={EX.L} y={EX.T} width={EX.R - EX.L} height={EX.B - EX.T} class="plot" />
         <rect x={ex2x(chart.eyIdeal[0])} y={ex2y(chart.tdsIdeal[1])} width={ex2x(chart.eyIdeal[1]) - ex2x(chart.eyIdeal[0])} height={ex2y(chart.tdsIdeal[0]) - ex2y(chart.tdsIdeal[1])} class="ideal" />
         {[16, 18, 20, 22, 24].map((v) => <text x={ex2x(v)} y={EX.B + 13} text-anchor="middle" class="small">{v}</text>)}
@@ -100,7 +100,7 @@ const description = 'Three instruments for measuring coffee: mix brewing water t
       <p class="ik"><span>03</span> Grind</p>
       <h2><a href="/deep-brew/calibrator/">Grind Calibrator</a></h2>
       <p class="bring">You bring the name of your grinder.</p>
-      <svg viewBox="0 -8 260 158" class="fig" role="img" aria-label="A {encore.short} dial, numbered {d0} to {d1}, set to {pour.min} for pour-over.">
+      <svg viewBox="0 -8 260 158" class="fig" role="img" aria-label={`A ${encore.short} dial, numbered ${d0} to ${d1}, set to ${pour.min} for pour-over.`}>
         <g transform="translate(60 4)">
           <circle cx={DC} cy={DC} r="68" class="bezel" />
           <g transform={`rotate(${turn} ${DC} ${DC})`}>
