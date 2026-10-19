@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, tick } from 'svelte';
   import data from '../../data/machines.json';
   import { chooseMachines, needsGrinder, neededHeight, unclearMaxCm, CATEGORY_LABEL } from '../../lib/coffee/machines.ts';
   import type { Machine, GrinderPrice, Needs, Category, Heating, Match } from '../../lib/coffee/machines.ts';
@@ -190,7 +190,15 @@
     if (mode === 'own') q.set('m', ownId);
     history.replaceState(history.state, '', `${location.pathname}?${q}`);
   });
-  function openOwn(id: string) { ownId = id; mode = 'own'; scrollTo({ top: (document.querySelector('.mc') as HTMLElement | null)?.offsetTop ?? 0, behavior: 'smooth' }); }
+  // The button that opened the owner card is gone once the view swaps, so focus moves to the card's heading
+  // instead of falling to <body> (Wave F r1, B8).
+  let ownHeadEl = $state<HTMLElement | null>(null);
+  async function openOwn(id: string) {
+    ownId = id; mode = 'own';
+    scrollTo({ top: (document.querySelector('.mc') as HTMLElement | null)?.offsetTop ?? 0, behavior: 'smooth' });
+    await tick();
+    ownHeadEl?.focus({ preventScroll: true });
+  }
 
   // ── The counter: matches side by side at one scale, with your counter width and cabinets ──
   let CW = $derived(narrow ? 360 : 640);
@@ -476,7 +484,7 @@
       <div class="ownbody">
         <div class="ownhead">
           <p class="ck">{own.category ? CATEGORY_LABEL[own.category] : 'Category not established'}{statusNote(own) ? ` · ${statusNote(own)}` : ''}</p>
-          <h3>{fullName(own)}</h3>
+          <h3 tabindex="-1" bind:this={ownHeadEl}>{fullName(own)}</h3>
           <dl class="specs">
             {#if own.category !== 'capsule'}<div><dt>Heats</dt><dd>{heatLabel(own)}{shortTerm(own) ? ` (${shortTerm(own)})` : ''}</dd></div>{/if}
             {#if own.portafilterMm}<div><dt>Portafilter</dt><dd>{own.portafilterMm} mm</dd></div>{/if}
