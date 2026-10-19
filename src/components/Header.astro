@@ -17,7 +17,8 @@ const links = [
 ---
 
 <a href="#main" class="skip-link">Skip to content</a>
-<header class:list={['site-header', isHome && 'is-home']} id="site-header">
+<!-- The menus repeat on every page, so search leaves them out of its index and excerpts. -->
+<header class:list={['site-header', isHome && 'is-home']} id="site-header" data-pagefind-ignore="all">
   <nav class="bar" aria-label="Main">
     <a href="/" class="brand">JayArr <em>Coffee</em></a>
     <ul class="links">
@@ -29,7 +30,7 @@ const links = [
       {links.map((l) => <li><a href={l.href} class:list={[l.active && 'on']} aria-current={l.active ? 'page' : undefined}>{l.label}</a></li>)}
     </ul>
     <div class="icons">
-      <button id="search-btn" class="icon" aria-label="Search the site">
+      <button id="search-btn" type="button" class="icon" aria-label="Search the site" aria-haspopup="dialog" aria-controls="search-overlay">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="m21 21-5.2-5.2m0 0A7.5 7.5 0 1 0 5.2 5.2a7.5 7.5 0 0 0 10.6 10.6z" /></svg>
       </button>
       <a href="https://www.youtube.com/@jayarrcoffee" target="_blank" rel="noopener" class="icon yt" aria-label="JayArr Coffee on YouTube">

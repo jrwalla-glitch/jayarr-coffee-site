@@ -1,119 +1,194 @@
-<!-- Search modal triggered by button in header -->
-<div id="search-overlay" class="fixed inset-0 z-[100] hidden">
-	<!-- Backdrop -->
-	<div id="search-backdrop" class="absolute inset-0 bg-charcoal/80 backdrop-blur-sm"></div>
-	<!-- Search container -->
-	<div class="relative max-w-2xl mx-auto mt-24 px-6">
-		<div class="bg-cream rounded-sm shadow-2xl overflow-hidden">
-			<div class="flex items-center border-b border-charcoal/10 px-4">
-				<svg class="w-5 h-5 text-warm-gray shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607z"/></svg>
-				<input
-					id="search-input"
-					type="text"
-					placeholder="Search articles..."
-					class="w-full px-3 py-4 bg-transparent text-charcoal placeholder:text-warm-gray/60 text-base focus:outline-none"
-					autocomplete="off"
-				/>
-				<button id="search-close" class="text-warm-gray hover:text-charcoal transition-colors p-1" aria-label="Close search">
-					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 18 6M6 6l12 12"/></svg>
+<!-- Site search: a modal dialog opened by the header's search button, any [data-open-search] button,
+     or Cmd/Ctrl+K. While it's open the rest of the page is inert and Tab stays inside; Escape, the
+     close button and the backdrop close it and return focus to whatever opened it. If Pagefind can't
+     load or a search fails, the results area says so and offers the article and tool indexes. -->
+<div id="search-overlay" class="so" data-pagefind-ignore="all" role="dialog" aria-modal="true" aria-label="Search the site" hidden>
+	<div id="search-backdrop" class="so-backdrop"></div>
+	<div class="so-wrap">
+		<div class="so-panel">
+			<div class="so-field">
+				<svg class="so-glass" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="m21 21-5.2-5.2m0 0A7.5 7.5 0 1 0 5.2 5.2a7.5 7.5 0 0 0 10.6 10.6z" /></svg>
+				<label for="search-input" class="sr-only">Search articles and tools</label>
+				<input id="search-input" type="search" placeholder="Search articles and tools" autocomplete="off" aria-controls="search-results" />
+				<button id="search-close" type="button" class="so-close" aria-label="Close search">
+					<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M6 18 18 6M6 6l12 12" /></svg>
 				</button>
 			</div>
-			<div id="search-results" class="max-h-[60vh] overflow-y-auto"></div>
+			<p id="search-status" class="sr-only" role="status" aria-live="polite"></p>
+			<div id="search-results" class="so-results"></div>
 		</div>
 	</div>
 </div>
 
 <script is:inline>
-	var _pagefind = null;
+	(function () {
+		var overlay = document.getElementById('search-overlay');
+		var backdrop = document.getElementById('search-backdrop');
+		var input = document.getElementById('search-input');
+		var results = document.getElementById('search-results');
+		var status = document.getElementById('search-status');
+		var closeBtn = document.getElementById('search-close');
+		if (!overlay || !input || !results) return;
 
-	async function _initPagefind() {
-		if (!_pagefind) {
-			_pagefind = await import('/pagefind/pagefind.js');
-			await _pagefind.init();
+		var pagefind = null;
+		var opener = null;
+		var madeInert = [];
+		var seq = 0;
+		var timer;
+
+		function esc(s) {
+			return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; });
 		}
-		return _pagefind;
-	}
-
-	var _overlay = document.getElementById('search-overlay');
-	var _backdrop = document.getElementById('search-backdrop');
-	var _input = document.getElementById('search-input');
-	var _results = document.getElementById('search-results');
-	var _closeBtn = document.getElementById('search-close');
-
-	function _openSearch() {
-		if (_overlay) _overlay.classList.remove('hidden');
-		document.body.style.overflow = 'hidden';
-		if (_input) _input.focus();
-		_initPagefind();
-	}
-
-	function _closeSearch() {
-		if (_overlay) _overlay.classList.add('hidden');
-		document.body.style.overflow = '';
-		if (_input) _input.value = '';
-		if (_results) _results.innerHTML = '';
-	}
-
-	// Trigger from header button
-	var _searchBtn = document.getElementById('search-btn');
-	var _mobileSearchBtn = document.getElementById('mobile-search-btn');
-	if (_searchBtn) _searchBtn.addEventListener('click', _openSearch);
-	if (_mobileSearchBtn) _mobileSearchBtn.addEventListener('click', _openSearch);
-
-	// Close handlers
-	if (_closeBtn) _closeBtn.addEventListener('click', _closeSearch);
-	if (_backdrop) _backdrop.addEventListener('click', _closeSearch);
-	document.addEventListener('keydown', function(e) {
-		if (e.key === 'Escape') _closeSearch();
-		if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-			e.preventDefault();
-			if (_overlay && _overlay.classList.contains('hidden')) {
-				_openSearch();
-			} else {
-				_closeSearch();
+		// Which part of the site a result is from, as the pages' own kickers name it.
+		function kind(url) {
+			var p = String(url || '');
+			return /^\/tools\//.test(p) ? 'Tool' : /^\/deep-brew\//.test(p) ? 'Deep Brew' : /^\/explore\//.test(p) ? 'Explore' : /^\/blog\//.test(p) ? 'Article' : 'Page';
+		}
+		function announce(text) {
+			if (!status) return;
+			status.textContent = '';
+			setTimeout(function () { status.textContent = text; }, 50);
+		}
+		function initPagefind() {
+			if (!pagefind) {
+				pagefind = import('/pagefind/pagefind.js').then(function (pf) { return Promise.resolve(pf.init && pf.init()).then(function () { return pf; }); });
+				// A failed load can be tried again on the next search.
+				pagefind.catch(function () { pagefind = null; });
 			}
+			return pagefind;
 		}
-	});
+		function showFailure() {
+			results.innerHTML = '<div class="so-msg so-fail"><p class="so-msg-h">Search couldn’t load.</p>' +
+				'<p>Try reloading the page. Meanwhile, every article is on the <a href="/blog/">blog index</a> and every tool on the <a href="/tools/">tools page</a>.</p></div>';
+			announce('Search couldn’t load. Try reloading the page.');
+		}
+		function isOpen() { return !overlay.hidden; }
+		function focusables() {
+			return Array.prototype.filter.call(overlay.querySelectorAll('a[href], button, input, [tabindex]:not([tabindex="-1"])'), function (el) {
+				return !el.disabled && el.getClientRects().length > 0;
+			});
+		}
 
-	// Search on input
-	var _debounceTimer;
-	if (_input) {
-		_input.addEventListener('input', function() {
-			clearTimeout(_debounceTimer);
-			_debounceTimer = setTimeout(async function() {
-				var query = _input.value.trim();
-				if (!_results) return;
+		function openSearch(from) {
+			if (isOpen()) return;
+			opener = from || document.activeElement;
+			// The dialog sits directly in <body>, so everything else can be made inert while it's open.
+			if (overlay.parentElement !== document.body) document.body.appendChild(overlay);
+			madeInert = [];
+			Array.prototype.forEach.call(document.body.children, function (el) {
+				if (el === overlay || el.inert || el.tagName === 'SCRIPT') return;
+				el.inert = true;
+				madeInert.push(el);
+			});
+			overlay.hidden = false;
+			document.body.style.overflow = 'hidden';
+			input.focus();
+			initPagefind().catch(showFailure);
+		}
 
-				if (!query) {
-					_results.innerHTML = '';
-					return;
-				}
+		function closeSearch() {
+			if (!isOpen()) return;
+			overlay.hidden = true;
+			document.body.style.overflow = '';
+			madeInert.forEach(function (el) { el.inert = false; });
+			madeInert = [];
+			clearTimeout(timer);
+			seq++;
+			input.value = '';
+			results.innerHTML = '';
+			if (status) status.textContent = '';
+			var back = opener;
+			opener = null;
+			if (back && back.isConnected && typeof back.focus === 'function' && back !== document.body) back.focus();
+		}
 
-				var pf = await _initPagefind();
-				var search = await pf.search(query);
-				var items = await Promise.all(search.results.slice(0, 8).map(function(r) { return r.data(); }));
+		// Openers: the header's search button and any [data-open-search] button (the 404 page has one).
+		document.addEventListener('click', function (e) {
+			var t = e.target && e.target.closest ? e.target.closest('#search-btn, [data-open-search]') : null;
+			if (t) { e.preventDefault(); openSearch(t); }
+		});
+		if (closeBtn) closeBtn.addEventListener('click', closeSearch);
+		if (backdrop) backdrop.addEventListener('click', closeSearch);
 
-				if (items.length === 0) {
-					_results.innerHTML = '<div style="padding:2rem 1.5rem;text-align:center;color:#6b6b6b;font-size:0.875rem;">No results found</div>';
-					return;
-				}
+		document.addEventListener('keydown', function (e) {
+			if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) {
+				e.preventDefault();
+				if (isOpen()) closeSearch(); else openSearch(document.activeElement);
+				return;
+			}
+			// Nothing else here acts while search is closed.
+			if (!isOpen()) return;
+			if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); closeSearch(); return; }
+			if (e.key === 'Tab') {
+				var f = focusables();
+				if (!f.length) return;
+				var first = f[0], last = f[f.length - 1];
+				var inside = overlay.contains(document.activeElement);
+				if (e.shiftKey && (document.activeElement === first || !inside)) { e.preventDefault(); last.focus(); }
+				else if (!e.shiftKey && (document.activeElement === last || !inside)) { e.preventDefault(); first.focus(); }
+			}
+		}, true);
 
-				_results.innerHTML = items.map(function(item) {
-					return '<a href="' + item.url + '" style="display:block;padding:1rem 1.5rem;border-bottom:1px solid rgba(0,0,0,0.06);text-decoration:none;">' +
-						'<div style="font-family:Playfair Display,serif;font-weight:700;color:#2c2c2c;">' + (item.meta && item.meta.title ? item.meta.title : 'Untitled') + '</div>' +
-						'<div style="font-size:0.875rem;color:#6b6b6b;margin-top:0.25rem;line-height:1.5;">' + item.excerpt + '</div>' +
-						'</a>';
-				}).join('');
+		input.addEventListener('input', function () {
+			clearTimeout(timer);
+			timer = setTimeout(function () {
+				var query = input.value.trim();
+				var mine = ++seq;
+				if (!query) { results.innerHTML = ''; if (status) status.textContent = ''; return; }
+				initPagefind()
+					.then(function (pf) { return pf.search(query); })
+					.then(function (search) { return Promise.all(search.results.slice(0, 8).map(function (r) { return r.data(); })); })
+					.then(function (items) {
+						if (mine !== seq) return;
+						if (items.length === 0) {
+							results.innerHTML = '<div class="so-msg"><p>No results found. Try a brewer, a drink or an origin.</p></div>';
+							announce('No results');
+							return;
+						}
+						results.innerHTML = items.map(function (item) {
+							var title = item.meta && item.meta.title ? item.meta.title : 'Untitled';
+							return '<a class="so-hit" href="' + esc(item.url) + '"><span class="so-kind">' + kind(item.url) + '</span>' +
+								'<span class="so-title">' + esc(title) + '</span>' +
+								// Pagefind's excerpt is escaped by Pagefind, with <mark> around the matches.
+								'<span class="so-excerpt">' + item.excerpt + '</span>' +
+								'</a>';
+						}).join('');
+						announce(items.length === 1 ? '1 result' : items.length + ' results');
+					})
+					.catch(function () { if (mine === seq) showFailure(); });
 			}, 200);
 		});
-	}
+	})();
 </script>
 
 <style>
-	#search-results :global(mark) {
-		background: rgba(184, 115, 51, 0.2);
-		color: inherit;
-		padding: 0 2px;
-		border-radius: 2px;
-	}
+	/* The tool family's look: cream card and ink type, Instrument Serif titles, Plex Sans and Mono. */
+	.so { position: fixed; inset: 0; z-index: 100; }
+	.so[hidden] { display: none; }
+	.so-backdrop { position: absolute; inset: 0; background: rgba(31, 22, 16, .74); backdrop-filter: blur(4px); }
+	.so-wrap { position: relative; max-width: 680px; margin: 96px auto 0; padding: 0 16px; }
+	.so-panel { background: #fbf8f3; border: 1px solid #d9cdbd; border-radius: 18px; overflow: hidden; color: #2a1d15; box-shadow: 0 40px 80px -30px rgba(20, 12, 6, .6); font: 400 16px/1.5 'IBM Plex Sans', 'IBM Plex Sans Fallback', system-ui, sans-serif; }
+	.so-field { display: flex; align-items: center; gap: 10px; padding: 6px 8px 6px 18px; border-bottom: 1px solid #d9cdbd; }
+	.so-glass { width: 20px; height: 20px; flex: none; color: #75655a; }
+	#search-input { flex: 1; min-width: 0; border: 0; background: transparent; padding: 14px 0; font: 400 18px/1.3 'IBM Plex Sans', 'IBM Plex Sans Fallback', system-ui, sans-serif; color: #2a1d15; outline: none; }
+	#search-input::placeholder { color: #75655a; opacity: 1; }
+	/* The close button beside the field does the clearing; the browser's own clear mark would sit next to it. */
+	#search-input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+	.so-close { appearance: none; border: 0; background: none; color: #5b4a3d; width: 40px; height: 40px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; flex: none; }
+	.so-close:hover { background: #f3ede3; color: #2a1d15; }
+	.so-close svg { width: 20px; height: 20px; }
+	.so-results { max-height: 60vh; overflow-y: auto; }
+	.so-results :global(.so-hit) { display: grid; gap: 3px; padding: 14px 20px; border-bottom: 1px solid #e6dccd; text-decoration: none; color: #2a1d15; }
+	.so-results :global(.so-hit:last-child) { border-bottom: 0; }
+	.so-results :global(.so-hit:hover) { background: #f3ede3; }
+	.so-results :global(.so-kind) { font: 500 11px/1 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .14em; text-transform: uppercase; color: #8f5d22; }
+	.so-results :global(.so-title) { font: 400 22px/1.15 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; color: #2a1d15; }
+	.so-results :global(.so-excerpt) { font-size: 14.5px; line-height: 1.5; color: #5b4a3d; }
+	.so-results :global(mark) { background: rgba(195, 135, 58, .22); color: inherit; padding: 0 2px; border-radius: 2px; }
+	.so-results :global(.so-msg) { padding: 20px 20px 22px; font-size: 15px; color: #5b4a3d; }
+	.so-results :global(.so-msg p) { margin: 0; }
+	.so-results :global(.so-msg .so-msg-h) { font: 400 22px/1.2 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; color: #2a1d15; margin: 0 0 6px; }
+	.so-results :global(.so-msg a) { color: #7a4e30; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+	.so-results :global(a:focus-visible), .so-close:focus-visible { outline: 2px solid #8f5d22; outline-offset: -2px; }
+	@media (max-width: 640px) { .so-wrap { margin-top: 72px; padding: 0 12px; } .so-results :global(.so-hit) { padding: 12px 16px; } }
 </style>
