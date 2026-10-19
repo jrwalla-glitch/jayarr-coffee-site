@@ -3,7 +3,7 @@ export { METHODS, GUIDE_METHODS, PHIN, EY_BY_METHOD, methodById } from './method
 export { buildRecipe, estimateStrength, doseForCup, adjustedTempC, nameInSentence } from './brew.ts';
 export { SOURCES } from './sources.ts';
 export { gToOz, ozToG, mlToFlOz, flOzToMl, cToF, fToC, approxTablespoons, G_PER_OZ, ML_PER_FL_OZ } from './units.ts';
-export { CAFFEINE, GUIDANCE, estimateBrewedMg, espressoMg, caffeineInBody, caffeineCurve, intakeMg, dayCurve, dailyTotal, inBodyAt, encodeDay, decodeDay, dayMinute, diaryDayKey, newDayAt, bedMinute, DEFAULT_BED_MIN } from './caffeine.ts';
+export { CAFFEINE, GUIDANCE, beanFraction, shownMg, mgText, shownIntakeMg, shownTotal, estimateBrewedMg, espressoMg, caffeineInBody, caffeineCurve, intakeMg, dayCurve, dailyTotal, inBodyAt, encodeDay, decodeDay, dayMinute, diaryDayKey, newDayAt, bedMinute, DEFAULT_BED_MIN } from './caffeine.ts';
 export type { Intake, IntakeKind, DayPoint, Bean } from './caffeine.ts';
 export { simulate } from './simulate.ts';
 export type { Frame, Simulation } from './simulate.ts';

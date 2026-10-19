@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { CAFFEINE, GUIDANCE, SOURCES, caffeineCurve, caffeineInBody, espressoMg, estimateBrewedMg, buildRecipe, flOzToMl } from '../index.ts';
+import { CAFFEINE, GUIDANCE, SOURCES, beanFraction, shownMg, mgText, shownIntakeMg, shownTotal, caffeineCurve, caffeineInBody, espressoMg, estimateBrewedMg, buildRecipe, flOzToMl } from '../index.ts';
 
 const ok = (r) => { assert.equal(r.ok, true, JSON.stringify(r)); return r.value; };
 const near = (a, b, eps = 1e-9) => assert.ok(Math.abs(a - b) <= eps, `${a} vs ${b}`);
@@ -15,8 +15,37 @@ test('a homemade 8 oz pour-over lands in the published range for a cup', () => {
 
 test('robusta reads higher than arabica for the same dose; blend spans both', () => {
   const a = ok(estimateBrewedMg(20, 'v60', 'arabica')), r = ok(estimateBrewedMg(20, 'v60', 'robusta')), b = ok(estimateBrewedMg(20, 'v60', 'blend'));
-  assert.ok(r.min > a.max, "robusta range sits above arabica");
+  // Farah's ranges touch (arabica up to 1.3%, robusta from 1.5%), and extraction widens both, so the cup ranges overlap
+  // a little; robusta's sits higher at both ends and is about twice arabica in the middle (Farah p. 28).
+  assert.ok(r.min > a.min && r.max > a.max, 'robusta range sits above arabica');
+  const mid = (x) => (x.min + x.max) / 2;
+  assert.ok(mid(r) / mid(a) > 1.6 && mid(r) / mid(a) < 2.2, String(mid(r) / mid(a)));
   assert.ok(b.min <= a.min && b.max >= r.max * 0.99);
+});
+
+test('item 34: bean caffeine is Farah 2012 Tables 2.1–2.2, cited and no longer marked VERIFY', () => {
+  assert.deepEqual(CAFFEINE.beanFraction, { arabica: { min: 0.009, max: 0.013 }, robusta: { min: 0.015, max: 0.025 } });
+  assert.ok(CAFFEINE.sourceIds.includes('farah-2012'));
+  assert.match(SOURCES['farah-2012'].where, /Table 2\.1, p\. 28/);
+  assert.match(SOURCES['farah-2012'].where, /Table 2\.2, p\. 38/);
+  // The medium-roast figures (Table 2.2) sit inside the green ranges the model uses.
+  assert.ok(0.011 >= CAFFEINE.beanFraction.arabica.min && 0.013 <= CAFFEINE.beanFraction.arabica.max);
+  assert.ok(0.024 >= CAFFEINE.beanFraction.robusta.min && 0.025 <= CAFFEINE.beanFraction.robusta.max);
+  assert.ok(!CAFFEINE.VERIFY.some((v) => /beanFraction/.test(v)));
+});
+
+test('item 34 / B1: a 15% robusta blend sits 15% of the way from arabica to robusta; a share needs a blend', () => {
+  const a = ok(estimateBrewedMg(20, 'v60', 'arabica')), r = ok(estimateBrewedMg(20, 'v60', 'robusta'));
+  const b15 = ok(estimateBrewedMg(20, 'v60', 'blend', undefined, undefined, 15));
+  near(b15.min, a.min + 0.15 * (r.min - a.min), 1e-9); near(b15.max, a.max + 0.15 * (r.max - a.max), 1e-9);
+  assert.deepEqual(beanFraction('blend', 15), { min: 0.009 + 0.15 * 0.006, max: 0.013 + 0.15 * 0.012 });
+  assert.equal(beanFraction('blend', 0), null); assert.equal(beanFraction('blend', 100), null);
+  assert.equal(estimateBrewedMg(20, 'v60', 'robusta', undefined, undefined, 15).ok, false);
+  assert.equal(estimateBrewedMg(20, 'v60', 'blend', undefined, undefined, 150).ok, false);
+  // The diary passes the share through; arabica is the default bean.
+  const i = { kind: 'brewed', method: 'drip-machine', cupMl: 355, atMin: 480 };
+  const plain = ok(intakeMg(i)), blend = ok(intakeMg({ ...i, bean: 'blend', robustaPct: 15 })), rob = ok(intakeMg({ ...i, bean: 'robusta' }));
+  assert.ok(plain.max < blend.max && blend.max < rob.max);
 });
 
 test('espresso is counted by shots, about 63 mg each', () => {
@@ -102,9 +131,31 @@ test('a day: totals add up, bedtime level is below the peak, ranges stay ordered
   assert.ok(bed.min > 0);
 });
 
-test('decaf scales with the cup and stays tiny', () => {
-  const r = intakeMg({ kind: 'decaf', cupMl: 355, atMin: 600 }).value;
-  assert.ok(r.max < 15 && r.min > 5);
+test('decaf follows the FDA: 2 to 15 mg in an 8 fl oz cup, scaled with the cup (B1)', () => {
+  const eight = intakeMg({ kind: 'decaf', cupMl: flOzToMl(8), atMin: 600 }).value;
+  near(eight.min, 2, 1e-9); near(eight.max, 15, 1e-9);
+  const twelve = intakeMg({ kind: 'decaf', cupMl: flOzToMl(12), atMin: 600 }).value;
+  near(twelve.min, 3, 1e-9); near(twelve.max, 22.5, 1e-9);
+  assert.match(SOURCES['fda-caffeine'].where, /2 to 15 milligrams in an 8-fluid-ounce cup/);
+  assert.ok(CAFFEINE.sourceIds.includes('fda-caffeine'));
+});
+
+test('B1 / item 36: shown figures round estimates to 5 mg, keep a label\'s own figure, and the total adds up the rows', () => {
+  assert.deepEqual(shownMg({ min: 107.2, max: 194.6 }), { min: 105, max: 195 });
+  assert.deepEqual(shownMg({ min: 142, max: 142 }, true), { min: 142, max: 142 });
+  assert.equal(mgText({ min: 105, max: 195 }), '105–195'); assert.equal(mgText({ min: 160, max: 160 }), '160');
+  const day = [
+    { kind: 'brewed', method: 'drip-machine', cupMl: flOzToMl(8), atMin: 480 },
+    { kind: 'espresso', shots: 2, atMin: 600 },
+    { kind: 'custom', mg: 142, atMin: 700 },
+  ];
+  const rows = day.map((i) => shownIntakeMg(i));
+  assert.deepEqual(rows[0], { min: 105, max: 195 }, 'the 8 oz drip row reads like the page table');
+  const t = shownTotal(day);
+  assert.deepEqual(t, { min: rows.reduce((a, r) => a + r.min, 0), max: rows.reduce((a, r) => a + r.max, 0) });
+  assert.equal(t.min % 5, 142 % 5, 'the label figure stays exact inside the total');
+  // Decaf keeps whole milligrams: 8 oz reads the FDA's 2–15, never "0–15".
+  assert.deepEqual(shownIntakeMg({ kind: 'decaf', cupMl: flOzToMl(8), atMin: 0 }), { min: 2, max: 15 });
 });
 
 test('a cup bigger than one brewer makes still gets an estimate, with no jump at the brewer\'s limit', () => {
@@ -162,6 +213,16 @@ test('day state round-trips through the link; junk fails', () => {
   // Older links with hl still open, at the typical half-life: a link never carries a health detail (Muse r4).
   assert.equal(decodeDay('d=esp.1@600&hl=8').value.halfLifeH, 5, 'older links with hl open at the typical half-life');
   for (const q of ['', 'd=', 'd=v60.355', 'd=esp.9@600', 'd=nope.355@600']) assert.equal(decodeDay(q).ok, false, q);
+});
+
+test('item 34: a blend\'s robusta share round-trips through the link; old .robusta and .blend links still open', () => {
+  const s = { intakes: [{ kind: 'brewed', method: 'drip-machine', cupMl: 355, bean: 'blend', robustaPct: 15, atMin: 480 }, { kind: 'brewed', method: 'v60', cupMl: 355, bean: 'blend', atMin: 600 }], halfLifeH: 5, bedMin: 1380 };
+  const q = encodeDay(s);
+  assert.match(q, /drip-machine\.355\.blend15%40480|drip-machine\.355\.blend15@480/);
+  assert.deepEqual(decodeDay(q).value, s);
+  assert.equal(decodeDay('d=v60.355.robusta@480').value.intakes[0].bean, 'robusta');
+  assert.equal(decodeDay('d=v60.355.blend@480').value.intakes[0].robustaPct, undefined);
+  for (const bad of ['d=v60.355.robusta15@480', 'd=v60.355.blend0@480', 'd=v60.355.blend100@480']) assert.equal(decodeDay(bad).ok, false, bad);
 });
 
 test('a known label amount counts exactly, not as a range', () => {

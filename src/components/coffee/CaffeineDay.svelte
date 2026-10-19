@@ -1,8 +1,8 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { METHODS, CAFFEINE, GUIDANCE, intakeMg, dayCurve, dailyTotal, inBodyAt, encodeDay, decodeDay, dayMinute, newDayAt, bedMinute, flOzToMl, mlToFlOz, buildRecipe,
+  import { METHODS, CAFFEINE, GUIDANCE, intakeMg, shownMg, mgText, shownIntakeMg, shownTotal, dayCurve, dailyTotal, inBodyAt, encodeDay, decodeDay, dayMinute, newDayAt, bedMinute, flOzToMl, mlToFlOz, buildRecipe,
     DEFAULT_SETTINGS, dayWindow, dayStartClock, dayView, instantInDay, placeTypedTime, minutesFromMidnight, bedInstant, clockOf, migrateV1, placeSharedDay, toDiaryMinutes, applyOp, parseStore, emptyStore, CARRY_HOURS } from '../../lib/coffee/index.ts';
-  import type { Intake, MethodId, LoggedDrink, DiarySettings, DiaryStore, DiaryOp } from '../../lib/coffee/index.ts';
+  import type { Intake, MethodId, Bean, LoggedDrink, DiarySettings, DiaryStore, DiaryOp } from '../../lib/coffee/index.ts';
 
   // Your diary is a log of real moments (see diary.ts): "today" is a view over it, so nothing is
   // thrown away to make a day fit, and daylight-saving nights can't move a drink. A shared link is
@@ -44,6 +44,10 @@
   let addKind = $state<'brewed' | 'espresso' | 'decaf' | 'custom'>('brewed');
   let addMg = $state(150);
   let addMethod = $state<MethodId>('drip-machine');
+  // Beans: arabica unless the bag says otherwise; a blend's robusta share when the bag gives one (item 34).
+  let addBean = $state<Bean>('arabica');
+  let addPct = $state<number | null>(null);
+  const BLEND_PCTS = [10, 15, 20, 30, 50];
   let addOz = $state(12);
   let addShots = $state(2);
   let addEsp = $state('Double espresso');
@@ -57,8 +61,11 @@
   const toClock = (hhmm: string) => { const [h, m] = hhmm.split(':').map(Number); return h * 60 + m; };
   const hhmm = (min: number) => { const m = ((Math.round(min) % 1440) + 1440) % 1440; return `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`; };
   const clock12 = (min: number) => { const m = ((Math.round(min) % 1440) + 1440) % 1440; const h = Math.floor(m / 60), mm = m % 60; return `${((h + 11) % 12) + 1}${mm ? ':' + String(mm).padStart(2, '0') : ''} ${h < 12 ? 'am' : 'pm'}`; };
-  const r0 = (n: number) => Math.round(n);
-  const rangeText = (lo: number, hi: number) => (r0(lo) === r0(hi) ? `${r0(lo)}` : `${r0(lo)}–${r0(hi)}`);
+  // Estimates are shown to the nearest 5 mg, as in the page's table, so a row, the table and the total agree (B1, item 36).
+  const rangeText = (lo: number, hi: number) => mgText(shownMg({ min: lo, max: hi }));
+  const rowText = (i: Intake) => { const r = shownIntakeMg(i); return r ? mgText(r) : '—'; };
+  // A cup size as the reader picked it: whole ounces from the buttons, and a link's 200 ml as 6.8 oz rather than "7 oz".
+  const ozLabel = (ml: number) => { const oz = mlToFlOz(ml); return Math.abs(oz - Math.round(oz)) < 0.05 ? `${Math.round(oz)} oz` : `${oz.toFixed(1)} oz (${Math.round(ml)} ml)`; };
 
   let halfLifeH = $derived(mode === 'shared' && shared ? shared.halfLifeH : settings.halfLifeH);
   let bedMin = $derived(mode === 'shared' && shared ? shared.bedMin : settings.bedMin);
@@ -84,6 +91,8 @@
   const labelAt = (t: number) => (mode === 'own' ? clock12(clockOf(win.midnight + t * 60000)) : clock12(t));
   let curve = $derived(dayCurve(curveIntakes, FROM, TO, 5, halfLifeH));
   let total = $derived(dailyTotal(sorted));
+  // What the total readout shows: the rows as shown, added up. The comparison with the reference uses the unrounded total.
+  let shownDay = $derived(shownTotal(sorted));
   let atBed = $derived(inBodyAt(curveIntakes, bedAt, halfLifeH));
   let atNow = $derived(nowAt !== null && nowAt >= FROM && nowAt <= TO ? inBodyAt(curveIntakes, nowAt, halfLifeH) : null);
   let peak = $derived(curve.reduce((a, p) => (p.max > a.max ? p : a), { tMin: FROM, min: 0, max: 0 }));
@@ -117,16 +126,19 @@
   function describe(i: Intake) {
     if (i.kind === 'espresso') return i.label ?? (i.shots === 1 ? 'Single espresso' : `${i.shots} espresso shots`);
     if (i.kind === 'custom') return 'Drink with a known amount';
-    const oz = r0(mlToFlOz(i.cupMl ?? 0));
-    if (i.kind === 'decaf') return `${oz} oz decaf`;
+    const oz = ozLabel(i.cupMl ?? 0);
+    if (i.kind === 'decaf') return `${oz} decaf`;
     const m = METHODS.find((mm) => mm.id === i.method);
     // Brand names keep their capitals: "8 oz V60", "8 oz AeroPress", but "8 oz drip machine" (blind Opus r5).
     const nm = m ? (/^(Cold|Drip|Moka|Espresso)/.test(m.label) ? m.label.toLowerCase() : m.label) : 'coffee';
-    return `${oz} oz ${nm}${oversize(i) ? ` (more than one ${nm} makes)` : ''}`;
+    // The bean is said whenever it isn't arabica, so a robusta link doesn't read like arabica (item 34).
+    const bean = i.bean === 'robusta' ? ', robusta' : i.bean === 'blend' ? (i.robustaPct ? `, ${i.robustaPct}% robusta blend` : ', arabica–robusta blend') : '';
+    return `${oz} ${nm}${bean}${oversize(i) ? ` (more than one ${nm} makes)` : ''}`;
   }
   function newIntake(): Omit<Intake, 'atMin'> {
     return addKind === 'custom' ? { kind: 'custom', mg: addMg } : addKind === 'espresso' ? { kind: 'espresso', shots: addShots, label: addEsp }
-      : addKind === 'decaf' ? { kind: 'decaf', cupMl: flOzToMl(addOz) } : { kind: 'brewed', method: addMethod, cupMl: flOzToMl(addOz) };
+      : addKind === 'decaf' ? { kind: 'decaf', cupMl: flOzToMl(addOz) }
+      : { kind: 'brewed', method: addMethod, cupMl: flOzToMl(addOz), ...(addBean !== 'arabica' ? { bean: addBean } : {}), ...(addBean === 'blend' && addPct ? { robustaPct: addPct } : {}) };
   }
   function add() {
     const base = newIntake(), clock = toClock(addTime);
@@ -297,7 +309,7 @@
     </div>
     <div class="ro total" class:over={overDaily} class:might={mightExceed}>
       <span class="lbl">{mode === 'shared' ? 'Their total' : mode === 'example' ? 'Example total' : 'Today’s total'}</span>
-      <span class="val small">{rangeText(total.min, total.max)}<small>mg</small></span>
+      <span class="val small">{mgText(shownDay)}<small>mg</small></span>
       <div class="meter" aria-hidden="true">
         <span class="fill lo" style:width="{Math.min(100, (total.min / (guidance.mg * 1.5)) * 100)}%"></span>
         <span class="fill hi" style:width="{Math.min(100, (total.max / (guidance.mg * 1.5)) * 100)}%"></span>
@@ -363,18 +375,19 @@
           <li>
             <input type="time" value={hhmm(row.clock)} aria-label={`Time of ${describe(i)}`} disabled={mode === 'example'} onchange={(e) => retime(row.key, e.currentTarget as HTMLInputElement, row.clock)} />
             <span class="what">{describe(i)}</span>
-            <span class="mg">{mg.ok ? rangeText(mg.value.min, mg.value.max) : '—'} mg<small class="basis">{i.kind === 'custom' ? 'label' : 'estimate'}</small></span>
+            <span class="mg">{rowText(i)} mg<small class="basis">{i.kind === 'custom' ? 'label' : 'estimate'}</small></span>
             <button type="button" class="x" aria-label={`Remove ${describe(i)}`} onclick={() => remove(row.key)} disabled={mode === 'example'}>×</button>
           </li>
         {/each}
       </ul>
       {#if rowError}<p class="adderr" role="alert">{rowError}</p>{/if}
+      {#if sorted.length}<p class="note rounding">Estimates are shown to the nearest 5 mg (decaf to the nearest 1 mg); a label's own figure is shown as given.</p>{/if}
       {#if lastNight.length}
         <p class="carried">Earlier (up to two days back), still counted in the curve, most recent first:</p>
         <ul class="carried-list">
           {#each lastNight as x (x.id)}
             {@const mg = intakeMg({ ...x, atMin: 0 } as Intake)}
-            <li><span class="t">{new Date(x.at).toLocaleDateString('en-US', { weekday: 'short' })} {clock12(clockOf(x.at))}</span><span class="what">{describe({ ...x, atMin: 0 } as Intake)}</span><span class="mg">{mg.ok ? rangeText(mg.value.min, mg.value.max) : '—'} mg</span><button type="button" class="x" aria-label={`Remove ${describe({ ...x, atMin: 0 } as Intake)}`} onclick={() => remove(x.id)}>×</button></li>
+            <li><span class="t">{new Date(x.at).toLocaleDateString('en-US', { weekday: 'short' })} {clock12(clockOf(x.at))}</span><span class="what">{describe({ ...x, atMin: 0 } as Intake)}</span><span class="mg">{rowText({ ...x, atMin: 0 } as Intake)} mg</span><button type="button" class="x" aria-label={`Remove ${describe({ ...x, atMin: 0 } as Intake)}`} onclick={() => remove(x.id)}>×</button></li>
           {/each}
         </ul>
       {/if}
@@ -410,6 +423,20 @@
         </div>
         {#if addKind === 'brewed' && addMethod === 'moka'}<p class="note">Count the moka coffee itself, before any water or milk goes in; a small pot makes only a few ounces.</p>{/if}
         {#if addKind === 'brewed' && addMethod === 'cold-brew'}<p class="note">The size you drink, with the concentrate diluted one to one.</p>{/if}
+      {/if}
+      {#if addKind === 'brewed'}
+        <div class="fld"><span class="lbl" id="cd-bean">Beans</span>
+          <div class="seg" role="group" aria-labelledby="cd-bean">
+            {#each [['arabica', 'Arabica'], ['robusta', 'Robusta'], ['blend', 'Blend']] as [b, label] (b)}<button type="button" aria-pressed={addBean === b} onclick={() => (addBean = b as Bean)}>{label}</button>{/each}
+          </div>
+        </div>
+        {#if addBean === 'blend'}
+          <div class="chips" role="group" aria-label="Robusta share of the blend">
+            <button type="button" aria-pressed={addPct === null} onclick={() => (addPct = null)}>Not sure</button>
+            {#each BLEND_PCTS as pct (pct)}<button type="button" aria-pressed={addPct === pct} onclick={() => (addPct = pct)}>{pct}% robusta</button>{/each}
+          </div>
+        {/if}
+        <p class="note">{addBean === 'arabica' ? 'Most specialty coffee is arabica; choose robusta or a blend if the bag says so.' : addBean === 'robusta' ? 'Robusta beans carry roughly twice the caffeine of arabica: 1.5–2.5% of their weight against 0.9–1.3% (Farah, 2012).' : addPct ? `Counted as ${100 - addPct}% arabica and ${addPct}% robusta by weight.` : 'With the mix unknown, the estimate runs from all-arabica to all-robusta.'}</p>
       {/if}
       <div class="row">
         <label class="fld"><span class="lbl">At</span><input type="time" bind:value={addTime} /></label>
