@@ -130,8 +130,8 @@ const neighbours = ORIGINS.filter((x) => x.id !== o.id && x.page).sort((a, b) =>
 
     {o.articles.length > 0 && (
       <>
-        <h2>Read more</h2>
-        <ul>{o.articles.map((a) => <li><a href={`/blog/${a.slug}/`}>{a.title}</a></li>)}</ul>
+        <h2 data-pagefind-ignore>Read more</h2>
+        <ul data-pagefind-ignore>{o.articles.map((a) => <li><a href={`/blog/${a.slug}/`}>{a.title}</a></li>)}</ul>
       </>
     )}
 

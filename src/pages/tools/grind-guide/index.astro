@@ -31,9 +31,9 @@ const rows = order.map((id) => METHODS.find((m) => m.id === id)!);
 		<Header />
 		<main>
 			<section class="cf-intro">
-				<a href="/tools/" class="cf-back">← All tools</a>
-				<p class="cf-kicker">Grind Guide</p>
-				<h1>How fine should you grind <em>for your brewer?</em></h1>
+				<a href="/tools/" class="cf-back" data-pagefind-ignore>← All tools</a>
+				<p class="cf-kicker" data-pagefind-weight="10" data-pagefind-meta="name">Grind Guide</p>
+				<h1 data-pagefind-weight="10">How fine should you grind <em>for your brewer?</em></h1>
 				<p class="cf-lede">Pick a brewer to see its grind under a magnifier and on the scale from finest to coarsest, plus what going too fine or too coarse tastes like.</p>
 			</section>
 			<section class="cf-tool" aria-label="Grind Guide"><GrindGuide client:load /><noscript><p class="tool-noscript">The magnifier and grind scale need JavaScript. The chart below gives the grind for every brewer.</p></noscript></section>
@@ -64,8 +64,8 @@ const rows = order.map((id) => METHODS.find((m) => m.id === id)!);
 					<li>Change only the grind between brews, so you know what made the difference.</li>
 				</ul>
 
-				<h2>Related guides</h2>
-				<ul>
+				<h2 data-pagefind-ignore>Related guides</h2>
+				<ul data-pagefind-ignore>
 					<li><a href="/blog/coffee-grind-size-guide-what-grind-for-every-brew-method/">Coffee grind size guide</a></li>
 					<li><a href="/blog/why-grinder-matters-more-than-machine/">Why the grinder matters more than the machine</a></li>
 					<li><a href="/blog/conical-vs-flat-burr-grinders/">Conical vs flat burrs</a></li>

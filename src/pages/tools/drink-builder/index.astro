@@ -33,9 +33,9 @@ const allSources = [...new Map(DRINKS.flatMap((d) => d.refs.flatMap((r) => [r.so
 		<Header />
 		<main>
 			<section class="cf-intro">
-				<a href="/tools/" class="cf-back">← All tools</a>
-				<p class="cf-kicker">Coffee Drinks</p>
-				<h1>Every espresso drink, <em>layer by layer.</em></h1>
+				<a href="/tools/" class="cf-back" data-pagefind-ignore>← All tools</a>
+				<p class="cf-kicker" data-pagefind-weight="10" data-pagefind-meta="name">Coffee Drinks</p>
+				<h1 data-pagefind-weight="10">Every espresso drink, <em>layer by layer.</em></h1>
 				<p class="cf-lede">Put two drinks side by side in their own cups, at the same scale, from published recipes. A cortado in Madrid and a cortado at Starbucks are not the same drink, so each recipe says where it comes from.</p>
 			</section>
 			<section class="cf-tool" aria-label="Coffee Drinks"><CoffeeDrinks client:load /><noscript><p class="tool-noscript">The side-by-side cups need JavaScript. Every drink and its reference recipe is listed below.</p></noscript></section>
@@ -61,8 +61,8 @@ const allSources = [...new Map(DRINKS.flatMap((d) => d.refs.flatMap((r) => [r.so
 				<h2>A cortado depends on where you order it</h2>
 				<p>In Spain a cortado is an espresso "cut" with a little milk: anything from a few drops to equal parts, with about three parts coffee to one part milk common. Specialty cafés often use a double shot. Starbucks' cortado is three ristretto shots with steamed milk in an 8 oz cup. The Gibraltar is a cortado named after the 4½ oz glass it was served in.</p>
 
-				<h2>Related</h2>
-				<ul>
+				<h2 data-pagefind-ignore>Related</h2>
+				<ul data-pagefind-ignore>
 					<li><a href="/blog/what-is-a-cortado/">What is a cortado?</a></li>
 					<li><a href="/blog/what-is-a-flat-white-latte-vs-flat-white-comparison/">Flat white vs latte</a></li>
 					<li><a href="/blog/affogato-recipe-guide/">Affogato recipe</a></li>

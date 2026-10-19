@@ -68,7 +68,7 @@ const videoPosts = [...owner.values()]
 							<h3 class="font-serif text-base font-bold text-charcoal group-hover:text-copper transition-colors leading-snug">
 								{video.title}
 							</h3>
-							<span class="text-xs text-crema-deep mt-1 inline-block">{video.title === video.postTitle ? 'Read article' : `Read the article: ${video.postTitle}`} &rarr;</span>
+							<span class="text-xs text-crema-deep mt-1 inline-block" data-pagefind-ignore>{video.title === video.postTitle ? 'Read article' : `Read the article: ${video.postTitle}`} &rarr;</span>
 						</a>
 					</div>
 				))}

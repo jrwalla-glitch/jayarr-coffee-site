@@ -50,9 +50,9 @@ const cited = [...new Set(METHODS.flatMap((m) => m.sourceIds))].map((id) => SOUR
 		<Header />
 		<main>
 			<section class="cf-intro">
-				<a href="/tools/" class="cf-back">← All tools</a>
-				<p class="cf-kicker">Brew Guide</p>
-				<h1>Coffee ratio calculator <em>and brew guide</em></h1>
+				<a href="/tools/" class="cf-back" data-pagefind-ignore>← All tools</a>
+				<p class="cf-kicker" data-pagefind-weight="10" data-pagefind-meta="name">Brew Guide</p>
+				<h1 data-pagefind-weight="10">Coffee ratio calculator <em>and brew guide</em></h1>
 				<p class="cf-lede">Pick your brewer and your mug. You get the coffee, the water, the temperature, the grind and every pour, timed, then you can brew along with it.</p>
 			</section>
 
@@ -86,8 +86,8 @@ const cited = [...new Set(METHODS.flatMap((m) => m.sourceIds))].map((id) => SOUR
 				<h2>If the cup tastes off</h2>
 				<p>Sour and thin usually means under-extracted: grind finer or use hotter water. Bitter and dry usually means over-extracted: grind coarser. <a href="/tools/fix-my-coffee/">Fix My Coffee</a> asks a few questions and gives you one change for the next brew, and the <a href="/tools/grind-guide/">Grind Guide</a> shows what each grind should look like.</p>
 
-				<h2>Related guides</h2>
-				<ul>
+				<h2 data-pagefind-ignore>Related guides</h2>
+				<ul data-pagefind-ignore>
 					<li><a href="/blog/coffee-to-water-ratio-guide/">Coffee-to-water ratio guide</a></li>
 					<li><a href="/blog/ultimate-pour-over-coffee-guide-and-best-v60-technique/">V60 pour-over technique</a></li>
 					<li><a href="/blog/how-to-use-a-french-press-the-most-amazing-coffee-youve-ever-had/">How to use a French press</a></li>

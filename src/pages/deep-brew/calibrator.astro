@@ -33,9 +33,9 @@ const secondary = grinders.filter((g) => g.settings.some((s) => s.provenance !==
 		<Header />
 		<main>
 			<section class="cf-intro">
-				<a href="/deep-brew/" class="cf-back">← Deep Brew</a>
-				<p class="cf-kicker">Deep Brew · Grind Calibrator</p>
-				<h1>Your grinder's own <em>starting setting</em></h1>
+				<a href="/deep-brew/" class="cf-back" data-pagefind-ignore>← Deep Brew</a>
+				<p class="cf-kicker" data-pagefind-weight="10" data-pagefind-meta="name">Deep Brew · Grind Calibrator</p>
+				<h1 data-pagefind-weight="10">Your grinder's own <em>starting setting</em></h1>
 				<p class="cf-lede">Choose your grinder and how you brew. It shows the setting or range its maker publishes for that method, in the maker's own numbers, with the chart it came from. For the two grinders with no maker chart we could find, it uses a documented secondary source and says so.</p>
 			</section>
 			<section class="cf-tool" aria-label="Grind Calibrator"><GrindCalibrator client:load /><noscript><p class="tool-noscript">The interactive calibrator needs JavaScript. Below, the guide explains why each grinder needs its own number and where zero is, and lists the grinders it covers, with its sources.</p></noscript></section>

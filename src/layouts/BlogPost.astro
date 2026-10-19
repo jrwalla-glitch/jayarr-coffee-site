@@ -73,16 +73,18 @@ const graph = {
 		<Header />
 		<main>
 			<header class="post-head">
-				<nav aria-label="Breadcrumb" class="crumbs">
+				{/* Site search: the title counts most, then the deck; the crumbs, byline, share row and related
+				    posts repeat on every article, so they stay out of the index (Wave F r2). */}
+				<nav aria-label="Breadcrumb" class="crumbs" data-pagefind-ignore>
 					<ol>
 						<li><a href="/">Home</a></li>
 						<li><a href="/blog/">Articles</a></li>
 						{category && <li><a href={`/blog/category/${category.toLowerCase()}/`}>{category}</a></li>}
 					</ol>
 				</nav>
-				<h1>{title}</h1>
-				{description && <p class="deck">{description}</p>}
-				<p class="byline">
+				<h1 data-pagefind-weight="10">{title}</h1>
+				{description && <p class="deck" data-pagefind-weight="3">{description}</p>}
+				<p class="byline" data-pagefind-ignore>
 					<span>By <a href="/about/">Jay Arr</a></span>
 					<span><FormattedDate date={pubDate} /></span>
 					{updatedDate && day(updatedDate) !== day(pubDate) && <span>Updated <FormattedDate date={updatedDate} /></span>}
@@ -108,7 +110,7 @@ const graph = {
 				<slot />
 			</article>
 
-			<div class="after">
+			<div class="after" data-pagefind-ignore="all">
 				<ShareButtons title={title} url={canonicalURL.toString()} />
 				<RelatedPosts currentId={id} category={category} />
 			</div>

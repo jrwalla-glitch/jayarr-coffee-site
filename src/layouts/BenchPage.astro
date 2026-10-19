@@ -34,11 +34,12 @@ const { title, description, kicker, lede, back, schema = [], breadcrumbs = true,
   </head>
   <body class:list={['bp-page', gallery && 'bp-gallery']}>
     <Header />
-    <main id="main">
+    {/* A page kept out of search engines (the 404) stays out of the site's own search too. */}
+    <main id="main" data-pagefind-ignore={noindex ? 'all' : undefined}>
       <section class:list={['bp-intro', wide && 'wide']}>
-        {back && <a href={back.href} class="bp-back">← {back.label}</a>}
+        {back && <a href={back.href} class="bp-back" data-pagefind-ignore>← {back.label}</a>}
         <p class="bp-kicker">{kicker}</p>
-        <h1><slot name="title" /></h1>
+        <h1 data-pagefind-weight="10"><slot name="title" /></h1>
         {lede && <p class="bp-lede">{lede}</p>}
         <slot name="intro" />
       </section>

@@ -26,10 +26,11 @@ const href = `${data.href}${query}`;
 ---
 
 <aside class="tool-callout" aria-label={`Try the ${data.name}`}>
-	<p class="tc-kicker">{data.deepBrew ? 'Deep Brew tool' : 'Tool'}</p>
-	<p class="tc-title">{data.name}</p>
-	<p class="tc-desc">{context || `${data.blurb}.`}</p>
-	<a href={href} class="tc-link">{cta ?? (preset ? 'Open it with these settings' : 'Open the tool')} <span aria-hidden="true">→</span></a>
+	{/* Site search indexes the article's own words about the tool, not the same name, blurb and button on every page. */}
+	<p class="tc-kicker" data-pagefind-ignore>{data.deepBrew ? 'Deep Brew tool' : 'Tool'}</p>
+	<p class="tc-title" data-pagefind-ignore>{data.name}</p>
+	<p class="tc-desc" data-pagefind-ignore={context ? undefined : ''}>{context || `${data.blurb}.`}</p>
+	<a href={href} class="tc-link" data-pagefind-ignore>{cta ?? (preset ? 'Open it with these settings' : 'Open the tool')} <span aria-hidden="true">→</span></a>
 </aside>
 
 <style>

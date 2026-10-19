@@ -30,9 +30,9 @@ const filter = freshnessStages('filter');
 		<Header />
 		<main>
 			<section class="cf-intro">
-				<a href="/tools/" class="cf-back">← All tools</a>
-				<p class="cf-kicker">Freshness</p>
-				<h1>How fresh are <em>your beans?</em></h1>
+				<a href="/tools/" class="cf-back" data-pagefind-ignore>← All tools</a>
+				<p class="cf-kicker" data-pagefind-weight="10" data-pagefind-meta="name">Freshness</p>
+				<h1 data-pagefind-weight="10">How fresh are <em>your beans?</em></h1>
 				<p class="cf-lede">Enter the roast date printed on the bag. You'll see whether the coffee is very fresh, at its peak or fading (and, for espresso, whether it's still resting), with the dates of its best window.</p>
 			</section>
 			<section class="cf-tool" aria-label="Freshness tracker"><FreshnessTimeline client:load /><noscript><p class="tool-noscript">The interactive timeline needs JavaScript. The table below gives the usual stages by days since roast.</p></noscript></section>
@@ -61,8 +61,8 @@ const filter = freshnessStages('filter');
 					<li><strong>Grind close to brewing.</strong> Ground coffee loses aroma much faster than whole beans, though grinding a batch for drip a few hours ahead is fine.</li>
 				</ul>
 
-				<h2>Related guides</h2>
-				<ul>
+				<h2 data-pagefind-ignore>Related guides</h2>
+				<ul data-pagefind-ignore>
 					<li><a href="/blog/coffee-freshness-roast-to-stale/">Coffee freshness from roast to stale</a></li>
 					<li><a href="/blog/how-to-store-coffee-beans/">How to store coffee beans</a></li>
 					<li><a href="/blog/how-to-freeze-coffee-beans/">How to freeze coffee beans</a></li>

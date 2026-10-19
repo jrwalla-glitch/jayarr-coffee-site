@@ -40,10 +40,10 @@ const data = pieces[piece];
 			</svg>
 		</div>
 		<div class="explore-callout-content">
-			<p class="explore-callout-label">From the Explore gallery</p>
-			<p class="explore-callout-title">{data.name}</p>
-			<p class="explore-callout-desc">{context || data.description}</p>
-			<a href={data.path} class="explore-callout-link">
+			<p class="explore-callout-label" data-pagefind-ignore>From the Explore gallery</p>
+			<p class="explore-callout-title" data-pagefind-ignore>{data.name}</p>
+			<p class="explore-callout-desc" data-pagefind-ignore={context ? undefined : ''}>{context || data.description}</p>
+			<a href={data.path} class="explore-callout-link" data-pagefind-ignore>
 				{data.cta} <span aria-hidden="true">&rarr;</span>
 			</a>
 		</div>

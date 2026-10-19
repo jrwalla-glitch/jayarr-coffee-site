@@ -71,7 +71,8 @@ const featured = bySlug('coffee-grind-size-guide-what-grind-for-every-brew-metho
         <div class="wrap">
           <p class="eyebrow">Start here</p>
           <h2 id="start-h">One guide for each everyday job</h2>
-          <ul class="cards">
+          {/* Lists of other pages stay out of site search, which finds those pages themselves. */}
+          <ul class="cards" data-pagefind-ignore="all">
             {START.map(({ post, job, art, promise }) => (
               <li>
                 <a href={`/blog/${post!.id}/`} class="card">
@@ -136,7 +137,7 @@ const featured = bySlug('coffee-grind-size-guide-what-grind-for-every-brew-metho
         <div class="wrap">
           <p class="eyebrow">Latest</p>
           <h2 id="latest-h">New and updated articles</h2>
-          <ul class="list">
+          <ul class="list" data-pagefind-ignore="all">
             {latest.map((p) => (
               <li><a href={`/blog/${p.id}/`}>{p.data.title}</a> <span class="date"><FormattedDate date={p.data.pubDate} /></span></li>
             ))}

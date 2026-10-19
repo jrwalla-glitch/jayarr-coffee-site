@@ -54,9 +54,9 @@ const efsa = GUIDANCE.find((g) => g.id === 'efsa-single-dose')!;
 		<Header />
 		<main>
 			<section class="cf-intro">
-				<a href="/tools/" class="cf-back">← All tools</a>
-				<p class="cf-kicker">Caffeine Calculator</p>
-				<h1>How much caffeine is <em>still in you at bedtime?</em></h1>
+				<a href="/tools/" class="cf-back" data-pagefind-ignore>← All tools</a>
+				<p class="cf-kicker" data-pagefind-weight="10" data-pagefind-meta="name">Caffeine Calculator</p>
+				<h1 data-pagefind-weight="10">How much caffeine is <em>still in you at bedtime?</em></h1>
 				<p class="cf-lede">Add what you drink and when. You see today's total, and a curve of how much caffeine is in your body hour by hour, falling by half every few hours (every five at the typical setting).</p>
 			</section>
 			<section class="cf-tool" aria-label="Caffeine Calculator"><CaffeineDay client:load /><noscript><p class="tool-noscript">The interactive calculator needs JavaScript. The table below gives typical caffeine for common drinks.</p></noscript></section>
@@ -94,8 +94,8 @@ const efsa = GUIDANCE.find((g) => g.id === 'efsa-single-dose')!;
 				</ul>
 				<p>These are general figures. Sensitivity varies a lot, and some medicines and conditions change it; ask a doctor about your own case.</p>
 
-				<h2>Related guides</h2>
-				<ul>
+				<h2 data-pagefind-ignore>Related guides</h2>
+				<ul data-pagefind-ignore>
 					<li><a href="/blog/caffeine-in-coffee-guide/">Caffeine in coffee: a complete guide</a></li>
 					<li><a href="/blog/how-is-coffee-decaffeinated/">How coffee is decaffeinated</a></li>
 					<li><a href="/blog/whats-different-about-ristretto-or-lungo-espresso-shots/">Ristretto and lungo shots</a></li>

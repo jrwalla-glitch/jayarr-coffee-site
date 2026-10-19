@@ -61,10 +61,11 @@ const breadcrumbSchema = {
 		<Header />
 		<main class="note">
 			<header class="nhead">
-				<nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="/deep-brew/">Deep Brew</a></li><li><a href="/deep-brew/research/">Research</a></li><li aria-current="page">{category}</li></ol></nav>
-				<h1>{nb(title)}</h1>
-				<p class="lede">{description}</p>
-				<p class="meta">
+				{/* Site search: the title counts most; the crumbs, dates, contents list and "More research" repeat, so they stay out of the index. */}
+				<nav aria-label="Breadcrumb" data-pagefind-ignore><ol class="crumbs"><li><a href="/deep-brew/">Deep Brew</a></li><li><a href="/deep-brew/research/">Research</a></li><li aria-current="page">{category}</li></ol></nav>
+				<h1 data-pagefind-weight="10">{nb(title)}</h1>
+				<p class="lede" data-pagefind-weight="3">{description}</p>
+				<p class="meta" data-pagefind-ignore>
 					<span>Published <time datetime={pubDate.toISOString()}>{longDate(pubDate)}</time></span>
 					{updatedDate && <span>Updated <time datetime={updatedDate.toISOString()}>{longDate(updatedDate)}</time></span>}
 					{minutes && <span>{minutes} min read</span>}
@@ -79,7 +80,7 @@ const breadcrumbSchema = {
 
 			<div class="body">
 				{contents.length >= 3 && (
-					<nav class="toc" aria-labelledby="toc-h">
+					<nav class="toc" aria-labelledby="toc-h" data-pagefind-ignore>
 						<p class="lbl" id="toc-h">In this note</p>
 						<ol>{contents.map((h) => <li><a href={`#${h.slug}`}>{nb(h.text)}</a></li>)}</ol>
 					</nav>
@@ -90,7 +91,7 @@ const breadcrumbSchema = {
 			</div>
 
 			{related.length > 0 && (
-				<aside class="more" aria-labelledby="more-h">
+				<aside class="more" aria-labelledby="more-h" data-pagefind-ignore="all">
 					<h2 id="more-h">More research</h2>
 					<ul>
 						{related.map((p) => (

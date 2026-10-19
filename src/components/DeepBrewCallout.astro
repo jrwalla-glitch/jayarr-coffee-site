@@ -37,10 +37,10 @@ const data = tools[tool];
 			</svg>
 		</div>
 		<div class="deepbrew-callout-content">
-			<p class="deepbrew-callout-label">Go Deep</p>
-			<p class="deepbrew-callout-title">{data.name}</p>
-			<p class="deepbrew-callout-desc">{context || data.description}</p>
-			<a href={data.path} class="deepbrew-callout-link">
+			<p class="deepbrew-callout-label" data-pagefind-ignore>Go Deep</p>
+			<p class="deepbrew-callout-title" data-pagefind-ignore>{data.name}</p>
+			<p class="deepbrew-callout-desc" data-pagefind-ignore={context ? undefined : ''}>{context || data.description}</p>
+			<a href={data.path} class="deepbrew-callout-link" data-pagefind-ignore>
 				Enter Deep Brew <span aria-hidden="true">&rarr;</span>
 			</a>
 		</div>

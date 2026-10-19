@@ -30,9 +30,9 @@ const description = 'Describe how your coffee tastes and feels, see where it lan
 		<Header />
 		<main>
 			<section class="cf-intro">
-				<a href="/deep-brew/" class="cf-back">← Deep Brew</a>
-				<p class="cf-kicker">Deep Brew · Extraction Map</p>
-				<h1>Where does your cup sit <em>between sour and bitter?</em></h1>
+				<a href="/deep-brew/" class="cf-back" data-pagefind-ignore>← Deep Brew</a>
+				<p class="cf-kicker" data-pagefind-weight="10" data-pagefind-meta="name">Deep Brew · Extraction Map</p>
+				<h1 data-pagefind-weight="10">Where does your cup sit <em>between sour and bitter?</em></h1>
 				<p class="cf-lede">Slide to describe the taste and the body, or enter a refractometer reading. Your cup lands on the brewing control chart, the map baristas use to talk about strength and extraction. Then pull a lever and watch it move.</p>
 			</section>
 			<section class="cf-tool" aria-label="Extraction Map"><ExtractionTool client:load /><noscript><p class="tool-noscript">The interactive map needs JavaScript. Below, the nine zones are explained, with the estimated extraction by brew method and how to calculate extraction yield.</p></noscript></section>
