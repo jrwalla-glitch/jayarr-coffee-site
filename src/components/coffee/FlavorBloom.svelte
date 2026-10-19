@@ -76,13 +76,17 @@
   let bagPhrases = $derived(bag.split(/[,;\/]| and /).map((t) => t.trim()).filter(Boolean));
   // A family's own word ("floral") reads as that family, not as a word the wheel lacks.
   const famLabel = (f: string) => `the ${familyById(f as FamilyId)!.label} family`;
+  // A flaw word on a bag ("earthy", "sour") is a wheel word, but it's set aside, as in roasters' descriptions:
+  // say so, rather than calling it unknown (review r7, Opus).
+  const setAside = (t: string) => notesInText(t).length > 0 && !notesInText(t, { roaster: true }).length && !familiesInText(t).length;
   let bagReadAs = $derived(bagPhrases.flatMap((t) => {
+    if (setAside(t)) return [`“${t}” as a flaw word, which a bag's reading sets aside`];
     if (!notesInText(t, { roaster: true }).length && !familiesInText(t).length && genericIn(t).length) { const g = genericMeans(genericIn(t)[0]); return [`“${t}” as ${g.notes.length ? 'several notes' : 'no single note on the wheel'}${g.family ? ` (${famLabel(g.family)})` : ''}, so it isn't counted as one`]; }
     // Read as the comparison reads a bag (roasters' words: flaw words set aside), so the two agree (review r7, Astra).
     const labels = [...notesInText(t, { roaster: true }).map((id) => noteById(id)!.label), ...familiesInText(t).map(famLabel)];
     return labels.length && !(labels.length === 1 && labels[0].toLowerCase() === t.toLowerCase()) ? [`“${t}” as ${labels.join(' and ')}`] : [];
   }));
-  let bagUnmatched = $derived(bagPhrases.filter((t) => !notesInText(t, { roaster: true }).length && !familiesInText(t).length && !genericIn(t).length));
+  let bagUnmatched = $derived(bagPhrases.filter((t) => !setAside(t) && !notesInText(t, { roaster: true }).length && !familiesInText(t).length && !genericIn(t).length));
   const nearBecause = (x: string) => { const g = genericIn(bag).find((w) => genericMeans(w).notes.includes(x)); if (g) return `the bag's “${g}” covers it`; const f = noteById(x)?.family, b = cmp.bagNotes.find((n) => noteById(n)?.family === f); return b ? `same family as the bag's ${noteById(b)!.label.toLowerCase()}` : `the bag names ${famLabel(f as string)}`; };
   let thinOrigins = $derived(note && ev?.thin ? [...new Set(lots.filter((l) => l.notes.some((t) => notesInText(t, { roaster: true }).includes(note.id))).map((l) => originName(l.o)))] : []);
   let originName = (id: string) => origins.find((o) => o.id === id)?.name ?? id;
@@ -594,7 +598,7 @@
   </svg>
 {/snippet}
 
-{#snippet keyText()}Bigger bud, more mentions (notes named twice or less share the smallest size): the number is how many of the {lots.length} lot descriptions in roasters' catalogs name the note.{#if branch.hidden}{' '}The plate shows the {branch.buds.length} most named; {branch.hidden === 1 ? 'one rarer note is' : `${branch.hidden} rarer notes are`} in the panel's list and the list view.{/if}{/snippet}
+{#snippet keyText()}Bigger bud, more mentions (notes named once or not at all share the smallest size): the number is how many of the {lots.length} lot descriptions in roasters' catalogs name the note.{#if branch.hidden}{' '}The plate shows the {branch.buds.length} most named; {branch.hidden === 1 ? 'one rarer note is' : `${branch.hidden} rarer notes are`} in the panel's list and the list view.{/if}{/snippet}
 
 {#snippet budKey()}
   <span class="budkey" aria-hidden="true">
@@ -816,7 +820,7 @@
             <li><span class="sw" style:background={colourOf(pn.family as FamilyId)}></span><button type="button" class="pinname" onclick={() => openNote(p)}>{pn.label}</button><button type="button" class="x" aria-label="Remove {pn.label}" onclick={() => togglePin(p)}>×</button></li>
           {/each}
         </ul>
-        <p class="quiet small">Your notes also show as seeds on their petals in the painting.</p>
+        {#if pins.some((p) => noteById(p)?.family !== 'off')}<p class="quiet small">Your notes also show as seeds on their petals in the painting{pins.some((p) => noteById(p)?.family === 'off') ? ' (off notes have no petal, so no seed)' : ''}.</p>{/if}
       {:else}
         <p class="quiet">Add up to three notes you can taste in today's cup, then compare them with the bag.</p>
       {/if}
@@ -843,7 +847,7 @@
           <p class="quiet small">Add the notes you taste to compare them with the bag.</p>
         </div>
       {:else if bag.trim()}
-        <p class="quiet small">None of those words match a note on the wheel yet. Try the main fruit or sweet word on the bag.</p>
+        <p class="quiet small">{bagPhrases.some(setAside) ? `Only flaw words, which a bag's reading sets aside (${bagPhrases.filter(setAside).map((t) => `“${t}”`).join(', ')}). Try the main fruit or sweet word on the bag.` : 'None of those words match a note on the wheel yet. Try the main fruit or sweet word on the bag.'}</p>
       {/if}
       <div class="cardactions">
         <button type="button" class="primary" disabled={!pins.length} onclick={saveCard}>Save on this device</button>

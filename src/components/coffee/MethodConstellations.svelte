@@ -49,7 +49,7 @@
   interface Placed { x: number; y: number; lx: number; ly: number; anchor: 'start' | 'middle' | 'end' }
   interface Hub { x: number; y: number; label: string; sub: string; lx: number; ly: number; anchor: string; first?: AtlasId }
   interface Layout { w: number; h: number; pos: Record<string, Placed>; hubs: Hub[]; chains: AtlasId[][]; x0?: number; x1?: number }
-  const HEAD: Record<string, string> = { 'steep-drain': 'Steep, then drain', 'thick-paper': 'Thick paper', none: 'Steeped', hand: 'Hand', vapor: 'Vapor', steam: 'Steam', pump: 'Pump' };
+  const HEAD: Record<string, string> = { 'steep-drain': 'Steep, then drain', 'thick-paper': 'Thick paper', none: 'Nothing pushes', hand: 'Hand', vapor: 'Vapor', steam: 'Steam', pump: 'Pump' };
   const SUB: Record<string, string> = {
     percolation: 'water runs through the bed', 'steep-drain': 'steeps, then drains through it', immersion: 'steeps in all the water',
     'thick-paper': 'the clearest cup', paper: 'a clear cup', cloth: 'some oils pass', metal: 'oils and fines pass',

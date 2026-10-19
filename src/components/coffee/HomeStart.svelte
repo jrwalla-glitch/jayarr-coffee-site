@@ -32,7 +32,7 @@
       sour: 'Often under-extracted. The shot time decides the fix: a fast shot wants a finer grind, one that runs on time a longer shot.',
       bitter: 'Over-extraction, a fast and uneven shot, or simply a dark roast: one timed shot tells them apart.',
       strong: 'Espresso is intense by design, and the ratio sets it: a longer shot, with more liquid per gram, makes it gentler.',
-      flat: 'Often stale beans or water with too few minerals, rather than the recipe.',
+      flat: 'A thin cup or a tired one: too little coffee for the water, or stale beans and soft water. Fix My Coffee asks two questions to tell which.',
     }[id] ?? '';
     // Cold brew is a concentrate and a moka pot's ratio is set by the pot, so their advice is their own,
     // as the Doctor gives it (review r2, Opus).
@@ -41,21 +41,21 @@
       bitter: 'Often a steep that ran long or a grind that was too fine; dark roasts are bitter by nature.',
       weak: 'Cold brew is a concentrate: serve it with less water or milk before changing the recipe.',
       strong: 'Cold brew is a concentrate: add more cold water or milk when you serve it.',
-      flat: 'Often stale beans or water with too few minerals, rather than the recipe.',
+      flat: 'A thin cup or a tired one: too little coffee for the water, or stale beans and soft water. Fix My Coffee asks two questions to tell which.',
     }[id] ?? '';
     if (m === 'moka') return {
       sour: 'Often the water passed through too fast: grind one step finer (still coarser than espresso); a lower flame, which slows it, is the next thing to try.',
       bitter: 'Often overheated: take the pot off the heat as it starts to sputter, and cool the base under the tap.',
       weak: 'Usually too little coffee in the basket: fill it level, without tamping.',
       strong: 'Moka coffee is concentrated by design: brew it as usual and add hot water to the cup to taste.',
-      flat: 'Often stale beans or water with too few minerals, rather than the recipe.',
+      flat: 'A thin cup or a tired one: too little coffee for the water, or stale beans and soft water. Fix My Coffee asks two questions to tell which.',
     }[id] ?? '';
     return {
       sour: `Often under-extracted: the water didn't pull enough from the coffee. The usual suspects are a grind that's too coarse or ${steep ? 'a steep that was too short' : m === 'drip-machine' ? 'a brew that ran too fast' : 'a brew that ran too fast, or water that wasn\'t hot enough'}.`,
       bitter: `Often over-extracted: too much was pulled out. A grind that's too fine or ${steep ? 'a steep that ran too long' : 'a brew that ran too long'} are the usual suspects, though dark roasts are bitter by nature.`,
       weak: 'Usually too little coffee for the water, before anything else. A stronger ratio is the first thing to try.',
-      strong: 'Usually too much coffee for the water: a lighter ratio, or a little hot water added, often fixes it. If the brew also ran long, grind a step coarser too.',
-      flat: 'Often stale beans or water with too few minerals, rather than the recipe.',
+      strong: 'Usually too much coffee for the water, so the one change is a lighter ratio or a little hot water added; if the brew ran long, it\'s a coarser grind instead. Fix My Coffee asks which.',
+      flat: 'A thin cup or a tired one: too little coffee for the water, or stale beans and soft water. Fix My Coffee asks two questions to tell which.',
     }[id] ?? '';
   }
 
@@ -111,9 +111,9 @@
   let grindShort = $derived(r ? r.grind.label.replace(/\s*\(.*\)$/, '') : '');
 
   // ── The Fix door's picture: a small extraction map, the taste marked, an arrow to the usual fix ──
-  const MAP_AT: Record<string, [number, number]> = { sour: [86, 66], bitter: [234, 66], weak: [160, 118], strong: [160, 16], flat: [160, 66] };
+  const MAP_AT: Record<string, [number, number]> = { sour: [86, 66], bitter: [234, 66], weak: [160, 118], strong: [160, 16], flat: [160, 92] };
   // Only the direction to move: how to get there depends on the brewer, which is the Doctor's job.
-  const MAP_FIX: Record<string, string> = { sour: 'extract more?', bitter: 'extract less?', weak: 'stronger?', strong: 'weaker?', flat: 'check the beans and water' };
+  const MAP_FIX: Record<string, string> = { sour: 'extract more?', bitter: 'extract less?', weak: 'stronger?', strong: 'weaker?', flat: 'thin, or stale?' };
   // A bitter shot can be a fast, uneven one, so for espresso the picture asks for the timing first, as the Doctor does.
   let fixLabel = $derived(fixMethod === 'espresso' && symptom === 'bitter' ? 'time the shot?' : MAP_FIX[symptom]);
 
@@ -201,7 +201,7 @@
             <figcaption>{grindShort}, like {r.grind.texture}</figcaption>
           </figure>
         </div>
-        <p class="note">{method === 'espresso' ? 'A double shot: 18 g in, 36 g out, in 25–30 seconds.' : method === 'cold-brew' ? 'A concentrate: dilute it about one to one to serve.' : method === 'moka' ? 'The pot sets the amounts: coffee level in the basket, water to just below the valve. The Brew Guide sizes it to your pot.' : `1:${ratioText} is the Brew Guide's classic strength for the ${BREWERS.find((b) => b.id === method)?.label}, and the Guide ${method === 'french-press' || method === 'aeropress' ? 'times the steep and the press' : method === 'cold-brew' ? 'times the steep' : method === 'drip-machine' ? 'walks you through the batch' : 'times every pour'}.${topUpG > 0 ? ` The chamber holds about 230 g, so ${topUpG} g of the water goes in after pressing.` : ''}`}</p>
+        <p class="note">{method === 'espresso' ? 'A double shot: 18 g in, 36 g out, in 25–30 seconds.' : method === 'cold-brew' ? 'A concentrate: dilute it about one to one to serve.' : method === 'moka' ? 'The pot sets the amounts: coffee level in the basket, water to just below the valve. The Brew Guide opens on a 15 g basket; set your pot there.' : `1:${ratioText} is the Brew Guide's classic strength for the ${BREWERS.find((b) => b.id === method)?.label}, and the Guide ${method === 'french-press' || method === 'aeropress' ? 'times the steep and the press' : method === 'cold-brew' ? 'times the steep' : method === 'drip-machine' ? 'walks you through the batch' : 'times every pour'}.${topUpG > 0 ? ` The chamber holds about 230 g, so ${topUpG} g of the water goes in after pressing.` : ''}`}</p>
       {/if}
       <a class="go" href={href}>Brew it step by step →</a>
     {:else if door === 'fix'}
@@ -239,7 +239,7 @@
       <ul class="pick">
         <li><a href="/tools/espresso-machines/"><span class="pm" aria-hidden="true"><ToolMini id="machines" /></span><span><b>An espresso machine</b><small>Machines matched to how you drink and what you'll spend, grinder included</small></span></a></li>
         <li><a href="/tools/nespresso-pods/"><span class="pm" aria-hidden="true"><ToolMini id="pods" /></span><span><b>Nespresso pods</b><small>Every capsule your machine takes, Original or Vertuo</small></span></a></li>
-        <li><a href="/deep-brew/calibrator/"><span class="pm" aria-hidden="true"><ToolMini id="calibrator" /></span><span><b>Your grinder's setting</b><small>The number to set for your brewer, from the maker's guidance</small></span></a></li>
+        <li><a href="/deep-brew/calibrator/"><span class="pm" aria-hidden="true"><ToolMini id="calibrator" /></span><span><b>Your grinder's setting</b><small>The number to set for your brewer, from makers' guidance and testers' data</small></span></a></li>
       </ul>
       <a class="go" href="/tools/#job-choose">Every gear tool →</a>
     {:else}

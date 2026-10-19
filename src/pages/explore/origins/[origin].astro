@@ -38,9 +38,10 @@ const PROC: Record<string, string> = { washed: 'Washed', natural: 'Natural', hon
 const ROAST: Record<string, string> = { light: 'Light', medium_light: 'Medium-light', medium: 'Medium', medium_dark: 'Medium-dark', dark: 'Dark' };
 const titleCase = (s: string) => (s === s.toUpperCase() ? s.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase()) : s);
 // The roasters' own words, tidied of scraping leftovers ("amp;", sentence fragments); none listed shows a dash.
-const cleanNote = (n: string) => n.replace(/&amp;|\bamp;/g, '&').replace(/^[&\s]+/, '').trim();
+// A scraped "nbsp;" prefix is stripped, not dropped: the word under it is counted elsewhere (review r7, Opus).
+const cleanNote = (n: string) => n.replace(/&amp;|\bamp;/g, '&').replace(/(&?nbsp;)+/g, ' ').replace(/^[&\s]+/, '').trim();
 // Scraping leftovers: run-on sentences, joining words, and word-ends cut from a longer word ("ed characteristics").
-const fragment = (n: string) => n.length >= 40 || /^(and|as well as|leading|sometimes|indulgent|ed|ing|ly)\b|nbsp/i.test(n);
+const fragment = (n: string) => n.length >= 40 || /^(and|as well as|leading|sometimes|indulgent|ed|ing|ly)\b/i.test(n);
 const lots = hub.beans.map((b) => ({ roaster: b.roaster, name: titleCase(b.name), process: PROC[b.processing] ?? b.processing, roast: ROAST[b.roast_level] ?? b.roast_level, notes: b.flavor_notes.map(cleanNote).filter((n) => n && !fragment(n)).join(', ') || '—' }));
 
 const sourceIds = [...new Set([...o.harvest.sources, ...(o.harvest.compare ?? []), ...(o.altitudeM?.sources ?? []), ...(o.robustaAltitudeM?.sources ?? []), ...(o.production ? [o.production.source] : []), o.tendencies.source, ...(o.sources?.varieties ?? []), ...(o.sources?.processing ?? []), ...(o.sources?.regions ?? [])])].filter((id) => sources[id]);

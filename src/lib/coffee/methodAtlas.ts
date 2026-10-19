@@ -83,7 +83,8 @@ const fromEngine = (id: MethodId) => {
     grind: m.grindLabel,
     temp: id === 'cold-brew' ? 'Cold or room temperature' : id === 'moka' ? 'Just-boiled water in the base' : `${Math.round(m.tempC.min * 9 / 5 + 32)}–${Math.round(m.tempC.max * 9 / 5 + 32)}°F (${m.tempC.min}–${m.tempC.max}°C)`,
     timeS: [m.timeS.min, m.timeS.max] as [number, number],
-    recipeBy: m.base?.by ? `the Brew Guide's starting recipe (it credits ${m.base.by})` : 'the Brew Guide\'s starting recipe',
+    // The Guide's classic numbers are its own, adapted from the recipe it credits, not that recipe's exact ratio (review r7, Opus).
+    recipeBy: m.base?.by ? `the Brew Guide's classic recipe (adapted from ${m.base.by})` : 'the Brew Guide\'s classic recipe',
     brewGuide: id,
   };
 };
@@ -295,7 +296,7 @@ export function differenceSentence(a: AtlasMethod, b: AtlasMethod): string {
   const d = differences(a, b);
   // Same axes: the grind each recipe uses can still differ, so say so (review r4, Opus M2).
   const grind = a.grind !== b.grind ? `, and in the grind each recipe uses (${a.grind.toLowerCase()} and ${b.grind.toLowerCase()})` : '';
-  if (!d.length) return `${cap(a.the)} and ${b.the} work the same way on contact, filter and force, and their times overlap (${timeText(a)} and ${timeText(b)}); they differ in the brewer's shape and how fast it drains${grind}.`;
+  if (!d.length) return `${cap(a.the)} and ${b.the} work the same way on contact, filter and force, and ${timeText(a) === timeText(b) ? `take the same time (${timeText(a)})` : `their times overlap (${timeText(a)} and ${timeText(b)})`}; they differ in the brewer's shape and how fast it drains${grind}.`;
   const parts: string[] = [];
   if (d.includes('contact')) {
     const verb = (m: AtlasMethod) => m.contact === 'percolation' ? 'runs water through the coffee'

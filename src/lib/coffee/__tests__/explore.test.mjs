@@ -174,7 +174,7 @@ test('the Clever Dripper is four minutes plus its drain; time differences of hal
   assert.ok(differences(v60, drip).includes('time'));
   assert.ok(!differences(v60, chemex).includes('time'));
   const kalita = ATLAS.find((m) => m.id === 'kalita');
-  assert.match(differenceSentence(v60, kalita), /times overlap/);
+  assert.match(differenceSentence(v60, kalita), /take the same time \(3–4 minutes\)/);
 });
 
 // ── Review round 2 (Opus) regressions ──
