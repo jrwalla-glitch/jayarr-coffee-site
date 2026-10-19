@@ -141,7 +141,10 @@
   });
   // Only offer sizes this brewer can make at the chosen strength; bigger ones stay reachable through Custom.
   let choices = $derived(allChoices.filter((c) => buildRecipe({ ...input, target: c.t }).ok));
-  let tooBig = $derived(allChoices.length > choices.length);
+  // The "bigger amounts" hint shows only when the amount really is past what one brewer handles: an amount
+  // over its capacity (from Custom or a link), or an AeroPress cup topped up after pressing. A plain 12 oz V60
+  // no longer reads as too big (Wave F r1, Opus).
+  let overOne = $derived((!result.ok && result.errors.some((e) => e.code === 'over-capacity')) || (method === 'aeropress' && !!recipe?.steps.some((s) => s.kind === 'dilute')));
   // Same target within a link's 0.1 rounding, so a 12 oz cup stored as 354.9 still lights the 12 oz chip.
   const same = (a: Target, b: Target) => {
     const ka = Object.keys(a)[0], kb = Object.keys(b)[0];
@@ -177,7 +180,9 @@
     }
   }
   // A switch that moves the cup to the other system's marked size says so (Muse r5): the batch never changes silently.
-  let unitNote = $state<string | null>(null);
+  // The note belongs to the brewer, size and units it was written for: change any of them and it goes (Wave F r1, Opus).
+  let unitNote = $state<{ text: string; method: MethodId; target: Target; units: Units } | null>(null);
+  let unitNoteText = $derived(unitNote && unitNote.method === method && unitNote.units === units && same(unitNote.target, target) ? unitNote.text : null);
   function switchUnits(u: Units) {
     if (u === units) return;
     const wasPreset = !customOpen && 'cupMl' in target && allChoices.some((c) => same(c.t, target));
@@ -189,7 +194,7 @@
       const after = 'cupMl' in target ? target.cupMl : null;
       if (before != null && after != null && Math.abs(after - before) > 1) {
         const show = (ml: number, us: boolean) => (us ? `${r0(mlToFlOz(ml))} fl oz` : `${r0(ml)} ml`);
-        unitNote = `Now ${show(after, u === 'us')}, the usual ${u === 'us' ? 'US' : 'metric'} size; your cup was ${show(before, u !== 'us')} (${show(before, u === 'us')}). Use Custom for an exact amount.`;
+        unitNote = { text: `Now ${show(after, u === 'us')}, the usual ${u === 'us' ? 'US' : 'metric'} size; your cup was ${show(before, u !== 'us')} (${show(before, u === 'us')}). Use Custom for an exact amount.`, method, target: { ...target }, units: u };
       }
     }
   }
@@ -372,7 +377,7 @@
           {/each}
           <button type="button" aria-pressed={customOpen || !choices.some((c) => same(c.t, target))} aria-expanded={customOpen} onclick={openCustom}>Custom</button>
         </div>
-        {#if tooBig}<p class="hint">{method === 'aeropress' ? 'Bigger cups need two presses (or try Custom).' : method === 'drip-machine' ? 'Bigger batches are more than a typical drip machine holds: brew twice, or try Custom.' : `Bigger amounts are more than one ${/^(Cold|Moka)/.test(m.label) ? m.label.toLowerCase() : m.label} handles well at this strength: brew twice, or try Custom.`}</p>{/if}
+        {#if overOne}<p class="hint">{method === 'aeropress' ? 'Bigger cups need two presses (or try Custom).' : method === 'drip-machine' ? 'For more than a typical drip machine holds, brew twice.' : `For more than one ${/^(Cold|Moka)/.test(m.label) ? m.label.toLowerCase() : m.label} handles well at this strength, brew twice.`}</p>{/if}
         {#if customOpen}
           <div class="custom">
             <label class="cfld"><span class="sr">Amount</span><input type="number" inputmode="decimal" min="0" step="0.1" value={customVal} oninput={(e) => { const raw = (e.currentTarget as HTMLInputElement).value.trim(); setCustom(raw === '' ? NaN : Number(raw), customKind); }} /></label>
@@ -389,7 +394,7 @@
           <button type="button" aria-pressed={units === 'us'} onclick={() => switchUnits('us')}>US</button>
           <button type="button" aria-pressed={units === 'metric'} onclick={() => switchUnits('metric')}>Metric</button>
         </div>
-        {#if unitNote}<p class="unitnote" role="status">{unitNote}</p>{/if}
+        {#if unitNoteText}<p class="unitnote" role="status">{unitNoteText}</p>{/if}
       </fieldset>
     </div>
 
