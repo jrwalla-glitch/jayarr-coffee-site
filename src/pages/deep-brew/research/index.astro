@@ -5,10 +5,11 @@ import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
 import { DB_CATEGORIES } from '../../../content.config';
 import { TOOLS } from '../../../data/tools';
+import { byId } from '../../../lib/order';
 
 const title = 'Deep Brew Research: The Science Behind Better Coffee';
 const description = 'Long-form explanations of coffee science, from extraction and espresso physics to roasting chemistry, aroma and climate, each linked to the tools that put it to use.';
-const posts = (await getCollection('deepbrew')).sort((a, b) => a.data.title.localeCompare(b.data.title));
+const posts = (await getCollection('deepbrew')).sort((a, b) => a.data.title.localeCompare(b.data.title) || byId(a, b));
 // The instruments in the landing page's order: water, extraction, grind.
 const ORDER = ['/deep-brew/water', '/deep-brew/extraction', '/deep-brew/calibrator'];
 const deepTools = TOOLS.filter((t) => t.deepBrew).sort((a, b) => ORDER.findIndex((o) => a.href.startsWith(o)) - ORDER.findIndex((o) => b.href.startsWith(o)));

@@ -7,6 +7,7 @@ import FormattedDate from '../../../components/FormattedDate.astro';
 import Header from '../../../components/Header.astro';
 import { SITE_TITLE } from '../../../consts';
 import { CATEGORIES } from '../../../content.config';
+import { newestFirst } from '../../../lib/order';
 
 export async function getStaticPaths() {
 	const posts = await getCollection('blog');
@@ -16,7 +17,7 @@ export async function getStaticPaths() {
 			category,
 			posts: posts
 				.filter((p) => p.data.category === category)
-				.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+				.sort(newestFirst),
 		},
 	}));
 }

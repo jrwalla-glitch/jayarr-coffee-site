@@ -1,9 +1,9 @@
 import { getCollection } from 'astro:content';
 import rss from '@astrojs/rss';
+import { newestFirst } from '../../lib/order';
 
 export async function GET(context) {
-	const posts = (await getCollection('deepbrew'))
-		.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+	const posts = (await getCollection('deepbrew')).sort(newestFirst);
 	return rss({
 		title: 'Deep Brew | JayArr Coffee',
 		description: 'Long-form coffee science articles grounded in peer-reviewed research.',

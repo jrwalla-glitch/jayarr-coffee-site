@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import FormattedDate from './FormattedDate.astro';
+import { newestFirst } from '../lib/order';
 
 interface Props {
 	currentId: string;
@@ -20,7 +21,7 @@ let related = allPosts
 		const aMatch = category && a.data.category === category ? 1 : 0;
 		const bMatch = category && b.data.category === category ? 1 : 0;
 		if (aMatch !== bMatch) return bMatch - aMatch;
-		return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+		return newestFirst(a, b);
 	})
 	.slice(0, limit);
 ---

@@ -4,6 +4,7 @@ import DeepBrewLayout from '../../layouts/DeepBrewLayout.astro';
 import grinderData from '../../data/grinders.json';
 import { planWater, measuredExtraction, CHARTS, WATER_RECIPES } from '../../lib/coffee/index.ts';
 import { headline, grinderById } from '../../lib/coffee/grinders.ts';
+import { latestFirst } from '../../lib/order';
 import type { Grinder } from '../../lib/coffee/grinders.ts';
 
 // Every readout on this page is computed by the same engine the instruments use, at build time,
@@ -39,7 +40,7 @@ const dialTicks = Array.from({ length: d1 - d0 + 1 }, (_, i) => d0 + i).filter((
 // The dial turns so the setting sits under the index at the top, as the Grind Calibrator draws it.
 const turn = -dang(pour.min);
 
-const notes = (await getCollection('deepbrew')).sort((a, b) => (b.data.updatedDate ?? b.data.pubDate).valueOf() - (a.data.updatedDate ?? a.data.pubDate).valueOf());
+const notes = (await getCollection('deepbrew')).sort(latestFirst);
 
 const title = 'Deep Brew: Measure Your Brewing Water, Extraction and Grind';
 const description = 'Three instruments for measuring coffee: mix brewing water to a published recipe, place a refractometer reading on the SCA chart, and find the setting your grinder’s maker publishes, with research notes.';

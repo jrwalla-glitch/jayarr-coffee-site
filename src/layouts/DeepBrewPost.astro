@@ -11,6 +11,7 @@ import '@fontsource/ibm-plex-mono/400.css';
 import '@fontsource/ibm-plex-mono/500.css';
 import { type CollectionEntry, getCollection } from 'astro:content';
 import type { MarkdownHeading } from 'astro';
+import { latestFirst } from '../lib/order';
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -28,7 +29,7 @@ const nb = (t: string) => t.replace(/(\d)-(\d)/g, '$1\u2011$2');
 // Three more notes: the same field first, then the most recently updated.
 const related = (await getCollection('deepbrew'))
 	.filter((p) => p.id !== id)
-	.sort((a, b) => (Number(b.data.category === category) - Number(a.data.category === category)) || ((b.data.updatedDate ?? b.data.pubDate).valueOf() - (a.data.updatedDate ?? a.data.pubDate).valueOf()))
+	.sort((a, b) => (Number(b.data.category === category) - Number(a.data.category === category)) || latestFirst(a, b))
 	.slice(0, 3);
 
 const articleSchema = {
