@@ -18,6 +18,10 @@ export const PPM_PER_ML_PER_L = { gh: CONCENTRATE_G_PER_L.gh / MG_EPSOM_PER_PPM_
 
 // No TDS figures: the old strings disagreed with the two-salt mixes (blind Opus r3), and GH + KH isn't TDS.
 export interface WaterRecipe {
+  /**
+   * `profile` describes the minerals, read from the recipe's own GH and KH, not a taste: the old flavor lines
+   * ("Intense acidity and clarity") weren't tied to any recipe author's words (round 3, item 25).
+   */
   id: string; name: string; gh: number; kh: number; profile: string; bestFor: string;
   /** The GH is the Builder's estimate, not a maker's figure: the maker publishes alkalinity only (R7, Wave D batch 1). */
   ghEstimated?: boolean;
@@ -32,14 +36,14 @@ export interface WaterRecipe {
 // also uses calcium citrate and sodium chloride. TWW Dark Roast (no published GH) and RPavlis
 // (potassium bicarbonate) are omitted from this two-bottle tool.
 export const WATER_RECIPES: WaterRecipe[] = [
-  { id: 'sca', name: 'SCA standard', gh: 68, kh: 40, profile: 'Balanced benchmark', bestFor: 'Cupping, a neutral reference' },
-  { id: 'melbourne', name: 'Melbourne', gh: 24, kh: 12, profile: 'Very soft, delicate', bestFor: 'Light-roast filter' },
-  { id: 'holy', name: 'Holy Water', gh: 62, kh: 23, profile: 'Clean, sweet, clear', bestFor: 'Light-roast pour-over', untraced: true, provenance: 'We couldn\'t trace Holy Water to a published original, so its 62 GH and 23 KH are the Builder\'s target, not a credited recipe.' },
-  { id: 'bh4', name: 'Barista Hustle #4', gh: 80, kh: 40, profile: 'Clean, bright, balanced', bestFor: 'Light-to-medium filter' },
-  { id: 'rao', name: 'Rao/Perger (simplified)', gh: 76, kh: 50, profile: 'Balanced, rounder', bestFor: 'All-purpose, filter and espresso' },
-  { id: 'hendon', name: 'Hendon', gh: 100, kh: 31, profile: 'Bright, complex', bestFor: 'Origin-focused pour-over' },
-  { id: 'tww-classic', name: 'Third Wave Water Classic (GH/KH only)', gh: 150, kh: 40, profile: 'Intense acidity and clarity', bestFor: 'Light roasts', ghEstimated: true, provenance: 'Third Wave Water publishes alkalinity (about 40) but not hardness, so GH 150 is the Builder\'s estimate, not a maker figure.' },
-  { id: 'tww-espresso', name: 'Third Wave Water Espresso (GH/KH only)', gh: 135, kh: 80, profile: 'Smoother, more buffered', bestFor: 'Espresso', ghEstimated: true, provenance: 'Third Wave Water publishes alkalinity (about 80) but not hardness, so GH 135 is the Builder\'s estimate, not a maker figure.' },
+  { id: 'sca', name: 'SCA standard', gh: 68, kh: 40, profile: 'The SCA\'s own target', bestFor: 'Cupping, a neutral reference' },
+  { id: 'melbourne', name: 'Melbourne', gh: 24, kh: 12, profile: 'Very soft, very low alkalinity', bestFor: 'Light-roast filter' },
+  { id: 'holy', name: 'Holy Water', gh: 62, kh: 23, profile: 'Soft, low alkalinity', bestFor: 'Light-roast pour-over', untraced: true, provenance: 'We couldn\'t trace Holy Water to a published original, so its 62 GH and 23 KH are the Builder\'s target, not a credited recipe.' },
+  { id: 'bh4', name: 'Barista Hustle #4', gh: 80, kh: 40, profile: 'Moderate hardness and alkalinity', bestFor: 'Light-to-medium filter' },
+  { id: 'rao', name: 'Rao/Perger (simplified)', gh: 76, kh: 50, profile: 'Moderate hardness, higher alkalinity', bestFor: 'All-purpose, filter and espresso' },
+  { id: 'hendon', name: 'Hendon', gh: 100, kh: 31, profile: 'Harder, moderate alkalinity', bestFor: 'Origin-focused pour-over' },
+  { id: 'tww-classic', name: 'Third Wave Water Classic (GH/KH only)', gh: 150, kh: 40, profile: 'Hard, moderate alkalinity', bestFor: 'Light roasts', ghEstimated: true, provenance: 'Third Wave Water publishes alkalinity (about 40) but not hardness, so GH 150 is the Builder\'s estimate, not a maker figure.' },
+  { id: 'tww-espresso', name: 'Third Wave Water Espresso (GH/KH only)', gh: 135, kh: 80, profile: 'Hard, high alkalinity', bestFor: 'Espresso', ghEstimated: true, provenance: 'Third Wave Water publishes alkalinity (about 80) but not hardness, so GH 135 is the Builder\'s estimate, not a maker figure.' },
 ];
 
 /** A recipe's numbers as its labels show them: "GH 150 (the Builder's estimate) · KH 40". */
