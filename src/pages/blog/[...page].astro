@@ -79,7 +79,7 @@ const nextUrl = slash(page.url.next);
 		</div>
 
 		<!-- Articles grid -->
-		<main class="max-w-6xl mx-auto px-6 py-16">
+		<main class="max-w-6xl mx-auto px-6 py-16" data-pagefind-ignore="all">
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
 				{page.data.map((post) => (
 					<a href={`/blog/${post.id}/`} class="group block">

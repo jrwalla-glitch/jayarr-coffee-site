@@ -41,7 +41,9 @@ const { title, description, image = FallbackImage, isArticle = false, pubDate, u
 
 // Differentiate <title> from <h1> — append site name unless this IS the homepage
 const isHomepage = title === SITE_TITLE;
-const pageTitle = isHomepage ? SITE_TITLE : `${title} | ${SITE_TITLE}`;
+// Some pages already end their title with the site name ("Articles — JayArr Coffee"); drop it so it isn't said twice.
+const ownTitle = title.replace(new RegExp(`\\s*[—|-]\\s*${SITE_TITLE}$`), '');
+const pageTitle = isHomepage ? SITE_TITLE : `${ownTitle} | ${SITE_TITLE}`;
 
 // Breadcrumb data from URL path. A segment with no page of its own is left out, so every crumb
 // resolves: the category pages read Home › Blog › Brewing, since /blog/category/ has no index
