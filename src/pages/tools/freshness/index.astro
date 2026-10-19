@@ -13,7 +13,7 @@ import FreshnessTimeline from '../../../components/coffee/FreshnessTimeline.svel
 import { freshnessStages, SOURCES } from '../../../lib/coffee/index.ts';
 
 const title = 'Coffee Freshness: How Long Do Coffee Beans Last?';
-const description = 'Enter the roast date from the bag and see where your beans are: still resting, at their peak, or fading. Peak dates, storage and freezing advice for filter and espresso.';
+const description = 'Enter the roast date from the bag and see where your beans are: very fresh, at their peak or fading, and for espresso whether they're still resting. Peak dates, storage and freezing advice for filter and espresso.';
 const filter = freshnessStages('filter');
 ---
 
@@ -33,7 +33,7 @@ const filter = freshnessStages('filter');
 				<a href="/tools/" class="cf-back">← All tools</a>
 				<p class="cf-kicker">Freshness</p>
 				<h1>How fresh are <em>your beans?</em></h1>
-				<p class="cf-lede">Enter the roast date printed on the bag. You'll see whether the coffee is still resting, at its peak or fading, and the dates of its best window.</p>
+				<p class="cf-lede">Enter the roast date printed on the bag. You'll see whether the coffee is very fresh, at its peak or fading (and, for espresso, whether it's still resting), with the dates of its best window.</p>
 			</section>
 			<section class="cf-tool" aria-label="Freshness tracker"><FreshnessTimeline client:load /></section>
 
