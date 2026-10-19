@@ -551,7 +551,7 @@
   .seg button[aria-pressed='true'], .chips button[aria-pressed='true'] { background: var(--ink); color: #f3ede3; border-color: var(--ink); }
   .fld { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
   .row { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
-  .check { display: flex; gap: 8px; align-items: center; margin-bottom: 18px; font-size: 14.5px; }
+  .check { display: flex; gap: 8px; align-items: center; min-height: 24px; margin-bottom: 16px; font-size: 14.5px; }
   .check input { width: 18px; height: 18px; }
   .go { appearance: none; border: 0; background: var(--ink); color: #f3ede3; border-radius: 999px; padding: 11px 22px; font: 600 15px/1 var(--cf-sans); cursor: pointer; min-height: 44px; margin-bottom: 12px; }
   .ghost { appearance: none; border: 1px solid var(--rule); background: #fff; color: var(--ink-2); border-radius: 999px; padding: 10px 15px; font: 500 14px/1 var(--cf-sans); cursor: pointer; min-height: 42px; }

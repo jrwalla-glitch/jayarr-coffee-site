@@ -953,7 +953,9 @@
   .notethumb { display: none; }
   .lfam h3 { font: 400 26px/1.1 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; margin: 14px 0 4px; display: flex; gap: 10px; align-items: center; }
   .lgroup { font: 600 13px/1.3 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; color: var(--ink-2); margin: 10px 0 6px; }
-  .gbtn { display: block; appearance: none; border: 0; background: none; padding: 2px 0; cursor: pointer; text-align: left; }
+  /* 24 px tall to tap (WCAG 2.2 target size): the extra padding below the name comes out of the gap to the chips,
+     so neither the name nor the chips move. */
+  .gbtn { display: block; appearance: none; border: 0; background: none; padding: 2px 0 6px; margin: 10px 0 2px; cursor: pointer; text-align: left; }
   .gbtn.on { color: var(--ink); }
   .gbtn.on::before { content: ''; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--crema); margin-right: 7px; vertical-align: 1px; }
   .inl { appearance: none; border: 0; background: none; padding: 0; font: inherit; color: var(--crema-deep); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }

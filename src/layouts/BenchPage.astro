@@ -57,7 +57,8 @@ const { title, description, kicker, lede, back, schema = [], breadcrumbs = true,
   .bp-page main { color: #2a1d15; }
   .bp-intro { max-width: 1180px; margin: 0 auto; padding: 116px 24px 20px; }
   .bp-intro.wide, .bp-tool.wide { max-width: 1320px; }
-  .bp-back { font: 500 12px/1 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; text-decoration: none; }
+  /* 24 px tall to tap; the negative margin keeps the intro where it was. */
+  .bp-back { font: 500 12px/1 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; text-decoration: none; display: inline-block; padding: 6px 0; margin: -6px 0; }
   .bp-back:hover { color: #8f5d22; }
   .bp-kicker { font: 500 12px/1 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .14em; text-transform: uppercase; color: #8f5d22; margin: 24px 0 0; }
   .bp-intro h1 { text-wrap: balance; font: 400 clamp(40px, 6vw, 68px)/.98 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; letter-spacing: -.01em; margin: 10px 0 12px; color: #2a1d15; }
