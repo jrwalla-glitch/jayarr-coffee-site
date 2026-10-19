@@ -100,10 +100,16 @@ const breadcrumbSchema = {
 <HydrationWatch />
 
 <!-- Vercel Web Analytics: the script exists only where Vercel serves the site (jayarr.coffee and its
-     *.vercel.app previews), so other hosts don't request a path that 404s. -->
+     *.vercel.app previews), so other hosts don't request a path that 404s. Every event's address loses its
+     query string and hash before it's sent (beforeSend, in the queue form Vercel documents for a plain
+     script tag), so a shared tool link's settings never reach Vercel. -->
 <script is:inline>
-	// No global named `va`: that's the name Vercel's own script uses for its queue.
 	if (location.hostname === 'jayarr.coffee' || /\.vercel\.app$/.test(location.hostname)) {
+		window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+		window.va('beforeSend', function (event) {
+			var u = new URL(event.url, location.href);
+			return Object.assign({}, event, { url: u.origin + u.pathname });
+		});
 		(function () {
 			var s = document.createElement('script');
 			s.defer = true;

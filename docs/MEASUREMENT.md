@@ -18,19 +18,30 @@ What the site measures, what it deliberately doesn't, how to read the numbers gi
   | `merchant_host` | `amazon.com`, `nespresso.com` | The link's hostname without `www.`. Never the path or query, so never the product, the Amazon search words or the affiliate tag. |
   | `page_path` | `/tools/nespresso-pods/` | The path of the page the click came from, without its query string. |
 
-**Vercel Web Analytics**, loaded only on `jayarr.coffee` and `*.vercel.app` (the script exists only where Vercel serves the site). It counts page views on Vercel's side; see Vercel's documentation for exactly what it collects. The site sends it no custom events.
+**Vercel Web Analytics**, loaded only on `jayarr.coffee` and `*.vercel.app` (the script exists only where Vercel serves the site). The site sends it no custom events. Per Vercel's privacy page, each page view can store the URL, the referrer, filtered query parameters, rough geolocation, device OS, browser and device type, with visitors told apart by a hash that's discarded after 24 hours and no cookies.
+
+- **The address goes without its query string or hash.** Before the script loads, BaseHead registers a `beforeSend` hook through the queue Vercel documents for a plain script tag (`window.va('beforeSend', …)`, queued in `window.vaq`). It rewrites every event's `url` to the page's origin and path: `https://jayarr.coffee/tools/brew-ratio/?method=espresso&dose=18#steps` is sent as `https://jayarr.coffee/tools/brew-ratio/`. So a shared tool link's settings don't reach Vercel through the page address.
+- **The referrer is a separate field, and `beforeSend` can't change it.** When a reader moves from one jayarr.coffee page to another, the browser's referrer is the previous page's full address, query string included, and Vercel can store it. So a tool's settings can still reach Vercel as the *next* page's referrer. Closing that needs a referrer policy that sends only the origin within the site (for example `<meta name="referrer" content="strict-origin">` in BaseHead). That also trims the internal referrers GA sees; it's a decision for John and hasn't been made.
 
 ## What isn't measured
 
-- No query strings anywhere: not in page views, referrers or events.
-- No tool inputs or results: no recipes, doses, roast dates, grinder choices, capsules, tasting notes or caffeine entries, and nothing about pregnancy.
+- No query strings in the page addresses sent to GA (`page_location`, `page_referrer`) or to Vercel (`url`), or in `outbound_click`. Two exceptions remain until they're dealt with: the GA settings below, and Vercel's referrer field above.
+- No tool inputs or results in anything the site's own code sends: no recipes, doses, roast dates, grinder choices, capsules, tasting notes or caffeine entries, and nothing about pregnancy.
 - No site-search text.
 - Nothing kept in the browser's local storage (saved recipes, the caffeine diary, the tasting card, the pod flight) ever leaves the device.
 - No user IDs, emails or other personal data.
 - No clicks on internal links, research sources (doi.org, the SCA, USDA and so on), roasters, sister sites or YouTube.
-- Nothing from local or preview builds.
+- Nothing from local or preview builds to GA, and nothing from local builds to Vercel.
 
-**One GA setting to check (John, GA Admin → Data streams → Web → Enhanced measurement).** If "Outbound clicks" is on, GA also sends its own automatic `click` event for every link off the site, with the full `link_url`, query string included (for Amazon that is the search words and the tag). That is the opposite of this plan; switch "Outbound clicks" off so `outbound_click` is the only outbound signal. "Site search" reads search parameters from the address bar; the site's search doesn't put the query in the address, so it records nothing either way. This file can't see the property's settings, so they haven't been checked.
+## Required GA admin steps (John)
+
+GA4's enhanced measurement runs inside gtag.js, outside the site's code, and three of its settings send full addresses. **Until they're off, query strings and tool settings do reach GA**, whatever the site's code strips. In GA Admin → Data streams → Web stream → Enhanced measurement:
+
+1. **Page views → Show advanced settings → turn off "Page changes based on browser history events".** Every tool rewrites the address as it's used (`history.replaceState`, with its settings in the query string); with this on, GA can log those as extra page views with the full address.
+2. **Turn off "Outbound clicks".** It sends its own `click` event with the full `link_url`, query string included (for Amazon, the search words and the tag). `outbound_click` replaces it.
+3. **Turn off user-provided data collection** (Admin → Data collection and modification → Data collection). The site collects no such data and doesn't want GA trying to.
+
+"Site search" reads search parameters from the address; the site's search doesn't put the query in the address, so it records nothing either way. This file can't see the property's settings: none of the three has been checked.
 
 ## Reading the numbers: bots
 
@@ -50,8 +61,9 @@ What the site measures, what it deliberately doesn't, how to read the numbers gi
 3. DebugView should show two `outbound_click` events, with `merchant_host` `nespresso.com` and `amazon.com`, and `page_path` `/tools/nespresso-pods/`, and nothing else in their parameters.
 4. A link to a source (a doi.org reference in an article) should send no event.
 5. To report on the parameters, register `merchant_host` and `page_path` as event-scoped custom dimensions (**Admin → Custom definitions**). Until they're registered, GA keeps the events but doesn't show those parameters in standard reports.
+6. In Vercel → the project → Analytics, open a tool page through a shared link (for example the Brew Guide with `?method=espresso&dose=18`); after a few minutes the page list should show `/tools/brew-ratio/` with no query parameters.
 
-Locally, `tool_wave_f_check.mjs` asserts that on `127.0.0.1` a click on a sponsored link sends no request and creates no `dataLayer`, and that on a simulated `jayarr.coffee` the same click records exactly one `outbound_click` with the merchant host and the page path, while a source link and an internal link record nothing.
+Locally, `tool_wave_f_check.mjs` asserts that on `127.0.0.1` a click on a sponsored link sends no request and creates no `dataLayer`, and that on a simulated `jayarr.coffee` the same click records exactly one `outbound_click` with the merchant host and the page path, while a source link and an internal link record nothing. A stand-in for Vercel's script runs the page's `beforeSend` and checks that the page view's `url` has no query string or hash; nothing is sent to Vercel from a local run.
 
 ## What the events can and can't attribute
 
