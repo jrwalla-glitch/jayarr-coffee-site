@@ -3,6 +3,7 @@
   import podData from '../../data/nespressoPods.json';
   import { catalog, sizeRows, filterPods, wall, tryAlso, similar, podFromParam, cleanFlight, rangeOf, buySearch, blendText, onSale, sizeName, STATUS_NOTE, LINES, ROASTS, AROMA_FAMILIES } from '../../lib/coffee/pods.ts';
   import type { Line, Pod, Roast, RawPod, SizeRow } from '../../lib/coffee/pods.ts';
+  import { readLocal, writeLocal, canStore } from '../../lib/storage.ts';
 
   // The capsule wall: pick your machine, then every capsule it takes, by cup size and intensity.
   // Picking one pours its cup beside the system's other sizes. Every cup drawing on the page uses
@@ -59,6 +60,8 @@
   let flightPods = $derived(flight.map((id) => pods.find((p) => p.id === id)).filter((p): p is Pod => !!p && p.line === line).sort((a, b) => (a.intensity ?? 99) - (b.intensity ?? 99)));
   let filtering = $derived(!!query.trim() || roast !== 'all' || family !== 'all' || category !== 'all' || decaf || flavored !== 'any');
 
+  // False when the browser won't keep the machine or the flight: the wall says so, and stops promising it.
+  let storageOk = $state(true);
   function choose(l: Line) {
     if (l !== line) {
       selectedId = null; category = 'all';
@@ -67,7 +70,7 @@
     }
     badLink = false;
     line = l;
-    try { localStorage.setItem('jayarr-pods-machine', l); } catch { /* storage unavailable */ }
+    storageOk = writeLocal('jayarr-pods-machine', l);
   }
   // Set when a suggestion or the flight opens a capsule the filters had hidden: the filters clear, and we say so.
   let cleared = $state<string | null>(null);
@@ -106,7 +109,7 @@
       flight = [...flight, p.id];
     }
     flightFull = null;
-    try { localStorage.setItem('jayarr-pods-flight', JSON.stringify(flight)); } catch { /* storage unavailable */ }
+    storageOk = writeLocal('jayarr-pods-flight', JSON.stringify(flight));
   }
 
   onMount(() => {
@@ -115,7 +118,9 @@
     if (q.get('pod') && !fromLink) badLink = true;
     const l = q.get('line');
     let saved: string | null = null;
-    try { saved = localStorage.getItem('jayarr-pods-machine'); flight = cleanFlight(pods, JSON.parse(localStorage.getItem('jayarr-pods-flight') ?? '[]')); } catch { /* storage unavailable */ }
+    saved = readLocal('jayarr-pods-machine');
+    try { flight = cleanFlight(pods, JSON.parse(readLocal('jayarr-pods-flight') ?? '[]')); } catch { /* unreadable flight */ }
+    storageOk = canStore();
     // A pod in a link decides the system; otherwise the link's line, otherwise your machine from last time.
     if (fromLink) { line = fromLink.line; selectedId = fromLink.id; if (!onSale(fromLink)) includeUnlisted = true; }
     else if (l === 'original' || l === 'vertuo') line = l;
@@ -247,11 +252,12 @@
 {/snippet}
 
 <div class="px">
+  {#if !storageOk}<p class="full badlink" role="status">This browser isn't letting the page save, so your machine and tasting flight last only until you leave. The address bar keeps the machine and capsule you're on: copy that link to come back to them.</p>{/if}
   {#if badLink}<p class="full badlink" role="status">That capsule link didn't match a capsule we list, so nothing is open.{line ? '' : ' Pick your machine to browse.'}</p>{/if}
   {#if !line}
     <div class="ask">
       <h3>Which machine do you have?</h3>
-      <p>Original and Vertuo capsules don't fit each other's machines, so the wall shows one system at a time. Your choice stays on this device.</p>
+      <p>Original and Vertuo capsules don't fit each other's machines, so the wall shows one system at a time.{storageOk ? ' Your choice stays on this device.' : ''}</p>
       <div class="ask-cards">
         {#each LINE_IDS as l (l)}
           <button type="button" class="ask-card" onclick={() => choose(l)}>
@@ -441,7 +447,7 @@
             </ol>
             <p class="quiet small">Brew them one after another into the same kind of cup, with the same milk (or none), and taste from left to right.</p>
           {:else}
-            <p class="quiet small">Add up to three capsules to compare side by side: intensity, roast and the cup each pours. Kept on this device.</p>
+            <p class="quiet small">Add up to three capsules to compare side by side: intensity, roast and the cup each pours.{storageOk ? ' Kept on this device.' : ''}</p>
           {/if}
         </div>
       </aside>

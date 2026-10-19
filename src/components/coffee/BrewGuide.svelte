@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount, untrack } from 'svelte';
   import BrewStage from './BrewStage.svelte';
+  import { readLocal, writeLocal } from '../../lib/storage.ts';
   import {
     GUIDE_METHODS as METHODS, buildRecipe, simulate, encodeBrew, decodeBrew,
     cToF, mlToFlOz, flOzToMl, approxTablespoons,
@@ -214,7 +215,7 @@
   // ── URL state ──
   onMount(() => {
     let store: { saved?: { name: string; q: string }[]; last?: string } = {};
-    try { store = JSON.parse(localStorage.getItem(SAVE_KEY) ?? '{}') ?? {}; } catch { /* storage unavailable */ }
+    try { store = JSON.parse(readLocal(SAVE_KEY) ?? '{}') ?? {}; } catch { /* unreadable save */ }
     if (Array.isArray(store.saved)) saved = store.saved.filter((x) => typeof x?.q === 'string' && decodeBrew(x.q).ok).slice(0, 8);
     const d = decodeBrew(location.search);
     if (d.ok) {
@@ -284,7 +285,9 @@
   // on every visit (Opus r4). The strength itself is part of the recipe and stays.
   let fullState = $derived({ ...input, units, ...(adjust === 'hotter' || adjust === 'cooler' ? { adjust } : {}) });
   let savedNow = $derived(saved.some((x) => x.q === encodeBrew(fullState)));
-  function persist() { try { localStorage.setItem(SAVE_KEY, JSON.stringify({ saved, last: encodeBrew(fullState) })); } catch { /* storage unavailable */ } }
+  // When the browser refuses the write, nothing says "Saved": the list is kept for this visit only, and says so.
+  let storageOk = $state(true);
+  function persist() { storageOk = writeLocal(SAVE_KEY, JSON.stringify({ saved, last: encodeBrew(fullState) })); }
   function saveRecipe() {
     if (!recipe) return;
     const amount = method === 'espresso' ? `${fmtG(recipe.doseG)} g in, ${r0(recipe.yieldG ?? 0)} g out` : byDose || 'doseG' in target ? `${fmtG(recipe.doseG)} g coffee` : cupText;
@@ -480,12 +483,13 @@
         <button type="button" class="ghost" onclick={() => play(method === 'cold-brew' ? 3600 : 8)}>{method === 'cold-brew' ? 'Watch the steep' : 'Watch it fast'}</button>
         {#if mode === 'brew'}<button type="button" class="ghost" onclick={reset}>Reset</button>{/if}
         <button type="button" class="ghost" onclick={share}>{copied ? 'Link copied' : 'Share'}</button>
-        <button type="button" class="ghost" onclick={saveRecipe} disabled={savedNow}>{savedNow ? 'Saved' : 'Save'}</button>
+        <button type="button" class="ghost" onclick={saveRecipe} disabled={savedNow}>{savedNow ? (storageOk ? 'Saved' : 'Kept for now') : 'Save'}</button>
         <button type="button" class="ghost" onclick={() => window.print()}>Print</button>
       </div>
+      {#if !storageOk}<p class="savenote" role="status">This browser isn't letting the page save, so recipes kept here last only until you leave. Share copies this recipe's link instead.</p>{/if}
       {#if saved.length}
-        <div class="saved" role="group" aria-label="Your saved recipes, on this device">
-          <span class="lbl">Saved on this device</span>
+        <div class="saved" role="group" aria-label={storageOk ? 'Your saved recipes, on this device' : 'Your recipes, until you leave'}>
+          <span class="lbl">{storageOk ? 'Saved on this device' : 'Kept until you leave'}</span>
           {#each saved as sv, k (sv.q)}
             <span class="sv"><button type="button" class="load" onclick={() => loadSaved(sv.q)}>{sv.name}</button><button type="button" class="x" aria-label={`Delete ${sv.name}`} onclick={() => removeSaved(k)}>×</button></span>
           {/each}
@@ -556,6 +560,7 @@
   .hint { font-size: 13.5px; color: #75655a; margin: 6px 0 0; }
   .mokahint { align-self: flex-end; max-width: 19.2em; /* 32ch of Plex */ }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .savenote { margin: 0; font-size: 13.5px; color: var(--crema-deep); background: #fff8ec; border-radius: 8px; padding: 7px 10px; }
   .saved { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 10px; }
   .saved .lbl { width: 100%; }
   .sv { display: inline-flex; align-items: center; border: 1px solid var(--rule, #d9cdbd); border-radius: 999px; background: #fff; }

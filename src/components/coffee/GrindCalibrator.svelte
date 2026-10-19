@@ -3,6 +3,7 @@
   import data from '../../data/grinders.json';
   import { GROUPS, settingsFor, groupsFor, groupFromParam, rangeText, headline, countHeadline, turnsLine, grinderById } from '../../lib/coffee/grinders.ts';
   import type { Grinder, Group, Setting } from '../../lib/coffee/grinders.ts';
+  import { readLocal, writeLocal } from '../../lib/storage.ts';
 
   // Your grinder's own control, drawn and turned to the maker's starting setting for your brew.
   // Every number is the maker's, in the maker's unit; where the maker prints only a range, the
@@ -35,6 +36,8 @@
   let who = $derived(s?.provenance === 'documented-secondary' ? 'source' : 'maker');
   let brand = $derived(g.name.split(' ')[0]);
 
+  // False when the browser won't remember your grinder: the page says so rather than forgetting quietly.
+  let storageOk = $state(true);
   function pickGrinder(id: string) {
     grinderId = id;
     pickKey = null;
@@ -44,14 +47,14 @@
     const gg = grinderById(grinders, id);
     // Keep the method if this grinder's maker publishes it; otherwise the first one it does, and say so (Muse WB1 G-3).
     if (gg && !settingsFor(gg, group).length) { askedFor = group; group = groupsFor(gg)[0]?.id ?? group; }
-    try { localStorage.setItem('jayarr-grinder', id); } catch { /* storage unavailable */ }
+    storageOk = writeLocal('jayarr-grinder', id);
   }
   const pickGroup = (id: Group) => { group = id; pickKey = null; askedFor = null; badMethod = false; badSetting = false; };
   const pickRow = (r: Setting) => { group = r.group; pickKey = r.key; askedFor = null; badMethod = false; badSetting = false; };
   onMount(() => {
     const q = new URLSearchParams(location.search);
     let saved: string | null = null;
-    try { saved = localStorage.getItem('jayarr-grinder'); } catch { /* storage unavailable */ }
+    saved = readLocal('jayarr-grinder');
     const id = q.get('grinder') ?? saved;
     if (id && grinderById(grinders, id)) grinderId = id;
     else if (q.get('grinder')) badGrinder = true;
@@ -208,6 +211,7 @@
       </select>
     </label>
     {#if g.applies}<p class="applies">{g.applies}</p>{/if}
+    {#if !storageOk}<p class="savenote" role="status">This browser isn't letting the page save, so it won't remember your grinder after you leave. The address bar keeps it: copy that link to come back to it.</p>{/if}
     <div class="fld"><span class="lbl">Brewing</span>
       <div class="chips" role="group" aria-label="Brew method">
         {#each GROUPS as m (m.id)}
@@ -524,6 +528,7 @@
   .turnsl em { display: block; font: 400 13.5px 'IBM Plex Sans', sans-serif; font-style: normal; color: var(--ink-3); }
   .mv small { display: block; font: 400 11px/1.25 'IBM Plex Sans', sans-serif; color: var(--ink-3); }
   .snote { margin: 8px 0 0; padding: 8px 12px; border-radius: 8px; background: var(--t-tint-2, #f6efe5); color: var(--ink); font-size: 14.5px; }
+  .savenote { margin: 0; padding: 7px 10px; border-radius: 8px; background: var(--t-tint, #fff3e0); border: 1px solid var(--t-crema-tint, #e9c48f); color: var(--ink); font-size: 13.5px; }
   .applies { margin: -6px 0 0; font-size: 13px; color: var(--ink-3); }
   .more { margin: 10px 0 0; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
   .morek { margin: 0; font: 500 10.5px 'IBM Plex Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); }

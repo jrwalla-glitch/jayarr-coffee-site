@@ -2,6 +2,7 @@
   import { onMount, tick } from 'svelte';
   import { Tween } from 'svelte/motion';
   import { cubicOut } from 'svelte/easing';
+  import { readLocal, writeLocal, canStore } from '../../lib/storage.ts';
   import {
     FAMILIES, OFF_GROUPS, ALL_NOTES, MAX_PINS, noteById, familyById, groupById, exercise, evidenceFor,
     compareCard, encodeCard, decodeCard, notesInText, familiesInText, genericIn, genericMeans, PROCESS_LABEL, ROAST_LABEL, ROASTER_SAMPLE,
@@ -186,12 +187,14 @@
 
   // While a shared card is shown unchanged, the reader's own card stays the stored one, Save included.
   let ownCurrent: { pins: string[]; bag: string } | null = null;
+  // False when the browser won't keep the card: then nothing says "saved" or "kept on this device".
+  let storageOk = $state(true);
   // "Unchanged" is judged here, from the card itself, not from linkCard (another effect clears that, and
   // may run after this one): the first edit to a shared card becomes the reader's own (review r6, Opus).
   function persist() {
     const shared = linkCard !== null && encodeCard({ pins, bag }) === linkCard;
     const current = shared ? ownCurrent ?? { pins: [], bag: '' } : { pins, bag };
-    try { localStorage.setItem(STORE, JSON.stringify({ current, saved })); } catch { /* storage unavailable */ }
+    storageOk = writeLocal(STORE, JSON.stringify({ current, saved }));
   }
   function saveCard() {
     if (!pins.length) return;
@@ -222,12 +225,13 @@
       pendingWhy = why;
     }
     try {
-      const s = JSON.parse(localStorage.getItem(STORE) ?? 'null');
+      const s = JSON.parse(readLocal(STORE) ?? 'null');
       if (s && Array.isArray(s.saved)) saved = s.saved.filter((c: { pins?: unknown }) => Array.isArray(c?.pins)).slice(0, 12);
       // Someone else's link never replaces your own card until you change it.
       if (fromLink && s?.current && Array.isArray(s.current.pins)) ownCurrent = { pins: s.current.pins, bag: typeof s.current.bag === 'string' ? s.current.bag : '' };
       if (!fromLink && s?.current && Array.isArray(s.current.pins)) { pins = s.current.pins.filter((p: string) => !!noteById(p)).slice(0, MAX_PINS); bag = typeof s.current.bag === 'string' ? s.current.bag : ''; }
-    } catch { /* storage unavailable */ }
+    } catch { /* unreadable card */ }
+    storageOk = canStore();
     if (fromLink) {
       // Say it's a shared card only when it holds something, and mention the reader's own only if they have one.
       const hasOwn = !!ownCurrent && (ownCurrent.pins.length > 0 || ownCurrent.bag.trim().length > 0);
@@ -714,7 +718,7 @@
           <div class="kinds">
             <p><b>Roasters say</b> Words counted from {lots.length} lot descriptions in {ROASTER_SAMPLE.label}.</p>
             <p><b>In general</b> Broad tendencies; their sources are listed at the foot of the page.</p>
-            <p><b>You noticed</b> Your own tasting card, kept on this device.</p>
+            <p><b>You noticed</b> Your own tasting card, {storageOk ? 'kept on this device' : 'kept until you leave'}.</p>
           </div>
         </div>
       {:else if !note}
@@ -849,14 +853,15 @@
       {:else if bag.trim()}
         <p class="quiet small">{bagPhrases.some(setAside) ? `Only flaw words, which a bag's reading sets aside (${bagPhrases.filter(setAside).map((t) => `“${t}”`).join(', ')}). Try the main fruit or sweet word on the bag.` : 'None of those words match a note on the wheel yet. Try the main fruit or sweet word on the bag.'}</p>
       {/if}
+      {#if !storageOk}<p class="savenote" role="status">This browser isn't letting the page save, so this card lasts only until you leave. Copy its link to keep it.</p>{/if}
       <div class="cardactions">
-        <button type="button" class="primary" disabled={!pins.length} onclick={saveCard}>Save on this device</button>
+        <button type="button" class="primary" disabled={!pins.length} onclick={saveCard}>{storageOk ? 'Save on this device' : 'Keep for this visit'}</button>
         <button type="button" class="ghost" disabled={!pins.length && !bag.trim()} onclick={share}>{copied ? 'Link copied' : 'Copy link'}</button>
         {#if pins.length || bag}<button type="button" class="linkish" onclick={newCard}>New card</button>{/if}
       </div>
       {#if saved.length}
         <details class="saved">
-          <summary>Saved cards ({saved.length})</summary>
+          <summary>{storageOk ? 'Saved cards' : 'Cards for this visit'} ({saved.length})</summary>
           <ul>
             {#each saved as c, i (c.made + c.pins.join() + i)}
               <li><button type="button" class="linkish" onclick={() => loadCard(c)}>{c.pins.map((p) => noteById(p)?.label ?? p).join(', ')}</button> <span class="mono quiet">{c.made}</span><button type="button" class="x" aria-label="Delete this saved card" onclick={() => removeSaved(i)}>×</button></li>
@@ -1016,6 +1021,7 @@
   .cmp { margin: 12px 0 0; padding: 10px 14px; background: #f6efe4; border-radius: 12px; max-width: 520px; }
   .cmp p { margin: 0 0 4px; font-size: 15px; }
   .cmp b { font: 500 11px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--crema-deep); margin-right: 6px; }
+  .savenote { margin: 12px 0 0; font-size: 13.5px; color: var(--crema-deep); background: #fff8ec; border-radius: 8px; padding: 7px 10px; }
   .cardactions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 14px; }
   .saved { margin-top: 12px; font-size: 14.5px; }
   .saved summary { cursor: pointer; color: var(--ink-2); }
