@@ -29,9 +29,10 @@ The texture words are the quickest guide. The micron (µm) ranges are our Grind 
   subtitle="Texture and illustrative particle-size band, finest first"
   scaleLabel={{ start: "Finer", end: "Coarser" }}
   items={[
-    { label: "Turkish coffee", description: "Extra fine, like flour", value: "about 100–200 µm", dotScale: 0.14 },
+    { label: "Turkish coffee", description: "Extra fine, like flour", value: "about 75–125 µm", dotScale: 0.1 },
     { label: "Espresso", description: "Fine, like powdered sugar", value: "about 200–300 µm", dotScale: 0.24 },
     { label: "Moka pot", description: "Medium-fine, coarser than espresso; like fine sand", value: "about 300–450 µm", dotScale: 0.36 },
+    { label: "Phin", description: "Fine, like sand; the moka pot's band, our estimate", value: "about 300–450 µm", dotScale: 0.36 },
     { label: "AeroPress", description: "Medium-fine, like fine sand", value: "about 350–500 µm", dotScale: 0.4 },
     { label: "V60", description: "Medium-fine, like table salt", value: "about 450–650 µm", dotScale: 0.52 },
     { label: "Kalita Wave", description: "Medium, like sand", value: "about 500–700 µm", dotScale: 0.57 },
@@ -40,7 +41,7 @@ The texture words are the quickest guide. The micron (µm) ranges are our Grind 
     { label: "Cold brew", description: "Coarse, like kosher salt", value: "about 800–1,100 µm", dotScale: 0.9 },
     { label: "French press", description: "Extra coarse, like coarse sea salt", value: "about 900–1,200 µm", dotScale: 1 }
   ]}
-  footnote="Bands from our Grind Guide and Brew Guide; illustrative. Brew times below are the Brew Guide's recipe targets."
+  footnote="Bands from our Grind Guide and Brew Guide; illustrative, except Turkish coffee's, the average particle size in Türkiye's registration (TÜRKPATENT). The phin borrows the moka pot's band, because Nguyen Coffee Supply likens the two grinds. Brew times below are the Brew Guide's recipe targets."
 />
 
 <ToolCallout tool="grind" preset={{ method: 'v60' }} cta="Open the Grind Guide on a V60" context="Opens the Grind Guide on a V60. Pick any brewer to see its band on a micron ruler, an illustrative magnified view of the grounds, and the signs that the grind is too fine or too coarse for the Brew Guide's recipe. Switch to Blade grinder to see the dust and large chunks a blade makes." />
@@ -97,6 +98,8 @@ The roast shifts the start. The Brew Guide puts light roasts in the finer half o
 
 ## Sources
 
+- Türk Patent ve Marka Kurumu (TÜRKPATENT), traditional product name registration no. G8, *Türk Kahvesi / Turkish Coffee*, registered March 10, 2026 (the ground coffee's average particle size), in Turkish: [registration (PDF)](https://ci.turkpatent.gov.tr/Files/GeographicalSigns/e6a9967f-4501-40fb-a040-4675c9600fb6.pdf)
+- Nguyen Coffee Supply, "The Phin Filter: Vietnam's Coffee Maker," by Alex Nguyen, June 8, 2021 (the phin grind compared with a moka pot's), checked October 18, 2026: [nguyencoffeesupply.com](https://nguyencoffeesupply.com/blogs/news/what-is-the-vietnamese-phin-filter)
 - Baratza, *Virtuoso+ Operations Manual*, v1.6, January 2023, pp. 5–6, "Adjusting the Grind Size" and the suggested-settings chart: [Baratza manual (PDF)](https://breville-production-aem-assets.s3.us-west-2.amazonaws.com/ZCG587/Virtuoso%2B+Documents/manual-virtuosoplus-en-v1-6.pdf)
 - AeroPress, "How To Use AeroPress," Signature Brew instructions, checked October 15, 2026: [aeropress.com](https://aeropress.com/instructions)
 - Jonathan Gagné, "Why Can't we Grind Coffee Finer for Pour Over?", *Coffee ad Astra*, April 2, 2020: [coffeeadastra.com](https://coffeeadastra.com/2020/04/02/why-cant-we-grind-coffee-finer-for-pour-over/)
