@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { DRINKS, drinkById, refById, compareRefs, mlToFlOz } from '../../lib/coffee/index.ts';
   import type { Drink, DrinkRef, Layer } from '../../lib/coffee/index.ts';
+  import type { Component } from 'svelte';
 
   // Two drinks on one counter, drawn to one scale. Schematic: real drinks mix, foam drains,
   // crema varies. Unpublished amounts are drawn dashed and labelled, never guessed.
@@ -49,27 +50,31 @@
 
   function pick(drinkId: string) {
     const d = drinkById(drinkId)!;
-    if (picking === 'a') { aId = d.refs[0].id; picking = 'b'; } else { bId = d.refs[0].id; picking = 'a'; }
+    // "In your cup" follows the drink you just picked.
+    if (picking === 'a') { aId = d.refs[0].id; picking = 'b'; fitSide = 'a'; } else { bId = d.refs[0].id; picking = 'a'; fitSide = 'b'; }
   }
 
   // ── geometry: both vessels share one ml→size scale ──
-  // The drawing is laid out for its real width: on a phone it uses a narrower canvas and a colour key
+  // The drawing is laid out for its real width: on a phone it uses a narrower canvas and a color key
   // instead of leader labels, so text stays readable rather than shrinking with the SVG.
-  const BASE = 290, H_AVAIL = 210;
-  let cw = $state(900);
-  let narrow = $derived(cw < 640);
-  let VW = $derived(narrow ? 440 : 900);
-  let CX = $derived(narrow ? [108, 322] : [270, 630]);
+  // Phones (Wave F r1, C4): the two vessels are packed side by side on a 340-wide canvas, saucers and handles
+  // counted, instead of each keeping a fixed slot on a 440-wide one, so they draw larger. The SVG's box is
+  // sized by CSS from the narrow layout's own aspect ratio (--nr), which the server can work out too, so the
+  // page doesn't shift when the tool loads. The breakpoint is the one the old width rule implied: the tool
+  // box is under 640 px wide below a 690 px viewport.
+  const BASE = 290, H_AVAIL = 210, H_AVAIL_N = 200, NARROW_Q = '(max-width: 689px)';
+  const VW_N = 340, M_N = 6, G_N = 12, LABEL_W = 150;
+  let narrow = $state(false);
   function capOf(r: DrinkRef) { const s = SHAPE[shapeOf(r.vessel.name)]; return r.vessel.capacityMl ? (r.vessel.capacityMl[0] + r.vessel.capacityMl[1]) / 2 : s.cap; }
-  let scale = $derived.by(() => {
-    // size factor so the larger vessel stands about H_AVAIL tall
-    const k = (r: DrinkRef) => { const s = SHAPE[shapeOf(r.vessel.name)]; return s.h * Math.cbrt(capOf(r) / s.cap); };
-    const kw = (r: DrinkRef) => { const s = SHAPE[shapeOf(r.vessel.name)]; return s.w * Math.cbrt(capOf(r) / s.cap); };
-    return Math.min(H_AVAIL / Math.max(k(a), k(b)), (narrow ? 150 : 250) / Math.max(kw(a), kw(b)));
-  });
+  function dims(r: DrinkRef) { const s = SHAPE[shapeOf(r.vessel.name)]; const c = Math.cbrt(capOf(r) / s.cap); return { s, w: s.w * c, h: s.h * c }; }
+  // How far a vessel reaches left and right of its center, per unit of scale (saucer and handle included).
+  function reach(r: DrinkRef) { const { s, w, h } = dims(r); const sau = s.saucer ? w * 0.66 : 0; return { l: Math.max(w / 2, sau), r: Math.max(w / 2 + (s.handle ? h * 0.29 : 0), sau) }; }
 
-  interface Drawn { kind: string; y0: number; y1: number; band?: [number, number]; unknown: boolean; label: string; value: string }
-  function build(r: DrinkRef) {
+  interface Drawn { kind: string; y0: number; y1: number; band?: [number, number]; unknown: boolean; label: string; value: string; shot: string }
+  // A recipe's shots in words, when it gives a plain count ("double shot"); otherwise none.
+  const shotName = (r: DrinkRef) => (r.shots === 'single' || r.shots === 'double' ? `${r.shots} shot` : '');
+  const shotCount = (r: DrinkRef) => (r.shots === 'double' ? 2 : 1);
+  function build(r: DrinkRef, scale: number) {
     const s = SHAPE[shapeOf(r.vessel.name)];
     const f = Math.cbrt(capOf(r) / s.cap) * scale;
     const w = s.w * f, h = s.h * f, cap = capOf(r);
@@ -79,7 +84,8 @@
     // Unpublished layers get a nominal share of the free space so the drawing reads; they stay dashed.
     // Espresso, foam and chocolate get small fixed shares; milk, water or brewed coffee fill the rest.
     const free = Math.max(cap * 0.82 - known, cap * 0.18);
-    const small = (l: Layer) => (l.kind === 'espresso' ? Math.min(30, free * 0.35) : l.kind === 'foam' || l.kind === 'chocolate' || l.kind === 'cream' ? free * 0.12 : 0);
+    // An unpublished shot gets room to read as a shot (C4: Cimbali's double was a sliver); it stays hatched and labeled.
+    const small = (l: Layer) => (l.kind === 'espresso' ? Math.min(30 * shotCount(r), Math.max(free * 0.35, cap * 0.15)) : l.kind === 'foam' || l.kind === 'chocolate' || l.kind === 'cream' ? free * 0.12 : 0);
     const unk = r.layers.filter((l) => l.unspecified);
     const fillers = unk.filter((l) => small(l) === 0).length;
     const rest = Math.max(0, free - unk.reduce((t, l) => t + small(l), 0));
@@ -92,22 +98,65 @@
       const range = l.ml ?? l.g;
       if (range && range[0] !== range[1]) band = [BASE - ((acc - v + range[0]) / cap) * h, BASE - ((acc - v + range[1]) / cap) * h];
       const unit = l.ml ? 'ml' : 'g';
-      const val = range ? (range[0] === range[1] ? `${range[0]} ${unit}` : `${range[0]}–${range[1]} ${unit}`) : l.amount ?? 'amount not published';
-      return { kind: l.kind, y0, y1, band, unknown: !!l.unspecified, label: NAME[l.kind], value: val };
+      const shotWord = l.kind === 'espresso' && l.unspecified ? shotName(r) : '';
+      // An unpublished shot is labeled by its count: "double shot / volume not published" (C4).
+      const val = range ? (range[0] === range[1] ? `${range[0]} ${unit}` : `${range[0]}–${range[1]} ${unit}`) : l.amount ?? (shotWord ? 'volume not published' : 'amount not published');
+      return { kind: l.kind, y0, y1, band, unknown: !!l.unspecified, label: shotWord || NAME[l.kind], value: val, shot: shotWord };
     });
     const foamPx = r.foamCm ? ((r.foamCm[0] + r.foamCm[1]) / 2 / s.hCm) * h : 0;
     return { s, w, h, cap, layers, byMass, foamPx, shape: shapeOf(r.vessel.name) };
   }
-  let A = $derived(build(a));
-  let B = $derived(build(b));
-  // Widen the canvas when the outside labels need room (a big mug's handle pushes them right).
-  const LABEL_W = 150;
-  let vLeft = $derived(narrow ? 0 : Math.min(0, CX[0] - A.w / 2 - 34 - LABEL_W));
-  let vRight = $derived(narrow ? VW : Math.max(VW, CX[1] + B.w / 2 + (B.s.handle ? B.h * 0.27 + 22 : 0) + 34 + LABEL_W));
-  // Crop the canvas to the taller vessel so short drinks don't float in empty space.
-  let vTop = $derived(Math.min(BASE - Math.max(A.h, B.h) - 26, BASE - 120));
+  function layoutFor(isNarrow: boolean, ra: DrinkRef, rb: DrinkRef, la: [string, string], lb: [string, string]) {
+    const ha = dims(ra).h, hb = dims(rb).h;
+    let VW = 900, CX: [number, number] = [270, 630], scale: number, LX: [number, number] = [270, 630];
+    if (!isNarrow) scale = Math.min(H_AVAIL / Math.max(ha, hb), 250 / Math.max(dims(ra).w, dims(rb).w));
+    else {
+      VW = VW_N;
+      const pa = reach(ra), pb = reach(rb), span = pa.l + pa.r + pb.l + pb.r;
+      scale = Math.min(H_AVAIL_N / Math.max(ha, hb), (VW - 2 * M_N - G_N) / span);
+      // When height limits the size, the spare width is split evenly between the margins and the gap.
+      const spare = (VW - 2 * M_N - G_N - span * scale) / 3;
+      CX = [M_N + spare + pa.l * scale, VW - M_N - spare - pb.r * scale];
+      // Names sit under their vessels, nudged in from the edges and apart from each other. Estimated widths:
+      // the 27-unit serif name averages about 0.45 em a letter; the 12.5-unit Plex Mono label is 0.6 em.
+      const half = ([name, sub]: [string, string]) => Math.max(name.length * 0.45 * 27, sub.length * 0.6 * 12.5) / 2 + 2;
+      const wa = half(la), wb = half(lb), d = wa + wb + 8;
+      LX = [Math.min(Math.max(CX[0], wa + 2), VW - wa - 2), Math.min(Math.max(CX[1], wb + 2), VW - wb - 2)];
+      if (LX[1] - LX[0] < d) { const mid = (LX[0] + LX[1]) / 2; LX = [Math.max(mid - d / 2, wa + 2), Math.min(mid + d / 2, VW - wb - 2)]; }
+    }
+    const A = build(ra, scale), B = build(rb, scale);
+    const vLeft = isNarrow ? 0 : Math.min(0, CX[0] - A.w / 2 - 34 - LABEL_W);
+    const vRight = isNarrow ? VW : Math.max(VW, CX[1] + B.w / 2 + (B.s.handle ? B.h * 0.27 + 22 : 0) + 34 + LABEL_W);
+    // Crop the canvas to the taller vessel so short drinks don't float in empty space.
+    const vTop = Math.min(BASE - Math.max(A.h, B.h) - 26, BASE - 120);
+    return { VW, CX, LX, scale, A, B, vLeft, vRight, vTop };
+  }
+  let lay = $derived(layoutFor(narrow, a, b, [da.name, a.label], [db.name, b.label]));
+  let CX = $derived(lay.CX);
+  let LX = $derived(lay.LX);
+  let A = $derived(lay.A);
+  let B = $derived(lay.B);
+  let vLeft = $derived(lay.vLeft);
+  let vRight = $derived(lay.vRight);
+  let vTop = $derived(lay.vTop);
+  // The phone layout's aspect ratio, known on the server too: the CSS sizes the drawing's box with it.
+  let nr = $derived.by(() => { const n = narrow ? lay : layoutFor(true, a, b, [da.name, a.label], [db.name, b.label]); return `${Math.round(n.vRight - n.vLeft)} / ${Math.round(BASE + 76 - n.vTop)}`; });
   let keyKinds = $derived([...new Set([...a.layers, ...b.layers].filter((l) => !l.unspecified).map((l) => l.kind))]);
   let hasUnknown = $derived([...a.layers, ...b.layers].some((l) => l.unspecified));
+
+  // ── In your cup (Wave F r1, C4): one of the two recipes, scaled to the cup you have ──
+  // The panel (CupFit.svelte; the scaling rules are in lib/coffee/cupFit.ts) opens from a button and loads
+  // then, so the tool's first load doesn't carry it; pointing at or tabbing to the button fetches it early.
+  // Which drink, the cup and the units live here, so they go in the link.
+  let units = $state<'us' | 'metric'>('us');
+  let cupMl = $state<number | null>(null);
+  let fitSide = $state<'a' | 'b'>('a');
+  let fitOpen = $state(false), fitFocus = $state(false);
+  let CupFit = $state<Component<any> | null>(null);
+  function loadFit() { if (!CupFit) import('./CupFit.svelte').then((m) => (CupFit = m.default)).catch(() => (fitOpen = false)); }
+  function openFit(byUser: boolean) { fitOpen = true; fitFocus = byUser; loadFit(); }
+  function setRef(id: string) { if (fitSide === 'a') aId = id; else bId = id; }
+  let fitText = $state('');
 
   function outline(cx: number, g: ReturnType<typeof build>) {
     const top = BASE - g.h, wt = g.w / 2, wb = (g.w * g.s.taper) / 2;
@@ -132,9 +181,44 @@
     if (qa && refById(qa)) aId = qa;
     if (qb && refById(qb)) bId = qb;
     if (!qa && q.get('drink') && drinkById(q.get('drink')!)) aId = drinkById(q.get('drink')!)!.refs[0].id;
+    // A shared cup: its size in ml, which drink it's for, and the units it was read in.
+    if (q.get('units') === 'metric') units = 'metric';
+    if (q.get('fit') === 'b') fitSide = 'b';
+    const c = Number(q.get('cup'));
+    if (c >= 30 && c <= 1000) { cupMl = c; openFit(false); }
+    const mq = matchMedia(NARROW_Q);
+    narrow = mq.matches;
+    mq.addEventListener('change', (e) => (narrow = e.matches));
     mounted = true;
   });
-  $effect(() => { if (!mounted) return; history.replaceState(history.state, '', `${location.pathname}?a=${aId}&b=${bId}`); });
+  $effect(() => {
+    if (!mounted) return;
+    const q = new URLSearchParams({ a: aId, b: bId });
+    if (cupMl) { q.set('cup', String(Math.round(cupMl))); q.set('fit', fitSide); }
+    if (units === 'metric') q.set('units', 'metric');
+    history.replaceState(history.state, '', `${location.pathname}?${q}`);
+  });
+
+  // "The difference" for screen readers: one polite sentence once the choice settles, not one per tap.
+  // The comparison already on screen when the page opens isn't read out; each later change is.
+  let said = $state('');
+  let saidFit = $state('');
+  let quiet = true, quietFit = true;
+  // The cup result too: read once it settles, and not for a cup that arrived with a shared link.
+  $effect(() => {
+    const s = cupMl ? fitText : '';
+    if (!mounted) return;
+    if (quietFit) { quietFit = false; return; }
+    const t = setTimeout(() => (saidFit = s), 700);
+    return () => clearTimeout(t);
+  });
+  $effect(() => {
+    const s = `${da.name}, ${a.label}, and ${db.name}, ${b.label}: ${sentence}`;
+    if (!mounted) return;
+    if (quiet) { quiet = false; return; }
+    const t = setTimeout(() => (said = s), 700);
+    return () => clearTimeout(t);
+  });
 </script>
 
 <div class="cd">
@@ -151,8 +235,8 @@
     {/each}
   </div>
 
-  <figure class="counter" bind:clientWidth={cw}>
-    <svg viewBox="{vLeft} {vTop} {vRight - vLeft} {BASE + 76 - vTop}" class:narrow role="img" aria-label={`${da.name} (${a.label}) beside ${db.name} (${b.label}), drawn to the same scale. ${sentence}`}>
+  <figure class="counter">
+    <svg viewBox="{vLeft} {vTop} {vRight - vLeft} {BASE + 76 - vTop}" class:narrow style:--nr={nr} role="img" aria-label={`${da.name} (${a.label}) beside ${db.name} (${b.label}), drawn to the same scale. ${sentence}`}>
       <defs>
         <pattern id="cd-unk" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#f6efe4" /><line x1="0" y1="0" x2="0" y2="8" stroke="#c9b9a3" stroke-width="3" /></pattern>
         <linearGradient id="cd-glass" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".6" /><stop offset=".5" stop-color="#fff" stop-opacity=".05" /><stop offset="1" stop-color="#fff" stop-opacity=".45" /></linearGradient>
@@ -160,8 +244,8 @@
       </defs>
       <rect x={vLeft} y={BASE + 6} width={vRight - vLeft} height="90" fill="url(#cd-wood)" />
       <line x1={vLeft} x2={vRight} y1={BASE + 6} y2={BASE + 6} stroke="#bfa98a" />
-      {#each [{ g: A, r: a, d: da, cx: CX[0], side: -1 }, { g: B, r: b, d: db, cx: CX[1], side: 1 }] as v (v.cx)}
-        {@const clipId = `cd-clip-${v.cx}`}
+      {#each [{ g: A, r: a, d: da, cx: CX[0], lx: LX[0], side: -1 }, { g: B, r: b, d: db, cx: CX[1], lx: LX[1], side: 1 }] as v (v.side)}
+        {@const clipId = `cd-clip-${v.side < 0 ? 'l' : 'r'}`}
         <g class="vessel">
           <clipPath id={clipId}><path d={`${outline(v.cx, v.g)} Z`} /></clipPath>
           {#if v.g.s.saucer}<ellipse cx={v.cx} cy={BASE + 4} rx={v.g.w * 0.66} ry="7" fill="#fbf8f3" stroke="#2a1d15" stroke-width="1.8" />{/if}
@@ -182,7 +266,22 @@
           {#if v.g.s.handle}<path d={`M${v.cx + widthAt(v.g, BASE - v.g.h * 0.75) - 1} ${BASE - v.g.h * 0.75} c ${v.g.h * 0.36} -2, ${v.g.h * 0.36} ${v.g.h * 0.5}, -1 ${v.g.h * 0.5}`} fill="none" stroke="#2a1d15" stroke-width="2" />{/if}
           {#if v.g.shape === 'coupe'}<path d={`M${v.cx} ${BASE - 12} L${v.cx} ${BASE - 2} M${v.cx - 22} ${BASE} L${v.cx + 22} ${BASE}`} stroke="#2a1d15" stroke-width="2" fill="none" />{/if}
           {#if v.g.shape === 'paper'}<rect x={v.cx - v.g.w * 0.46} y={BASE - v.g.h * 0.62} width={v.g.w * 0.92} height={v.g.h * 0.24} fill="#c9b18e" opacity=".6" />{/if}
-          <!-- labels on the outside (wide layout only; phones get the colour key below) -->
+          <!-- On a phone, where there are no leader labels, each hatched band says what it is where it is (C4). -->
+          {#if narrow}
+            {#each v.g.layers as L, i (i)}
+              {#if L.unknown && (L.shot || L.y0 - L.y1 >= 12)}
+                {@const two = !!L.shot}
+                <!-- A two-line tag that is taller than its band sits on the band's floor and rises over the layer above. -->
+                {@const cy = two && L.y0 - L.y1 < 27 ? L.y0 - 14.5 : (L.y0 + L.y1) / 2}
+                <g class="unk-tag">
+                  <rect x={v.cx - 45} y={cy - (two ? 12.5 : 7.5)} width="90" height={two ? 25 : 15} rx="7.5" />
+                  {#if two}<text x={v.cx} y={cy - 1.5} text-anchor="middle">{L.shot}</text><text x={v.cx} y={cy + 9} text-anchor="middle">not published</text>
+                  {:else}<text x={v.cx} y={cy + 3.5} text-anchor="middle">not published</text>{/if}
+                </g>
+              {/if}
+            {/each}
+          {/if}
+          <!-- labels on the outside (wide layout only; phones get the color key below) -->
           {#if !narrow}
             {@const lx = v.cx + v.side * (v.g.w / 2 + (v.side > 0 && v.g.s.handle ? v.g.h * 0.27 + 22 : 0) + 34)}
             {#each labelSpots(v.g) as L, i (i)}
@@ -191,8 +290,8 @@
               <text x={lx} y={L.ty} text-anchor={v.side < 0 ? 'end' : 'start'} class="lbl" class:unk={L.unknown}>{L.label}<tspan x={lx} dy="15" class="val">{L.value}</tspan></text>
             {/each}
           {/if}
-          <text x={v.cx} y={BASE + 42} text-anchor="middle" class="nm">{v.d.name}</text>
-          <text x={v.cx} y={BASE + 62} text-anchor="middle" class="sub">{narrow ? v.r.label : `${v.r.label} · ${v.r.vessel.name}${v.r.vessel.capacityMl ? `, ${Math.round(v.r.vessel.capacityMl[1])} ml` : ' (size not published)'}`}</text>
+          <text x={narrow ? v.lx : v.cx} y={BASE + 42} text-anchor="middle" class="nm">{v.d.name}</text>
+          <text x={narrow ? v.lx : v.cx} y={BASE + 62} text-anchor="middle" class="sub">{narrow ? v.r.label : `${v.r.label} · ${v.r.vessel.name}${v.r.vessel.capacityMl ? `, ${Math.round(v.r.vessel.capacityMl[1])} ml` : ' (size not published)'}`}</text>
         </g>
       {/each}
     </svg>
@@ -206,6 +305,17 @@
   </figure>
 
   <div class="diff"><span class="k">The difference</span><p>{sentence}</p></div>
+  <p class="sr" aria-live="polite" aria-atomic="true">{said}</p>
+
+  <section class="fit" aria-labelledby="cd-fit-k" onpointerenter={loadFit} onfocusin={loadFit}>
+    {#if fitOpen && CupFit}
+      <CupFit {a} {b} {da} {db} bind:fitSide bind:cupMl bind:units focusFirst={fitFocus} onref={setRef} onsummary={(t: string) => (fitText = t)} />
+    {:else}
+      <p class="k" id="cd-fit-k">In your cup</p>
+      <button type="button" class="fit-open" aria-expanded={fitOpen} onclick={() => openFit(true)}>{fitOpen ? 'Opening…' : 'Size one of these drinks for your own cup'}</button>
+    {/if}
+    <p class="sr" aria-live="polite" aria-atomic="true">{saidFit}</p>
+  </section>
 
   <div class="cards">
     {#each [{ r: a, d: da, set: (id: string) => (aId = id), tag: 'Left' }, { r: b, d: db, set: (id: string) => (bId = id), tag: 'Right' }] as c (c.tag)}
@@ -257,8 +367,12 @@
   .val { font-size: 11.5px; fill: var(--ink-3); }
   .nm { font: 400 30px 'Instrument Serif', 'Instrument Serif Metrics', Georgia, serif; fill: var(--ink); }
   .sub { font: 400 12px 'IBM Plex Mono', 'IBM Plex Mono Metrics', monospace; fill: var(--ink-3); }
-  .narrow .nm { font-size: 34px; }
-  .narrow .sub { font-size: 17px; }
+  .narrow .nm { font-size: 27px; }
+  .narrow .sub { font-size: 12.5px; }
+  /* Phones: the box takes the narrow layout's own ratio before the tool loads, so it doesn't shift when it does. */
+  @media (max-width: 689px) { .counter svg { aspect-ratio: var(--nr); } }
+  .unk-tag rect { fill: #fbf8f3; stroke: #b9a78f; stroke-width: .8; }
+  .unk-tag text { font: 500 10px 'IBM Plex Mono', 'IBM Plex Mono Metrics', monospace; fill: var(--ink-2); }
   .key { list-style: none; margin: 0; padding: 10px 18px 0; display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13.5px; color: var(--ink-2); }
   .key li { display: flex; align-items: center; gap: 6px; }
   .sw { width: 14px; height: 14px; border-radius: 3px; border: 1px solid #b9a78f; }
@@ -268,6 +382,11 @@
   .diff .k { font: 500 11px/1 'IBM Plex Mono', 'IBM Plex Mono Metrics', monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--crema-deep); white-space: nowrap; }
   .diff p { margin: 0; font: 400 21px/1.3 'Instrument Serif', 'Instrument Serif Metrics', Georgia, serif; }
   @media (max-width: 640px) { .diff { flex-direction: column; gap: 6px; padding: 14px 18px; } }
+  .fit { padding: 14px 22px 16px; border-bottom: 1px solid var(--rule); display: grid; gap: 10px; }
+  .fit .k { font: 500 11px/1 'IBM Plex Mono', 'IBM Plex Mono Metrics', monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--crema-deep); margin: 0; }
+  .fit-open { justify-self: start; appearance: none; border: 1px solid var(--rule); background: #fff; border-radius: 999px; padding: 9px 16px; min-height: 40px; font: 500 14px/1 'IBM Plex Sans', 'IBM Plex Sans Metrics', sans-serif; color: var(--ink); cursor: pointer; }
+  .fit-open:hover { border-color: var(--crema); }
+  @media (max-width: 640px) { .fit { padding: 14px 18px 16px; } }
   .cards { display: grid; grid-template-columns: 1fr 1fr; }
   .card { padding: 18px 22px 22px; }
   .card + .card { border-left: 1px solid var(--rule); }
@@ -282,6 +401,7 @@
   .src { font-size: 13px; color: var(--ink-3); margin: 10px 0 0; }
   .src a { color: #7a4e30; }
   button:focus-visible, a:focus-visible { outline: 2px solid var(--crema-deep); outline-offset: 2px; }
+  .sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
   @media (max-width: 760px) {
     .gl { width: 100%; }
     .cards { grid-template-columns: 1fr; }

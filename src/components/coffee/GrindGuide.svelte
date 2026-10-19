@@ -93,6 +93,18 @@
     if (grinder === 'blade') q.set('grinder', 'blade');
     history.replaceState(history.state, '', `${location.pathname}?${q}`);
   });
+
+  // The band, for screen readers: one polite sentence once the choice settles, not one per tap.
+  // The band on screen when the page opens isn't read out; each later change is.
+  let said = $state('');
+  let quiet = true;
+  $effect(() => {
+    const s = `${m.label}: ${m.grindLabel.toLowerCase()}, like ${m.texture}, about ${m.grindMicrons.min} to ${m.grindMicrons.max} micrometers${grinder === 'blade' ? '. A blade grinder adds dust and large chunks' : ''}.`;
+    if (!mounted) return;
+    if (quiet) { quiet = false; return; }
+    const t = setTimeout(() => (said = s), 700);
+    return () => clearTimeout(t);
+  });
 </script>
 
 <div class="gg">
@@ -127,6 +139,7 @@
     <div class="chips" role="group" aria-label="Brew method">
       {#each ROWS as r (r.id)}<button type="button" aria-pressed={method === r.id} onclick={() => (method = r.id)}>{r.label}</button>{/each}
     </div>
+    <p class="sr" aria-live="polite" aria-atomic="true">{said}</p>
     <div class="head">
       <p class="name">{m.grindLabel}</p>
       <p class="sub">like {m.texture} · about {m.grindMicrons.min}–{m.grindMicrons.max} µm</p>
@@ -226,5 +239,6 @@
   .spread .axis { display: flex; justify-content: space-between; font: 400 11.5px 'IBM Plex Mono', 'IBM Plex Mono Metrics', monospace; color: var(--ink-3); margin-top: 3px; }
   .spread figcaption { font-size: 12.5px; color: var(--ink-3); margin-top: 6px; }
   button:focus-visible, a:focus-visible { outline: 2px solid var(--crema-deep); outline-offset: 2px; }
+  .sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
   @media (max-width: 820px) { .gg { grid-template-columns: 1fr; } .loupe-wrap { border-right: 0; border-bottom: 1px solid var(--rule); } .loupe { max-width: 240px; } .name { font-size: 36px; } .too { grid-template-columns: 1fr; } .too div + div { border-left: 0; padding-left: 0; border-top: 1px dashed var(--rule); } .ruler { padding: 12px 10px 16px; } .rrow { grid-template-columns: 94px minmax(0, 1fr) 72px; gap: 8px; } .rl { font-size: 13px; white-space: nowrap; } .rv { font-size: 12.5px; } .tk.minor { display: none; } }
 </style>
