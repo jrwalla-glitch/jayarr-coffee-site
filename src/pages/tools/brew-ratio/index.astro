@@ -10,15 +10,16 @@ import BaseHead from '../../../components/BaseHead.astro';
 import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
 import BrewGuide from '../../../components/coffee/BrewGuide.svelte';
-import { METHODS, SOURCES, cToF } from '../../../lib/coffee/index.ts';
+import { GUIDE_METHODS as METHODS, SOURCES, cToF } from '../../../lib/coffee/index.ts';
 
 const title = 'Coffee Ratio Calculator and Brew Guide';
-const description = 'Pick your brewer and your mug and get the coffee, water, temperature, grind and every timed pour, then brew along. Ratios for V60, Chemex, French press, AeroPress, cold brew and espresso.';
+const description = 'Pick your brewer and your mug and get the coffee, water, temperature, grind and every timed pour, then brew along. Ratios for V60, Chemex, French press, AeroPress, cold brew, espresso and the phin.';
 // A moka pot's basket and valve set its strength, so the guide offers no range there: it says 1:10 and
 // "The pot sets a moka's strength" (Wave D batch 4: the table printed 1:9–1:11).
 const ratioText = (m: (typeof METHODS)[number]) => m.id === 'espresso'
   ? `1:${m.ratio.stronger}–1:${m.ratio.lighter} (yield)`
   : m.id === 'moka' ? `1:${m.ratio.classic} (the pot sets it)`
+  : m.id === 'phin' ? `1:${m.ratio.classic} (Nguyen's recipe)`
   : `1:${m.ratio.stronger}–1:${m.ratio.lighter}`;
 const tempText = (m: (typeof METHODS)[number]) => m.id === 'cold-brew' ? 'cold or room temp'
   : m.id === 'moka' ? 'just boiled' : `${Math.round(cToF(m.tempC.min))}–${Math.round(cToF(m.tempC.max))}°F`;
@@ -73,14 +74,14 @@ const cited = [...new Set(METHODS.flatMap((m) => m.sourceIds))].map((id) => SOUR
 						</tbody>
 					</table>
 				</div>
-				<p class="cf-note">Espresso is measured differently: the ratio is the liquid in the cup to the dry coffee, so 18 g in and 36 g out is 1:2. Cold brew is brewed as a concentrate at about 1:6 and diluted one to one before serving.</p>
+				<p class="cf-note">Espresso is measured differently: the ratio is the liquid in the cup to the dry coffee, so 18 g in and 36 g out is 1:2. The guide keeps the shot at 25–30 seconds at every ratio: Scott Rao's range is 25–40 seconds, and he puts machines without pressure profiling at its low end. It does follow his temperature advice, cooler for a longer shot and hotter for a shorter one, within his 91–95°C range. Cold brew is brewed as a concentrate at about 1:6 and diluted one to one before serving; its 1:3 to 1:10 range is for that concentrate, not a ready-to-drink batch. The phin follows Nguyen Coffee Supply's recipe, 14 g to 4 oz of water, and its micron range is our estimate, borrowed from the moka pot, which Nguyen likens its grind to.</p>
 
 				<h2>Why your cup is smaller than the water you pour</h2>
 				<p>The grounds hold on to water. A filter bed keeps roughly two grams of water for every gram of coffee, so 400 g of water through 25 g of coffee leaves about 350 g in the cup. The guide works backwards from the cup you want, which is why a 12 oz mug at 1:16 needs about 25 g of coffee and 405 g of water, not 355 g.</p>
 
 				<h2>Strength and extraction are different things</h2>
 				<p>Strength is how concentrated the cup is, measured as total dissolved solids (TDS). Extraction is how much of the coffee's soluble material made it into the water, as a share of the dry grounds. The SCA's March 2019 brewing control chart, which grew out of E. E. Lockhart's work in the 1950s, plots one against the other and uses 1.15–1.45% TDS and 18–22% extraction as its reference range; earlier Golden Cup guidance used 1.15–1.35%. These ranges help compare brews, and your preferred strength can fall outside them.</p>
-				<p>The ratio sets strength most directly. Grind, temperature and time mostly set extraction. That's why a cup can be strong and sour (too little extracted) or weak and bitter (too much water through tired, over-extracted grounds). The strength the guide shows is an estimate from typical extraction for each method, not a measurement.</p>
+				<p>The ratio sets strength most directly. Grind, temperature and time mostly set extraction. That's why a cup can be strong and sour (too little extracted) or weak and bitter (too much water through tired, over-extracted grounds). The strength the guide shows is our estimate, worked out from an extraction band the guide assumes for each method; those bands are its own estimates, not published measurements, and it shows none for the moka pot or the phin.</p>
 
 				<h2>If the cup tastes off</h2>
 				<p>Sour and thin usually means under-extracted: grind finer or use hotter water. Bitter and dry usually means over-extracted: grind coarser. <a href="/tools/fix-my-coffee/">Fix My Coffee</a> asks a few questions and gives you one change for the next brew, and the <a href="/tools/grind-guide/">Grind Guide</a> shows what each grind should look like.</p>

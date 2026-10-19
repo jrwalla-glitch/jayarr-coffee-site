@@ -72,7 +72,7 @@
   </defs>
 
   <!-- Kettle: a gooseneck, only while pouring -->
-  <g class="kettle" class:on={showKettle} transform={method === 'french-press' ? 'translate(-46 34)' : method === 'aeropress' || method === 'cold-brew' ? 'translate(-6 34)' : ''}>
+  <g class="kettle" class:on={showKettle} transform={method === 'french-press' ? 'translate(-46 34)' : method === 'aeropress' || method === 'cold-brew' ? 'translate(-6 34)' : method === 'phin' ? 'translate(14 20)' : ''}>
     <!-- gooseneck kettle, body partly off the left edge -->
     <path d="M-60 34 Q -58 22 -40 20 L 40 20 Q 58 22 60 34 L 70 98 Q 72 110 58 112 L -58 112 Z" fill="#efe7dc" stroke="#2a1d15" stroke-width="2" stroke-linejoin="round" />
     <path d="M-30 20 Q -28 8 0 6 Q 28 8 30 20" fill="#e2d8ca" stroke="#2a1d15" stroke-width="2" />
@@ -210,6 +210,27 @@
       <path d="M168 318 L252 318 L244 382 Q242 392 232 392 L188 392 Q178 392 176 382 Z" fill="none" stroke="#2a1d15" stroke-width="2" />
       <path d="M250 330 c 18 0, 18 28, -2 28" fill="none" stroke="#2a1d15" stroke-width="2" />
       <rect x="120" y="398" width="180" height="10" rx="2" fill="#8a786a" />
+    </g>
+  {:else if method === 'phin'}
+    <!-- Phin on a glass: a metal chamber with its press over the bed, a wide plate, the coffee dripping into the glass. -->
+    <g>
+      <clipPath id="bs-phin"><rect x="176" y="174" width="68" height="84" /></clipPath>
+      <g clip-path="url(#bs-phin)">
+        <rect x="170" y="240" width="80" height="20" fill="#5a3822" />
+        {#if frame.brewerG > 0.5}<rect x="170" y={240 - 62 * clamp(frame.brewerG / Math.max(1, waterG))} width="80" height={62 * clamp(frame.brewerG / Math.max(1, waterG)) + 1} fill="url(#bs-slurry)" />{/if}
+      </g>
+      <rect x="180" y="236" width="60" height="4" rx="1" fill="#8a786a" stroke="#2a1d15" stroke-width="1.2" />
+      <rect x="174" y="172" width="72" height="88" rx="3" fill="none" stroke="#2a1d15" stroke-width="2" />
+      <rect x="170" y="162" width="80" height="10" rx="3" fill="#c9c0b3" stroke="#2a1d15" stroke-width="2" />
+      <rect x="140" y="260" width="140" height="8" rx="3" fill="#c9c0b3" stroke="#2a1d15" stroke-width="2" />
+      {#if frame.dripping}<circle cx="210" cy={276 + ((frame.tS * 30) % 20)} r="2" fill="#4a2c19" />{/if}
+      <g clip-path="url(#bs-cup)">
+        <rect x="140" y={cupY} width="140" height={CUP_BOT - cupY + 4} fill="url(#bs-brew)" />
+        {#if frame.cupG > 3}<line x1="146" x2="274" y1={cupY} y2={cupY} stroke="#c3873a" stroke-width="1.2" />{/if}
+      </g>
+      <path d="M144 272 L276 272 L276 392 Q276 408 260 408 L160 408 Q144 408 144 392 Z" fill="url(#bs-glass)" fill-opacity=".3" stroke="#2a1d15" stroke-width="2" />
+      <line x1="138" x2="150" y1={targetY} y2={targetY} stroke="#3f8796" stroke-width="1.4" />
+      <text x="134" y={targetY + 4} text-anchor="end" class="mark">target</text>
     </g>
   {:else if method === 'moka'}
     <g>
