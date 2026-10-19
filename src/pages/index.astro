@@ -1,375 +1,257 @@
 ---
-import { Image } from 'astro:assets';
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
-import { getCollection } from 'astro:content';
 import LiteYouTube from '../components/LiteYouTube.astro';
+import HomeStart from '../components/coffee/HomeStart.svelte';
+import BrewerCutaway from '../components/coffee/art/BrewerCutaway.svelte';
+import ToolMini from '../components/coffee/art/ToolMini.svelte';
+import videoPoster from '../assets/blog/JT01fu8P_LM.jpg';
+import { SITE_TITLE } from '../consts';
+import { getCollection } from 'astro:content';
 
-const allPosts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
-const latestPosts = allPosts.slice(0, 6);
+const description = 'Brew a better cup at home: tools that draw what they work out, guides that show their sources, and a gallery of where coffee grows, how it\'s brewed and how it tastes.';
+const allPosts = (await getCollection('blog')).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const bySlug = (slug: string) => allPosts.find((p) => p.id === slug);
+const latest = allPosts.slice(0, 6);
 
-// Popular posts — hand-picked high-value articles
-const popularSlugs = [
-	'coffee-grind-size-guide-what-grind-for-every-brew-method',
-	'why-water-matters-more-than-your-coffee-beans',
-	'ultimate-pour-over-coffee-guide-and-best-v60-technique',
-	'whats-the-ideal-coffee-brewing-temperature',
-	'why-and-how-you-should-use-an-aeropress',
-	'how-to-use-a-french-press-the-most-amazing-coffee-youve-ever-had',
-];
-const popularPosts = popularSlugs
-	.map(slug => allPosts.find(p => p.id === slug))
-	.filter(Boolean);
-
+// Start here: one guide per everyday job, drawn in the site's own hand rather than with mixed photos.
+const START = [
+  { slug: 'ultimate-pour-over-coffee-guide-and-best-v60-technique', job: 'Brew a better pour-over', art: 'v60', promise: 'Grind, ratio and pour timing for a V60' },
+  { slug: 'how-to-dial-in-espresso', job: 'Dial in espresso', art: 'espresso', promise: 'Dose, yield and time, and what to change first' },
+  { slug: 'cold-brew-concentrate-guide', job: 'Make cold brew concentrate', art: 'cold-brew', promise: 'Ratio, steep time and how far to dilute it' },
+  { slug: 'why-water-matters-more-than-your-coffee-beans', job: 'Get your water right', art: 'water', promise: 'What minerals do to a cup, and how to fix your water' },
+].map((x) => ({ ...x, post: bySlug(x.slug) })).filter((x) => x.post);
+// From the channel: the original reviews and comparisons the site grew out of.
+const REVIEWS = [
+  { slug: 'peets-vs-starbucks-comparison-and-coffee-review', short: 'Peet\'s vs Starbucks' },
+  { slug: '7-ethiopian-coffees-reviewed-best-and-worst', short: 'Seven Ethiopian coffees, ranked' },
+  { slug: 'espresso-battle-royale-reviews-of-gaggia-breville-bambino-and-phillips-3200', short: 'Three espresso machines, side by side' },
+  { slug: 'cold-brewing-coffee-with-the-coffeesock', short: 'Cold brew in a CoffeeSock' },
+].map((x) => ({ ...x, post: bySlug(x.slug) })).filter((x) => x.post);
+const featured = bySlug('coffee-grind-size-guide-what-grind-for-every-brew-method');
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<script type="application/ld+json" set:html={JSON.stringify({
-			'@context': 'https://schema.org',
-			'@type': 'WebSite',
-			name: SITE_TITLE,
-			url: 'https://jayarr.coffee',
-			description: SITE_DESCRIPTION,
-			publisher: {
-				'@type': 'Organization',
-				name: SITE_TITLE,
-				url: 'https://jayarr.coffee',
-				logo: {
-					'@type': 'ImageObject',
-					url: 'https://jayarr.coffee/favicon.svg',
-				},
-			},
-		})} />
-	</head>
-	<body class="bg-cream">
-		<Header />
+  <head>
+    <BaseHead title={SITE_TITLE} description={description} />
+    <link rel="preload" as="image" href="/hero/espresso-hero-poster.jpg" fetchpriority="high" />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: SITE_TITLE,
+      url: 'https://jayarr.coffee',
+      description,
+      publisher: { '@type': 'Organization', name: SITE_TITLE, url: 'https://jayarr.coffee', logo: { '@type': 'ImageObject', url: 'https://jayarr.coffee/favicon.svg' } },
+    })} />
+  </head>
+  <body class="home">
+    <Header />
+    <main id="main">
+      <section class="hero">
+        <div class="hero-bg" aria-hidden="true">
+          <img src="/hero/espresso-hero-poster.jpg" alt="" width="1280" height="720" fetchpriority="high" decoding="async" />
+          <video class="hero-video" muted loop playsinline preload="none" poster="/hero/espresso-hero-poster.jpg" data-webm="/hero/espresso-hero.webm" data-mp4="/hero/espresso-hero.mp4"></video>
+        </div>
+        <div class="hero-inner">
+          <h1 class="hero-title">Better coffee at home, <em class="keep">with the work shown</em></h1>
+          <div class="hero-card">
+            <HomeStart client:load />
+          </div>
+          <div class="hero-copy">
+            <p class="lede">Tools that draw what they calculate, guides that show their sources, and a small gallery of where coffee grows, how it's brewed and how it tastes.</p>
+            <p class="more"><a href="/tools/">Every tool →</a> <a href="/explore/">The gallery →</a> <a href="/deep-brew/">Deep Brew →</a></p>
+          </div>
+        </div>
+      </section>
 
-		<main id="main">
-		<!-- Hero Section -->
-		<section class="relative h-[85vh] md:h-screen min-h-[500px] flex items-center justify-center overflow-hidden">
-			<div class="absolute inset-0">
-				<video
-					class="hero-video absolute inset-0 w-full h-full object-cover object-center"
-					autoplay
-					loop
-					muted
-					playsinline
-					preload="auto"
-					poster="/hero/espresso-hero-poster.jpg"
-					aria-hidden="true"
-				>
-					<source src="/hero/espresso-hero.webm" type="video/webm" />
-					<source src="/hero/espresso-hero.mp4" type="video/mp4" />
-				</video>
-				<img
-					class="hero-fallback absolute inset-0 w-full h-full object-cover object-center"
-					src="/hero/espresso-hero-poster.jpg"
-					alt="Espresso extracting from a naked portafilter into a white cup, golden crema visible"
-					loading="eager"
-				/>
-				<div class="absolute inset-0 bg-gradient-to-b from-charcoal/60 via-charcoal/30 to-charcoal/80"></div>
-			</div>
-			<div class="relative z-10 text-center px-6 max-w-4xl">
-				<h1 class="font-serif text-5xl md:text-7xl lg:text-8xl font-bold text-cream mb-4 md:mb-6 leading-tight">
-					JayArr Coffee
-				</h1>
-				<p class="text-lg md:text-xl text-cream/80 max-w-2xl mx-auto mb-6 md:mb-10 leading-relaxed">
-					Exploring specialty coffee through science, scoring, and honest reviews. From origin to cup.
-				</p>
-				<div class="flex flex-col sm:flex-row justify-center items-center gap-4">
-					<a href="/explore" class="inline-block bg-copper text-cream px-8 py-3 text-sm uppercase tracking-widest hover:bg-copper-dark transition-all duration-300">
-						Explore the Collection
-					</a>
-					<a href="/blog" class="inline-block border border-cream/40 text-cream px-8 py-3 text-sm uppercase tracking-widest hover:bg-cream hover:text-charcoal transition-all duration-300">
-						Read Articles
-					</a>
-				</div>
-			</div>
-			<!-- Deep Brew Mode toggle -->
-			<div class="absolute bottom-8 right-6 md:right-10 z-10">
-				<a href="/deep-brew"
-					class="group flex items-center gap-2 px-4 py-2 rounded-full border border-cream/20 bg-charcoal/40 backdrop-blur-sm hover:border-amber-400/50 hover:bg-charcoal/60 transition-all duration-300"
-				>
-					<span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-					<span class="text-xs text-cream/70 group-hover:text-amber-400 transition-colors uppercase tracking-widest font-medium">
-						Deep Brew Mode
-					</span>
-				</a>
-			</div>
+      <section class="band paths" aria-labelledby="start-h">
+        <div class="wrap">
+          <p class="eyebrow">Start here</p>
+          <h2 id="start-h">One guide for each everyday job</h2>
+          <ul class="cards">
+            {START.map(({ post, job, art, promise }) => (
+              <li>
+                <a href={`/blog/${post!.id}/`} class="card">
+                  <span class="img art" aria-hidden="true">{art === 'water' ? (
+                    <svg viewBox="0 0 200 240">
+                      <line x1="40" x2="160" y1="214" y2="214" stroke="#cdbfac" stroke-width="2" />
+                      <path d="M70 70 L130 70 L124 210 Q123 214 119 214 L81 214 Q77 214 76 210 Z" fill="#fffdf9" stroke="#2a1d15" stroke-width="2.4" />
+                      <path d="M73 104 L127 104 L123.5 209 Q123 211 119 211 L81 211 Q77 211 76.5 209 Z" fill="#d6eaee" />
+                      <path d="M73 104 Q86 99 100 104 T127 104" fill="none" stroke="#3f8fa0" stroke-width="1.8" />
+                      <g fill="#c3873a"><circle cx="88" cy="130" r="4" /><circle cx="110" cy="152" r="4" /><circle cx="94" cy="182" r="4" /></g>
+                      <g fill="#3f8fa0"><circle cx="112" cy="122" r="3.4" /><circle cx="86" cy="160" r="3.4" /><circle cx="108" cy="192" r="3.4" /></g>
+                      <text x="138" y="140" font-family="IBM Plex Mono, monospace" font-size="15" fill="#5b4a3d">Ca Mg</text>
+                      <text x="138" y="182" font-family="IBM Plex Mono, monospace" font-size="15" fill="#5b4a3d">HCO₃</text>
+                    </svg>
+                  ) : <BrewerCutaway method={art as 'v60' | 'espresso' | 'cold-brew'} compact label="" />}</span>
+                  <span class="t">{job}</span>
+                  <span class="sub">{promise}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
 
-			<!-- Scroll indicator -->
-			<div class="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce">
-				<svg class="w-5 h-5 text-cream/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
-			</div>
-		</section>
+      <section class="band channel" aria-labelledby="channel-h">
+        <div class="wrap two">
+          <div>
+            <p class="eyebrow">From the channel</p>
+            <h2 id="channel-h">Where the site began</h2>
+            <p>JayArr Coffee started as a YouTube channel in 2019: reviews, side-by-side comparisons and brewing technique. The videos still sit inside the guides they belong to.</p>
+            <ul class="reviews">
+              {REVIEWS.map(({ post, short }) => <li><a href={`/blog/${post!.id}/`} title={post!.data.title}>{short}</a></li>)}
+            </ul>
+            <p><a class="arrow" href="/videos/">Every video →</a></p>
+          </div>
+          {featured && (
+            <div class="video" style={`--poster: url(${videoPoster.src})`}>
+              <LiteYouTube videoId="JT01fu8P_LM" title={featured.data.title} />
+              <p class="vcap">Watch: <a href={`/blog/${featured.id}/`}>how to grind for every brewer</a>. Or let the <a href="/tools/grind-guide/">Grind Guide</a> work out your setting.</p>
+            </div>
+          )}
+        </div>
+      </section>
 
-		<!-- Latest Articles -->
-		<section class="max-w-6xl mx-auto px-6 py-24">
-			<div class="flex items-end justify-between mb-12">
-				<div>
-					<span class="text-xs uppercase tracking-widest text-copper font-medium">Latest</span>
-					<h2 class="font-serif text-4xl md:text-5xl font-bold text-charcoal mt-2">Articles</h2>
-				</div>
-				<a href="/blog" class="text-sm text-copper hover:text-copper-dark transition-colors uppercase tracking-widest">
-					View all &rarr;
-				</a>
-			</div>
+      <section class="band deep" aria-labelledby="deep-h">
+        <div class="wrap two">
+          <div>
+            <p class="eyebrow">Deep Brew</p>
+            <h2 id="deep-h">The science section</h2>
+            <p>For when you want the measurements: mixing brewing water to a recipe, reading extraction from a refractometer, and setting your own grinder, with ten long-form research articles behind them.</p>
+          </div>
+          <ul class="deeplinks">
+            <li><a href="/deep-brew/water/"><span class="dm" aria-hidden="true"><ToolMini id="water" /></span><b>Water Recipe Builder</b><span>Mix brewing water to a recipe</span></a></li>
+            <li><a href="/deep-brew/extraction/"><span class="dm" aria-hidden="true"><ToolMini id="extraction" /></span><b>Extraction Map</b><span>Where your cup sits between sour and bitter</span></a></li>
+            <li><a href="/deep-brew/calibrator/"><span class="dm" aria-hidden="true"><ToolMini id="calibrator" /></span><b>Grind Calibrator</b><span>The number to set on your grinder</span></a></li>
+            <li><a href="/deep-brew/research/"><span class="dm" aria-hidden="true"><svg viewBox="0 0 160 100"><line x1="20" x2="140" y1="84" y2="84" stroke="#cdbfac" stroke-width="1.2" /><g fill="#fffdf9" stroke="#2a1d15" stroke-width="1.4"><rect x="58" y="22" width="44" height="58" rx="2" transform="rotate(-8 80 51)" /><rect x="60" y="20" width="44" height="58" rx="2" transform="rotate(5 82 49)" /><rect x="58" y="22" width="44" height="58" rx="2" /></g><g stroke="#8f5d22" stroke-width="1.4"><line x1="65" x2="95" y1="34" y2="34" /><line x1="65" x2="95" y1="42" y2="42" /><line x1="65" x2="88" y1="50" y2="50" /></g><path d="M66 70 L74 62 L80 66 L94 54" fill="none" stroke="#2f7484" stroke-width="1.6" /></svg></span><b>The research</b><span>Ten long-form articles</span></a></li>
+          </ul>
+        </div>
+      </section>
 
-			{latestPosts.length > 0 && (
-				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
-					{latestPosts.map((post) => (
-						<a href={`/blog/${post.id}/`} class="group block">
-							<article>
-								{post.data.heroImage && (
-									<div class="aspect-[16/10] overflow-hidden rounded-sm mb-4">
-										<Image
-											widths={[400, 720, 1080]}
-											sizes="(min-width: 1024px) 320px, (min-width: 768px) 360px, 100vw"
-											src={post.data.heroImage}
-											alt={post.data.title}
-											loading="lazy"
-											class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-										/>
-									</div>
-								)}
-								<div class="flex items-center gap-3 mb-1">
-									{post.data.category && (
-										<span class="text-xs uppercase tracking-widest text-copper">{post.data.category}</span>
-									)}
-									<time class="text-xs uppercase tracking-widest text-warm-gray">
-										<FormattedDate date={post.data.pubDate} />
-									</time>
-								</div>
-								<h3 class="font-serif text-xl font-bold text-charcoal mt-1 mb-2 group-hover:text-copper transition-colors">
-									{post.data.title}
-								</h3>
-								{post.data.description && (
-									<p class="text-sm text-warm-gray leading-relaxed line-clamp-2">
-										{post.data.description}
-									</p>
-								)}
-							</article>
-						</a>
-					))}
-				</div>
-			)}
-		</section>
+      <section class="band latest" aria-labelledby="latest-h">
+        <div class="wrap">
+          <p class="eyebrow">Latest</p>
+          <h2 id="latest-h">New and updated articles</h2>
+          <ul class="list">
+            {latest.map((p) => (
+              <li><a href={`/blog/${p.id}/`}>{p.data.title}</a> <span class="date"><FormattedDate date={p.data.pubDate} /></span></li>
+            ))}
+          </ul>
+          <p><a class="arrow" href="/blog/">All articles →</a></p>
+        </div>
+      </section>
+    </main>
+    <Footer />
 
-		<!-- Explore the Collection -->
-		<section class="bg-charcoal py-24">
-			<div class="max-w-6xl mx-auto px-6">
-				<div class="text-center mb-14">
-					<span class="text-xs uppercase tracking-widest text-copper font-medium">Discover</span>
-					<h2 class="font-serif text-4xl md:text-5xl font-bold text-cream mt-2">Beyond the Articles</h2>
-					<p class="text-cream/50 mt-3 text-sm max-w-xl mx-auto">Interactive tools and visual explorations that go deeper than reading</p>
-				</div>
-
-				<!-- The Coffee Collection -->
-				<div class="mb-16">
-					<h3 class="font-serif text-2xl font-bold text-cream text-center mb-2">The Coffee Collection</h3>
-					<p class="text-cream/55 text-sm text-center mb-8 italic">Three interactive studies in coffee science</p>
-					<div class="flex flex-col md:flex-row justify-center gap-6 md:gap-8 items-center">
-						<a href="/explore/origins" class="group block text-center">
-							<div class="w-52 h-32 bg-[#E8E1D4] border border-white/15 rounded-sm overflow-hidden relative mx-auto" style="box-shadow: inset 0 2px 6px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.15);">
-								<svg viewBox="0 0 300 180" class="w-full h-full">
-									<rect width="300" height="180" fill="#CBCFD5" rx="1"/>
-									<g transform="scale(0.95) translate(8, 5)">
-										<path d="M47.6,43.1L43.8,40.7L37.1,27.5L35.5,29L32.5,26.7L32.5,7.9L36.2,9.8L43.2,6L54,9.8L59.3,13.2L65.5,12.7L69.9,13.4L77.2,13.6L82.3,9.2L82.2,13.8L78.5,15L71.5,25.7L73.1,31.8L81.5,34.7L83.4,40.2L86.2,32.7L88.5,23L93.6,30.1L98.5,33L103.5,37.4L92.3,45L81.3,51.8L79.9,46.2L71,42.6L47.6,43.1Z M47.6,43.1L76.4,44L81.2,47.6L92.3,45L86.9,58.3L82.2,62.4L83,68.3L68.7,67.7L61.2,62.1L49.5,59.3L46.3,53.3L47.6,43.1Z M32.5,7.9L32.5,26.7L35.5,29L41.2,35.3L38.3,30.2L27.4,25.7L18,33.5L12.7,35.8L15,29.4L12.2,26.3L16,18.6L9.9,16.8L11.5,9.9L19.5,3.8L32.5,7.9Z" fill="#C9B99A" opacity="0.7"/>
-										<path d="M105.5,119.9L102,116.4L101.5,103.7L91.2,99.2L91.8,88.6L99.8,85.6L107.3,86.5L116.7,92.4L121.1,96.1L115.9,108.7L105.5,119.9Z M102,116.4L102.7,123.1L93.2,141.3L88.8,137.3L92,104.9Z" fill="#C9B99A" opacity="0.7"/>
-										<path d="M155.2,42.5L156.2,49.5L148.7,50.3L146.2,43.5L155.2,42.5Z M161.8,36.7L160.8,45L155,39.4L161.8,36.7Z M176.5,39L183.4,42.3L173.9,47.6L168.4,43.8L176.5,39Z" fill="#C9B99A" opacity="0.65"/>
-										<path d="M142.8,66.3L149,58.1L156.1,56.7L160,69.9L142.8,66.3Z M170.8,71.2L159.6,60.8L170.8,62L170.8,71.2Z M170.5,83.1L170.8,71.2L182,74.8L178.3,82.7L170.5,83.1Z M174.5,93.8L174.8,101.1L160.1,94.8L166.2,85.8L174.8,86.2L174.5,93.8Z M163.6,114.8L174.5,108.9L177.4,113.1L166.4,121L163.6,114.8Z" fill="#C9B99A" opacity="0.7"/>
-										<path d="M190.9,46.3L183.4,42.3L176.5,39L173.5,33.2L176.3,22.2L173.8,9.5L183.6,12L186.2,10.6L188.6,14.8L200,11.3L207.1,11.7L210.7,1.5L217.9,2.8L234,-11.5L245.1,-9.5L255.8,-2.3L266.6,3.5L274.6,1.6L284.1,8.6L300,9.7L300,18.2L291.9,27.4L285.1,35.2L280.7,40.5L268.5,28.8L262.6,35.3L261.3,50.5L259.2,48L253,37.1L248.2,42.4L232.4,39.1L222.8,42.8L214.1,35.7L207.6,34.4L201.1,40.7L189.6,41.2L190.9,46.3Z M216.9,51L223.1,42.7L241.1,50.8L258.9,51L248,55L251.4,65.5L241.6,72.8L230.1,64.3L215.6,62.3L211.4,54.2L216.9,51Z M179.1,64.4L190.4,65.2L196,70.6L185.6,76.2L179.1,64.4Z" fill="#C9B99A" opacity="0.7"/>
-										<path d="M255.1,118.4L245.9,120.3L245.1,108.6L258,102.6L263.7,99.9L268.8,98.9L277.6,112.5L275,123.6L264,121.4L255.1,118.4Z" fill="#C9B99A" opacity="0.65"/>
-									</g>
-								</svg>
-							</div>
-							<span class="block text-cream/70 text-sm mt-3 group-hover:text-copper transition-colors font-serif font-semibold">Coffee Origins</span>
-						</a>
-						<a href="/explore/methods" class="group block text-center">
-							<div class="w-52 h-32 border border-white/15 rounded-sm overflow-hidden relative mx-auto" style="background: #2A3040; box-shadow: inset 0 2px 6px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.15);">
-								<svg viewBox="0 0 300 180" class="w-full h-full">
-									<rect width="300" height="180" fill="#0B1525"/>
-									{[{x:22,y:18},{x:88,y:12},{x:178,y:22},{x:248,y:15},{x:268,y:55},{x:12,y:115},{x:138,y:152},{x:282,y:140}].map(s => (
-										<circle cx={s.x} cy={s.y} r="0.6" fill="#E8E0D0" opacity="0.25"/>
-									))}
-									<line x1="40" y1="48" x2="82" y2="44" stroke="#C9A84E" stroke-width="0.6" opacity="0.4"/>
-									<line x1="82" y1="44" x2="62" y2="78" stroke="#C9A84E" stroke-width="0.6" opacity="0.4"/>
-									<line x1="40" y1="48" x2="62" y2="78" stroke="#C9A84E" stroke-width="0.6" opacity="0.4"/>
-									<line x1="62" y1="78" x2="62" y2="115" stroke="#C9A84E" stroke-width="0.6" opacity="0.4"/>
-									<circle cx="40" cy="48" r="2.2" fill="#E8C36A" opacity="0.8"/>
-									<circle cx="82" cy="44" r="2" fill="#E8C36A" opacity="0.75"/>
-									<circle cx="62" cy="78" r="3" fill="#D4A44C" opacity="0.9"/>
-									<circle cx="62" cy="115" r="2" fill="#E8C36A" opacity="0.75"/>
-									<line x1="128" y1="48" x2="172" y2="48" stroke="#C9A84E" stroke-width="0.6" opacity="0.4"/>
-									<line x1="128" y1="48" x2="122" y2="90" stroke="#C9A84E" stroke-width="0.6" opacity="0.4"/>
-									<line x1="172" y1="48" x2="178" y2="90" stroke="#C9A84E" stroke-width="0.6" opacity="0.4"/>
-									<line x1="122" y1="90" x2="150" y2="122" stroke="#C9A84E" stroke-width="0.6" opacity="0.4"/>
-									<line x1="178" y1="90" x2="150" y2="122" stroke="#C9A84E" stroke-width="0.6" opacity="0.4"/>
-									<circle cx="128" cy="48" r="2" fill="#E8C36A" opacity="0.75"/>
-									<circle cx="172" cy="48" r="2" fill="#E8C36A" opacity="0.75"/>
-									<circle cx="150" cy="85" r="3" fill="#D4A44C" opacity="0.9"/>
-									<circle cx="150" cy="122" r="2" fill="#E8C36A" opacity="0.75"/>
-									<line x1="222" y1="45" x2="258" y2="80" stroke="#C9A84E" stroke-width="0.6" opacity="0.4"/>
-									<line x1="258" y1="80" x2="222" y2="118" stroke="#C9A84E" stroke-width="0.6" opacity="0.4"/>
-									<circle cx="222" cy="45" r="2" fill="#E8C36A" opacity="0.75"/>
-									<circle cx="258" cy="80" r="3" fill="#D4A44C" opacity="0.9"/>
-									<circle cx="222" cy="118" r="2" fill="#E8C36A" opacity="0.75"/>
-								</svg>
-							</div>
-							<span class="block text-cream/70 text-sm mt-3 group-hover:text-copper transition-colors font-serif font-semibold">Brewing Constellations</span>
-						</a>
-						<a href="/explore/flavors" class="group block text-center">
-							<div class="w-52 h-32 bg-[#DDE4D6] border border-white/15 rounded-sm overflow-hidden relative mx-auto" style="box-shadow: inset 0 2px 6px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.15);">
-								<svg viewBox="0 0 300 180" class="w-full h-full">
-									<defs>
-										{[
-											{ id: 'hf', c: '#C17A3A', l: '#D4944F' },
-											{ id: 'hfl', c: '#B8847A', l: '#CCACA4' },
-											{ id: 'hs', c: '#8B6F47', l: '#A6895E' },
-											{ id: 'hn', c: '#A69070', l: '#BBA98D' },
-											{ id: 'hsp', c: '#9B7653', l: '#B3926E' },
-											{ id: 'he', c: '#7A7A60', l: '#96967E' },
-										].map(g => (
-											<radialGradient id={g.id} cx="50%" cy="50%" r="50%">
-												<stop offset="0%" stop-color={g.c} stop-opacity="1"/>
-												<stop offset="60%" stop-color={g.c} stop-opacity="0.92"/>
-												<stop offset="85%" stop-color={g.l} stop-opacity="0.65"/>
-												<stop offset="100%" stop-color={g.l} stop-opacity="0.35"/>
-											</radialGradient>
-										))}
-									</defs>
-									{[0,60,120,180,240,300].map((angle, i) => {
-										const fills = ['url(#hf)','url(#hfl)','url(#hs)','url(#hn)','url(#hsp)','url(#he)'];
-										const rad = angle * Math.PI / 180;
-										const px = 150 + 26 * Math.sin(rad);
-										const py = 90 - 26 * Math.cos(rad);
-										return <ellipse cx={px} cy={py} rx="24" ry="33" fill={fills[i]} transform={`rotate(${angle}, ${px}, ${py})`}/>;
-									})}
-									<circle cx="150" cy="90" r="9" fill="#F5F0E8" stroke="#C17A3A" stroke-width="0.8"/>
-								</svg>
-							</div>
-							<span class="block text-cream/70 text-sm mt-3 group-hover:text-copper transition-colors font-serif font-semibold">Flavor Bloom</span>
-						</a>
-					</div>
-					<div class="text-center mt-8">
-						<a href="/explore" class="inline-block border border-cream/25 text-cream/70 px-6 py-2.5 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-copper transition-all duration-300">
-							View the Collection &rarr;
-						</a>
-					</div>
-				</div>
-
-				<!-- Divider -->
-				<div class="flex items-center gap-4 mb-14">
-					<div class="flex-1 h-px bg-white/10"></div>
-					<span class="text-copper/40 text-xs tracking-widest uppercase">Plus</span>
-					<div class="flex-1 h-px bg-white/10"></div>
-				</div>
-
-				<!-- Your Coffee Toolkit -->
-				<div>
-					<h3 class="font-serif text-2xl font-bold text-cream text-center mb-2">Your Coffee Toolkit</h3>
-					<p class="text-cream/55 text-sm text-center mb-8 italic">Practical calculators and diagnostics for everyday brewing</p>
-					<div class="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-3xl mx-auto">
-						<a href="/tools/fix-my-coffee/" class="group block p-5 border border-white/10 rounded-sm hover:border-copper/40 transition-all duration-300">
-							<div class="text-copper mb-2">
-								<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085"/></svg>
-							</div>
-							<h4 class="font-serif text-base font-bold text-cream group-hover:text-copper transition-colors mb-1">Fix My Coffee</h4>
-							<p class="text-xs text-cream/50 leading-relaxed">Pick a symptom, get science-backed fixes</p>
-						</a>
-						<a href="/tools/brew-ratio/" class="group block p-5 border border-white/10 rounded-sm hover:border-copper/40 transition-all duration-300">
-							<div class="text-copper mb-2">
-								<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0 0 12 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52 2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 0 1-2.031.352 5.988 5.988 0 0 1-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971Zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0 2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 0 1-2.031.352 5.989 5.989 0 0 1-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971Z"/></svg>
-							</div>
-							<h4 class="font-serif text-base font-bold text-cream group-hover:text-copper transition-colors mb-1">Brew Ratio</h4>
-							<p class="text-xs text-cream/50 leading-relaxed">Dial in coffee-to-water for any method</p>
-						</a>
-						<a href="/tools/grind-guide/" class="group block p-5 border border-white/10 rounded-sm hover:border-copper/40 transition-all duration-300">
-							<div class="text-copper mb-2">
-								<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"/></svg>
-							</div>
-							<h4 class="font-serif text-base font-bold text-cream group-hover:text-copper transition-colors mb-1">Grind Guide</h4>
-							<p class="text-xs text-cream/50 leading-relaxed">Micron ranges and textures for every brewer</p>
-						</a>
-					</div>
-					<div class="text-center mt-8">
-						<a href="/tools" class="inline-block border border-cream/25 text-cream/70 px-6 py-2.5 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-copper transition-all duration-300">
-							Open the Toolkit &rarr;
-						</a>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<!-- Popular Articles -->
-		<section class="max-w-6xl mx-auto px-6 py-24">
-			<div class="text-center mb-12">
-				<span class="text-xs uppercase tracking-widest text-copper font-medium">Start Here</span>
-				<h2 class="font-serif text-4xl md:text-5xl font-bold text-charcoal mt-2">Popular Articles</h2>
-			</div>
-			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8">
-				{popularPosts.map((post) => post && (
-					<a href={`/blog/${post.id}/`} class="group flex gap-4 items-start">
-						{post.data.heroImage && (
-							<div class="w-20 h-20 shrink-0 overflow-hidden rounded-sm">
-								<Image
-									width={160}
-									height={160}
-									src={post.data.heroImage}
-									alt={post.data.title}
-									class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-								/>
-							</div>
-						)}
-						<div>
-							{post.data.category && (
-								<span class="text-xs uppercase tracking-widest text-copper">{post.data.category}</span>
-							)}
-							<h3 class="font-serif text-base font-bold text-charcoal mt-0.5 group-hover:text-copper transition-colors leading-snug">
-								{post.data.title}
-							</h3>
-						</div>
-					</a>
-				))}
-			</div>
-		</section>
-
-		<!-- Featured Video Section -->
-		<section class="bg-charcoal py-24">
-			<div class="max-w-6xl mx-auto px-6">
-				<div class="text-center mb-12">
-					<span class="text-xs uppercase tracking-widest text-copper font-medium">Watch</span>
-					<h2 class="font-serif text-4xl md:text-5xl font-bold text-cream mt-2">Featured Video</h2>
-				</div>
-				<div class="max-w-4xl mx-auto">
-					<div class="aspect-video rounded-sm overflow-hidden bg-charcoal-light">
-						<LiteYouTube
-							videoId="nK_nJa3LCcM"
-							title="Best Gooseneck Kettle for Pour Over Coffee 2026 (Top 7)"
-							class="w-full h-full rounded-sm"
-						/>
-					</div>
-					<p class="text-cream/50 text-sm text-center mt-4 mb-6">Best Gooseneck Kettle for Pour Over Coffee 2026 (Top 7)</p>
-					<div class="text-center">
-						<a href="https://www.youtube.com/@jayarrcoffee" target="_blank" rel="noopener" class="inline-block border border-cream/30 text-cream/80 px-8 py-3 text-sm uppercase tracking-widest hover:bg-cream hover:text-charcoal transition-all duration-300">
-							Subscribe on YouTube
-						</a>
-					</div>
-				</div>
-			</div>
-		</section>
-
-
-		</main>
-
-		<Footer />
-	</body>
+    <script>
+      // The hero video only loads after the page is ready, on wide screens, and never when the
+      // reader prefers reduced motion or saves data. Everyone else keeps the still poster.
+      const v = document.querySelector<HTMLVideoElement>('.hero-video');
+      const nav = navigator as Navigator & { connection?: { saveData?: boolean } };
+      const ok = v && innerWidth >= 900 && !matchMedia('(prefers-reduced-motion: reduce)').matches && !nav.connection?.saveData;
+      if (ok && v) {
+        const start = () => {
+          for (const [type, key] of [['video/webm', 'webm'], ['video/mp4', 'mp4']] as const) {
+            const s = document.createElement('source'); s.type = type; s.src = v.dataset[key]!; v.appendChild(s);
+          }
+          v.load();
+          v.addEventListener('canplay', () => { v.classList.add('on'); v.play().catch(() => {}); }, { once: true });
+        };
+        const idle = (window as Window & { requestIdleCallback?: (cb: () => void) => void }).requestIdleCallback;
+        addEventListener('load', () => (idle ? idle(start) : setTimeout(start, 1200)), { once: true });
+      }
+    </script>
+  </body>
 </html>
+
+<style is:global>
+  body.home { background: #f3ede3; }
+</style>
+<style>
+  main { color: #2a1d15; }
+  .hero { position: relative; overflow: hidden; background: #1f1610; color: #f3ede3; }
+  .hero-bg { position: absolute; inset: 0; }
+  .hero-bg img, .hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hero-video { opacity: 0; transition: opacity 1s ease; }
+  .hero-video.on { opacity: 1; }
+  .hero-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(100deg, rgba(20, 14, 10, .86) 0%, rgba(20, 14, 10, .68) 42%, rgba(20, 14, 10, .36) 100%), linear-gradient(180deg, rgba(20, 14, 10, .2), rgba(20, 14, 10, .55)); }
+  /* The hero shares the page's 1180 px column, and the card's top edge stays put when its door changes. */
+  .hero-inner { position: relative; max-width: 1180px; margin: 0 auto; padding: 120px 24px 56px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr); gap: 40px; align-items: start; min-height: 640px; }
+  .hero-inner { grid-template-areas: 'title card' 'copy card'; grid-template-rows: auto 1fr; row-gap: 0; }
+  .hero-title { grid-area: title; padding-top: 56px; }
+  .hero-card { grid-area: card; }
+  .hero-copy { grid-area: copy; }
+  .kicker { font: 500 12px/1 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .16em; text-transform: uppercase; color: #d9a35e; margin: 0 0 14px; }
+  .hero h1 { font: 400 clamp(42px, 5.6vw, 70px)/1 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; margin: 0 0 16px; letter-spacing: -.01em; color: #fbf6ee; }
+  .hero h1 em { color: #e2b47a; }
+  .hero h1 em.keep { white-space: nowrap; }
+  .lede { font: 400 18px/1.55 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; color: rgba(243, 237, 227, .86); max-width: 46ch; margin: 0 0 18px; }
+  .more { display: flex; gap: 8px 20px; flex-wrap: wrap; margin: 0; }
+  .more a { color: #f3ede3; font: 500 15px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; text-decoration: underline; text-decoration-color: rgba(217, 163, 94, .7); text-underline-offset: 4px; }
+  .more a:hover { color: #fff; }
+  .band { padding: 56px 0; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+  .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 40px; align-items: center; }
+  .eyebrow { font: 500 12px/1 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .14em; text-transform: uppercase; color: #8f5d22; margin: 0 0 8px; }
+  .band h2 { font: 400 clamp(32px, 4vw, 44px)/1.05 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; margin: 0 0 14px; }
+  .band p { font-size: 16.5px; line-height: 1.6; color: #5b4a3d; max-width: 60ch; }
+  .cards { list-style: none; margin: 18px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .card { display: grid; gap: 6px; text-decoration: none; color: #2a1d15; }
+  .card .img { display: block; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 12px; background: #e6dccd; }
+  .card .art { display: grid; place-items: center; background: radial-gradient(120% 90% at 50% 0%, #fffdf9, #efe5d6); border: 1px solid #e0d4c3; padding: 8px 12px; transition: transform .4s ease, border-color .2s; }
+  .card .art :global(svg) { display: block; width: auto; height: 100%; max-width: 100%; }
+  @media (hover: hover) { .card:hover .art { border-color: #b9a58b; transform: translateY(-2px); } }
+  .card .t { font: 400 24px/1.1 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; margin-top: 6px; }
+  .card .sub { font-size: 14.5px; line-height: 1.45; color: #5b4a3d; }
+  .channel { background: #fbf8f3; border-top: 1px solid #e6dccd; border-bottom: 1px solid #e6dccd; }
+  .reviews { list-style: none; padding: 0; margin: 12px 0; display: grid; gap: 8px; }
+  .reviews a { color: #2a1d15; font: 500 16px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; text-decoration: underline; text-decoration-color: #c9a46e; text-underline-offset: 3px; }
+  .arrow { color: #7a4e30; font-weight: 600; text-underline-offset: 3px; }
+  .video :global(.lite-youtube), .video :global(lite-youtube) { border-radius: 12px; overflow: hidden; }
+  /* The facade's still comes from this site, not from YouTube, until someone presses play. */
+  .video :global(.lite-youtube) { background-image: var(--poster) !important; }
+  /* The play button sits in a corner, off the thumbnail's own title. */
+  .video :global(.lty-playbtn) { top: auto; left: 16px; bottom: 14px; transform: none; width: 56px; height: 40px; }
+  .vcap { font-size: 14.5px !important; margin-top: 8px; }
+  .vcap a { color: #7a4e30; }
+  .deep { background: #1d1713; color: #efe6da; }
+  .deep .eyebrow { color: #e0a85a; }
+  .deep p { color: #c8b9a8; }
+  .deeplinks { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .deeplinks li { display: flex; }
+  .deeplinks a { flex: 1; display: grid; grid-template-rows: auto auto 1fr; gap: 2px; border: 1px solid #3a2f27; background: #241c17; border-radius: 12px; padding: 10px 12px 14px; text-decoration: none; color: #efe6da; }
+  .dm { display: block; background: radial-gradient(120% 90% at 50% 0%, #fffdf9, #efe5d6); border-radius: 8px; padding: 2px 8px; margin-bottom: 8px; }
+  .dm :global(svg) { display: block; width: 100%; height: auto; max-height: 104px; }
+  @media (hover: hover) { .deeplinks a:hover { border-color: #e0a85a; } }
+  .deeplinks b { font: 400 22px/1.1 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; font-weight: 400; }
+  .deeplinks span { font-size: 14px; color: #c8b9a8; }
+  .list { list-style: none; padding: 0; margin: 10px 0 14px; columns: 2; column-gap: 40px; }
+  .list li { break-inside: avoid; padding: 9px 0; border-bottom: 1px solid #e6dccd; }
+  .list a { color: #2a1d15; font: 500 16px 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; text-decoration: none; }
+  .list a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .date { display: block; font: 500 12px 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; color: #75655a; margin-top: 2px; }
+  a:focus-visible { outline: 3px solid #d9a35e; outline-offset: 3px; border-radius: 4px; }
+  @media (max-width: 1000px) {
+    .hero-inner { grid-template-columns: 1fr; padding: 100px 20px 36px; min-height: 0; gap: 22px; }
+    .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .two { grid-template-columns: 1fr; gap: 24px; }
+  }
+  @media (max-width: 1000px) { .hero-inner { grid-template-areas: 'title' 'card' 'copy'; grid-template-rows: auto; row-gap: 22px; } .hero-title { padding-top: 0; } }
+  @media (max-width: 640px) {
+    .hero-inner { padding: 84px 16px 28px; }
+    /* On a phone the working preview comes straight after the headline; the intro follows it (document order). */
+    .kicker { display: none; }
+    .hero h1 { margin: 0; font-size: 38px; }
+    .lede { font-size: 16px; margin: 0 0 12px; }
+    .band { padding: 40px 0; }
+    .wrap { padding: 0 16px; }
+    .cards { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .card .t { font-size: 18px; }
+    .deeplinks { grid-template-columns: 1fr; }
+    .list { columns: 1; }
+  }
+</style>

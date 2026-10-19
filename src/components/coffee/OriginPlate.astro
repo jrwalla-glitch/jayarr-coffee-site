@@ -1,0 +1,180 @@
+---
+// A detail plate cut from the Coffee Origins map: one country on the antique map, its growing
+// regions marked. Rendered at build time; no JavaScript.
+import { countryPaths, TROPIC_CANCER_Y, TROPIC_CAPRICORN_Y, EQUATOR_Y } from '../../data/mapPaths.ts';
+import { project } from '../../lib/coffee/origins.ts';
+import { regionPoint } from '../../lib/coffee/mapPlace.ts';
+import { ORIGINS } from '../../lib/coffee/origins.ts';
+import type { Origin } from '../../lib/coffee/origins.ts';
+
+// Seas named on each plate, placed by hand in open water (lat, lon), so no plate misnames an ocean.
+const SEAS: Record<string, { name: string; lat: number; lon: number }[]> = {
+  brazil: [{ name: 'Atlantic Ocean', lat: -16, lon: -33 }],
+  colombia: [{ name: 'Pacific Ocean', lat: 4, lon: -80 }, { name: 'Caribbean Sea', lat: 12.6, lon: -76.5 }],
+  'costa-rica': [{ name: 'Pacific Ocean', lat: 8.6, lon: -85.4 }, { name: 'Caribbean Sea', lat: 10.9, lon: -82.6 }],
+  ecuador: [{ name: 'Pacific Ocean', lat: -1.5, lon: -82.3 }],
+  'el-salvador': [{ name: 'Pacific Ocean', lat: 12.7, lon: -89 }],
+  ethiopia: [{ name: 'Red Sea', lat: 15.6, lon: 41 }, { name: 'Gulf of Aden', lat: 12.4, lon: 47.5 }],
+  guatemala: [{ name: 'Pacific Ocean', lat: 13.2, lon: -91.6 }],
+  honduras: [{ name: 'Caribbean Sea', lat: 16.7, lon: -85 }],
+  indonesia: [{ name: 'Indian Ocean', lat: -9, lon: 100 }, { name: 'Java Sea', lat: -5, lon: 111 }],
+  kenya: [{ name: 'Indian Ocean', lat: -3, lon: 42.2 }],
+  mexico: [{ name: 'Pacific Ocean', lat: 18, lon: -109 }, { name: 'Gulf of Mexico', lat: 24, lon: -92 }],
+  nicaragua: [{ name: 'Caribbean Sea', lat: 13, lon: -82.2 }, { name: 'Pacific Ocean', lat: 11, lon: -87.6 }],
+  panama: [{ name: 'Pacific Ocean', lat: 6.6, lon: -79.5 }, { name: 'Caribbean Sea', lat: 10, lon: -79.5 }],
+  peru: [{ name: 'Pacific Ocean', lat: -12, lon: -80.5 }],
+  tanzania: [{ name: 'Indian Ocean', lat: -7, lon: 41.6 }],
+  thailand: [{ name: 'Andaman Sea', lat: 8.5, lon: 96.5 }, { name: 'Gulf of Thailand', lat: 10, lon: 101.5 }],
+};
+// Neighbors are named in plain map lettering; a few ids need their usual short name.
+const NAME: Record<string, string> = { drc: 'DR Congo', 'congo-republic': 'Congo', usa: 'United States', uae: 'UAE', 'south-sudan': 'South Sudan' };
+const SKIP_NAME = new Set(['somaliland', 'western-sahara']);
+const nameOf = (id: string) => NAME[id] ?? ORIGINS.find((o) => o.id === id)?.name ?? id.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+const polys = (path: string) => path.split('M').filter(Boolean).map((sp) => [...sp.matchAll(/(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/g)].map((m) => [Number(m[1]), Number(m[2])] as [number, number]));
+const inPoly = (x: number, y: number, ps: [number, number][]) => { let c = false; for (let i = 0, j = ps.length - 1; i < ps.length; j = i++) { const [xi, yi] = ps[i], [xj, yj] = ps[j]; if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) c = !c; } return c; };
+const LAND = countryPaths.map((c) => ({ id: c.id, polys: polys(c.path) }));
+const onLand = (x: number, y: number) => LAND.some((c) => c.polys.some((ps) => inPoly(x, y, ps)));
+
+interface Props { origin: Origin; width?: number }
+const { origin, width = 560 } = Astro.props;
+
+// The country's main landmass (its largest sub-path) plus its regions set the frame, so islands
+// far offshore (Galápagos, outlying archipelagos) don't shrink the country to a dot.
+const own = countryPaths.find((c) => c.id === origin.id);
+const pts: [number, number][] = [];
+if (own) {
+  const subs = own.path.split('M').filter(Boolean).map((sp) => [...sp.matchAll(/(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/g)].map((m) => [Number(m[1]), Number(m[2])] as [number, number]));
+  const area = (ps: [number, number][]) => { const xs = ps.map((p) => p[0]), ys = ps.map((p) => p[1]); return (Math.max(...xs) - Math.min(...xs)) * (Math.max(...ys) - Math.min(...ys)); };
+  const main = subs.sort((a, b) => area(b) - area(a))[0] ?? [];
+  pts.push(...main);
+}
+// Each region is drawn inside its own country's outline (the 110 m borders are coarse near frontiers).
+let regions = origin.regions.filter((r) => r.lat !== null && r.lon !== null).map((r) => ({ name: r.name, lat: r.lat!, lon: r.lon!, xy: regionPoint(origin.id, r.lat!, r.lon!) }));
+pts.push(...regions.map((r) => r.xy), project(origin.lat, origin.lon));
+const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
+let [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
+const ASPECT = 1.5;
+let w = Math.max(x1 - x0, 12) * 1.32, h = Math.max(y1 - y0, 9) * 1.32;
+if (w / h < ASPECT) w = h * ASPECT; else h = w / ASPECT;
+const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+const vb = [cx - w / 2, cy - h / 2, w, h];
+const u = w / width; // map units per screen pixel at the plate's drawn width
+// Now the scale is known, keep each mark a full diamond inside its border.
+regions = regions.map((r) => ({ ...r, xy: regionPoint(origin.id, r.lat, r.lon, Math.max(0.4, 7 * u)) }));
+const fmt = (n: number) => Math.round(n * 100) / 100;
+// Region labels: try right, left, above and below each mark; keep the first spot that doesn't
+// touch another label or mark (all in screen pixels at the plate's drawn width).
+type Box = { x: number; y: number; w: number; h: number };
+const hit = (a: Box, b: Box) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
+const sx = (x: number) => (x - vb[0]) / u, sy = (y: number) => (y - vb[1]) / u;
+const boxes: Box[] = regions.map((r) => ({ x: sx(r.xy[0]) - 6, y: sy(r.xy[1]) - 6, w: 12, h: 12 }));
+const PX_W = width, PX_H = width / ASPECT;
+const labelled = regions.map((r) => {
+  const px = sx(r.xy[0]), py = sy(r.xy[1]), tw = r.name.length * 6.6, th = 15;
+  const inside = (b: Box) => b.x > 4 && b.y > 4 && b.x + b.w < PX_W - 4 && b.y + b.h < PX_H - 4;
+  // Near spots first, then farther ones with a leader line back to the mark.
+  const spots: { dx: number; dy: number; anchor: string; b: Box; lead: boolean }[] = [];
+  for (const d of [9, 30, 52, 76]) {
+    const lead = d > 9;
+    spots.push(
+      { dx: d, dy: 5, anchor: 'start', b: { x: px + d, y: py - 10, w: tw, h: th }, lead },
+      { dx: -d, dy: 5, anchor: 'end', b: { x: px - d - tw, y: py - 10, w: tw, h: th }, lead },
+      { dx: lead ? d * 0.7 : 0, dy: -d - 1, anchor: lead ? 'start' : 'middle', b: lead ? { x: px + d * 0.7, y: py - d - 12, w: tw, h: th } : { x: px - tw / 2, y: py - d - 16, w: tw, h: th }, lead },
+      { dx: lead ? d * 0.7 : 0, dy: d + 11, anchor: lead ? 'start' : 'middle', b: lead ? { x: px + d * 0.7, y: py + d - 1, w: tw, h: th } : { x: px - tw / 2, y: py + d - 2, w: tw, h: th }, lead },
+      { dx: lead ? -d * 0.7 : 0, dy: d + 11, anchor: lead ? 'end' : 'middle', b: lead ? { x: px - d * 0.7 - tw, y: py + d - 1, w: tw, h: th } : { x: px - tw / 2, y: py + d - 2, w: tw, h: th }, lead },
+    );
+  }
+  const pick = spots.find((c) => inside(c.b) && !boxes.some((b) => hit(b, c.b))) ?? spots.find((c) => inside(c.b)) ?? spots[0];
+  boxes.push(pick.b);
+  return { ...r, dx: pick.dx * u, dy: pick.dy * u, anchor: pick.anchor, lead: pick.lead };
+});
+// Seas: the hand-placed spot if the whole name sits in open water there, else the nearest spot
+// around it (within about 110 px) where it does, so a name never runs onto a coast.
+const wet = (b: Box) => {
+  // Sampled every few pixels along the top, middle and bottom of the name, so a thin peninsula can't hide between samples.
+  for (let px = b.x - 3; px <= b.x + b.w + 3; px += 5) for (const py of [b.y, b.y + b.h / 2, b.y + b.h]) if (onLand(vb[0] + px * u, vb[1] + py * u)) return false;
+  return true;
+};
+const seas = (SEAS[origin.id] ?? []).flatMap((sea) => {
+  const [hx, hy] = project(sea.lat, sea.lon);
+  const tw = sea.name.length * 8.4, tries: [number, number][] = [[sx(hx), sy(hy)]];
+  for (let r = 10; r <= 110; r += 10) for (let a = 0; a < 360; a += 15) tries.push([sx(hx) + r * Math.cos((a * Math.PI) / 180), sy(hy) + r * Math.sin((a * Math.PI) / 180)]);
+  for (const [px, py] of tries) {
+    const b = { x: px - tw / 2, y: py - 11, w: tw, h: 15 };
+    if (b.x < 6 || b.y < 6 || b.x + b.w > PX_W - 6 || b.y + b.h > PX_H - 6 || !wet(b) || boxes.some((o) => hit(o, b))) continue;
+    boxes.push(b);
+    return [{ name: sea.name, x: vb[0] + px * u, y: vb[1] + py * u }];
+  }
+  return [];
+});
+// Neighbors: named at a point well inside their visible part, when enough of them is in view.
+const neighbours = LAND.filter((c) => c.id !== origin.id && !SKIP_NAME.has(c.id)).flatMap((c) => {
+  const cands: [number, number][] = [];
+  for (let i = 1; i < 36; i++) for (let j = 1; j < 24; j++) {
+    const x = vb[0] + (vb[2] * i) / 36, y = vb[1] + (vb[3] * j) / 24;
+    if (c.polys.some((ps) => inPoly(x, y, ps))) cands.push([x, y]);
+  }
+  if (cands.length < 14) return [];
+  const mx = cands.reduce((t, p) => t + p[0], 0) / cands.length, my = cands.reduce((t, p) => t + p[1], 0) / cands.length;
+  const label = nameOf(c.id).toUpperCase(), tw = label.length * 8.6;
+  const ins = (x: number, y: number) => c.polys.some((ps) => inPoly(x, y, ps));
+  // The whole word sits inside the country: both ends and the middle, at the baseline and cap height.
+  for (const [x, y] of [...cands].sort((a, b2) => Math.hypot(a[0] - mx, a[1] - my) - Math.hypot(b2[0] - mx, b2[1] - my))) {
+    const b = { x: sx(x) - tw / 2, y: sy(y) - 10, w: tw, h: 14 };
+    if (b.x < 6 || b.x + b.w > PX_W - 6 || b.y < 6 || b.y + b.h > PX_H - 6 || boxes.some((o) => hit(o, b))) continue;
+    const hw = (tw / 2 + 4) * u;
+    if (![[x - hw, y], [x + hw, y], [x - hw, y - 10 * u], [x + hw, y - 10 * u]].every(([px, py]) => ins(px, py))) continue;
+    boxes.push(b);
+    return [{ label, x, y }];
+  }
+  return [];
+});
+// Only the countries that reach the frame are drawn (the rest would be clipped anyway).
+const inFrame = (path: string) => {
+  const ps = polys(path).flat();
+  if (!ps.length) return false;
+  const xs = ps.map((q) => q[0]), ys = ps.map((q) => q[1]);
+  return Math.max(...xs) >= vb[0] && Math.min(...xs) <= vb[0] + vb[2] && Math.max(...ys) >= vb[1] && Math.min(...ys) <= vb[1] + vb[3];
+};
+const drawn = countryPaths.filter((c) => inFrame(c.path));
+// The sea's paper grain at the plate's own scale, so it reads as texture, not blotches.
+const grain = fmt(1 / (1.6 * u));
+---
+
+<svg viewBox={vb.map(fmt).join(' ')} class="plate-map" role="img" aria-label={`Map of ${origin.name} with its growing regions: ${origin.regions.map((r) => r.name).join(', ')}.`}>
+  <defs>
+    <filter id="op-grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency={grain} numOctaves="3" seed="4" result="n" />
+      <feColorMatrix type="saturate" values="0" in="n" result="g" />
+      <feComponentTransfer in="g" result="f"><feFuncR type="linear" slope=".12" intercept=".44" /><feFuncG type="linear" slope=".12" intercept=".44" /><feFuncB type="linear" slope=".12" intercept=".44" /></feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="f" mode="soft-light" />
+    </filter>
+    <radialGradient id="op-vig" cx=".5" cy=".5" r=".7"><stop offset=".6" stop-color="#5a5040" stop-opacity="0" /><stop offset="1" stop-color="#5a5040" stop-opacity=".22" /></radialGradient>
+    <radialGradient id="op-area"><stop offset="0" stop-color="#8a4a1c" stop-opacity=".32" /><stop offset=".7" stop-color="#8a4a1c" stop-opacity=".14" /><stop offset="1" stop-color="#8a4a1c" stop-opacity="0" /></radialGradient>
+  </defs>
+  <rect x={fmt(vb[0] - 5)} y={fmt(vb[1] - 5)} width={fmt(vb[2] + 10)} height={fmt(vb[3] + 10)} fill="#cbcfd5" filter="url(#op-grain)" />
+  {[TROPIC_CANCER_Y, EQUATOR_Y, TROPIC_CAPRICORN_Y].map((y) => <line x1={fmt(vb[0])} x2={fmt(vb[0] + vb[2])} y1={y} y2={y} stroke="#8b9ba8" stroke-width={fmt(u)} stroke-dasharray={`${fmt(4 * u)} ${fmt(6 * u)}`} opacity=".55" />)}
+  {drawn.map((c) => <path d={c.path} fill={c.id === origin.id ? '#cf9558' : '#ebe4d6'} stroke="#a89878" stroke-width={fmt(0.8 * u)} />)}
+  {seas.map((s) => <text x={fmt(s.x)} y={fmt(s.y)} text-anchor="middle" font-size={fmt(12.5 * u)} class="op-sea">{s.name.toUpperCase()}</text>)}
+  {neighbours.map((n) => <text x={fmt(n.x)} y={fmt(n.y)} text-anchor="middle" font-size={fmt(11 * u)} class="op-nb">{n.label}</text>)}
+  {regions.map((r) => <circle cx={fmt(r.xy[0])} cy={fmt(r.xy[1])} r={fmt(24 * u)} fill="url(#op-area)" />)}
+  {regions.map((r) => <circle cx={fmt(r.xy[0])} cy={fmt(r.xy[1])} r={fmt(15 * u)} fill="none" stroke="#7a3f14" stroke-width={fmt(0.7 * u)} stroke-dasharray={`${fmt(2 * u)} ${fmt(2.5 * u)}`} opacity=".55" />)}
+  {labelled.map((r) => (
+    <g>
+      <path d={`M${fmt(r.xy[0])} ${fmt(r.xy[1] - 5 * u)} L${fmt(r.xy[0] + 5 * u)} ${fmt(r.xy[1])} L${fmt(r.xy[0])} ${fmt(r.xy[1] + 5 * u)} L${fmt(r.xy[0] - 5 * u)} ${fmt(r.xy[1])} Z`} fill="#2a1d15" stroke="#fbf6ee" stroke-width={fmt(1.2 * u)} />
+      {r.lead && <line x1={fmt(r.xy[0])} y1={fmt(r.xy[1])} x2={fmt(r.xy[0] + r.dx * 0.92)} y2={fmt(r.xy[1] + r.dy - 4 * u)} stroke="#2a1d15" stroke-width={fmt(0.8 * u)} opacity=".55" />}
+      <text x={fmt(r.xy[0] + r.dx)} y={fmt(r.xy[1] + r.dy)} text-anchor={r.anchor} font-size={fmt(14 * u)} stroke-width={fmt(3 * u)} class="op-rl">{r.name}</text>
+    </g>
+  ))}
+  <g transform={`translate(${fmt(vb[0] + vb[2] - 22 * u)} ${fmt(vb[1] + 24 * u)}) scale(${fmt(u * 1.4)})`} opacity=".55">
+    <circle r="12" fill="none" stroke="#5b4a3d" stroke-width=".5" /><polygon points="0,-10 -1.6,-3 0,-4 1.6,-3" fill="#2a1d15" /><polygon points="0,10 -1.6,3 0,4 1.6,3" fill="#a6896a" /><polygon points="10,0 3,-1.6 4,0 3,1.6" fill="#a6896a" /><polygon points="-10,0 -3,-1.6 -4,0 -3,1.6" fill="#a6896a" />
+  </g>
+  <rect x={fmt(vb[0] - 5)} y={fmt(vb[1] - 5)} width={fmt(vb[2] + 10)} height={fmt(vb[3] + 10)} fill="url(#op-vig)" />
+</svg>
+
+<style>
+  .plate-map { display: block; width: 100%; height: auto; aspect-ratio: 1.5; background: #cbcfd5; }
+  .op-rl { font-family: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; font-style: italic; fill: #2a1d15; paint-order: stroke; stroke: #f3eee4; stroke-linejoin: round; }
+  .op-sea { font-family: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif; font-style: italic; fill: #6f7f8e; letter-spacing: .2em; }
+  .op-nb { font-family: 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; fill: #8c7d66; letter-spacing: .16em; }
+</style>

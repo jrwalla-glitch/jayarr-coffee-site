@@ -1,104 +1,94 @@
 ---
-import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
-import BrewExplorer from '../../components/BrewExplorer.svelte';
+import BenchPage from '../../layouts/BenchPage.astro';
+import MethodConstellations from '../../components/coffee/MethodConstellations.svelte';
+import { ATLAS, CONTACT, FILTER, FORCE, brewGuideHref, ratioText, timeText } from '../../lib/coffee/methodAtlas.ts';
+import { EXPLORE_SOURCES } from '../../lib/coffee/explore-sources.ts';
+
+const title = 'Coffee Brewing Methods Compared: Brewing Constellations';
+const description = 'Thirteen coffee brewers compared on how water meets the coffee, the filter, what pushes the water and brew time. Compare any two side by side and open a recipe.';
+const cited = ['easto', 'hoffmann', 'rao', 'synthesis'].map((id) => EXPLORE_SOURCES[id]);
+const order = ['percolation', 'steep-drain', 'immersion'] as const;
+const rows = [...ATLAS].sort((a, b) => order.indexOf(a.contact) - order.indexOf(b.contact) || a.timeS[0] - b.timeS[0]);
 ---
 
-<html lang="en">
-  <head>
-    <BaseHead
-      title="Brew Explorer — The Brewing Constellations | JayArr Coffee"
-      description="Explore coffee brewing methods through an interactive star chart. Click any constellation to discover the science behind pour over, French press, and espresso."
-    />
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "Brew Explorer",
-      "url": "https://jayarr.coffee/explore/methods/",
-      "description": "Explore coffee brewing methods through an interactive star chart. Click any constellation to discover the science behind pour over, French press, and espresso.",
-      "applicationCategory": "EducationalApplication",
-      "operatingSystem": "Any",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "JayArr Coffee",
-        "url": "https://jayarr.coffee"
-      }
-    })}></script>
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "HowTo",
-      "name": "How to Explore Coffee Brewing Methods",
-      "description": "Navigate the interactive star chart to discover 13 coffee brewing methods organized into three families: percolation (pour over), immersion (French press), and pressure (espresso).",
-      "totalTime": "PT3M",
-      "step": [
-        {
-          "@type": "HowToStep",
-          "position": 1,
-          "name": "Choose a constellation",
-          "text": "The star chart organizes brewing methods into three constellations: The Filter (percolation methods like V60, Chemex, and Kalita), The Vessel (immersion methods like French press, cold brew, and Turkish), and The Force (pressure methods like espresso and AeroPress)."
-        },
-        {
-          "@type": "HowToStep",
-          "position": 2,
-          "name": "Click a method star",
-          "text": "Select any star to see detailed information about that brewing method: recommended grind size, water temperature, brew time, ratio, filter type, and a description of the extraction physics involved."
-        },
-        {
-          "@type": "HowToStep",
-          "position": 3,
-          "name": "Compare related methods",
-          "text": "Follow the constellation lines to see how methods relate to each other. Methods connected by lines share similar extraction physics but differ in specific parameters like filter type, contact time, or pressure."
-        },
-        {
-          "@type": "HowToStep",
-          "position": 4,
-          "name": "Find your ideal method",
-          "text": "Use the method details to choose a brewing approach that matches your priorities: clarity and clean flavors (percolation), rich body and oils (immersion), or concentrated intensity (pressure)."
-        }
-      ]
-    })}></script>
-  </head>
-  <body class="bg-cream">
-    <Header />
+<BenchPage
+  title={title}
+  description={description}
+  kicker="Explore · Brewing Constellations"
+  lede="Thirteen brewers as stars, and four ways to arrange the sky."
+  back={{ href: '/explore/', label: 'The gallery' }}
+  gallery
+  wide
+  schema={[{
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Brewing Constellations',
+    url: 'https://jayarr.coffee/explore/methods/',
+    description,
+    applicationCategory: 'EducationalApplication',
+    operatingSystem: 'Any',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    publisher: { '@type': 'Organization', name: 'JayArr Coffee', url: 'https://jayarr.coffee' },
+  }]}
+>
+  <Fragment slot="title">Brewing Constellations: <em>how brewers really differ</em></Fragment>
+  <MethodConstellations client:load />
+  <noscript><p class="bp-noscript">The interactive sky needs JavaScript. Every brewer is compared in the table below.</p></noscript>
 
-    <main class="pt-20 pb-20">
-      <h1 class="sr-only">The Brewing Constellations</h1>
-      <BrewExplorer client:load />
-    </main>
+  <Fragment slot="body">
+    <h2>Four separate axes</h2>
+    <p>Brewers are often sorted into pour-over, immersion and pressure. That mixes up different things: espresso is percolation under pressure, and an AeroPress steeps like a press and is then pushed through paper by hand. Each axis here answers one question.</p>
+    <h3>Contact: how water meets the coffee</h3>
+    <ul>{order.map((k) => <li><strong>{CONTACT[k].label}.</strong> {CONTACT[k].line}</li>)}</ul>
+    <h3>Filter: what holds the grounds back</h3>
+    <p>Paper traps most of the coffee's oils and fine particles, so the cup is clearer and lighter-bodied; metal lets them through for more body; cloth sits between. Turkish coffee isn't filtered at all.</p>
+    <ul>{Object.values(FILTER).sort((a, b) => a.order - b.order).map((f) => <li><strong>{f.label}.</strong> {f.line}</li>)}</ul>
+    <h3>Force: what moves the water</h3>
+    <ul>{Object.values(FORCE).sort((a, b) => a.order - b.order).map((f) => <li><strong>{f.label}.</strong> {f.line}</li>)}</ul>
+    <p class="bp-note">A moka pot works at about 1.5 bar, nowhere near espresso's 9, which is why it makes strong coffee rather than espresso (Hoffmann). Espresso machines are usually set to about 9 bar; Rao notes flow peaks around 7–9 bar at the group head.</p>
+    <h3>Time: how long water and coffee are in contact</h3>
+    <p>From about half a minute for espresso to most of a day for cold brew. Finer grinds suit short contact and coarser grinds long contact, which is why each brewer has its own grind.</p>
 
-    <section class="py-16 px-6">
-      <div class="prose mx-auto">
-        <h2>Percolation, Immersion, and Pressure: Three Families of Brewing</h2>
-        <p>Every coffee brewing method is a variation on the same physical process: dissolving soluble compounds from ground coffee into water. What makes each method distinctive is how it manages three fundamental variables: contact time, filtration, and pressure.</p>
-        <p>Jonathan Gagne divides all brewing into two categories based on water flow. Percolation methods — pour over, drip, and Vietnamese phin — pass fresh water continuously through a bed of coffee. Because the coffee always contacts relatively dilute water (maintaining a high concentration gradient at the particle surface, as described by the Noyes-Whitney equation), percolation achieves higher extraction yields, typically 18-22%. Immersion methods — French press, cupping, siphon, and cold brew — steep coffee in a fixed volume of water. As the water saturates with dissolved coffee compounds, the concentration gradient drops and extraction slows toward equilibrium. Immersion methods typically achieve 16-19% extraction yield. Some methods, like the AeroPress and Clever Dripper, are hybrids: they steep like immersion then drain like percolation, combining the body of immersion with the clarity-enhancing final filtration of percolation.</p>
-        <p>Filtration determines body and clarity. Paper filters trap insoluble oils (including cafestol and kahweol, two diterpenes linked to LDL cholesterol elevation), insoluble protein fragments, and fine particles. The result is a clean, clear cup with less body but a measurable health benefit for daily drinkers. Metal mesh filters in French press and some pour-over drippers pass oils and fines through, producing a heavier, more textured cup with more mouthfeel but less clarity. Cloth filters split the difference. Chemex filters are 20-30% thicker than standard paper, producing the cleanest cup of any common method.</p>
-        <p>Pressure is the third axis. Most brewing methods operate at atmospheric pressure (1 bar). Espresso forces water through finely ground coffee at approximately 9 bars — roughly 130 PSI. This pressure compresses the coffee bed, forces water into the cellular structure of each particle, and extracts compounds that would never dissolve under gravity alone. The result is a fundamentally different beverage: concentrated (8-12% TDS versus 1-1.4% for filter), syrupy in body, topped with crema. Darcy's law governs the flow physics: flow rate through the compressed coffee bed depends on permeability, water column pressure, and bed thickness. The moka pot operates at a lower pressure of about 1.5 bars — enough to push water through a coffee bed but far less than true espresso.</p>
-        <p>Temperature creates a fourth dimension. Most hot brewing targets 91-96 degrees Celsius (195-205 degrees Fahrenheit), where the diffusion coefficient of coffee solubles is high enough for efficient extraction. But slurry temperature in a pour over is typically 5-15 degrees lower than the kettle temperature — heat is lost to the dripper, the air, and the coffee itself. Plastic V60s steal the least heat (counterintuitively outperforming ceramic and glass), which is why Gagne specifically recommends them. Cold brew abandons temperature entirely, compensating with extended time (12-24 hours) and higher dose ratios (1:5 to 1:8). The resulting beverage has fewer bitter compounds and a naturally smoother, sweeter profile.</p>
-        <p>Each constellation in the Brew Explorer represents one of these three families — percolation, immersion, and pressure — with individual methods plotted as stars. The connections between them trace the relationships: methods connected by lines share extraction physics but differ in specific parameters.</p>
-      </div>
-    </section>
+    <h2>Every brewer compared</h2>
+    <div class="mtab-wrap">
+      <table class="mtab">
+        <thead><tr><th scope="col">Brewer</th><th scope="col">Contact</th><th scope="col">Filter</th><th scope="col">Force</th><th scope="col">Time</th><th scope="col">Ratio</th><th scope="col">Recipe</th></tr></thead>
+        <tbody>
+          {rows.map((m) => (
+            <tr>
+              <th scope="row">{m.label}</th>
+              <td>{CONTACT[m.contact].label}</td>
+              <td>{FILTER[m.filter].label}</td>
+              <td>{FORCE[m.force].label}</td>
+              <td class="mono">{timeText(m)}{m.timeNote ? '*' : ''}</td>
+              <td class="mono">{ratioText(m)}</td>
+              <td>{brewGuideHref(m) ? <a href={brewGuideHref(m)!}>Brew Guide</a> : <a href={`/blog/${m.guide.slug}/`}>Guide</a>}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="bp-note">Ratios are water to coffee by weight; espresso's is drink out to coffee in. Where the Brew Guide covers a brewer, these numbers are the Brew Guide's own, apart from the French press's time, which spans the common 4-minute recipe and the Brew Guide's 8-minute steep. Starred times: {rows.filter((m) => m.timeNote).map((m) => `${m.label}, ${m.timeNote}`).join('; ')}. The phin, Turkish coffee, Clever Dripper and siphon use the recipes in our guides to those brewers.</p>
 
-    <!-- Bridge to Tools -->
-    <section class="bg-charcoal py-12">
-      <div class="max-w-3xl mx-auto px-6 text-center">
-        <span class="text-xs uppercase tracking-widest text-copper font-medium">Put It Into Practice</span>
-        <h2 class="font-serif text-xl md:text-2xl font-bold text-cream mt-2 mb-6">Related Tools</h2>
-        <div class="flex flex-wrap justify-center gap-4">
-          <a href="/tools/brew-ratio/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-            Brew Ratio Calculator
-          </a>
-          <a href="/tools/grind-guide/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-            Grind Size Guide
-          </a>
-        </div>
-      </div>
-    </section>
-    <Footer />
-  </body>
-</html>
+    <h2>Guides to each brewer</h2>
+    <ul>
+      {[...new Map(ATLAS.map((m) => [m.guide.slug, m])).values()].map((m) => <li><a href={`/blog/${m.guide.slug}/`}>{m.guide.title}</a></li>)}
+    </ul>
+    <p>Not sure what grind each one needs? The <a href="/tools/grind-guide/">Grind Guide</a> shows it, and the <a href="/tools/brew-ratio/">Brew Guide</a> builds the recipe for your cup.</p>
+
+    <h2>Sources</h2>
+    <ul class="bp-sources">
+      {cited.map((s) => <li>{s.author}, <cite>{s.title}</cite>{s.year ? ` (${s.year})` : ''}{s.where ? `: ${s.where}` : ''}.</li>)}
+    </ul>
+  </Fragment>
+</BenchPage>
+
+<style>
+  .mtab-wrap { overflow-x: auto; border: 1px solid #d9cdbd; border-radius: 12px; background: #fbf8f3; }
+  .mtab { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  .mtab th, .mtab td { text-align: left; padding: 9px 12px; border-bottom: 1px solid #e6dccd; white-space: nowrap; }
+  .mtab thead th { font: 500 11px/1 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; }
+  .mtab tbody th { font-weight: 600; }
+  .mtab .mono { font-family: 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; font-size: 13.5px; }
+  .mtab tr:last-child th, .mtab tr:last-child td { border-bottom: 0; }
+</style>

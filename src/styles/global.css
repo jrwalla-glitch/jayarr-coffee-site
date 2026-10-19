@@ -1,5 +1,45 @@
 @import "tailwindcss";
 
+/* A fallback sized to Instrument Serif: Georgia scaled to its width (measured: 76.3% roman,
+   75.4% italic), so a heading wraps the same before and after the web font arrives and the
+   page doesn't jump. Use it as the second name in an Instrument Serif stack. */
+@font-face {
+  font-family: 'Instrument Serif Fallback';
+  src: local('Georgia'), local('Times New Roman');
+  font-style: normal;
+  size-adjust: 76.3%;
+  ascent-override: 129.7%;
+  descent-override: 40.6%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Instrument Serif Fallback';
+  src: local('Georgia Italic'), local('Georgia-Italic'), local('Times New Roman Italic');
+  font-style: italic;
+  size-adjust: 75.4%;
+  ascent-override: 131.3%;
+  descent-override: 41.1%;
+  line-gap-override: 0%;
+}
+/* The same for the text faces: IBM Plex Sans runs within 2% of Arial's width but 5–13% wider
+   than system-ui, so a system-ui fallback wraps short and grows when Plex arrives. */
+@font-face {
+  font-family: 'IBM Plex Sans Fallback';
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans');
+  size-adjust: 100.5%;
+  ascent-override: 101.5%;
+  descent-override: 26.9%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'IBM Plex Mono Fallback';
+  src: local('Menlo'), local('Consolas'), local('Courier New');
+  size-adjust: 100%;
+  ascent-override: 102%;
+  descent-override: 27%;
+  line-gap-override: 0%;
+}
+
 @theme {
   /* Coffee Roastery Palette — "The Roasted Archive" */
 

@@ -1,104 +1,99 @@
 ---
-import BaseHead from '../../../components/BaseHead.astro';
-import Header from '../../../components/Header.astro';
-import Footer from '../../../components/Footer.astro';
-import CoffeeMap from '../../../components/CoffeeMap.svelte';
+import BenchPage from '../../../layouts/BenchPage.astro';
+import OriginAtlas from '../../../components/coffee/OriginAtlas.svelte';
+import originHubs from '../../../data/origin-hubs.json';
+import originSources from '../../../data/origins-sources.json';
+import { ORIGINS, CONTINENTS, harvestText, bandText, productionText } from '../../../lib/coffee/origins.ts';
+import { notesInText, noteById, inSample } from '../../../lib/coffee/flavors.ts';
+
+const title = 'Coffee Origins Map: Harvest Seasons, Altitude and Flavor';
+const description = 'A map of 30 coffee origins: when each is harvested, how high it grows, how much it produces and how its coffees are described, with sources. Compare any two.';
+
+// Roasters' most-used words per origin, from the winter 2026 catalog sample (the Flavor Bloom's data).
+const roasterWords: Record<string, { words: { id: string; label: string; n: number }[]; lots: number }> = {};
+for (const h of originHubs) {
+  const id = h.origin_slug.replace(/_/g, '-');
+  const counts = new Map<string, number>();
+  const sample = h.beans.filter((b) => inSample(b.name, b.flavor_notes));
+  for (const b of sample) for (const n of new Set(b.flavor_notes.flatMap((t) => notesInText(t, { roaster: true })))) counts.set(n, (counts.get(n) ?? 0) + 1);
+  const words = [...counts.entries()].filter(([, n]) => n >= 2).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([nid, n]) => ({ id: nid, label: noteById(nid)!.label, n }));
+  roasterWords[id] = { words, lots: sample.length };
+}
+const sources = originSources as Record<string, { title: string; url: string; checked: string }>;
+const sourceList = Object.entries(sources).sort((a, b) => a[1].title.localeCompare(b[1].title));
 ---
 
-<html lang="en">
-  <head>
-    <BaseHead
-      title="Coffee Origin Map — Explore Where Coffee Grows | JayArr Coffee"
-      description="Explore coffee origins with our interactive world map. Click any country to discover its coffee story — flavor profiles, growing regions, and harvest seasons."
-    />
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "Coffee Origin Map",
-      "url": "https://jayarr.coffee/explore/origins/",
-      "description": "Explore coffee origins with our interactive world map. Click any country to discover its coffee story — flavor profiles, growing regions, and harvest seasons.",
-      "applicationCategory": "EducationalApplication",
-      "operatingSystem": "Any",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "JayArr Coffee",
-        "url": "https://jayarr.coffee"
-      }
-    })}></script>
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "HowTo",
-      "name": "How to Explore Coffee Origins",
-      "description": "Use the interactive world map to discover coffee-producing countries, their flavor profiles, growing regions, harvest seasons, and key varieties.",
-      "totalTime": "PT3M",
-      "step": [
-        {
-          "@type": "HowToStep",
-          "position": 1,
-          "name": "Browse the coffee belt",
-          "text": "The interactive map highlights every major coffee-producing country between the Tropic of Cancer and Tropic of Capricorn. Countries with active coffee production are shaded and clickable."
-        },
-        {
-          "@type": "HowToStep",
-          "position": 2,
-          "name": "Click a country to explore",
-          "text": "Select any producing country to see its coffee profile: annual production volume, key varieties grown, dominant processing methods, growing altitude ranges, and harvest season months."
-        },
-        {
-          "@type": "HowToStep",
-          "position": 3,
-          "name": "Discover flavor profiles by region",
-          "text": "Each origin panel describes the characteristic flavor profile. Ethiopian coffees tend toward citrus, florals, and berry. Brazilian coffees lean nutty and chocolatey. Kenyan coffees are known for intense blackcurrant and bright acidity."
-        },
-        {
-          "@type": "HowToStep",
-          "position": 4,
-          "name": "Check harvest season timing",
-          "text": "Harvest months are displayed for each country so you can time your purchases for peak freshness. Coffee is a seasonal crop — beans from the most recent harvest will taste best."
-        }
-      ]
-    })}></script>
-  </head>
-  <body class="bg-cream">
-    <Header />
+<BenchPage
+  title={title}
+  description={description}
+  kicker="Explore · The Coffee Origins"
+  lede="Thirty origins: who's harvesting now, where it grows and how it's described."
+  back={{ href: '/explore/', label: 'The gallery' }}
+  gallery
+  wide
+  schema={[{
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'The Coffee Origins',
+    url: 'https://jayarr.coffee/explore/origins/',
+    description,
+    applicationCategory: 'EducationalApplication',
+    operatingSystem: 'Any',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    publisher: { '@type': 'Organization', name: 'JayArr Coffee', url: 'https://jayarr.coffee' },
+  }]}
+>
+  <Fragment slot="title">The Coffee Origins: <em>where and when it grows</em></Fragment>
+  <OriginAtlas client:load roasterWords={roasterWords} sources={sources} />
+  <noscript><p class="bp-noscript">The interactive map needs JavaScript. Every origin is listed in the table below.</p></noscript>
 
-    <main class="pt-20 pb-20">
-      <h1 class="sr-only">Coffee Origin Map</h1>
-      <CoffeeMap client:load />
-    </main>
+  <Fragment slot="body">
+    <h2>How to read the map</h2>
+    <p>Each origin's year is a ring, January at the top and running clockwise. Solid copper marks the main harvest, a paler arc a second crop where the sources give one (Colombia's mitaca, Kenya's fly crop), and hatching one month either side of each harvest. The hatching is a one-month margin we add around the calendar drawn, not an extra sourced harvest window: picking can start early or run late with altitude, region and the year's weather. Turn the month to light up every origin picking at that time.</p>
+    <p>Harvest isn't when coffee reaches your roaster. Cherries are processed, dried, rested, milled and shipped first, and importers list arrival separately: Café Imports gives Ethiopia's October–January harvest an April–June arrival in the US. There's no single lag that fits every origin.</p>
+    <p>Altitude is drawn on one scale, from sea level to 2,600 m, for the coffees each source describes, not the country's highest and lowest farms. Where robusta is at least a fifth of production, its band is shown hatched beside arabica's; Brazil is the exception, because no source gives a general band for its conilon.</p>
+    <p>"Often described as" is how importers describe each origin's coffees in general. It's a tendency, not a promise about a bag, and the processing often matters more than the country: a natural Ethiopian and a washed one can taste very different. The <a href="/explore/flavors/">Flavor Bloom</a> shows which words roasters use for which origins.</p>
 
-    <section class="py-16 px-6">
-      <div class="prose mx-auto">
-        <h2>How Geography Shapes Your Coffee</h2>
-        <p>Coffee grows in a narrow band between the Tropic of Cancer and the Tropic of Capricorn, but within that band, no two countries produce the same cup. The flavor differences between Ethiopian and Brazilian coffee are as dramatic as the differences between Burgundy and Barossa Valley wine, and the reasons are rooted in the same concept: terroir.</p>
-        <p>Altitude is the dominant variable. Higher altitude means cooler temperatures, which slow cherry maturation from 6-8 months at low elevations to 9-11 months at high elevations. This extended development period allows the fruit to accumulate more sugars, organic acids, and volatile precursor compounds. The diurnal temperature differential — the gap between daytime highs and nighttime lows, typically 8-10 degrees Celsius in prime growing regions — means that sugars produced by photosynthesis during the day are conserved overnight because cooler temperatures suppress nighttime respiration. A 2024 study of coffee grown in Pu'er, China, quantified this: of 112 volatile organic compounds analyzed, 11 showed significant altitude dependence. Pyrazines (nutty, roasted notes) decreased with altitude while aldehydes (sweet, caramel, fruity notes) increased.</p>
-        <p>The quality sweet spot sits between 1,400 and 1,900 meters at equatorial latitudes, with diminishing returns above 2,000 meters where temperatures drop too low for optimal plant metabolism. But required altitude varies with latitude: near the equator, you need 1,100-1,900 meters. At the edges of the coffee belt (20-25 degrees latitude), quality coffee can grow at much lower elevations — Brazil's Cerrado region produces specialty coffee below 1,200 meters because its subtropical latitude provides the necessary temperature modulation.</p>
-        <p>Arabica and Robusta are the two commercially important species, but they're not simply "good" and "bad." Arabica evolved in the highland forests of southwestern Ethiopia and produces more complex, acidic, aromatic coffee. It accounts for roughly 60% of world production. Robusta evolved in the lowland forests of central and western Africa, contains nearly twice the caffeine, and produces heavier-bodied, more bitter coffee. It accounts for 40% of production and dominates instant coffee and espresso blends. Arabica is actually a natural hybrid of Robusta and C. eugenioides, originating in what is now southern Sudan — a fact that surprises many in the specialty community.</p>
-        <p>Variety (cultivar) adds another layer. Within Arabica alone, there are over 100 cataloged varieties with distinct genetic profiles. SL-28 and SL-34 from Kenya produce the intense blackcurrant and bright acidity that makes Kenyan coffee celebrated worldwide. Gesha (originally from Ethiopia, made famous in Panama) delivers jasmine, bergamot, and tropical fruit that commands auction prices exceeding $350 per pound. Bourbon and its mutations (Caturra, SL-28, Pacas) consistently produce sweet, complex cups with high quality potential.</p>
-        <p>Climate change is actively redrawing the coffee map. The top five producing countries now average 144 days per year of coffee-harming heat above 30 degrees Celsius. Colombia's farms are migrating upward at a rate of 150 meters per degree of warming. Ethiopia's wild Arabica forests face a projected 50% decline by 2088. Meanwhile, emerging origins are rising: China's Yunnan province saw its specialty coffee ratio surge from 8% to 31.6% between 2021 and 2024, with exports growing 358% year over year. The world's coffee geography is being reshaped in real time.</p>
-      </div>
-    </section>
-
-    <!-- Bridge to Tools -->
-    <section class="bg-charcoal py-12">
-      <div class="max-w-3xl mx-auto px-6 text-center">
-        <span class="text-xs uppercase tracking-widest text-copper font-medium">Put It Into Practice</span>
-        <h2 class="font-serif text-xl md:text-2xl font-bold text-cream mt-2 mb-6">Related Tools</h2>
-        <div class="flex flex-wrap justify-center gap-4">
-          <a href="/tools/freshness/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-            Freshness Tracker
-          </a>
-          <a href="/tools/brew-ratio/" class="border border-cream/20 text-cream/70 px-5 py-2 text-xs uppercase tracking-widest hover:border-copper/50 hover:text-cream transition-all">
-            Brew Ratio Calculator
-          </a>
+    <h2>Every origin</h2>
+    {CONTINENTS.map((c) => (
+      <>
+        <h3>{c.label}</h3>
+        <div class="otab-wrap">
+          <table class="otab">
+            <thead><tr><th scope="col">Origin</th><th scope="col">Harvest</th><th scope="col">Altitude (arabica)</th><th scope="col">Production</th></tr></thead>
+            <tbody>
+              {ORIGINS.filter((o) => o.continent === c.id).map((o) => (
+                <tr>
+                  <th scope="row">{o.page ? <a href={o.page}>{o.name}</a> : o.name}</th>
+                  <td>{harvestText(o)}</td>
+                  <td class="mono">{o.altitudeM ? bandText(o.altitudeM).replace(/ \(.*\)$/, '') + (/offering/i.test(o.altitudeM.scope ?? '') ? '*' : '') : '—'}</td>
+                  <td class="mono">{productionText(o) ?? 'No current figure'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-      </div>
-    </section>
-    <Footer />
-  </body>
-</html>
+      </>
+    ))}
+    <p class="bp-note">* One lot's growing altitude (Cuba: an Escambray lot from El Nicho); no national range is established. Every other band is a sourcing or growing band, scoped in its origin's profile.</p>
+    <p class="bp-note">Production is in 60 kg bags of green coffee, from the US Department of Agriculture's Foreign Agricultural Service (PSD, July 2026) unless noted; forecasts are for the 2026/27 season. Hawaii's figure is calculated from the USDA's Hawaii coffee report. Harvest calendars are importers' (mostly Café Imports and Sucafina); other references, such as atlases and national boards, can differ by a month or so, so each country's page names the source of every figure. Research checked 15 October 2026.</p>
+
+    <h2>Sources</h2>
+    <details>
+      <summary>{sourceList.length} sources, each checked 15 October 2026</summary>
+      <ul class="bp-sources">
+        {sourceList.map(([, s]) => <li><a href={s.url} rel="noopener">{s.title}</a></li>)}
+      </ul>
+    </details>
+  </Fragment>
+</BenchPage>
+
+<style>
+  .otab-wrap { overflow-x: auto; border: 1px solid #d9cdbd; border-radius: 4px; background: #fbf8f3; margin-bottom: 8px; }
+  .otab { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  .otab th, .otab td { text-align: left; padding: 8px 12px; border-bottom: 1px solid #e6dccd; }
+  .otab thead th { font: 500 11px/1 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; letter-spacing: .12em; text-transform: uppercase; color: #75655a; }
+  .otab tbody th { font-weight: 600; white-space: nowrap; }
+  .otab .mono { font-family: 'IBM Plex Mono', 'IBM Plex Mono Fallback', monospace; font-size: 13px; white-space: nowrap; }
+  .otab tr:last-child th, .otab tr:last-child td { border-bottom: 0; }
+</style>
