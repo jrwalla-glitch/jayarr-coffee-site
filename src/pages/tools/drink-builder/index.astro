@@ -11,12 +11,13 @@ const NAME: Record<string, string> = { espresso: 'espresso', milk: 'milk', froth
 const fmtLayer = (l: (typeof DRINKS)[number]['refs'][number]['layers'][number]) => {
 	const r = l.ml ?? l.g;
 	const unit = l.ml ? 'ml' : 'g';
-	return r ? `${r[0] === r[1] ? r[0] : `${r[0]}–${r[1]}`} ${unit} ${NAME[l.kind] ?? l.kind}` : `${NAME[l.kind] ?? l.kind} (amount not published)`;
+	return r ? `${r[0] === r[1] ? r[0] : `${r[0]}–${r[1]}`} ${unit} ${NAME[l.kind] ?? l.kind}` : l.amount ? `${NAME[l.kind] ?? l.kind} (${l.amount})` : `${NAME[l.kind] ?? l.kind} (amount not published)`;
 };
 // Shot counts as readable text: "single shot", "three ristretto shots", "no espresso (drip coffee)".
 const shotsText = (s: string) => s === 'single' ? 'single shot' : s === 'double' ? 'double shot' : s === 'not stated' ? 'shots not stated'
 	: s.startsWith('none') ? `no espresso${s.slice(4)}` : s.startsWith('usually ') ? `usually a ${s.slice(8)} shot` : `${s} shots`;
-const allSources = [...new Map(DRINKS.flatMap((d) => d.refs.map((r) => [r.source.url, r.source]))).values()];
+// Each source once; a printed source (no link) is listed by name, and a recipe's current page beside it.
+const allSources = [...new Map(DRINKS.flatMap((d) => d.refs.flatMap((r) => [r.source, ...(r.also ? [r.also] : [])])).map((x) => [x.url ?? x.name, x])).values()];
 ---
 
 <!doctype html>
@@ -69,7 +70,7 @@ const allSources = [...new Map(DRINKS.flatMap((d) => d.refs.map((r) => [r.source
 				</ul>
 
 				<h2>Sources</h2>
-				<ul class="cf-sources">{allSources.map((s) => <li><a href={s.url} rel="noopener" target="_blank">{s.name}</a></li>)}</ul>
+				<ul class="cf-sources">{allSources.map((s) => <li>{s.url ? <a href={s.url} rel="noopener" target="_blank">{s.name}</a> : <cite>{s.name}</cite>}</li>)}</ul>
 			</article>
 		</main>
 		<Footer />

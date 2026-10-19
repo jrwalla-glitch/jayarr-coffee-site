@@ -79,7 +79,7 @@
     // Unpublished layers get a nominal share of the free space so the drawing reads; they stay dashed.
     // Espresso, foam and chocolate get small fixed shares; milk, water or brewed coffee fill the rest.
     const free = Math.max(cap * 0.82 - known, cap * 0.18);
-    const small = (l: Layer) => (l.kind === 'espresso' ? Math.min(30, free * 0.35) : l.kind === 'foam' || l.kind === 'chocolate' ? free * 0.12 : 0);
+    const small = (l: Layer) => (l.kind === 'espresso' ? Math.min(30, free * 0.35) : l.kind === 'foam' || l.kind === 'chocolate' || l.kind === 'cream' ? free * 0.12 : 0);
     const unk = r.layers.filter((l) => l.unspecified);
     const fillers = unk.filter((l) => small(l) === 0).length;
     const rest = Math.max(0, free - unk.reduce((t, l) => t + small(l), 0));
@@ -92,7 +92,7 @@
       const range = l.ml ?? l.g;
       if (range && range[0] !== range[1]) band = [BASE - ((acc - v + range[0]) / cap) * h, BASE - ((acc - v + range[1]) / cap) * h];
       const unit = l.ml ? 'ml' : 'g';
-      const val = range ? (range[0] === range[1] ? `${range[0]} ${unit}` : `${range[0]}–${range[1]} ${unit}`) : 'amount not published';
+      const val = range ? (range[0] === range[1] ? `${range[0]} ${unit}` : `${range[0]}–${range[1]} ${unit}`) : l.amount ?? 'amount not published';
       return { kind: l.kind, y0, y1, band, unknown: !!l.unspecified, label: NAME[l.kind], value: val };
     });
     const foamPx = r.foamCm ? ((r.foamCm[0] + r.foamCm[1]) / 2 / s.hCm) * h : 0;
@@ -221,13 +221,13 @@
         <dl>
           <div><dt>Shots</dt><dd>{c.r.shots}</dd></div>
           {#each c.r.layers as l, i (i)}
-            <div><dt>{NAME[l.kind]}</dt><dd>{l.ml ? `${l.ml[0] === l.ml[1] ? l.ml[0] : `${l.ml[0]}–${l.ml[1]}`} ml (${l.ml[0] === l.ml[1] ? mlToFlOz(l.ml[0]).toFixed(1) : `${mlToFlOz(l.ml[0]).toFixed(1)}–${mlToFlOz(l.ml[1]).toFixed(1)}`} fl oz)` : l.g ? `${l.g[0] === l.g[1] ? l.g[0] : `${l.g[0]}–${l.g[1]}`} g` : 'not published'}{l.basis ? ` — ${l.basis}` : ''}</dd></div>
+            <div><dt>{NAME[l.kind]}</dt><dd>{l.ml ? `${l.ml[0] === l.ml[1] ? l.ml[0] : `${l.ml[0]}–${l.ml[1]}`} ml (${l.ml[0] === l.ml[1] ? mlToFlOz(l.ml[0]).toFixed(1) : `${mlToFlOz(l.ml[0]).toFixed(1)}–${mlToFlOz(l.ml[1]).toFixed(1)}`} fl oz)` : l.g ? `${l.g[0] === l.g[1] ? l.g[0] : `${l.g[0]}–${l.g[1]}`} g` : l.amount ?? 'not published'}{l.basis ? ` — ${l.basis}` : ''}</dd></div>
           {/each}
           {#if c.r.foamCm}<div><dt>Foam</dt><dd>about {c.r.foamCm[0]} cm</dd></div>{/if}
           <div><dt>Served in</dt><dd>{c.r.vessel.name}{c.r.vessel.capacityMl ? `, ${c.r.vessel.capacityMl[0] === c.r.vessel.capacityMl[1] ? c.r.vessel.capacityMl[0] : `${c.r.vessel.capacityMl[0]}–${c.r.vessel.capacityMl[1]}`} ml` : ''}</dd></div>
         </dl>
         {#if c.r.note}<p class="note">{c.r.note}</p>{/if}
-        <p class="src">Recipe: <a href={c.r.source.url} target="_blank" rel="noopener">{c.r.source.name}</a> · {c.r.where}</p>
+        <p class="src">Recipe: {#if c.r.source.url}<a href={c.r.source.url} target="_blank" rel="noopener">{c.r.source.name}</a>{:else}<cite>{c.r.source.name}</cite>{/if} · {c.r.where}{#if c.r.also} · see also <a href={c.r.also.url} target="_blank" rel="noopener">{c.r.also.name}</a>{/if}</p>
       </article>
     {/each}
   </div>

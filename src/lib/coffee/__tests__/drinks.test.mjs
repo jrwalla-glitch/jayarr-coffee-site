@@ -1,14 +1,47 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { DRINKS, knownVolume, compareRefs, refById } from '../index.ts';
+import { DRINKS, knownVolume, compareRefs, refById, drinkById } from '../index.ts';
 
-test('every drink has a sourced reference with an https URL and a definition', () => {
+test('every drink has a sourced reference and a definition; a link is https, a printed source names its pages', () => {
   assert.equal(DRINKS.length, 18);
   for (const d of DRINKS) {
     assert.ok(d.definition.length > 20, d.id);
     assert.ok(d.refs.length >= 1, d.id);
-    for (const r of d.refs) assert.match(r.source.url, /^https:\/\//, r.id);
+    for (const r of d.refs) {
+      if (r.source.url) assert.match(r.source.url, /^https:\/\//, r.id);
+      else assert.match(r.source.name, /\bpp?\. \d/, `${r.id}: a printed source names its pages`);
+      if (r.also) assert.match(r.also.url, /^https:\/\//, r.id);
+    }
   }
+});
+
+test('item 41: INEI\'s technical figures cite the brochure, with the current page beside it; illy pours the foam; CoffeeGeek is the live page', () => {
+  for (const id of ['espresso-inei', 'capp-inei']) {
+    const r = refById(id);
+    assert.match(r.source.name, /brochure, 2006\), pp?\. /, id);
+    assert.equal(r.source.url, undefined, `${id}: no link that doesn't carry the table`);
+    assert.equal(r.also.url, 'https://iei.coffee/en/espresso-italiano-certificato');
+  }
+  assert.match(refById('capp-inei').note, /25 ml of espresso and 100 ml of steamed milk/);
+  const mac = refById('macchiato-illy').layers.find((l) => l.kind === 'foam');
+  assert.match(mac.basis, /poured on until the cup is almost full/); assert.doesNotMatch(mac.basis, /spooned/);
+  const lungo = refById('lungo-coffeegeek');
+  assert.equal(lungo.source.url, 'https://coffeegeek.com/guides/howtos/espresso-lungo-how-to/');
+  assert.match(lungo.source.name, /Mark Prince.*September 13, 2020/);
+});
+
+test('B2: Starbucks\' Caffè Mocha (Grande: 2 shots, 4 pumps, 16 fl oz) and Hoffmann\'s equal-parts cortado', () => {
+  const m = refById('mocha-sbux');
+  assert.equal(m.source.url, 'https://www.starbucks.com/menu/product/408/hot');
+  assert.match(m.shots, /^2\b/); assert.deepEqual(m.vessel.capacityMl, [473, 473]);
+  assert.equal(m.layers.find((l) => l.kind === 'chocolate').amount, '4 pumps of mocha sauce');
+  assert.equal(drinkById('mocha').refs[0].id, 'mocha-breville', 'the default mocha is unchanged');
+  const c = refById('cortado-hoffmann');
+  assert.deepEqual(c.layers.map((l) => [l.kind, l.ml]), [['espresso', [30, 30]], ['milk', [30, 30]]]);
+  assert.match(c.source.name, /p\. 117/);
+  assert.equal(drinkById('cortado').refs[0].id, 'cortado-sabora', 'the default cortado is unchanged');
+  assert.match(compareRefs(refById('cortado-hoffmann'), refById('cortado-sabora'), 'Cortado', 'Cortado'), /milk/);
+  assert.match(compareRefs(refById('mocha-sbux'), refById('mocha-breville'), 'Mocha', 'Mocha'), /whipped cream/);
 });
 
 test('known volumes never exceed a published vessel capacity (capacity is not fill, but it is a ceiling)', () => {
