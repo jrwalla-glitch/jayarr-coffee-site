@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte';
   import {
-    ATLAS, CONTACT, FILTER, FORCE, TIME_TICKS, atlasById, brewGuideHref, describe, differenceSentence, differences,
+    ATLAS, CONTACT, FILTER, FORCE, TIME_TICKS, atlasById, brewGuideHref, describe, differenceSentence, differences, recipeDiffers,
     ratioText, timePosition, timeText,
   } from '../../lib/coffee/methodAtlas.ts';
   import type { AtlasId, AtlasMethod, Axis } from '../../lib/coffee/methodAtlas.ts';
@@ -419,6 +419,7 @@
         </div>
       {:else}
         {@const d = differences(A, B)}
+        {@const rd = recipeDiffers(A, B)}
         <div class="detail compare">
           <button type="button" class="x" aria-label="Close the comparison" onclick={close}>×</button>
           <p class="kick">Compare</p>
@@ -438,11 +439,11 @@
               {#each ARRANGE as x (x.id)}
                 <tr class:differs={d.includes(x.id)}><th scope="row">{x.label}{#if d.includes(x.id)}<span class="sr"> (differs)</span>{/if}</th><td>{axisValue(A, x.id)}</td><td>{axisValue(B, x.id)}</td></tr>
               {/each}
-              <tr><th scope="row">Ratio</th><td>{keep(ratioText(A))}</td><td>{keep(ratioText(B))}</td></tr>
-              <tr><th scope="row">Grind</th><td>{A.grind}</td><td>{B.grind}</td></tr>
+              <tr class:differs={rd.ratio}><th scope="row">Ratio{#if rd.ratio}<span class="sr"> (differs)</span>{/if}</th><td>{keep(ratioText(A))}</td><td>{keep(ratioText(B))}</td></tr>
+              <tr class:differs={rd.grind}><th scope="row">Grind{#if rd.grind}<span class="sr"> (differs)</span>{/if}</th><td>{A.grind}</td><td>{B.grind}</td></tr>
             </tbody>
           </table>
-          <p class="quiet small">Highlighted rows are the axes that differ. Time is highlighted when the ranges don't overlap or one takes at least 1.5 times as long. Time is the typical brew time for each recipe (the moka pot's is its time on the stove).{#each [A, B].filter((m) => m.timeNote) as m (m.id)}{' '}* {m.label}: {m.timeNote}.{/each}{#each [A, B].filter((m) => m.filterNote) as m (m.id)}{' '}† {m.label}: {m.filterNote}.{/each}</p>
+          <p class="quiet small">Highlighted rows are the ones that differ: contact, filter and force when they're different kinds; time when the ranges don't overlap or one takes at least 1.5 times as long; ratio when one uses at least a third more coffee for its water; grind when the grinds differ. Time is the typical brew time for each recipe (the moka pot's is its time on the stove).{#each [A, B].filter((m) => m.timeNote) as m (m.id)}{' '}* {m.label}: {m.timeNote}.{/each}{#each [A, B].filter((m) => m.filterNote) as m (m.id)}{' '}† {m.label}: {m.filterNote}.{/each}</p>
           <div class="actions">
             {#each [A, B] as m (m.id)}
               {#if brewGuideHref(m)}<a class="ghost" href={brewGuideHref(m)}>{m.label} in the Brew Guide →</a>{:else}<a class="ghost" href="/blog/{m.guide.slug}/">{m.label} guide →</a>{/if}

@@ -22,6 +22,8 @@ for (const b of counted) for (const w of new Set(b.flavor_notes.map((t) => t.tri
   if (!w || MOUTHFEEL.test(w) || notesInText(w, { roaster: true }).length || familiesInText(w).length || genericIn(w).length) continue;
   unhomed.set(w, (unhomed.get(w) ?? 0) + 1);
 }
+// The sample's shape, said once on the page (review r5, Muse): its roast mix and how many decafs it holds.
+const lightN = counted.filter((b) => b.roast_level === 'light').length, decafN = counted.filter((b) => /decaf/i.test(b.name)).length;
 const topUnhomed = [...unhomed].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 4);
 const unhomedText = topUnhomed.map(([w, n], i) => (i === 0 ? `${w} (${n} lots)` : w)).join(', ').replace(/, ([^,]+)$/, ' and $1');
 const origins = ORIGINS.map((o) => ({ id: o.id, name: o.name, page: o.page }));
@@ -57,7 +59,7 @@ const offCount = OFF_GROUPS.reduce((t, g) => t + g.notes.length, 0);
     <h2>How the bloom works</h2>
     <p>The eight petals are the flavor families of the SCA and World Coffee Research Coffee Taster's Flavor Wheel. Open one and its groups fan out; pick a note and you get three different kinds of information, kept apart on purpose:</p>
     <ul>
-      <li><strong>Roasters say:</strong> how often roasters use the word, counted from {lots.length} single-origin lot descriptions by {roasters} specialty roasters (of {collected} whose catalogs we recorded, January–March 2026). Words with no note on the wheel count toward none; the commonest are {unhomedText}. It shows where a word tends to turn up, by process, roast and origin. It isn't a measurement, and it can't promise what a particular bag will taste like.</li>
+      <li><strong>Roasters say:</strong> how often roasters use the word, counted from {lots.length} single-origin lot descriptions by {roasters} specialty roasters (of {collected} whose catalogs we recorded, January–March 2026). Most are light roasts ({lightN} of {lots.length}), and {decafN} are decafs. Words with no note on the wheel count toward none; the commonest are {unhomedText}. It shows where a word tends to turn up, by process, roast and origin. It isn't a measurement, and it can't promise what a particular bag will taste like.</li>
       <li><strong>Tends to:</strong> general tendencies, such as lighter roasts keeping more fruit and acidity, with their sources.</li>
       <li><strong>You noticed:</strong> your own tasting card. Add up to three notes you can taste, type in what the bag says, and see where you agree. The card stays on your device.</li>
     </ul>

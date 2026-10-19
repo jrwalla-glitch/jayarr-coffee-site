@@ -65,8 +65,9 @@
   let symptom = $state('sour');
   let fixMethod = $state<MethodId>('v60');
 
-  // Only the mug sizes this brewer can make in one go are offered (one AeroPress holds about 22 g).
-  const fits = (m: MethodId, c: number) => buildRecipe({ method: m, target: { cupMl: flOzToMl(c) }, strength: 'classic', roast: 'medium' }).ok;
+  // Only the mug sizes this brewer makes well in one go are offered (one AeroPress holds about 22 g), and
+  // none the Brew Guide would open with its small-batch warning (an 8 oz Chemex or cold brew; review r5, Muse).
+  const fits = (m: MethodId, c: number) => { const r = buildRecipe({ method: m, target: { cupMl: flOzToMl(c) }, strength: 'classic', roast: 'medium' }); return r.ok && !r.warnings.some((w) => w.code === 'small-batch'); };
   let cups = $derived(method === 'espresso' || method === 'moka' ? [] : CUPS.filter((c) => fits(method, c)));
   $effect(() => { if (cups.length && !cups.includes(oz)) oz = cups.filter((c) => c <= oz).at(-1) ?? cups[0]; });
   let target = $derived(method === 'espresso' ? { doseG: 18 } : method === 'moka' ? { doseG: 15 } : { cupMl: flOzToMl(oz) });

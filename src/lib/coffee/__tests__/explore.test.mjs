@@ -6,7 +6,7 @@ import summaries from '../../../data/origin-summaries.json' with { type: 'json' 
 import {
   FAMILIES, OFF_GROUPS, ALL_NOTES, noteById, notesInText, familiesInText, evidenceFor, familyCounts, compareCard, encodeCard, decodeCard, MAX_PINS, inSample,
 } from '../flavors.ts';
-import { ATLAS, brewGuideHref, differences, differenceSentence, describe, ratioText, timeText, timePosition, TIME_TICKS } from '../methodAtlas.ts';
+import { ATLAS, brewGuideHref, differences, differenceSentence, describe, ratioText, recipeDiffers, timeText, timePosition, TIME_TICKS } from '../methodAtlas.ts';
 import { ORIGINS, CONTINENTS, monthsIn, harvestState, harvestingIn, originByPage, bandText, project, sourceNames, harvestBags } from '../origins.ts';
 import { EXPLORE_SOURCES } from '../explore-sources.ts';
 import { decodeBrew } from '../share.ts';
@@ -266,4 +266,13 @@ test('review r5 (Opus): harvest lists order by the bags of the species picked; I
   const oct = harvestingIn(10).sort((a, b) => harvestBags(b) - harvestBags(a)).map((o) => o.id);
   assert.equal(oct[0], 'vietnam');
   assert.ok(oct.indexOf('indonesia') > 3, oct.join(','));
+});
+
+test('review r5 (Muse): ratio and grind rows differ when they do; a large ratio gap is said; Clever and AeroPress times are named as one recipe', () => {
+  const by = (id) => ATLAS.find((m) => m.id === id);
+  assert.deepEqual(recipeDiffers(by('phin'), by('v60')), { ratio: true, grind: true });
+  assert.equal(recipeDiffers(by('v60'), by('french-press')).ratio, false);
+  assert.equal(recipeDiffers(by('espresso'), by('moka')).ratio, true);
+  assert.match(differenceSentence(by('phin'), by('v60')), /the phin uses about twice the coffee for its water \(1:8\.6 against 1:16\)/);
+  assert.ok(by('clever').timeNote && by('aeropress').timeNote);
 });

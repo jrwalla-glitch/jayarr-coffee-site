@@ -286,11 +286,13 @@
      7
     ],
     "second": null,
-    "variesBy": "Higher sites can ripen later.",
+    "variesBy": "Café Imports' and Sucafina's calendar. Apex gives April–July. Higher sites can ripen later.",
     "edgeMonths": 1,
     "sources": [
      "ci-burundi",
-     "suca-burundi",
+     "suca-burundi"
+    ],
+    "compare": [
      "apex-burundi"
     ],
     "scope": "Arabica"
@@ -377,10 +379,12 @@
      11
     ],
     "second": null,
-    "variesBy": "Southern arabica runs May–September and northern arabica July–November; robusta follows a separate calendar.",
+    "variesBy": "Café Imports' calendar: southern arabica May–September, northern arabica July–November. Sucafina's 2026 handbook gives May–September in the south and June–October in the north. Robusta follows a separate calendar.",
     "edgeMonths": 0,
     "sources": [
-     "ci-tanzania",
+     "ci-tanzania"
+    ],
+    "compare": [
      "sucafina-handbook-2026"
     ],
     "scope": "arabica, south and north together"
@@ -585,10 +589,12 @@
      10
     ],
     "second": null,
-    "variesBy": "Northern smallholders and southern estates do not necessarily pick together.",
+    "variesBy": "Sucafina's calendar. Café Imports gives April–September. Northern smallholders and southern estates do not necessarily pick together.",
     "edgeMonths": 1,
     "sources": [
-     "suca-malawi",
+     "suca-malawi"
+    ],
+    "compare": [
      "ci-malawi"
     ],
     "scope": "Arabica"
@@ -671,12 +677,14 @@
      9
     ],
     "second": null,
-    "variesBy": "Cerrado often starts in May; Conilon/Robusta commonly runs March–August.",
+    "variesBy": "Sucafina's calendar (Sul de Minas, Mogiana and Matas de Minas April–September; Cerrado May–September). Café Imports adds October–December for Espírito Santo; Apex gives May–September. Conilon/Robusta commonly runs March–August.",
     "edgeMonths": 1,
     "sources": [
      "suca-brazil",
+     "sucafina-handbook-2026"
+    ],
+    "compare": [
      "ci-brazil",
-     "sucafina-handbook-2026",
      "apex-brazil"
     ],
     "scope": "Arabica"
@@ -836,7 +844,8 @@
     "Bourbon"
    ],
    "processing": [
-    "Washed"
+    "Washed (most of the crop)",
+    "Natural, honey and anaerobic (common in specialty lots)"
    ],
    "tendencies": {
     "notes": [
@@ -1244,12 +1253,14 @@
      4
     ],
     "second": null,
-    "variesBy": "Timing follows region/elevation; some calendars finish in March.",
+    "variesBy": "Café Imports', Sucafina's and Mercanta's calendar. Sucafina's 2026 handbook ends it in March. Timing follows region and elevation.",
     "edgeMonths": 1,
     "sources": [
      "ci-honduras",
      "suca-honduras",
-     "mercanta-honduras",
+     "mercanta-honduras"
+    ],
+    "compare": [
      "sucafina-handbook-2026"
     ],
     "scope": "Arabica"
@@ -1336,13 +1347,15 @@
      3
     ],
     "second": null,
-    "variesBy": "High farms may continue into April.",
+    "variesBy": "Sucafina's and Mercanta's calendar. Café Imports gives November–April; high farms may continue into April.",
     "edgeMonths": 1,
     "sources": [
      "suca-el-salvador",
      "mercanta-el-salvador",
-     "ci-el-salvador",
      "sucafina-handbook-2026"
+    ],
+    "compare": [
+     "ci-el-salvador"
     ],
     "scope": "Arabica"
    },
@@ -1427,11 +1440,13 @@
      3
     ],
     "second": null,
-    "variesBy": "Higher northern districts often concentrate picking in December–March.",
+    "variesBy": "Café Imports' and Sucafina's 2026 handbook calendar. Sucafina's website and Mercanta give December–March, where higher northern districts concentrate their picking.",
     "edgeMonths": 1,
     "sources": [
      "ci-nicaragua",
-     "sucafina-handbook-2026",
+     "sucafina-handbook-2026"
+    ],
+    "compare": [
      "suca-nicaragua",
      "mercanta-nicaragua"
     ],
@@ -1610,12 +1625,14 @@
      3
     ],
     "second": null,
-    "variesBy": "Higher Chiriquí farms can ripen later.",
+    "variesBy": "Café Imports', Apex's and Sucafina's 2026 handbook calendar. Sucafina's website gives December–March; higher Chiriquí farms can ripen later.",
     "edgeMonths": 1,
     "sources": [
      "ci-panama",
      "apex-panama",
-     "sucafina-handbook-2026",
+     "sucafina-handbook-2026"
+    ],
+    "compare": [
      "suca-panama"
     ],
     "scope": "Arabica"
@@ -1700,12 +1717,14 @@
      3
     ],
     "second": null,
-    "variesBy": "Southern and lower sites may begin in October.",
+    "variesBy": "Café Imports', Sucafina's and Mercanta's calendar. Sucafina's 2026 handbook starts it in October, as southern and lower sites may.",
     "edgeMonths": 1,
     "sources": [
      "ci-mexico",
      "suca-mexico",
-     "mercanta-mexico",
+     "mercanta-mexico"
+    ],
+    "compare": [
      "sucafina-handbook-2026"
     ],
     "scope": "Arabica"
@@ -1795,10 +1814,12 @@
      1
     ],
     "second": null,
-    "variesBy": "Escambray's October–March trade calendar differs from the broad country window.",
+    "variesBy": "Bijdendijk's country calendar. Moka Trade's Escambray lot gives October–March.",
     "edgeMonths": 1,
     "sources": [
-     "bijdendijk-cuba",
+     "bijdendijk-cuba"
+    ],
+    "compare": [
      "moka-cuba"
     ],
     "scope": "Arabica"
@@ -2162,10 +2183,12 @@
      3
     ],
     "second": null,
-    "variesBy": "Robusta generally runs December–March; Arabica November–January.",
+    "variesBy": "Sucafina's 2026 handbook robusta calendar. Arabica runs November–January, in the handbook and in Café Imports' calendar.",
     "edgeMonths": 1,
     "sources": [
-     "sucafina-handbook-2026",
+     "sucafina-handbook-2026"
+    ],
+    "compare": [
      "ci-india"
     ],
     "scope": "Robusta"
@@ -2263,10 +2286,12 @@
      2
     ],
     "second": null,
-    "variesBy": "Robusta runs October–February; highland Arabica often November–January, northern Arabica October–January.",
+    "variesBy": "Sucafina's 2026 handbook robusta calendar. Sucafina's website gives November–January in the Central Highlands and October–January in the north.",
     "edgeMonths": 1,
     "sources": [
-     "sucafina-handbook-2026",
+     "sucafina-handbook-2026"
+    ],
+    "compare": [
      "suca-vietnam"
     ],
     "scope": "Robusta"
@@ -2530,10 +2555,12 @@
      3
     ],
     "second": null,
-    "variesBy": "Some specialty producers continue into April; Shan smallholders and Mandalay estates differ.",
+    "variesBy": "Sucafina's calendar. Nilaa gives late December to April; Shan smallholders and Mandalay estates differ.",
     "edgeMonths": 1,
     "sources": [
-     "suca-myanmar",
+     "suca-myanmar"
+    ],
+    "compare": [
      "nilaa-myanmar"
     ],
     "scope": "Arabica"

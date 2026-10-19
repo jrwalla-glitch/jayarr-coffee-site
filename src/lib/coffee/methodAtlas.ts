@@ -31,7 +31,7 @@ export const FILTER: Record<FilterKind, { label: string; line: string; order: nu
 
 // Ordered by how hard the water is pushed.
 export const FORCE: Record<Force, { label: string; line: string; order: number }> = {
-  none: { label: 'None (it steeps)', line: 'Nothing pushes the water through the coffee: it steeps, then the grounds are separated.', order: 0 },
+  none: { label: 'None', line: 'Nothing pushes the water through the coffee: it steeps (or, for Turkish coffee, heats) with the grounds, which are then strained off or left to settle.', order: 0 },
   gravity: { label: 'Gravity', line: 'The water\'s own weight pulls it through the bed.', order: 1 },
   hand: { label: 'Hand pressure', line: 'You press a plunger to push the brew through the bed and filter.', order: 2 },
   vapor: { label: 'Vapor and vacuum', line: 'Heated vapor pushes the water up; as it cools, a vacuum pulls the brew back down.', order: 3 },
@@ -160,6 +160,7 @@ export const ATLAS: AtlasMethod[] = [
     id: 'clever', label: 'Clever Dripper', the: 'the Clever Dripper', line: 'A cone with a valve: it steeps like a press, then drains through paper.',
     contact: 'steep-drain', filter: 'paper', force: 'gravity', attention: 1,
     timeS: [270, 285], ratio: { classic: 15, range: [15, 16] }, grind: 'Medium-coarse', temp: '199–205°F (93–96°C)',
+    timeNote: 'one recipe, our guide\'s: a 4-minute steep and a 30–45 second drain; many recipes steep for less',
     recipeBy: 'our Clever Dripper guide: 20 g of coffee and 300 g of water, 4 minutes, then a 30–45 second drain',
     brewGuide: null,
     guide: { slug: 'the-clever-dripper-better-coffee-than-pour-over', title: 'The Clever Dripper' },
@@ -179,6 +180,7 @@ export const ATLAS: AtlasMethod[] = [
     id: 'aeropress', label: 'AeroPress', the: 'the AeroPress', line: 'Coffee steeps in a chamber, then you press it through a paper disc.',
     contact: 'steep-drain', filter: 'paper', force: 'hand', attention: 2,
     ...fromEngine('aeropress'),
+    timeNote: 'the Brew Guide\'s quick recipe; many AeroPress recipes steep 2 minutes or more',
     guide: { slug: 'why-and-how-you-should-use-an-aeropress', title: 'Why and how to use an AeroPress' },
     sourceIds: ['easto', 'synthesis'],
   },
@@ -273,6 +275,14 @@ export function describe(m: AtlasMethod): string {
 }
 
 /** The headline difference for a comparison: at most two clauses, the rest is in the table. */
+/** Ratio and grind aren't axes, but they're rows a reader compares. The ratio differs when one brewer
+ *  uses at least a third more coffee for its water, or only one is measured as drink out (espresso); the
+ *  grind when the grinds differ (review r5, Muse and Opus). */
+const baseGrind = (m: AtlasMethod) => m.grind.split(' (')[0];
+export function recipeDiffers(a: AtlasMethod, b: AtlasMethod): { ratio: boolean; grind: boolean } {
+  const ratio = !!a.ratio.yield !== !!b.ratio.yield || Math.max(a.ratio.classic, b.ratio.classic) / Math.min(a.ratio.classic, b.ratio.classic) >= 4 / 3;
+  return { ratio, grind: baseGrind(a) !== baseGrind(b) };
+}
 export function differenceSentence(a: AtlasMethod, b: AtlasMethod): string {
   const d = differences(a, b);
   // Same axes: the grind each recipe uses can still differ, so say so (review r4, Opus M2).
@@ -296,6 +306,13 @@ export function differenceSentence(a: AtlasMethod, b: AtlasMethod): string {
   if (d.includes('time') && parts.length < 2) {
     const [fast, slow] = a.timeS[1] <= b.timeS[1] ? [a, b] : [b, a];
     parts.push(`${fast.the} takes ${timeText(fast)}, ${slow.the} ${timeText(slow)}`);
+  }
+  // A large ratio difference is often the one a reader notices most (phin against V60): say it when
+  // there's room, for brewers measured the same way (review r5, Muse).
+  const [strong, weak] = a.ratio.classic <= b.ratio.classic ? [a, b] : [b, a];
+  if (parts.length < 2 && !a.ratio.yield && !b.ratio.yield && weak.ratio.classic / strong.ratio.classic >= 1.5) {
+    const r = (x: number) => String(Math.round(x * 100) / 100);
+    parts.push(`${strong.the} uses about ${weak.ratio.classic / strong.ratio.classic >= 1.85 ? 'twice' : `${(weak.ratio.classic / strong.ratio.classic).toFixed(1)} times`} the coffee for its water (1:${r(strong.ratio.classic)} against 1:${r(weak.ratio.classic)})`);
   }
   if (parts.length === 1 && d.includes('force') && d.includes('contact')) {
     const pushed = [a, b].filter((m) => m.force === 'hand' || m.force === 'steam' || m.force === 'pump' || m.force === 'vapor');

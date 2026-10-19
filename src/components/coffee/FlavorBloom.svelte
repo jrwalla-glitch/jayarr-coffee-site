@@ -666,7 +666,8 @@
             <section class="lfam">
               <h3><span class="sw" style:background={f.colour}></span>{f.label}</h3>
               {#each f.groups.filter((g) => !single(g)) as g (g.id)}
-                {#if g.label !== f.label}<p class="lgroup">{g.label}</p>{/if}
+                <!-- Every group is headed, even one named like its family (Floral's Floral), so its notes aren't left unheaded beside "Also on the wheel" (review r5, Muse). -->
+                <p class="lgroup">{g.label}</p>
                 <ul class="chips">
                   {#each g.notes as n (n.id)}
                     <li><button type="button" class="chip" class:on={noteId === n.id} aria-pressed={noteId === n.id} onclick={() => openNote(n.id)}>{n.label}{#if pins.includes(n.id)}<span class="pinmark" aria-label=", on your card">●</span>{/if}</button></li>

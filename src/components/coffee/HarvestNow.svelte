@@ -3,13 +3,16 @@
   // picked now. The page is built ahead of time, so the month is set in the reader's browser.
   import { onMount } from 'svelte';
   import HarvestRing from './art/HarvestRing.svelte';
-  import { drawsEdge, harvestState, MONTHS_LONG } from '../../lib/coffee/origins.ts';
+  import { calendarTag, drawsEdge, harvestState, MONTHS_LONG } from '../../lib/coffee/origins.ts';
   import type { OriginFacts } from '../../lib/coffee/origins.ts';
   interface Props { harvest: OriginFacts['harvest']; name: string; size?: number }
   let { harvest, name, size = 150 }: Props = $props();
   let month = $state<number | null>(null);
   onMount(() => { month = new Date().getMonth() + 1; });
   let st = $derived(month ? harvestState({ harvest }, month) : null);
+  // Which coffee the sentence is about, where the calendar isn't the whole country's (Thailand's northern
+  // arabica, Vietnam's robusta), so "outside its harvest" isn't read as the whole crop (review r5, Muse).
+  const tag = calendarTag({ harvest });
   // Which calendar the ring draws, when it isn't simply the country's arabica (Huila for Colombia).
   const scope = harvest.scope && !/^(arabica|robusta)$/i.test(harvest.scope) ? harvest.scope.replace(/ illustrative calendar/i, '').replace(/^\w/, (c) => c.toUpperCase()) : '';
 </script>
@@ -18,7 +21,7 @@
   <HarvestRing harvest={harvest} month={month} labels size={size} label="{name} harvest calendar" />
   <p class="now" aria-live="polite">
     {#if month && st}
-      {#if st === 'main'}<b>Harvesting now</b> ({MONTHS_LONG[month - 1]}, main crop){:else if st === 'second'}<b>Harvesting now</b> ({MONTHS_LONG[month - 1]}, second crop){:else if st === 'edge'}<b>Maybe</b>: {MONTHS_LONG[month - 1]} is just outside the calendar drawn, where picking can start early or run late{:else if st === 'elsewhere'}<b>Outside this calendar</b> in {MONTHS_LONG[month - 1]}, but {harvest.elsewhere}{:else}<b>Outside its harvest</b> in {MONTHS_LONG[month - 1]}{/if}
+      {#if st === 'main'}<b>Harvesting now</b> ({MONTHS_LONG[month - 1]}, main crop{tag ? `, ${tag}` : ''}){:else if st === 'second'}<b>Harvesting now</b> ({MONTHS_LONG[month - 1]}, second crop{tag ? `, ${tag}` : ''}){:else if st === 'edge'}<b>Maybe</b>: {MONTHS_LONG[month - 1]} is just outside the calendar drawn, where picking can start early or run late{:else if st === 'elsewhere'}<b>Outside this calendar</b> in {MONTHS_LONG[month - 1]}, but {harvest.elsewhere}{:else}<b>Outside its harvest</b>{tag ? ` (${tag})` : ''} in {MONTHS_LONG[month - 1]}{/if}
     {/if}
   </p>
   <ul class="key" aria-label="Ring key">

@@ -510,7 +510,7 @@
           <p class="lbl">From cherry to bag</p>
           <ol>
             <li><b>Picked</b> {harvestText(sel)}</li>
-            <li><b>Processed</b> {sel.processing.length ? sel.processing.slice(0, 2).join(' or ').toLowerCase() : 'at the mill'}</li>
+            <li><b>Processed</b> {sel.processing.length ? sel.processing.slice(0, 2).map((x) => x.replace(/\s*\(.*\)$/, '')).join(' or ').toLowerCase() : 'at the mill'}</li>
             <li><b>Dried and rested</b> on patios or raised beds</li>
             <li><b>Shipped</b> {arrival ? `arrives ${arrival.arrival}` : 'months later'}</li>
             <li><b>Roasted</b> and bagged</li>

@@ -11,7 +11,7 @@
   import type { FreshUse, Storage } from '../../lib/coffee/freshness.ts';
   import { METHODS } from '../../lib/coffee/methods.ts';
   import { noteById } from '../../lib/coffee/flavors.ts';
-  import { parseStore } from '../../lib/coffee/diary.ts';
+  import { parseStore, pruneLog } from '../../lib/coffee/diary.ts';
 
   // The toolkit as a working bench: every tool is a card with a live miniature of what it draws,
   // grouped by the job you're doing. What you've saved on this device comes first, with its answer,
@@ -35,7 +35,6 @@
   let month = $state(10);
   const PIECE: Record<string, 'origins' | 'methods' | 'flavors'> = { origins: 'origins', methods: 'methods', flavors: 'flavors' };
 
-  const pretty = (id: string) => id.replace(/[-_]+/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()).replace(/\bC(\d+)\b/, 'C$1');
   const fmtDate = (iso: string) => { const d = new Date(`${iso}T12:00:00`); return Number.isNaN(d.valueOf()) ? null : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); };
   // As the Brew Guide prints coffee: a tenth of a gram under 100 g, whole grams above.
   const g1 = (x: number) => (x >= 100 ? Math.round(x) : Math.round(x * 10) / 10).toLocaleString('en-US');
@@ -80,7 +79,9 @@
       }
     }
     const grinder = get('jayarr-grinder');
-    if (grinder) out.push({ href: `/deep-brew/calibrator/?grinder=${encodeURIComponent(grinder)}`, label: 'Your grinder', detail: pretty(grinder), icon: 'dial' });
+    // The calibrator saves only its grinder's id, and its names ("1Zpresso JX-Pro") can't be guessed from
+    // one ("jxpro"), so the card doesn't name it (review r5, Muse). After merging Wave B, use its grinder list.
+    if (grinder) out.push({ href: `/deep-brew/calibrator/?grinder=${encodeURIComponent(grinder)}`, label: 'Your grinder', detail: 'Saved in the Grind Calibrator', icon: 'dial' });
     const line = get('jayarr-pods-machine');
     if (line === 'original' || line === 'vertuo') {
       let n = 0; try { n = (JSON.parse(get('jayarr-pods-flight') ?? '[]') as unknown[]).length; } catch { /* ignore */ }
@@ -96,7 +97,8 @@
     // Only when the diary holds something (its contents are never shown).
     // Read with the Caffeine Calculator's own parser, so the two agree on what a diary is (review r4, Opus T3:
     // the strip looked for `entries`, the tool saves `drinks`).
-    const hasDiary = (parseStore(get('jayarr-caffeine-log-v2'))?.drinks.length ?? 0) > 0;
+    // Only drinks still inside the diary's own keep window count (review r5, Muse: a month-old drink did).
+    const hasDiary = pruneLog(parseStore(get('jayarr-caffeine-log-v2'))?.drinks ?? [], Date.now()).length > 0;
     if (hasDiary) out.push({ href: '/tools/caffeine/', label: 'Your caffeine day', detail: 'Kept on this device', icon: 'night' });
     resume = out;
 
