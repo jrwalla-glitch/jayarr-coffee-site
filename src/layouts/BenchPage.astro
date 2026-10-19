@@ -19,14 +19,16 @@ interface Props {
   wide?: boolean;
   /** Explore pieces hang in the gallery (DECISIONS #16): centred title, gallery wall and lighting. */
   gallery?: boolean;
+  /** Keep the page out of search results (the 404 page). */
+  noindex?: boolean;
 }
-const { title, description, kicker, lede, back, schema = [], breadcrumbs = true, wide = false, gallery = false } = Astro.props;
+const { title, description, kicker, lede, back, schema = [], breadcrumbs = true, wide = false, gallery = false, noindex = false } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={title} description={description} breadcrumbs={breadcrumbs} />
+    <BaseHead title={title} description={description} breadcrumbs={breadcrumbs} noindex={noindex} />
     {schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
     <slot name="head" />
   </head>

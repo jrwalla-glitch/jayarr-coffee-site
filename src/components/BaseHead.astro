@@ -31,11 +31,13 @@ interface Props {
 	updatedDate?: Date;
 	/** Emit the URL-derived BreadcrumbList. Pages with their own (articles) pass false: one owner per page. */
 	breadcrumbs?: boolean;
+	/** Keep the page out of search results (the 404 page): no canonical, robots noindex. */
+	noindex?: boolean;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description, image = FallbackImage, isArticle = false, pubDate, updatedDate, breadcrumbs: emitCrumbs = true } = Astro.props;
+const { title, description, image = FallbackImage, isArticle = false, pubDate, updatedDate, breadcrumbs: emitCrumbs = true, noindex = false } = Astro.props;
 
 // Differentiate <title> from <h1> — append site name unless this IS the homepage
 const isHomepage = title === SITE_TITLE;
@@ -81,8 +83,8 @@ const breadcrumbSchema = {
 
 <!-- Fonts are self-hosted via @fontsource (imported in frontmatter) -->
 
-<!-- Canonical URL -->
-<link rel="canonical" href={canonicalURL} />
+<!-- Canonical URL (none on a noindex page such as the 404) -->
+{noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonicalURL} />}
 
 <!-- Preconnect to third-party origins used during initial render -->
 <link rel="preconnect" href="https://i.ytimg.com" crossorigin />
