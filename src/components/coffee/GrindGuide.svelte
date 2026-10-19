@@ -157,7 +157,7 @@
     {#if m.doctor}
       <p class="hint">Taste is the judge: water, freshness and pouring cause the same tastes. <a href={`/tools/fix-my-coffee/${m.brew ? `?method=${method}` : ''}`}>Fix My Coffee</a> helps sort it out.</p>
     {:else if method === 'phin'}
-      <p class="hint">Fix My Coffee doesn't cover the phin yet; Nguyen's troubleshooting is in our <a href="/blog/vietnamese-phin-guide/">phin guide</a>.</p>
+      <p class="hint">For a phin that drips too fast or stalls, <a href="/tools/fix-my-coffee/?method=phin">Fix My Coffee</a> walks through Nguyen's troubleshooting.</p>
     {:else}
       <p class="hint">Taste is the judge: water, freshness and pouring cause the same tastes. <a href="/tools/fix-my-coffee/">Fix My Coffee</a> helps sort it out.</p>
     {/if}

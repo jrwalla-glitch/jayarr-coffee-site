@@ -216,7 +216,7 @@ test('item 29: the phin\'s strength is the recipe\'s, and a 4 oz phin takes 14 g
   ok(buildRecipe({ method: 'phin', ...big.errors[0].patch }));
   const small = buildRecipe({ method: 'phin', target: { doseG: 10 } });
   assert.match(small.warnings.map((w) => w.message).join(' '), /less than 2 tablespoons \(14 g\) in a 4 oz phin may drip fast/);
-  // Fix My Coffee doesn't diagnose a phin yet.
+  // Fix My Coffee's phin path covers only Nguyen's drip problems (too fast, stalled, too strong); it gives no taste diagnoses.
   assert.equal(diagnose({ method: 'phin', symptom: 'sour', answers: { time: 'fast', roast: 'medium', grinder: 'burr' } }).ok, false);
 });
 
