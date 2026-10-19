@@ -81,8 +81,9 @@ function question(id: QuestionId, method: MethodId): Question {
         : method === 'drip-machine' ? `How long did the machine take to brew? Usually ${target}.`
         : `How long did the brew take, from the first pour to the end of drawdown? Target for ${inSentence(m?.label ?? 'this method')} is ${target}.`;
       // Hoffmann's French press (World Atlas pp. 78–79; his 2016 video) steeps 4:00, skims, then settles 5 or more minutes
-      // and is poured without plunging: about 9–12 minutes, on purpose. It is its own answer, not "too long" (Wave D batch 19).
-      const settled = method === 'french-press' ? [{ id: 'settled', label: 'About 9–12 min, Hoffmann\'s way: crust broken at 4:00, then left to settle and poured without plunging' }] : [];
+      // and is poured without plunging: about 9½–12½ minutes from the first pour, as the French press guide times it
+      // (Wave F r1, B3). It is its own answer, not "too long" (Wave D batch 19).
+      const settled = method === 'french-press' ? [{ id: 'settled', label: 'About 9½–12½ min, Hoffmann\'s way: crust broken at 4:00, then left to settle and poured without plunging' }] : [];
       return { id, text, options: [{ id: 'fast', label: `Shorter than ${fmt(t.min)}` }, { id: 'ok', label: 'About on target' }, { id: 'slow', label: `Longer than ${fmt(t.max)}` }, ...settled, { id: 'unsure', label: 'Not sure' }] };
     }
     case 'shot':

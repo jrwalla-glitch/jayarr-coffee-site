@@ -457,3 +457,8 @@ test('Wave F r1 B14: the phin gets a short path built only from Nguyen Coffee Su
   assert.match(run('strong', {}).changeNow, /Add hot water/);
   assert.match(brewLinkFor('phin', run('drip-fast', { press: 'gravity', dose: 'full' })), /adjust=finer/);
 });
+
+test('Wave F r1 B3: Hoffmann\'s settled French press is timed as the French press guide times it (9½–12½ min)', () => {
+  const q = nextQuestion({ method: 'french-press', symptom: 'bitter', answers: {} });
+  assert.match(q.options.find((o) => o.id === 'settled').label, /^About 9½–12½ min, Hoffmann's way/);
+});
