@@ -54,7 +54,7 @@ const { page } = Astro.props;
 		<!-- Category filter tabs -->
 		<div class="bg-cream-dark border-b border-charcoal/10">
 			<div class="max-w-6xl mx-auto px-6">
-				<div class="flex items-center gap-1 overflow-x-auto py-3 -mb-px scrollbar-hide">
+				<div class="flex items-center gap-1 overflow-x-auto py-3 -mb-px scrollbar-hide" data-category-tabs>
 					<a
 						href="/blog/"
 						class="category-tab whitespace-nowrap px-4 py-2 text-sm font-medium rounded-sm transition-colors text-charcoal bg-cream border border-charcoal/15"
@@ -112,9 +112,11 @@ const { page } = Astro.props;
 				))}
 			</div>
 
-			<!-- Pagination -->
+			<!-- Pagination. On a phone the row can't hold every page number, so it wraps (Previous, the numbers,
+			     Next, each centered) rather than squeezing the numbers to slivers and widening the page. Wide
+			     screens keep one row. -->
 			{page.lastPage > 1 && (
-				<nav class="flex items-center justify-center gap-2 mt-16" aria-label="Pagination">
+				<nav class="flex flex-wrap items-center justify-center gap-2 mt-16" aria-label="Pagination">
 					{page.url.prev ? (
 						<a
 							href={page.url.prev}
@@ -128,19 +130,21 @@ const { page } = Astro.props;
 						</span>
 					)}
 
-					{Array.from({ length: page.lastPage }, (_, i) => i + 1).map((num) => (
-						<a
-							href={num === 1 ? '/blog/' : `/blog/${num}/`}
-							class:list={[
-								'w-10 h-10 flex items-center justify-center text-sm rounded-sm transition-colors',
-								num === page.currentPage
-									? 'bg-charcoal text-cream'
-									: 'border border-charcoal/20 text-charcoal hover:bg-charcoal hover:text-cream',
-							]}
-						>
-							{num}
-						</a>
-					))}
+					<div class="flex flex-wrap items-center justify-center gap-2">
+						{Array.from({ length: page.lastPage }, (_, i) => i + 1).map((num) => (
+							<a
+								href={num === 1 ? '/blog/' : `/blog/${num}/`}
+								class:list={[
+									'w-10 h-10 shrink-0 flex items-center justify-center text-sm rounded-sm transition-colors',
+									num === page.currentPage
+										? 'bg-charcoal text-cream'
+										: 'border border-charcoal/20 text-charcoal hover:bg-charcoal hover:text-cream',
+								]}
+							>
+								{num}
+							</a>
+						))}
+					</div>
 
 					{page.url.next ? (
 						<a
@@ -159,5 +163,13 @@ const { page } = Astro.props;
 		</main>
 
 		<Footer />
+
+		<script>
+			// On a phone the category row scrolls sideways. Chrome leaves a focused tab cut off at the row's edge
+			// when 32 px or more of it already shows, so a tab reached with the keyboard is brought fully into view.
+			document.querySelector('[data-category-tabs]')?.addEventListener('focusin', (e) => {
+				(e.target as HTMLElement).scrollIntoView({ block: 'nearest', inline: 'nearest' });
+			});
+		</script>
 	</body>
 </html>
