@@ -108,8 +108,8 @@ const featured = bySlug('coffee-grind-size-guide-what-grind-for-every-brew-metho
             <p><a class="arrow" href="/videos/">Every video →</a></p>
           </div>
           {featured && (
-            <div class="video" style={`--poster: url(${videoPoster.src})`}>
-              <LiteYouTube videoId="JT01fu8P_LM" title={featured.data.title} />
+            <div class="video">
+              <LiteYouTube videoId="JT01fu8P_LM" title={featured.data.title} poster={videoPoster.src} />
               <p class="vcap">Watch: <a href={`/blog/${featured.id}/`}>how to grind for every brewer</a>. Or let the <a href="/tools/grind-guide/">Grind Guide</a> work out your setting.</p>
             </div>
           )}
@@ -213,7 +213,6 @@ const featured = bySlug('coffee-grind-size-guide-what-grind-for-every-brew-metho
   .arrow { color: #7a4e30; font-weight: 600; text-underline-offset: 3px; }
   .video :global(.lite-youtube), .video :global(lite-youtube) { border-radius: 12px; overflow: hidden; }
   /* The facade's still comes from this site, not from YouTube, until someone presses play. */
-  .video :global(.lite-youtube) { background-image: var(--poster) !important; }
   /* The play button sits in a corner, off the thumbnail's own title. */
   .video :global(.lty-playbtn) { top: auto; left: 16px; bottom: 14px; transform: none; width: 56px; height: 40px; }
   .vcap { font-size: 14.5px !important; margin-top: 8px; }

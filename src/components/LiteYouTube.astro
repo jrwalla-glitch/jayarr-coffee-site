@@ -8,16 +8,18 @@ interface Props {
 	videoId: string;
 	title: string;
 	class?: string;
+	/** A local still to show instead of YouTube's thumbnail; then no connection to i.ytimg.com is needed. */
+	poster?: string;
 }
 
-const { videoId, title, class: className } = Astro.props;
-const thumbnailUrl = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+const { videoId, title, class: className, poster } = Astro.props;
+const thumbnailUrl = poster ?? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
 // Only pages that embed a video warm up a connection to the thumbnail host, and only once per page.
 // No crossorigin: the thumbnail is a CSS background, fetched without CORS, so a CORS connection
 // wouldn't be reused for it.
 const locals = Astro.locals as Record<string, unknown>;
-const firstOnPage = !locals.liteYouTubePreconnect;
-locals.liteYouTubePreconnect = true;
+const firstOnPage = !poster && !locals.liteYouTubePreconnect;
+if (!poster) locals.liteYouTubePreconnect = true;
 ---
 
 {firstOnPage && <link rel="preconnect" href="https://i.ytimg.com" />}
