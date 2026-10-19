@@ -423,6 +423,8 @@
                 <p class="band">About {band(x.band)}{needsGrinder(m) ? ' with a grinder' : ''}</p>
                 {#if m.listPrice.seller}<p class="fine">Machine price: the {m.listPrice.kind}.</p>{/if}
                 {#if needsGrinder(m) && grinderPrices.length}<p class="fine">Machine {money(m.listPrice.usd!)}, plus an espresso grinder from about {money(r(grinderPrices[0]))} to {money(r(grinderPrices[grinderPrices.length - 1]))}.</p>{/if}
+                <!-- Where a record covers several colors, say which one the link opens and which one the price was seen for (Wave F r1, B4). -->
+                {#if m.amazon?.variant && m.listPrice.variant && m.amazon.variant !== m.listPrice.variant}<p class="fine variant">The Amazon link opens the {m.amazon.variant}. The price is for the {m.listPrice.variant}: the {m.listPrice.kind}.</p>{/if}
                 <p class="rankn">{rankNote(i)}</p>
                 <ul class="why">{#each [...x.why, ...fitLines(m)] as w (w)}<li>{w}</li>{/each}</ul>
                 <ul class="trade">{#each [...tradeoffs(x), ...(tightLine(m) ? [tightLine(m)!] : [])] as t (t)}<li>{t}</li>{/each}</ul>

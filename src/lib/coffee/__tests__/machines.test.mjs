@@ -119,3 +119,18 @@ test('item 11: the Gaggia Classic E24 and Dedica DeLuxe carry the makers\' publi
   // De'Longhi's US page prints no tank or wattage; non-US figures stay out.
   assert.equal(ded.tankL, null); assert.equal(ded.watts, null);
 });
+
+test('Wave F r1 B4: where the Amazon link and the price are different colors, each is named, and the code covers both', async () => {
+  const { readFileSync } = await import('node:fs');
+  const data = JSON.parse(readFileSync(new URL('../../../data/machines.json', import.meta.url), 'utf8'));
+  const by = (id) => data.machines.find((x) => x.id === id);
+  const lat = by('nespresso-lattissima-one');
+  assert.match(lat.code, /EN510W/); assert.match(lat.code, /EN510B/);
+  assert.match(lat.amazon.title, /Shadow Black/); assert.match(lat.amazon.variant, /Shadow Black \(EN510B\)/);
+  assert.match(lat.listPrice.url, /EN510W/); assert.match(lat.listPrice.variant, /Silky White \(EN510W\)/);
+  const e6 = by('jura-e6-nac-2022');
+  assert.match(e6.amazon.title, /15465/); assert.match(e6.amazon.variant, /15465/);
+  assert.match(e6.listPrice.url, /piano-white/); assert.match(e6.listPrice.variant, /Piano White \(15559\)/);
+  // Both or neither: a record names the link's variant only alongside the price's.
+  for (const m of data.machines) assert.equal(!!m.amazon?.variant, !!m.listPrice?.variant, m.id);
+});

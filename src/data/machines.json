@@ -7325,13 +7325,15 @@
     "usd": 1899,
     "kind": "price seen on the maker’s US shop",
     "url": "https://shopjura.com/e6-piano-white-nac.html",
-    "checked": "2026-10-15"
+    "checked": "2026-10-15",
+    "variant": "Piano White (15559)"
    },
    "amazon": {
     "asin": "B0BVMZRNZL",
     "url": "https://www.amazon.com/dp/B0BVMZRNZL?tag=jayarrcoffee-20",
     "title": "Jura E6 Platinum 15465",
-    "checked": "2026-10-15"
+    "checked": "2026-10-15",
+    "variant": "Platinum (15465)"
    },
    "sources": [
     {
@@ -10066,7 +10068,7 @@
    "brand": "Nespresso",
    "name": "Lattissima One",
    "variant": null,
-   "code": "EN510W",
+   "code": "EN510W / EN510B",
    "fullName": "Lattissima One",
    "models": [
     "De'Longhi EN510W (Silky White)",
@@ -10121,13 +10123,15 @@
     "usd": 429,
     "kind": "price seen on the maker’s US site",
     "url": "https://www.delonghi.com/en-us/p/lattissima-one-nespresso-lattissima-one-coffee-e-espresso-machine-by-de-longhi--white---en510wca/EN510W.html",
-    "checked": "2026-10-15"
+    "checked": "2026-10-15",
+    "variant": "Silky White (EN510W)"
    },
    "amazon": {
     "asin": "B08VTG33NZ",
     "url": "https://www.amazon.com/dp/B08VTG33NZ?tag=jayarrcoffee-20",
     "title": "Nespresso Lattissima One Original Espresso Machine with Milk Frother by De'Longhi, Shadow Black",
-    "checked": "2026-10-15"
+    "checked": "2026-10-15",
+    "variant": "Shadow Black (EN510B)"
    },
    "sources": [
     {

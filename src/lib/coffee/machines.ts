@@ -29,8 +29,10 @@ export interface Machine {
   care?: { descale?: string | null; backflush?: string | null; manualUrl?: string | null } | null;
   /** The dated price seen on the maker's US site or shop, and what kind it was; only for budget bands. */
   /** `seller` is named where the price came from the maker's US importer or an authorized dealer (DECISIONS #18). */
-  listPrice: { usd: number | null; kind?: string | null; url?: string | null; checked?: string | null; seller?: string | null };
-  amazon?: { asin: string | null; url: string | null; title?: string | null; checked?: string | null } | null;
+  /** `variant` names the color or model the price was seen for, where the record covers several (Wave F r1, B4). */
+  listPrice: { usd: number | null; kind?: string | null; url?: string | null; checked?: string | null; seller?: string | null; variant?: string | null };
+  /** `variant` names the color or model the Amazon link opens, where the record covers several. */
+  amazon?: { asin: string | null; url: string | null; title?: string | null; checked?: string | null; variant?: string | null } | null;
   sources?: { field: string; url: string; checked: string }[];
   notes?: string | null;
   /** No longer set: superseded by dimsUnclear (kept so older data still type-checks). */
