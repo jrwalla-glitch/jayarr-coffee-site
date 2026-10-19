@@ -1,0 +1,49 @@
+---
+// Every tool is a client:load island. If its bundle fails or is blocked, the server-rendered
+// controls look live but do nothing, and a shared link shows the tool's defaults (Wave F r1, Astra).
+// After the page's load event and a grace period, an island still marked `ssr` (not hydrated) gets a
+// notice just before it. If it hydrates later on a slow connection, the notice goes away.
+---
+
+<script is:inline>
+	(function () {
+		var GRACE = 3000;
+		function flag(island) {
+			var prev = island.previousElementSibling;
+			if (prev && prev.classList.contains('tool-load-notice')) return;
+			var n = document.createElement('div');
+			n.className = 'tool-load-notice';
+			n.setAttribute('role', 'alert');
+			n.innerHTML = '<p><strong>This tool didn’t finish loading,</strong> so its controls won’t respond, and any settings in a shared link aren’t shown yet. </p>';
+			var a = document.createElement('a');
+			a.href = location.href;
+			a.textContent = 'Reload the page';
+			a.addEventListener('click', function (e) { e.preventDefault(); location.reload(); });
+			n.firstChild.appendChild(a);
+			island.parentNode.insertBefore(n, island);
+			var mo = new MutationObserver(function () {
+				if (!island.hasAttribute('ssr')) { mo.disconnect(); n.remove(); }
+			});
+			mo.observe(island, { attributes: true, attributeFilter: ['ssr'] });
+		}
+		function check() {
+			var islands = document.querySelectorAll('astro-island[ssr]');
+			for (var i = 0; i < islands.length; i++) {
+				var el = islands[i];
+				// Only islands that should be live by now: client:load, and not nested in another island.
+				if (el.getAttribute('client') !== 'load') continue;
+				if (el.parentElement && el.parentElement.closest('astro-island')) continue;
+				flag(el);
+			}
+		}
+		addEventListener('load', function () { setTimeout(check, GRACE); });
+	})();
+</script>
+
+<style is:global>
+	.tool-load-notice, .tool-noscript { font: 400 15px/1.5 'IBM Plex Sans', 'IBM Plex Sans Fallback', system-ui, sans-serif; color: #2a1d15; border-radius: 12px; padding: 12px 16px; margin: 0 0 14px; }
+	.tool-load-notice { background: #fff8ec; border: 1px solid #e3c79f; }
+	.tool-load-notice p { margin: 0; }
+	.tool-load-notice a { color: #7a4e30; font-weight: 600; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+	.tool-noscript { background: #fbf8f3; border: 1px solid #d9cdbd; }
+</style>

@@ -59,7 +59,7 @@ const efsa = GUIDANCE.find((g) => g.id === 'efsa-single-dose')!;
 				<h1>How much caffeine is <em>still in you at bedtime?</em></h1>
 				<p class="cf-lede">Add what you drink and when. You see today's total, and a curve of how much caffeine is in your body hour by hour, falling by half every few hours (every five at the typical setting).</p>
 			</section>
-			<section class="cf-tool" aria-label="Caffeine Calculator"><CaffeineDay client:load /></section>
+			<section class="cf-tool" aria-label="Caffeine Calculator"><CaffeineDay client:load /><noscript><p class="tool-noscript">The interactive calculator needs JavaScript. The table below gives typical caffeine for common drinks.</p></noscript></section>
 
 			<article class="cf-body">
 				<h2>How much caffeine is in a cup of coffee?</h2>

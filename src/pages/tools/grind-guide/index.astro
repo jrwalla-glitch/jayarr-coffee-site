@@ -36,7 +36,7 @@ const rows = order.map((id) => METHODS.find((m) => m.id === id)!);
 				<h1>How fine should you grind <em>for your brewer?</em></h1>
 				<p class="cf-lede">Pick a brewer to see its grind under a magnifier and on the scale from finest to coarsest, plus what going too fine or too coarse tastes like.</p>
 			</section>
-			<section class="cf-tool" aria-label="Grind Guide"><GrindGuide client:load /></section>
+			<section class="cf-tool" aria-label="Grind Guide"><GrindGuide client:load /><noscript><p class="tool-noscript">The magnifier and grind scale need JavaScript. The chart below gives the grind for every brewer.</p></noscript></section>
 
 			<article class="cf-body">
 				<h2>Grind size chart</h2>
