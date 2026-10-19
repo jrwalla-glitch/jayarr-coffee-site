@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte';
   import data from '../../data/machines.json';
-  import { chooseMachines, needsGrinder, neededHeight, unclearMaxCm, CATEGORY_LABEL } from '../../lib/coffee/machines.ts';
+  import { chooseMachines, fitsCounter, needsGrinder, neededHeight, unclearMaxCm, CATEGORY_LABEL } from '../../lib/coffee/machines.ts';
   import type { Machine, GrinderPrice, Needs, Category, Heating, Match } from '../../lib/coffee/machines.ts';
 
   // Choose a machine for your counter, budget (grinder included), milk and effort; then, if you own
@@ -43,6 +43,25 @@
   // Machines a width ruled out only because their published size is unclear, which would otherwise be shortlisted:
   // said where the answer is, not in a footnote (gate r2).
   let hiddenByWidth = $derived(needs.widthCm ? chooseMachines(machines, grinders, { ...needs, widthCm: null }).map((x) => x.machine as M).filter((m) => !m.dims && m.dimsUnclear) : []);
+  // Every other machine that meets the routine and budget but drops out only because its size can't be checked
+  // against the counter given: no published size, or (with a width) Breville's unclear one. Counted and named,
+  // never dropped silently (Wave F r1, B6.2).
+  let sizeOut = $derived.by(() => {
+    if (!needs.widthCm && !needs.heightCm) return [] as M[];
+    const named = new Set(hiddenByWidth.map((m) => m.id));
+    return chooseMachines(machines, grinders, { ...needs, widthCm: null, heightCm: null }, 200).map((x) => x.machine as M).filter((m) => fitsCounter(m, needs) === null && !named.has(m.id));
+  });
+  const noHeight = machines.filter((m) => m.status === 'current' && m.category && m.listPrice.usd && m.milk.type && neededHeight(m) == null).length;
+  const noHeightText = noHeight === 1 ? 'the one of those without a published height is left out' : `the ${noHeight} of those without a published height are left out`;
+  const nameList = (xs: M[]) => xs.map((m) => m.name).join(xs.length === 2 ? ' and ' : ', ').replace(/, ([^,]*)$/, ' and $1');
+  function sizeOutText(xs: M[]): string {
+    const n = xs.length, unclear = xs.filter((m) => m.dimsUnclear), none = xs.filter((m) => !m.dimsUnclear);
+    const why = [
+      unclear.length ? `the ${nameList(unclear)} (${unclear[0].brand}'s listed ${unclear.length === 1 ? 'size conflicts' : 'sizes conflict'} with its own guidance)` : '',
+      none.length ? `the ${none.map((m) => `${m.brand} ${m.name}`).join(none.length === 2 ? ' and ' : ', ').replace(/, ([^,]*)$/, ' and $1')} (${none.length === 1 ? 'its maker publishes' : 'their makers publish'} no size we could find)` : '',
+    ].filter(Boolean).join(' and ');
+    return `${hiddenByWidth.length ? 'Also left out' : 'Left out'}: ${n === 1 ? 'one machine that meets' : `${n} machines that meet`} your routine and budget, because ${n === 1 ? 'its' : 'their'} size can't be checked against your counter: ${why}.`;
+  }
 
   const HEAT: Record<Heating, string> = { thermoblock: 'Thermoblock', 'single-boiler': 'Single boiler', 'heat-exchanger': 'Heat exchanger', 'dual-boiler': 'Dual boiler', 'dual-thermoblock': 'Twin thermoblocks', none: 'No boiler (lever)' };
   const HEATS: string[] = ['thermoblock', 'single-boiler', 'heat-exchanger', 'dual-boiler'];
@@ -290,6 +309,15 @@
   });
 </script>
 
+{#snippet sizeNote()}
+  {#if sizeOut.length}
+    <div class="sizenote">
+      <p>{sizeOutText(sizeOut)}</p>
+      <button type="button" class="ghost" onclick={() => { widthIn = null; heightIn = null; }}>Show matches without the counter</button>
+    </div>
+  {/if}
+{/snippet}
+
 {#snippet machineShape(m: M, x: number, w: number, h: number, known: boolean, floor: number)}
   {@const y = floor - h}
   <g class="mach" class:unknown={!known}>
@@ -392,6 +420,7 @@
               <button type="button" class="ghost" onclick={() => (widthIn = null)}>Show {hiddenByWidth.length === 1 ? 'it' : 'them'} without the width</button>
             </div>
           {/if}
+          {@render sizeNote()}
           {@const c = counter}
           {#if sized.length}
           <svg viewBox="0 0 {CW} {c.H}" class="counter" role="img" aria-label="Your shortlist on a counter, drawn to one scale: {matches.map((x) => x.machine.dims ? `${x.machine.brand} ${x.machine.name}, ${len(x.machine.dims.w)} ${u} wide and ${len(x.machine.dims.h)} ${u} tall` : `${x.machine.brand} ${x.machine.name}, size unclear`).join('; ')}{needs.heightCm ? `, under cabinets ${heightIn} ${u} high` : ''}{needs.widthCm ? `, in ${widthIn} ${u} of width` : ''}.">
@@ -459,6 +488,7 @@
           {#if !sized.length}<p class="cap nodraw">No drawing to scale: {sizeWhy(matches.map((x) => x.machine as M))}{clearanceText(matches.map((x) => x.machine as M))}</p>{/if}
           <p class="shared">Prices are what each maker's US site or shop showed on October 15, 2026, or, where a maker doesn't sell direct, its US importer or an authorized dealer; they change. Amazon links go to the exact model; as an Amazon Associate we earn from qualifying purchases.</p>
         {:else}
+          {@render sizeNote()}
           <div class="none">
             <p class="kick">Nothing fits all of that</p>
             {#if nearest}
@@ -470,7 +500,7 @@
             {/if}
           </div>
         {/if}
-        <p class="method">Only current machines with a dated price and a known milk system are suggested.{needs.widthCm ? ` With a width given, the ${machines.filter((m) => m.status === 'current' && m.category && m.listPrice.usd && m.milk.type && !m.dims).length} of those without a clear published size are left out.` : ''} {machines.filter((m) => m.status === 'current' && !(m.category && m.listPrice.usd && m.milk.type)).length} more current machines are in <button type="button" class="linkish" onclick={() => (mode = 'all')}>All {machines.length}</button>, with what's missing.</p>
+        <p class="method">Only current machines with a dated price and a known milk system are suggested.{needs.widthCm ? ` With a width given, the ${machines.filter((m) => m.status === 'current' && m.category && m.listPrice.usd && m.milk.type && !m.dims).length} of those without a clear published size are left out.` : ''}{needs.heightCm ? ` With a cabinet height given, ${noHeightText}.` : ''}{' '}{machines.filter((m) => m.status === 'current' && !(m.category && m.listPrice.usd && m.milk.type)).length} more current machines are in <button type="button" class="linkish" onclick={() => (mode = 'all')}>All {machines.length}</button>, with what's missing.</p>
       </section>
     </div>
   {:else if mode === 'own'}
@@ -756,8 +786,8 @@
   }
   @media (max-width: 420px) { .modes button { padding: 9px 12px; } }
   @media (prefers-reduced-motion: reduce) { .schem .fbrew { animation: none; } .pipe, .flow, .heater { transition: none; } }
-  .widthnote { margin: 0 0 12px; padding: 12px 14px; border-radius: 14px; border: 1px solid #e9c48f; background: #fff8ec; display: grid; gap: 8px; justify-items: start; }
-  .widthnote p { margin: 0; font-size: 14.5px; color: var(--ink); }
+  .widthnote, .sizenote { margin: 0 0 12px; padding: 12px 14px; border-radius: 14px; border: 1px solid #e9c48f; background: #fff8ec; display: grid; gap: 8px; justify-items: start; }
+  .widthnote p, .sizenote p { margin: 0; font-size: 14.5px; color: var(--ink); }
   .schem[data-phase='steam'] .psteam, .schem[data-phase='both'] .psteam { stroke: #c3873a !important; stroke-width: 5; }
   .schem[data-phase='steam'] .fsteam, .schem[data-phase='both'] .fsteam { stroke: #c3873a; }
   /* Phones: the drawings scale down, so their words scale up (gate r2). */
