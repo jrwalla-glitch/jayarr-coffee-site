@@ -55,6 +55,9 @@
   let selected = $derived(selectedId ? pods.find((p) => p.id === selectedId) ?? null : null);
   let suggestion = $derived(selected ? tryAlso(pods, selected) : null);
   // No editorial suggestion: the nearest capsule on the same row, labelled as such (design gate r2).
+  // On sale with its own Nespresso order page in the data: that exact page is the primary buy link, and the
+  // Amazon search becomes a secondary link (a search can surface the wrong line first; Wave F r1, Muse).
+  let ownPage = $derived(selected && onSale(selected) && !selected.source_label && /^https:\/\/www\.nespresso\.com\/us\/en\/order\/capsules\/(original|vertuo)\//.test(selected.source_url ?? '') ? selected.source_url! : null);
   let near = $derived(selected && !suggestion ? similar(pods, selected) : null);
   // The flight is tasted mildest first, so it's shown in that order (unrated last).
   let flightPods = $derived(flight.map((id) => pods.find((p) => p.id === id)).filter((p): p is Pod => !!p && p.line === line).sort((a, b) => (a.intensity ?? 99) - (b.intensity ?? 99)));
@@ -410,11 +413,16 @@
               <p class="try"><span class="lbl">Similar on the wall</span><button type="button" class="trybtn" onclick={() => pick(near!)}>{@render capsule(near.line, near.color_hex, 20)}{near.name}<small>{near.intensity ? `intensity ${near.intensity}` : 'not rated'} · {near.aroma}</small></button><small class="quiet nearwhy">{selected.intensity ? 'Same cup size, the closest intensity and aroma.' : 'Same cup size and aroma family (Nespresso doesn\'t rate this one for intensity).'}</small></p>
             {/if}
             <div class="actions">
-              {#if onSale(selected)}<a class="go" href={buySearch(selected)} rel="sponsored noopener" target="_blank">Search Amazon for {LINES[selected.line].label} {selected.name} →</a>{/if}
+              {#if ownPage}<a class="go" href={ownPage} rel="noopener" target="_blank">Buy from Nespresso ↗</a>
+              {:else if onSale(selected)}<a class="go" href={buySearch(selected)} rel="sponsored noopener" target="_blank">Search Amazon for {LINES[selected.line].label} {selected.name} →</a>{/if}
               <button type="button" class="pill" aria-pressed={flight.includes(selected.id)} onclick={() => toggleFlight(selected!)}>{flight.includes(selected.id) ? 'In your flight ✓' : 'Add to a tasting flight'}</button>
             </div>
+            {#if ownPage}
+              <p class="disc">Buy from Nespresso opens Nespresso's own US page for this {LINES[selected.line].label} capsule{selected.checked ? `, checked ${fmtDate(selected.checked)}` : ''}. Or <a class="src" href={buySearch(selected)} rel="sponsored noopener" target="_blank">search Amazon for {LINES[selected.line].label} {selected.name}</a>: that opens an Amazon search, not a checked listing, and as an Amazon Associate we earn from qualifying purchases.</p>
+            {:else}
             {#if onSale(selected)}<p class="disc">The button opens an Amazon search for this {LINES[selected.line].label} capsule; as an Amazon Associate we earn from qualifying purchases.</p>{/if}
             {#if selected.source_url}<p class="disc"><a class="src" href={selected.source_url} rel="noopener" target="_blank">{selected.source_label ?? "Nespresso's page for this capsule"} ↗</a>{selected.checked ? `, ${onSale(selected) ? 'checked' : 'status checked'} ${fmtDate(selected.checked)}` : ''}</p>{/if}
+            {/if}
           </div>
         {:else}
           <div class="howto">
