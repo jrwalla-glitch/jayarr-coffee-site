@@ -443,7 +443,8 @@
               <tr class:differs={rd.grind}><th scope="row">Grind{#if rd.grind}<span class="sr"> (differs)</span>{/if}</th><td>{A.grind}</td><td>{B.grind}</td></tr>
             </tbody>
           </table>
-          <p class="quiet small">Highlighted rows are the ones that differ: contact, filter and force when they're different kinds; time when the ranges don't overlap or one takes at least 1.5 times as long; ratio when one uses at least a third more coffee for its water; grind when the grinds differ. Time is the typical brew time for each recipe (the moka pot's is its time on the stove).{#each [A, B].filter((m) => m.timeNote) as m (m.id)}{' '}* {m.label}: {m.timeNote}.{/each}{#each [A, B].filter((m) => m.filterNote) as m (m.id)}{' '}† {m.label}: {m.filterNote}.{/each}</p>
+          <details class="rules quiet small"><summary>Highlighted rows are where these two differ. How rows are highlighted</summary>Contact, filter and force when they're different kinds; time when the ranges don't overlap or one takes at least 1.5 times as long; ratio when one uses at least a third more coffee for its water; grind when the grinds differ.</details>
+          <p class="quiet small">Time is the typical brew time for each recipe (the moka pot's is its time on the stove).{#each [A, B].filter((m) => m.timeNote) as m (m.id)}{' '}* {m.label}: {m.timeNote}.{/each}{#each [A, B].filter((m) => m.filterNote) as m (m.id)}{' '}† {m.label}: {m.filterNote}.{/each}</p>
           <div class="actions">
             {#each [A, B] as m (m.id)}
               {#if brewGuideHref(m)}<a class="ghost" href={brewGuideHref(m)}>{m.label} in the Brew Guide →</a>{:else}<a class="ghost" href="/blog/{m.guide.slug}/">{m.label} guide →</a>{/if}

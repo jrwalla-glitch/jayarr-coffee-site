@@ -282,7 +282,7 @@
       <AltitudeBand arabica={o.altitudeM} robusta={o.robustaAltitudeM} name={o.name} height={compact ? 150 : 166} />
     </div>
     {#if !compact}
-      <ul class="rkey" aria-label="Ring key"><li><span class="k main"></span>Main harvest</li>{#if o.harvest.second}<li><span class="k second"></span>Second crop</li>{/if}{#if drawsEdge(o)}<li><span class="k edge"></span>Edge month (our buffer): picking may start early or run late</li>{/if}<li>The hand points to {MONTHS_LONG[month - 1]}</li></ul>
+      <ul class="rkey" aria-label="Ring key"><li><span class="k main"></span>Main harvest</li>{#if o.harvest.second}<li><span class="k second"></span>Second crop</li>{/if}{#if drawsEdge(o)}<li><span class="k edge"></span>Edge month, a margin we add: picking may start early or run late</li>{/if}<li>The hand points to {MONTHS_LONG[month - 1]}</li></ul>
     {/if}
     <dl class="facts">
       <div><dt>Harvest</dt><dd>{harvestText(o)}{#if o.harvest.scope && !compact && !/^This is /.test(o.harvest.variesBy ?? '')}<span class="sub">{scopeText(o.harvest.scope)}</span>{/if}{#if o.harvest.variesBy && !compact}<span class="sub">{o.harvest.variesBy.replace(/^This is (\w+);\s*/, "This calendar is $1's; ")}</span>{/if}{#if o.harvest.elsewhere}<span class="sub">Outside these months, {o.harvest.elsewhere}.</span>{/if}{#if !compact && o.harvest.sources.length}<span class="sub srcline">Calendar from {sourceNames(o.harvest.sources)}, checked October 2026{#if o.harvest.compare?.length}; compared with {sourceNames(o.harvest.compare)}{/if}</span>{/if}</dd></div>
@@ -433,8 +433,8 @@
         <div class="mapkey" aria-hidden="true">
           <span class="kt">Key</span>
           <span><span class="dot on"></span> Harvesting in {MONTHS_LONG[month - 1]}</span>
-          <span><span class="dot edge"></span> Maybe: a month either side of the calendar drawn (our buffer)</span>
-          {#if elsewhereNow.length}<span><span class="dot else"></span> Outside the calendar drawn, but picked in another region</span>{/if}
+          <span><span class="dot edge"></span> Maybe: possibly starting or finishing (a one-month margin we add)</span>
+          {#if elsewhereNow.length}<span><span class="dot else"></span> Picked in some regions</span>{/if}
           {#if sel && zoom > 2}<span><span class="dia"></span> A growing region</span>{/if}
           <span><span class="dot off"></span> Outside its harvest period</span>
           <span class="kring">{#if zoom > 2}<span class="ringk"></span> {narrow ? 'Ring: 12 months, Jan at top' : 'Ring: its 12-month harvest calendar, January at the top'}{:else}Pick an origin to zoom in and see its year as a ring{/if}</span>
@@ -539,12 +539,14 @@
               <h3>{o.name}</h3>
               {@render profile(o, true)}
               <p class="small"><b>Often described as</b> {o.tendencies.notes.join(', ') || 'not established'}</p>
+              <!-- The caveat travels with the notes in the comparison too (Wave D batch 35: Panama's Gesha note). -->
+              {#if o.tendencies.caveat}<p class="small quiet">{o.tendencies.caveat}</p>{/if}
               {#if o.page}<a class="linkish" href={o.page}>{o.name}'s country page{'\u00a0'}→</a>{/if}
             </section>
           {/each}
         </div>
         <div class="cmpfoot">
-          <ul class="rkey" aria-label="Ring key"><li><span class="k main"></span>Main harvest</li><li><span class="k second"></span>Second crop</li><li><span class="k edge"></span>Edge month (our buffer): picking may start early or run late</li><li>The hand points to {MONTHS_LONG[month - 1]}</li></ul>
+          <ul class="rkey" aria-label="Ring key"><li><span class="k main"></span>Main harvest</li><li><span class="k second"></span>Second crop</li><li><span class="k edge"></span>Edge month, a margin we add: picking may start early or run late</li><li>The hand points to {MONTHS_LONG[month - 1]}</li></ul>
           <p class="small quiet">Both altitude bands are drawn on the same scale.</p>
           <button type="button" class="linkish" onclick={() => { const t = selId; selId = vsId; vsId = t; }}>Swap the two</button>
         </div>

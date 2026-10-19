@@ -27,7 +27,7 @@
   <ul class="key" aria-label="Ring key">
     <li><span class="k main"></span>Main harvest</li>
     {#if harvest.second}<li><span class="k second"></span>Second crop</li>{/if}
-    {#if drawsEdge({ harvest })}<li><span class="k edge"></span>Edge month (our buffer): picking may start early or run late</li>{/if}
+    {#if drawsEdge({ harvest })}<li><span class="k edge"></span>Edge month, a margin we add: picking may start early or run late</li>{/if}
   </ul>
   {#if scope}<p class="sc">Calendar shown: {scope}</p>{/if}
 </div>

@@ -845,7 +845,7 @@
    ],
    "processing": [
     "Washed (most of the crop)",
-    "Natural, honey and anaerobic (common in specialty lots)"
+    "Natural, honey and anaerobic (common in our specialty lot sample)"
    ],
    "tendencies": {
     "notes": [
@@ -1902,11 +1902,13 @@
      9,
      1
     ],
-    "variesBy": "Two picking cycles are described; farms and elevation determine which dominates.",
+    "variesBy": "Blue Mountain Coffee Jamaica's two harvest cycles. Café Imports gives February–June.",
     "edgeMonths": 1,
     "sources": [
-     "ci-jamaica",
      "bmj-spec"
+    ],
+    "compare": [
+     "ci-jamaica"
     ],
     "scope": "Arabica"
    },
@@ -2074,7 +2076,7 @@
      6
     ],
     "second": null,
-    "variesBy": "Café Imports' Sumatra calendar. Sucafina gives two main Sumatran harvests and a fly crop all year: April–June and November–January on its website, October–December and March–May in its 2026 handbook. Robusta and the other islands keep different calendars; lowland robusta runs about April–July.",
+    "variesBy": "Café Imports' Sumatra calendar. Sucafina's main Sumatran crops: April–June and November–January on its website, October–December and March–May in its 2026 handbook. Lowland robusta runs about April–July.",
     "edgeMonths": 0,
     "sources": [
      "ci-sumatra"
@@ -2648,9 +2650,9 @@
    },
    "altitudeM": {
     "min": 1100,
-    "max": 1800,
+    "max": 1600,
     "species": "arabica",
-    "scope": "Northern Arabica examples: Thep Sadet; Movaci's Chiang Mai 1,100–1,500 m and Chiang Rai 1,200–1,600 m; Mae Salong up to 1,800 m, a band Movaci gives for its tea and Arabica together.",
+    "scope": "Northern Arabica examples: Thep Sadet 1,100–1,600 m; Movaci's Chiang Mai 1,100–1,500 m and Chiang Rai 1,200–1,600 m. Movaci's Mae Salong band, 1,200–1,800 m, is given for its tea and Arabica together.",
     "sources": [
      "thai-moac",
      "movaci-thailand"

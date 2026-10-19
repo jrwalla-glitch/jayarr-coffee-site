@@ -82,7 +82,7 @@ const META: OriginMeta[] = [
   { id: 'china', name: 'China (Yunnan)', continent: 'asia-pacific', lat: 22.8, lon: 100.9, articles: [a('china-yunnan-coffee-emerging-origin', 'Yunnan: China\'s coffee origin')] },
   { id: 'vietnam', name: 'Vietnam', continent: 'asia-pacific', lat: 12.7, lon: 108.1, articles: [a('vietnam-coffee-origin-guide', 'Vietnam: how one country changed coffee'), a('vietnamese-phin-guide', 'Vietnamese phin guide')] },
   { id: 'indonesia', name: 'Indonesia', continent: 'asia-pacific', lat: -1.0, lon: 102.0, page: '/explore/origins/indonesia/', articles: [a('what-does-indonesian-coffee-taste-like', 'What Indonesian coffee tastes like'), a('7-sumatra-coffees-reviewed-best-and-worst', 'Seven Sumatran coffees reviewed')] },
-  { id: 'papua-new-guinea', name: 'Papua New Guinea', continent: 'asia-pacific', lat: -6.1, lon: 145.3, articles: [a('papua-new-guinea-makes-excellent-coffee', 'Papua New Guinea: sweet, fruity and underrated')] },
+  { id: 'papua-new-guinea', name: 'Papua New Guinea', continent: 'asia-pacific', lat: -6.1, lon: 145.3, articles: [a('papua-new-guinea-makes-excellent-coffee', 'Papua New Guinea coffee: highland arabica, grades and taste')] },
 ];
 
 export const CONTINENTS: { id: Continent; label: string }[] = [
