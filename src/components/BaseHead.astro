@@ -43,14 +43,20 @@ const { title, description, image = FallbackImage, isArticle = false, pubDate, u
 const isHomepage = title === SITE_TITLE;
 const pageTitle = isHomepage ? SITE_TITLE : `${title} | ${SITE_TITLE}`;
 
-// Breadcrumb data from URL path
+// Breadcrumb data from URL path. A segment with no page of its own is left out, so every crumb
+// resolves: the category pages read Home › Blog › Brewing, since /blog/category/ has no index
+// (Wave F r1, Opus). tool_wave_f_check.mjs checks every BreadcrumbList item in dist/.
+const NO_PAGE = new Set(['/blog/category/']);
 const pathSegments = Astro.url.pathname.split('/').filter(Boolean);
 const breadcrumbs = [
 	{ name: 'Home', url: Astro.site?.href || 'https://jayarr.coffee/' },
-	...pathSegments.map((seg, i) => ({
-		name: seg.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
-		url: new URL(pathSegments.slice(0, i + 1).join('/') + '/', Astro.site || 'https://jayarr.coffee').href,
-	})),
+	...pathSegments
+		.map((seg, i) => ({ seg, path: '/' + pathSegments.slice(0, i + 1).join('/') + '/' }))
+		.filter(({ path }) => !NO_PAGE.has(path))
+		.map(({ seg, path }) => ({
+			name: seg.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+			url: new URL(path, Astro.site || 'https://jayarr.coffee').href,
+		})),
 ];
 const breadcrumbSchema = {
 	'@context': 'https://schema.org',
