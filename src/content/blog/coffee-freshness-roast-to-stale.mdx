@@ -11,9 +11,9 @@ import AnswerBox from '../../components/AnswerBox.astro';
 import ProcessFlow from '../../components/infographics/ProcessFlow.astro';
 import ToolCallout from '../../components/ToolCallout.astro';
 
-<AnswerBox answer="Whole beans usually taste best about 7 to 21 days after roasting, stay good to about day 30 and fade over the following month. Very fresh beans need a few days' rest first, longer for espresso. These are typical windows, not a forecast for your bag. Ground coffee runs on a much faster clock: it releases much of its trapped gas within minutes of grinding, so grind just before you brew." />
+<AnswerBox answer="Whole beans usually taste best about 7 to 21 days after roasting, stay good to about day 30 and fade over the following month. Espresso beans need about a week's rest first; for filter, very fresh beans are fine to brew, though James Hoffmann finds they taste better after two or three days. These are typical windows, not a forecast for your bag. Ground coffee runs on a much faster clock: it releases much of its trapped gas within minutes of grinding, so grind just before you brew." />
 
-Roasted coffee starts changing the day it leaves the roaster. For a few days it's too gassy to brew evenly; then it opens up, peaks and slowly goes flat. Whole beans do this over weeks. Ground coffee does a lot of it in minutes.
+Roasted coffee starts changing the day it leaves the roaster. For the first few days it's full of carbon dioxide, which gets in the way of espresso far more than filter; then it opens up, peaks and slowly goes flat. Whole beans do this over weeks. Ground coffee does a lot of it in minutes.
 
 ## The typical timeline for whole beans
 
@@ -24,10 +24,10 @@ These are the stages our [Freshness tool](/tools/freshness/) uses, counted in da
   subtitle="Days since roasting, for filter coffee. Typical windows, not a forecast for your bag."
   steps={[
     {
-      label: "Probably still resting",
+      label: "Very fresh",
       sublabel: "Days 0–3",
-      description: "Likely too fresh: trapped carbon dioxide can push water away from the grounds and make the coffee brew unevenly.",
-      detail: "For espresso, the Freshness tool keeps beans in this stage through day 6."
+      description: "Fine to brew. In an open filter brewer most of the gas escapes as it brews (Rao), though Hoffmann finds coffee tastes better after two or three days.",
+      detail: "For espresso, the Freshness tool calls beans probably still resting through day 6: the gas pushes back against the water and forces a coarser grind."
     },
     {
       label: "Opening up",
@@ -60,7 +60,7 @@ These are the stages our [Freshness tool](/tools/freshness/) uses, counted in da
 
 The day counts are the Freshness tool's typical windows, built on practical advice rather than on a measured curve. James Hoffmann's rules in *The World Atlas of Coffee* are to buy within two weeks of roasting and use the coffee within a month, because it's "at its most vibrant during the first few weeks". The boundaries after a month (fading from day 31, stale from day 60) are our own guide, not a rule from any study.
 
-The resting days differ a little from Hoffmann's. For espresso at home he recommends at least three to four days between roasting and brewing; for filter coffee he says the rest matters less, though he finds coffee tastes better after two to three days than straight off the roaster. The Freshness tool rests filter beans through day 3 and espresso through day 6, a little longer than he suggests. If your beans taste fine sooner, brew them.
+The resting days come from Hoffmann and Scott Rao. For espresso at home Hoffmann recommends at least three to four days between roasting and brewing, and the Freshness tool rests espresso beans through day 6, a little longer than he suggests; Rao explains in *Espresso Extraction* that the gas pushes back against the water in a shot and forces a coarser grind. For filter coffee Hoffmann says the rest matters less, though he finds coffee tastes better after two to three days than straight off the roaster, and Rao writes that in an open brewer most of the gas escapes into the air above the slurry without significantly affecting extraction or flavor. So the tool calls filter beans very fresh and fine to brew from day 0. If your espresso beans pull well sooner, use them.
 
 Stale coffee isn't unsafe. Hoffmann notes that coffee is considered shelf stable and safe to drink two years after roasting, "but it will taste pretty terrible at that point." He describes stale coffee as tasting flat, woody and "vaguely of cardboard".
 
@@ -68,7 +68,7 @@ Stale coffee isn't unsafe. Hoffmann notes that coffee is considered shelf stable
 
 In *The Physics of Filter Coffee*, Jonathan Gagné describes three things happening at once:
 
-- **Carbon dioxide leaves.** Roasting fills the beans with CO₂, and they slowly lose it. It doesn't affect the taste of filter coffee directly, but it interferes with extraction, which is why very fresh beans need a rest. In a bag with a one-way valve, it also pushes oxygen out and protects the beans.
+- **Carbon dioxide leaves.** Roasting fills the beans with CO₂, and they slowly lose it. It doesn't affect the taste of filter coffee directly, but it interferes with extraction, which is one reason very fresh beans are often rested. In a bag with a one-way valve, it also pushes oxygen out and protects the beans.
 - **Aromas escape.** Aroma compounds leave at different rates, so a coffee's smell and taste shift as it ages before they fade overall. Moisture speeds this up.
 - **Oils come to the surface and oxidize.** Oils migrate outward over days to months, faster in darker roasts and decaf, and turn rancid once they meet oxygen. Fresh beans usually don't look oily, so a glossy bean is usually a sign of age, a dark roast, or both.
 
@@ -94,7 +94,7 @@ Gagné goes further. In a blind tasting, he couldn't tell a fresh bag from a thr
 
 That's one taster's comparison, and the Freshness tool doesn't model it: it counts from the roast date whether the bag is sealed or opened, adds a note that opened bags go stale faster, and says the bag can move its windows by days to weeks.
 
-<ToolCallout tool="freshness" preset={{ storage: 'sealed-bag' }} cta="Open Freshness for a sealed bag" context="Opens the Freshness tool for a sealed bag of whole beans brewed as filter. It starts on a bag roasted ten days ago: enter the roast date from yours to see its stage and its usual best dates, or switch to espresso for the longer rest." />
+<ToolCallout tool="freshness" preset={{ storage: 'sealed-bag' }} cta="Open Freshness for a sealed bag" context="Opens the Freshness tool for a sealed bag of whole beans brewed as filter. It starts on a bag roasted ten days ago: enter the roast date from yours to see its stage and its usual best dates, or switch to espresso, which rests through day 6." />
 
 ## Slowing the clock
 
@@ -111,4 +111,5 @@ The bloom is a weaker clue. Fresher coffee usually bubbles more when the water h
 - Jonathan Gagné, *The Physics of Filter Coffee* (2021), chapter 8, "Freshness," §§8.1–8.5, pp. 159–165
 - James Hoffmann, *The World Atlas of Coffee*, revised edition (Mitchell Beazley, 2018), "Buying and Storing Coffee," pp. 62–65 ("Golden rules for fresh coffee," "Freshness," "Staling," "'Resting' coffee" and "Packaging coffee")
 - National Coffee Association, "Storage and shelf life," *About Coffee* (aboutcoffee.org), checked October 15, 2026: [aboutcoffee.org](https://www.aboutcoffee.org/beans/storage-and-shelf-life/)
+- Scott Rao, *Espresso Extraction: Measurement and Mastery* (2013), chapter 8, "Roast Age," and chapter 9, "Grinding" (resting beans for espresso and for filter brewing)
 - Samo Smrke, Marco Wellinger, Tomonori Suzuki, Franz Balsiger, Sebastian E. W. Opitz and Chahan Yeretzian, "Time-Resolved Gravimetric Method To Assess Degassing of Roasted Coffee," *Journal of Agricultural and Food Chemistry* 66, no. 21 (2018): 5293–5300, Introduction and Results ("Whole Roasted Coffee Beans"; "Roast and Ground Coffee"): [doi.org/10.1021/acs.jafc.7b03310](https://doi.org/10.1021/acs.jafc.7b03310)
