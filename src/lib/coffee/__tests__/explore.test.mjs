@@ -276,3 +276,13 @@ test('review r5 (Muse): ratio and grind rows differ when they do; a large ratio 
   assert.match(differenceSentence(by('phin'), by('v60')), /the phin uses about twice the coffee for its water \(1:8\.6 against 1:16\)/);
   assert.ok(by('clever').timeNote && by('aeropress').timeNote);
 });
+
+test('review r6 (Opus): cold brew reads as a concentrate and compares as served; multiples are said exactly; a bag\'s "sour" isn\'t the flaw note', () => {
+  const by = (id) => ATLAS.find((m) => m.id === id);
+  assert.match(ratioText(by('cold-brew')), /concentrate, diluted about 1:1 to serve$/);
+  assert.equal(recipeDiffers(by('cold-brew'), by('french-press')).ratio, false);
+  assert.doesNotMatch(differenceSentence(by('cold-brew'), by('french-press')), /times the coffee|twice the coffee/);
+  assert.match(differenceSentence(by('phin'), by('v60')), /about twice the coffee/);
+  const c = compareCard(['lemon'], 'sour, raw sugar');
+  assert.ok(!c.bagOnly.some((id) => noteById(id)?.family === 'off' || noteById(id)?.flaw), c.bagOnly.join(','));
+});

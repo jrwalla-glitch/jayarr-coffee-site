@@ -77,7 +77,7 @@
   // A family's own word ("floral") reads as that family, not as a word the wheel lacks.
   const famLabel = (f: string) => `the ${familyById(f as FamilyId)!.label} family`;
   let bagReadAs = $derived(bagPhrases.flatMap((t) => {
-    if (!notesInText(t).length && !familiesInText(t).length && genericIn(t).length) { const f = genericMeans(genericIn(t)[0]).family; return [`“${t}” as several notes${f ? ` (${famLabel(f)})` : ''}, so it isn't counted as one`]; }
+    if (!notesInText(t).length && !familiesInText(t).length && genericIn(t).length) { const g = genericMeans(genericIn(t)[0]); return [`“${t}” as ${g.notes.length ? 'several notes' : 'no single note on the wheel'}${g.family ? ` (${famLabel(g.family)})` : ''}, so it isn't counted as one`]; }
     const labels = [...notesInText(t).map((id) => noteById(id)!.label), ...familiesInText(t).map(famLabel)];
     return labels.length && !(labels.length === 1 && labels[0].toLowerCase() === t.toLowerCase()) ? [`“${t}” as ${labels.join(' and ')}`] : [];
   }));
@@ -181,8 +181,11 @@
 
   // While a shared card is shown unchanged, the reader's own card stays the stored one, Save included.
   let ownCurrent: { pins: string[]; bag: string } | null = null;
+  // "Unchanged" is judged here, from the card itself, not from linkCard (another effect clears that, and
+  // may run after this one): the first edit to a shared card becomes the reader's own (review r6, Opus).
   function persist() {
-    const current = linkCard !== null ? ownCurrent ?? { pins: [], bag: '' } : { pins, bag };
+    const shared = linkCard !== null && encodeCard({ pins, bag }) === linkCard;
+    const current = shared ? ownCurrent ?? { pins: [], bag: '' } : { pins, bag };
     try { localStorage.setItem(STORE, JSON.stringify({ current, saved })); } catch { /* storage unavailable */ }
   }
   function saveCard() {

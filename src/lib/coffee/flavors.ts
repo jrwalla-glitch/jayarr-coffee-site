@@ -157,7 +157,7 @@ export const FAMILIES: Family[] = [
         n('blackberry', 'Blackberry', 'Dark, tart-sweet berry with seeds.', 'a blackberry or blackberry jam', ['blackberry', 'blackberry jam', 'boysenberry', 'mulberry']),
         n('blackcurrant', 'Blackcurrant', 'Tart, dark, slightly green berry: a hallmark word for Kenyan coffees.', 'blackcurrant jam or cordial', ['blackcurrant', 'black currant', 'black currants', 'cassis'], extraWord),
         n('cranberry', 'Cranberry', 'Sharp, dry red berry.', 'a dried or fresh cranberry', ['cranberry'], extraWord),
-        n('berries-mixed', 'Mixed berries', 'Berries without one fruit in front.', 'a spoon of mixed-berry jam', ['berry', 'berries', 'red berries', 'juicy berries', 'mixed berries', 'forest fruits', 'cloudberry', 'seabuckthorn berry', 'redcurrant', 'red currant', 'red currants'], extraWord),
+        n('berries-mixed', 'Mixed berries', 'Berries without one fruit in front, or a berry with no note of its own here (redcurrant, cloudberry).', 'a spoon of mixed-berry jam', ['berry', 'berries', 'red berries', 'juicy berries', 'mixed berries', 'forest fruits', 'cloudberry', 'seabuckthorn berry', 'redcurrant', 'red currant', 'red currants'], extraWord),
       ]],
       ['dried-fruit', 'Dried fruit', [
         n('raisin', 'Raisin', 'Dark, sweet dried grape.', 'a few raisins, chewed', ['raisin', 'raisins', 'golden raisin', 'sultana']),
@@ -184,7 +184,7 @@ export const FAMILIES: Family[] = [
         n('orange', 'Orange', 'Sweet, juicy, floral citrus.', 'a segment of orange', ['orange', 'blood orange', 'tangerine', 'mandarin', 'mandarin orange', 'clementine', 'sweet orange', 'orange zest', 'marmalade']),
         n('grapefruit', 'Grapefruit', 'Sour with a bitter peel edge.', 'a strip of grapefruit peel', ['grapefruit', 'ruby grapefruit', 'pomelo']),
         n('bergamot', 'Bergamot', 'Perfumed citrus, the scent of Earl Grey.', 'an Earl Grey tea bag', ['bergamot'], extraWord),
-        n('citrus', 'Mixed citrus', 'Bright citrus without one fruit in front.', 'a mix of orange and lemon zest', ['citrus', 'complex citrus', 'ripe citrus', 'citrus oil', 'candied peel', 'yuzu'], extraWord),
+        n('citrus', 'Mixed citrus', 'Bright citrus without one fruit in front, or a citrus with no note of its own here (yuzu).', 'a mix of orange and lemon zest', ['citrus', 'complex citrus', 'ripe citrus', 'citrus oil', 'candied peel', 'yuzu'], extraWord),
       ]],
     ]),
   family('sour-fermented', 'Sour & fermented', '#b9b23e',
@@ -468,7 +468,9 @@ export interface CardComparison {
 /** How the reader's notes line up with a roaster's: same note, same family, or neither. */
 export function compareCard(pins: string[], bag: string): CardComparison {
   const generic = genericIn(bag).map(genericMeans);
-  const bagNotes = notesInText(bag), bagFamilies = [...new Set([...familiesInText(bag), ...generic.flatMap((g) => (g.family ? [g.family] : []))])];
+  // A bag is a roaster's words, so it's read as their descriptions are: a flaw word there ("sour") is set
+  // aside, not offered as the flaw note (review r6, Opus).
+  const bagNotes = notesInText(bag, { roaster: true }), bagFamilies = [...new Set([...familiesInText(bag), ...generic.flatMap((g) => (g.family ? [g.family] : []))])];
   const covered = generic.flatMap((g) => g.notes);
   const fam = (id: string) => noteById(id)?.family;
   const shared = pins.filter((p) => bagNotes.includes(p));

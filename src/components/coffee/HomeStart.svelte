@@ -54,7 +54,7 @@
       sour: `Often under-extracted: the water didn't pull enough from the coffee. The usual suspects are a grind that's too coarse or ${steep ? 'a steep that was too short' : m === 'drip-machine' ? 'a brew that ran too fast' : 'a brew that ran too fast, or water that wasn\'t hot enough'}.`,
       bitter: `Often over-extracted: too much was pulled out. A grind that's too fine or ${steep ? 'a steep that ran too long' : 'a brew that ran too long'} are the usual suspects, though dark roasts are bitter by nature.`,
       weak: 'Usually too little coffee for the water, before anything else. A stronger ratio is the first thing to try.',
-      strong: 'Usually too much coffee for the water. A lighter ratio, or adding a little hot water, fixes it without touching the grind.',
+      strong: 'Usually too much coffee for the water: a lighter ratio, or a little hot water added, often fixes it. If the brew also ran long, grind a step coarser too.',
       flat: 'Often stale beans or water with too few minerals, rather than the recipe.',
     }[id] ?? '';
   }
@@ -151,7 +151,7 @@
         <p class="q">Your mug</p>
         <div class="chips">
           {#each cups as c (c)}<button type="button" class="chip" aria-pressed={oz === c} onclick={() => (oz = c)}>{c} oz</button>{/each}
-          {#if cups.length < CUPS.length}<span class="cupnote">{method === 'aeropress' ? 'One press makes about 8 oz; for a bigger mug, make two.' : `The Brew Guide sizes one ${BREWERS.find((b) => b.id === method)?.label} brew up to ${cups.at(-1)} oz.`}</span>{/if}
+          {#if cups.length < CUPS.length}<span class="cupnote">{method === 'aeropress' ? 'One press makes about 8 oz; for a bigger mug, make two.' : cups[0] > CUPS[0] ? `The Brew Guide starts a ${BREWERS.find((b) => b.id === method)?.label} ${method === 'cold-brew' || method === 'drip-machine' ? 'batch' : 'brew'} at ${cups[0]} oz; less is too small to brew well.` : `The Brew Guide sizes one ${BREWERS.find((b) => b.id === method)?.label} ${method === 'cold-brew' || method === 'drip-machine' ? 'batch' : 'brew'} up to ${cups.at(-1)} oz.`}</span>{/if}
         </div>
       {/if}
       {#if r}

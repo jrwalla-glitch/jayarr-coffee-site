@@ -89,7 +89,8 @@
     }
     try {
       const card = JSON.parse(get('jayarr-tasting-card-v1') ?? 'null');
-      const pins = (card?.current?.pins ?? []).map((p: string) => noteById(p)?.label).filter(Boolean);
+      // As the Bloom reopens it: known notes only, three at most (review r6, Opus).
+      const pins = (card?.current?.pins ?? []).map((p: string) => noteById(p)?.label).filter(Boolean).slice(0, 3);
       // No pins in the link: the Bloom reopens your own card, bag notes included, from this device.
       if (pins.length) out.push({ href: '/explore/flavors/', label: 'Your tasting card', detail: pins.join(', '), icon: 'flower' });
     } catch { /* ignore */ }
@@ -99,7 +100,7 @@
     // the strip looked for `entries`, the tool saves `drinks`).
     // Only drinks still inside the diary's own keep window count (review r5, Muse: a month-old drink did).
     const hasDiary = pruneLog(parseStore(get('jayarr-caffeine-log-v2'))?.drinks ?? [], Date.now()).length > 0;
-    if (hasDiary) out.push({ href: '/tools/caffeine/', label: 'Your caffeine day', detail: 'Kept on this device', icon: 'night' });
+    if (hasDiary) out.push({ href: '/tools/caffeine/', label: 'Your caffeine diary', detail: 'Kept on this device', icon: 'night' });
     resume = out;
 
     // On touch screens there's no hover: each miniature plays once as it scrolls into view.

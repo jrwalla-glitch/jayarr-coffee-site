@@ -66,6 +66,8 @@ export interface AtlasMethod {
   sourceIds: string[];
   /** A note on the time, where recipes vary a lot. */
   timeNote?: string;
+  /** A concentrate, served diluted: how many times its water the served drink holds (cold brew: 2, diluted about 1:1). */
+  servedFactor?: number;
   /** Said in place of a ratio range where the brewer sets the ratio itself (the moka pot). */
   ratioNote?: string;
   /** A note on the filter, where the brewer is sold or used with others too (review r4, Muse M2). */
@@ -141,6 +143,7 @@ export const ATLAS: AtlasMethod[] = [
     id: 'cold-brew', label: 'Cold brew', the: 'cold brew', line: 'Coarse coffee steeps in cold water for half a day or more.',
     contact: 'immersion', filter: 'metal', force: 'none', attention: 1,
     filterNote: 'a metal mesh in the recipe drawn; paper and cloth work too',
+    servedFactor: 2,
     ...fromEngine('cold-brew'),
     guide: { slug: 'cold-brew-concentrate-guide', title: 'Cold brew concentrate: ratio, steep time and dilution' },
     sourceIds: ['easto', 'synthesis'],
@@ -229,7 +232,9 @@ export function ratioText(m: AtlasMethod): string {
   if (m.ratio.yield) return `1:${r(m.ratio.classic)} out (1:${r(m.ratio.range[0])}–1:${r(m.ratio.range[1])})`;
   // As the Brew Guide's own table puts it (review r4, Opus M3).
   if (m.ratioNote) return `1:${r(m.ratio.classic)} (${m.ratioNote})`;
-  return m.ratio.range[0] === m.ratio.range[1] ? `1:${r(m.ratio.classic)}` : `1:${r(m.ratio.classic)} (1:${r(m.ratio.range[0])}–1:${r(m.ratio.range[1])})`;
+  const base = m.ratio.range[0] === m.ratio.range[1] ? `1:${r(m.ratio.classic)}` : `1:${r(m.ratio.classic)} (1:${r(m.ratio.range[0])}–1:${r(m.ratio.range[1])})`;
+  // A concentrate's ratio isn't the cup's: said so wherever it shows (review r6, Opus).
+  return m.servedFactor ? `${base} concentrate, diluted about 1:1 to serve` : base;
 }
 
 export type Axis = 'contact' | 'filter' | 'force' | 'time';
@@ -279,8 +284,10 @@ export function describe(m: AtlasMethod): string {
  *  uses at least a third more coffee for its water, or only one is measured as drink out (espresso); the
  *  grind when the grinds differ (review r5, Muse and Opus). */
 const baseGrind = (m: AtlasMethod) => m.grind.split(' (')[0];
+// Ratios compare as served: a concentrate diluted 1:1 drinks like twice its water.
+const served = (m: AtlasMethod) => m.ratio.classic * (m.servedFactor ?? 1);
 export function recipeDiffers(a: AtlasMethod, b: AtlasMethod): { ratio: boolean; grind: boolean } {
-  const ratio = !!a.ratio.yield !== !!b.ratio.yield || Math.max(a.ratio.classic, b.ratio.classic) / Math.min(a.ratio.classic, b.ratio.classic) >= 4 / 3;
+  const ratio = !!a.ratio.yield !== !!b.ratio.yield || Math.max(served(a), served(b)) / Math.min(served(a), served(b)) >= 4 / 3;
   return { ratio, grind: baseGrind(a) !== baseGrind(b) };
 }
 export function differenceSentence(a: AtlasMethod, b: AtlasMethod): string {
@@ -309,10 +316,11 @@ export function differenceSentence(a: AtlasMethod, b: AtlasMethod): string {
   }
   // A large ratio difference is often the one a reader notices most (phin against V60): say it when
   // there's room, for brewers measured the same way (review r5, Muse).
-  const [strong, weak] = a.ratio.classic <= b.ratio.classic ? [a, b] : [b, a];
-  if (parts.length < 2 && !a.ratio.yield && !b.ratio.yield && weak.ratio.classic / strong.ratio.classic >= 1.5) {
+  const [strong, weak] = served(a) <= served(b) ? [a, b] : [b, a];
+  const times = served(weak) / served(strong);
+  if (parts.length < 2 && !a.ratio.yield && !b.ratio.yield && !a.servedFactor && !b.servedFactor && times >= 1.5) {
     const r = (x: number) => String(Math.round(x * 100) / 100);
-    parts.push(`${strong.the} uses about ${weak.ratio.classic / strong.ratio.classic >= 1.85 ? 'twice' : `${(weak.ratio.classic / strong.ratio.classic).toFixed(1)} times`} the coffee for its water (1:${r(strong.ratio.classic)} against 1:${r(weak.ratio.classic)})`);
+    parts.push(`${strong.the} uses about ${times >= 1.85 && times < 2.15 ? 'twice' : `${times.toFixed(1)} times`} the coffee for its water (1:${r(strong.ratio.classic)} against 1:${r(weak.ratio.classic)})`);
   }
   if (parts.length === 1 && d.includes('force') && d.includes('contact')) {
     const pushed = [a, b].filter((m) => m.force === 'hand' || m.force === 'steam' || m.force === 'pump' || m.force === 'vapor');
