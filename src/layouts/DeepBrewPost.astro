@@ -35,7 +35,7 @@ const related = (await getCollection('deepbrew'))
 const articleSchema = {
 	'@context': 'https://schema.org', '@type': 'Article', headline: title, description,
 	datePublished: pubDate.toISOString(), dateModified: (updatedDate ?? pubDate).toISOString(),
-	author: { '@type': 'Person', name: 'Jay Arr', url: Astro.site?.toString() },
+	author: { '@type': 'Person', name: 'Jay Arr', url: new URL('/about/', Astro.site).toString() },
 	publisher: { '@type': 'Organization', name: SITE_TITLE, url: Astro.site?.toString() },
 	mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalURL.toString() },
 };
@@ -67,6 +67,7 @@ const breadcrumbSchema = {
 				<h1 data-pagefind-weight="10">{nb(title)}</h1>
 				<p class="lede" data-pagefind-weight="3">{description}</p>
 				<p class="meta" data-pagefind-ignore>
+					<span>By <a href="/about/">Jay Arr</a></span>
 					<span>Published <time datetime={pubDate.toISOString()}>{longDate(pubDate)}</time></span>
 					{updatedDate && <span>Updated <time datetime={updatedDate.toISOString()}>{longDate(updatedDate)}</time></span>}
 					{minutes && <span>{minutes} min read</span>}
